@@ -4706,12 +4706,13 @@ font-size:15px;
 line-height:20px
 }
 .card {
-	margin-bottom:1.5rem;
+	margin-bottom:20px;
 	-webkit-box-shadow:0 1px 2px rgba(56, 65, 74, .15);
 	box-shadow:0 1px 2px rgba(56, 65, 74, .15)
 }
 .card-header {
-	border-bottom:1px solid var(--vz-border-color)
+	border-bottom:1px solid var(--vz-border-color);
+	padding: 7px 16px;
 }
 .card-header-dropdown .dropdown-btn {
 	padding:1rem 0
@@ -14752,4 +14753,62 @@ top:20px
 }
 .dashbaord-items .col-4 h6{
 	color:#000
+}
+
+/***************/
+.card-body {
+  
+    padding: 10px 16px;
+  
+}
+.Dashboard-form{
+	
+}
+.Dashboard-form label{
+	
+}
+.Dashboard-form .form-control{
+	margin-bottom:10px;
+}
+.Dashboard-form .form-select{
+	margin-bottom:10px;
+}
+.edit-color{
+	color:rgb(102, 102, 102);
+	margin-right:5px;
+}
+.delete-color{
+	color:rgb(102, 102, 102);
+	margin-right:5px;
+}
+.view-color{
+	color:rgb(102, 102, 102);
+	margin-right:5px;
+}
+.edit-color i{
+	color:rgb(255, 204, 102);
+}
+.delete-color i{
+	color:red
+}
+.view-color i{
+	color:blue
+}
+.Btn-dasform{
+	    position: relative;
+    padding-top: 0;
+   margin-bottom: 10px;
+}
+
+
+/***********/
+
+
+.card-body .table>:not(caption)>*>* {
+    padding: 0.55rem 0.6rem;
+	
+}
+
+.modal-body .card {
+    margin-bottom: 0px;
 }

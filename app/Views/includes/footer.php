@@ -23,59 +23,7 @@
 
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">View Account Head</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                
-                                <div class="card-body">
-                                    <div class="live-preview">
-                                        <form action="#" method="post" class="Dashboard-form">
-                                            <div class="row align-items-end">
-                                                <div class="col-col-md-6 col-lg-6">
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account Name</label>
-                                                        <input type="text" readonly value="Bibin Sabu" name="aname" class="form-control " >
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-col-md-6 col-lg-6">
-                                                    <div>
-                                                        <label for="labelInput" disabled="" class="form-label">Account Type</label>
-                                                        <input type="text" name="aname" readonly value="Accounts Receivable" class="form-control " >
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                
-                                                
-                                            
-                                                
-                                            </div>
-                                            <!--end row-->
-                                        </form>
-                                    </div>
-                                        
-                                </div>
-                            </div>
-                        </div>
-                        <!--end col-->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Print</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- JAVASCRIPT -->
 	<script src="<?php echo base_url(); ?>public/assets/code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
