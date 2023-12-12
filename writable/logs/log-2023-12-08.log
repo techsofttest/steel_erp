@@ -1,0 +1,1097 @@
+CRITICAL - 2023-12-08 04:46:03 --> Call to undefined function form_open()
+in APPPATH\Views\admin\login.php on line 61.
+ 1 SYSTEMPATH\View\View.php(228): include()
+ 2 SYSTEMPATH\View\View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1190): CodeIgniter\View\View->render('admin/login', [], true)
+ 4 APPPATH\Controllers\Auth.php(14): view('admin/login')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->index()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 04:46:07 --> Call to undefined function form_open()
+in APPPATH\Views\admin\login.php on line 61.
+ 1 SYSTEMPATH\View\View.php(228): include()
+ 2 SYSTEMPATH\View\View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1190): CodeIgniter\View\View->render('admin/login', [], true)
+ 4 APPPATH\Controllers\Auth.php(14): view('admin/login')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->index()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 04:46:07 --> Call to undefined function form_open()
+in APPPATH\Views\admin\login.php on line 61.
+ 1 SYSTEMPATH\View\View.php(228): include()
+ 2 SYSTEMPATH\View\View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1190): CodeIgniter\View\View->render('admin/login', [], true)
+ 4 APPPATH\Controllers\Auth.php(14): view('admin/login')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->index()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 04:46:15 --> Call to undefined function form_open()
+in APPPATH\Views\admin\login.php on line 61.
+ 1 SYSTEMPATH\View\View.php(228): include()
+ 2 SYSTEMPATH\View\View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1190): CodeIgniter\View\View->render('admin/login', [], true)
+ 4 APPPATH\Controllers\Auth.php(14): view('admin/login')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->index()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 04:46:35 --> Call to undefined function form_open()
+in APPPATH\Views\admin\login.php on line 61.
+ 1 SYSTEMPATH\View\View.php(228): include()
+ 2 SYSTEMPATH\View\View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1190): CodeIgniter\View\View->render('admin/login', [], true)
+ 4 APPPATH\Controllers\Auth.php(14): view('admin/login')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->index()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:06:21 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('sdqsad', '85136c79cbf9fe3...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('sdqsad', '85136c79cbf9fe3...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:06:21 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('sdqsad', '85136c79cbf9fe36bb9d05d0639c70c265c18d37')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:06:30 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:06:30 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:07:24 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:07:24 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:08:20 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:08:20 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:08:40 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:08:40 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:08:50 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:08:50 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:13:52 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:13:52 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:16:43 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:16:43 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:17:08 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:17:08 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:18:03 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:18:03 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(43): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:19:54 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '242a8619d1191ba...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '242a8619d1191ba...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:19:54 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '242a8619d1191ba0537e3c57b55607e42f7064b1')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:27:28 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:27:28 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:29:43 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:29:43 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:29:48 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:29:48 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329c7ec128e7dcadd03de241f42b')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:32:46 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:32:46 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329c7ec128e7dcadd03de241f42b')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:33:34 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#5 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-08 05:33:34 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329c7ec128e7dcadd03de241f42b')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:34:43 --> mysqli_sql_exception: Table 'steel.steel_admin' doesn't exist in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(607): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-12-08 05:34:43 --> Table 'steel.steel_admin' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 647.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `steel_admin`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 2 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329c7ec128e7dcadd03de241f42b')
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-08 05:37:18 --> mysqli_sql_exception: Unknown column 'admin_username' in 'where clause' in C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp\htdocs\steel\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\steel\system\Database\BaseConnection.php(607): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\steel\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329...')
+#6 C:\xampp\htdocs\steel\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-12-08 05:37:18 --> Unknown column 'admin_username' in 'where clause'
+in SYSTEMPATH\Database\BaseConnection.php on line 647.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `steel_users`
+WHERE `admin_username` = :admin_username:
+AND `admin_password` = :admin_password:', [...], false)
+ 2 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('admin', '2afb7a556392329c7ec128e7dcadd03de241f42b')
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 05:38:05 --> Undefined property: stdClass::$admin_username
+in APPPATH\Controllers\Auth.php on line 50.
+ 1 APPPATH\Controllers\Auth.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$admin_username', 'C:\\xampp\\htdocs\\steel\\app\\Controllers\\Auth.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/css/custom.min.css.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/bootstrap/js/bootstrap.bundle.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/feather-icons/feather.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/css/bootstrap.min.css.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/node-waves/waves.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:11 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/css/custom.min.css.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/css/bootstrap.min.css.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/bootstrap/js/bootstrap.bundle.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/node-waves/waves.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 06:29:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/feather-icons/feather.min.js.map')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 07:25:50 --> Call to undefined method CodeIgniter\Router\RouteCollection::filter()
+in APPPATH\Config\Routes.php on line 66.
+ 1 SYSTEMPATH\Router\RouteCollection.php(344): require()
+ 2 SYSTEMPATH\CodeIgniter.php(810): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:32:49 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:32:49 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:32:53 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:27 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:27 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:28 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:28 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:32 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:49 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:49 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:51 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:51 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 10:36:55 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 11:58:16 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 11:58:16 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 11:58:29 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:19:42 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:19:42 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:19:44 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:19:44 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:19:57 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:20:06 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:20:06 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:20:12 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:20:14 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:20:14 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:24:17 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:27:36 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:27:36 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:27:48 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:27:50 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:27:50 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:28:02 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('Home')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:28:06 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/choices.js/public/assets/scripts/choices.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-08 12:28:06 --> CodeIgniter\Router\RouteCollection::getFilterForRoute(): Return value must be of type string, array returned
+in SYSTEMPATH\Router\RouteCollection.php on line 1255.
+ 1 SYSTEMPATH\Router\Router.php(193): CodeIgniter\Router\RouteCollection->getFilterForRoute('(.*)')
+ 2 SYSTEMPATH\CodeIgniter.php(823): CodeIgniter\Router\Router->handle('assets/libs/flatpickr/flatpickr.min.js')
+ 3 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
