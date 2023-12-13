@@ -75,18 +75,24 @@ class Auth extends BaseController
 
 
 
-    /*public function Logout()
+    public function Logout()
     {
 
-        $this->session->remove('admin_username');
-        $this->session->remove('admin_id');
-        $this->session->remove('admin_login');
 
+        $admin_data = [
+            'admin_username',
+            'admin_id',
+            'admin_role',
+            'admin_login',
+        ];
+
+        $this->session->remove($admin_data);
+      
         $this->session->setFlashdata('error','Logged Out');
 
-        return redirect()->to('Admin/Login');
+        return redirect()->to('Login');
         
-    }*/
+    }
 
 
 

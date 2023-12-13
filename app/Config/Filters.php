@@ -37,10 +37,10 @@ class Filters extends BaseConfig
             //Add Auth Filter In Every Controller Inside admin Folder, Except admin/Login for avoiding loop
            
 
-            /*'authGuard' => [
-                'before' => ['/*'],
-                'except' => ['Login']
-            ],*/
+            'authGuard' => [
+                'before' => ['Accounts/*'],
+                'except' => ['Login','Check']
+            ],
 
             
             // 'honeypot',
