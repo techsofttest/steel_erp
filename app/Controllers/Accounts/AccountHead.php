@@ -7,10 +7,8 @@ use App\Controllers\BaseController;
 
 class AccountHead extends BaseController
 {
-
-    //view page
-    public function index()
-    {   
+    public function FetchData()
+    {
         /*pagination start*/
         $request = service('request');
         $postData = $request->getPost();
@@ -31,32 +29,36 @@ class AccountHead extends BaseController
         $totalRecords = $users->select('id')
                       ->countAllResults();*/
                       
-        $totalRecords = $this->common_model->FetchAll('accounts_account_type','at_id');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id');
  
         ## Total number of records with filtering
-        $totalRecordwithFilter = $users->select('id')
+        /*$totalRecordwithFilter = $users->select('id')
              ->orLike('name', $searchValue)
              ->orLike('email', $searchValue)
              ->orLike('city', $searchValue)
-             ->countAllResults();
- 
+             ->countAllResults();*/
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,'at_name');
+    
         ## Fetch records
-        $records = $users->select('*')
+        /*$records = $users->select('*')
              ->orLike('name', $searchValue)
              ->orLike('email', $searchValue)
              ->orLike('city', $searchValue)
              ->orderBy($columnName,$columnSortOrder)
-             ->findAll($rowperpage, $start);
+             ->findAll($rowperpage, $start);*/
+        
+        $records = $this->common_model->GetRecord('accounts_account_type','at_id',$searchValue,'at_name',$columnName,$columnSortOrder,$rowperpage,$start);
+    
  
         $data = array();
  
         foreach($records as $record ){
  
            $data[] = array( 
-              "id"=>$record['id'],
-              "name"=>$record['name'],
-              "email"=>$record['email'],
-              "city"=>$record['city']
+              "id"=>$record['at_id'],
+              "name"=>$record['at_name'],
+              "edit" => ""
            ); 
         }
  
@@ -71,6 +73,11 @@ class AccountHead extends BaseController
  
         return $this->response->setJSON($response);
         /*pagination end*/
+    } 
+
+    //view page
+    public function index()
+    {   
 
         $data['accounts_type'] = $this->common_model->FetchAll('accounts_account_type');
 

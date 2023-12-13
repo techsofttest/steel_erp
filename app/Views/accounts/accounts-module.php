@@ -130,7 +130,7 @@
 
                                         <tbody>
                                             
-                                            <?php $i=1; foreach($account_head as $acc_head){?> 
+                                            <?php /*$i=1; foreach($account_head as $acc_head){?> 
                                             
                                             <tr>
                                                 <td><?php echo $i; ?></td>
@@ -145,7 +145,7 @@
                                                 </td>
                                             </tr>
                                             
-                                            <?php $i++;} ?>
+                                            <?php $i++;} */?>
                                             
                                         
                                         </tbody>
@@ -1987,7 +1987,9 @@
 
             <!--data table  script start-->
 
-            <script type="text/javascript">
+              <!--data table  script start-->
+
+              <script type="text/javascript">
             $(document).ready(function(){
             $('#userTable').DataTable({
                 'processing': true,
@@ -2017,14 +2019,14 @@
                 'columns': [
                     { data: 'id' },
                     { data: 'name' },
-                    { data: 'email' },
-                    { data: 'city' },
+                   
                 ]
             });
         });
    </script>
-            
             <!--data table script  end-->
+            
+            
 	
 	
 	

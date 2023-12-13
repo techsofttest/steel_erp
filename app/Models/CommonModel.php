@@ -180,6 +180,37 @@ class CommonModel extends Model
         
         return $slug_data;
     }
+
+
+    public function GetTotalRecords($table,$coloum)
+    {  
+        return $this->db
+        ->table($table)
+        ->select($coloum)
+        ->countAllResults();
+    }
+
+    public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum)
+    {
+        return $this->db
+        ->table($table)
+        ->select($coloum)
+        ->orLike($searchColoum, $searchValue)
+        ->countAllResults();
+        
+    }
+
+
+    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder,$rowperpage,$start)
+    {
+        return $this->db
+        ->table($table)
+        ->select($coloum)
+        ->orLike($searchColoum, $searchValue)
+        ->orderBy($columnName,$columnSortOrder)
+        ->findAll($rowperpage, $start);
+       
+    }
     
     
 

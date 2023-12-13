@@ -160,3 +160,604 @@ in APPPATH\Controllers\Accounts\AccountHead.php on line 13.
  4 SYSTEMPATH\CodeIgniter.php(450): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
  5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  6 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 05:20:07 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-13 05:21:03 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel_erp\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel_erp\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel_erp\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel_erp\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel_erp\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel_erp\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel_erp\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel_erp\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-13 05:21:03 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `users`
+WHERE `user_name` = :user_name:
+AND `user_password` = :user_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-12-13 05:26:50 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php:184
+Stack trace:
+#0 C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php(184): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\steel_erp\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\steel_erp\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\steel_erp\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121f...')
+#6 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#7 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\steel_erp\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#10 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\steel_erp\system\Database\MySQLi\Connection.php:229
+Stack trace:
+#0 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(392): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\steel_erp\system\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\steel_erp\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\steel_erp\app\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\steel_erp\app\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121f...')
+#5 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(942): App\Controllers\Auth->Check()
+#6 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#7 C:\xampp\htdocs\steel_erp\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\steel_erp\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-12-13 05:26:50 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `users`
+WHERE `user_name` = :user_name:
+AND `user_password` = :user_password:', [...], false)
+ 3 APPPATH\Models\CommonModel.php(23): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Auth.php(42): App\Models\CommonModel->GetProfile('super_admin', 'f865b53623b121fd34ee5426c792e5c33af8c227')
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Auth->Check()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-12-13 05:31:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Auth::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:31:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:31:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Auth::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:31:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:31:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Auth::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:31:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:31:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Auth::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:31:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:31:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Auth::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:31:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:32:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:32:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:33:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:34:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:34:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:34:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:37:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:38:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 05:38:29 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:38:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:38:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:39:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:39:02 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:39:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:39:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:39:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 05:39:20 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:56:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:56:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 05:56:38 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:57:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:57:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:57:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 05:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 05:57:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 05:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:01:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:01:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:01:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:03:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:03:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:03:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:04:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:04:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:04:14 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:07:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:07:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:07:07 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 17.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(17): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 17)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:20:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:20:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:20:08 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 16.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(16): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 16)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:21:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:21:38 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 16.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(16): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 16)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->index()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:26:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:26:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:27:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:27:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:27:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:30:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:30:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:30:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:30:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:30:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:30:34 --> You must set the database table to be used with your query.
+in SYSTEMPATH\Database\BaseConnection.php on line 884.
+ 1 SYSTEMPATH\Model.php(635): CodeIgniter\Database\BaseConnection->table(null)
+ 2 SYSTEMPATH\Model.php(863): CodeIgniter\Model->builder()
+ 3 APPPATH\Controllers\Accounts\AccountHead.php(28): CodeIgniter\Model->__call('GetTotalRecords', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:31:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:31:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:31:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:31:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:31:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:31:23 --> You must set the database table to be used with your query.
+in SYSTEMPATH\Database\BaseConnection.php on line 884.
+ 1 SYSTEMPATH\Model.php(635): CodeIgniter\Database\BaseConnection->table(null)
+ 2 SYSTEMPATH\Model.php(863): CodeIgniter\Model->builder()
+ 3 APPPATH\Controllers\Accounts\AccountHead.php(28): CodeIgniter\Model->__call('GetTotalRecords', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:31:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:31:49 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:31:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:31:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:31:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:31:50 --> You must set the database table to be used with your query.
+in SYSTEMPATH\Database\BaseConnection.php on line 884.
+ 1 SYSTEMPATH\Model.php(635): CodeIgniter\Database\BaseConnection->table(null)
+ 2 SYSTEMPATH\Model.php(863): CodeIgniter\Model->builder()
+ 3 APPPATH\Controllers\Accounts\AccountHead.php(28): CodeIgniter\Model->__call('GetTotalRecords', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:33:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:34:03 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:34:03 --> Undefined array key "data"
+in APPPATH\Controllers\Accounts\AccountHead.php on line 15.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "data"', 'C:\\xampp\\htdocs\\steel_erp\\app\\Controllers\\Accounts\\AccountHead.php', 15)
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:36:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:36:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:36:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:36:35 --> Call to undefined method CodeIgniter\Database\MySQLi\Builder::findAll()
+in APPPATH\Models\CommonModel.php on line 211.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(34): App\Models\CommonModel->GetRecord('accounts_account_type', 'at_id', '', 'at_name', 'id', 'asc', '10', '0')
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:41:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:41:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:42:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:42:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:42:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:16 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-12-13 06:43:47 --> Call to undefined method CodeIgniter\Database\MySQLi\Builder::findAll()
+in APPPATH\Models\CommonModel.php on line 211.
+ 1 APPPATH\Controllers\Accounts\AccountHead.php(35): App\Models\CommonModel->GetRecord('accounts_account_type', 'at_id', '', 'at_name', 'id', 'asc', '10', '0')
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Accounts\AccountHead->FetchData()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Accounts\AccountHead))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:43:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:52:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:52:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:52:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:53:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:53:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:53:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:53:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:57:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:57:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:57:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:57:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-12-13 06:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-12-13 06:57:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-12-13 06:57:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\Accounts\AccountHead::$validation is deprecated in APPPATH\Controllers\BaseController.php on line 73.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
