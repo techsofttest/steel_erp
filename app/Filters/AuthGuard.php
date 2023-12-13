@@ -14,7 +14,7 @@ class AuthGuard implements FilterInterface
         // Check if the user is not logged in
          
        
-        if (!session()->get('admin_login')) 
+        if (session()->get('admin_login')!=true) 
         {
           
             /*$session_data = session()->get('admin_login');
@@ -29,7 +29,7 @@ class AuthGuard implements FilterInterface
         }
         else
         {
-            echo "home page"; exit();
+            //
         }
 
       
