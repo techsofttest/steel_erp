@@ -26,7 +26,7 @@
 <link href="<?php echo base_url(); ?>public/assets/css/alertify.default.min.css" rel="stylesheet">
 
 <!-- Datatable CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"/>
 
 
 </head>

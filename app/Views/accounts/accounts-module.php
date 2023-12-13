@@ -115,7 +115,9 @@
                                     <h4 class="card-title mb-0 flex-grow-1">View Account Head</h4>
                                 </div><!-- end card header -->
                                 <div class="card-body" id="account_type_id">
-                                    <table id="dataTable" class="table table-bordered table-striped delTable">
+                                     <!-- CSRF token --> 
+                                    <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                                    <table id="userTable" class="table table-bordered table-striped delTable display dataTable">
                                         <thead>
                                             <tr>
                                                 <th class="no-sort">Sl no</th>
@@ -1981,7 +1983,48 @@
             </script>
 
             <!--accoiunt type delete section end-->
+
+
+            <!--data table  script start-->
+
+            <script type="text/javascript">
+            $(document).ready(function(){
+            $('#userTable').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':"<?php echo base_url(); ?>Accounts/AccountHead",
+                    'data': function(data){
+                    // CSRF Hash
+                    var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
+                    var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+
+                    return {
+                        data: data,
+                        [csrfName]: csrfHash // CSRF Token
+                    };
+                    },
+                    dataSrc: function(data){
+
+                    // Update token hash
+                    $('.txt_csrfname').val(data.token);
+
+                    // Datatable data
+                    return data.aaData;
+                    }
+                },
+                'columns': [
+                    { data: 'id' },
+                    { data: 'name' },
+                    { data: 'email' },
+                    { data: 'city' },
+                ]
+            });
+        });
+   </script>
             
+            <!--data table script  end-->
 	
 	
 	
