@@ -49,8 +49,10 @@
 
     <!-- App js -->
     <script src="<?php echo base_url(); ?>public/assets/js/app.js"></script>
-	<script src="<?php echo base_url(); ?>public/assets/js/datatables/jquery.dataTables.min.js" ></script>
-    <script src="<?php echo base_url(); ?>public/assets/js/datatables/dataTables.bootstrap.min.js" ></script>
+	<!--<script src="<?php echo base_url(); ?>public/assets/js/datatables/jquery.dataTables.min.js" ></script>
+    <script src="<?php echo base_url(); ?>public/assets/js/datatables/dataTables.bootstrap.min.js" ></script>-->
+    <!-- Datatable JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 
     <!-- Notification Alerts -->

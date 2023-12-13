@@ -62,16 +62,13 @@
                                 
 								
                                     
-                                
-									<div class="tab-content text-muted">
+                <div class="tab-content text-muted">
                                        
 
-                                    <!--Start Account col-->
+                <!--Start Account head -->
 										
-										
-                                       
-										  <div class="tab-pane active" id="border-nav-1" role="tabpanel">
-                                            <div class="row">
+				<div class="tab-pane active" id="border-nav-1" role="tabpanel">
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
@@ -80,27 +77,27 @@
                                 </div><!-- end card header -->
                                 <div class="card-body">
                                     <div class="live-preview">
-									<form  class="Dashboard-form class" id="account_head_form">
-                                   
-                                        <div class="row align-items-end">
-                                            <div class="col-col-md-4 col-lg-4">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Account Type</label>
-                                                    <input type="text" id="account_type_inp"  name="aname" class="form-control">
+                                        <form  class="Dashboard-form class" id="account_head_form">
+                                    
+                                            <div class="row align-items-end">
+                                                <div class="col-col-md-4 col-lg-4">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Account Type</label>
+                                                        <input type="text" id="account_type_inp"  name="aname" class="form-control">
+                                                    </div>
                                                 </div>
+                                                
+                                                
+                                                <div class="col-col-md-4 col-lg-4">
+                                                    <div class="Btn-dasform">
+                                                        <button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                                                    </div>
+                                                </div>
+                                            
+                                                
                                             </div>
-                                            
-											
-											<div class="col-col-md-4 col-lg-4">
-											<div class="Btn-dasform">
-											<button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
-											</div>
-											</div>
-                                           
-                                            
-                                        </div>
-                                        <!--end row-->
-										</form>
+                                            <!--end row-->
+                                        </form>
                                     </div>
                                     
                                 </div>
@@ -111,14 +108,14 @@
 					
 					
 					
-					 <div class="row">
+					<div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">View Account Head</h4>
                                 </div><!-- end card header -->
                                 <div class="card-body" id="account_type_id">
-                                    <table id="" class="table table-bordered table-striped delTable">
+                                    <table id="dataTable" class="table table-bordered table-striped delTable">
                                         <thead>
                                             <tr>
                                                 <th class="no-sort">Sl no</th>
@@ -160,16 +157,10 @@
                     </div>
 
                                           
-                                        </div>
+                </div>
 										
 										
-										
-										
-										
-										
-										
-										
-<!--end Account  col-->
+				<!--end Account  Head-->
 										
 <!--Start Chart col-->
 										
@@ -1875,7 +1866,7 @@
             <!--add account type section end-->
 
 
-            <!--account type modal section start--> 
+            <!--account type edit modal  section start--> 
             <script>
 
                 
@@ -1909,7 +1900,9 @@
                 });
 
             </script>
-            <!--account type modal section end-->
+            <!--account type edit modal section end-->
+
+            
 
             <!--account type edit section start-->
 

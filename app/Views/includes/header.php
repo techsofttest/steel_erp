@@ -18,12 +18,16 @@
 <!-- custom Css-->
 <link href="<?php echo base_url(); ?>public/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
-<link href="<?php echo base_url(); ?>public/assets/js/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+<!--<link href="<?php echo base_url(); ?>public/assets/js/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />--->
 
 <!--alertify css-->
 <link href="<?php echo base_url(); ?>public/assets/css/alertify.min.css" rel="stylesheet">
 
 <link href="<?php echo base_url(); ?>public/assets/css/alertify.default.min.css" rel="stylesheet">
+
+<!-- Datatable CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
 
 </head>
 

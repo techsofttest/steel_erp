@@ -8,18 +8,18 @@ use App\Controllers\BaseController;
 class AccountHead extends BaseController
 {
 
-    
+    //view page
     public function index()
     {   
         $data['accounts_type'] = $this->common_model->FetchAll('accounts_account_type');
 
         $data['account_head'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','DESC');
 
-        return view('accounts-module',$data);
+        return view('accounts/accounts-module',$data);
     }
 
 
-
+    // add account head
     Public function Add()
     {   
         
@@ -41,7 +41,7 @@ class AccountHead extends BaseController
         
     }
 
-
+    //refresh table with ajax
     public function RefreshTable()
     {
         $account_head = $this->common_model->FetchAllOrder('accounts_account_type','at_id','DESC');
@@ -60,7 +60,7 @@ class AccountHead extends BaseController
         echo json_encode($data);
     }
 
-    
+    //account head modal 
     public function HeadEdit()
     {
         
@@ -73,7 +73,7 @@ class AccountHead extends BaseController
         echo json_encode($data);
     }
 
-
+   // update account head 
     public function Update()
     {    
         $cond = array('at_id' => $this->request->getPost('account_id'));
@@ -95,7 +95,7 @@ class AccountHead extends BaseController
 
     }
 
-
+    //delete account head
     public function Delete()
     {
         $cond = array('at_id' => $this->request->getPost('account_id'));
