@@ -50,7 +50,7 @@
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
                     <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
-                    <table id="userTable" class="table table-bordered table-striped delTable display dataTable">
+                    <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
@@ -96,247 +96,252 @@
 <!--end Account  Head-->
 
 
+
+
 <!--Edit Modal section start-->
 <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <form action="#" id="account_head_edit_form" class="Dashboard-form">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card">
-                                            
-                                            <div class="card-body">
-                                                <div class="live-preview">
-                                                    
-                                                        <div class="row align-items-end">
-                                                            <div class="col-col-md-6 col-lg-12">
-                                                                <div>
-                                                                    <label for="basiInput" class="form-label">Account Type</label>
-                                                                    <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
-                                                                </div>
-                                                            </div>
-                                                            <!--end col-->
-                                                            <input type="hidden" name="account_id" id="modal_acc_type_id" value="">
-                                                            
-                                                        
-                                                            
-                                                        </div>
-                                                        <!--end row-->
-                                                    
-                                                </div>
-                                                    
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                </div>
-                            
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
-                        </div>
-                    </div>
-                    </form>
-
-                </div>
+    <div class="modal-dialog">
+        <form action="#" id="account_head_edit_form" class="Dashboard-form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!--Edit modal section end-->
-
-
-             <!---add account type section start-->
-
-             <script>
-                document.addEventListener("DOMContentLoaded", function(event) { 
-
-                $(document).ready(function(){
-                    $('#account_head_form').submit(function(e){
-                        e.preventDefault();
-                        if( ($('input[name="aname"]').val()==""))
-                        {
-                            alertify.error('Fill required fields').delay(4).dismissOthers();
-                            return false;
-                        }
-                        $.ajax({
-
-                            url : "<?php echo base_url(); ?>Accounts/AccountHead/Add",
-
-                            method : "POST",
-
-                            data : $('#account_head_form').serialize(),
-
-                            success:function(data)
-                            {
-                                var data = JSON.parse(data);
-
-                                $("#account_type_id").html(data.output);
-
-                                $('#account_type_id').css('display', 'block');
-
-                                $("#account_type_inp").val('');
-
-                                alertify.success('Account Head Added Successfully').delay(8).dismissOthers();
-                            }
-
-
-                        });
-                        
-                    });
-                });
-            
-
-            
-            
-
+            <div class="modal-body">
                 
-                $("body").on('click', '.acctype_edit', function(){ 
-                    var acctype = $(this).data('acctype');
-                    //alert(acctype);
-                    $.ajax({
-
-                        url : "<?php echo base_url(); ?>Accounts/AccountHead/HeadEdit",
-
-                        method : "POST",
-
-                        data: {account_id: acctype},
-
-                        success:function(data)
-                        {   
-                            var data = JSON.parse(data);
-
-                            $("#modal_account_type").val(data.account_type);
-
-                            $('#EditModal').modal('show');
-                            
-                            $("#modal_acc_type_id").val(acctype);
-                            
-                        }
-
-
-                    });
-                   
-                  
-                });
-
-           
-           
-
-           
-                $(document).ready(function(){
-                    $('#account_head_edit_form').submit(function(e){
-                       
-                        e.preventDefault();
-                        
-                        if( ($('input[name="edit_aname"]').val()==""))
-                        {
-                            alertify.error('Fill required fields').delay(4).dismissOthers();
-                            return false;
-                        }
-                        $.ajax({
-
-                            url : "<?php echo base_url(); ?>Accounts/AccountHead/Update",
-
-                            method : "POST",
-
-                            data : $('#account_head_edit_form').serialize(),
-
-                            success:function(data)
-                            {
-                                var data = JSON.parse(data);
-
-                                $("#account_type_id").html(data.output);
-
-                                $('#account_type_id').css('display', 'block');
-
-                                $('#EditModal').modal('hide');
-
-                                alertify.success('Account Head Edit Successfully').delay(8).dismissOthers();
-                            }
-
-
-                        });
-                    });
-                });
-            
-
-            
-
-           
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                    <div class="live-preview">
+                                        
+                                            <div class="row align-items-end">
+                                                <div class="col-col-md-6 col-lg-12">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Account Type</label>
+                                                        <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                    </div>
+                                                </div>
+                                                <!--end col-->
+                                                <input type="hidden" name="account_id" id="modal_acc_type_id" value="">
+                                                
+                                            
+                                                
+                                            </div>
+                                            <!--end row-->
+                                        
+                                    </div>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
                 
-                $("body").on('click', '.acctype_delete', function(){ 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
+            </div>
+        </div>
+        </form>
+
+    </div>
+</div>
+
+<!--Edit modal section end-->
+
+
+            
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+    
+        /*account head add section*/    
+        $(document).ready(function(){
+            $('#account_head_form').submit(function(e){
+                e.preventDefault();
+                if( ($('input[name="aname"]').val()==""))
+                {
+                    alertify.error('Fill required fields').delay(4).dismissOthers();
+                    return false;
+                }
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/AccountHead/Add",
+
+                    method : "POST",
+
+                    data : $('#account_head_form').serialize(),
+
+                    success:function(data)
+                    {
+                        
+                        $("#account_type_inp").val('');
+
+                        alertify.success('Account Head Added Successfully').delay(8).dismissOthers();
+
+                        initializeDataTable()
+                    }
+
+
+                });
+                
+            });
+        });
+        
+        /*###*/
+
+
+
+
+        /*account head modal start*/ 
+        $("body").on('click', '.acctype_edit', function(){ 
+            var acctype = $(this).data('acctype');
+            //alert(acctype);
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/AccountHead/HeadEdit",
+
+                method : "POST",
+
+                data: {account_id: acctype},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $("#modal_account_type").val(data.account_type);
+
+                    $('#EditModal').modal('show');
                     
-                    if (!confirm('Are you absolutely sure you want to delete?')) return;
-                    var acctype = $(this).data('acctypedel');
-                    $.ajax({
-
-                        url : "<?php echo base_url(); ?>Accounts/AccountHead/Delete",
-
-                        method : "POST",
-
-                        data: {account_id: acctype},
-
-                        success:function(data)
-                        {
-                            var data = JSON.parse(data);
-
-                            $("#account_type_id").html(data.output);
-
-                            $('#account_type_id').css('display', 'block');
-
-                            alertify.success('Account Head Delete Successfully').delay(8).dismissOthers();
-                        }
+                    $("#modal_acc_type_id").val(acctype);
+                    
+                }
 
 
-                    });
+            });
+            
+            
+        });
+        /*####*/
+
+
+
+        /*account head update*/
+        $(document).ready(function(){
+            $('#account_head_edit_form').submit(function(e){
+                
+                e.preventDefault();
+                
+                if( ($('input[name="edit_aname"]').val()==""))
+                {
+                    alertify.error('Fill required fields').delay(4).dismissOthers();
+                    return false;
+                }
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/AccountHead/Update",
+
+                    method : "POST",
+
+                    data : $('#account_head_edit_form').serialize(),
+
+                    success:function(data)
+                    {
+                        
+                        $('#EditModal').modal('hide');
+
+                        alertify.success('Account Head Edit Successfully').delay(8).dismissOthers();
+
+                        initializeDataTable()
+                    }
+
 
                 });
+            });
+        });
+        /*###*/
+
+
+
+
+        /*account head delete*/ 
+        $("body").on('click', '.acctype_delete', function(){ 
             
+            if (!confirm('Are you absolutely sure you want to delete?')) return;
+            var acctype = $(this).data('acctypedel');
+            $.ajax({
 
-           
+                url : "<?php echo base_url(); ?>Accounts/AccountHead/Delete",
 
-             
-            $(document).ready(function(){
-            $('#userTable').DataTable({
+                method : "POST",
+
+                data: {account_id: acctype},
+
+                success:function(data)
+                {
+                    alertify.success('Account Head Delete Successfully').delay(8).dismissOthers();
+
+                    initializeDataTable()
+                }
+
+
+            });
+
+        });
+        /*###*/
+
+
+
+        /*data table start*/ 
+        function initializeDataTable() {
+            $('#accountTable').DataTable().clear().destroy();
+            $('#accountTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':"<?php echo base_url(); ?>Accounts/AccountHead/FetchData",
-                    'data': function(data){
-                    // CSRF Hash
-                    var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-                    var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+                    'url': "<?php echo base_url(); ?>Accounts/AccountHead/FetchData",
+                    'data': function (data) {
+                        // CSRF Hash
+                        var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
+                        var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
-                    return {
-                    data: data,
-                    [csrfName]: csrfHash, // CSRF Token
-                    };
+                        return {
+                            data: data,
+                            [csrfName]: csrfHash, // CSRF Token
+                        };
                     },
-                    dataSrc: function(data){
-                    // Update token hash
-                    $('.txt_csrfname').val(data.token);
+                    dataSrc: function (data) {
+                        // Update token hash
+                        $('.txt_csrfname').val(data.token);
 
-                    // Datatable data
-                    return data.aaData;
+                        // Datatable data
+                        return data.aaData;
                     }
                 },
                 'columns': [
                     { data: 'at_id' },
                     { data: 'at_name' },
-                    { data: 'at_added_by' },
-                   
+                    { data: 'action' },
                 ]
-            });
+                
+           });
+        }
+
+        $(document).ready(function () {
+            initializeDataTable();
         });
+        /*###*/
+     
+
+   
 
     });
-   </script>
-            <!--data table script  end-->
 
+
+</script>
+            
             
