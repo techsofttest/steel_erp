@@ -9,6 +9,22 @@ class AccountHead extends BaseController
 {
     public function FetchData()
     {
+
+        /* Test */
+
+
+        //$totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id');
+
+        $searchValue = "Cash";
+
+       // $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,'at_name');
+    
+
+        //echo $totalRecordwithFilter; exit;
+
+        /* */
+
+
         /*pagination start*/
         $request = service('request');
         $postData = $request->getPost();
@@ -56,9 +72,9 @@ class AccountHead extends BaseController
         foreach($records as $record ){
  
            $data[] = array( 
-              "id"=>$record['at_id'],
-              "name"=>$record['at_name'],
-              "edit" => ""
+              "at_id"=>$record->at_id,
+              "at_name"=>$record->at_name,
+              "at_added_by" =>$record->at_added_by,
            ); 
         }
  
@@ -71,7 +87,12 @@ class AccountHead extends BaseController
          "token" => csrf_hash() // New token hash
         );
  
-        return $this->response->setJSON($response);
+        //return $this->response->setJSON($response);
+
+        echo json_encode($response);
+
+        exit;
+
         /*pagination end*/
     } 
 

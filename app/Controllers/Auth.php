@@ -78,7 +78,6 @@ class Auth extends BaseController
     public function Logout()
     {
 
-
         $admin_data = [
             'admin_username',
             'admin_id',

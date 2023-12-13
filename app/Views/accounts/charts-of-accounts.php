@@ -121,6 +121,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="no-sort">Sl no</th>
+                                                
+                                                
                                                 <th>Account Type</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -128,7 +130,7 @@
 
                                         <tbody>
                                             
-                                            <?php /*$i=1; foreach($account_head as $acc_head){?> 
+                                            <?php $i=1; foreach($account_head as $acc_head){?> 
                                             
                                             <tr>
                                                 <td><?php echo $i; ?></td>
@@ -143,7 +145,7 @@
                                                 </td>
                                             </tr>
                                             
-                                            <?php $i++;} */?>
+                                            <?php $i++;} ?>
                                             
                                         
                                         </tbody>
@@ -1985,27 +1987,26 @@
 
             <!--data table  script start-->
 
-              <!--data table  script start-->
-
-              <script type="text/javascript">
+            <script type="text/javascript">
             $(document).ready(function(){
             $('#userTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':"<?php echo base_url(); ?>Accounts/AccountHead/FetchData",
+                    'url':"<?php echo base_url(); ?>Accounts/AccountHead",
                     'data': function(data){
                     // CSRF Hash
                     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
                     var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
                     return {
-                    data: data,
-                    [csrfName]: csrfHash, // CSRF Token
+                        data: data,
+                        [csrfName]: csrfHash // CSRF Token
                     };
                     },
                     dataSrc: function(data){
+
                     // Update token hash
                     $('.txt_csrfname').val(data.token);
 
@@ -2014,17 +2015,16 @@
                     }
                 },
                 'columns': [
-                    { data: 'at_id' },
-                    { data: 'at_name' },
-                    { data: 'at_added_by' },
-                   
+                    { data: 'id' },
+                    { data: 'name' },
+                    { data: 'email' },
+                    { data: 'city' },
                 ]
             });
         });
    </script>
+            
             <!--data table script  end-->
-            
-            
 	
 	
 	

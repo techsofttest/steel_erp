@@ -201,14 +201,16 @@ class CommonModel extends Model
     }
 
 
-    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder,$rowperpage,$start)
+    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder="",$rowperpage,$start)
     {
         return $this->db
         ->table($table)
-        ->select($coloum)
+        ->select('*')
         ->orLike($searchColoum, $searchValue)
         ->orderBy($columnName,$columnSortOrder)
-        ->findAll($rowperpage, $start);
+        ->limit($rowperpage,$start)
+        ->get()
+        ->getResult();
        
     }
     
