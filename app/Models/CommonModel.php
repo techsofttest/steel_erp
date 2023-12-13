@@ -180,7 +180,8 @@ class CommonModel extends Model
         
         return $slug_data;
     }
-
+    
+    
 
  
 

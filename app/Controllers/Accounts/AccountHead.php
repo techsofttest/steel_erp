@@ -11,6 +11,67 @@ class AccountHead extends BaseController
     //view page
     public function index()
     {   
+        /*pagination start*/
+        $request = service('request');
+        $postData = $request->getPost();
+        $dtpostData = $postData['data'];
+        $response = array();
+ 
+        ## Read value
+        $draw = $dtpostData['draw'];
+        $start = $dtpostData['start'];
+        $rowperpage = $dtpostData['length']; // Rows display per page
+        $columnIndex = $dtpostData['order'][0]['column']; // Column index
+        $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
+        $searchValue = $dtpostData['search']['value']; // Search value
+ 
+        ## Total number of records without filtering
+        /*$users = new Users();
+        $totalRecords = $users->select('id')
+                      ->countAllResults();*/
+                      
+        $totalRecords = $this->common_model->FetchAll('accounts_account_type','at_id');
+ 
+        ## Total number of records with filtering
+        $totalRecordwithFilter = $users->select('id')
+             ->orLike('name', $searchValue)
+             ->orLike('email', $searchValue)
+             ->orLike('city', $searchValue)
+             ->countAllResults();
+ 
+        ## Fetch records
+        $records = $users->select('*')
+             ->orLike('name', $searchValue)
+             ->orLike('email', $searchValue)
+             ->orLike('city', $searchValue)
+             ->orderBy($columnName,$columnSortOrder)
+             ->findAll($rowperpage, $start);
+ 
+        $data = array();
+ 
+        foreach($records as $record ){
+ 
+           $data[] = array( 
+              "id"=>$record['id'],
+              "name"=>$record['name'],
+              "email"=>$record['email'],
+              "city"=>$record['city']
+           ); 
+        }
+ 
+        ## Response
+        $response = array(
+         "draw" => intval($draw),
+         "iTotalRecords" => $totalRecords,
+         "iTotalDisplayRecords" => $totalRecordwithFilter,
+         "aaData" => $data,
+         "token" => csrf_hash() // New token hash
+        );
+ 
+        return $this->response->setJSON($response);
+        /*pagination end*/
+
         $data['accounts_type'] = $this->common_model->FetchAll('accounts_account_type');
 
         $data['account_head'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','DESC');
