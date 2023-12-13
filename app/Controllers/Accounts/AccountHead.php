@@ -10,20 +10,7 @@ class AccountHead extends BaseController
     public function FetchData()
     {
 
-        /* Test */
-
-
-        //$totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id');
-
         $searchValue = "Cash";
-
-       // $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,'at_name');
-    
-
-        //echo $totalRecordwithFilter; exit;
-
-        /* */
-
 
         /*pagination start*/
         $request = service('request');
@@ -41,28 +28,14 @@ class AccountHead extends BaseController
         $searchValue = $dtpostData['search']['value']; // Search value
  
         ## Total number of records without filtering
-        /*$users = new Users();
-        $totalRecords = $users->select('id')
-                      ->countAllResults();*/
-                      
+       
         $totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id');
  
         ## Total number of records with filtering
-        /*$totalRecordwithFilter = $users->select('id')
-             ->orLike('name', $searchValue)
-             ->orLike('email', $searchValue)
-             ->orLike('city', $searchValue)
-             ->countAllResults();*/
-
+       
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,'at_name');
     
         ## Fetch records
-        /*$records = $users->select('*')
-             ->orLike('name', $searchValue)
-             ->orLike('email', $searchValue)
-             ->orLike('city', $searchValue)
-             ->orderBy($columnName,$columnSortOrder)
-             ->findAll($rowperpage, $start);*/
         
         $records = $this->common_model->GetRecord('accounts_account_type','at_id',$searchValue,'at_name',$columnName,$columnSortOrder,$rowperpage,$start);
     
@@ -96,6 +69,9 @@ class AccountHead extends BaseController
         /*pagination end*/
     } 
 
+
+
+
     //view page
     public function index()
     {   
@@ -106,6 +82,8 @@ class AccountHead extends BaseController
 
         return view('accounts/accounts-module',$data);
     }
+
+
 
 
     // add account head
@@ -130,6 +108,8 @@ class AccountHead extends BaseController
         
     }
 
+
+
     //refresh table with ajax
     public function RefreshTable()
     {
@@ -149,6 +129,8 @@ class AccountHead extends BaseController
         echo json_encode($data);
     }
 
+
+
     //account head modal 
     public function HeadEdit()
     {
@@ -161,6 +143,8 @@ class AccountHead extends BaseController
 
         echo json_encode($data);
     }
+
+
 
    // update account head 
     public function Update()
@@ -184,6 +168,9 @@ class AccountHead extends BaseController
 
     }
 
+
+
+    
     //delete account head
     public function Delete()
     {
