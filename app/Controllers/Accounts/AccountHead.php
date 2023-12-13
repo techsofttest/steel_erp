@@ -85,11 +85,12 @@ class AccountHead extends BaseController
     public function index()
     {   
 
-        //$data['accounts_type'] = $this->common_model->FetchAll('accounts_account_type');
+        $data['content'] = view('accounts/account-head');
 
-        //$data['account_head'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','DESC');
+        return view('accounts/accounts-module',$data);
 
-        return view('accounts/accounts-module');
+        
+       
     }
 
 

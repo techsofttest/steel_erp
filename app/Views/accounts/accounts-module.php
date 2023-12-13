@@ -49,7 +49,7 @@
                 <!--account head section start-->
                 
                 <section id="ajax_container">
-                    <?php echo view('accounts/account-head');?>
+                    <?php echo $content;?>
                 </section>
 
                 <!--###-->
