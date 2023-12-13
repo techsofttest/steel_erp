@@ -41,8 +41,6 @@ class Auth extends BaseController
 
             $user = $this->common_model->GetProfile($username,$password);
 
-            
-
             if($user)
             {
                 
