@@ -10,7 +10,14 @@ class Auth extends BaseController
 
     public function index()
     {
-      
+
+        if (session()->get('admin_login')==true) 
+        {
+
+         return redirect()->to('Home');
+
+        }
+        
         return view('login');
     }
 	
