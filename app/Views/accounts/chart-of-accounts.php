@@ -107,11 +107,11 @@
 
 <!--Edit Modal section start-->
 <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <form action="#" id="account_head_edit_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Charts Of Account</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -125,13 +125,35 @@
                                         
                                             <div class="row align-items-end">
                                                 <div class="col-col-md-6 col-lg-12">
+
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Account ID</label>
+                                                        <input type="text" id="edit_account_id" value="" name="ca_account_id" class="form-control">
+                                                    </div>
+
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Account Name</label>
+                                                        <input type="text" id="edit_account_name" value="" name="ca_name" class="form-control">
+                                                    </div>
+
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Type</label>
-                                                        <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                        
+                                                        <select class="form-control" name="ca_account_type">
+
+                                                            <option value=""></option>
+
+                                                        </select>
+
                                                     </div>
+
+
+
                                                 </div>
+
                                                 <!--end col-->
-                                                <input type="hidden" name="account_id" id="modal_acc_type_id" value="">
+
+                                                <input type="hidden" name="id" id="ca_id" value="">
                                                 
                                             
                                                 
@@ -203,24 +225,35 @@
         /*account head modal start*/ 
         $("body").on('click', '.edit_btn', function(){ 
             var id = $(this).data('id');
-            //alert(acctype);
+
+            alert(id);
+
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/AccountHead/HeadEdit",
+                url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Edit",
 
                 method : "POST",
 
-                data: {account_id: acctype},
+                data: {id: id},
 
                 success:function(data)
                 {   
+                    if(data)
+                    {
                     var data = JSON.parse(data);
 
-                    $("#modal_account_type").val(data.account_type);
+                    $("#edit_account_id").val(data.ca_account_id);
+
+                    $("#edit_account_name").val(data.ca_name);
 
                     $('#EditModal').modal('show');
                     
-                    $("#modal_acc_type_id").val(id);
+                    $("#ca_id").val(id);
+                    }
+                    else
+                    {
+                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
+                    }
                     
                 }
 

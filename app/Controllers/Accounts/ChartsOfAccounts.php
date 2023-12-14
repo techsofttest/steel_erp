@@ -39,7 +39,9 @@ class ChartsOfAccounts extends BaseController
  
         ## Total number of records with filtering
        
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_charts_accounts','ca_id',$searchValue,'ca_name');
+        $searchColumns = array('ca_name','ca_account_id');
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_charts_accounts','ca_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
@@ -52,7 +54,7 @@ class ChartsOfAccounts extends BaseController
 
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_charts_accounts','ca_id',$searchValue,'ca_name',$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_charts_accounts','ca_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -106,22 +108,31 @@ class ChartsOfAccounts extends BaseController
 
         $id = $this->common_model->InsertData('accounts_charts_accounts',$insert_data);
 
-        
     }
 
     //refresh table with ajax
  
     //account head modal 
-    public function HeadEdit()
+    public function Edit()
     {
         
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('ca_id' => $this->request->getPost('id'));
 
-        $account_type = $this->common_model->SingleRow('accounts_account_type',$cond);
+         ##Joins if any //Pass Joins as Multi dim array
+         $joins = array(
+           
+            array(
+            'table' => 'accounts_account_type',
+            'pk' => 'at_id',
+            'fk' => 'ca_account_type',
+            ),
 
-        $data['account_type'] = $account_type->at_name;
+        );
+
+        $data = $this->common_model->SingleRowJoin('accounts_charts_accounts',$cond,$joins);
 
         echo json_encode($data);
+
     }
 
    // update account head 

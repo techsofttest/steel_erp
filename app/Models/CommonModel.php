@@ -84,6 +84,25 @@ class CommonModel extends Model
     }
 
 
+    public function SingleRowJoin($table,$cond,$joins)
+    {
+        $query= $this->db->table($table)
+        ->where($cond);
+
+        if(!empty($joins))
+        foreach($joins as $join)
+    {
+        $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+    }
+
+        $result = $query->get()->getRow();
+
+        return $result;
+
+    }
+
+
+
 
     //Fetch Where
 
@@ -192,11 +211,16 @@ class CommonModel extends Model
 
     public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum)
     {
-        return $this->db
+         $query = $this->db
         ->table($table)
-        ->select($coloum)
-        ->orLike($searchColoum, $searchValue)
-        ->countAllResults();
+        ->select($coloum);
+
+        foreach($searchColoum as $col){
+        $query->orLike($col, $searchValue);
+        }
+
+        return $query->countAllResults();
+ 
         
     }
 
@@ -206,9 +230,13 @@ class CommonModel extends Model
 
 
         $query = $this->db->table($table)
-        ->select('*')
-        ->orLike($searchColoum, $searchValue)
-        ->orderBy($columnName,$columnSortOrder);
+        ->select('*');
+
+        foreach($searchColoum as $col){
+        $query->orLike($col, $searchValue);
+        }
+
+        $query->orderBy($columnName,$columnSortOrder);
 
         if(!empty($joins))
         {
