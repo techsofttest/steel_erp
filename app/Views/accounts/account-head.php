@@ -10,20 +10,20 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
-                        <form  class="Dashboard-form class" id="account_head_form">
+                        <form  class="Dashboard-form class" id="add_form">
                     
                             <div class="row align-items-end">
                                 <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
-                                        <input type="text" id="account_type_inp"  name="aname" class="form-control">
+                                        <input type="text" id="account_type_inp"  name="at_name" class="form-control" required>
                                     </div>
                                 </div>
                                 
                                 
                                 <div class="col-col-md-4 col-lg-4">
                                     <div class="Btn-dasform">
-                                        <button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                                        <button type="submit"  class="btn btn-primary waves-effect waves-light">Save</button>
                                     </div>
                                 </div>
                             
@@ -50,7 +50,7 @@
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
                     <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
-                    <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
+                    <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
@@ -86,7 +86,7 @@
 <!--Edit Modal section start-->
 <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="#" id="account_head_edit_form" class="Dashboard-form">
+        <form action="#" id="update_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
@@ -105,11 +105,11 @@
                                                 <div class="col-col-md-6 col-lg-12">
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Type</label>
-                                                        <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                        <input type="text" id="htmlContent" value="" name="at_name" class="form-control " required>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
-                                                <input type="hidden" name="account_id" id="modal_acc_type_id" value="">
+                                                <input type="hidden" name="account_id" id="id" value="">
                                                 
                                             
                                                 
@@ -127,7 +127,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
+                <button type="submit" name="" class="btn btn btn-success">Submit</button>
             </div>
         </div>
         </form>
@@ -143,38 +143,34 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
     
-        /*account head add section*/    
-        $(document).ready(function(){
-            $('#account_head_form').submit(function(e){
-                e.preventDefault();
-                if( ($('input[name="aname"]').val()==""))
-                {
-                    alertify.error('Fill required fields').delay(4).dismissOthers();
-                    return false;
+        /*account head add section*/  
+
+        $(function() {
+            $('#add_form').validate({
+                rules: {
+                    required: 'required',
+                    
+                },
+                messages: {
+                    required: 'This field is required',
+                    
+                },
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Accounts/AccountHead/Add",
+                        method: "POST",
+                        data: $(form).serialize(),
+                        success: function(data) {
+                            $('#add_form')[0].reset();
+                            alertify.success('Account Head Added Successfully').delay(2).dismissOthers();
+                            initializeDataTable()
+                        }
+                    });
+                    return false; // prevent the form from submitting
                 }
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Accounts/AccountHead/Add",
-
-                    method : "POST",
-
-                    data : $('#account_head_form').serialize(),
-
-                    success:function(data)
-                    {
-                        
-                        $("#account_type_inp").val('');
-
-                        alertify.success('Account Head Added Successfully').delay(8).dismissOthers();
-
-                        initializeDataTable()
-                    }
-
-
-                });
-                
             });
         });
+
         
         /*###*/
 
@@ -182,26 +178,26 @@
 
 
         /*account head modal start*/ 
-        $("body").on('click', '.acctype_edit', function(){ 
-            var acctype = $(this).data('acctype');
-            //alert(acctype);
+        $("body").on('click', '.edit_btn', function(){ 
+            var id = $(this).data('id');
+            
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/AccountHead/HeadEdit",
+                url : "<?php echo base_url(); ?>Accounts/AccountHead/Edit",
 
                 method : "POST",
 
-                data: {account_id: acctype},
+                data: {ID: id},
 
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
 
-                    $("#modal_account_type").val(data.account_type);
+                    $("#htmlContent").val(data.account_type);
 
                     $('#EditModal').modal('show');
                     
-                    $("#modal_acc_type_id").val(acctype);
+                    $("#id").val(id);
                     
                 }
 
@@ -215,59 +211,56 @@
 
 
         /*account head update*/
-        $(document).ready(function(){
-            $('#account_head_edit_form').submit(function(e){
-                
-                e.preventDefault();
-                
-                if( ($('input[name="edit_aname"]').val()==""))
-                {
-                    alertify.error('Fill required fields').delay(4).dismissOthers();
-                    return false;
+        
+        $(function() {
+            $('#update_form').validate({
+                rules: {
+                    required: 'required',
+                    
+                },
+                messages: {
+                    required: 'This field is required',
+                    
+                },
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Accounts/AccountHead/Update",
+                        method: "POST",
+                        data: $(form).serialize(),
+                        success: function(data) {
+                            
+                            alertify.success('Account Head Update Successfully').delay(2).dismissOthers();
+                            $('#EditModal').modal('hide');
+                            initializeDataTable()
+                        }
+                    });
+                    return false; // prevent the form from submitting
                 }
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Accounts/AccountHead/Update",
-
-                    method : "POST",
-
-                    data : $('#account_head_edit_form').serialize(),
-
-                    success:function(data)
-                    {
-                        
-                        $('#EditModal').modal('hide');
-
-                        alertify.success('Account Head Edit Successfully').delay(8).dismissOthers();
-
-                        initializeDataTable()
-                    }
-
-
-                });
             });
         });
+
+
         /*###*/
 
 
 
 
         /*account head delete*/ 
-        $("body").on('click', '.acctype_delete', function(){ 
+        $("body").on('click', '.delete_btn', function(){ 
             
             if (!confirm('Are you absolutely sure you want to delete?')) return;
-            var acctype = $(this).data('acctypedel');
+            var id = $(this).data('id');
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Accounts/AccountHead/Delete",
 
                 method : "POST",
 
-                data: {account_id: acctype},
+                data: {ID: id},
 
                 success:function(data)
                 {
-                    alertify.success('Account Head Delete Successfully').delay(8).dismissOthers();
+                    alertify.success('Account Head Delete Successfully').delay(2).dismissOthers();
 
                     initializeDataTable()
                 }
@@ -282,8 +275,8 @@
 
         /*data table start*/ 
         function initializeDataTable() {
-            $('#accountTable').DataTable().clear().destroy();
-            $('#accountTable').DataTable({
+            $('#DataTable').DataTable().clear().destroy();
+            $('#DataTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',

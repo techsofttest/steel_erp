@@ -46,138 +46,185 @@
                                 <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label" >Debit</label>
-                                        <input type="text"  name="jv_debit" class="form-control" required>
+                                        <input type="number"  name="jv_debit" class="form-control" required>
                                     </div>
                                 </div>
                                 <!--end col-->
-                                    <div class="col-col-md-4 col-lg-4">
+                                <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Credit</label>
-                                        <input type="text"  name="jv_credit" class="form-control" required>
+                                        <input type="number"  name="jv_credit" class="form-control" required>
                                     </div>
                                 </div>
                                 <!--end col-->
-                                    <div class="col-col-md-4 col-lg-4">
+                                <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Narration</label>
                                         <input type="text"  name="jv_narration" class="form-control" required>
                                     </div>
                                 </div>
                                 <!--end col-->
-											 
+								<div class="col-col-md-4 col-lg-4">
 											
-											<div class="col-col-md-4 col-lg-4">
-											
-											<div class="Btn-dasform">
+									<div class="Btn-dasform">
 											<button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
-											</div>
+									</div>
 											
-											</div>
+								</div>
                                            
                                             
-                                        </div>
-                                        <!--end row-->
-										</form>
-                                    </div>
-                                    
-                                </div>
                             </div>
-                        </div>
-                        <!--end col-->
+                        <!--end row-->
+						</form>
                     </div>
-					
-					
-					
-					 <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">View Journal Voucher</h4>
                                     
-                                </div><!-- end card header -->
-                                <div class="card-body">
-                                    <table id="datatable" class="table table-bordered table-striped delTable">
-             <thead>
-                <tr>
-                  <th class="no-sort">Sl no</th>
-                  <th> Voucher No</th>
-                  <th>Date</th>
-                  <th>Sales order No</th>
-				  <th> Account </th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-              
+                </div>
+            </div>
+        </div>
+    <!--end col-->
+    </div>
+					
+					
+					
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">View Journal Voucher</h4>
                 
-				  <tr >
-                  <td>1</td>
-                  <td>1011</td>
-				    <td>10-12-2023</td>
-					  <td>211</td>
-                  <td>Savings </td>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <!-- CSRF token --> 
+                    <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                    <table id="jv_table" class="table table-bordered table-striped delTable display dataTable">
+                        <thead>
+                            <tr>
+                            <th class="no-sort">Sl no</th>
+                            <th> Voucher No</th>
+                            <th>Date</th>
+                            <th>Sales order No</th>
+                            <th> Account </th>
+                            <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                        </tbody>
+
+                    </table>
                 
-                <td><a  href="" class="edit edit-color" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="" class="delete delete-color" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>
-					<a  href="" class="view view-color" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-					</td>
-                </tr>
-				  <tr >
-                  <td>2</td>
-                  <td>1012</td>
-                    <td>10-12-2023</td>
-					    <td>212</td>
-                  <td>Savings </td>
-              
-<td><a  href="" class="edit edit-color" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="" class="delete delete-color" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>
-					<a  href="" class="view view-color" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-					</td>
-                </tr>
-				  <tr >
-                  <td>3</td>
-                  <td>1013</td>
-                   <td>10-12-2023</td>
-				   <td>213</td>
-                  <td>Savings </td>
-                  
-                <td><a  href="" class="edit edit-color" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="" class="delete delete-color" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>
-					<a  href="" class="view view-color" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-					</td>
-                </tr>
-				  <tr >
-                  <td>4</td>
-                  <td>1014</td>
-                    <td>10-12-2023</td>
-					<td>214</td>
-                  <td>Savings </td>
-                  
-                 <td><a  href="" class="edit edit-color" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="" class="delete delete-color" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>
-					<a  href="" class="view view-color" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-					</td>
-                </tr>
-              
-              </tbody>
-           
-            </table>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <!--end col-->
-                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+    </div>
                                           
-                                        </div>
-										
+</div>
 										
 <!--end Journal col-->
+
+
+<!--view Modal section start-->
+<div class="modal fade" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="#" id="account_head_edit_form" class="Dashboard-form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">View Journal Voucher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="live-preview view_modal_tb">
+                                    
+                                    <!--<div class="row align-items-end ">-->
+                                        
+                                    
+                                        <!--<div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Date</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Sales order No</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>
+                                      
+
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Account</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>
+                                       
+
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Debit</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>
+                                       
+
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Credit</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>
+                                       
+
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Narration</label>
+                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                            </div>
+                                        </div>--->
+                                       
+
+                                    
+                                        
+                                    <!--</div>-->
+                                    <!--end row-->
+                                    
+                                </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
+            </div>
+        </div>
+        </form>
+
+    </div>
+</div>
+
+<!--view modal section end-->
 
 
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event){
+        
+        /*add JournalVoucher*/
         $(function() {
             $('#journal_voucher_form').validate({
                 rules: {
@@ -202,5 +249,133 @@
                 }
             });
         });
+        /*####*/
+
+
+
+        /*view journal voucher start*/ 
+        $("body").on('click', '.jv_view', function(){ 
+            var jv_id = $(this).data('jvview');
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/JournalVoucher/View",
+
+                method : "POST",
+
+                data: {jv_id : jv_id},
+
+                success:function(data)
+                {   
+                    var jsonData = JSON.parse(data);
+
+                    var htmlContent=    ` <div class="row align-items-end ">
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Date</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_voucher_no}" name="edit_aname" class="form-control " > 
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Date</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_voucher_date}" name="edit_aname" class="form-control " > 
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Sales order No</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_sales_order_id}" name="edit_aname" class="form-control " >
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Account</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_account}"  name="edit_aname" class="form-control " >
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Debit</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_debit}"  name="edit_aname" class="form-control " >
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-6">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Credit</label>
+                                                    <input type="text" id="modal_account_type"  value="${jsonData.jv_credit}"  name="edit_aname" class="form-control " >
+                                                </div>
+                                            </div>
+                                            <div class="col-col-md-6 col-lg-12">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Narration</label>
+                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_narration}"   name="edit_aname" class="form-control " >
+                                                </div>
+                                            </div>
+                                        </div>`;
+                   
+                    $(".view_modal_tb").html(htmlContent);
+                    $('.view_modal_tb').css('display', 'block');
+
+                    $('#ViewModal').modal('show');
+                    
+                    //$("#modal_acc_type_id").val(acctype);
+                    
+                }
+
+
+            });
+            
+            
+        });
+        /*####*/
+
+
+        /*data table start*/ 
+        function initializeDataTable() {
+            $('#jv_table').DataTable().clear().destroy();
+            $('#jv_table').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': "<?php echo base_url(); ?>Accounts/JournalVoucher/FetchData",
+                    'data': function (data) {
+                        // CSRF Hash
+                        var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
+                        var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+
+                        return {
+                            data: data,
+                            [csrfName]: csrfHash, // CSRF Token
+                        };
+                    },
+                    dataSrc: function (data) {
+                        // Update token hash
+                        $('.txt_csrfname').val(data.token);
+
+                        // Datatable data
+                        return data.aaData;
+                    }
+                },
+                'columns': [
+                    { data: 'jv_id' },
+                    { data: 'jv_voucher_no' },
+                    { data: 'jv_voucher_date' },
+                    { data: 'jv_sales_order_id' },
+                    { data: 'jv_account' },
+                    { data: 'action' },
+                    
+                ]
+                
+            });
+        }
+
+        $(document).ready(function () {
+            initializeDataTable();
+        });
+        /*###*/
+
+
     });
 </script>

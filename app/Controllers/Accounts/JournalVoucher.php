@@ -9,6 +9,81 @@ class JournalVoucher extends BaseController
 {
     
 
+    public function FetchData()
+    {
+
+        $searchValue = "Cash";
+
+        /*pagination start*/
+        $request = service('request');
+        $postData = $request->getPost();
+        $dtpostData = $postData['data'];
+        $response = array();
+ 
+        ## Read value
+        $draw = $dtpostData['draw'];
+        $start = $dtpostData['start'];
+        $rowperpage = $dtpostData['length']; // Rows display per page
+        $columnIndex = $dtpostData['order'][0]['column']; // Column index
+        $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
+        $searchValue = $dtpostData['search']['value']; // Search value
+
+        // Check if the current sort order is 'asc', then set it to 'desc'
+        if ($columnSortOrder === 'asc') {
+            $columnSortOrder = 'desc';
+        } 
+
+ 
+        ## Total number of records without filtering
+       
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_journal_voucher','jv_id','DESC');
+ 
+        ## Total number of records with filtering
+       
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_voucher','jv_id',$searchValue,'jv_voucher_no');
+        
+        ##Joins if any //Pass Joins as Multi dim array
+        $joins = array();
+        ## Fetch records
+        
+        $records = $this->common_model->GetRecord('accounts_journal_voucher','jv_id',$searchValue,'jv_voucher_no',$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+       
+ 
+        $data = array();
+        
+        $i=1;
+        foreach($records as $record ){
+            $action = '<a  href="javascript:void(0)" class="edit edit-color acctype_edit" data-toggle="tooltip" data-placement="top" title="edit"  data-acctype="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color acctype_delete" data-toggle="tooltip" data-acctypedel="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+           
+           $data[] = array( 
+              "jv_id"=>$i,
+              "jv_voucher_no"=>$record->jv_voucher_no,
+              "jv_voucher_date"=>date('d-m-Y',strtotime($record->jv_voucher_date)),
+              "jv_sales_order_id"=>$record->jv_sales_order_id,
+              "jv_account"=>$record->jv_account,
+              "action" =>$action,
+           );
+           $i++; 
+        }
+ 
+        ## Response
+        $response = array(
+         "draw" => intval($draw),
+         "iTotalRecords" => $totalRecords,
+         "iTotalDisplayRecords" => $totalRecordwithFilter,
+         "aaData" => $data,
+         "token" => csrf_hash() // New token hash
+        );
+ 
+        //return $this->response->setJSON($response);
+
+        echo json_encode($response);
+
+        exit;
+
+        /*pagination end*/
+    } 
 
 
 
@@ -54,16 +129,42 @@ class JournalVoucher extends BaseController
 
 
         ];
-        helper('my_helper');
+
+        helper('journal_voucher_helper');
         $journal_voucher_id = $this->common_model->InsertData('accounts_journal_voucher',$insert_data);
        
-        $booking_name_id = journal_voucher($journal_voucher_id,'jv');
+        $voucher_no = journal_voucher($journal_voucher_id,'JV');
 
-       //$this->Admin_model->update_all(array('booking_name_id' => $booking_name_id),array('booking_id' => $booking_id),'booking');
+      
+        $this->common_model->EditData(array('jv_voucher_no' => $voucher_no),array('jv_id' => $journal_voucher_id),'accounts_journal_voucher');
         
+    }
 
-        $this->common_model->EditData(array('jv_voucher_no' => $booking_name_id),array('jv_id' => $journal_voucher_id),'accounts_journal_voucher');
+
+    //account head modal 
+    public function View()
+    {
         
+        $cond = array('jv_id' => $this->request->getPost('jv_id'));
+
+        $journal_voucher = $this->common_model->SingleRow('accounts_journal_voucher',$cond);
+
+                         
+        $data['jv_voucher_no']      = $journal_voucher->jv_voucher_no;
+
+        $data['jv_voucher_date']    = $journal_voucher->jv_voucher_date;
+
+        $data['jv_sales_order_id']  = $journal_voucher->jv_sales_order_id;
+
+        $data['jv_account']         = $journal_voucher->jv_account;
+
+        $data['jv_debit']           = $journal_voucher->jv_debit;
+
+        $data['jv_credit']          = $journal_voucher->jv_credit;
+
+        $data['jv_narration']       = $journal_voucher->jv_narration;
+
+        echo json_encode($data);
     }
 
 
