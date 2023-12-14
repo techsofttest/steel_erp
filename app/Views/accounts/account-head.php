@@ -61,22 +61,7 @@
 
                         <tbody>
                             
-                            <?php /*$i=1; foreach($account_head as $acc_head){?> 
                             
-                            <tr>
-                                <td><?php echo $i; ?></td>
-                                
-                            
-                                <td><?php echo $acc_head->at_name;?></td>
-                                <td>
-                                    
-                                    <a  href="javascript:void(0)" class="edit edit-color acctype_edit" data-toggle="tooltip" data-placement="top" title="edit"  data-acctype=<?php echo $acc_head->at_id;?> data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                                    <!--<a href="" class="delete delete-color" data-toggle="tooltip"  data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>-->
-                                    <a href="javascript:void(0)" class="delete delete-color acctype_delete" data-toggle="tooltip" data-acctypedel=<?php echo $acc_head->at_id;?>  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>
-                                </td>
-                            </tr>
-                            
-                            <?php $i++;} */?>
                             
                         
                         </tbody>
@@ -328,7 +313,7 @@
                     { data: 'action' },
                 ]
                 
-           });
+            });
         }
 
         $(document).ready(function () {

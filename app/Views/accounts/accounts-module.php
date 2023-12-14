@@ -46,13 +46,15 @@
                 <div class="tab-content text-muted">
                                        
 
-                <!--account head section start-->
+                
                 
                 <section id="ajax_container">
+
                     <?php echo $content;?>
+                    
                 </section>
 
-                <!--###-->
+               
 										
 
 										

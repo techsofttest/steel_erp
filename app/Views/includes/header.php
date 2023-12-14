@@ -28,6 +28,12 @@
 <!-- Datatable CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"/>
 
+<style>
+    label.error 
+    {
+        color: red;
+    }
+</style>
 
 </head>
 

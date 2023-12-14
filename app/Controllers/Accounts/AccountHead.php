@@ -114,11 +114,7 @@ class AccountHead extends BaseController
         $id = $this->common_model->InsertData('accounts_account_type',$insert_data);
 
         
-
-        
     }
-
-
 
 
 
