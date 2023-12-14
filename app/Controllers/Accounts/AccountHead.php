@@ -10,8 +10,7 @@ class AccountHead extends BaseController
     public function FetchData()
     {
 
-        $searchValue = "Cash";
-
+       
         /*pagination start*/
         $request = service('request');
         $postData = $request->getPost();
