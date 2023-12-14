@@ -8,55 +8,109 @@ use App\Controllers\BaseController;
 class ChartsOfAccounts extends BaseController
 {
 
+
+    public function FetchData()
+    {
+
+        /*pagination start*/
+        $request = service('request');
+        $postData = $request->getPost();
+        $dtpostData = $postData['data'];
+        $response = array();
+ 
+        ## Read value
+        $draw = $dtpostData['draw'];
+        $start = $dtpostData['start'];
+        $rowperpage = $dtpostData['length']; // Rows display per page
+        $columnIndex = $dtpostData['order'][0]['column']; // Column index
+        $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
+        $searchValue = $dtpostData['search']['value']; // Search value
+
+        // Check if the current sort order is 'asc', then set it to 'desc'
+        if ($columnSortOrder === 'asc') {
+            $columnSortOrder = 'desc';
+        } 
+
+ 
+        ## Total number of records without filtering
+       
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_charts_accounts','ca_id','DESC');
+ 
+        ## Total number of records with filtering
+       
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_charts_accounts','ca_id',$searchValue,'ca_name');
+    
+        ##Joins if any //Pass Joins as Multi dim array
+        $joins = array(
+           
+            array(
+            'table' => 'accounts_account_type',
+            'pk' => 'at_id',
+            'fk' => 'ca_account_type',
+            ),
+
+        );
+        ## Fetch records
+        $records = $this->common_model->GetRecord('accounts_charts_accounts','ca_id',$searchValue,'ca_name',$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+    
+        $data = array();
+
+        $i=1;
+        foreach($records as $record ){
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ca_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color acctype_delete" data-toggle="tooltip" data-acctypedel="'.$record->ca_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           
+           $data[] = array( 
+              "ca_id"=>$i,
+              'at_name' => $record->at_name,
+              "ca_name"=>$record->ca_name,
+              "action" =>$action,
+           );
+           $i++; 
+        }
+ 
+        ## Response
+        $response = array(
+         "draw" => intval($draw),
+         "iTotalRecords" => $totalRecords,
+         "iTotalDisplayRecords" => $totalRecordwithFilter,
+         "aaData" => $data,
+         "token" => csrf_hash() // New token hash
+        );
+ 
+        //return $this->response->setJSON($response);
+
+        echo json_encode($response);
+
+        exit;
+
+        /*pagination end*/
+    } 
+
+
+
     //view page
     public function index()
     {   
-        $data = array();
-        return view('accounts/charts-of-accounts',$data);
+        $data['content'] = view('accounts/chart-of-accounts');
+
+        return view('accounts/accounts-module',$data);
     }
 
 
     // add account head
     Public function Add()
     {   
-        
-        $insert_data = [
-            
-            'at_name'       => $this->request->getPost('aname'),
 
-            'at_added_by'   => 0,
+        $insert_data = $_POST;
 
-            'at_added_date' => date('Y-m-d'),
-
-
-        ];
-
-        $id = $this->common_model->InsertData('accounts_account_type',$insert_data);
-
-        $this->RefreshTable();
+        $id = $this->common_model->InsertData('accounts_charts_accounts',$insert_data);
 
         
     }
 
     //refresh table with ajax
-    public function RefreshTable()
-    {
-        $account_head = $this->common_model->FetchAllOrder('accounts_account_type','at_id','DESC');
-        
-        $data['output'] =' <table id="" class="table table-bordered table-striped delTable"><thead><tr><th class="no-sort">Sl no</th><th>Account Type</th><th>Actions</th></tr> </thead><tbody>';
-        
-        $i = 1;
-        foreach ($account_head as $acc_head) 
-        {
-            $data['output'] .= '<tr><td>'.$i.'</td><td>'.$acc_head->at_name.'</td><td><a href="javascript:void(0)" class="edit edit-color acctype_edit" data-acctype="'.$acc_head->at_id.'"  data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color acctype_delete" data-acctypedel="'.$acc_head->at_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td></tr>';
-            $i++;
-        }
-
-        $data['output'] .='</tbody></table>';
-        
-        echo json_encode($data);
-    }
-
+ 
     //account head modal 
     public function HeadEdit()
     {
@@ -88,7 +142,7 @@ class ChartsOfAccounts extends BaseController
 
         $this->common_model->EditData($update_data,$cond,'accounts_account_type');
         
-        $this->RefreshTable();
+      
 
     }
 
@@ -99,7 +153,7 @@ class ChartsOfAccounts extends BaseController
 
         $this->common_model->DeleteData('accounts_account_type',$cond);
 
-        $this->RefreshTable();
+      
     }
 
 

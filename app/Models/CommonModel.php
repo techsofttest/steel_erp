@@ -201,16 +201,29 @@ class CommonModel extends Model
     }
 
 
-    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder="",$rowperpage,$start)
+    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder="",$joins,$rowperpage,$start)
     {
-        return $this->db
-        ->table($table)
+
+
+        $query = $this->db->table($table)
         ->select('*')
         ->orLike($searchColoum, $searchValue)
-        ->orderBy($columnName,$columnSortOrder)
-        ->limit($rowperpage,$start)
-        ->get()
-        ->getResult();
+        ->orderBy($columnName,$columnSortOrder);
+
+        if(!empty($joins))
+        {
+            foreach($joins as $join)
+            {
+    
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+    
+            }
+        }
+        $query->limit($rowperpage,$start);
+
+        $result = $query->get()->getResult();
+
+        return $result;
        
     }
     

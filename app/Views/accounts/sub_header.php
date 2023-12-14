@@ -1,10 +1,15 @@
+<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());
+
+echo ($uri->getSegment(3))
+
+?>
 
 <ul class="nav nav-pills nav-custom-outline nav-primary mb-3" role="tablist">
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link active" data-bs-toggle="tab" href="#border-nav-1" role="tab">Account Head</a>
+        <a class="nav-link <?php if($uri->getSegment(3)=="AccountHead") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/AccountHead" >Account Head</a>
     </li>
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link" data-bs-toggle="tab" href="#border-nav-2" role="tab">Charts of Accounts</a>
+        <a class="nav-link <?php if($uri->getSegment(3)=="ChartsOfAccounts") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/ChartsOfAccounts">Charts of Accounts</a>
     </li>
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link" data-bs-toggle="tab" href="#border-nav-3" role="tab">Receipt</a>

@@ -35,7 +35,7 @@ $routes->get('Login', 'Auth::index'); //For Viewing Page
 
 $routes->post('Check', 'Auth::Check'); //For Posting
 
-$routes->post('Logout', 'Auth::Logout'); //For Posting
+$routes->get('Logout', 'Auth::Logout'); //For Posting
 
 
 

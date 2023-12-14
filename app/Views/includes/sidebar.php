@@ -42,7 +42,7 @@
                         <ul class="navbar-nav" id="navbar-nav">
                       
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="index.html"   >
+                                <a class="nav-link menu-link" href="<?= base_url(); ?>"   >
                                     <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                                 </a>
                                 
@@ -52,7 +52,8 @@
                     
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="accounts-module.html">
+                                
+                                <a class="nav-link menu-link" href="<?= base_url() ?>">
                                     <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
                                 </a>
                             
@@ -87,21 +88,21 @@
 
                        
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="company.html" >
+                                <a class="nav-link menu-link" href="#" >
                                     <i class="ri-layout-grid-line"></i> <span data-key="t-company">Company</span>
                                 </a>
                                 
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="executives.html">
+                                <a class="nav-link menu-link" href="#">
                                     <i class="ri-file-list-3-line"></i> <span data-key="t-executives">Executives</span>
                                 </a>
                                 
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="login.html" >
+                                <a onclick="return confirm('Are you sure you want to logout?')" class="nav-link menu-link" href="<?= base_url(); ?>Logout" >
                                     <i class="ri-account-circle-line"></i> <span data-key="t-crm">Logout</span>
                                 </a>
                             

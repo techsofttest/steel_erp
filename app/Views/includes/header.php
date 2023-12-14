@@ -1,3 +1,4 @@
+<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 <!-- App favicon -->
 <link rel="shortcut icon" href="<?php echo base_url(); ?>public/assets/images/favicon.png">
 
