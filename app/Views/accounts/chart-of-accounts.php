@@ -34,9 +34,7 @@
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
                                         
-                                        <select class="form-control" required>
-
-                                        <option value="1">Test</option>
+                                        <select name="ca_account_type" class="account_type_select form-control" required>
 
                                         </select>
 
@@ -226,8 +224,6 @@
         $("body").on('click', '.edit_btn', function(){ 
             var id = $(this).data('id');
 
-            alert(id);
-
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Edit",
@@ -305,21 +301,21 @@
 
 
         /*account head delete*/ 
-        $("body").on('click', '.acctype_delete', function(){ 
+        $("body").on('click', '.delete_btn', function(){ 
             
             if (!confirm('Are you absolutely sure you want to delete?')) return;
-            var acctype = $(this).data('acctypedel');
+            var id = $(this).data('id');
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/AccountHead/Delete",
+                url : "<?php echo base_url(); ?>Accounts/ChartOfAccounts/Delete",
 
                 method : "POST",
 
-                data: {account_id: acctype},
+                data: {id: id},
 
                 success:function(data)
                 {
-                    alertify.success('Account Head Delete Successfully').delay(8).dismissOthers();
+                    alertify.success('Chart Of Account Deleted Successfully').delay(8).dismissOthers();
 
                     initializeDataTable()
                 }
@@ -377,11 +373,43 @@
         /*###*/
      
 
-   
+$(".account_type_select").select2({
+  placeholder: "Select account type",
+  theme : "default form-control-",
+  ajax: {
+        url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchTypes",
+        dataType: 'json',
+        delay: 250,
+        cache: false,
+         minimumInputLength: 1,
+        allowClear: true,
+        data: function (params) {
+            return {
+                term: params.term,
+                page: params.page || 1,
+            };
+        },
+        processResults: function(data, params) {
+            //console.log(data);
+            //  NO NEED TO PARSE DATA `processResults` automatically parse it
+            //var c = JSON.parse(data);
+            console.log(data);
+            var page = params.page || 1;
+            return {
+                results: $.map(data.result, function (item) { return {id: item.at_id, text: item.at_name}}),
+                pagination: {
+                // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                    more: (page * 10) <= data.total_count
+                }
+            };
+        },              
+    }
+})
+
 
     });
 
 
 </script>
-            
+
             

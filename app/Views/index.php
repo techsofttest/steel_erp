@@ -639,6 +639,11 @@
 
             <!--footer section end-->
 
+            <script src="<?php echo base_url(); ?>public/assets/libs/swiper/swiper-bundle.min.js"></script>
+
+                <!-- Dashboard init -->
+            <script src="<?php echo base_url(); ?>public/assets/js/pages/dashboard-ecommerce.init.js"></script>
+
 
 
             <!---add account type section start-->

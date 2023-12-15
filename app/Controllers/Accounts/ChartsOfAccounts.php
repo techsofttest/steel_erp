@@ -91,10 +91,35 @@ class ChartsOfAccounts extends BaseController
 
 
 
+    public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_type','at_name','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+
     //view page
     public function index()
     {   
-        $data['content'] = view('accounts/chart-of-accounts');
+
+       // $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_type','at_name','asc');
+
+       $data = array();
+
+        $data['content'] = view('accounts/chart-of-accounts',$data);
 
         return view('accounts/accounts-module',$data);
     }

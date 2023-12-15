@@ -6,10 +6,15 @@
 <link href="<?php echo base_url(); ?>public/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
 
 <!--Swiper slider css-->
+<!--
 <link href="<?php echo base_url(); ?>public/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+-->
 
 <!-- Layout config Js -->
+<!--
 <script src="<?php echo base_url(); ?>public/assets/js/layout.js"></script>
+-->
+
 <!-- Bootstrap Css -->
 <link href="<?php echo base_url(); ?>public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
@@ -26,6 +31,8 @@
 
 <link href="<?php echo base_url(); ?>public/assets/css/alertify.default.min.css" rel="stylesheet">
 
+<link href="<?php echo base_url(); ?>public/assets/css/select2.min.css" rel="stylesheet">
+
 <!-- Datatable CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"/>
 
@@ -34,6 +41,37 @@
     {
         color: red;
     }
+
+    /* For Select 2 Dropdown */
+
+    
+    .select2-container {
+    vertical-align: unset !important;
+    height: calc(1.5em + 1rem + calc(var(--vz-border-width) * 2)) !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+    background-color: unset !important;
+    border: unset !important;  
+     border-radius: 4px; 
+    }
+    
+
+    
+    .form-control-
+    {
+        margin-bottom:10px;
+        /*padding: 0.5rem 0.9rem;*/
+        line-height: 1.5;
+        /*appearance: none;*/
+        background-color: var(--vz-input-bg-custom);
+        border: var(--vz-border-width) solid var(--vz-input-border-custom);
+        border-radius: var(--vz-border-radius);
+    }
+
+ 
+
+    
 </style>
 
 </head>
@@ -81,6 +119,7 @@
                             <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
                             <span class="mdi mdi-magnify search-widget-icon"></span>
                             <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
+                            <span id="search-dropdown"></span>
                         </div>
                         
                     </form>
@@ -262,7 +301,7 @@
                             <h6 class="dropdown-header">Welcome Anna!</h6>
                             <a class="dropdown-item" href="password-reset.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Password Reset</span></a>
                         
-                            <a class="dropdown-item" href="login.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                            <a class="dropdown-item" href="<?= base_url(); ?>Logout" onclick="return confirm('Are you sure you want to logout?')"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                         </div>
                     </div>
                 </div>

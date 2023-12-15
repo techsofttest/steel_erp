@@ -144,6 +144,24 @@ class CommonModel extends Model
 
 
 
+    //For Select 2 Dropdown
+
+    public function FetchAllLimit($table,$order_key,$order,$term,$end,$start)
+    {
+      
+        return $this->db
+        ->table($table)
+        ->select('*')
+        ->like($order_key,$term)
+        ->limit($end,$start)
+        ->orderBy($order_key, $order)
+        ->get()
+        ->getResult();
+        
+    }
+
+
+
 
     // create slug
     public function createSlug($name,$slug_name,$table)

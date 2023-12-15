@@ -29,24 +29,37 @@
 	<script src="<?php echo base_url(); ?>public/assets/code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
    
     <script src="<?php echo base_url(); ?>public/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
     <script src="<?php echo base_url(); ?>public/assets/libs/simplebar/simplebar.min.js"></script>
+
+    <!--
     <script src="<?php echo base_url(); ?>public/assets/libs/node-waves/waves.min.js"></script>
     <script src="<?php echo base_url(); ?>public/assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?php echo base_url(); ?>public/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    -->
+
      <!-- <script src="assets/js/plugins.js"></script>-->
 
     <!-- apexcharts -->
+    <!--
     <script src="<?php echo base_url(); ?>public/assets/libs/apexcharts/apexcharts.min.js"></script>
+    -->
 
     <!-- Vector map-->
+    <!--
     <script src="<?php echo base_url(); ?>public/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
     <script src="<?php echo base_url(); ?>public/assets/libs/jsvectormap/maps/world-merc.js"></script>
+    -->
 
     <!--Swiper slider js-->
+    <!--
     <script src="<?php echo base_url(); ?>public/assets/libs/swiper/swiper-bundle.min.js"></script>
+    -->
 
-    <!-- Dashboard init -->
-    <script src="<?php echo base_url(); ?>public/assets/js/pages/dashboard-ecommerce.init.js"></script>
+
+    <script src="<?php echo base_url(); ?>public/assets/libs/feather-icons/feather.min.js"></script>
+
+    <script src="<?php echo base_url(); ?>public/assets/libs/node-waves/waves.min.js"></script>
 
     <!-- App js -->
     <script src="<?php echo base_url(); ?>public/assets/js/app.js"></script>
@@ -56,10 +69,11 @@
 
     <!--jquery validate-->
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+  
+
+    <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
     
-
-
-
 
     <!-- Notification Alerts -->
 
