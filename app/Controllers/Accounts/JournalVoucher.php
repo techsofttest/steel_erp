@@ -40,14 +40,27 @@ class JournalVoucher extends BaseController
         $totalRecords = $this->common_model->GetTotalRecords('accounts_journal_voucher','jv_id','DESC');
  
         ## Total number of records with filtering
-       
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_voucher','jv_id',$searchValue,'jv_voucher_no');
+         $searchColumns = array('jv_voucher_no');
+
+        
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_voucher','jv_id',$searchValue,$searchColumns);
         
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array();
+        $joins = array(
+            array(
+                'table' => 'accounts_account_type',
+                'pk' => 'at_id',
+                'fk' => 'jv_account',
+                ),
+            array(
+                'table' => 'crm_sales_order',
+                'pk' => 'so_id',
+                'fk' => 'jv_sales_order_id',
+            ),
+        );
         ## Fetch records
         
-        $records = $this->common_model->GetRecord('accounts_journal_voucher','jv_id',$searchValue,'jv_voucher_no',$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_journal_voucher','jv_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
        
  
         $data = array();
@@ -60,8 +73,8 @@ class JournalVoucher extends BaseController
               "jv_id"=>$i,
               "jv_voucher_no"=>$record->jv_voucher_no,
               "jv_voucher_date"=>date('d-m-Y',strtotime($record->jv_voucher_date)),
-              "jv_sales_order_id"=>$record->jv_sales_order_id,
-              "jv_account"=>$record->jv_account,
+              "jv_sales_order_id"=>$record->so_order_no,
+              "jv_account"=>$record->at_name,
               "action" =>$action,
            );
            $i++; 
@@ -90,8 +103,8 @@ class JournalVoucher extends BaseController
     //view page
     public function index()
     {  
-        $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc'); 
-
+        $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
+        
         $data['sales_order'] = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
 
         $data['content'] = view('accounts/journal-voucher',$data);
@@ -108,27 +121,13 @@ class JournalVoucher extends BaseController
     // add account head
     Public function Add()
     {   
-        
-        $insert_data = [
-            
-            'jv_voucher_date'   => $this->request->getPost('jv_date'),
 
-            'jv_sales_order_id' => $this->request->getPost('jv_order'),
+        $insert_data = $this->request->getPost();
 
-            'jv_account'        => $this->request->getPost('jv_account'),
+        $insert_data['jv_added_by'] = 0; 
 
-            'jv_debit'          => $this->request->getPost('jv_debit'),
+        $insert_data['jv_added_date'] = date('Y-m-d'); 
 
-            'jv_credit'         => $this->request->getPost('jv_credit'),
-
-            'jv_narration'      => $this->request->getPost('jv_narration'),
-
-            'jv_added_by'       => 0,
-
-            'jv_added_date'     => date('Y-m-d'),
-
-
-        ];
 
         helper('journal_voucher_helper');
         $journal_voucher_id = $this->common_model->InsertData('accounts_journal_voucher',$insert_data);
@@ -147,16 +146,28 @@ class JournalVoucher extends BaseController
         
         $cond = array('jv_id' => $this->request->getPost('jv_id'));
 
-        $journal_voucher = $this->common_model->SingleRow('accounts_journal_voucher',$cond);
+        $joins = array(
+            array(
+                'table' => 'accounts_account_type',
+                'pk' => 'at_id',
+                'fk' => 'jv_account',
+                ),
+            array(
+                'table' => 'crm_sales_order',
+                'pk' => 'so_id',
+                'fk' => 'jv_sales_order_id',
+            ),
+        );
 
-                         
+        $journal_voucher = $this->common_model->SingleRowJoin('accounts_journal_voucher',$cond,$joins);
+
         $data['jv_voucher_no']      = $journal_voucher->jv_voucher_no;
 
         $data['jv_voucher_date']    = $journal_voucher->jv_voucher_date;
 
-        $data['jv_sales_order_id']  = $journal_voucher->jv_sales_order_id;
+        $data['jv_sales_order_id']  = $journal_voucher->so_order_no;
 
-        $data['jv_account']         = $journal_voucher->jv_account;
+        $data['jv_account']         = $journal_voucher->at_name;
 
         $data['jv_debit']           = $journal_voucher->jv_debit;
 

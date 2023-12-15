@@ -10,7 +10,6 @@ class AccountHead extends BaseController
     public function FetchData()
     {
 
-       
         /*pagination start*/
         $request = service('request');
         $postData = $request->getPost();
@@ -37,15 +36,18 @@ class AccountHead extends BaseController
         $totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id','DESC');
  
         ## Total number of records with filtering
-       
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,'at_name');
+        $searchColumns = array('at_name');
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,$searchColumns);
+    
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array();
         
         ## Fetch records
+        $records = $this->common_model->GetRecord('accounts_account_type','at_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
-        $records = $this->common_model->GetRecord('accounts_account_type','at_id',$searchValue,'at_name',$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+      
     
  
         $data = array();
@@ -91,8 +93,6 @@ class AccountHead extends BaseController
 
         return view('accounts/accounts-module',$data);
 
-        
-       
     }
 
 

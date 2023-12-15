@@ -9,22 +9,22 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
-						<form action="#" class="Dashboard-form" id="journal_voucher_form">
+						<form action="#" class="Dashboard-form" id="add_form">
                             <div class="row align-items-end">
 								<div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Date</label>
-                                        <input type="date" onclick="this.showPicker();"  name="jv_date" class="form-control" required>
+                                        <input type="date" onclick="this.showPicker();"  name="jv_voucher_date" class="form-control" required>
                                     </div>
                                 </div>
                                         
                                 <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="labelInput" class="form-label">Sales order No</label>
-                                        <select class="form-select " name="jv_order" required>
+                                        <select class="form-select " name="jv_sales_order_id" required>
                                             <option value="" selected disabled>Select Sales order No</option>
                                             <?php foreach($sales_order as $order){?> 
-                                                <option value="1"><?php echo $order->so_order_no;?></option>
+                                                <option value="<?php echo $order->so_id;?>"><?php echo $order->so_order_no;?></option>
                                             <?php } ?>
 
 
@@ -37,8 +37,9 @@
                                         <label for="labelInput" class="form-label">Account</label>
                                         <select class="form-select" name="jv_account" required>
                                             <option value="" selected disabled>Select Account </option>
-                                            <?php foreach($accounts_type as $account_type)?>
+                                            <?php foreach($accounts_type as $account_type){?> 
                                             <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                            <?php } ?>
                                         </select>
                                     </div>
                                 </div>
@@ -67,7 +68,7 @@
 								<div class="col-col-md-4 col-lg-4">
 											
 									<div class="Btn-dasform">
-											<button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+											<button type="submit" name="" class="btn btn-primary waves-effect waves-light">Save</button>
 									</div>
 											
 								</div>
@@ -141,22 +142,28 @@
                         <div class="card">
                             
                             <div class="card-body">
-                                <div class="live-preview view_modal_tb">
+                                <div class="live-preview">
                                     
-                                    <!--<div class="row align-items-end ">-->
+                                    <div class="row align-items-end ">
                                         
+                                        <div class="col-col-md-6 col-lg-6">
+                                            <div>
+                                                <label for="basiInput" class="form-label">Voucher No</label>
+                                                <input type="text" id="voucher_no_id" value="" name="edit_aname" class="form-control">
+                                            </div>
+                                        </div>
                                     
-                                        <!--<div class="col-col-md-6 col-lg-6">
+                                        <div class="col-col-md-6 col-lg-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">Date</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_date_id" value="" name="edit_aname" class="form-control " >
                                             </div>
                                         </div>
                                       
                                         <div class="col-col-md-6 col-lg-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">Sales order No</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_order" value="" name="edit_aname" class="form-control " >
                                             </div>
                                         </div>
                                       
@@ -164,7 +171,7 @@
                                         <div class="col-col-md-6 col-lg-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">Account</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_account" value="" name="edit_aname" class="form-control " >
                                             </div>
                                         </div>
                                        
@@ -172,7 +179,7 @@
                                         <div class="col-col-md-6 col-lg-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">Debit</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_debit" value="" name="edit_aname" class="form-control " >
                                             </div>
                                         </div>
                                        
@@ -180,22 +187,22 @@
                                         <div class="col-col-md-6 col-lg-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">Credit</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_credit" value="" name="edit_aname" class="form-control " >
                                             </div>
                                         </div>
                                        
 
-                                        <div class="col-col-md-6 col-lg-6">
+                                        <div class="col-col-md-6 col-lg-12">
                                             <div>
                                                 <label for="basiInput" class="form-label">Narration</label>
-                                                <input type="text" id="modal_account_type" value="" name="edit_aname" class="form-control " >
+                                                <input type="text" id="voucher_narration" value="" name="edit_aname" class="form-control " >
                                             </div>
-                                        </div>--->
+                                        </div>
                                        
 
                                     
                                         
-                                    <!--</div>-->
+                                     </div>
                                     <!--end row-->
                                     
                                 </div>
@@ -226,7 +233,7 @@
         
         /*add JournalVoucher*/
         $(function() {
-            $('#journal_voucher_form').validate({
+            $('#add_form').validate({
                 rules: {
                     required: 'required',
                     
@@ -241,8 +248,9 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
-                            $('#journal_voucher_form')[0].reset();
-                            alertify.success('Journal Voucher Added Successfully').delay(8).dismissOthers();
+                            $('#add_form')[0].reset();
+                            alertify.success('Journal Voucher Added Successfully').delay(2).dismissOthers();
+                            initializeDataTable()
                         }
                     });
                     return false; // prevent the form from submitting
@@ -268,54 +276,22 @@
                 success:function(data)
                 {   
                     var jsonData = JSON.parse(data);
+                    console.log(jsonData.jv_voucher_no)
+                    //$(".view_modal_tb").html(htmlContent);
+                      
+                    $("#voucher_no_id").val(jsonData.jv_voucher_no);
 
-                    var htmlContent=    ` <div class="row align-items-end ">
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Date</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_voucher_no}" name="edit_aname" class="form-control " > 
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Date</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_voucher_date}" name="edit_aname" class="form-control " > 
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Sales order No</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_sales_order_id}" name="edit_aname" class="form-control " >
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Account</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_account}"  name="edit_aname" class="form-control " >
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Debit</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_debit}"  name="edit_aname" class="form-control " >
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-6">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Credit</label>
-                                                    <input type="text" id="modal_account_type"  value="${jsonData.jv_credit}"  name="edit_aname" class="form-control " >
-                                                </div>
-                                            </div>
-                                            <div class="col-col-md-6 col-lg-12">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Narration</label>
-                                                    <input type="text" id="modal_account_type" value="${jsonData.jv_narration}"   name="edit_aname" class="form-control " >
-                                                </div>
-                                            </div>
-                                        </div>`;
-                   
-                    $(".view_modal_tb").html(htmlContent);
-                    $('.view_modal_tb').css('display', 'block');
+                    $("#voucher_date_id").val(jsonData.jv_voucher_date);
+
+                    $("#voucher_order").val(jsonData.jv_sales_order_id);
+
+                    $("#voucher_account").val(jsonData.jv_account);
+
+                    $("#voucher_debit").val(jsonData.jv_debit);
+
+                    $("#voucher_credit").val(jsonData.jv_credit);
+
+                    $("#voucher_narration").val(jsonData.jv_narration);
 
                     $('#ViewModal').modal('show');
                     

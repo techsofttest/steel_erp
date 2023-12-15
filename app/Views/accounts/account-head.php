@@ -248,7 +248,7 @@
         /*account head delete*/ 
         $("body").on('click', '.delete_btn', function(){ 
             
-            if (!confirm('Are you absolutely sure you want to delete?')) return;
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
             var id = $(this).data('id');
             $.ajax({
 
