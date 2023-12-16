@@ -35,26 +35,26 @@ class ChartsOfAccounts extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_charts_accounts','ca_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_charts_of_accounts','ca_id','DESC');
  
         ## Total number of records with filtering
        
         $searchColumns = array('ca_name','ca_account_id');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_charts_accounts','ca_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_charts_of_accounts','ca_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
            
             array(
-            'table' => 'accounts_account_type',
+            'table' => 'accounts_account_types',
             'pk' => 'at_id',
             'fk' => 'ca_account_type',
             ),
 
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_charts_accounts','ca_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_charts_of_accounts','ca_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -102,7 +102,7 @@ class ChartsOfAccounts extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_type','at_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_types','at_name','asc',$term,$start,$end);
 
         $data['total_count'] =count($data['result']);
 
@@ -118,7 +118,7 @@ class ChartsOfAccounts extends BaseController
     public function index()
     {   
 
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_type','at_name','asc');
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_name','asc');
 
         $data['content'] = view('accounts/chart-of-accounts',$data);
 
@@ -132,7 +132,7 @@ class ChartsOfAccounts extends BaseController
 
         $insert_data = $_POST;
 
-        $id = $this->common_model->InsertData('accounts_charts_accounts',$insert_data);
+        $id = $this->common_model->InsertData('accounts_charts_of_accounts',$insert_data);
 
     }
 
@@ -148,14 +148,14 @@ class ChartsOfAccounts extends BaseController
          $joins = array(
            
             array(
-            'table' => 'accounts_account_type',
+            'table' => 'accounts_account_types',
             'pk' => 'at_id',
             'fk' => 'ca_account_type',
             ),
 
         );
 
-        $data = $this->common_model->SingleRowJoin('accounts_charts_accounts',$cond,$joins);
+        $data = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',$cond,$joins);
 
         echo json_encode($data);
 
@@ -176,7 +176,7 @@ class ChartsOfAccounts extends BaseController
 
         $update_data['ca_modify_date'] = date('Y-m-d'); 
 
-        $this->common_model->EditData($update_data,$cond,'accounts_charts_accounts');
+        $this->common_model->EditData($update_data,$cond,'accounts_charts_of_accounts');
         
       
 
@@ -187,7 +187,7 @@ class ChartsOfAccounts extends BaseController
     {
         $cond = array('at_id' => $this->request->getPost('account_id'));
 
-        $this->common_model->DeleteData('accounts_account_type',$cond);
+        $this->common_model->DeleteData('accounts_account_types',$cond);
 
       
     }

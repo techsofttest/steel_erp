@@ -1,0 +1,1 @@
+RENAME TABLE `steel`.`steel_accounts_charts_accounts` TO `steel`.`steel_accounts_charts_of_accounts`;
