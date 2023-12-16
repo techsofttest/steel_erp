@@ -65,6 +65,7 @@ class ChartsOfAccounts extends BaseController
            $data[] = array( 
               "ca_id"=>$i,
               'at_name' => $record->at_name,
+              'ca_account_id' => $record->ca_account_id,
               "ca_name"=>$record->ca_name,
               "action" =>$action,
            );
@@ -91,6 +92,7 @@ class ChartsOfAccounts extends BaseController
 
 
 
+    /*
     public function FetchTypes()
     {
 
@@ -107,6 +109,7 @@ class ChartsOfAccounts extends BaseController
         return json_encode($data);
 
     }
+    */
 
 
 
@@ -115,9 +118,7 @@ class ChartsOfAccounts extends BaseController
     public function index()
     {   
 
-       // $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_type','at_name','asc');
-
-       $data = array();
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_type','at_name','asc');
 
         $data['content'] = view('accounts/chart-of-accounts',$data);
 
@@ -163,20 +164,19 @@ class ChartsOfAccounts extends BaseController
    // update account head 
     public function Update()
     {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('ca_id' => $this->request->getPost('id'));
 
-        $update_data = [
-            
-            'at_name'       => $this->request->getPost('edit_aname'),
+        $update_data = $this->request->getPost(); 
 
-            'at_added_by'   => 0,
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('id', $update_data)) 
+        {
+             unset($update_data['id']);
+        }       
 
-            'at_modify_date' => date('Y-m-d'),
+        $update_data['ca_modify_date'] = date('Y-m-d'); 
 
-
-        ];
-
-        $this->common_model->EditData($update_data,$cond,'accounts_account_type');
+        $this->common_model->EditData($update_data,$cond,'accounts_charts_accounts');
         
       
 

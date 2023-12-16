@@ -1,8 +1,4 @@
-<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());
-
-echo ($uri->getSegment(3))
-
-?>
+<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 
 <ul class="nav nav-pills nav-custom-outline nav-primary mb-3" role="tablist">
     <li class="nav-item waves-effect waves-light">

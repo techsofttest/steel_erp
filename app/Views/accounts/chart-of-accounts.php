@@ -5,17 +5,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Add Charts Of Account </h4>
-                    
+                    <h4 class="card-title mb-0 flex-grow-1">New </h4>
+                    <button type="button" class="btn btn-primary py-1 add_sec_toggle">Add</button>
                 </div><!-- end card header -->
-                <div class="card-body">
+                <div class="card-body add_sec" style="display:none;">
                     <div class="live-preview">
                         <form  class="Dashboard-form class" id="add_form">
                     
                             <div class="row align-items-end">
 
 
-                                <div class="col-col-md-4 col-lg-4">
+                                <div class="col-col-md-2 col-lg-2">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Id</label>
                                         <input type="text"   name="ca_account_id" class="form-control" required>
@@ -30,11 +30,19 @@
                                 </div>
 
 
-                                <div class="col-col-md-4 col-lg-4">
+                                <div class="col-col-md-2 col-lg-2">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
                                         
-                                        <select name="ca_account_type" class="account_type_select form-control" required>
+                                        <select name="ca_account_type" class="account_type_select_add form-control" required>
+
+                                        <option value="">Select Account Type</option>
+
+                                        <?php foreach($account_types as $ac_type){ ?>
+
+                                        <option value="<?= $ac_type->at_id; ?>"><?= $ac_type->at_name; ?></option>
+
+                                        <?php } ?>
 
                                         </select>
 
@@ -42,9 +50,9 @@
                                 </div>
                                 
                                 
-                                <div class="col-col-md-4 col-lg-4">
+                                <div class="col-col-md-2 col-lg-2">
                                     <div class="Btn-dasform">
-                                        <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light">Save</button>
                                     </div>
                                 </div>
                             
@@ -66,7 +74,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">View Account Head</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">View Charts Of Accounts</h4>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -76,6 +84,7 @@
                             <tr>
                                 <th class="no-sort">Sl no</th>
                                 <th>Type</th>
+                                <th>Account ID</th>
                                 <th>Name</th>
                                 <th>Actions</th>
                             </tr>
@@ -104,9 +113,9 @@
 
 
 <!--Edit Modal section start-->
-<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <form action="#" id="account_head_edit_form" class="Dashboard-form">
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="#" id="edit_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Charts Of Account</h5>
@@ -137,9 +146,13 @@
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Type</label>
                                                         
-                                                        <select class="form-control" name="ca_account_type">
+                                                        <select id="edit_account_type" class="form-control account_type_select_edit" name="ca_account_type">
 
-                                                            <option value=""></option>
+                                                        <?php foreach($account_types as $ac_type){ ?>
+
+                                                        <option value="<?= $ac_type->at_id; ?>"><?= $ac_type->at_name; ?></option>
+
+                                                        <?php } ?>
 
                                                         </select>
 
@@ -153,7 +166,6 @@
 
                                                 <input type="hidden" name="id" id="ca_id" value="">
                                                 
-                                            
                                                 
                                             </div>
                                             <!--end row-->
@@ -242,6 +254,8 @@
 
                     $("#edit_account_name").val(data.ca_name);
 
+                    $('#edit_account_type').val(data.ca_account_type);
+
                     $('#EditModal').modal('show');
                     
                     $("#ca_id").val(id);
@@ -264,29 +278,24 @@
 
         /*account head update*/
         $(document).ready(function(){
-            $('#account_head_edit_form').submit(function(e){
-                
+            $('#edit_form').submit(function(e){
+
                 e.preventDefault();
                 
-                if( ($('input[name="edit_aname"]').val()==""))
-                {
-                    alertify.error('Fill required fields').delay(4).dismissOthers();
-                    return false;
-                }
                 $.ajax({
 
-                    url : "<?php echo base_url(); ?>Accounts/AccountHead/Update",
+                    url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Update",
 
                     method : "POST",
 
-                    data : $('#account_head_edit_form').serialize(),
+                    data : $('#edit_form').serialize(),
 
                     success:function(data)
                     {
                         
                         $('#EditModal').modal('hide');
 
-                        alertify.success('Account Head Edit Successfully').delay(8).dismissOthers();
+                        alertify.success('Charts Of Account Updated Successfully').delay(8).dismissOthers();
 
                         initializeDataTable()
                     }
@@ -352,7 +361,6 @@
                     dataSrc: function (data) {
                         // Update token hash
                         $('.txt_csrfname').val(data.token);
-
                         // Datatable data
                         return data.aaData;
                     }
@@ -360,6 +368,7 @@
                 'columns': [
                     { data: 'ca_id' },
                     { data: 'at_name' },
+                    { data : 'ca_account_id'},
                     { data: 'ca_name' },
                     { data: 'action' },
                 ]
@@ -372,40 +381,6 @@
         });
         /*###*/
      
-
-$(".account_type_select").select2({
-  placeholder: "Select account type",
-  theme : "default form-control-",
-  ajax: {
-        url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchTypes",
-        dataType: 'json',
-        delay: 250,
-        cache: false,
-         minimumInputLength: 1,
-        allowClear: true,
-        data: function (params) {
-            return {
-                term: params.term,
-                page: params.page || 1,
-            };
-        },
-        processResults: function(data, params) {
-            //console.log(data);
-            //  NO NEED TO PARSE DATA `processResults` automatically parse it
-            //var c = JSON.parse(data);
-            console.log(data);
-            var page = params.page || 1;
-            return {
-                results: $.map(data.result, function (item) { return {id: item.at_id, text: item.at_name}}),
-                pagination: {
-                // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                    more: (page * 10) <= data.total_count
-                }
-            };
-        },              
-    }
-})
-
 
     });
 

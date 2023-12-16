@@ -81,6 +81,30 @@
    
 
     <script>
+
+        $('.add_sec_toggle').click(function(){
+
+            //$('.add_sec').toggle();
+            if($('.add_sec:visible').length == 0)
+            {
+                $('.add_sec').show();
+                $(this).html('X');
+                
+            }
+            else
+            {
+                $('.add_sec').hide();
+                $(this).html('Add');
+               
+            }
+
+        });
+
+    </script>
+
+
+
+    <script>
     alertify.set('notifier','position', 'top-center');
     </script>
 

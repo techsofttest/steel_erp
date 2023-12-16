@@ -55,6 +55,10 @@
     border: unset !important;  
      border-radius: 4px; 
     }
+
+    .select2-container--open {
+    z-index: 9999999
+    }
     
 
     
