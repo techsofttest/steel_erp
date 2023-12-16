@@ -33,37 +33,32 @@ class AccountHead extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_account_heads','ah_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_account_type','at_id','DESC');
  
         ## Total number of records with filtering
-        $searchColumns = array('ah_account_name');
+        $searchColumns = array('at_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_heads','ah_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_type','at_id',$searchValue,$searchColumns);
     
     
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array(
-            array(
-                'table' => 'accounts_account_types',
-                'pk' => 'at_id',
-                'fk' => 'ah_account_type',
-                )
-           
-        );
+        $joins = array();
         
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_account_heads','ah_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_account_type','at_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
+      
+    
+ 
         $data = array();
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ah_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ah_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->at_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->at_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
-              "ah_id"=>$i,
-              "ah_account_name"=>$record->ah_account_name,
-              "ah_account_type"=>$record->at_name,
+              "at_id"=>$i,
+              "at_name"=>$record->at_name,
               "action" =>$action,
            );
            $i++; 
@@ -88,16 +83,19 @@ class AccountHead extends BaseController
     } 
 
 
+
+
     //view page
     public function index()
     {   
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
 
-        $data['content'] = view('accounts/account-head',$data);
+        $data['content'] = view('accounts/account-head');
 
         return view('accounts/accounts-module',$data);
 
     }
+
+
 
 
     // add account head
@@ -106,58 +104,68 @@ class AccountHead extends BaseController
         
         $insert_data = $this->request->getPost();
 
-        $insert_data['ah_added_by'] = 0; 
+        $insert_data['at_added_by'] = 0; 
 
-        $insert_data['ah_added_date'] = date('Y-m-d'); 
+        $insert_data['at_added_date'] = date('Y-m-d'); 
 
-        $id = $this->common_model->InsertData('accounts_account_heads',$insert_data);
+        $id = $this->common_model->InsertData('accounts_account_type',$insert_data);
 
+        
     }
+
+
 
 
     //account head modal 
     public function Edit()
     {
         
-        $cond = array('ah_id' => $this->request->getPost('ID'));
+        $cond = array('at_id' => $this->request->getPost('ID'));
 
-        $account_type = $this->common_model->SingleRow('accounts_account_heads',$cond);
+        $account_type = $this->common_model->SingleRow('accounts_account_type',$cond);
 
-        $data = $account_type;
+        $data['account_type'] = $account_type->at_name;
 
         echo json_encode($data);
     }
 
 
-    // update account head 
+
+   // update account head 
     public function Update()
     {    
-        $cond = array('ah_id' => $this->request->getPost('ah_id'));
+        $cond = array('at_id' => $this->request->getPost('account_id'));
         
         $update_data = $this->request->getPost(); 
 
         // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('ah_id', $update_data)) 
+        if (array_key_exists('account_id', $update_data)) 
         {
-             unset($update_data['ah_id']);
+             unset($update_data['account_id']);
         }       
 
-        $update_data['ah_modified_date'] = date('Y-m-d'); 
+        $update_data['at_added_by'] = 0; 
 
-        $this->common_model->EditData($update_data,$cond,'accounts_account_heads');
+        $update_data['at_modify_date'] = date('Y-m-d'); 
+
+
+
+        $this->common_model->EditData($update_data,$cond,'accounts_account_type');
        
     }
 
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('ah_id' => $this->request->getPost('ID'));
- 
-         $this->common_model->DeleteData('accounts_account_heads',$cond);
- 
-     }
 
 
+    
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('at_id' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('accounts_account_type',$cond);
+
+        
+    }
 
 
 
