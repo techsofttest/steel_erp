@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap);
+
 @font-face {
 font-family:hkgrotesk;
 src:url(../fonts/hkgrotesk-light.eot);
@@ -30,6 +30,7 @@ src:url(../fonts/hkgrotesk-bold.eot);
 src:local("hkgrotesk bold"), url(../fonts/hkgrotesk-bold.woff) format("woff");
 font-weight:700
 }
+
 :root {
 --theme-color:#e31d24;
 }
