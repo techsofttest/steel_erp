@@ -251,7 +251,7 @@
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.reload( null, false )
+                            datatable.ajax.reload( null, false )
                         }
                        
                     });
