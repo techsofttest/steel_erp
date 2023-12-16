@@ -5,7 +5,7 @@ namespace App\Controllers\Crm;
 use App\Controllers\BaseController;
 
 
-class ProductHead extends BaseController
+class CustomerCreation extends BaseController
 {
     
     public function FetchData()
@@ -84,7 +84,7 @@ class ProductHead extends BaseController
     public function index()
     {   
        
-        $data['content'] = view('crm/product_heads');
+        $data['content'] = view('crm/customer-creation');
 
         return view('crm/crm-module',$data);
 
