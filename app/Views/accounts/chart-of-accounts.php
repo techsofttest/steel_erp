@@ -250,8 +250,8 @@
                         success: function(data) {
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
-                            alertify.success('Charts Of Account Added Successfully').delay(3).dismissOthers();
-                            initializeDataTable()
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.reload( null, false )
                         }
                        
                     });
@@ -328,9 +328,9 @@
                         
                         $('#EditModal').modal('hide');
 
-                        alertify.success('Charts Of Account Updated Successfully').delay(8).dismissOthers();
+                        alertify.success('Data Updated Successfully').delay(8).dismissOthers();
 
-                        initializeDataTable()
+                        datatable.ajax.reload( null, false );
                     }
 
 
@@ -349,7 +349,7 @@
             var id = $(this).data('id');
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/ChartOfAccounts/Delete",
+                url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Delete",
 
                 method : "POST",
 
@@ -357,9 +357,9 @@
 
                 success:function(data)
                 {
-                    alertify.success('Chart Of Account Deleted Successfully').delay(8).dismissOthers();
+                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
 
-                    initializeDataTable()
+                    datatable.ajax.reload( null, false )
                 }
 
 
@@ -374,8 +374,15 @@
 
 
         function initializeDataTable() {
-            $('#accountTable').DataTable().clear().destroy();
-            $('#accountTable').DataTable({
+
+            /*
+            if ($.fn.DataTable.isDataTable("#accountTable")) {
+                $('#accountTable').DataTable().clear().destroy();
+            }
+            */
+
+            datatable = $('#accountTable').DataTable({
+                'stateSave': true,
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',

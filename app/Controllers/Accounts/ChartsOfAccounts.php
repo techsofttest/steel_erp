@@ -60,7 +60,7 @@ class ChartsOfAccounts extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ca_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color acctype_delete" data-toggle="tooltip" data-acctypedel="'.$record->ca_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ca_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ca_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "ca_id"=>$i,
@@ -185,9 +185,9 @@ class ChartsOfAccounts extends BaseController
     //delete account head
     public function Delete()
     {
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('ca_id' => $this->request->getPost('id'));
 
-        $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('accounts_charts_of_accounts',$cond);
 
       
     }
