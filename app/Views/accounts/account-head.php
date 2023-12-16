@@ -8,15 +8,28 @@
                     <h4 class="card-title mb-0 flex-grow-1">Add Account Head </h4>
                     
                 </div><!-- end card header -->
-                <div class="card-body">
+                <div class="card-body add_sec" style="display:none;">
                     <div class="live-preview">
                         <form  class="Dashboard-form class" id="add_form">
                     
                             <div class="row align-items-end">
+                               <div class="col-col-md-4 col-lg-4">
+                                    <div>
+                                        <label for="basiInput" class="form-label">Account Name</label>
+                                        <input type="text" id="account_type_inp"  name="ah_account_name" class="form-control" required>
+                                        
+                                    </div>
+                                </div>
                                 <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
-                                        <input type="text" id="account_type_inp"  name="at_name" class="form-control" required>
+                                        
+                                        <select class="form-select" name="ah_account_type" required>
+                                            <option value="" selected disabled>Select Account Type</option>
+                                            <?php foreach($account_types as $account_type){?> 
+                                                <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 
@@ -54,6 +67,7 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
+                                <th>Account Name</th>
                                 <th>Account Type</th>
                                 <th>Actions</th>
                             </tr>
@@ -175,8 +189,6 @@
         /*###*/
 
 
-
-
         /*account head modal start*/ 
         $("body").on('click', '.edit_btn', function(){ 
             var id = $(this).data('id');
@@ -207,7 +219,6 @@
             
         });
         /*####*/
-
 
 
         /*account head update*/
@@ -243,8 +254,6 @@
         /*###*/
 
 
-
-
         /*account head delete*/ 
         $("body").on('click', '.delete_btn', function(){ 
             
@@ -270,7 +279,6 @@
 
         });
         /*###*/
-
 
 
         /*data table start*/ 
@@ -301,8 +309,9 @@
                     }
                 },
                 'columns': [
-                    { data: 'at_id' },
-                    { data: 'at_name' },
+                    { data: 'ah_id' },
+                    { data: 'ah_account_name' },
+                    { data: 'ah_account_type' },
                     { data: 'action' },
                 ]
                 
@@ -313,7 +322,11 @@
             initializeDataTable();
         });
         /*###*/
-     
+
+
+
+
+       
 
    
 

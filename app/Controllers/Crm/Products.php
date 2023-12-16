@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Controllers\Accounts;
+namespace App\Controllers\Crm;
 
 use App\Controllers\BaseController;
 
 
-class AccountHead extends BaseController
+class Products extends BaseController
 {
+    
     public function FetchData()
     {
 
@@ -33,37 +34,37 @@ class AccountHead extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_account_heads','ah_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('crm_products','product_id ','DESC');
  
         ## Total number of records with filtering
-        $searchColumns = array('ah_account_name');
+       
+        $searchColumns = array('product_code');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_account_heads','ah_id',$searchValue,$searchColumns);
-    
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_products','product_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
-                'table' => 'accounts_account_types',
-                'pk' => 'at_id',
-                'fk' => 'ah_account_type',
-                )
-           
+                'table' => 'crm_product_heads',
+                'pk' => 'ph_id',
+                'fk' => 'product_product_head',
+                ),
+    
         );
-        
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_account_heads','ah_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
-        
+        $records = $this->common_model->GetRecord('crm_products','product_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+    
         $data = array();
-        
+
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ah_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ah_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->product_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->product_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
-              "ah_id"=>$i,
-              "ah_account_name"=>$record->ah_account_name,
-              "ah_account_type"=>$record->at_name,
+              "product_id "=>$i,
+              'product_code' => $record->product_code,
+              'product_details' => $record->product_details,
+              'product_product_head' => $record->ph_product_head,
               "action" =>$action,
            );
            $i++; 
@@ -88,14 +89,31 @@ class AccountHead extends BaseController
     } 
 
 
+
+    public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_product_heads','ph_product_head','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
     //view page
     public function index()
     {   
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+       
+        $data['content'] = view('crm/products');
 
-        $data['content'] = view('accounts/account-head',$data);
-
-        return view('accounts/accounts-module',$data);
+        return view('crm/crm-module',$data);
 
     }
 
@@ -106,11 +124,11 @@ class AccountHead extends BaseController
         
         $insert_data = $this->request->getPost();
 
-        $insert_data['ah_added_by'] = 0; 
+        $insert_data['product_added_by'] = 0; 
 
-        $insert_data['ah_added_date'] = date('Y-m-d'); 
+        $insert_data['product_added_date'] = date('Y-m-d'); 
 
-        $id = $this->common_model->InsertData('accounts_account_heads',$insert_data);
+        $id = $this->common_model->InsertData('crm_products',$insert_data);
 
     }
 

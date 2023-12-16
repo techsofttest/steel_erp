@@ -5,7 +5,7 @@ namespace App\Controllers\Accounts;
 use App\Controllers\BaseController;
 
 
-class JournalVoucher extends BaseController
+class Receipt extends BaseController
 {
     
 
@@ -137,11 +137,11 @@ class JournalVoucher extends BaseController
     //view page
     public function index()
     {  
-        $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
+        /*$data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
         
-        $data['sales_order'] = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
+        $data['sales_order'] = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');*/
 
-        $data['content'] = view('accounts/journal-voucher',$data);
+        $data['content'] = view('accounts/receipt');
 
         return view('accounts/accounts-module',$data);
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controllers\Accounts;
+namespace App\Controllers\Crm;
 
 use App\Controllers\BaseController;
 
 
-class AccountHead extends BaseController
+class ProductHead extends BaseController
 {
     public function FetchData()
     {
@@ -91,11 +91,11 @@ class AccountHead extends BaseController
     //view page
     public function index()
     {   
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+       // $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
 
-        $data['content'] = view('accounts/account-head',$data);
+        //$data['content'] = view('accounts/account-head',$data);
 
-        return view('accounts/accounts-module',$data);
+        return view('crm/crm-module');
 
     }
 
