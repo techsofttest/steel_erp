@@ -5,7 +5,7 @@ namespace App\Controllers\Accounts;
 use App\Controllers\BaseController;
 
 
-class JournalVoucher extends BaseController
+class PettyCashVoucher extends BaseController
 {
     
 
@@ -95,8 +95,8 @@ class JournalVoucher extends BaseController
 
         /*pagination end*/
     } 
-    
 
+     
     public function FetchTypes()
     {
 
@@ -114,34 +114,13 @@ class JournalVoucher extends BaseController
 
     }
 
-
-    public function AccountFetchTypes()
-    {
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_type','at_name','asc',$term,$start,$end);
-
-        $data['total_count'] =count($data['result']);
-
-        return json_encode($data);
-
-    }
-
-
-
     //view page
     public function index()
     {  
-        $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
-        
+       
         $data['sales_order'] = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
 
-        $data['content'] = view('accounts/journal-voucher',$data);
+        $data['content'] = view('accounts/petty-cash-voucher',$data);
 
         return view('accounts/accounts-module',$data);
 
@@ -157,19 +136,17 @@ class JournalVoucher extends BaseController
 
         $insert_data = $this->request->getPost();
 
-        $insert_data['jv_added_by'] = 0; 
+        $insert_data['pcv_credit_acount_id'] = 0; 
 
-        $insert_data['jv_added_date'] = date('Y-m-d'); 
+        $insert_data['pcv_debit_account'] = 0; 
 
+        $insert_data['pcv_added_by'] = 0; 
 
-        helper('journal_voucher_helper');
-        $journal_voucher_id = $this->common_model->InsertData('accounts_journal_voucher',$insert_data);
+        $insert_data['pcv_added_date'] = date('Y-m-d'); 
+
+        $this->common_model->InsertData('accounts_petty_cash_voucher',$insert_data);
        
-        $voucher_no = journal_voucher($journal_voucher_id,'JV');
-
-      
-        $this->common_model->EditData(array('jv_voucher_no' => $voucher_no),array('jv_id' => $journal_voucher_id),'accounts_journal_voucher');
-        
+       
     }
 
 
