@@ -86,33 +86,34 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                             <!-- Tab 2 content goes here -->
-                            <div class="row">
-                                <div class="col-md-4 col-lg-3">
-                                    <label for="basiInput" class="form-label">Contact Person</label>
-                                    <input type="text" name="ph_code" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-3">
-                                    <label for="basicInput" class="form-label">Designation</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-3">
-                                    <label for="basicInput" class="form-label">	Mobile</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-3">
-                                    <label for="basicInput" class="form-label">Email</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                
-                               
-                                
-                            </div>
+                            <table  class="table table-bordered table-striped delTable">
+                                <tbody class="travelerinfo">
+                                    <tr>
+                                        <td >No</td>
+                                        <td>Contact Person </td>
+                                        <td>Designation</td>
+                                        <td>Mobile</td>
+                                        <td>Email</td>
+                                        <td>Action</td>
+                                    </tr>
+                                    <tr>
+					                    <td>1</td>
+					                    <td><input type="text" name="" class="form-control " required=""></td>
+					                    <td><input type="text" name="" class="form-control " required=""></td>
+						                <td><input type="text" name="" class="form-control " required=""></td>
+                                        <td> <input type="email" name="" class="form-control " required=""></td>
+                                        <td><div class="tecs"><span  id="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="person-more"></tbody>
+                  
+                            </table>
 
-                           
-                            
                         </div>
+                        
                         <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                             <!-- Tab 3 content goes here -->
                             <div class="row">
