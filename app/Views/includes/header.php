@@ -73,6 +73,19 @@
         border-radius: var(--vz-border-radius);
     }
 
+    .tecs span 
+    {
+        color: green;
+    }
+    .remainpass
+    {
+        color: var(--theme-color);
+    }
+    .travelerinfo td
+    {
+        color: black;
+    }
+
  
 
     
