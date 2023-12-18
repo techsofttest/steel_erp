@@ -119,11 +119,11 @@ class AccountHead extends BaseController
     public function Edit()
     {
         
-        $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('ah_id' => $this->request->getPost('ID'));
 
-        $account_type = $this->common_model->SingleRow('accounts_account_types',$cond);
+        $account_type = $this->common_model->SingleRow('accounts_account_heads',$cond);
 
-        $data['account_type'] = $account_type->at_name;
+        $data = $account_type;
 
         echo json_encode($data);
     }
@@ -132,34 +132,29 @@ class AccountHead extends BaseController
     // update account head 
     public function Update()
     {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('ah_id' => $this->request->getPost('ah_id'));
         
         $update_data = $this->request->getPost(); 
 
         // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        if (array_key_exists('ah_id', $update_data)) 
         {
-             unset($update_data['account_id']);
+             unset($update_data['ah_id']);
         }       
 
-        $update_data['at_added_by'] = 0; 
+        $update_data['ah_modified_date'] = date('Y-m-d'); 
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
-
-
-
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
+        $this->common_model->EditData($update_data,$cond,'accounts_account_heads');
        
     }
 
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+         $cond = array('ah_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+         $this->common_model->DeleteData('accounts_account_heads',$cond);
  
-         
      }
 
 
