@@ -1,32 +1,48 @@
 <!--Start Account head -->
-									
-<div class="tab-pane active" id="border-nav-1" role="tabpanel">
+
+
+
+<!-- Add Modal Start -->
+
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form action="#" id="add_form" class="Dashboard-form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Add Account Head </h4>
-                    
-                </div><!-- end card header -->
+               
                 <div class="card-body">
                     <div class="live-preview">
-                        <form  class="Dashboard-form class" id="add_form">
-                    
+                       
                             <div class="row align-items-end">
-                                <div class="col-col-md-4 col-lg-4">
+                               <div class="col-col-md-6 col-lg-6">
+                                    <div>
+                                        <label for="basiInput" class="form-label">Account Name</label>
+                                        <input type="text" id="account_type_inp"  name="ah_account_name" class="form-control" required>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-col-md-6 col-lg-6">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
-                                        <input type="text" id="account_type_inp"  name="at_name" class="form-control" required>
+                                        <select class="form-select" name="ah_account_type" required>
+                                            <option value="" selected disabled>Select Account Type</option>
+                                            <?php foreach($account_types as $account_type){?> 
+                                                <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 
                                 
-                                <div class="col-col-md-4 col-lg-4">
-                                    <div class="Btn-dasform">
-                                        <button type="submit"  class="btn btn-primary waves-effect waves-light">Save</button>
-                                    </div>
-                                </div>
-                            
                                 
                             </div>
                             <!--end row-->
@@ -38,14 +54,33 @@
         </div>
         <!--end col-->
     </div>
-    
-    
+
+    <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="" class="btn btn btn-success">Submit</button>
+            </div>
+        </div>
+        </form>
+
+    </div>
+</div>
+
+                                            </div>
+
+       <!-- End Add Modal -->
+
+
+
+									
+<div class="tab-pane active" id="border-nav-1" role="tabpanel">
+
     
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Account Head</h4>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -54,6 +89,7 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
+                                <th>Account Name</th>
                                 <th>Account Type</th>
                                 <th>Actions</th>
                             </tr>
@@ -102,14 +138,33 @@
                                     <div class="live-preview">
                                         
                                             <div class="row align-items-end">
+
+
+                                            <div class="col-col-md-6 col-lg-12">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Account Name</label>
+                                                        <input type="text" id="edit_account_name" value="" name="ah_account_name" class="form-control " required>
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="col-col-md-6 col-lg-12">
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Type</label>
-                                                        <input type="text" id="htmlContent" value="" name="at_name" class="form-control " required>
+
+                                                        <select class="form-select" id="edit_account_type" name="ah_account_type" required>
+                                                        <option value="" selected disabled>Select Account Type</option>
+                                                        <?php foreach($account_types as $account_type){?> 
+                                                            <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                                        <?php } ?>
+                                                        </select>
+                                                        
                                                     </div>
                                                 </div>
+
+
                                                 <!--end col-->
-                                                <input type="hidden" name="account_id" id="id" value="">
+                                                <input type="hidden" name="ah_id" id="id" value="">
                                                 
                                             
                                                 
@@ -162,8 +217,9 @@
                         data: $(form).serialize(),
                         success: function(data) {
                             $('#add_form')[0].reset();
-                            alertify.success('Account Head Added Successfully').delay(2).dismissOthers();
-                            initializeDataTable()
+                            $('#AddModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(2).dismissOthers();
+                            datatable.ajax.reload(null,false);
                         }
                     });
                     return false; // prevent the form from submitting
@@ -173,8 +229,6 @@
 
         
         /*###*/
-
-
 
 
         /*account head modal start*/ 
@@ -193,7 +247,9 @@
                 {   
                     var data = JSON.parse(data);
 
-                    $("#htmlContent").val(data.account_type);
+                    $("#edit_account_name").val(data.ah_account_name);
+
+                    $("#edit_account_type").val(data.ah_account_type);
 
                     $('#EditModal').modal('show');
                     
@@ -207,7 +263,6 @@
             
         });
         /*####*/
-
 
 
         /*account head update*/
@@ -229,9 +284,9 @@
                         data: $(form).serialize(),
                         success: function(data) {
                             
-                            alertify.success('Account Head Update Successfully').delay(2).dismissOthers();
+                            alertify.success('Data Updated Successfully').delay(2).dismissOthers();
                             $('#EditModal').modal('hide');
-                            initializeDataTable()
+                            datatable.ajax.reload(null,false);
                         }
                     });
                     return false; // prevent the form from submitting
@@ -241,8 +296,6 @@
 
 
         /*###*/
-
-
 
 
         /*account head delete*/ 
@@ -260,9 +313,9 @@
 
                 success:function(data)
                 {
-                    alertify.success('Account Head Delete Successfully').delay(2).dismissOthers();
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
 
-                    initializeDataTable()
+                    datatable.ajax.reload(null,false);
                 }
 
 
@@ -272,11 +325,9 @@
         /*###*/
 
 
-
         /*data table start*/ 
         function initializeDataTable() {
-            $('#DataTable').DataTable().clear().destroy();
-            $('#DataTable').DataTable({
+         datatable =  $('#DataTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
@@ -301,8 +352,9 @@
                     }
                 },
                 'columns': [
-                    { data: 'at_id' },
-                    { data: 'at_name' },
+                    { data: 'ah_id' },
+                    { data: 'ah_account_name' },
+                    { data: 'ah_account_type' },
                     { data: 'action' },
                 ]
                 
@@ -313,13 +365,10 @@
             initializeDataTable();
         });
         /*###*/
-     
+
 
    
 
     });
 
-
 </script>
-            
-            

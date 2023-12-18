@@ -8,7 +8,7 @@
         <a class="nav-link <?php if($uri->getSegment(3)=="ChartsOfAccounts") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/ChartsOfAccounts">Charts of Accounts</a>
     </li>
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link" data-bs-toggle="tab" href="#border-nav-3" role="tab">Receipt</a>
+        <a class="nav-link <?php if($uri->getSegment(3)=="Receipts") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/Receipts">Receipts</a>
     </li>
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link" data-bs-toggle="tab" href="#border-nav-4" role="tab">Payment</a>

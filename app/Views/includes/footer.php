@@ -24,7 +24,6 @@
 
 
 
-
     <!-- JAVASCRIPT -->
 	<script src="<?php echo base_url(); ?>public/assets/code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
    
