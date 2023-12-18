@@ -1,5 +1,3 @@
-
-
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -30,7 +28,10 @@
                             <a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
+                            <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Contact Details</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Official Documents</a>
                         </li>
                         <!-- Add more tabs as needed -->
                     </ul>
@@ -44,42 +45,42 @@
                                     <label for="basiInput" class="form-label">Customer Name</label>
                                     <input type="text" name="ph_code" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Post Box</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Telephone</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Fax</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Email</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Credit Term</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Credit Period (Days)</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">Credit Limit</label>
                                     <input type="text" name="ph_product_head" class="form-control" required>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-lg-4">
                                     <label for="basicInput" class="form-label">GL Account Type</label>
                                     <!--<input type="text" name="ph_product_head" class="form-control" required>-->
-                                    <select class="">
+                                    <select class="form-select">
                                         <option>Select </option>
                                     </select>
                                 </div>
@@ -87,9 +88,85 @@
                         </div>
                         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                             <!-- Tab 2 content goes here -->
-                            <!-- Add your content for Tab 2 here -->
+                            <div class="row">
+                                <div class="col-md-4 col-lg-3">
+                                    <label for="basiInput" class="form-label">Contact Person</label>
+                                    <input type="text" name="ph_code" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <label for="basicInput" class="form-label">Designation</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <label for="basicInput" class="form-label">	Mobile</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <label for="basicInput" class="form-label">Email</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                
+                               
+                                
+                            </div>
+
+                           
+                            
                         </div>
-                        <!-- Add more tab panes as needed -->
+                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                            <!-- Tab 3 content goes here -->
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basiInput" class="form-label">CR Number</label>
+                                    <input type="text" name="ph_code" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Expiry Date</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">	Attach CR</label>
+                                    <input type="file" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Establishment Card No</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Expiry Date</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Attach Establishment Card</label>
+                                    <input type="file" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Authorized Signatory Name</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">ID Card Number</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">ID Card Expiry</label>
+                                    <input type="text" name="ph_product_head" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <label for="basicInput" class="form-label">Attach ID Card</label>
+                                    <input type="file" name="ph_product_head" class="form-control" required>
+                                </div>
+                                
+                               
+                                
+                            </div>
+
+                           
+                            
+                        </div>
+
+
+                        
                     </div>
 
                 </div>
