@@ -5,7 +5,7 @@ namespace App\Controllers\Crm;
 use App\Controllers\BaseController;
 
 
-class CustomerCreation extends BaseController
+class Enquiry extends BaseController
 {
     
     public function FetchData()
@@ -90,7 +90,7 @@ class CustomerCreation extends BaseController
         
         $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
 
-        $data['content'] = view('crm/customer-creation',$data);
+        $data['content'] = view('crm/enquiry',$data);
 
         return view('crm/crm-module',$data);
 
@@ -170,17 +170,17 @@ class CustomerCreation extends BaseController
 
     // Handle file upload
     if ($_FILES['cc_attach_cr']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
+        $ccAttachCrFileName = $this->uploadFile('cc_attach_cr', 'path/to/upload/CustomerCreation');
         $update_data['cc_attach_cr'] = $ccAttachCrFileName;
     }
 
     if ($_FILES['cc_est_attach_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
+        $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card', 'path/to/upload/CustomerCreation');
         $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
     }
 
     if ($_FILES['cc_id_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
+        $ccAttachCrFileName = $this->uploadFile('cc_id_card', 'path/to/upload/CustomerCreation');
         $update_data['cc_id_card'] = $ccAttachCrFileName;
     }
 
@@ -308,11 +308,11 @@ private function uploadFile($fieldName, $uploadPath)
         
         $data['contact'] .= '</tbody></table>';
 
-        $data['attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+        $data['attach_cr'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
 
-        $data['attach_est_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
+        $data['attach_est_card'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
         
-        $data['attach_id_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_id_card) . '" target="_blank">View</a>';  
+        $data['attach_id_card'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_id_card) . '" target="_blank">View</a>';  
 
         
         echo json_encode($data);

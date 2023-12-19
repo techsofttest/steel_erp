@@ -17,7 +17,7 @@
                                 
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Enquiry Details</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -28,7 +28,7 @@
                                                 <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Contact Details</a>
+                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <a class="nav-link src-nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Official Documents</a>
@@ -43,11 +43,15 @@
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
                                                         <div class="col-md-4 col-lg-4">
-                                                            <label for="basiInput" class="form-label">Customer Name</label>
+                                                            <label for="basiInput" class="form-label">Enquiry Number</label>
                                                             <input type="text" name="cc_customer_name" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
+                                                            <label for="basiInput" class="form-label">date</label>
+                                                            <input type="date" name="cc_customer_name" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Customer</label>
                                                             
                                                             <select class="form-select" name="cc_account_id" required>
                                                                 <option value="" selected disabled>Select Account ID</option>
@@ -57,43 +61,40 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Post Box</label>
-                                                            <input type="text" name="cc_post_box" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Telephone</label>
-                                                            <input type="text" name="cc_telephone" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Fax</label>
-                                                            <input type="text" name="cc_fax" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Email</label>
-                                                            <input type="text" name="cc_email" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Credit Term</label>
-                                                            <input type="text" name="cc_credit_term" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Credit Period (Days)</label>
-                                                            <input type="text" name="cc_credit_period" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Credit Limit</label>
-                                                            <input type="text" name="cc_credit_limit" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">GL Account Type</label>
+                                                            <label for="basicInput" class="form-label">Contact Person</label>
                                                             
-                                                            <select class="form-select" name="cc_account_type" required>
-                                                                <option value="" selected disabled>Select GL Account Type</option>
-                                                                <?php foreach($accounts_type as $account_type){?> 
-                                                                    <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                                            <select class="form-select" name="cc_account_id" required>
+                                                                <option value="" selected disabled>Select Account ID</option>
+                                                                <?php foreach($charts_accounts as $chart_account){?> 
+                                                                    <option value="<?php echo $chart_account->ca_id;?>"><?php echo $chart_account->ca_account_id;?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Sales Executive</label>
+                                                            
+                                                            <select class="form-select" name="cc_account_id" required>
+                                                                <option value="" selected disabled>Select Account ID</option>
+                                                                <?php foreach($charts_accounts as $chart_account){?> 
+                                                                    <option value="<?php echo $chart_account->ca_id;?>"><?php echo $chart_account->ca_account_id;?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Validity</label>
+                                                            <input type="text" name="cc_post_box" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Project</label>
+                                                            <input type="text" name="cc_telephone" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Enquiry Reference</label>
+                                                            <input type="text" name="cc_fax" class="form-control" required>
+                                                        </div>
+                                                        
+                                                        
+                                                       
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -111,11 +112,10 @@
                                                     <table  class="table table-bordered table-striped delTable">
                                                         <tbody class="travelerinfo">
                                                             <tr>
-                                                                <td >No</td>
-                                                                <td>Contact Person </td>
-                                                                <td>Designation</td>
-                                                                <td>Mobile</td>
-                                                                <td>Email</td>
+                                                                <td >Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Quantity</td>
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr>
@@ -124,10 +124,10 @@
                                                                 <td><input type="text" name="contact_designation[]" class="form-control " required></td>
                                                                 <td><input type="text" name="contact_mobile[]" class="form-control " required></td>
                                                                 <td> <input type="email" name="contact_email[]" class="form-control " required></td>
-                                                                <td><div class="tecs"><span  id="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                                               
                                                             </tr>
                                                         </tbody>
-                                                        <tbody id="person-more" class="travelerinfo"></tbody>
+                                                        <tbody id="product-more" class="travelerinfo"></tbody>
                 
                                                     </table>
                                                     <input type="hidden" class="customer_creation_id" name="contact_customer_creation">
@@ -408,18 +408,18 @@
                                                                     
                                                                     <tr>
                                                                         <td>Attach CR</td>
-                                                                        <td id="attach_cr_id"></td>
+                                                                        <td id="attach_cr_id"><a href="<?php echo base_url(); ?>public/path/to/upload/CustomerCreation/" target="_blank">View</a></td>
                                                                     </tr>
 
                                                                     <tr>
                                                                         <td>Attach Establishment Card</td>
-                                                                        <td id="attach_est_card"></td>
+                                                                        <td id="attach_est_card"><a href="" target="_blank">View</a></td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td>Attach ID Card</td>
-                                                                        <td id="attach_id_card"></td>
+                                                                        <td id="attach_id_card"><a href="" target="_blank">View</a></td>
                                                                     </tr>
 
 
