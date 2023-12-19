@@ -85,8 +85,18 @@
     {
         color: black;
     }
-
- 
+    .tab_attachment_head h5
+    {
+        color: black;
+        font-weight: 500;
+        margin-top: 12px;
+        margin-bottom: 25px;
+    }
+    .view_tab_cond td
+    {
+        width: 50%;
+    }
+     
 
     
 </style>

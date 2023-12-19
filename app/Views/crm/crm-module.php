@@ -109,7 +109,7 @@ var y = 1;
 
 				if(y < max_fieldss){ //max input box allowed
 					y++;
-	  $("#person-more").append("<tr><td>"+y+"</td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='email' name='' class='form-control ' required=''></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+	        $("#person-more").append("<tr><td>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='text' name='contact_mobile[]' class='form-control ' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
 	 
 				}
 	  });

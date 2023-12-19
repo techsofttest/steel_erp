@@ -13,172 +13,196 @@
                         
                         <!--modal content start-->
                         <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <form class="Dashboard-form class" id="add_form">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+                            <div class="modal-dialog modal-xl">
+                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
 
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Contact Details</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Official Documents</a>
-                        </li>
-                        <!-- Add more tabs as needed -->
-                    </ul>
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Contact Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Official Documents</a>
+                                            </li>
+                                            <!-- Add more tabs as needed -->
+                                        </ul>
 
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                            <!-- Tab 1 content goes here -->
-                            <div class="row">
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basiInput" class="form-label">Customer Name</label>
-                                    <input type="text" name="ph_code" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Post Box</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Telephone</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Fax</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Email</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Credit Term</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Credit Period (Days)</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Credit Limit</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">GL Account Type</label>
-                                    <!--<input type="text" name="ph_product_head" class="form-control" required>-->
-                                    <select class="form-select">
-                                        <option>Select </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                                                <form class="Dashboard-form class" id="add_form1">
+                                                    <!-- Tab 1 content goes here -->
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basiInput" class="form-label">Customer Name</label>
+                                                            <input type="text" name="cc_customer_name" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
+                                                            
+                                                            <select class="form-select" name="cc_account_id" required>
+                                                                <option value="" selected disabled>Select Account ID</option>
+                                                                <?php foreach($charts_accounts as $chart_account){?> 
+                                                                    <option value="<?php echo $chart_account->ca_id;?>"><?php echo $chart_account->ca_account_id;?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Post Box</label>
+                                                            <input type="text" name="cc_post_box" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Telephone</label>
+                                                            <input type="text" name="cc_telephone" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Fax</label>
+                                                            <input type="text" name="cc_fax" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Email</label>
+                                                            <input type="text" name="cc_email" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Term</label>
+                                                            <input type="text" name="cc_credit_term" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Period (Days)</label>
+                                                            <input type="text" name="cc_credit_period" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Limit</label>
+                                                            <input type="text" name="cc_credit_limit" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">GL Account Type</label>
+                                                            
+                                                            <select class="form-select" name="cc_account_type" required>
+                                                                <option value="" selected disabled>Select GL Account Type</option>
+                                                                <?php foreach($accounts_type as $account_type){?> 
+                                                                    <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn btn-success">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                                
+                                            
+                                            
+                                            
+                                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                                                <form class="Dashboard-form class" id="add_form2">
+                                                        <!-- Tab 2 content goes here -->
+                                                    <table  class="table table-bordered table-striped delTable">
+                                                        <tbody class="travelerinfo">
+                                                            <tr>
+                                                                <td >No</td>
+                                                                <td>Contact Person </td>
+                                                                <td>Designation</td>
+                                                                <td>Mobile</td>
+                                                                <td>Email</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td><input type="text" name="contact_person[]" class="form-control " required></td>
+                                                                <td><input type="text" name="contact_designation[]" class="form-control " required></td>
+                                                                <td><input type="text" name="contact_mobile[]" class="form-control " required></td>
+                                                                <td> <input type="email" name="contact_email[]" class="form-control " required></td>
+                                                                <td><div class="tecs"><span  id="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody id="person-more" class="travelerinfo"></tbody>
+                
+                                                    </table>
+                                                    <input type="hidden" class="customer_creation_id" name="contact_customer_creation">
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn btn-success">Submit</button>
+                                                    </div>
+                                                </form> 
+                                            </div>
 
-                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                            <!-- Tab 2 content goes here -->
-                            <table  class="table table-bordered table-striped delTable">
-                                <tbody class="travelerinfo">
-                                    <tr>
-                                        <td >No</td>
-                                        <td>Contact Person </td>
-                                        <td>Designation</td>
-                                        <td>Mobile</td>
-                                        <td>Email</td>
-                                        <td>Action</td>
-                                    </tr>
-                                    <tr>
-					                    <td>1</td>
-					                    <td><input type="text" name="" class="form-control " required=""></td>
-					                    <td><input type="text" name="" class="form-control " required=""></td>
-						                <td><input type="text" name="" class="form-control " required=""></td>
-                                        <td> <input type="email" name="" class="form-control " required=""></td>
-                                        <td><div class="tecs"><span  id="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
-                                    </tr>
-                                </tbody>
-                                <tbody id="person-more"></tbody>
-                  
-                            </table>
 
-                        </div>
-                        
-                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                            <!-- Tab 3 content goes here -->
-                            <div class="row">
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basiInput" class="form-label">CR Number</label>
-                                    <input type="text" name="ph_code" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Expiry Date</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">	Attach CR</label>
-                                    <input type="file" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Establishment Card No</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Expiry Date</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Attach Establishment Card</label>
-                                    <input type="file" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Authorized Signatory Name</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">ID Card Number</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">ID Card Expiry</label>
-                                    <input type="text" name="ph_product_head" class="form-control" required>
-                                </div>
-                                <div class="col-md-4 col-lg-4">
-                                    <label for="basicInput" class="form-label">Attach ID Card</label>
-                                    <input type="file" name="ph_product_head" class="form-control" required>
+                                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                                                <form class="Dashboard-form class" id="add_form3" enctype= multipart/form-data>
+                                                    <!-- Tab 3 content goes here -->
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basiInput" class="form-label">CR Number</label>
+                                                            <input type="text" name="cc_cr_number" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Expiry Date</label>
+                                                            <input type="date" name="cc_expiry_date" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">	Attach CR</label>
+                                                            <input type="file" name="cc_attach_cr" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Establishment Card No</label>
+                                                            <input type="text" name="cc_est_card_no" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Expiry Date</label>
+                                                            <input type="date" name="cc_est_expiry_date" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Attach Establishment Card</label>
+                                                            <input type="file" name="cc_est_attach_card" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Authorized Signatory Name</label>
+                                                            <input type="text" name="cc_est_signatory_name" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">ID Card Number</label>
+                                                            <input type="text" name="cc_card_number" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">ID Card Expiry</label>
+                                                            <input type="date" name="cc_id_card_expiry_date" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Attach ID Card</label>
+                                                            <input type="file" name="cc_id_card" class="form-control" required>
+                                                        </div>
+                                                        <input type="hidden" class="customer_creation_id" name="customer_creation">
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <button class="btn btn btn-success">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                    </div>
+                                    
                                 </div>
                                 
-                               
-                                
                             </div>
-
-                           
-                            
                         </div>
-
-
-                        
-                    </div>
-
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn btn-success">Save</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 
                         <!--modal content end-->
@@ -189,7 +213,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Product Head</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Customer Creation</h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -197,19 +221,16 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th> Code </th>
-                                                    <th>Product Head</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Post Box</th>
+                                                    <th>Phone Number</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             
                                             <tbody>
 
-                                                
-
-
-
-
+                                            
 
                                             </tbody>
 
@@ -224,112 +245,7 @@
                     <!--###-->
 
 
-                    <!--product tab start-->
-
-                    <div class="tab-pane" id="arrow-2" role="tabpanel">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Add Product </h4>
-                                    
-                                    </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <div class="live-preview">
-									        <form action="#" method="post" class="Dashboard-form">
-                                                <div class="row align-items-end">
-                                                    <!--end col-->
-                                                    <div class="col-md-4 col-lg-4">
-                                                        <div>
-                                                            <label for="basiInput" class="form-label">Code</label>
-                                                            <input type="text" name="" class="form-control " required="">
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-md-4 col-lg-4">
-                                                        <div>
-                                                            <label for="labelInput" class="form-label"> Product Details </label>
-                                                            <input type="text" name="" class="form-control " required="">
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-md-4 col-lg-4">
-                                                        <div>
-                                                            <label for="basiInput" class="form-label">Product Head</label>
-                                                            <select class="form-select" name="" required="">
-                                                                <option selected="">Select </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-md-4 col-lg-4">
-                                                        <div class="Btn-dasform">
-                                                            <button type="button" name="submit" class="btn btn-primary waves-effect waves-light">Save</button>
-                                                        </div>
-                                                    
-                                                    </div>
-                                                
-                                                    
-                                                </div>
-                                                <!--end row-->
-										    </form>
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Product </h4>
-                                    
-                                    </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th> Code </th>
-                                                    <th> Product Details </th>
-                                                    <th>Product Head</th>
-                                                    
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>p101</td>
-                                                    <td>Lorem Ispum Dummy Text</td>
-                                                    <td>Lorem Dummy </td>
-                                                    <td>
-                                                        <a  href="" class="edit edit-color" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                                                        <a href="" class="delete delete-color" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you absolutely sure you want to delete?');"><i  class="ri-delete-bin-fill"></i> Delete</a>
-                                                        <a  href="" class="view view-color" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-                                                    
-                                                    </td>
-                                                </tr>
-                    
-                    
-                    
-                
-                                            </tbody>
-           
-                                        </table>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
-                    </div>  
-
-                    <!--product tab end-->
+                   
 
                     
                 </div>
@@ -347,43 +263,380 @@
                         
 </div>
 
+<!--view modal section start-->
+
+<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab5" role="tab" aria-controls="tab2" aria-selected="false">Contact Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab6" role="tab" aria-controls="tab3" aria-selected="false">Official Documents</a>
+                                            </li>
+                                            <!-- Add more tabs as needed -->
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="tab4" role="tabpanel" aria-labelledby="tab1-tab">
+                                                <form class="Dashboard-form class" id="">
+                                                    <!-- Tab 1 content goes here -->
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basiInput" class="form-label">Customer Name</label>
+                                                            <input type="text"  id="cc_customer_name_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
+                                                            
+                                                            <select class="form-select" id="cc_account_id_view" required>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Post Box</label>
+                                                            <input type="text"  id="cc_post_box_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Telephone</label>
+                                                            <input type="text" id="cc_telephone_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Fax</label>
+                                                            <input type="text"  id="cc_fax_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Email</label>
+                                                            <input type="text"  id="cc_email_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Term</label>
+                                                            <input type="text"  id="cc_credit_term_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Period (Days)</label>
+                                                            <input type="text"  id="cc_credit_period_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Credit Limit</label>
+                                                            <input type="text"  id="cc_credit_limit_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">GL Account Type</label>
+                                                            
+                                                            <select class="form-select" id="cc_account_type_id" required></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        
+                                                    </div>
+                                                </form>
+                                            </div>
+                                                
+                                            
+                                            
+                                            
+                                            <div class="tab-pane fade" id="tab5" role="tabpanel" aria-labelledby="tab2-tab">
+                                                <form class="Dashboard-form class" id="contact_details">
+                                                        <!-- Tab 2 content goes here -->
+                                                   
+                                                    
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        
+                                                    </div>
+                                                </form> 
+                                            </div>
+
+
+                                            <div class="tab-pane fade" id="tab6" role="tabpanel" aria-labelledby="tab3-tab">
+                                                <form class="Dashboard-form class" id="" enctype= multipart/form-data>
+                                                    <!-- Tab 3 content goes here -->
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basiInput" class="form-label">CR Number</label>
+                                                            <input type="text" id="cc_cr_number_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Expiry Date</label>
+                                                            <input type="date" id="cc_expiry_date_id" class="form-control" readonly>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Establishment Card No</label>
+                                                            <input type="text" id="cc_est_card_no_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Expiry Date</label>
+                                                            <input type="date" id="cc_est_expiry_date_id" class="form-control" readonly>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">Authorized Signatory Name</label>
+                                                            <input type="text" id="cc_est_signatory_name_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">ID Card Number</label>
+                                                            <input type="text" id="cc_card_number_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4">
+                                                            <label for="basicInput" class="form-label">ID Card Expiry</label>
+                                                            <input type="date" id="cc_id_card_expiry_date_id" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-lg-12 tab_attachment_head">
+                                                            <h5 class="">Attachments</h5>
+                                                            <table  class="table table-bordered table-striped delTable view_tab_cond">
+                                                                <tbody class="travelerinfo">
+                                                                    <tr>
+                                                                        <td >Label</td>
+                                                                        <td>View</td>
+                                                                    </tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td>Attach CR</td>
+                                                                        <td id="attach_cr_id"><a href="<?php echo base_url(); ?>public/path/to/upload/CustomerCreation/" target="_blank">View</a></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Attach Establishment Card</td>
+                                                                        <td id="attach_est_card"><a href="" target="_blank">View</a></td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Attach ID Card</td>
+                                                                        <td id="attach_id_card"><a href="" target="_blank">View</a></td>
+                                                                    </tr>
+
+
+                                                                </tbody>
+
+
+                                                            </table>
+
+                                                        </div>
+                                                        
+                                                      
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+
+<!--view  modal section end-->
+
+
+
 
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
     
         /*add section*/    
-   
         $(function() {
-            $('#add_form').validate({
+            var form = $('#add_form1');
+            
+            form.validate({
                 rules: {
                     required: 'required',
-                    
                 },
                 messages: {
                     required: 'This field is required',
-                    
                 },
-                submitHandler: function(form) {
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/ProductHead/Add",
+                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/Add",
                         method: "POST",
-                        data: $(form).serialize(),
+                        data: $(currentForm).serialize(),
                         success: function(data) {
-                            $('#add_form')[0].reset();
+                            var responseData = JSON.parse(data);
+                            
+                            $(".customer_creation_id").val(responseData.customer_creation_id);
+                            // Trigger a click event on the next tab
+                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            if (nextTab.length > 0) {
+                                nextTab.tab('show');
+                            } else {
+                                console.error("Next tab not found!");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+
+        $(function() {
+            var form = $('#add_form2');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab2",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+                        
+                            
+                            // Trigger a click event on the next tab
+                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            if (nextTab.length > 0) {
+                                nextTab.tab('show');
+                            } else {
+                                console.error("Next tab not found!");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+
+
+
+        $(function() {
+            var form = $('#add_form3');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                submitHandler: function(currentForm) {
+                    // Create FormData object to handle file uploads
+                    var formData = new FormData(currentForm);
+
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab3",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                            $('#add_form1')[0].reset();
+                            $('#add_form2')[0].reset();
+                            $('#add_form3')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload( null, false )
-                            
+                            datatable.ajax.reload(null, false);
                         }
-                       
                     });
-                    return false; // prevent the form from submitting
                 }
             });
         });
 
         /*###*/
+
+
+        /*view*/ 
+        $("body").on('click', '.view_btn', function(){ 
+            var id = $(this).data('id');
+           
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CustomerCreation/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                   
+                    $('#cc_customer_name_id').val(data.cc_customer_name);
+
+                    $('#cc_account_id_view').html(data.cc_account);
+
+                    $('#cc_post_box_id').val(data.cc_post_box);
+
+                    $('#cc_telephone_id').val(data.cc_telephone);
+
+                    $('#cc_fax_id').val(data.cc_fax);
+
+                    $('#cc_email_id').val(data.cc_email);
+
+                    $('#cc_credit_term_id').val(data.cc_credit_term);
+
+                    $('#cc_credit_period_id').val(data.cc_credit_period);
+
+                    $('#cc_credit_limit_id').val(data.cc_credit_limit);
+
+                    $('#cc_account_type_id').html(data.acc_type);
+
+                    $('#cc_cr_number_id').val(data.cc_cr_number);
+
+                    $('#cc_expiry_date_id').val(data.cc_expiry_date);
+
+                    $('#cc_est_card_no_id').val(data.cc_est_card_no);
+
+                    $('#cc_est_expiry_date_id').val(data.cc_est_expiry_date);
+
+                    $('#cc_est_signatory_name_id').val(data.cc_est_signatory_name);
+
+                    $('#cc_card_number_id').val(data.cc_card_number);
+
+                    $('#cc_id_card_expiry_date_id').val(data.cc_id_card_expiry_date);
+                    
+                    $('#contact_details').html(data.contact);
+
+                    $('#attach_cr_id').html(data.attach_cr);
+
+                    $('#attach_est_card').html(data.attach_est_card);
+
+                    $('#attach_id_card').html(data.attach_id_card);
+                    
+                    $('#ViewModal').modal('show');
+                    
+                   
+                    
+                }
+
+
+            });
+            
+            
+        });
+        /*####*/
 
 
 
@@ -400,7 +653,7 @@
             'serverMethod': 'post',
             'ajax': 
             {
-                'url': "<?php echo base_url(); ?>Crm/ProductHead/FetchData",
+                'url': "<?php echo base_url(); ?>Crm/CustomerCreation/FetchData",
                 'data': function (data) {
                     // CSRF Hash
                     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -419,10 +672,11 @@
                 }
             },
             'columns': [
-                { data: 'ph_id' },
-                { data: 'ph_code' },
-                { data : 'ph_product_head'},
-                { data : 'action'},
+                { data: 'cc_id' },
+                { data: 'cc_customer_name' },
+                { data: 'cc_post_box'},
+                { data: 'cc_telephone'},
+                { data: 'action'},
                 
                ]
     
