@@ -115,6 +115,25 @@ class CommonModel extends Model
 
     }
 
+    //Fetch where Join
+    public function FetchWhereJoin($table,$cond,$join)
+    {
+        $query = $this->db->table($table)
+        ->where($cond);
+
+        if(!empty($joins))
+        
+        foreach($joins as $join)
+        {
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+        }
+       
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }
+
 
 
     //Fetch All 

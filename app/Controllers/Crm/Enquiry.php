@@ -34,33 +34,37 @@ class Enquiry extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('crm_customer_creation','cc_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('crm_enquiry','enquiry_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('cc_customer_name','cc_account_id');
+        $searchColumns = array('enquiry_enq_number');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_customer_creation','cc_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_enquiry','enquiry_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
-            
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'enquiry_customer',
+            )
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('crm_customer_creation','cc_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('crm_enquiry','enquiry_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cc_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cc_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cc_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->enquiry_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->enquiry_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->enquiry_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
-              "cc_id"=>$i,
-              'cc_customer_name' => $record->cc_customer_name,
-              'cc_post_box'      => $record->cc_post_box,
-              'cc_telephone'     => $record->cc_telephone,
-              "action"           => $action,
+              "enquiry_id"         =>$i,
+              'enquiry_enq_number' => $record->enquiry_enq_number,
+              'enquiry_date'       => date('d-m-Y',strtotime($record->enquiry_date)),
+              'enquiry_customer'   => $record->cc_customer_name,
+              "action"             => $action,
            );
            $i++; 
         }
@@ -86,9 +90,11 @@ class Enquiry extends BaseController
     //view page
     public function index()
     {   
-        $data['charts_accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
-        $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['content'] = view('crm/enquiry',$data);
 
@@ -103,13 +109,13 @@ class Enquiry extends BaseController
         
         $insert_data = $this->request->getPost();
 
-        $insert_data['cc_added_by'] = 0; 
+        $insert_data['enquiry_added_by'] = 0; 
 
-        $insert_data['cc_added_date'] = date('Y-m-d'); 
+        $insert_data['enquiry_added_date'] = date('Y-m-d'); 
 
-        $id = $this->common_model->InsertData('crm_customer_creation',$insert_data);
+        $id = $this->common_model->InsertData('crm_enquiry',$insert_data);
 
-        $data['customer_creation_id'] = $id;
+        $data['enquiry_id'] = $id;
 
         echo json_encode($data);
 
@@ -119,9 +125,9 @@ class Enquiry extends BaseController
     {
         $insert_data = $this->request->getPost();
         if($_POST){
-	        if(!empty($_POST['contact_person']))
+	        if(!empty($_POST['pd_product_detail']))
 			{
-			    $count =  count($_POST['contact_person']);
+			    $count =  count($_POST['pd_product_detail']);
 					
 				if($count!=0)
 			    {  
@@ -129,16 +135,16 @@ class Enquiry extends BaseController
 					{
 							
 					    $insert_data  	= array(  
-							'contact_person'            =>  $_POST['contact_person'][$j],
-							'contact_designation'       =>  $_POST['contact_designation'][$j],
-							'contact_mobile'            =>  $_POST['contact_mobile'][$j],
-						    'contact_email'             =>  $_POST['contact_email'][$j],
-                            'contact_customer_creation' =>  $_POST['contact_customer_creation'],
+							'pd_serial_no'            =>  $_POST['pd_serial_no'][$j],
+							'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
+							'pd_unit'                 =>   $_POST['pd_unit'][$j],
+						    'pd_quantity'             =>  $_POST['pd_quantity'][$j],
+                            'pd_customer_details	' =>  $_POST['pd_customer_details'],
 	  
 					    );
 					
-							
-				        $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
+						
+				        $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
 				
 				    } 
 				}
@@ -153,54 +159,8 @@ class Enquiry extends BaseController
 
 
 
-    public function AddTab3()
-    {
-    $cond = array('cc_id' => $this->request->getPost('customer_creation'));
-    $update_data = $this->request->getPost();
+  
 
-    if (array_key_exists('customer_creation', $update_data)) {
-        unset($update_data['customer_creation']);
-    }
-
-    // Remove unnecessary unset statements for date fields
-
-    $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
-    $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
-    $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
-
-    // Handle file upload
-    if ($_FILES['cc_attach_cr']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_attach_cr', 'path/to/upload/CustomerCreation');
-        $update_data['cc_attach_cr'] = $ccAttachCrFileName;
-    }
-
-    if ($_FILES['cc_est_attach_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card', 'path/to/upload/CustomerCreation');
-        $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
-    }
-
-    if ($_FILES['cc_id_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_id_card', 'path/to/upload/CustomerCreation');
-        $update_data['cc_id_card'] = $ccAttachCrFileName;
-    }
-
-
-    $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
-}
-
-// Function to handle file upload
-private function uploadFile($fieldName, $uploadPath)
-{
-    $file = $this->request->getFile($fieldName);
-
-    if ($file->isValid() && !$file->hasMoved()) {
-        $newName = $file->getRandomName();
-        $file->move($uploadPath, $newName);
-        return $newName;
-    }
-
-    return null;
-}
 
 
 
@@ -208,114 +168,107 @@ private function uploadFile($fieldName, $uploadPath)
     public function View()
     {
         
-        $cond = array('cc_id' => $this->request->getPost('ID'));
+        $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
-        $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
+        
 
         $joins = array(
-           
             array(
-            'table' => 'accounts_charts_of_accounts',
-            'pk'    => 'ca_account_id',
-            'fk'    => 'cc_account_id',
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'enquiry_sales_executive',
             ),
             array(
-            'table' => 'accounts_account_types',
-            'pk'    => 'at_id',
-            'fk'    => 'cc_account_type',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'enquiry_customer',
             ),
+            array(
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
+                'fk'    => 'enquiry_contact_person',
+            )
+
 
         );
 
-        $cus_creation = $this->common_model->SingleRowJoin('crm_customer_creation',$cond,$joins);
+        $enquiry = $this->common_model->SingleRowJoin('crm_enquiry',$cond,$joins);
 
-        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
+        $cond1 = array('pd_customer_details' => $this->request->getPost('ID'));
 
-        $charts_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'pd_product_detail',
+            ),
+           
 
-        $account_types = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
-        
-        $data['cc_customer_name'] = $cus_creation->cc_customer_name;
+        );
 
-        $data['cc_post_box']      = $cus_creation->cc_post_box;
-
-        $data['cc_telephone']     = $cus_creation->cc_telephone;
-
-        $data['cc_fax'] = $cus_creation->cc_fax;
-
-        $data['cc_email'] = $cus_creation->cc_email;
-
-        $data['cc_credit_term'] = $cus_creation->cc_credit_term;
-
-        $data['cc_credit_period'] = $cus_creation->cc_credit_period;
-
-        $data['cc_credit_limit'] = $cus_creation->cc_credit_limit;
-
-        $data['cc_cr_number'] = $cus_creation->cc_cr_number;
-
-        $data['cc_expiry_date'] = $cus_creation->cc_expiry_date;
-
-        $data['cc_est_card_no'] = $cus_creation->cc_est_card_no;
-
-        $data['cc_est_expiry_date'] = $cus_creation->cc_est_expiry_date;
-
-        $data['cc_est_signatory_name'] = $cus_creation->cc_est_signatory_name	;
-
-        $data['cc_card_number'] = $cus_creation->cc_card_number;
-
-        $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
-
-        
-
-        
-        $data['cc_account'] ="";
-
-        foreach($charts_accounts as $charts)
-        {
-            $data['cc_account'] .='<option value='.$charts->ca_id.'';
-            if($charts->ca_id == $cus_creation->cc_account_id){
-            $data['cc_account'] .=    " selected ";}
-            $data['cc_account'] .='>' .$charts->ca_account_id. '</option>'; 
-        }
-
-
-        $data['acc_type'] ="";
-
-        foreach($account_types as $account)
-        {
-            $data['acc_type'] .='<option value='.$account->at_id.'';
-            if($account->at_id  == $cus_creation->cc_account_type){
-            $data['acc_type'] .=    " selected ";}
-            $data['acc_type'] .='>' .$account->at_name. '</option>'; 
-        }
-       
-       
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_product_detail',$cond1,$joins1);
          
-        $i=1;
-        $data['contact'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >No</td><td>Contact Person </td><td>Designation</td><td>Mobile</td><td>Email</td></tr>';
 
-        foreach($contact_details as $contact)
+        $data['enquiry_enq_number'] = $enquiry->enquiry_enq_number;
+
+        $data['enquiry_date']      = $enquiry->enquiry_date;
+
+        $data['enquiry_validity'] = $enquiry->enquiry_validity;
+
+        $data['enquiry_project'] = $enquiry->enquiry_project;
+
+        $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
+
+        $data['sales_executive'] = $enquiry->se_name;
+
+        $data['customer_creation'] = $enquiry->cc_customer_name;
+
+        $data['contact_details'] = $enquiry->contact_person;
+
+
+         
+        
+        $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
+        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td></tr>';
+
+        foreach($product_details_data as $prod_det)
         {
-            $data['contact'] .='<tr>
-            <td>'.$i.'</td>
-            <td><input type="text"   value='.$contact->contact_person.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
-            <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
+            $data['prod_details'] .='<tr>
+            <td><input type="text"   value='.$prod_det->pd_serial_no.' class="form-control " readonly></td>
+            <td><input type="text"   value='.$prod_det->product_details.' class="form-control " readonly></td>
+            <td><input type="text"   value='.$prod_det->pd_unit.' class="form-control " readonly></td>
+            <td> <input type="email" value='.$prod_det->pd_quantity.' class="form-control " readonly></td>
             </tr>'; 
-            $i++;  
+             
         }
         
-        $data['contact'] .= '</tbody></table>';
-
-        $data['attach_cr'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
-
-        $data['attach_est_card'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
-        
-        $data['attach_id_card'] = '<a href="' . base_url('public/path/to/upload/CustomerCreation/' . $cus_creation->cc_id_card) . '" target="_blank">View</a>';  
+        $data['prod_details'] .= '</tbody></table>';
 
         
         echo json_encode($data);
+    }
+
+
+    public function ContactPerson()
+    {
+        $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+        
+        $data['customer_name'] ="";
+
+        $data['customer_name'] ='<option value="" selected disabled>Select  Contact Person</option>';
+
+        foreach($contact_details as $con_det)
+        {
+            $data['customer_name'] .='<option value='.$con_det->contact_id.'';
+           
+            $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
+        }
+
+        echo json_encode($data);
+
+
     }
 
 
