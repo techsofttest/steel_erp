@@ -142,7 +142,7 @@
                                                                         <?php } ?>
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="number" name="qpd_unit[]" class="form-control" required></td>
+                                                                <td><input type="text" name="qpd_unit[]" class="form-control" required></td>
                                                                 <td><input type="number" name="qpd_quantity[]" class="form-control" required></td>
                                                                 <td><input type="number" name="qpd_rate[]" class="form-control" required></td>
                                                                 <td><input type="number" name="qpd_discount[]" class="form-control" required></td>
@@ -224,7 +224,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation</h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -721,7 +721,7 @@
 			if(pp < max_fieldspp){ 
                 pp++;
         
-                $("#product-more2").append("<tr><td><input type='number' name='qpd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='number' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control ' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control ' required=''></td><td><input type='number' name='qpd_discount[]' class='form-control ' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more2").append("<tr><td><input type='number' name='qpd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control ' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control ' required=''></td><td><input type='number' name='qpd_discount[]' class='form-control ' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });

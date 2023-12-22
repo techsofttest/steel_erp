@@ -265,7 +265,7 @@ private function uploadFile($fieldName, $uploadPath)
 
         $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
 
-        
+        $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
 
         
         $data['cc_account'] ="";

@@ -62,11 +62,11 @@
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
                                                             <label for="basicInput" class="form-label">Telephone</label>
-                                                            <input type="text" name="cc_telephone" class="form-control" required>
+                                                            <input type="number" name="cc_telephone" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
                                                             <label for="basicInput" class="form-label">Fax</label>
-                                                            <input type="text" name="cc_fax" class="form-control" required>
+                                                            <input type="number" name="cc_fax" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
                                                             <label for="basicInput" class="form-label">Email</label>
@@ -122,7 +122,7 @@
                                                                 <td>1</td>
                                                                 <td><input type="text" name="contact_person[]" class="form-control " required></td>
                                                                 <td><input type="text" name="contact_designation[]" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_mobile[]" class="form-control " required></td>
+                                                                <td><input type="number" name="contact_mobile[]" class="form-control " required></td>
                                                                 <td> <input type="email" name="contact_email[]" class="form-control " required></td>
                                                                 <td><div class="tecs"><span  id="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                                             </tr>
@@ -687,6 +687,26 @@
             initializeDataTable();
         });
         /*###*/
+
+
+        var max_fieldss      = 30;
+        var y = 1;
+
+        $("#add_person").click(function(){
+
+			if(y < max_fieldss){ //max input box allowed
+				y++;
+	            $("#person-more").append("<tr><td>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='number' name='contact_mobile[]' class='form-control ' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+	 
+			}
+	    });
+
+        $(document).on("click", ".remove-btnnp", function() {
+	 
+	        $(this).parent().remove();
+	        y--;
+        });
+
      
 
     });

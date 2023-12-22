@@ -131,7 +131,7 @@
                                                                         <?php } ?>
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="number" name="pd_unit[]" class="form-control" required></td>
+                                                                <td><input type="text" name="pd_unit[]" class="form-control" required></td>
                                                                 <td><input type="number" name="pd_quantity[]" class="form-control" required></td>
                                                                 <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                                             </tr>
@@ -527,7 +527,7 @@
 
 			if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='number' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+	            $("#product-more").append("<tr><td><input type='number' name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });

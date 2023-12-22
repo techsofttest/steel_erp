@@ -102,7 +102,7 @@
 	
 	
 <script type='text/javascript'>
-var max_fieldss      = 30;
+/*var max_fieldss      = 30;
 var y = 1;
 
  $("#add_person").click(function(){
@@ -120,7 +120,7 @@ var y = 1;
 	 
 	  $(this).parent().remove();
 	    y--;
-  });
+  });*/
 
   
 </script>
