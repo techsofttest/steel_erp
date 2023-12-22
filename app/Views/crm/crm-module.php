@@ -125,7 +125,7 @@ var y = 1;
   
 </script>
 
-<script type='text/javascript'>
+<!--<script type='text/javascript'>
 var max_fieldsp      = 30;
 var p = 1;
 
@@ -147,14 +147,15 @@ var p = 1;
   });
 
   
-</script>
-<script type='text/javascript'>
+</script>--->
+
+<!--<script type='text/javascript'>
 var max_fieldspp      = 30;
 var pp = 1;
 
  $("#add_product2").click(function(){
 
-				if(pp < max_fieldspp){ //max input box allowed
+				if(pp < max_fieldspp){ 
 					pp++;
 	  $("#product-more2").append("<tr><td><input type='text' name='' class='form-control ' required=''></td><td><select class='form-select' name='' required=''><option selected=''>Select</option></select></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td><input type='text' name='' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
 
@@ -170,7 +171,7 @@ var pp = 1;
   });
 
   
-</script>
+</script>--->
 </body>
 
 

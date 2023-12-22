@@ -96,6 +96,8 @@ class Enquiry extends BaseController
         
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
+        $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+
         $data['content'] = view('crm/enquiry',$data);
 
         return view('crm/crm-module',$data);
@@ -116,6 +118,14 @@ class Enquiry extends BaseController
         $id = $this->common_model->InsertData('crm_enquiry',$insert_data);
 
         $data['enquiry_id'] = $id;
+
+        $p_ref_no = 'ENQ'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        
+        $cond = array('enquiry_id' => $id);
+
+        $update_data['enquiry_enq_number'] = $p_ref_no;
+
+        $this->common_model->EditData($update_data,$cond,'crm_enquiry');
 
         echo json_encode($data);
 
@@ -187,8 +197,12 @@ class Enquiry extends BaseController
                 'table' => 'crm_contact_details',
                 'pk'    => 'contact_id',
                 'fk'    => 'enquiry_contact_person',
-            )
-
+            ),
+            array(
+                'table' => 'employees',
+                'pk'    => 'employees_id',
+                'fk'    => 'enquiry_employees',
+            ),
 
         );
 
@@ -202,7 +216,7 @@ class Enquiry extends BaseController
                 'pk'    => 'product_id',
                 'fk'    => 'pd_product_detail',
             ),
-           
+            
 
         );
 
@@ -225,6 +239,8 @@ class Enquiry extends BaseController
 
         $data['contact_details'] = $enquiry->contact_person;
 
+        $data['enquiry_employees'] = $enquiry->employees_name;
+
 
          
         
@@ -234,10 +250,10 @@ class Enquiry extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"   value='.$prod_det->pd_serial_no.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$prod_det->product_details.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$prod_det->pd_unit.' class="form-control " readonly></td>
-            <td> <input type="email" value='.$prod_det->pd_quantity.' class="form-control " readonly></td>
+            <td><input type="text"   value="'.$prod_det->pd_serial_no.'" class="form-control " readonly></td>
+            <td><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control " readonly></td>
+            <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control " readonly></td>
             </tr>'; 
              
         }
