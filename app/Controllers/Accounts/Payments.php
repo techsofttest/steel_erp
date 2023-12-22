@@ -35,13 +35,13 @@ class Payments extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_payment_methods','pay_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_payments','pay_id','DESC');
  
         ## Total number of records with filtering
        
         $searchColumns = array('pay_ref_no');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_payment_methods','pay_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_payments','pay_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
@@ -49,36 +49,37 @@ class Payments extends BaseController
             array(
             'table' => 'master_receipt_method',
             'pk' => 'rm_id',
-            'fk' => 'r_method',
+            'fk' => 'pay_method',
             ),
 
             array(
                 'table' => 'master_banks',
                 'pk' => 'bank_id',
-                'fk' => 'r_bank',
+                'fk' => 'pay_bank',
                 ),
 
             array(
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
-                'fk' => 'r_debit_account',
+                'fk' => 'pay_debit_account',
                 ),
 
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_payment_methods','pay_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_payments','pay_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
         $i=1;
         foreach($records as $record ){
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pay_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pay_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pay_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
-              "r_id"=>$i,
-              'date' => date('d-m-Y',strtotime($record->r_date)),
-              'receipt_method' => $record->rm_name,
+              "pay_id"=>$i,
+              'date' => date('d-m-Y',strtotime($record->pay_date)),
+              "pay_ref_no" => $record->pay_ref_no,
+              'pay_method' => $record->rm_name,
               "bank"=> $record->bank_name,
               "action" =>$action,
            );
@@ -109,12 +110,12 @@ class Payments extends BaseController
     public function index()
     {   
 
-        $data['p_methods'] = $this->common_model->FetchAllOrder('master_receipt_method','rm_name','asc');
+        $data['p_methods'] = $this->common_model->FetchAllOrder('master_receipt_method','rm_name','asc'); 
 
         $data['banks'] = $this->common_model->FetchAllOrder('master_banks','bank_name','asc');
 
         $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
-
+        
         $data['collectors'] = $this->common_model->FetchAllOrder('master_collectors','col_name','asc');
 
         $data['content'] = view('accounts/payments',$data);
@@ -133,7 +134,7 @@ class Payments extends BaseController
 
         $insert_data['pay_method'] = $this->request->getPost('p_method');
 
-        if(!empty($this->request->getPost('p_method')=="Cheque"))
+        if(!empty($this->request->getPost('p_method')==1))
         {
 
         $insert_data['pay_cheque_no'] = $this->request->getPost('p_cheque_no');
@@ -151,6 +152,12 @@ class Payments extends BaseController
         $insert_data['pay_added_by'] = 1;
 
         $insert_data['pay_added_date'] = date('Y-m-d');
+
+        if ($_FILES['file']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('file','uploads/Payments');
+            $update_data['file'] = $ccAttachCrFileName;
+        }
+
 
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
 
@@ -218,7 +225,7 @@ class Payments extends BaseController
 
     $id = $this->request->getPost('id');
 
-    $cond = array('r_id' => $id);
+    $cond = array('pay_id' => $id);
 
      ##Joins if any //Pass Joins as Multi dim array
      $joins = array(
@@ -226,30 +233,24 @@ class Payments extends BaseController
         array(
         'table' => 'master_receipt_method',
         'pk' => 'rm_id',
-        'fk' => 'r_method',
+        'fk' => 'pay_method',
         ),
 
         array(
         'table' => 'master_banks',
         'pk' => 'bank_id',
-        'fk' => 'r_bank',
+        'fk' => 'pay_bank',
         ),
 
         array(
         'table' => 'accounts_charts_of_accounts',
         'pk' => 'ca_id',
-        'fk' => 'r_debit_account',
+        'fk' => 'pay_debit_account',
         ),
-
-        array(
-            'table' => 'master_collectors',
-            'pk' => 'col_id',
-            'fk' => 'r_collected_by',
-            ),
 
     );
 
-    $data = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
+    $data = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
 
     echo json_encode($data);
 
@@ -267,9 +268,9 @@ class Payments extends BaseController
     //delete account head
     public function Delete()
     {
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('pay_id' => $this->request->getPost('id'));
 
-        $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('accounts_payments',$cond);
 
       
     }
@@ -396,6 +397,23 @@ class Payments extends BaseController
 
 
 
+    }
+
+
+
+
+    // Function to handle file upload
+    private function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
+
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
+
+        return null;
     }
 
 
