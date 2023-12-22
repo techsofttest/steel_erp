@@ -1,0 +1,18 @@
+Account head,
+
+Single row add button,Make coloumn width smaller
+
+default hide add section
+
+add new button shows add section
+
+
+Account head
+Code,Account Name,Dropdown
+
+Receipt
+Charts of account in debit dropdown,
+Account settled in receipt method dropdown
+Bank default in db
+If cheque show cheque fields else hide,cheque copy near cheque fields
+Collected by
