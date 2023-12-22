@@ -301,8 +301,8 @@
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
                                                             <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
-                                                            
-                                                            <select class="form-select" id="cc_account_id_view" required>
+                                                            <input type="text"  id="cc_account_id_view" class="form-control" readonly>
+                                                            <!--<select class="form-select" id="cc_account_id_view" required>--->
                                                                 
                                                             </select>
                                                         </div>
@@ -336,8 +336,8 @@
                                                         </div>
                                                         <div class="col-md-4 col-lg-4">
                                                             <label for="basicInput" class="form-label">GL Account Type</label>
-                                                            
-                                                            <select class="form-select" id="cc_account_type_id" required></select>
+                                                            <input type="text"  id="cc_account_type_id" class="form-control" readonly>
+                                                            <!--<select class="form-select" id="cc_account_type_id" required></select>--->
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
@@ -582,10 +582,12 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                   
+                    console.log(data);
                     $('#cc_customer_name_id').val(data.cc_customer_name);
 
-                    $('#cc_account_id_view').html(data.cc_account);
+                    $('#cc_account_id_view').val(data.ca_account_id);
+
+                    //$('#cc_account_id_view').html(data.cc_account);
 
                     $('#cc_post_box_id').val(data.cc_post_box);
 
@@ -601,7 +603,9 @@
 
                     $('#cc_credit_limit_id').val(data.cc_credit_limit);
 
-                    $('#cc_account_type_id').html(data.acc_type);
+                    //$('#cc_account_type_id').html(data.acc_type);
+
+                    $('#cc_account_type_id').val(data.cc_account_type);
 
                     $('#cc_cr_number_id').val(data.cc_cr_number);
 

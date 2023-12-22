@@ -216,7 +216,7 @@ private function uploadFile($fieldName, $uploadPath)
            
             array(
             'table' => 'accounts_charts_of_accounts',
-            'pk'    => 'ca_account_id',
+            'pk'    => 'ca_id',
             'fk'    => 'cc_account_id',
             ),
             array(
@@ -228,6 +228,8 @@ private function uploadFile($fieldName, $uploadPath)
         );
 
         $cus_creation = $this->common_model->SingleRowJoin('crm_customer_creation',$cond,$joins);
+
+        
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
 
@@ -265,10 +267,13 @@ private function uploadFile($fieldName, $uploadPath)
 
         $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
 
-        $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
+        $data['ca_account_id'] = $cus_creation->ca_account_id;
+
+        $data['cc_account_type'] = $cus_creation->at_name;
+
 
         
-        $data['cc_account'] ="";
+        /*$data['cc_account'] ="";
 
         foreach($charts_accounts as $charts)
         {
@@ -276,7 +281,7 @@ private function uploadFile($fieldName, $uploadPath)
             if($charts->ca_id == $cus_creation->cc_account_id){
             $data['cc_account'] .=    " selected ";}
             $data['cc_account'] .='>' .$charts->ca_account_id. '</option>'; 
-        }
+        }*/
 
 
         $data['acc_type'] ="";
