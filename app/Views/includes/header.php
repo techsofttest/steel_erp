@@ -64,6 +64,10 @@
     border: 1px solid red;
     }
 
+    .form-select.error {
+    border: 1px solid red;
+    }
+
     .form-control-
     {
         margin-bottom:10px;
