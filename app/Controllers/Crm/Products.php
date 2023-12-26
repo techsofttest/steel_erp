@@ -137,45 +137,58 @@ class Products extends BaseController
     public function Edit()
     {
         
-        $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('product_id' => $this->request->getPost('ID'));
 
-        $account_type = $this->common_model->SingleRow('accounts_account_types',$cond);
+        $product_head = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','asc');
 
-        $data['account_type'] = $account_type->at_name;
+        $product = $this->common_model->SingleRow('crm_products',$cond);
+
+        $data['product_code'] = $product->product_code;
+
+        $data['product_details'] = $product->product_details;
+        
+        $data['prod_head_out'] ="";
+        foreach ($product_head as $prod_head) {
+            $data['prod_head_out'] .= '<option value="' . $prod_head->ph_id . '"'; 
+        
+            // Check if the current product head is selected
+            if ($prod_head->ph_id == $product->product_product_head) {
+                $data['prod_head_out'] .= ' selected'; 
+            }
+        
+            $data['prod_head_out'] .= '>' . $prod_head->ph_product_head . '</option>';
+        }
 
         echo json_encode($data);
+
     }
 
 
     // update account head 
     public function Update()
     {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('product_id' => $this->request->getPost('product_id'));
         
         $update_data = $this->request->getPost(); 
 
         // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        if (array_key_exists('product_id', $update_data)) 
         {
-             unset($update_data['account_id']);
+             unset($update_data['product_id']);
         }       
 
-        $update_data['at_added_by'] = 0; 
+        $update_data['product_modified_date'] = date('Y-m-d'); 
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
-
-
-
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
+        $this->common_model->EditData($update_data,$cond,'crm_products');
        
     }
 
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+         $cond = array('product_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+         $this->common_model->DeleteData('crm_products',$cond);
  
          
      }

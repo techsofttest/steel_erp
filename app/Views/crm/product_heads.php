@@ -252,12 +252,81 @@
 </div>
 
 
+<!--Edit Modal section start-->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="#" id="update_form" class="Dashboard-form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Product Head</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                    <div class="live-preview">
+                                        
+                                            <div class="row align-items-end">
+
+                                                <div class="col-col-md-6 col-lg-6">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Code</label>
+                                                        <input type="text" id="edit_prod_code" value="" name="ph_code" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-col-md-6 col-lg-6">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Product Head</label>
+                                                        <input type="text" id="edit_product_head" value="" name="ph_product_head" class="form-control" required>
+                                                    </div>
+                                                </div>
+
+
+                                               
+
+
+                                                <!--end col-->
+                                                <input type="hidden" name="ph_id" id="id" value="">
+                                                
+                                            
+                                                
+                                            </div>
+                                            <!--end row-->
+                                        
+                                    </div>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                
+                    </div>
+            <div class="modal-footer">
+                <button type="submit" name="" class="btn btn btn-success">Save</button>
+            </div>
+        
+        </form>
+
+    </div>
+</div>
+
+<!--Edit modal section end-->
+
+
+
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
     
-        /*add section*/    
-   
+       
+         /*add section*/    
         $(function() {
             $('#add_form').validate({
                 rules: {
@@ -268,6 +337,7 @@
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/ProductHead/Add",
@@ -287,6 +357,104 @@
             });
         });
 
+        /*###*/
+
+
+
+        /*edit*/ 
+        $("body").on('click', '.edit_btn', function(){ 
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                     
+                    $("#edit_prod_code").val(data.product_code);
+
+                    $("#edit_product_head").val(data.ph_product_head);
+
+                    $('#EditModal').modal('show');
+                    
+                    $("#id").val(id);
+                    
+                }
+
+
+            });
+            
+            
+        });
+        /*####*/
+
+
+
+        /*update*/
+        
+        $(function() {
+            $('#update_form').validate({
+                rules: {
+                    required: 'required',
+                    
+                },
+                messages: {
+                    required: 'This field is required',
+                    
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/ProductHead/Update",
+                        method: "POST",
+                        data: $(form).serialize(),
+                        success: function(data) {
+                            
+                            alertify.success('Data Updated Successfully').delay(2).dismissOthers();
+                            $('#EditModal').modal('hide');
+                            datatable.ajax.reload(null,false);
+                        }
+                    });
+                    return false; // prevent the form from submitting
+                }
+            });
+        });
+
+
+        /*###*/
+
+
+
+        /*delete*/ 
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
         /*###*/
 
 
