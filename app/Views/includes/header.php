@@ -82,10 +82,12 @@
     .tecs span 
     {
         color: green;
+        cursor: pointer;
     }
     .remainpass
     {
         color: var(--theme-color);
+        cursor: pointer;
     }
     .travelerinfo td
     {
@@ -102,7 +104,7 @@
     {
         /*width: 50%;*/
     }
-
+    
 
 
     /* New Form Styles */
@@ -165,9 +167,22 @@
     padding-bottom: 4px !important;
 
     }
-
-
-
+    .row_remove
+    {
+        color: red !important;
+        cursor: pointer;
+    }
+    .edit_add_more
+    {
+        text-align: center;
+        
+    }
+    .edit_add_more
+    {
+        cursor: pointer;
+        color: green;
+        padding-bottom: 18px;
+    }
 
     /* ##### */
      
