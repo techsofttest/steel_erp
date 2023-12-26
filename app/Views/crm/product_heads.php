@@ -35,11 +35,11 @@
                         
                         <!--modal content start-->
                         <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog">
                                 <form  class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Add Product Head</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Product Head</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -51,14 +51,14 @@
                                                         <div class="card-body">
                                                             <div class="live-preview">
                                                                 <div class="row align-items-end">
-                                                                    <div class="col-col-md-4 col-lg-6">
+                                                                    <div class="col-col-md-3 col-lg-3">
                                                                         <div>
                                                                             <label for="basiInput" class="form-label">Code</label>
                                                                             <input type="text"   name="ph_code" class="form-control" required>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-col-md-4 col-lg-6">
+                                                                    <div class="col-col-md-6 col-lg-6">
                                                                         <div>
                                                                             <label for="basiInput" class="form-label">Product Head</label>
                                                                             <input type="text"  name="ph_product_head" class="form-control" required>
@@ -77,7 +77,6 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                             <button  class="btn btn btn-success">Save</button>
                                         </div>
                                     </div>

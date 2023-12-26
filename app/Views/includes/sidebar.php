@@ -3,7 +3,7 @@
     <div class="navbar-brand-box">
 
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
+        <a href="<?= base_url(); ?>" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="22">
             </span>
@@ -13,7 +13,7 @@
         </a>
 
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="<?= base_url(); ?>" class="logo logo-light">
             <span class="logo-sm">
                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="22">
             </span>
@@ -29,7 +29,7 @@
 		<div  class="row dashbaord-items">
 			<div  class="col-4"><small >Sales</small><h6 >456</h6></div>
 			    <div  class="col-4"><small >Order</small><h6 >1350</h6></div>
-			        <div  class="col-4"><small >Revenue</small><h6 >$2.13B</h6></div>
+			        <div  class="col-4"><small >Revenue</small><h6 >100AED</h6></div>
 			    </div>
             </div>
 			
@@ -53,7 +53,7 @@
 
                             <li class="nav-item">
                                 
-                                <a class="nav-link menu-link" href="<?= base_url() ?>">
+                                <a class="nav-link menu-link" href="<?= base_url() ?>Accounts/AccountHead">
                                     <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
                                 </a>
                             
@@ -61,7 +61,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#" >
+                                <a class="nav-link menu-link" href="<?= base_url() ?>Crm/ProductHead" >
                                     <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
                                 </a>
                             

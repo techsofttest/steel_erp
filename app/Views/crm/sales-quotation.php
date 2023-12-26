@@ -44,11 +44,11 @@
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
                                                         
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Date</label>
                                                             <input type="date" name="qd_date" id="qd_date_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-3 col-lg-3">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             
                                                             <select class="form-select" name="qd_customer" id="customer_id" required>
@@ -58,7 +58,8 @@
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
                                                             
                                                             <select class="form-select" name="qd_contact_person" id="contact_person_id" required>
@@ -66,7 +67,8 @@
                                                                 
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
                                                             
                                                             <select class="form-select" name="qd_sales_executive" id="qd_sales_executive_id" required>
@@ -77,11 +79,13 @@
                                                                 
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Payment Term</label>
                                                             <input type="text" name="qd_payment_term" id="qd_payment_term_id" class="form-control" readonly>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Delivery Term</label>
                                                             
                                                             <select class="form-select" name="qd_delivery_term" id="qd_delivery_term_id" required>
@@ -93,23 +97,24 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Validity</label>
                                                             <input type="text" name="qd_validity" id="qd_validity_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
                                                             <input type="text" name="qd_project" id="qd_project_id" class="form-control">
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Enquiry Reference</label>
                                                             <input type="text" name="qd_enquiry_reference" id="qd_enquiry_reference_id" class="form-control">
                                                         </div>
                                                         
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -154,8 +159,7 @@
                                                     </table>
                                                     <input type="hidden" name="qpd_quotation_details" class="quotation_details_id"> 
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -168,38 +172,37 @@
                                                 <form class="Dashboard-form class" id="add_form3">
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Material / Services</label>
                                                             <input type="text" name="qd_materials" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Qty</label>
                                                             <input type="number" name="qd_qty" class="form-control" required>
                                                         </div>
                                                         
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Rate</label>
                                                             <input type="number" name="qd_rate" class="form-control" required>
                                                         </div>
                                                         
 
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Amount</label>
                                                             <input type="number" name="qd_amount" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Cost of Sales</label>
                                                             <input type="number" name="qd_cost_of_sale" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">% of Gross profit</label>
                                                             <input type="number" name="qd_gross_profit" class="form-control" required>
                                                         </div>
                                                         <input type="hidden" name="qd_id" class="quotation_details_id"> 
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -307,54 +310,53 @@
                         <form class="Dashboard-form class" id="add_form1">
                             <!-- Tab 1 content goes here -->
                             <div class="row">
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">Quotation Number</label>
                                     <input type="text" name="" id="quotation_number_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">Date</label>
                                     <input type="date" name="" id="quotation_date_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Customer</label>
                                     <input class="form-control" id="quotation_customer_id" name="" readonly>
                                     
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Contact Person</label>
                                     <input class="form-control" id="quotation_con_person_id" name="" readonly>
                                     
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Sales Executive</label>
                                     <input class="form-control" id="quotation_sales_executive_id" name="" readonly>
                                     
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Payment Term</label>
                                     <input type="text" name="" id="quotation_payment_term_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Delivery Term</label>
                                     <input class="form-control" id="quotation_delivery_term_id" name="" readonly>
                                     
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Validity</label>
                                     <input type="text" name="" id="quotation_validity_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Project</label>
                                     <input type="text" name="" id="quotation_project_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Enquiry Reference</label>
                                     <input type="text" name="" id="quotation_enquiry_reference_id" class="form-control" readonly>
                                 </div>
                                                             
                             </div>
                             <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 
                             </div>
                         </form>
@@ -370,7 +372,6 @@
                             
                         </form>
                         <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 
                         </div>
                     </div>
@@ -382,37 +383,36 @@
                         <form class="Dashboard-form class" id="add_form3">
                             <!-- Tab 1 content goes here -->
                             <div class="row">
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">Material / Services</label>
                                     <input type="text" id="quotation_material" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">Qty</label>
                                     <input type="number"  id="quotation_qty" class="form-control" readonly>
                                 </div>
                                 
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Rate</label>
                                     <input type="number" id="quotation_rate" class="form-control" readonly>
                                 </div>
                                 
 
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Amount</label>
                                     <input type="number"  id="quotation_amount" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Cost of Sales</label>
                                     <input type="number"  id="quotation_cost_of_sale" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">% of Gross profit</label>
                                     <input type="number" id="quotation_gross_profile" class="form-control" readonly>
                                 </div>
                                 
                             </div>
                             <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 
                             </div>
                         </form>

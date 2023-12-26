@@ -45,12 +45,20 @@ class ChartsOfAccounts extends BaseController
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
-           
+            /*
             array(
             'table' => 'accounts_account_types',
             'pk' => 'at_id',
             'fk' => 'ca_account_type',
             ),
+            */
+
+            
+            array(
+                'table' => 'accounts_account_heads',
+                'pk' => 'ah_id',
+                'fk' => 'ca_account_type',
+                ),
 
         );
         ## Fetch records
@@ -64,7 +72,7 @@ class ChartsOfAccounts extends BaseController
            
            $data[] = array( 
               "ca_id"=>$i,
-              'at_name' => $record->at_name,
+              'at_name' => $record->ah_account_name,
               'ca_account_id' => $record->ca_account_id,
               "ca_name"=>$record->ca_name,
               "action" =>$action,
@@ -118,7 +126,8 @@ class ChartsOfAccounts extends BaseController
     public function index()
     {   
 
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_name','asc');
+       
+        $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_account_name','asc');
 
         $data['content'] = view('accounts/chart-of-accounts',$data);
 
@@ -148,8 +157,8 @@ class ChartsOfAccounts extends BaseController
          $joins = array(
            
             array(
-            'table' => 'accounts_account_types',
-            'pk' => 'at_id',
+            'table' => 'accounts_account_heads',
+            'pk' => 'ah_id',
             'fk' => 'ca_account_type',
             ),
 

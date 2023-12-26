@@ -45,11 +45,11 @@
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
                                                         
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Date</label>
                                                             <input type="date" name="so_date" id="" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             
                                                             <select class="form-select" name="so_customer" id="customer_id" required>
@@ -59,11 +59,11 @@
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">LPO reference</label>
                                                             <input type="text" name="so_lpo" id="qd_quotation_number_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Quotation Ref</label>
                                                             
                                                             <select class="form-select" name="so_quotation_ref" id="quotation_ref" required>
@@ -71,29 +71,29 @@
                                                                
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
                                                             <input type="text" name="so_contact_person" id="contact_person" class="form-control" readonly>
                                                         
                                                            
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
                                                             <input type="text" name="so_sales_executive" id="sales_executive" class="form-control" readonly>
                                                             
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Payment Term</label>
                                                             <input type="text" name="so_payment_term" id="payment_term" class="form-control" readonly>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Delivery Term</label>
                                                             <input type="text" name="so_delivery_term" id="delivery_term" class="form-control" readonly>
                                                             
                                                         </div>
 
                                                       
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
                                                             <input type="text" name="so_project" id="project" class="form-control" readonly>
                                                         </div>
@@ -101,8 +101,7 @@
                                                         
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -117,8 +116,7 @@
                                                     
                                                     <input type="hidden" name="spd_sales_order"  class="spd_sales_order_id">
                                                     <div class="modal-footer justify-content-center"> 
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> 
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -132,14 +130,14 @@
                                                     <!-- Tab 3 content goes here -->
                                                     <div class="row">
                                                         
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">LPO & Drawings</label>
                                                             <input type="file" name="so_lpo_and_drawing" id="" class="form-control" required>
                                                         </div>
                                                         
                                                       
                                                        
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Scheduled date of delivery</label>
                                                             <input type="date" name="so_scheduled_date_of_delivery" id="" class="form-control" required>
                                                             
@@ -150,8 +148,7 @@
                                                         
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn btn-success">Submit</button>
+                                                        <button class="btn btn btn-success">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -262,51 +259,52 @@
                                                 <form class="Dashboard-form class" id="">
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Sales Order No.</label>
                                                             <input type="text" name="" id="sales_order_no_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Date</label>
                                                             <input type="date" name="" id="sales_order_date_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             <input type="text" name="" id="sales_order_customer_id" class="form-control" required>
                                                             
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">LPO reference</label>
                                                             <input type="text" name="" id="sales_order_lpo_id" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Quotation Ref</label>
                                                             <input type="text" name="" id="sales_order_quot_ref_id" class="form-control" required>
                                                             
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
                                                             <input type="text" name="" id="sales_order_contact_person_id" class="form-control" readonly>
                                                         
                                                            
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
                                                             <input type="text" name="" id="sales_order_executive" class="form-control" readonly>
                                                             
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Payment Term</label>
                                                             <input type="text" name="" id="sales_order_payment_term" class="form-control" readonly>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Delivery Term</label>
                                                             <input type="text" name="" id="sales_order_delivery_term" class="form-control" readonly>
                                                             
                                                         </div>
 
                                                       
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
                                                             <input type="text" name="" id="sales_order_project" class="form-control" readonly>
                                                         </div>
@@ -314,8 +312,7 @@
                                                         
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        
+                                                       
                                                     </div>
                                                 </form>
                                             </div>
@@ -330,7 +327,6 @@
                                                     
                                                     <input type="hidden" name="spd_sales_order"  class="spd_sales_order_id">
                                                     <div class="modal-footer justify-content-center"> 
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> 
                                                         
                                                     </div>
                                                 </form>
@@ -381,7 +377,6 @@
                                                         
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                                         
                                                     </div>
                                                 </form>
@@ -461,7 +456,6 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            
                            
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");

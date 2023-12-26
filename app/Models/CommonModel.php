@@ -83,6 +83,15 @@ class CommonModel extends Model
         ->getRow();
     }
 
+    public function SingleRowArray($table,$cond)
+    {
+        return $this->db
+        ->table($table)
+        ->where($cond)
+        ->get()
+        ->getRowArray();
+    }
+
 
     public function SingleRowJoin($table,$cond,$joins)
     {
@@ -101,6 +110,18 @@ class CommonModel extends Model
 
     }
 
+
+
+
+
+    public function CountWhere($table,$cond)
+    {
+        $query = $this->db->table($table)
+        ->where($cond)
+        ->get();
+        return $query->getNumRows();
+
+    }
 
 
 
@@ -156,6 +177,19 @@ class CommonModel extends Model
         return $this->db
         ->table($table)
         ->select('*')
+        ->orderBy($order_key, $order)
+        ->get()
+        ->getResult();
+    }
+
+
+    public function FetchAllOrderLimit($table,$order_key,$order,$end,$start)
+    {
+
+        return $this->db
+        ->table($table)
+        ->select('*')
+        ->limit($end,$start)
         ->orderBy($order_key, $order)
         ->get()
         ->getResult();

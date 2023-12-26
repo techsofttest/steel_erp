@@ -36,7 +36,19 @@ class Home extends BaseController
 
     public function index()
     {
-        return view('index');
+
+        $data['products']=$this->common_model->FetchAllOrderLimit('crm_products','product_id','desc',5,0);
+
+        $data['customers']=$this->common_model->FetchAllOrderLimit('crm_customer_creation','cc_id','desc',5,0);
+
+        $data['sales_count'] = $this->common_model->CountWhere('crm_sales_orders',array());
+
+        $data['customers_count'] = $this->common_model->CountWhere('crm_customer_creation',array());
+
+        $data['enquiry_count'] = $this->common_model->CountWhere('crm_enquiry',array());
+
+        return view('index',$data);
+
     }
 
 

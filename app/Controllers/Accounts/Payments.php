@@ -118,6 +118,8 @@ class Payments extends BaseController
         
         $data['collectors'] = $this->common_model->FetchAllOrder('master_collectors','col_name','asc');
 
+        $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+
         $data['content'] = view('accounts/payments',$data);
 
         return view('accounts/accounts-module',$data);
@@ -153,10 +155,12 @@ class Payments extends BaseController
 
         $insert_data['pay_added_date'] = date('Y-m-d');
 
+        /*
         if ($_FILES['file']['name'] !== '') {
             $ccAttachCrFileName = $this->uploadFile('file','uploads/Payments');
             $update_data['file'] = $ccAttachCrFileName;
         }
+        */
 
 
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
@@ -282,55 +286,41 @@ class Payments extends BaseController
     public function FetchInvoices()
     {
 
-    if($_POST)
-    {
-
-    $customer_id = $this->request->getPost('id');
-
-    $invoices = array(
-        array(
-        'invoice_id' => 'INV123',
-        'account' => 'Test 123',
-        'amount'   => 1200,
-        'date'  => '20-10-2023',
-        ),
-        array(
-        'invoice_id' => 'INV124',
-        'account' => 'Test 124',
-         'amount'   => 1100,
-            'date'  => '20-10-2023',
-            ),
-            array(
-                'invoice_id' => 'INV125',
-                'account' => 'Test 128',
-                'amount'   =>1000,
-                'date'  => '20-10-2023',
-                ),
-
-    );
-
-
-    $data = "";
-
-    foreach($invoices as $inv)
-    {
-
-    $data .='<tr id="'.$inv['invoice_id'].'">
-    <th class="checkbx"><input type="checkbox" name="invoice_selected" value="'.$inv['invoice_id'].'"></th>
-    <th>'.$inv['invoice_id']."<input type='hidden' name='invoice_id[]'></th>
-    <th>".$inv["account"]."</th>
-    <th>".$inv['amount']."</th>
-    <th>".$inv['date']."</th>
-    </tr>";
+        if($_POST)
+        {
     
-    }
-
-    echo json_encode($data);
-
-
-    }
-
-
+        $ac_id = $this->request->getPost('id');
+    
+        $joins = array(
+               
+        );
+    
+        $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
+    
+        $cond = array('so_customer' => $customer->cc_id);
+    
+        $invoices = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+    
+        $data="";
+    
+        foreach($invoices as $inv)
+        {
+    
+        $data.='<tr id="'.$inv->so_id.'">
+        <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->so_id.'"></th>
+        <th>'.date('d-m-Y',strtotime($inv->so_date)).'</th>
+        <th>'.$inv->so_order_no.'</th>
+        <th>'.$inv->so_scheduled_date_of_delivery.'</th>
+        <th>'.$inv->so_total.'</th>
+        </tr>';
+    
+        }
+    
+        echo json_encode($data);
+    
+    
+        }
+    
 
     }
 

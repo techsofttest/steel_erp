@@ -5,13 +5,14 @@
 <!-- Add Modal Start -->
 
 <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <form action="#" id="add_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Account Head</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
 
 
@@ -54,12 +55,12 @@
         </div>
         <!--end col-->
     </div>
-
-    <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="" class="btn btn btn-success">Submit</button>
+    </div>
+    <div class="modal-footer">
+                
+                <button type="submit" name="" class="btn btn btn-success">Save</button>
             </div>
-        </div>
+        
         </form>
 
     </div>
@@ -68,6 +69,7 @@
                                             </div>
 
        <!-- End Add Modal -->
+       
 
 
 
@@ -139,8 +141,7 @@
                                         
                                             <div class="row align-items-end">
 
-
-                                            <div class="col-col-md-6 col-lg-12">
+                                            <div class="col-col-md-6 col-lg-6">
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Name</label>
                                                         <input type="text" id="edit_account_name" value="" name="ah_account_name" class="form-control " required>
@@ -148,7 +149,7 @@
                                                 </div>
 
 
-                                                <div class="col-col-md-6 col-lg-12">
+                                                <div class="col-col-md-6 col-lg-6">
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Type</label>
 
@@ -179,12 +180,11 @@
                         <!--end col-->
                     </div>
                 
-            </div>
+                    </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="" class="btn btn btn-success">Submit</button>
+                <button type="submit" name="" class="btn btn btn-success">Save</button>
             </div>
-        </div>
+        
         </form>
 
     </div>
@@ -210,6 +210,7 @@
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/AccountHead/Add",

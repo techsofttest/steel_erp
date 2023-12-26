@@ -7,7 +7,7 @@
 
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
             <form  class="Dashboard-form class" id="add_form">
         <div class="modal-content">
             <div class="modal-header">
@@ -30,7 +30,7 @@
                     <div class="row align-items-end">
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
                             <div>
                                 <label for="basiInput" class="form-label">Account Id</label>
                                 <input type="text"   name="ca_account_id" class="form-control" required>
@@ -45,17 +45,17 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-5 col-lg-5">
                             <div>
-                                <label for="basiInput" class="form-label">Account Type</label>
+                                <label for="basiInput" class="form-label">Account Head</label>
                                 
                                 <select name="ca_account_type" class="account_type_select_add form-control" required>
 
-                                <option value="">Select Account Type</option>
+                                <option value="">Select Account Head</option>
 
-                                <?php foreach($account_types as $ac_type){ ?>
+                                <?php foreach($account_heads as $ah){ ?>
 
-                                <option value="<?= $ac_type->at_id; ?>"><?= $ac_type->at_name; ?></option>
+                                <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
 
                                 <?php } ?>
 
@@ -80,7 +80,6 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button  class="btn btn btn-success">Save</button>
             </div>
         </div>
@@ -115,7 +114,7 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
-                                <th>Type</th>
+                                <th>Head</th>
                                 <th>Account ID</th>
                                 <th>Name</th>
                                 <th>Actions</th>
@@ -163,26 +162,27 @@
                                     <div class="live-preview">
                                         
                                             <div class="row align-items-end">
-                                                <div class="col-col-md-6 col-lg-12">
 
-                                                    <div>
+                                                
+
+                                                    <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Account ID</label>
                                                         <input type="text" id="edit_account_id" value="" name="ca_account_id" class="form-control">
                                                     </div>
 
-                                                    <div>
+                                                    <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Account Name</label>
                                                         <input type="text" id="edit_account_name" value="" name="ca_name" class="form-control">
                                                     </div>
 
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account Type</label>
+                                                    <div class="col-col-md-4 col-lg-4">
+                                                        <label for="basiInput" class="form-label">Account Head</label>
                                                         
                                                         <select id="edit_account_type" class="form-control account_type_select_edit" name="ca_account_type">
 
-                                                        <?php foreach($account_types as $ac_type){ ?>
+                                                        <?php foreach($account_heads as $ah){ ?>
 
-                                                        <option value="<?= $ac_type->at_id; ?>"><?= $ac_type->at_name; ?></option>
+                                                        <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
 
                                                         <?php } ?>
 
@@ -192,7 +192,7 @@
 
 
 
-                                                </div>
+                                              
 
                                                 <!--end col-->
 
@@ -212,8 +212,7 @@
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
+                <button type="submit" name="submit" class="btn btn btn-success">Save</button>
             </div>
         </div>
         </form>
@@ -242,6 +241,7 @@
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Add",

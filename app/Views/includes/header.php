@@ -60,8 +60,10 @@
     z-index: 9999999
     }
     
+    .form-control.error {
+    border: 1px solid red;
+    }
 
-    
     .form-control-
     {
         margin-bottom:10px;
@@ -94,8 +96,76 @@
     }
     .view_tab_cond td
     {
-        width: 50%;
+        /*width: 50%;*/
     }
+
+
+
+    /* New Form Styles */
+
+    .btn-close{
+    right: 10px;
+    position: absolute;
+    }
+
+    .card-header .btn {
+    --vz-btn-line-height: 1.2 !important;
+    }
+ 
+
+    .Dashboard-form label {
+    color: black;
+    font-size: 12px;
+    }
+
+
+    .form-control
+    {
+       padding:0.3rem 0.3rem 0.3rem 0.3rem !important;
+    }
+
+    .form-select{
+    padding: 0.3rem 2.7rem 0.3rem 0.3rem !important;
+    }
+
+    :root {
+    --vz-modal-header-padding: 0.25rem 0.25rem !important;
+    }
+
+    .btn {
+    --vz-btn-line-height: 0.9 !important;
+    }
+
+    .modal-body {
+    padding-top: 10px !important;
+    padding-bottom: 0px !important;
+    }
+
+    .modal-header {
+    justify-content:center !important;
+    padding: 1rem 1rem 0rem 1rem !important;
+
+    }
+
+    .live-preview .row
+    {
+
+    justify-content:center;
+
+    }
+
+    .modal-footer
+    {
+    justify-content:center;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+
+    }
+
+
+
+
+    /* ##### */
      
 
     
@@ -113,7 +183,7 @@
                 <div class="d-flex">
                     <!-- LOGO -->
                     <div class="navbar-brand-box horizontal-logo">
-                        <a href="index.html" class="logo logo-dark">
+                        <a href="<?= base_url(); ?>" class="logo logo-dark">
                             <span class="logo-sm">
                                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="22">
                             </span>
@@ -122,7 +192,7 @@
                             </span>
                         </a>
 
-                        <a href="index.html" class="logo logo-light">
+                        <a href="<?= base_url(); ?>" class="logo logo-light">
                             <span class="logo-sm">
                                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="22">
                             </span>
@@ -141,7 +211,7 @@
                     </button>
 
                     <!-- App Search-->
-                    <form class="app-search d-none d-md-block">
+                    <form class="app-search d-none">
                         <div class="position-relative">
                             <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
                             <span class="mdi mdi-magnify search-widget-icon"></span>
@@ -326,7 +396,7 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- item-->
                             <h6 class="dropdown-header">Welcome Anna!</h6>
-                            <a class="dropdown-item" href="password-reset.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Password Reset</span></a>
+                            <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Password Reset</span></a>
                         
                             <a class="dropdown-item" href="<?= base_url(); ?>Logout" onclick="return confirm('Are you sure you want to logout?')"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                         </div>

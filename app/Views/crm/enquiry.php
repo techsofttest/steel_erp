@@ -41,11 +41,11 @@
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
                                                         
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">date</label>
                                                             <input type="date" name="enquiry_date" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             
                                                             <select class="form-select" name="enquiry_customer" id="customer_id" required>
@@ -55,7 +55,7 @@
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
                                                             
                                                             <select class="form-select" name="enquiry_contact_person" id="contact_person_id" required>
@@ -63,7 +63,7 @@
                                                                 
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
                                                             
                                                             <select class="form-select" name="enquiry_sales_executive" required>
@@ -74,19 +74,19 @@
                                                                 
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Validity</label>
                                                             <input type="text" name="enquiry_validity" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
                                                             <input type="text" name="enquiry_project" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Enquiry Reference</label>
                                                             <input type="text" name="enquiry_enq_referance" class="form-control" required>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4">
+                                                        <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Assigned To</label>
                                                             
                                                             <select class="form-select" name="enquiry_employees" required>
@@ -246,42 +246,42 @@
                         <form class="Dashboard-form class" id="add_form1">
                             <!-- Tab 1 content goes here -->
                             <div class="row">
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">Enquiry Number</label>
                                     <input type="text" name="" id="enquiry_enq_number_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">date</label>
                                     <input type="date" name="" id="enquiry_date_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Customer</label>
                                     <input type="text" name="" id="enquiry_customer_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Contact Person</label>
                                     <input type="text" name="" id="enquiry_contact_person_id" class="form-control" readonly>
                                     
                                    
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Sales Executive</label>
                                     <input type="text" name="" id="enquiry_sales_executive_id" class="form-control" readonly>
                                     
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Validity</label>
                                     <input type="text" name="" id="enquiry_validity_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Project</label>
                                     <input type="text" name="" id="enquiry_project_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Enquiry Reference</label>
                                     <input type="text" name="" id="enquiry_enq_referance_id" class="form-control" readonly>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Assigned To</label>
                                     <input type="text" name="" id="enquiry_employees" class="form-control" readonly>
                                 </div>

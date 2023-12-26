@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/*
 @font-face {
 font-family:hkgrotesk;
 src:url(../fonts/hkgrotesk-light.eot);
@@ -30,6 +31,7 @@ src:url(../fonts/hkgrotesk-bold.eot);
 src:local("hkgrotesk bold"), url(../fonts/hkgrotesk-bold.woff) format("woff");
 font-weight:700
 }
+*/
 
 :root {
 --theme-color:#e31d24;
@@ -14759,7 +14761,7 @@ top:20px
 /***************/
 .card-body {
   
-    padding: 10px 16px;
+    padding: 5px 16px;
   
 }
 .Dashboard-form{

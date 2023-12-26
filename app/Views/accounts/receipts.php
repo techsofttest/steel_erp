@@ -12,6 +12,8 @@
         display:none;
     }
 
+  
+
 </style>
 
 
@@ -45,7 +47,7 @@
 
 
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Reference No</label>
                                 <input type="text"  id="r_ref_view" class="form-control" value="" disabled>
@@ -54,7 +56,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Date</label>
                                 <input type="text"  id="r_date" class="form-control" value="" disabled>
@@ -62,7 +64,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -75,7 +77,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Receipt No</label>
                                 <input type="text"  id="r_no" class="form-control" value="" disabled>
@@ -83,7 +85,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -97,7 +99,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Number</label>
                                 <input type="text"  id="cheque_no_view" class="form-control" disabled>
@@ -105,7 +107,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Date</label>
                                 <input type="text" id="cheque_date_view" class="form-control" disabled>
@@ -113,12 +115,14 @@
                         </div>
 
 
+                        <!--
                         <div class="col-col-md-4 col-lg-4 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Copy</label>
                                 <span class="form-control"></span>
                             </div>
                         </div>
+                        -->
 
 
                         <div class="col-col-md-4 col-lg-4">
@@ -135,7 +139,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                         <div>
 
@@ -148,7 +152,7 @@
                     </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
                                 
@@ -169,69 +173,24 @@
 
                                     <thead>
                                         <tr>
-                                        <th>Sl No</th>
-                                        <th>Account</th>
-                                        <th>Reference</th>
+                                        <th>Date</th>
+                                        <th>Order No</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
                                         </tr>
                                     </thead>
 
-                                    <tbody >
 
-                                        <tr>
+                                    <tbody id="invoice_sec_view">
 
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-
-                                        </tr>
-
-
-                                        <tr>
-
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-                                        </tr>
-
-
-
-                                        <tr>
-
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-                                        </tr>
-
+                                        
 
                                     </tbody>
                                     
 
                                     <tr>
 
-                                    <td colspan="4" align="right">Total</td>
+                                    <td colspan="3" align="right">Total</td>
 
                                     <td id="total_amount_view" style="font-size: 17px;font-weight: 600;"></td>
 
@@ -320,10 +279,11 @@
                                     <thead>
                                         <tr>
                                         <th></th>
-                                        <th>Sl No</th>
-                                        <th>Account</th>
+                                        <th>Date</th>
+                                        <th>Sales Order No</th>
+                                        <th>Delivery Date</th>
                                         <th>Amount</th>
-                                        <th>Reference</th>
+                                        
                                         </tr>
                                     </thead>
 
@@ -414,7 +374,7 @@
                     <div class="row align-items-end">
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Date</label>
                                 <input type="date"  name="r_date" class="form-control" required>
@@ -422,7 +382,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                             <div>
 
@@ -446,7 +406,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Receipt No</label>
                                 <input type="text"  name="r_receipt_no" class="form-control" required>
@@ -454,7 +414,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                             <div>
 
@@ -478,7 +438,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Number</label>
                                 <input type="text"  name="r_cheque_no" class="form-control" required>
@@ -486,7 +446,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Date</label>
                                 <input type="date"  name="r_cheque_date" class="form-control" required>
@@ -494,7 +454,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Copy</label>
                                 <input type="file"  name="r_cheque_copy" class="form-control" required>
@@ -502,7 +462,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -524,7 +484,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                         <div>
 
@@ -549,7 +509,7 @@
                     </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                             <div>
                                 
@@ -559,7 +519,11 @@
 
                                 <option value="">Select Credit Account</option>
 
-                                <option value="1">Customer 1</option>
+                                <?php foreach($customers as $cus) { ?>
+
+                                <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                                <?php } ?>
 
                                 </select>
 
@@ -580,9 +544,8 @@
 
                                     <thead>
                                         <tr>
+                                        <th>Date</th>
                                         <th>Invoice No</th>
-                                        <th>Account</th>
-                                        <th>Reference</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
                                         </tr>
@@ -595,7 +558,7 @@
 
                                     <tr>
 
-                                    <td align="right" colspan="4">Total</td>
+                                    <td align="right" colspan="3">Total</td>
 
                                     <th  id="total_amount">0</th>
 
@@ -612,7 +575,7 @@
 
                          <div class="col-col-md-12 col-lg-12 text-center">
 
-                         <a href="javascript:void(0);" data-bs-target="#InvoicesModal" data-bs-toggle="modal" class="btn btn-primary add_invoices">Add Invoices</a>
+                         <a href="javascript:void(0);"  class="btn btn-primary add_invoices">Add Invoices</a>
                          
                         </div>
 
@@ -634,7 +597,6 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button  class="btn btn btn-success">Save</button>
             </div>
 
@@ -798,6 +760,7 @@
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/Receipts/Add",
@@ -885,38 +848,36 @@
                     {
                     var data = JSON.parse(data);
 
-                    //console.log(data);
+                    $('#r_ref_view').val(data.receipt.r_ref_no);
 
-                    $('#r_ref_view').val(data.r_ref_no);
+                    $('#r_date').val(data.receipt.r_date);
 
-                    $('#r_date').val(data.r_date);
+                    $('#r_debit_acc').val(data.receipt.ca_account_id);
 
-                    $('#r_debit_acc').val(data.ca_account_id);
+                    $('#r_no').val(data.receipt.r_number);
 
-                    $('#r_no').val(data.r_number);
+                    $('#r_method_view').val(data.receipt.rm_name);
 
-                    $('#r_method_view').val(data.rm_name);
+                    $('#r_bank_view').val(data.receipt.bank_name);
 
-                    $('#r_bank_view').val(data.bank_name);
-
-                    $('#r_collected_by_view').val(data.col_name);
+                    $('#r_collected_by_view').val(data.receipt.col_name);
 
                     $('#r_credit_account_view').val('Customer1');
 
-                    $('#total_amount_view').html(data.r_amount);
+                    $('#total_amount_view').html(data.receipt.r_amount);
 
-                    if(data.rm_name=="Cheque")
+                    if(data.receipt.rm_name=="Cheque")
                     {
                     $('.cheque_sec_view').show();
-                    $('#cheque_no_view').val(data.r_cheque_no);
-                    $('#cheque_date_view').val(data.r_cheque_date);
-
-
+                    $('#cheque_no_view').val(data.receipt.r_cheque_no);
+                    $('#cheque_date_view').val(data.receipt.r_cheque_date);
                     }
                     else
                     {
                     $('.cheque_sec_view').hide();
                     }
+
+                    $('#invoice_sec_view').html(data.invoices);
 
                     $('#ViewModal').modal('show');
                   
@@ -1105,7 +1066,19 @@
      
         $("body").on('click', '.add_invoices', function(){ 
             
-            var id = 1;
+            
+            if( $('select[name=r_credit_account]').val() =="")
+            {
+
+            alertify.error('Select Credit Account!').delay(3).dismissOthers();   
+
+            return false;
+
+            }
+            
+            //var id=1;
+
+            var id = $('select[name=r_credit_account]').val(); //Customer_ID
 
             $.ajax({
 
@@ -1120,7 +1093,20 @@
                 success:function(data)
                 {
 
+                    /*
+                    if(data=="")
+                    {
+                    alertify.error('No Orders Found!').delay(3).dismissOthers();   
+
+                    return false;
+                    }
+                    */
+
                     $('#invoices_sec').hide().html(data).fadeIn(200);
+
+                    $('#AddModal').modal('hide');
+
+                    $('#InvoicesModal').modal('show');
 
                 }
 
@@ -1155,9 +1141,11 @@
         
         var data = JSON.parse(data);
 
-        $.each(data.html, function(key,value) {
+        console.log(data);
 
-        tbody.append('<tr><td>'+value.invoice_id+'</td><td>'+value.account+'</td><td>'+value.date+'</td><td><input class="form-control" name="" type="text"></td><td>'+value.amount+'</td></tr>');
+        $.each(data.html, function(key,value) {
+        //alert(value.so_o);
+        tbody.append('<tr><td>'+value['so_date']+'</td><td><input type="hidden" name="so_id[]" value="'+value['so_id']+'">'+value['so_order_no']+'</td><td><input class="form-control" name="so_remarks[]" type="text"></td><td>'+value['so_total']+'</td></tr>');
 
         }); 
 

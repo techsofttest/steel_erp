@@ -44,9 +44,7 @@
                     <div class="row align-items-end">
 
 
-
-
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Reference Number</label>
                                 <input type="text"  id="p_ref_view" class="form-control" value="" disabled>
@@ -54,7 +52,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Date</label>
                                 <input type="text"  id="p_date_view" class="form-control" value="" disabled>
@@ -62,7 +60,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -75,7 +73,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -89,7 +87,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Number</label>
                                 <input type="text"  name="r_cheque_no" class="form-control" required>
@@ -97,7 +95,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Date</label>
                                 <input type="date"  name="r_cheque_date" class="form-control" required>
@@ -105,7 +103,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Copy</label>
                                 <input type="file"  name="r_cheque_copy" class="form-control" required>
@@ -113,7 +111,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -127,7 +125,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
                                 
@@ -372,7 +370,7 @@
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form  class="Dashboard-form class" id="add_form" enctype="multipart/form-data">
+            <form  class="Dashboard-form class" id="add_form">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Payment</h5>
@@ -393,7 +391,7 @@
                     <div class="row align-items-end">
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Date</label>
                                 <input type="date"  name="p_date" class="form-control" required>
@@ -401,7 +399,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -421,7 +419,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-2 col-lg-2">
 
                             <div>
 
@@ -445,7 +443,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Number</label>
                                 <input type="text"  name="p_cheque_no" class="form-control" required>
@@ -453,7 +451,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Date</label>
                                 <input type="date"  name="p_cheque_date" class="form-control" required>
@@ -461,7 +459,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4 cheque_sec">
+                        <div class="col-col-md-2 col-lg-2 cheque_sec">
                             <div>
                                 <label for="basiInput" class="form-label">Cheque Copy</label>
                                 <input type="file"  name="p_cheque_copy" class="form-control" required>
@@ -469,7 +467,7 @@
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                             <div>
 
@@ -491,7 +489,7 @@
 
 
 
-                        <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-3 col-lg-3">
 
                             <div>
                                 
@@ -733,14 +731,14 @@
             $('#add_form').validate({
                 rules: {
                     required: 'required',
-                    
                 },
                 messages: {
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
-
+                    /*
                     form.preventdefault();
 
                     var file_data = $('input[name=p_cheque_copy]').prop('files')[0];
@@ -748,13 +746,13 @@
                     var form_data = new FormData(form);
 
                     form_data.append('file',file_data);
-
+                    */
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/Payments/Add",
                         method: "POST",
-                        contentType: false,
-                        processData: false,
-                        data: form_data,
+                       // contentType: false,
+                       // processData: false,
+                        data: $(form).serialize(),
                         success: function(data) {
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
