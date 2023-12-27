@@ -398,12 +398,12 @@ private function uploadFile($fieldName, $uploadPath)
             <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
             <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
             <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
-            <td class="row_remove"><i class="ri-close-line"></i>Remove</td>
+            <td class="row_remove"><a href=""><i class="ri-close-line"></i>Remove</a></td>
             </tr>'; 
             $i++;  
         }
         
-        $data['contact'] .= '</tbody></table><div class="edit_add_more"><span class="edit_add_more add_person"><i class="ri-add-circle-line"></i>Add More</span></div>';
+        $data['contact'] .= '</tbody> <tbody class="person-more" class="travelerinfo"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_person"><i class="ri-add-circle-line"></i>Add More</span></div>';
         
         echo json_encode($data);
     }

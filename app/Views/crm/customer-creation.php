@@ -110,7 +110,7 @@
                                                     <div class="modal-footer justify-content-center">
                                                         <button class="btn btn btn-success">Save</button>
                                                     </div>
-                                                    
+
                                                 </form>
                                             </div>
                                                 
@@ -982,14 +982,16 @@
         var max_fieldss      = 30;
         var y = 1;
 
-        $(".add_person").click(function(){
-            alert("sucess");
+       // $(".add_person").click(function(){
+        $("body").on('click', '.add_person', function(){
+           
 			if(y < max_fieldss){ //max input box allowed
 				y++;
 	            $(".person-more").append("<tr><td>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='number' name='contact_mobile[]' class='form-control ' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
 	 
 			}
 	    });
+        
 
         $(document).on("click", ".remove-btnnp", function() {
 	 
