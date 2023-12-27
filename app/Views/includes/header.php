@@ -172,16 +172,17 @@
         color: red !important;
         cursor: pointer;
     }
-    .edit_add_more
+    .edit_add_more_div
     {
         text-align: center;
+        padding-bottom: 18px;
         
     }
     .edit_add_more
     {
         cursor: pointer;
         color: green;
-        padding-bottom: 18px;
+        
     }
 
     /* ##### */
