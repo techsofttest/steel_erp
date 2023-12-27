@@ -324,6 +324,94 @@ private function uploadFile($fieldName, $uploadPath)
     }
 
 
+
+    
+    public function Edit()
+    {
+        $cond = array('cc_id' => $this->request->getPost('ID'));
+
+        $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
+
+        $charts_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+
+        $account_types = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
+
+        $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
+
+        $data['cc_customer_name']  = $customer_creation->cc_customer_name;
+
+        $data['cc_post_box']       = $customer_creation->cc_post_box;
+
+        $data['cc_telephone']      = $customer_creation->cc_telephone;
+
+        $data['cc_fax']            = $customer_creation->cc_fax;
+
+        $data['cc_email']          = $customer_creation->cc_email;
+
+        $data['cc_credit_term']    = $customer_creation->cc_credit_term;
+
+        $data['cc_credit_period']  = $customer_creation->cc_credit_period;
+
+        $data['cc_credit_limit']   = $customer_creation->cc_credit_limit;
+
+        $data['account_type_out'] ="";
+
+        foreach($account_types as $account_type)
+        {
+            $data['account_type_out'] .= '<option value="' .$account_type->at_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($account_type->at_id == $customer_creation->cc_account_type)
+            {
+                $data['account_type_out'] .= ' selected'; 
+            }
+        
+            $data['account_type_out'] .= '>' . $account_type->at_name . '</option>';
+        }
+
+
+        $data['chart_account_type'] ="";
+
+        foreach($charts_accounts as $chart_account)
+        {
+            $data['chart_account_type'] .= '<option value="' .$chart_account->ca_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($chart_account->ca_id == $customer_creation->cc_account_id)
+            {
+                $data['chart_account_type'] .= ' selected'; 
+            }
+        
+            $data['chart_account_type'] .= '>' . $chart_account->ca_account_id . '</option>';
+        }
+
+        $i=1;
+        $data['contact'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >No</td><td>Contact Person </td><td>Designation</td><td>Mobile</td><td>Email</td><td>Action</td></tr>';
+
+        foreach($contact_details as $contact)
+        {
+            $data['contact'] .='<tr>
+            <td>'.$i.'</td>
+            <td><input type="text"   value='.$contact->contact_person.' class="form-control " readonly></td>
+            <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
+            <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
+            <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
+            <td class="row_remove"><i class="ri-close-line"></i>Remove</td>
+            </tr>'; 
+            $i++;  
+        }
+        
+        $data['contact'] .= '</tbody></table><div class="edit_add_more"><span class="edit_add_more add_person"><i class="ri-add-circle-line"></i>Add More</span></div>';
+        
+        echo json_encode($data);
+    }
+
+
+
+
+
     // update account head 
     public function Update()
     {    
