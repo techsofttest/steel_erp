@@ -424,6 +424,7 @@
         $(".product_head_select").select2({
         placeholder: "Product Head",
         theme : "default form-control-",
+        dropdownParent: $('#AddModal'),
         ajax: {
                 url: "<?= base_url(); ?>Crm/Products/FetchTypes",
                 dataType: 'json',
