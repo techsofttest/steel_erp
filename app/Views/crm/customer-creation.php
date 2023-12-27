@@ -264,6 +264,7 @@
                             </div>
                             <!--end col-->
                         </div>
+                        
                     </div>
                     <!--###-->
 
@@ -510,7 +511,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab7" role="tabpanel" aria-labelledby="tab1-tab">
-                        <form class="Dashboard-form class" id="">
+                        <form class="Dashboard-form class" id="add_form4">
                             <!-- Tab 1 content goes here -->
                             <div class="row">
                                 <div class="col-md-2 col-lg-2">
@@ -564,7 +565,9 @@
                                     <label for="basicInput" class="form-label">GL Account Type</label>
                                     <select id="edit_account_type_id" class="form-select"></select>
                                 </div>
+
                                 
+                                <input type="hidden" id="edit_customer_id" name="cc_id">
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn btn-success">Save</button>
@@ -595,37 +598,54 @@
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basiInput" class="form-label">CR Number</label>
-                                    <input type="text" id="cc_cr_number_id" class="form-control" disabled>
+                                    <input type="text" id="edit_cr_number_id" class="form-control">
                                 </div>
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Expiry Date</label>
-                                    <input type="date" id="cc_expiry_date_id" class="form-control" disabled>
+                                    <input type="date" id="edit_expiry_date_id" class="form-control">
                                 </div>
                                 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Establishment Card No</label>
-                                    <input type="text" id="cc_est_card_no_id" class="form-control" disabled>
+                                    <input type="text" id="edit_est_card_no_id" class="form-control">
                                 </div>
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Expiry Date</label>
-                                    <input type="date" id="cc_est_expiry_date_id" class="form-control" disabled>
+                                    <input type="date" id="edit_est_expiry_date_id" class="form-control">
                                 </div>
                                 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Authorized Signatory Name</label>
-                                    <input type="text" id="cc_est_signatory_name_id" class="form-control" disabled>
+                                    <input type="text" id="edit_est_signatory_name_id" class="form-control">
                                 </div>
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">ID Card Number</label>
-                                    <input type="text" id="cc_card_number_id" class="form-control" disabled>
+                                    <input type="text" id="edit_card_number_id" class="form-control">
                                 </div>
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">ID Card Expiry</label>
-                                    <input type="date" id="cc_id_card_expiry_date_id" class="form-control" disabled>
+                                    <input type="date" id="edit_id_card_expiry_date_id" class="form-control">
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Attach CR</label>
+                                    <input type="file" id="" class="form-control">
+                                </div>
+
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Attach Establishment Card</label>
+                                    <input type="file" id="" class="form-control">
+                                </div>
+
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Attach ID Card</label>
+                                    <input type="file" id="" class="form-control">
                                 </div>
 
                                 <div class="col-lg-12 tab_attachment_head">
@@ -798,6 +818,47 @@
         /*###*/
 
 
+
+
+        /*edit 1st tab*/
+        $(function() {
+            var form = $('#add_form4');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/UpdateTab1",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+                           /* var responseData = JSON.parse(data);
+                            
+                            $(".customer_creation_id").val(responseData.customer_creation_id);
+                            // Trigger a click event on the next tab
+                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            if (nextTab.length > 0) {
+                                nextTab.tab('show');
+                            } else {
+                                console.error("Next tab not found!");
+                            }*/
+                        }
+                    });
+                }
+            });
+        });
+        /**/
+
+
+
+
         /*view*/ 
         $("body").on('click', '.view_btn', function(){ 
             var id = $(this).data('id');
@@ -915,6 +976,20 @@
 
                     $("#edit_contact_details").html(data.contact);
 
+                    $("#edit_cr_number_id").val(data.cc_cr_number);
+
+                    $("#edit_expiry_date_id").val(data.cc_expiry_date);
+
+                    $("#edit_est_card_no_id").val(data.cc_est_card_no);
+
+                    $("#edit_est_expiry_date_id").val(data.cc_est_expiry_date);
+
+                    $("#edit_est_signatory_name_id").val(data.cc_est_signatory_name);
+
+                    $("#edit_card_number_id").val(data.cc_card_number);
+
+                    $("#edit_customer_id").val(data.cc_id);
+
                     $('#EditModal').modal('show');
                     
                     $("#id").val(id);
@@ -976,7 +1051,41 @@
         $(document).ready(function () {
             initializeDataTable();
         });
+
+         
+
         /*###*/
+
+
+
+        /**/
+        $("body").on('click', '.row_remove', function(){ 
+           
+            var id = $(this).data('id');
+            alert(id); 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CustomerCreation/DeleteContact",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    $('#'+id+'').remove();
+                    $('#'+id+'').fadeIn();
+
+                   
+                    
+                }
+
+
+            });
+                
+        });
+        /**/
 
 
         var max_fieldss      = 30;
@@ -991,7 +1100,7 @@
 	 
 			}
 	    });
-        
+
 
         $(document).on("click", ".remove-btnnp", function() {
 	 
@@ -1002,6 +1111,12 @@
      
 
     });
+
+
+    
+
+
+
 
 
 </script>

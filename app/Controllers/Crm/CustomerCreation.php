@@ -340,21 +340,37 @@ private function uploadFile($fieldName, $uploadPath)
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
 
-        $data['cc_customer_name']  = $customer_creation->cc_customer_name;
+        $data['cc_customer_name']        = $customer_creation->cc_customer_name;
 
-        $data['cc_post_box']       = $customer_creation->cc_post_box;
+        $data['cc_post_box']             = $customer_creation->cc_post_box;
 
-        $data['cc_telephone']      = $customer_creation->cc_telephone;
+        $data['cc_telephone']            = $customer_creation->cc_telephone;
 
-        $data['cc_fax']            = $customer_creation->cc_fax;
+        $data['cc_fax']                  = $customer_creation->cc_fax;
 
-        $data['cc_email']          = $customer_creation->cc_email;
+        $data['cc_email']                = $customer_creation->cc_email;
 
-        $data['cc_credit_term']    = $customer_creation->cc_credit_term;
+        $data['cc_credit_term']          = $customer_creation->cc_credit_term;
 
-        $data['cc_credit_period']  = $customer_creation->cc_credit_period;
+        $data['cc_credit_period']        = $customer_creation->cc_credit_period;
 
-        $data['cc_credit_limit']   = $customer_creation->cc_credit_limit;
+        $data['cc_credit_limit']         = $customer_creation->cc_credit_limit;
+
+        $data['cc_cr_number']            = $customer_creation->cc_cr_number;
+
+        $data['cc_expiry_date']          = $customer_creation->cc_expiry_date;
+
+        $data['cc_est_card_no']          = $customer_creation->cc_est_card_no;
+
+        $data['cc_est_expiry_date']      = $customer_creation->cc_est_expiry_date;
+
+        $data['cc_est_signatory_name']   = $customer_creation->cc_est_signatory_name;
+
+        $data['cc_card_number']          = $customer_creation->cc_card_number;
+
+        $data['cc_id_card_expiry_date']  = $customer_creation->cc_id_card_expiry_date;
+
+        $data['cc_id']  = $customer_creation->cc_id;
 
         $data['account_type_out'] ="";
 
@@ -392,13 +408,13 @@ private function uploadFile($fieldName, $uploadPath)
 
         foreach($contact_details as $contact)
         {
-            $data['contact'] .='<tr>
+            $data['contact'] .='<tr id="'.$contact->contact_id.'">
             <td>'.$i.'</td>
             <td><input type="text"   value='.$contact->contact_person.' class="form-control " readonly></td>
             <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
             <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
             <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
-            <td class="row_remove"><a href=""><i class="ri-close-line"></i>Remove</a></td>
+            <td class="row_remove" data-id="'.$contact->contact_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>'; 
             $i++;  
         }
@@ -409,7 +425,22 @@ private function uploadFile($fieldName, $uploadPath)
     }
 
 
+    public function UpdateTab1()
+    {
+        $cond = array('cc_id' => $this->request->getPost('cc_id'));
+        
+        $update_data = $this->request->getPost(); 
 
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('cc_id', $update_data)) 
+        {
+             unset($update_data['cc_id']);
+        }       
+
+        $update_data['cc_modified_date'] = date('Y-m-d'); 
+
+        $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
+    }
 
 
     // update account head 
@@ -434,13 +465,23 @@ private function uploadFile($fieldName, $uploadPath)
         $this->common_model->EditData($update_data,$cond,'accounts_account_types');
        
     }
-
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+    
+    //delete contact details
+    public function DeleteContact()
+    {
+        $cond = array('contact_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_contact_details',$cond);
+
+        
+    }
+
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('at_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('accounts_account_types',$cond);
  
          
      }
