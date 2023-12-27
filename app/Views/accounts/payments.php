@@ -149,68 +149,23 @@
                                         <tr>
                                         <th>Sl No</th>
                                         <th>Account</th>
-                                        <th>Reference</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
                                         </tr>
                                     </thead>
 
-                                    <tbody >
-
-                                        <tr>
-
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-
-                                        </tr>
-
-
-                                        <tr>
-
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-
-                                        </tr>
-
-
-
-                                        <tr>
-
-                                            <td>1</td>
-
-                                            <td>Al Fuzail</td>
-
-                                            <td>INV123456</td>
-
-                                            <td>Balance Pay On 19</td>
-
-                                            <td>1000</td>
-
-                                        </tr>
+                                    <tbody id="invoice_sec_view">
+                                  
 
                                     </tbody>
 
                                     <tr>
 
-                                    <td colspan="4" align="right">Total</td>
+                                    <td colspan="3" align="right">Total</td>
 
                                     <td id="total_amount_view" style="font-size: 17px;font-weight: 600;"></td>
+
+                                    <input type="hidden" name="p_amount" value="">
 
                                     </tr>
 
@@ -337,8 +292,8 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
-                <button type="submit" class="btn btn btn-success">Add</button>
+                
+                <button type="submit" class="btn btn btn-success">Save</button>
             </div>
 
         </div>
@@ -409,7 +364,11 @@
 
                                 <option value="">Select Credit Account</option>
 
-                                <option value="1">Customer 1</option>
+                                <?php foreach($customers as $cus) { ?>
+
+                                <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                                <?php } ?>
 
 
                                 </select>
@@ -524,7 +483,6 @@
                                         <tr>    
                                         <th>Invoice No</th>
                                         <th>Account</th>
-                                        <th>Reference</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
                                         </tr>
@@ -536,7 +494,7 @@
 
                                     <tr>
 
-                                    <td align="right" colspan="4">Total</td>
+                                    <td align="right" colspan="3">Total</td>
 
                                     <th  id="total_amount">0</th>
 
@@ -547,13 +505,11 @@
                         </table>
 
 
-
                         </div>
-
 
                          <div class="col-col-md-12 col-lg-12 text-center">
 
-                         <a href="javascript:void(0);" data-bs-target="#InvoicesModal" data-bs-toggle="modal" class="btn btn-primary add_invoices">Add Invoices</a>
+                         <a href="javascript:void(0);" class="btn btn-primary add_invoices">Add Invoices</a>
                          
                         </div>
 
@@ -574,7 +530,7 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            
                 <button  class="btn btn btn-success">Save</button>
             </div>
 
@@ -835,21 +791,23 @@
                     {
                     var data = JSON.parse(data);
 
-                    $('#p_ref_view').val(data.pay_ref_no);
+                    $('#p_ref_view').val(data.payment.pay_ref_no);
 
-                    $('#p_date_view').val(data.pay_date);
+                    $('#p_date_view').val(data.payment.pay_date);
 
                     $('#p_credit_acc_view').val('Customer Name');
 
-                    $('#p_pay_method_view').val(data.rm_name);
+                    $('#p_pay_method_view').val(data.payment.rm_name);
 
-                    $('#p_bank_view').val(data.bank_name);
+                    $('#p_bank_view').val(data.payment.bank_name);
 
-                    $('#p_debit_acc_view').val(data.ca_account_id);
+                    $('#p_debit_acc_view').val(data.payment.ca_account_id);
 
-                    $('#total_amount_view').html(data.pay_total);
+                    $('#total_amount_view').html(data.payment.pay_total);
 
                     $('#ViewModal').modal('show');
+
+                    $('#invoice_sec_view').html(data.invoices);
                   
                     }
                     else
@@ -1036,7 +994,18 @@
      
         $("body").on('click', '.add_invoices', function(){ 
             
-            var id = 1;
+          
+            if( $('select[name=p_credit_account]').val() =="")
+            {
+
+            alertify.error('Select Credit Account!').delay(3).dismissOthers();   
+
+            return false;
+
+            }
+
+            var id = $('select[name=p_credit_account]').val();
+
 
             $.ajax({
 
@@ -1051,8 +1020,12 @@
                 success:function(data)
                 {
 
-                    //console.log(data);
                     $('#invoices_sec').hide().html(data).fadeIn(200);
+
+                    $('#AddModal').modal('hide');
+
+                    $('#InvoicesModal').modal('show');
+                    //$('#invoices_sec').hide().html(data).fadeIn(200);
 
                 }
 
@@ -1089,15 +1062,18 @@ success:function(data)
 
 var data = JSON.parse(data);
 
-$.each(data.html, function(key,value) {
+//console.log(data);
 
-tbody.append('<tr><td>'+value.invoice_id+'</td><td>'+value.account+'</td><td>'+value.date+'</td><td><input class="form-control" name="" type="text"></td><td>'+value.amount+'</td></tr>');
+$.each(data.html, function(key,value) {
+//alert(value.so_o);
+tbody.append('<tr><td>'+value['so_date']+'</td><td><input type="hidden" name="so_id[]" value="'+value['so_id']+'">'+value['so_order_no']+'</td><td><input class="form-control" name="so_remarks[]" type="text"></td><td>'+value['so_total']+'</td></tr>');
 
 }); 
 
 $('#total_amount').html(data.total);
 
 $('input[name=p_amount]').val(data.total);
+
 
 }
 

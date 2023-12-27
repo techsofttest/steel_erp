@@ -57,12 +57,13 @@ class Receipts extends BaseController
                 'pk' => 'bank_id',
                 'fk' => 'r_bank',
                 ),
-
+            /*
             array(
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
                 'fk' => 'r_debit_account',
                 ),
+                */
 
         );
         ## Fetch records
@@ -176,7 +177,7 @@ class Receipts extends BaseController
 
         $insert_inv_data['ri_remarks'] = $inv_remarks;
 
-        $this->common_model->InsertData('account_receipt_invoices',$insert_inv_data);
+        $this->common_model->InsertData('accounts_receipt_invoices',$insert_inv_data);
 
         }
         
@@ -233,6 +234,9 @@ class Receipts extends BaseController
 
         $this->common_model->EditData($update_data,$cond,'accounts_charts_of_accounts');
         
+        /*
+        
+        */
       
 
     }
@@ -288,7 +292,7 @@ class Receipts extends BaseController
 
     );
 
-    $invoices = $this->common_model->FetchWhereJoin('account_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
+    $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
 
     $data['invoices'] ="";
 

@@ -58,11 +58,13 @@ class Payments extends BaseController
                 'fk' => 'pay_bank',
                 ),
 
+                /*
             array(
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
                 'fk' => 'pay_debit_account',
                 ),
+                */
 
         );
         ## Fetch records
@@ -136,6 +138,8 @@ class Payments extends BaseController
 
         $insert_data['pay_method'] = $this->request->getPost('p_method');
 
+        $insert_data['pay_amount'] = $this->request->getPost('p_amount');
+
         if(!empty($this->request->getPost('p_method')==1))
         {
 
@@ -164,6 +168,27 @@ class Payments extends BaseController
 
 
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
+
+
+        //Add invoices
+        for($i=0;$i<count($this->request->getPost('so_id'));$i++)
+        {
+
+        $inv_id = $_POST['so_id'][$i];
+
+        $inv_remarks = $_POST['so_remarks'][$i];
+
+        $insert_inv_data['pi_payment'] = $id;
+
+        $insert_inv_data['pi_invoice'] = $inv_id;
+
+        $insert_inv_data['pi_remarks'] = $inv_remarks;
+
+        $this->common_model->InsertData('accounts_payment_invoices',$insert_inv_data);
+
+        }
+
+
 
         $p_ref_no = 'PAY'.str_pad($id, 7, '0', STR_PAD_LEFT);
         
@@ -252,9 +277,38 @@ class Payments extends BaseController
         'fk' => 'pay_debit_account',
         ),
 
+        array(
+            'table' => 'accounts_charts_of_accounts',
+            'pk' => 'ca_id',
+            'fk' => 'pay_debit_account',
+            ),
+
+
+
     );
 
-    $data = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
+    $data['payment'] = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
+
+    $joins_inv = array(
+        
+        array(
+        'table' => 'crm_sales_orders',
+        'pk' => 'so_id',
+        'fk' => 'pi_invoice',
+        ),
+
+    );
+
+    $invoices = $this->common_model->FetchWhereJoin('accounts_payment_invoices',array('pi_payment'=>$id),$joins_inv);
+
+    $data['invoices'] ="";
+
+    foreach($invoices as $invoice)
+    {
+
+    $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->so_date))."</td><td>{$invoice->so_order_no}</td><td>{$invoice->pi_remarks}</td><td>{$invoice->so_total}</td></tr>";
+    
+    }
 
     echo json_encode($data);
 
@@ -282,48 +336,46 @@ class Payments extends BaseController
 
 
 
-
     public function FetchInvoices()
     {
 
-        if($_POST)
-        {
-    
-        $ac_id = $this->request->getPost('id');
-    
-        $joins = array(
-               
-        );
-    
-        $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
-    
-        $cond = array('so_customer' => $customer->cc_id);
-    
-        $invoices = $this->common_model->FetchWhere('crm_sales_orders',$cond);
-    
-        $data="";
-    
-        foreach($invoices as $inv)
-        {
-    
-        $data.='<tr id="'.$inv->so_id.'">
-        <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->so_id.'"></th>
-        <th>'.date('d-m-Y',strtotime($inv->so_date)).'</th>
-        <th>'.$inv->so_order_no.'</th>
-        <th>'.$inv->so_scheduled_date_of_delivery.'</th>
-        <th>'.$inv->so_total.'</th>
-        </tr>';
-    
-        }
-    
-        echo json_encode($data);
-    
-    
-        }
-    
+    if($_POST)
+    {
+
+    $ac_id = $this->request->getPost('id');
+
+    $joins = array(
+           
+    );
+
+    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
+
+    $cond = array('so_customer' => $customer->cc_id);
+
+    $invoices = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+
+    $data="";
+
+    foreach($invoices as $inv)
+    {
+
+    $data.='<tr id="'.$inv->so_id.'">
+    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->so_id.'"></th>
+    <th>'.date('d-m-Y',strtotime($inv->so_date)).'</th>
+    <th>'.$inv->so_order_no.'</th>
+    <th>'.$inv->so_scheduled_date_of_delivery.'</th>
+    <th>'.$inv->so_total.'</th>
+    </tr>';
 
     }
 
+    echo json_encode($data);
+
+
+    }
+
+
+    }
 
 
 
@@ -333,54 +385,20 @@ class Payments extends BaseController
     if($_POST)
     {
 
-    $data['request'] = $this->request->getPost();
-
-        $invoices = array(
-        array(
-        'invoice_id' => 'INV123',
-        'account' => 'Test 123',
-        'amount'   => 1200,
-        'date'  => '20-10-2023',
-            ),
-        array(
-        'invoice_id' => 'INV124',
-        'account' => 'Test 124',
-        'amount'   => 1100,
-        'date'  => '20-10-2023',
-        ),
-        array(
-            'invoice_id' => 'INV125',
-            'account' => 'Test 128',
-            'amount'   => 1000,
-            'date'  => '20-10-2023',
-            ),
-
-    );
-
-    $data['html'] = $invoices;
-
     $data['total'] = 0;
 
-    
-    foreach($invoices as $inv)
+    foreach($this->request->getPost('invoice_selected') as $inv)
     {
 
-    /*
-    $data['html'] .='<tr id="'.$inv['invoice_id'].'">
-    <th>'.$inv['invoice_id'].'"<input type="hidden" name="invoice_id[]" value="'.$inv['invoice_id'].'"></th>
-    <th>'.$inv["account"].'</th>
-    <th>'.$inv['amount'].'</th>
-    <th>'.$inv['date'].'</th>
-    <th><input type="text" name="remarks"></th>
-    </tr>';
-    */
+    $invoice = $this->common_model->SingleRowArray('crm_sales_orders',array('so_id' => $inv));
 
-    $amount = $inv['amount'];
+    $data['html'][] = $invoice;
 
-    $data['total'] = $data['total']+$amount;
+    $data['total'] = $invoice['so_total']+$data['total'];
 
     }
 
+   
     echo json_encode($data);
 
     }

@@ -62,7 +62,6 @@ class CommonModel extends Model
 
     public function DeleteData($table,$cond)
     {
-
         $this->db
         ->table($table)
         ->where($cond)
@@ -109,6 +108,28 @@ class CommonModel extends Model
         return $result;
 
     }
+
+
+
+    public function SingleRowAliasJoin($table,$cond,$joins)
+    {
+        $query= $this->db->table($table)
+        ->where($cond);
+
+        if(!empty($joins))
+        foreach($joins as $join)
+    {
+        $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+    }
+
+        $result = $query->get()->getRow();
+
+        return $result;
+
+    }
+
+
+
 
 
 
