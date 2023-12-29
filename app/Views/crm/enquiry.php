@@ -48,7 +48,7 @@
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             
-                                                            <select class="form-select" name="enquiry_customer" id="customer_id" required>
+                                                            <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                 <option value="" selected disabled>Select Customer</option>
                                                                 <?php foreach($customer_creation as $c_creation){?> 
                                                                     <option value="<?php echo $c_creation->cc_id;?>"><?php echo $c_creation->cc_customer_name;?></option>
@@ -100,7 +100,7 @@
                                                          
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        
                                                         <button class="btn btn btn-success">Submit</button>
                                                     </div>
                                                 </form>
@@ -122,9 +122,9 @@
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><input type="number" name="pd_serial_no[]" class="form-control" required></td>
+                                                                <td style="width: 10%;"><input type="number" value="1" name="pd_serial_no[]" class="form-control" required></td>
                                                                 <td>
-                                                                    <select class="form-select" name="pd_product_detail[]" required>
+                                                                    <select class="form-select ser_product_det" name="pd_product_detail[]" required>
                                                                         <option selected>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
                                                                             <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
@@ -140,7 +140,7 @@
                                                     </table>
                                                     <input type="hidden" class="enquiry_id" name="pd_customer_details">
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        
                                                         <button class="btn btn btn-success">Submit</button>
                                                     </div>
                                                 </form>
@@ -527,7 +527,7 @@
 
 			if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });
@@ -539,6 +539,81 @@
 	        pp--;
         });
 
+
+
+        /*customer droup drown search*/
+        $(".ser_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control-",
+            dropdownParent: $('#AddModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchTypes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /*###*/
+
+
+
+        /*enquiry droup drown search*/
+        $(".ser_product_det").select2({
+            placeholder: "Product Description",
+            theme : "default form-control-",
+            dropdownParent: $('#AddModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchTypes1",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /*###*/
 
 
 

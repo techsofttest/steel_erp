@@ -59,6 +59,33 @@
                                                             </select>
                                                         </div>
 
+                                                        
+
+                                                        <div class="col-md-3 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Direct / Enquiry</label>
+                                                            
+                                                            <select class="form-select" name="direct_enquiry" id="direct_enquiry" required>
+                                                                <option value="" selected disabled>Select Direct / Enquiry</option>
+                                                                <option value="direct">Direct</option>
+                                                                <option value="enquiry">Enquiry</option>
+                                                            </select>
+
+                                                        </div>
+
+
+
+                                                        <div class="col-md-3 col-lg-3" id="enq_num_div" style="display:none;">
+                                                            <label for="basicInput" class="form-label">Enquiry Number</label>
+                                                            
+                                                            <select class="form-select" name="enquiry_numb" id="enquiry_numb" required>
+                                                                <option value="" selected disabled>Select Enquiry Number</option>
+                                                               
+                                                               
+                                                            </select>
+
+                                                        </div>
+
+
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
                                                             
@@ -67,6 +94,8 @@
                                                                 
                                                             </select>
                                                         </div>
+
+
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
@@ -685,7 +714,7 @@
         });
 
 
-        $("body").on('change', '#contact_person_id', function(){ 
+        /*$("body").on('change', '#contact_person_id', function(){ 
             var id = $(this).val();
            
             $.ajax({
@@ -709,7 +738,7 @@
 
 
             });
-        });
+        });*/
 
 
        
@@ -734,6 +763,91 @@
         });
 
 
+
+        $("body").on('change', '#direct_enquiry', function(){ 
+            
+            var enquiry_direct =$("#direct_enquiry option:selected").val()
+
+            if(enquiry_direct === "enquiry"){
+               
+                var id = $("#customer_id option:selected").val()
+
+                
+            
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Crm/SalesQuotation/EnquiryId",
+
+                    method : "POST",
+
+                    data: {ID: id},
+
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+
+                        console.log(data.enquiry_output);  
+       
+                        $("#enquiry_numb").html(data.enquiry_output);
+
+                        // $("#direct_enquiry_div").css("display":block);
+
+                        $('#enq_num_div').show();
+
+                    }
+
+
+                });
+
+
+            }
+            else
+            {
+                $('#enq_num_div').hide();
+            }
+
+
+
+        });
+
+
+        $("body").on('change', '#enquiry_numb', function(){ 
+            
+            var id = $(this).val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchEnquiry",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                    
+                    document.getElementById('contact_person_id').value=data.contact_person;
+                    
+                    document.getElementById('qd_sales_executive_id').value=data.sales_executive;
+
+                    $("#qd_validity_id").val(data.enquiry_validity);
+
+                    $("#qd_project_id").val(data.enquiry_project);
+
+                    $("#qd_enquiry_reference_id").val(data.enquiry_enq_referance);
+                }
+
+
+            });
+
+
+        });
+
+
+
+
+        
 
 
      

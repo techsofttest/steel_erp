@@ -422,7 +422,7 @@
 
         /*droupdrown*/
         $(".product_head_select").select2({
-        placeholder: "Product Head",
+        placeholder: "Select Product Head",
         theme : "default form-control-",
         dropdownParent: $('#AddModal'),
         ajax: {

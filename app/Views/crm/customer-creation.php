@@ -51,10 +51,10 @@
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Account ID (Linked with GL)</label>
                                                             
-                                                            <select class="form-select" name="cc_account_id" required>
+                                                            <select class="form-select ser_account" name="cc_account_id"  required>
                                                                 <option value="" selected disabled>Select Account ID</option>
                                                                 <?php foreach($charts_accounts as $chart_account){?> 
-                                                                    <option value="<?php echo $chart_account->ca_id;?>"><?php echo $chart_account->ca_account_id;?></option>
+                                                                    <option value="<?php echo $chart_account->ca_id;?>"><?php echo $chart_account->ca_name;?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
@@ -66,7 +66,7 @@
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Telephone</label>
-                                                            <input type="number" name="cc_telephone" class="form-control" required>
+                                                            <input type="text" name="cc_telephone" id="cc_telephone" pattern="^[0-9\s]+$" class="form-control"  required>
                                                         </div>
 
                                                         <div class="col-md-2 col-lg-2">
@@ -97,7 +97,7 @@
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">GL Account Type</label>
                                                             
-                                                            <select class="form-select" name="cc_account_type" required>
+                                                            <select class="form-select ser_account_type" name="cc_account_type" required>
                                                                 <option value="" selected disabled>Select GL Account Type</option>
                                                                 <?php foreach($accounts_type as $account_type){?> 
                                                                 <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
@@ -264,7 +264,7 @@
                             </div>
                             <!--end col-->
                         </div>
-                        
+
                     </div>
                     <!--###-->
 
@@ -820,44 +820,6 @@
 
 
 
-        /*edit 1st tab*/
-        $(function() {
-            var form = $('#add_form4');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/UpdateTab1",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                           /* var responseData = JSON.parse(data);
-                            
-                            $(".customer_creation_id").val(responseData.customer_creation_id);
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }*/
-                        }
-                    });
-                }
-            });
-        });
-        /**/
-
-
-
 
         /*view*/ 
         $("body").on('click', '.view_btn', function(){ 
@@ -1107,6 +1069,92 @@
 	        $(this).parent().remove();
 	        y--;
         });
+
+
+        /* accountid  search droup drown start*/
+        
+        $(".ser_account").select2({
+            placeholder: "Select Account Id",
+            theme : "default form-control-",
+            dropdownParent: $('#AddModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /**/
+
+
+
+        /* GL account  search droup drown start*/
+        $(".ser_account_type").select2({
+            placeholder: "GL Account Type",
+            theme : "default form-control-",
+            dropdownParent: $('#AddModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes1",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.at_id, text: item.at_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /**/
+
+
+
+        $('#cc_telephone').on('input', function() {
+            // Allow digits, hyphens, and spaces
+            $(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
+        });
+
+
+        
 
      
 

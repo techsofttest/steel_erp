@@ -134,7 +134,8 @@ class SalesQuotation extends BaseController
     public function AddTab2()
     {
         $insert_data = $this->request->getPost();
-        if($_POST){
+        if($_POST)
+        {
 	        if(!empty($_POST['qpd_unit']))
 			{
 			    $count =  count($_POST['qpd_unit']);
@@ -165,9 +166,7 @@ class SalesQuotation extends BaseController
 			
 			
         }
-        
-
-       
+     
     }
 
 
@@ -181,16 +180,27 @@ class SalesQuotation extends BaseController
             unset($update_data['qd_id']);
         }
 
-        
-
-
         $this->common_model->EditData($update_data, $cond, 'crm_quotation_details');
-}
+    }
 
 
 
+    public function EnquiryId()
+    {
+        $cond = array('enquiry_customer' => $this->request->getPost('ID'));
 
-  
+        $customer_enquiry = $this->common_model->FetchWhere('crm_enquiry',$cond);
+        
+        $data['enquiry_output'] = '<option value="" selected disabled>Select Enquiry Number</option>';
+
+        foreach($customer_enquiry as $cust_enq)
+        {
+            $data['enquiry_output'] .= '<option value="'.$cust_enq->enquiry_id.'">'.$cust_enq->enquiry_enq_number.'</option>'; 
+        }
+
+        echo json_encode($data);
+         
+    }
 
 
 
@@ -355,7 +365,6 @@ class SalesQuotation extends BaseController
             $data['enquiry_enq_referance']  = "";
         }
        
-
         echo json_encode($data);
     }
 
@@ -370,28 +379,49 @@ class SalesQuotation extends BaseController
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('account_id', $update_data)) 
         {
-             unset($update_data['account_id']);
+            unset($update_data['account_id']);
         }       
 
         $update_data['at_added_by'] = 0; 
 
         $update_data['at_modify_date'] = date('Y-m-d'); 
-
-
-
+        
         $this->common_model->EditData($update_data,$cond,'accounts_account_types');
        
     }
 
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('at_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
- 
-         
-     }
+        $this->common_model->DeleteData('accounts_account_types',$cond);
+   
+    }
+
+
+    //fetch inquiry
+    public function FetchEnquiry()
+    {   
+       
+        $cond = array('enquiry_id' => $this->request->getPost('ID'));
+
+        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
+        
+        $data['contact_person'] = $enquiry->enquiry_contact_person;
+
+        $data['sales_executive'] = $enquiry->enquiry_sales_executive;
+
+        $data['enquiry_validity'] = $enquiry->enquiry_validity;
+
+        $data['enquiry_project'] = $enquiry->enquiry_project;
+
+        $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
+
+        echo json_encode($data);
+       
+    }
 
 
 
