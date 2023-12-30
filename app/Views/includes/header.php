@@ -47,13 +47,14 @@
     
     .select2-container {
     vertical-align: unset !important;
-    height: calc(1.5em + 1rem + calc(var(--vz-border-width) * 2)) !important;
+    /*height: calc(1.5em + 1rem + calc(var(--vz-border-width) * 2)) !important;*/
+    height:unset !important;
     }
 
     .select2-container--default .select2-selection--single {
     background-color: unset !important;
     border: unset !important;  
-     border-radius: 4px; 
+    border-radius: 4px; 
     }
 
     .select2-container--open {
