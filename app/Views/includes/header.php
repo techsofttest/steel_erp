@@ -185,7 +185,22 @@
         color: green;
         
     }
-
+    /*.cost_remove
+    {
+        margin-top: 33px;
+    }*/
+    .remove-cost
+    {
+        position: relative;
+        top: -37px;
+        left: 1093px;
+    }
+    .non_border_input 
+    {
+        border: 0;
+        outline: none;
+    }
+   
     /* ##### */
      
 
