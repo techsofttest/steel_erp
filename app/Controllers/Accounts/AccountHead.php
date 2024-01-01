@@ -61,7 +61,7 @@ class AccountHead extends BaseController
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ah_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ah_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
-              "ah_id"=>$i,
+              "ah_head_id"=>$record->ah_head_id,
               "ah_account_name"=>$record->ah_account_name,
               "ah_account_type"=>$record->at_name,
               "action" =>$action,

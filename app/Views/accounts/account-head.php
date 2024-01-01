@@ -24,14 +24,23 @@
                     <div class="live-preview">
                        
                             <div class="row align-items-end">
-                               <div class="col-col-md-6 col-lg-6">
+
+                            <div class="col-col-md-3 col-lg-3">
+                                    <div>
+                                        <label for="basiInput" class="form-label">Id</label>
+                                        <input type="text" id=""  name="ah_head_id" class="form-control" required>
+                                        
+                                    </div>
+                                </div>
+
+                               <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Name</label>
                                         <input type="text" id="account_type_inp"  name="ah_account_name" class="form-control" required>
                                         
                                     </div>
                                 </div>
-                                <div class="col-col-md-6 col-lg-6">
+                                <div class="col-col-md-4 col-lg-4">
                                     <div>
                                         <label for="basiInput" class="form-label">Account Type</label>
                                         <select class="form-select" name="ah_account_type" required>
@@ -90,7 +99,7 @@
                     <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
+                                <th class="no-sort">Id</th>
                                 <th>Account Name</th>
                                 <th>Account Type</th>
                                 <th>Actions</th>
@@ -141,7 +150,17 @@
                                         
                                             <div class="row align-items-end">
 
-                                            <div class="col-col-md-6 col-lg-6">
+
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                    <div>
+                                                        <label for="basiInput" class="form-label">Id</label>
+                                                        <input type="text" id="edit_account_hid" value="" name="ah_head_id" class="form-control " required>
+                                                    </div>
+                                                </div>
+
+
+                                            <div class="col-col-md-3 col-lg-3">
                                                     <div>
                                                         <label for="basiInput" class="form-label">Account Name</label>
                                                         <input type="text" id="edit_account_name" value="" name="ah_account_name" class="form-control " required>
@@ -248,6 +267,8 @@
                 {   
                     var data = JSON.parse(data);
 
+                    $("#edit_account_hid").val(data.ah_head_id);
+
                     $("#edit_account_name").val(data.ah_account_name);
 
                     $("#edit_account_type").val(data.ah_account_type);
@@ -353,7 +374,7 @@
                     }
                 },
                 'columns': [
-                    { data: 'ah_id' },
+                    { data: 'ah_head_id' },
                     { data: 'ah_account_name' },
                     { data: 'ah_account_type' },
                     { data: 'action' },
