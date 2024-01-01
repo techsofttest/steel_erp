@@ -155,7 +155,7 @@ class SalesOrder extends BaseController
 	        if(!empty($_POST['spd_unit']))
 			{
 			    $count =  count($_POST['spd_unit']);
-					
+				
 				if($count!=0)
 			    {  
 					for($j=0;$j<=$count-1;$j++)
