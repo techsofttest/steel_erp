@@ -405,6 +405,7 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
     
         /*add section*/    
+          /*add section*/    
         $(function() {
             var form = $('#add_form1');
             
@@ -514,6 +515,13 @@
 
 
         /**/
+
+
+        
+
+
+
+       
 
 
 
@@ -708,7 +716,7 @@
         $("body").on('click', '.add_product2', function(){
             
             var pp = $('.prod_row').length
-            pp++
+            
             alert(pp)
             
 			//if(pp < max_fieldspp){ 

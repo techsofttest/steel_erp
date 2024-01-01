@@ -207,7 +207,7 @@ class SalesOrder extends BaseController
                         
 
 					    $insert_data  	= array(  
-							'spd_serial_no'         =>  $_POST['spd_serial_no'][$j],
+							
 							'spd_product_details'   =>  $_POST['spd_product_details'][$j],
 							'spd_unit'              =>  $_POST['spd_unit'][$j],
 						    'spd_quantity'          =>  $_POST['spd_quantity'][$j],
