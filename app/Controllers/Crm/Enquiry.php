@@ -89,7 +89,7 @@ class Enquiry extends BaseController
 
 
     // search droup drown (customer)
-    public function FetchTypes()
+    public function FetchCustomer()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -109,7 +109,7 @@ class Enquiry extends BaseController
 
 
     // search droup drown (product description)
-    public function FetchTypes1()
+    public function FetchProdDes()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;

@@ -50,9 +50,7 @@
                                                             
                                                             <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                 <option value="" selected disabled>Select Customer</option>
-                                                                <?php foreach($customer_creation as $c_creation){?> 
-                                                                    <option value="<?php echo $c_creation->cc_id;?>"><?php echo $c_creation->cc_customer_name;?></option>
-                                                                <?php } ?>
+                                                               
                                                             </select>
                                                         </div>
                                                         <div class="col-md-2 col-lg-2">
@@ -547,7 +545,7 @@
             theme : "default form-control-",
             dropdownParent: $('#AddModal'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchTypes",
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchCustomer",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -585,7 +583,7 @@
             theme : "default form-control-",
             dropdownParent: $('#AddModal'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchTypes1",
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,

@@ -185,10 +185,7 @@
         color: green;
         
     }
-    /*.cost_remove
-    {
-        margin-top: 33px;
-    }*/
+    
     .remove-cost
     {
         position: relative;

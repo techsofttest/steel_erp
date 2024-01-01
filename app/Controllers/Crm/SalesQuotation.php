@@ -87,6 +87,45 @@ class SalesQuotation extends BaseController
         /*pagination end*/
     } 
 
+
+    public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+    public function FetchTypes1()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
     //view page
     public function index()
     {   
@@ -148,7 +187,7 @@ class SalesQuotation extends BaseController
 					    $insert_data  	= array(  
 							'qpd_serial_no'            =>  $_POST['qpd_serial_no'][$j],
 							'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
-							'qpd_unit'                 =>   $_POST['qpd_unit'][$j],
+							'qpd_unit'                 =>  $_POST['qpd_unit'][$j],
 						    'qpd_quantity'             =>  $_POST['qpd_quantity'][$j],
                             'qpd_rate'                 =>  $_POST['qpd_rate'][$j],
                             'qpd_discount'             =>  $_POST['qpd_discount'][$j],
@@ -289,6 +328,8 @@ class SalesQuotation extends BaseController
 
         $data['qd_gross_profit']      = $quotation_details->qd_gross_profit;
 
+        $data['qd_direct']      = $quotation_details->qd_direct;
+
 
          
         
@@ -408,6 +449,13 @@ class SalesQuotation extends BaseController
         $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
         $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
+       
+        $cond1 = array('pd_customer_details' => $this->request->getPost('ID'));
+
+        $product_detail = $this->common_model->FetchWhere('crm_product_detail',$cond1);
+
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+       
         
         $data['contact_person'] = $enquiry->enquiry_contact_person;
 
@@ -419,8 +467,49 @@ class SalesQuotation extends BaseController
 
         $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
 
+        $data['product_detail'] = '<table class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td>Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount(%)</td><td>Amount</td><td>Action</td></tr>'; 
+        
+        $i=1;
+        foreach($product_detail as $prod_det){
+
+        $data['product_detail'] .= '<tr class="prod_row">
+                                        <td><input type="number" name="qpd_serial_no[]" value="'.$i.'" class="form-control non_border_input" style="style="border:none"" required></td>
+                                        <td>
+                                            <select class="form-select droup_product" name="qpd_product_description[]" required>
+                                                <option selected>Select Product Description</option>';
+                                                foreach($products as $prod){
+                                                    $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
+                                                    if($prod->product_id == $prod_det->pd_id){ $data['product_detail'] .= "selected"; }
+                                                    $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                }
+                                            $data['product_detail'] .='</select>
+                                        </td>
+                                        <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
+                                        <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
+                                        <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
+                                        <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
+                                        <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
+                                        <td class="row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
+                                    </tr>';
+        $i++;
+        }
+        
+        $data['product_detail'] .= '</tbody><tbody class="travelerinfo product-more2"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product2"><i class="ri-add-circle-line"></i>Add More</span></div><input type="hidden" name="qpd_quotation_details" class="quotation_details_id"><div class="modal-footer justify-content-center"><button class="btn btn btn-success">Save</button></div>';
+
         echo json_encode($data);
        
+    }
+
+
+
+    //delete contact details
+    public function DeleteContact()
+    {
+        $cond = array('pd_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_product_detail',$cond);
+
+        
     }
 
 

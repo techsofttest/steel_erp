@@ -836,7 +836,7 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                    console.log(data.account_type_out);
+                    
                     $('#cc_customer_name_id').val(data.cc_customer_name);
 
                     $('#cc_account_id_view').val(data.ca_account_id);

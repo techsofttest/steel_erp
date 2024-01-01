@@ -421,29 +421,39 @@ class SalesOrder extends BaseController
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);
         
-       
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
          
         $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td></tr>';
+        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td><td>Action</td></tr>';
 
         foreach($product_details_data as $prod_det)
         {   
             $prod_det->qpd_amount;
 
-            $data['prod_details'] .='<tr>
-            <td><input type="text"  name="spd_serial_no[]"  value="'.$prod_det->qpd_serial_no.'" class="form-control " readonly></td>
-            <td><input type="text"  name="spd_product_details[]"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->qpd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->qpd_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->qpd_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->qpd_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" name="spd_amount[]" value="'.$prod_det->qpd_amount.'" class="form-control " readonly></td>
+            $data['prod_details'] .='<tr class="prod_row" id="'.$prod_det->qpd_id.'">
+            <td><input type="text"  name="spd_serial_no[]"  value="'.$prod_det->qpd_serial_no.'" class="form-control non_border_input" readonly></td>
+            <td>
+                <select class="form-select droup_product" name="spd_product_details[]" required>';
+                    
+                    foreach($products as $prod){
+                        $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                        if($prod->product_id == $prod_det->qpd_product_description){ $data['prod_details'] .= "selected"; }
+                        $data['prod_details'] .='>'.$prod->product_details.'</option>';
+                    }
+            $data['prod_details'] .='</select>
+            </td>
+            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->qpd_unit.'" class="form-control " required></td>
+            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->qpd_quantity.'" class="form-control qtn_clz_id"  required></td>
+            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->qpd_rate.'" class="form-control rate_clz_id" required></td>
+            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->qpd_discount.'" class="form-control discount_clz_id" required></td>
+            <td> <input type="text" name="spd_amount[]" value="'.$prod_det->qpd_amount.'" class="form-control amount_clz_id" required></td>
+            <td class="row_remove" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>'; 
              
         }
         
-        $data['prod_details'] .= '</tbody></table>';
+        $data['prod_details'] .= '</tbody><tbody class="travelerinfo product-more2"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product2"><i class="ri-add-circle-line"></i>Add More</span></div>';
 
         /**/
 
@@ -509,15 +519,26 @@ class SalesOrder extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {
+    //delete account head
+    public function Delete()
+    {
          $cond = array('at_id' => $this->request->getPost('ID'));
  
          $this->common_model->DeleteData('accounts_account_types',$cond);
  
          
-     }
+    }
+
+
+    //delete contact details
+    public function DeleteContact()
+    {
+        $cond = array('qpd_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_quotation_product_details',$cond);
+
+        
+    }
 
 
 

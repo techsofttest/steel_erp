@@ -73,29 +73,29 @@
                                                         </div>
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Contact Person</label>
-                                                            <input type="text" name="so_contact_person" id="contact_person" class="form-control" readonly>
+                                                            <input type="text" name="so_contact_person" id="contact_person" class="form-control" required>
                                                         
                                                            
                                                         </div>
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Sales Executive</label>
-                                                            <input type="text" name="so_sales_executive" id="sales_executive" class="form-control" readonly>
+                                                            <input type="text" name="so_sales_executive" id="sales_executive" class="form-control" required>
                                                             
                                                         </div>
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Payment Term</label>
-                                                            <input type="text" name="so_payment_term" id="payment_term" class="form-control" readonly>
+                                                            <input type="text" name="so_payment_term" id="payment_term" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Delivery Term</label>
-                                                            <input type="text" name="so_delivery_term" id="delivery_term" class="form-control" readonly>
+                                                            <input type="text" name="so_delivery_term" id="delivery_term" class="form-control" required>
                                                             
                                                         </div>
 
                                                       
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="so_project" id="project" class="form-control" readonly>
+                                                            <input type="text" name="so_project" id="project" class="form-control" required>
                                                         </div>
                                                         
                                                         
@@ -415,6 +415,7 @@
                 messages: {
                     required: 'This field is required',
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
@@ -449,6 +450,7 @@
                 messages: {
                     required: 'This field is required',
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
@@ -473,29 +475,45 @@
 
 
 
-        $(function () {
+        /*form3 add start*/
+        
+        $(function() {
             var form = $('#add_form3');
-            form.submit(function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Create FormData object to handle file uploads
+                    var formData = new FormData(currentForm);
 
-            $.ajax({
-                url: "<?php echo base_url(); ?>Crm/SalesOrder/AddTab3",
-                method: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    $('#add_form1')[0].reset();
-                    $('#add_form2')[0].reset();
-                    $('#add_form3')[0].reset();
-                    $('#AddModal').modal('hide');
-                    alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                    datatable.ajax.reload(null, false);
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/SalesOrder/AddTab3",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                            $('#add_form1')[0].reset();
+                            $('#add_form2')[0].reset();
+                            $('#add_form3')[0].reset();
+                            $('#AddModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload(null, false);
+                        }
+                    });
                 }
             });
-       });
-    });
+        });
+
+
+        /**/
 
 
 
@@ -609,6 +627,8 @@
         });
         /*###*/
 
+
+
         $("body").on('change', '#customer_id', function(){ 
             var id = $(this).val();
            
@@ -634,6 +654,7 @@
 
             });
         });
+
 
 
 
@@ -679,18 +700,25 @@
         });
 
 
-       
+        /*product section start*/
 
-        var max_fieldspp      = 30;
-        var pp = 1;
-        $("#add_product2").click(function(){
-
-			if(pp < max_fieldspp){ 
-                pp++;
+       // var max_fieldspp      = 30;
+        //var pp = 1;
         
-                $("#product-more2").append("<tr><td><input type='number' name='qpd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='number' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control ' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control ' required=''></td><td><input type='number' name='qpd_discount[]' class='form-control ' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+        $("body").on('click', '.add_product2', function(){
+            
+            var pp = $('.prod_row').length
+            pp++
+            alert(pp)
+            
+			//if(pp < max_fieldspp){ 
+                
+                //pp++;
+                
+                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
-			}
+			//}
+
 	    });
 
         $(document).on("click", ".remove-btnpp", function() 
@@ -700,10 +728,76 @@
                 pp--;
         });
 
+        /**/
 
 
 
-     
+        /*product detail calculation*/
+        
+        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+
+            var discount = $(this).val();
+
+            var $discountSelect = $(this);
+
+            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
+
+            var quantity = $quantitySelectElement.val();
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = parseFloat(quantity); 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var orginalPrice = multipliedTotal - discount
+
+            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+
+            $amountElement.val(orginalPrice);
+
+
+
+        });
+
+        /**/
+
+
+
+        /*delete product detail row*/
+
+        $("body").on('click', '.row_remove', function(){ 
+	   
+            var id = $(this).data('id');
+       
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteContact",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    $('#' + id).remove();
+                    $('#' + id).fadeIn();
+                }
+
+
+            });
+
+        });
+
+        /**/
+
+
+
 
     });
 
