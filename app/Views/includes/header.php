@@ -192,12 +192,19 @@
         top: -37px;
         left: 1093px;
     }
+    
     .non_border_input 
     {
         border: 0;
         outline: none;
     }
-   
+
+    #total_cost_id
+    {
+        font-size: 17px;
+        color: black;
+    }
+
     /* ##### */
      
 

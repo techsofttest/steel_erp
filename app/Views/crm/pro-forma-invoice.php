@@ -66,7 +66,7 @@
 
                                                         <label for="basicInput" class="form-label">Sales Order Number</label>
 
-                                                        <select class="form-select" name="pf_sales_order" id="sales_order_add" required>
+                                                        <select class="form-select sales_order_add_clz" name="pf_sales_order" id="sales_order_add" required>
 
                                                             <option value="" selected disabled>Select Sales Order</option>
                                                             
@@ -131,45 +131,10 @@
                                             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                                                 <form class="Dashboard-form class" id="add_form2">
                                                     <!-- Tab 2 content goes here -->
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
-                                                            <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Quantity</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount(%)</td>
-                                                                <td>Amount</td>
-                                                                <td>Current Claim</td>
-                                                                <td>In Words</td>
-                                                                <td>Action</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>
-                                                                    <select class="form-select" name="pd_product_detail[]" required>
-                                                                        <option selected>Select Product Description</option>
-                                                                        <?php foreach($products as $prod){?>
-                                                                            <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
-                                                                        <?php } ?>
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="text" name="pd_unit[]" class="form-control" required></td>
-                                                                <td><input type="number" name="pd_quantity[]" class="form-control" required></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tbody id="product-more" class="travelerinfo"></tbody>
-                                                    </table>
+                                                    <div id="product_detail_table"></div>
+                                                    
                                                     <input type="hidden" class="enquiry_id" name="pd_customer_details">
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                                         <button class="btn btn btn-success">Submit</button>
                                                     </div>
                                                 </form>
@@ -203,9 +168,10 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
+                                                    <th>Pro-forma Invoice Number</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+                                                    <th>Sales Order No</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -378,7 +344,7 @@
                         success: function(data) {
                             var responseData = JSON.parse(data);
                             
-                            $(".enquiry_id").val(responseData.enquiry_id);
+                            $(".pf_id_clz").val(responseData.pf_id);
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
                             if (nextTab.length > 0) {
@@ -386,6 +352,7 @@
                             } else {
                                 console.error("Next tab not found!");
                             }
+                            totalCalcutate();
                         }
                     });
                 }
@@ -403,10 +370,11 @@
                 messages: {
                     required: 'This field is required',
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/Enquiry/AddTab2",
+                        url: "<?php echo base_url(); ?>Crm/ProFormaInvoice/AddTab2",
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
@@ -489,7 +457,7 @@
             'serverMethod': 'post',
             'ajax': 
             {
-                'url': "<?php echo base_url(); ?>Crm/Enquiry/FetchData",
+                'url': "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchData",
                 'data': function (data) {
                     // CSRF Hash
                     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -508,10 +476,11 @@
                 }
             },
             'columns': [
-                { data: 'enquiry_id' },
-                { data: 'enquiry_enq_number' },
-                { data: 'enquiry_date'},
-                { data: 'enquiry_customer'},
+                { data: 'pf_id' },
+                { data: 'pf_uid' },
+                { data: 'pf_date'},
+                { data: 'pf_customer'},
+                { data: 'pf_sales_order'},
                 { data: 'action'},
                 
                ]
@@ -531,7 +500,7 @@
             //Fetch Contact Person
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/Enquiry/ContactPerson",
+                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/ContactPerson",
 
                 method : "POST",
 
@@ -579,13 +548,17 @@
 
         var max_fieldspp      = 30;
         var pp = 1;
-        $("#add_product").click(function(){
+        //$("#add_product").click(function(){
+        $("body").on('click', '.add_product', function(){
+            
+            var pp = $('.prod_row').length
 
-			if(pp < max_fieldspp){ 
+			//if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+	            
+                $("#product-more").append("<tr class='prod_row'><td>"+pp+"</td><td><select class='form-select' name='pd_product_detail[]' required><option selected>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit[]' class='form-control' required></td><td><input type='number' name='pp_quantity[]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate[]' class='form-control rate_clz_id' required></td><td><input type='number' name='pp_discount[]' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount[]' class='form-control amount_clz_id' required></td><td><input type='text' name='pp_current_claim[]' class='form-control ' required></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
-			}
+			//}
 	    });
 
         $(document).on("click", ".remove-btnpp", function() 
@@ -656,8 +629,8 @@
 
             success:function(data)
             {
-            
-            $('#sales_order_add').html(data);
+                var data = JSON.parse(data);
+            $('#sales_order_add').html(data.orders);
 
             }
 
@@ -712,6 +685,124 @@
             }
         })
         /*###*/
+
+
+        /*onchange function Sales Order Number*/
+
+        $('#sales_order_add').change(function(){
+
+            var id = $(this).val();
+
+            $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchSalesOrder",
+
+            method : "POST",
+
+            data : {id:id},
+
+            success:function(data)
+            {
+                var data = JSON.parse(data);
+                
+                $('#product_detail_table').html(data.saleorder_output);
+
+            }
+
+
+            });
+
+
+        });
+
+        /**/
+
+
+
+
+        /*product detail calculation*/
+        
+        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+
+            var discount = $(this).val();
+
+            var discountSelect = $(this);
+
+            var discountSelectElement = discountSelect.closest('.prod_row').find('.rate_clz_id');
+
+            var rate = discountSelectElement.val();
+
+            var quantitySelectElement = discountSelect.closest('.prod_row').find('.qtn_clz_id');
+
+            var quantity = quantitySelectElement.val();
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = parseFloat(quantity); 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var result = discount / 100;
+
+            var orginalPrice = multipliedTotal * result
+
+            var $amountElement = discountSelect.closest('.prod_row').find('.amount_clz_id');
+
+            $amountElement.val(orginalPrice);
+
+            totalCalcutate()
+
+        });
+
+        /*delete product detail row*/
+
+        $("body").on('click', '.row_remove', function(){ 
+	   
+            var id = $(this).data('id');
+  
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/DeleteContact",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    $('#' + id).remove();
+                    $('#' + id).fadeIn();
+                }
+
+
+            });
+
+        });
+
+   /**/
+
+
+        function totalCalcutate()
+        {  
+            var total = 0;
+            $('body .amount_clz_id').each(function()
+            {
+                var sub_tot = $(this).val();
+                total += parseInt(sub_tot)||0;
+                console.log(total);
+            });
+
+            $('input[name=pf_total_cost]').val(total);
+
+           $("#total_cost_id").html('Grand Total:' + total);
+
+        }
+
+
+
+
+/**/
 
 
 
