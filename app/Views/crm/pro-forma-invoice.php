@@ -17,7 +17,7 @@
                                 
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">ProForma Invoice</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Pro-Forma Invoice</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -160,7 +160,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Pro-Forma Invoice</h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
