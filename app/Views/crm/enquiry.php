@@ -120,7 +120,7 @@
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width: 10%;"><input type="number" value="1" name="pd_serial_no[]" class="form-control" required></td>
+                                                                <td style="width: 10%;"><input type="number" value="1" name="pd_serial_no[]" class="form-control" required readonly></td>
                                                                 <td>
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[]" required>
                                                                         <option selected>Select Product Description</option>
@@ -519,20 +519,19 @@
 
        
 
-        var max_fieldspp      = 30;
+        var max_fieldspp  = 30;
         var pp = 1;
         $("#add_product").click(function(){
 
 			if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required=''></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });
 
         $(document).on("click", ".remove-btnpp", function() 
         {
-	 
 	        $(this).parent().remove();
 	        pp--;
         });
@@ -559,7 +558,7 @@
                 },
                 processResults: function(data, params) {
                     //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
                     console.log(data);
                     var page = params.page || 1;
@@ -578,6 +577,7 @@
 
 
         /*enquiry droup drown search*/
+        /*
         $(".ser_product_det").select2({
             placeholder: "Product Description",
             theme : "default form-control-",
@@ -612,6 +612,7 @@
             }
         })
         /*###*/
+    
 
 
 

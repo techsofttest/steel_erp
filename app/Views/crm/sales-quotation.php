@@ -28,10 +28,10 @@
                                                 <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Quotation Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                                                <a class="nav-link src-nav-link disabled"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Cost Calculation</a>
+                                                <a class="nav-link src-nav-link disabled"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Cost Calculation</a>
                                             </li>
                                             
                                             <!-- Add more tabs as needed -->
@@ -179,7 +179,7 @@
                                                                 <div class="col-md-3 col-lg-3">
                                                                     <label for="basiInput" class="form-label">Material / Services</label>
                                                                     <!--<input type="text" name="qd_materials" class="form-control" required>--->
-                                                                    <select id="quotation_material" class="form-control quotation_material_clz">
+                                                                    <select id="quotation_material" class="form-control quotation_material_clz" name="quotation_material[]" required>
                                                                         <option value="" selected disabled>Select Material / Services</option>
                                                 
                                                                     </select>
@@ -188,18 +188,18 @@
                                                                 
                                                                 <div class="col-md-3 col-lg-3">
                                                                     <label for="basiInput" class="form-label">Qty</label>
-                                                                    <input type="number" name="qd_qty" class="form-control cost_qty" required>
+                                                                    <input type="number" name="qc_qty[]" class="form-control cost_qty" required>
                                                                 </div>
                                                             
                                                                 <div class="col-md-3 col-lg-3">
                                                                     <label for="basicInput" class="form-label">Rate</label>
-                                                                    <input type="number" name="qd_rate" class="form-control cost_rate" required>
+                                                                    <input type="number" name="qc_rate[]" class="form-control cost_rate" required>
                                                                 </div>
                                                             
 
                                                                 <div class="col-md-3 col-lg-3">
                                                                     <label for="basicInput" class="form-label">Amount</label>
-                                                                    <input type="number" name="qd_amount" class="form-control cost_amount" required style="width:95%">
+                                                                    <input type="number" name="qc_amount[]" readonly class="form-control cost_amount" required style="width:95%">
                                                                 </div>
 
                                                             </div>
@@ -207,37 +207,46 @@
                                                         </div>
 
 
-                                                        
 
                                                         <!--<div class="cost_cal"></div>-->
                                                         <div class="col-lg-12 cost_cal"></div>
 
+
                                                         
+                                                        <div class="col-lg-12">
+                                                            
+                                                            <div class="edit_add_more_div"><span class="edit_add_more add_cost_more"><i class="ri-add-circle-line"></i>Add More</span></div>
+
+                                                        </div>
+
 
 
                                                         <div class="col-lg-12">
                                                             <div class="row">
-                                                                <div class="col-lg-4"></div>
+                                                                <div class="col-lg-3"></div>
+
                                                                 <div class="col-md-2 col-lg-2">
                                                                     <label for="basicInput" class="form-label">Cost of Sales</label>
-                                                                    <input type="number" name="qd_cost_of_sale" class="form-control" required>
+                                                                    <input type="number" name="qd_cost_of_sale" class="form-control" readonly required>
                                                                 </div>
 
                                                                 <div class="col-md-2 col-lg-2">
-                                                                    <label for="basicInput" class="form-label">% of Gross profit</label>
+                                                                    <label for="basicInput" class="form-label">% of Gross Profit</label>
                                                                     <input type="number" name="qd_gross_profit" class="form-control" required>
                                                                 </div>
-                                                                <div class="col-lg-4"></div>
+
+
+                                                                <div class="col-md-2 col-lg-2">
+                                                                    <label for="basicInput" class="form-label">Grand Total</label>
+                                                                    <input type="number" name="qd_amount_total" class="form-control" required readonly>
+                                                                </div>
+
+
+                                                                <div class="col-lg-3"></div>
 
                                                             </div>
                                                         </div>
-
-
-
-                                                        <div class="col-lg-12">
-                                                            <div class="edit_add_more_div"><span class="edit_add_more add_cost_more"><i class="ri-add-circle-line"></i>Add More</span></div>
-
-                                                        </div>
+                                                      
                                                         
                                                         <input type="hidden" name="qd_id" class="quotation_details_id"> 
                                                     </div>
@@ -323,25 +332,30 @@
     <div class="modal-dialog modal-xl">
                                 
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Sales Quotation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+
                     <li class="nav-item" role="presentation">
                         <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="true">Quotation Details</a>
                     </li>
+
                     <li class="nav-item" role="presentation">
                         <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab5" role="tab" aria-controls="tab5" aria-selected="false">Product Details</a>
                     </li>
+
                     <li class="nav-item" role="presentation">
                         <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab6" role="tab" aria-controls="tab6" aria-selected="false">Cost Calculation</a>
                     </li>
                     
-                    <!-- Add more tabs as needed -->
+                <!-- Add more tabs as needed -->
                 </ul>
 
                 <!-- Tab panes -->
@@ -410,15 +424,18 @@
                                                 
                     <!---->
                     <div class="tab-pane fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+
                         <form class="Dashboard-form class" id="product_detail_table">
                             <!-- Tab 2 content goes here -->
                             
                             
                             
                         </form>
+
                         <div class="modal-footer justify-content-center">
                                 
                         </div>
+
                     </div>
 
                     <!---->
@@ -446,7 +463,7 @@
 
                                 <div class="col-md-2 col-lg-2">
                                     <label for="basicInput" class="form-label">Amount</label>
-                                    <input type="number"  id="quotation_amount" class="form-control" readonly>
+                                    <input type="number"  id="quotation_amount" class="form-control quotation_amount" readonly>
                                 </div>
 
                                 <div id=""></div>
@@ -514,6 +531,7 @@
                             $(".quotation_details_id").val(responseData.qd_id);
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            nextTab.removeClass("disabled");
                             if (nextTab.length > 0) {
                                 nextTab.tab('show');
                             } else {
@@ -547,6 +565,7 @@
                             
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            nextTab.removeClass("disabled");
                             if (nextTab.length > 0) {
                                 nextTab.tab('show');
                             } else {
@@ -562,6 +581,7 @@
 
 
         $(function() {
+
             var form = $('#add_form3');
             
             form.validate({
@@ -600,6 +620,7 @@
 
         /*view*/ 
         $("body").on('click', '.view_btn', function(){ 
+            
             var id = $(this).data('id');
             
             $.ajax({
@@ -611,7 +632,8 @@
                 data: {ID: id},
 
                 success:function(data)
-                {   
+                {
+
                     var data = JSON.parse(data);
                     
                     $("#quotation_number_id").val(data.qd_quotation_number);
@@ -782,7 +804,7 @@
 
        
 
-        var max_fieldspp      = 30;
+        var max_fieldspp  = 30;
 
         var pp = 1;
         
@@ -792,7 +814,7 @@
 			if(pp < max_fieldspp){ 
                 pp++;
         
-                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required='' readonly></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });
@@ -807,7 +829,7 @@
         
         /*cost calculation add more*/
 
-        var max_fieldcost      = 30;
+        var max_fieldcost = 30;
         var cc = 1;
         
         $("body").on('click', '.add_cost_more', function(){
@@ -818,16 +840,17 @@
         
                 //$(".cost_cal").append("<div class='row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control' required></div><div class='col-md-2 col-lg-2'><label for='basicInput' class='form-label'>Amount</label><input type='number' name='qd_amount' class='form-control' required></div><div class='col-lg-1 remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
 
-                $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+                $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
           
 			}
 	    });
 
         $(document).on("click", ".remove-cost", function() 
         {
-	 
             $(this).parent().remove();
             cc--;
+            totalCalcutate();
+            grossCalculate();
         });
 
         /**/
@@ -941,9 +964,9 @@
         //$("body").on('keyup', '.discount_clz_id', function(){ 
         $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
 
-            var discount = $(this).val();
-            
             var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
             
             var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
@@ -951,22 +974,23 @@
 
             var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
-            var quantity = $quantitySelectElement.val();
+            var quantity = parseInt($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
             var parsedQuantity = parseFloat(quantity); 
 
             var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
            
-            var orginalPrice = multipliedTotal - discount
+            var orginalPrice = multipliedTotal - per_amount;
 
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
             $amountElement.val(orginalPrice);
 
            
-
         });
 
 
@@ -1112,10 +1136,65 @@
 
             $amountElement.val(multipliedTotal);
 
-          
+            totalCalcutate();
 
+            grossCalculate();
+          
+        });
+
+
+
+        function totalCalcutate()
+        {
+
+        var total = 0; 
+        
+        $('body .cost_amount').each(function()
+        {
+
+        var sub_tot = $(this).val();
+
+
+        total += parseInt(sub_tot)||0;
 
         });
+
+        $('input[name=qd_cost_of_sale]').val(total);
+
+
+        }
+
+
+        $('input[name=qd_gross_profit]').on("keyup change",function(){
+
+        grossCalculate();
+
+        });
+
+
+
+        function grossCalculate()
+        {
+
+        var percentage = parseInt($('input[name=qd_gross_profit]').val())||0;
+
+        var total = parseInt($('input[name=qd_cost_of_sale]').val()) || 0;
+
+        var per_amount = (percentage/100)*total;
+
+        var grand_total = total+per_amount;
+
+        $('input[name=qd_amount_total]').val(grand_total);
+
+        }
+
+
+
+
+
+
+
+
 
         
      

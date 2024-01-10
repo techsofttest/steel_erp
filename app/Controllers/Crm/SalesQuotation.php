@@ -213,13 +213,28 @@ class SalesQuotation extends BaseController
     public function AddTab3()
     {
         $cond = array('qd_id' => $this->request->getPost('qd_id'));
+
         $update_data = $this->request->getPost();
 
-        if (array_key_exists('qd_id', $update_data)) {
-            unset($update_data['qd_id']);
-        }
+        $count = count($_POST['quotation_material']);
 
-        $this->common_model->EditData($update_data, $cond, 'crm_quotation_details');
+        for($i=0;$i<$count;$i++)
+        {
+
+            $insert_data['qc_quotation_id'] = $_POST['qd_id'];
+
+            $insert_data['qc_material']=$_POST['quotation_material'][$i];
+
+            $insert_data['qc_qty'] = $_POST['qc_qty'];
+
+            $insert_data['qc_rate'] = $_POST['qc_qty'];
+
+            $insert_data['qc_amount'] = $_POST['qc_amount'];
+
+            $this->common_model->InsertData('crm_quotation_cost_calculation',$insert_data);
+
+        }
+        
     }
 
 
@@ -287,8 +302,6 @@ class SalesQuotation extends BaseController
                 'pk'    => 'product_id',
                 'fk'    => 'qpd_product_description',
             ),
-           
-
         );
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);

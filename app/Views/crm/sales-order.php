@@ -28,10 +28,10 @@
                                                 <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Sales Order Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                                                <a class="nav-link src-nav-link disabled"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">More Details</a>
+                                                <a class="nav-link src-nav-link disabled"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">More Details</a>
                                             </li>
                                           
                                             
@@ -331,7 +331,6 @@
                                                     </div>
                                                 </form>
                                             </div>
-
                                             <!---->
 
                                             <!---->
@@ -427,8 +426,10 @@
                             var responseData = JSON.parse(data);
                            
                             $(".spd_sales_order_id").val(responseData.so_id);
+                            
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            nextTab.removeClass("disabled");
                             if (nextTab.length > 0) {
                                 nextTab.tab('show');
                             } else {
@@ -462,6 +463,7 @@
                            
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            nextTab.removeClass("disabled");
                             if (nextTab.length > 0) {
                                 nextTab.tab('show');
                             } else {
