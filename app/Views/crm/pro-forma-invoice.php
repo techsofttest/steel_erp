@@ -102,19 +102,19 @@
                                                       
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Payment Terms</label>
-                                                            <input type="text" name="pf_payment_terms" class="form-control" required>
+                                                            <input type="text" name="pf_payment_terms" class="form-control payment_term_clz" required>
                                                         </div>
 
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Delivery Terms</label>
-                                                            <input type="text" name="pf_delivery_terms" class="form-control" required>
+                                                            <input type="text" name="pf_delivery_terms" class="form-control delivery_term" required>
                                                         </div>
 
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="pf_project" class="form-control" required>
+                                                            <input type="text" name="pf_project" class="form-control project_clz" required>
                                                         </div>
                                                        
                                                          
@@ -444,6 +444,40 @@
 
 
 
+        /**/ 
+        $("body").on('change', '.sales_order_add_clz', function(){ 
+            var id = $(this).val();
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/SalesOrder",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                   
+                    $(".payment_term_clz").val(data.payment_term);
+
+                    $(".delivery_term").val(data.so_delivery_term);
+
+                    $(".project_clz").val(data.so_project);
+                 
+                    
+                }
+
+
+            });
+            
+            
+        });
+        /*####*/
+
+
+
 
 
         /*data table start*/ 
@@ -518,6 +552,10 @@
             });
 
 
+            /*###*/
+
+            
+
 
             //Fetch Contact Person
             $.ajax({
@@ -544,7 +582,7 @@
         });
 
 
-       
+
 
         var max_fieldspp      = 30;
         var pp = 1;
@@ -566,6 +604,10 @@
 	        $(this).parent().remove();
 	        pp--;
         });
+
+
+
+ 
 
 
 

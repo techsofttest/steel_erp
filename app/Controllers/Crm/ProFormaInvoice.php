@@ -462,6 +462,24 @@ class ProFormaInvoice extends BaseController
 
         }
 
+
+        public function SalesOrder()
+        {
+            $cond = array('so_id' => $this->request->getPost('ID'));
+
+            $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
+             
+            $data['payment_term'] = $sales_order->so_payment_term;
+
+            $data['so_delivery_term'] = $sales_order->so_delivery_term;
+
+            $data['so_project'] = $sales_order->so_project;
+
+            echo json_encode($data);
+
+        }
+
+
      
     
 
