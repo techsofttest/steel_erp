@@ -5,6 +5,8 @@
         <div class="row">
             
             <div class="col-lg-12">
+
+                
                 
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
@@ -17,7 +19,7 @@
                                 
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Pro-Forma Invoice</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Sales Return</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -25,10 +27,13 @@
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Invoice Details</a>
+                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Sales Return</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">File Attachment</a>
                                             </li>
                                             
                                             <!-- Add more tabs as needed -->
@@ -37,88 +42,78 @@
                                         <!-- Tab panes -->
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
                                                 <form class="Dashboard-form class" id="add_form1">
                                                     <!-- Tab 1 content goes here -->
                                                     <div class="row">
                                                         
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basiInput" class="form-label">Date</label>
-                                                            <input type="date" name="pf_date" class="form-control" required>
+                                                            <input type="date" name="sr_date" class="form-control" required>
                                                         </div>
+
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Customer</label>
                                                             
-                                                            <select class="form-select customer_sel" name="pf_customer" id="customer_id" required>
+                                                            <select class="form-select customer_sel" name="sr_customer" id="customer_id" required>
                                                                
                                                             </select>
+                                                        </div>
+
+
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Credit Invoice</label>
+                                                            
+                                                            <select class="form-select credit_invoice" name="sr_credit_invoice"  required>
+                                                              <option value="" selected disabled>Select Credit Invoice</option>
+                                                              <?php foreach($credit_invoice as $credit_inv){?>
+                                                                 <option value="<?php echo $credit_inv->cci_id;?>"><?php echo $credit_inv->cci_reffer_no;?></option>  
+                                                              <?php } ?> 
+                                                            </select>
+
                                                         </div>
 
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">LPO Reference</label>
-                                                            <input type="text" name="pf_lfo_ref" class="form-control" required>
+                                                            <input type="text" name="sr_lpo_reff" class="form-control lpo_ref" required>
                                                         </div>
 
 
 
                                                         <div class="col-md-2 col-lg-2">
-
-                                                        <label for="basicInput" class="form-label">Sales Order Number</label>
-
-                                                        <select class="form-select sales_order_add_clz" name="pf_sales_order" id="sales_order_add" required>
-
                                                             
+                                                            <label for="basicInput" class="form-label">Sales Account</label>
                                                             
-                                                        </select>
+                                                            <select class="form-select sales_account" name="sr_sales_account" id="" required></select>
+                                                                                                  
+
                                                         </div>
 
 
 
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Contact Person</label>
-                                                            <select class="form-select contact_person_clz" name="pf_contact_person" id="contact_person_id" required>
-                                                                <option value="" selected disabled>Contact Person</option>
-                                                                
-                                                            </select>
-                                                        </div>
+                                                        
 
                                                         <div class="col-md-2 col-lg-2">
 
-                                                            <label for="basicInput" class="form-label">Sales Executive</label>
-                                                            
-                                                            <select class="form-select sales_excutive_clz"  name="pf_sales_executive" required>
+                                                            <label for="basicInput" class="form-label">Sales Order Number</label>
 
-                                                               
-                                                                
-                                                            </select>
+                                                            <select class="form-select sales_order_add_clz" name="sr_sales_order" id="" required></select>
+                                        
+
                                                         </div>
-
-                                                      
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Payment Terms</label>
-                                                            <input type="text" name="pf_payment_terms" class="form-control payment_term_clz" required>
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Delivery Terms</label>
-                                                            <input type="text" name="pf_delivery_terms" class="form-control delivery_term" required>
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="pf_project" class="form-control project_clz" required>
-                                                        </div>
+                        
                                                        
                                                          
                                                     </div>
+
                                                     <div class="modal-footer justify-content-center">
                                                         <button class="btn btn btn-success">Submit</button>
                                                     </div>
+
                                                 </form>
+                                                
                                             </div>
                                                 
                                             
@@ -126,17 +121,54 @@
                                             <!---->
                                             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                                                 <form class="Dashboard-form class" id="add_form2">
-                                                    <!-- Tab 2 content goes here -->
-                                                    <div id="product_detail_table"></div>
+                                                    <div class="prod_table_clz"></div>
                                                     
-                                                    <input type="hidden" class="enquiry_id" name="pd_customer_details">
+                                                    <input type="hidden" class="sales_ret_prod_det" name="srp_sales_return">
                                                     <div class="modal-footer justify-content-center">
                                                         <button class="btn btn btn-success">Submit</button>
                                                     </div>
+                                                </form> 
+                                            </div>   
+                                            <!---->
+
+
+                                            <!--tab 3-->
+
+                                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                                                <form class="Dashboard-form class" id="add_form3">
+                                                    <!-- Tab 1 content goes here -->
+                                                    <div class="row">
+
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Invoice Value</label>
+                                                            <input type="text" name="sr_invoice_value" class="form-control" required>
+                                                         
+                                                        </div>
+
+
+                                                        
+                                                        <div class="col-md-2 col-lg-3">
+                                                            <label for="basiInput" class="form-label">Signed Sales Return</label>
+                                                            <input type="file" name="sr_invoice_sale_return" class="form-control" required>
+                                                        </div>
+
+                                                        <input type="hidden" name="sr_id" class="sales_ret_prod_det">
+                                
+                                                    </div>
+
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button class="btn btn btn-success">Submit</button>
+                                                    </div>
+
                                                 </form>
                                             </div>
 
                                             <!---->
+
+
+                                            
+
+
 
                                         </div>
 
@@ -156,7 +188,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Pro-Forma Invoice</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Sales Return</h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -164,17 +196,15 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Pro-forma Invoice Number</th>
+                                                    <th>Invoice No.</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
-                                                    <th>Sales Order No</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             
                                             <tbody>
 
-                                            
 
                                             </tbody>
 
@@ -221,9 +251,11 @@
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+                    
                     <li class="nav-item" role="presentation">
                         <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
                     </li>
+
                     <li class="nav-item" role="presentation">
                         <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
                     </li>
@@ -334,13 +366,13 @@
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/ProFormaInvoice/Add",
+                        url: "<?php echo base_url(); ?>Crm/SalesReturn/Add",
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
                             var responseData = JSON.parse(data);
                             
-                            $(".pf_id_clz").val(responseData.pf_id);
+                            $(".sales_ret_prod_det").val(responseData.sr_id);
                             // Trigger a click event on the next tab
                             var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
                             if (nextTab.length > 0) {
@@ -370,16 +402,17 @@
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/ProFormaInvoice/AddTab2",
+                        url: "<?php echo base_url(); ?>Crm/SalesReturn/AddTab2",
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            $('#add_form1')[0].reset();
-                            $('#add_form2')[0].reset();
-                          
-                            $('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);
+                           // Trigger a click event on the next tab
+                           var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
+                            if (nextTab.length > 0) {
+                                nextTab.tab('show');
+                            } else {
+                                console.error("Next tab not found!");
+                            }
                         
                         }
                     });
@@ -389,95 +422,40 @@
 
 
 
-        /*view*/ 
-        $("body").on('click', '.view_btn', function(){ 
-            var id = $(this).data('id');
-           
-            $.ajax({
+        $(function() {
+            var form = $('#add_form3');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Create FormData object to handle file uploads
+                    var formData = new FormData(currentForm);
 
-                url : "<?php echo base_url(); ?>Crm/Enquiry/View",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                   
-                    $("#enquiry_enq_number_id").val(data.enquiry_enq_number);
-
-                    $("#enquiry_date_id").val(data.enquiry_date);
-
-                    $("#enquiry_validity_id").val(data.enquiry_validity);
-
-                    $("#enquiry_project_id").val(data.enquiry_project);
-
-                    $("#enquiry_enq_referance_id").val(data.enquiry_enq_referance);
-
-                    $("#enquiry_sales_executive_id").val(data.sales_executive);
-                    
-                    $("#enquiry_customer_id").val(data.customer_creation);
-
-                    $("#enquiry_contact_person_id").val(data.contact_details);
-
-                    $("#enquiry_employees").val(data.enquiry_employees);
-
-                    $("#product_detail_id").html(data.prod_details);
-                   
-                    $('#ViewModal').modal('show');
-                    
-                   
-                    
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/SalesReturn/AddTab3",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                            $('#add_form1')[0].reset();
+                            $('#add_form2')[0].reset();
+                            $('#add_form3')[0].reset();
+                            $('#AddModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload(null, false);
+                        }
+                    });
                 }
-
-
             });
-            
-            
         });
-        /*####*/
-
-
-
-        /**/ 
-        $("body").on('change', '.sales_order_add_clz', function(){ 
-            var id = $(this).val();
-            
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/SalesOrder",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                    console.log(data.contact_person);
-                    $(".payment_term_clz").val(data.payment_term);
-
-                    $(".delivery_term").val(data.so_delivery_term);
-
-                    $(".project_clz").val(data.so_project);
-
-                    $(".contact_person_clz").html(data.contact_person);
-
-                    $(".sales_excutive_clz").html(data.sales_executive);
-                 
-                    
-                }
-
-
-            });
-            
-            
-        });
-        /*####*/
-
-
-
 
 
         /*data table start*/ 
@@ -491,7 +469,7 @@
             'serverMethod': 'post',
             'ajax': 
             {
-                'url': "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchData",
+                'url': "<?php echo base_url(); ?>Crm/SalesReturn/FetchData",
                 'data': function (data) {
                     // CSRF Hash
                     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -510,11 +488,10 @@
                 }
             },
             'columns': [
-                { data: 'pf_id' },
-                { data: 'pf_uid' },
-                { data: 'pf_date'},
-                { data: 'pf_customer'},
-                { data: 'pf_sales_order'},
+                { data: 'sr_id' },
+                { data: 'sr_reffer_no' },
+                { data: 'sr_date'},
+                { data: 'sr_customer'},
                 { data: 'action'},
                 
                ]
@@ -527,14 +504,15 @@
         });
         /*###*/
 
+
         $("body").on('change', '#customer_id', function(){ 
 
             var id = $(this).val();
-           
+            
             //Fetch Contact Person
-           /* $.ajax({
+            $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/ContactPerson",
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/SalesOrder",
 
                 method : "POST",
 
@@ -543,73 +521,87 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
-                    $("#contact_person_id").html(data.customer_name);
+                    
+                    $(".sales_order_add_clz").html(data.sales_order);
+
+                    $(".delivery_note").html(data.delivery_note);
+                    
                     
                 }
 
-
-            });*/
-
-
-            /*###*/
-
-            
-
-
-            //Fetch Contact Person
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
-
-            method : "POST",
-
-            data: {ID: id},
-
-            success:function(data)
-            {   
-                var data = JSON.parse(data);
-
-                $("#contact_person_id").html(data.customer_name);
-                
-            }
 
             });
 
 
 
-
         });
 
 
 
+        /**/
+        $("body").on('change', '.credit_invoice', function(){ 
+            
+            var id = $(this).val();
+            
+            //Fetch Contact Person
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesReturn/FetchSalesData",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $(".sales_order_add_clz").html(data.sales_order);
+
+                    $(".lpo_ref").val(data.cci_lpo_reff);
+
+                    $(".sales_account").html(data.sales_account_output);
+
+                    $(".sales_order_add_clz").html(data.sales_order_output);
+
+                    $(".prod_table_clz").html(data.sales_prod_det);
+
+                   
+                    
+                    
+                }
+
+
+            });
+
+        });
+        /**/
+
+
+       
+        /**/
 
         var max_fieldspp      = 30;
         var pp = 1;
-        //$("#add_product").click(function(){
+        
         $("body").on('click', '.add_product', function(){
-            
-            var pp = $('.prod_row').length
-
-			//if(pp < max_fieldspp){ 
+           
+			if(pp < max_fieldspp){ 
 			    pp++;
-	            
-                $("#product-more").append("<tr class='prod_row'><td>"+pp+"</td><td><select class='form-select' name='pd_product_detail[]' required><option selected>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit[]' class='form-control' required></td><td><input type='number' name='pp_quantity[]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate[]' class='form-control rate_clz_id' required></td><td><input type='number' name='pp_discount[]' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount[]' class='form-control amount_clz_id' required></td><td><input type='text' name='pp_current_claim[]' class='form-control ' required></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-
-			//}
+	           
+                $(".product-more").append("<tr class='prod_row'><td>" + pp + "</td><td><select class='form-select' name='srp_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='srp_unit[]'  class='form-control' required></td><td><input type='number' name='srp_quantity[]'  class='form-control qtn_clz_id' required></td><td><input type='number' name='srp_rate[]'  class='form-control rate_clz_id' required></td><td><input type='number' name='srp_discount[]'  class='form-control discount_clz_id' required></td><td><input type='number' name='srp_amount[]' class='form-control amount_clz_id' required></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+              
+			}
 	    });
 
         $(document).on("click", ".remove-btnpp", function() 
         {
+	 
 	        $(this).parent().remove();
 	        pp--;
         });
 
-
-
- 
-
-
+        /**/
 
 
 
@@ -621,7 +613,7 @@
             theme : "default form-control-",
             dropdownParent: $('#AddModal'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/ProFormaInvoice/FetchCustomers",
+                url: "<?= base_url(); ?>Crm/CreditInvoice/FetchCustomers",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -637,7 +629,7 @@
                     //console.log(data);
                     //  NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
-                   
+                    
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -655,78 +647,6 @@
 
         /* Fetch Sales Orders */
 
-
-
-        $('.customer_sel').change(function(){
-
-            var id = $(this).val();
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
-
-            method : "POST",
-
-            data : {id:id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
-            $('#sales_order_add').html(data.orders);
-
-            }
-
-
-            });
-
-
-        });
-
-
-
-        /* ################## */
-
-
-
-
-
-
-
-        /*enquiry droup drown search*/
-        $(".ser_product_det").select2({
-            placeholder: "Product Description",
-            theme : "default form-control-",
-            dropdownParent: $('#AddModal'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchTypes1",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /*###*/
 
 
         /*onchange function Sales Order Number*/
@@ -760,23 +680,26 @@
         /**/
 
 
-
-
         /*product detail calculation*/
         
         $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
-
+            
+           
             var discount = $(this).val();
 
             var discountSelect = $(this);
 
-            var discountSelectElement = discountSelect.closest('.prod_row').find('.rate_clz_id');
+            var rateSelectElement = discountSelect.closest('.prod_row').find('.rate_clz_id');
 
-            var rate = discountSelectElement.val();
+            var rate = rateSelectElement.val();
 
             var quantitySelectElement = discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
             var quantity = quantitySelectElement.val();
+
+            var discountSelectElement = discountSelect.closest('.prod_row').find('.discount_clz_id');
+
+            var dicount_data = discountSelectElement.val();
 
             var parsedRate = parseFloat(rate);
 
@@ -784,7 +707,7 @@
 
             var multipliedTotal = parsedRate * parsedQuantity;
 
-            var result = discount / 100;
+            var result = dicount_data / 100;
 
             var orginalPrice = multipliedTotal * result
 
@@ -799,57 +722,25 @@
         /*delete product detail row*/
 
         $("body").on('click', '.row_remove', function(){ 
-	   
+	        
             var id = $(this).data('id');
-  
-            $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/DeleteContact",
+            alert(id);
 
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
-                    $('#' + id).remove();
-                    $('#' + id).fadeIn();
-                }
-
+            $('#' + id).fadeOut('fast', function() {
+        
+                $(this).remove();
 
             });
 
+          
         });
 
-   /**/
+        /**/
 
 
-        function totalCalcutate()
-        {  
-            var total = 0;
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = $(this).val();
-                total += parseInt(sub_tot)||0;
-                console.log(total);
-            });
+       
 
-            $('input[name=pf_total_cost]').val(total);
-
-           $("#total_cost_id").html('Grand Total:' + total);
-
-        }
-
-
-
-
-/**/
-
-
-
-
-     
 
     });
 

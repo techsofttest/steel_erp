@@ -312,18 +312,6 @@ private function uploadFile($fieldName, $uploadPath)
         $data['cc_account_type'] = $cus_creation->at_name;
 
 
-        
-        /*$data['cc_account'] ="";
-
-        foreach($charts_accounts as $charts)
-        {
-            $data['cc_account'] .='<option value='.$charts->ca_id.'';
-            if($charts->ca_id == $cus_creation->cc_account_id){
-            $data['cc_account'] .=    " selected ";}
-            $data['cc_account'] .='>' .$charts->ca_account_id. '</option>'; 
-        }*/
-
-
         $data['acc_type'] ="";
 
         foreach($account_types as $account)

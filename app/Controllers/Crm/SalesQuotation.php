@@ -137,6 +137,8 @@ class SalesQuotation extends BaseController
 
         $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
 
+        //$data['delivery_term'] = $this->common_model->FetchAllOrder('crm_products','product_details','desc');
+
         $data['content'] = view('crm/sales-quotation',$data);
 
         return view('crm/crm-module',$data);
@@ -488,11 +490,11 @@ class SalesQuotation extends BaseController
         $data['product_detail'] .= '<tr class="prod_row">
                                         <td><input type="number" name="qpd_serial_no[]" value="'.$i.'" class="form-control non_border_input" style="style="border:none"" required></td>
                                         <td>
-                                            <select class="form-select droup_product" name="qpd_product_description[]" required>
-                                                <option selected>Select Product Description</option>';
+                                            <select class="form-select droup_product" name="qpd_product_description[]" required>';
+                                               
                                                 foreach($products as $prod){
                                                     $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
-                                                    if($prod->product_id == $prod_det->pd_id){ $data['product_detail'] .= "selected"; }
+                                                    if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
                                                     $data['product_detail'] .='>'.$prod->product_details.'</option>';
                                                 }
                                             $data['product_detail'] .='</select>

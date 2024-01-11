@@ -5,7 +5,7 @@ namespace App\Controllers\Crm;
 use App\Controllers\BaseController;
 
 
-class ProFormaInvoice extends BaseController
+class CashInvoice extends BaseController
 {
     
     public function FetchData()
@@ -34,43 +34,38 @@ class ProFormaInvoice extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('crm_proforma_invoices','pf_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('crm_cash_invoice','ci_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('pf_uid');
+        $searchColumns = array('ci_reffer_no');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_proforma_invoices','pf_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_cash_invoice','ci_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
-                'fk'    => 'pf_customer',
+                'fk'    => 'ci_customer_number1',
             ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pf_sales_order',
-            ),
+           
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('crm_proforma_invoices','pf_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('crm_cash_invoice','ci_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
-              'pf_id'           => $i,
-              'pf_uid'          => $record->pf_uid,
-              'pf_date'         => date('d-m-Y',strtotime($record->pf_date)),
-              'pf_customer'     => $record->cc_customer_name,
-              'pf_sales_order'  => $record->so_order_no,
-              'action'          => $action,
+              'ci_id'                => $i,
+              'ci_reffer_no'         => $record->ci_reffer_no,
+              'ci_date'              => date('d-m-Y',strtotime($record->ci_date)),
+              'ci_customer_number1'  => $record->cc_customer_name,
+              'action'               => $action,
            );
            $i++; 
         }
@@ -104,8 +99,13 @@ class ProFormaInvoice extends BaseController
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
 
+        $data['charts_of_accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
 
-        $data['content'] = view('crm/pro-forma-invoice',$data);
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+        
+        $data['cash_invoice'] = $this->common_model->FetchAllOrder('master_cash_invoice_status','cis_id ','desc');
+
+        $data['content'] = view('crm/cash-invoice',$data);
 
         return view('crm/crm-module',$data);
 
@@ -141,8 +141,6 @@ class ProFormaInvoice extends BaseController
 
         $orders = $this->common_model->FetchWhere('crm_sales_orders',$where);
 
-       
-
         $data['orders'] ="";
 
         $data['orders'] ='<option value="" selected disabled>Select  Contact Person</option>';
@@ -169,26 +167,21 @@ class ProFormaInvoice extends BaseController
     {   
         $insert_data = $this->request->getPost();
 
-        if (array_key_exists('pf_total_cost', $insert_data)) 
-        {
-             unset($update_data['pf_total_cost']);
-        } 
-
-        $insert_data['pf_added_by'] = 0; 
-
-        $insert_data['pf_added_on'] = date('Y-m-d'); 
-
-        $id = $this->common_model->InsertData('crm_proforma_invoices',$insert_data);
-
-        $data['pf_id'] = $id;
-
-        $p_ref_no = 'PINV'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $insert_data['ci_addded_by'] = 0;
         
-        $cond = array('pf_id' => $id);
+        $insert_data['ci_added_date'] = date('Y-m-d'); 
 
-        $update_data['pf_uid'] = $p_ref_no;
+        $id = $this->common_model->InsertData('crm_cash_invoice',$insert_data);
 
-        $this->common_model->EditData($update_data,$cond,'crm_proforma_invoices');
+        $data['ci_id'] = $id;
+
+        $p_ref_no = 'CI'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        
+        $cond = array('ci_id' => $id);
+
+        $update_data['ci_reffer_no'] = $p_ref_no;
+
+        $this->common_model->EditData($update_data,$cond,'crm_cash_invoice');
 
         echo json_encode($data);
 
@@ -197,12 +190,12 @@ class ProFormaInvoice extends BaseController
     public function AddTab2()
     {
          
+        if($_POST)
+        {
 
-        if($_POST){
-
-	        if(!empty($_POST['pp_product_det']))
+	        if(!empty($_POST['cipd_prod_det']))
 			{
-			    $count =  count($_POST['pp_product_det']);
+			    $count =  count($_POST['cipd_prod_det']);
 					
 				if($count!=0)
 			    {  
@@ -211,48 +204,66 @@ class ProFormaInvoice extends BaseController
 							
 					    $insert_data  	= array(  
 							
-							'pp_product_det'   =>   $_POST['pp_product_det'][$j],
-							'pp_unit'           =>  $_POST['pp_unit'][$j],
-						    'pp_quantity'       =>  $_POST['pp_quantity'][$j],
-                            'pp_rate'           =>  $_POST['pp_rate'][$j],
-                            'pp_discount'       =>  $_POST['pp_discount'][$j],
-                            'pp_amount'         =>  $_POST['pp_amount'][$j],
-                            'pp_current_claim'  =>  $_POST['pp_current_claim'][$j],
-                            'pp_proforma'       =>  $_POST['pp_proforma'],
-	  
+							'cipd_prod_det'     =>  $_POST['cipd_prod_det'][$j],
+							'cipd_unit'         =>  $_POST['cipd_unit'][$j],
+						    'cipd_order_qtn'    =>  $_POST['cipd_order_qtn'][$j],
+                            'cipd_qtn'          =>  $_POST['cipd_qtn'][$j],
+                            'cipd_rate'         =>  $_POST['cipd_rate'][$j],
+                            'cipd_discount'     =>  $_POST['cipd_discount'][$j],
+                            'cipd_amount'       =>  $_POST['cipd_amount'][$j],
+                            'cipd_cash_invoice' =>  $_POST['cipd_cash_invoice'],
+                          
 					    );
 
-				         $this->common_model->InsertData('crm_proforma_product',$insert_data);
+				        $this->common_model->InsertData('crm_cash_invoice_prod_det',$insert_data);
                       
-                        
-				
 				    } 
 				}
 
                    
 			}
 
-
-            $cond = array('pf_id' => $_POST['pp_proforma']);
-
-            $update_data['pf_total_cost'] = $_POST['pf_total_cost'];
-
-            $this->common_model->EditData($update_data,$cond,'crm_proforma_invoices');
-			
 			
         }
         
 
-       
     }
 
 
+    public function AddTab3()
+    {
+        $cond = array('ci_id' => $this->request->getPost('ci_id'));
+        $update_data = $this->request->getPost();
+      
+        if (array_key_exists('ci_id', $update_data)) {
+            unset($update_data['ci_id']);
+        }
 
+        
+        // Handle file upload
+        if (isset($_FILES['ci_signed_cash_invoice']) && $_FILES['ci_signed_cash_invoice']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('ci_signed_cash_invoice', 'uploads/CashInvoice');
+            $update_data['ci_signed_cash_invoice'] = $ccAttachCrFileName;
+        }
 
+        $this->common_model->EditData($update_data, $cond, 'crm_cash_invoice');
+    }
+    
+    // Function to handle file upload
+    private function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
 
+        if ($file->isValid() && !$file->hasMoved()) 
+        {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
 
+        return null;
+    }
 
-  
 
 
 
@@ -345,22 +356,25 @@ class ProFormaInvoice extends BaseController
     }
 
 
-    public function ContactPerson()
+    public function SalesOrder()
     {
-        $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
+        $cond = array('so_customer' => $this->request->getPost('ID'));
 
-        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+       
+        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
         
-        $data['customer_name'] ="";
+        $data['sales_order'] ="";
 
-        $data['customer_name'] ='<option value="" selected disabled>Select  Contact Person</option>';
+        $data['sales_order'] ='<option value="" selected disabled>Select Sales Order Number</option>';
 
-        foreach($contact_details as $con_det)
+        foreach($sales_orders as $sales_order)
         {
-            $data['customer_name'] .='<option value='.$con_det->contact_id.'';
+            $data['sales_order'] .='<option value='.$sales_order->so_id.'';
            
-            $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
+            $data['sales_order'] .='>' .$sales_order->so_order_no. '</option>'; 
         }
+        
+        
 
         echo json_encode($data);
 
@@ -446,11 +460,78 @@ class ProFormaInvoice extends BaseController
                                         </tr>';
                                         $i++;
                                     }
-           $data['saleorder_output'] .= '</tbody><tbody id="product-more" class="travelerinfo"></tbody><tr><td colspan="9" style="text-align: center;"><span id="total_cost_id"></span></td></tr></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div><input type="hidden" name="pp_proforma" class="pf_id_clz"><input type="hidden" name="pf_total_cost">';
-           
-           
-           
+           $data['saleorder_output'] .= '</tbody><tbody id="product-more" class="travelerinfo"></tbody><tr><td colspan="9" style="text-align: center;"><span id="total_cost_id"></span></td></tr></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';
         
+        
+            echo json_encode($data);
+
+        }
+
+
+        public function FetchSalesData()
+        {
+            $cond = array('so_id' => $this->request->getPost('ID'));
+
+            $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
+
+            $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
+
+            $sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
+
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+            $data['so_lpo'] = $sales_order->so_lpo;
+
+            $data['so_contact_person'] = $sales_order->so_contact_person;
+
+            $data['so_project'] = $sales_order->so_project;
+
+            $data['product_detail'] ='';
+
+            $data['product_detail'] .=' <table class="table table-bordered table-striped delTable">
+                                            <tbody class="travelerinfo">
+                                                <tr>
+                                                    <td>Serial No.</td>
+                                                    <td>Product Description</td>
+                                                    <td>Unit</td>
+                                                    <td>Order Quantity</td>
+                                                    <td>Quantity</td>
+                                                    <td>Rate</td>
+                                                    <td>Discount(%)</td>
+                                                    <td>Amount</td>
+                                                    <td>Action</td>
+                                                </tr>';
+                                                $i = 1;  
+                                                foreach($sales_order_details as $sales_det){
+                       $data['product_detail'] .='<tr class="prod_row" id="'.$sales_det->spd_id.'">
+                                                    <td>'.$i.'</td>
+                                                    <td>
+                                                        <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
+                                                            
+                                                            foreach($products as $prod){
+                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                                if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                            }
+                                                        $data['product_detail'] .= '</select>
+                                                    </td>
+                                                    <td><input type="text"   name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                                    <td><input type="number" name="cipd_order_qtn[]" value="'.$sales_det->spd_quantity.'"  class="form-control real_qty" required></td>
+                                                    <td><input type="number" name="cipd_qtn[]" value="'.$sales_det->spd_quantity.'" class="form-control qtn_limit qtn_clz_id" required></td>
+                                                    <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id" required></td>
+                                                    <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'"  class="form-control discount_clz_id" required></td>
+                                                    <td><input type="number" name="cipd_amount[]" value="'.$sales_det->spd_amount.'"  class="form-control amount_clz_id" required></td>
+                                                    <td class="row_remove" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
+                                                    
+                                                </tr>';
+                                                
+                                                $i++;
+                                                }
+
+
+                     $data['product_detail'] .='</tbody><tbody class="travelerinfo product-more"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';  
+                      
+
             echo json_encode($data);
 
         }
@@ -464,55 +545,6 @@ class ProFormaInvoice extends BaseController
            // $this->common_model->DeleteData('crm_proforma_product',$cond);
 
         }
-
-
-        public function SalesOrder()
-        {
-            $cond = array('so_id' => $this->request->getPost('ID'));
-
-            $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
-             
-            $data['payment_term'] = $sales_order->so_payment_term;
-
-            $data['so_delivery_term'] = $sales_order->so_delivery_term;
-
-            $data['so_project'] = $sales_order->so_project;
-
-            $contact_details = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
-           
-            $data['contact_person'] = "";
-
-            foreach($contact_details as $con_det)
-            {
-                
-                $data['contact_person'] .= '<option value=' . $con_det->contact_id;
-                if ($con_det->contact_person == $sales_order->so_contact_person)
-                {
-                    $data['contact_person'] .= ' selected';
-                }
-                $data['contact_person'] .= '>' . $con_det->contact_person . '</option>';
-
-                
-            }
-
-            $sales_executive = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-           
-            $data['sales_executive'] = "";
-
-            foreach($sales_executive as $sales_execut)
-            {
-                $data['sales_executive'] .= '<option value=' . $sales_execut->se_id;
-                if ($sales_execut->se_name == $sales_order->so_sales_executive)
-                {
-                    $data['sales_executive'] .= ' selected';
-                }
-                $data['sales_executive'] .= '>' . $sales_execut->se_name . '</option>';
-            }
-
-            echo json_encode($data);
-
-        }
-
 
      
     

@@ -181,7 +181,9 @@
                                                                     <!--<input type="text" name="qd_materials" class="form-control" required>--->
                                                                     <select id="quotation_material" class="form-control quotation_material_clz" name="quotation_material[]" required>
                                                                         <option value="" selected disabled>Select Material / Services</option>
-                                                
+                                                                        <?php foreach($products as $prod){?> 
+                                                                            <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details;?></option>    
+                                                                        <?php } ?>
                                                                     </select>
                                                                 </div>
 
@@ -618,71 +620,7 @@
 
 
 
-        /*view*/ 
-        $("body").on('click', '.view_btn', function(){ 
-            
-            var id = $(this).data('id');
-            
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotation/View",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {
-
-                    var data = JSON.parse(data);
-                    
-                    $("#quotation_number_id").val(data.qd_quotation_number);
-
-                    $("#quotation_date_id").val(data.qd_date);
-
-                    $("#quotation_payment_term_id").val(data.qd_payment_term);
-
-                    $("#quotation_validity_id").val(data.qd_validity);
-
-                    $("#quotation_project_id").val(data.qd_project);
-
-                    $("#quotation_enquiry_reference_id").val(data.qd_enquiry_reference);
-
-                    $("#quotation_customer_id").val(data.qd_customer);
-
-                    $("#quotation_con_person_id").val(data.qd_contact_person);
-
-                    $("#quotation_sales_executive_id").val(data.qd_sales_executive);
-
-                    $("#quotation_delivery_term_id").val(data.qd_delivery_term);
-
-                    $("#product_detail_table").html(data.prod_details);
-
-                    $("#quotation_material").val(data.qd_materials);
-
-                    $("#quotation_qty").val(data.qd_qty);
-
-                    $("#quotation_rate").val(data.qd_rate);
-
-                    $("#quotation_amount").val(data.qd_amount);
-
-                    $("#quotation_cost_of_sale").val(data.qd_cost_of_sale);
-
-                    $("#quotation_gross_profile").val(data.qd_gross_profit);
-
-                    $("#quotation_enquiry_id").val(data.qd_direct);
-
-                    $('#ViewModal').modal('show');
-                    
-                
-                }
-
-
-            });
-            
-            
-        });
-        /*####*/
+       
 
 
 
@@ -840,8 +778,11 @@
         
                 //$(".cost_cal").append("<div class='row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control' required></div><div class='col-md-2 col-lg-2'><label for='basicInput' class='form-label'>Amount</label><input type='number' name='qd_amount' class='form-control' required></div><div class='col-lg-1 remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
 
-                $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-          
+               // $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+               
+               $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+               
+                
 			}
 	    });
 
