@@ -149,7 +149,7 @@ class SalesQuotation extends BaseController
     {   
         
         $insert_data = $this->request->getPost();
-        
+
         $insert_data['qd_added_by'] = 0; 
 
         $insert_data['qd_added_date'] = date('Y-m-d'); 

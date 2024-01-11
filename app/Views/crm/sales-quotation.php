@@ -122,7 +122,7 @@
                                                             <select class="form-select" name="qd_delivery_term" id="qd_delivery_term_id" required>
                                                                 <option value="" selected disabled>Delivery Term</option>
                                                                 <?php foreach($delivery_term as $delv_term){?>
-                                                                    <option name="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option>  
+                                                                    <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option>  
                                                                 <?php } ?>
                                                                 
                                                             </select>
