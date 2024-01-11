@@ -172,7 +172,7 @@ class SalesQuotation extends BaseController
 
     public function AddTab2()
     {
-        $insert_data = $this->request->getPost();
+        //$insert_data = $this->request->getPost();
         if($_POST)
         {
 	        if(!empty($_POST['qpd_unit']))
