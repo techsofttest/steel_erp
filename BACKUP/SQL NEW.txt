@@ -1,0 +1,1 @@
+CREATE TABLE `steel`.`steel_crm_quotation_cost_calculation` (`qc_id` INT NOT NULL AUTO_INCREMENT , `qc_quotation_id` INT NOT NULL , `qc_material` INT NOT NULL , `qc_qty` INT NOT NULL , `qc_rate` INT NOT NULL , `qc_amount` INT NOT NULL , PRIMARY KEY (`qc_id`)) ENGINE = InnoDB;

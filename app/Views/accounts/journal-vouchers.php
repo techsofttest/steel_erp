@@ -46,7 +46,7 @@
 
 
 
-                    <div class="col-col-md-4 col-lg-4">
+                        <div class="col-col-md-4 col-lg-4">
                             <div>
                                 <label for="basiInput" class="form-label">Voucher Number</label>
                                 <input type="text"  id="p_ref_view" class="form-control" value="" disabled>
@@ -81,7 +81,6 @@
 
                                     <tbody id="jv_invoices_view" >
 
-
                                     </tbody>
 
                                     <tr>
@@ -98,6 +97,9 @@
 
 
                         </div>
+
+
+                       
 
                         
                         
@@ -122,123 +124,7 @@
     </div>
 </div>
 
-
-
 <!-- ######### -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Invoices Seletion Modal -->
-
-
-<div class="modal fade" id="InvoicesModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-            <form action="#" method="POST" class="Dashboard-form class" id="invoices_add">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
-                <button type="button" class="btn-close" data-bs-target="#AddModal" data-bs-toggle="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-    <div class="row">
-
-
-<div class="col-lg-12">
-
-    <div class="card">
-       
-        <div class="card-body">
-
-            <div class="live-preview">
-            
-                    <div class="row align-items-end">
-
-
-                        <div class="col-col-md-12 col-lg-12">
-
-
-                        <table class="table table-bordered">
-
-
-                                    <thead>
-                                        <tr>
-                                        <th>Sl No</th>
-                                        <th>Order Ref No</th>
-                                        <th>Account</th>
-                                        <th>Amount</th>
-                                        <th>Reference</th>
-                                        </tr>
-                                    </thead>
-
-
-                                    <tbody id="invoices_sec">
-
-
-                                      
-
-
-                                    </tbody>
-
-
-                        </table>
-
-
-
-                        </div>
-
-
-
-
-
-                        
-                        
-                        
-                    </div>
-                    <!--end row-->
-                
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<!--end col-->
-</div>
-
-</div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
-                <button type="submit" class="btn btn btn-success">Add</button>
-            </div>
-
-        </div>
-        </form>
-
-    </div>
-</div>
-
-
-
-
-
-<!-- ### -->
-
-
-
-
-
 
 
 
@@ -303,20 +189,27 @@
 
                                     <tbody id="sel_invoices">
 
-                                    <tr>
 
-                                        <th>1</th>
+                                    <tr class="so_row">
+
+                                        <th class="sl_no">1</th>
                                         
                                         <th>
 
                                         <select name="jv_sale_invoice[]" class="form-control">
+
                                         <option value="0">None</option>
-                                        <option value="1">SALE124</option>
-                                        <option value="2">SALE125</option>
-                                        <option value="3">SALE126</option>
+
+                                        <?php foreach($sales_orders as $sorder){ ?>
+
+                                        <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_order_no; ?></option>
+
+                                        <?php } ?>
 
                                         </select>
+
                                         </th>
+
 
                                         <th> <select name="jv_account[]" class="form-control">
 
@@ -324,7 +217,7 @@
 
                                         <?php foreach($accounts as $account){ ?>
 
-                                        <option value="<?php echo $account->ca_id; ?>"><?= $account->ca_account_id; ?></option>
+                                        <option value="<?php echo $account->ca_id; ?>"><?= $account->ca_name; ?></option>
 
                                         <?php } ?>
                                         
@@ -332,57 +225,34 @@
 
                                         </th>
                                         
-                                        <th><input name="jv_debit[]" type="number" class="form-control" ></th>
+                                        <th><input name="jv_debit[]" type="number" class="form-control debit_amount" ></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control" ></th>
-
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-                                        </tr>
-
-
-
-                                        <tr>
-
-                                        <th>2</th>
-
-                                        <th>
-                                            
-                                        <select name="jv_sale_invoice[]" class="form-control">
-
-                                        <option value="1">SALE124</option>
-                                        <option value="2">SALE125</option>
-                                        <option value="3">SALE126</option>
-
-                                        </select></th>
-
-                                        <th> <select name="jv_account[]" class="form-control">
-
-                                        <option value=""></option>
-
-                                        <?php foreach($accounts as $account){ ?>
-
-                                        <option value="<?php echo $account->ca_id; ?>"><?= $account->ca_account_id; ?></option>
-
-                                        <?php } ?>
-
-                                        </select>
-
-                                        </th>
-
-                                        <th><input name="jv_debit[]" type="number" class="form-control" ></th>
-
-                                        <th><input name="jv_credit[]" type="number" class="form-control" ></th>
+                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" ></th>
 
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-                                        </tr>
+
+                                        <th> <a href="javascript:void(0);" class="del_elem"><i class='ri-close-line'></i></a></th>
+
+                                    </tr>
+
 
                                     </tbody>
 
                                     <tr>
 
-                                    <td align="right" colspan="4">Total</td>
+                                    <td colspan="3">Total</td>
+                                   
 
-                                    <th  id="total_amount">0</th>
+                                    <td id="total_amount_debit_disp">0</td>
+
+                                    <th  id="total_amount_credit_disp">0</th>
+                                    
+                                    <input type="hidden" id="total_amount_inp" name="total_amount">
+
+                                    <input type="hidden" id="total_amount_debit" name="total_debit">
+
+                                    <input type="hidden" id="total_amount_credit" name="total_credit">
+                                    
 
                                     </tr>
 
@@ -394,13 +264,12 @@
                         </div>
 
 
-                         <div class="col-col-md-12 col-lg-12 text-center">
+                        <div class="col-lg-12 text-center">
+                                                            
+                            <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
 
-                         <a href="javascript:void(0);" data-bs-target="#InvoicesModal" data-bs-toggle="modal" class="btn btn-primary add_invoices">Add Invoices</a>
-                         
                         </div>
 
-                        
                         
                         
                     </div>
@@ -417,7 +286,6 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button  class="btn btn btn-success">Save</button>
             </div>
 
@@ -565,9 +433,57 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+
+
+        /*cost calculation add more*/
+
+        var max_fieldcost = 30;
+
+        var cc = $('.so_row').length;
+        
+        $("body").on('click', '.add_more', function(){
+
+			if(cc < max_fieldcost){ 
+
+            cc++;
+            //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+          
+            var $clone =  $('.so_row:first').clone();
+
+            $clone.find("input").val("");
+
+            $clone.find("select").val(0);
+
+            $clone.find(".sl_no").html(cc);
+
+            $clone.find(".del_elem").show();
+
+            $clone.insertAfter('.so_row:last');
+
+			}
+
+	    });
+
+
+
+        $(document).on("click", ".del_elem", function() 
+        {
+            $(this).closest('.so_row').remove();
+            cc--;
+            totalCalcutate();                                                                           
+            grossCalculate();
+        });
+
+        /**/
+
+
+
+
+
     
-        /*account head add section*/    
-   
+        /*account head add section*/ 
         $(function() {
             $('#add_form').validate({
                 rules: {
@@ -578,7 +494,21 @@
                     required: 'This field is required',
                     
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
+
+                    var debit = parseInt($('#total_amount_debit').val())||0;
+
+                    var credit = parseInt($('#total_amount_credit').val())||0;
+                    if(debit != credit)
+                    {
+
+                    alertify.error('Debit And Credit Must Be Same!').delay(3).dismissOthers();
+
+                    return false;
+
+                    }
+
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/JournalVouchers/Add",
                         method: "POST",
@@ -601,7 +531,8 @@
 
 
 
-        /*account head modal start*/ 
+        /*account head modal start*/
+        /*
         $("body").on('click', '.edit_btn', function(){ 
             var id = $(this).data('id');
 
@@ -641,7 +572,72 @@
             
             
         });
+        */
         /*####*/
+
+
+
+
+
+        $("body").on('keyup', '.debit_amount', function(){ 
+
+            totalCalcutate();    
+
+        });
+
+
+        $("body").on('keyup', '.credit_amount', function(){ 
+
+        totalCalcutate();    
+
+        });
+
+
+        function totalCalcutate()
+        {
+
+        var d_total = 0; 
+
+        var c_total = 0;
+        
+        $('body .debit_amount').each(function()
+        {
+
+        var sub_tot = $(this).val();
+
+        d_total += parseInt(sub_tot)||0;
+
+        });
+
+
+        $('body .credit_amount').each(function()
+        {
+
+        var sub_tot = $(this).val();
+
+        c_total += parseInt(sub_tot)||0;
+
+        });
+
+        $('#total_amount_debit').val(d_total);
+
+        $('#total_amount_debit_disp').html(d_total);
+
+        $('#total_amount_credit').val(c_total);
+
+        $('#total_amount_credit_disp').html(c_total);
+
+
+        }
+
+
+        $('input[name=qd_gross_profit]').on("keyup change",function(){
+
+        grossCalculate();
+
+        });
+
+
 
 
 
@@ -649,6 +645,7 @@
 
            /*account head modal start*/ 
            $("body").on('click', '.view_btn', function(){ 
+            
             var id = $(this).data('id');
 
             $.ajax({
@@ -801,7 +798,7 @@
                     }
                 },
                 'columns': [
-                    { data: 'jv_id' },
+                    { data: 'pcv_id' },
                     { data: 'jv_voucher_date'},
                     { data: 'jv_voucher_no' },
                     { data: 'action' },
@@ -814,7 +811,6 @@
             initializeDataTable();
         });
         /*###*/
-
 
 
 

@@ -35,44 +35,37 @@ class PettyCashVoucher extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_journal_voucher','jv_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_petty_cash_voucher','pcv_id','DESC');
  
         ## Total number of records with filtering
-         $searchColumns = array('jv_voucher_no');
+         $searchColumns = array('pcv_voucher_no');
 
         
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_voucher','jv_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_petty_cash_voucher','pcv_id',$searchValue,$searchColumns);
         
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
-                'table' => 'accounts_account_type',
-                'pk' => 'at_id',
-                'fk' => 'jv_account',
+                'table' => 'accounts_charts_of_accounts',
+                'pk' => 'ca_id',
+                'fk' => 'pcv_credit_account',
                 ),
-            array(
-                'table' => 'crm_sales_order',
-                'pk' => 'so_id',
-                'fk' => 'jv_sales_order_id',
-            ),
         );
         ## Fetch records
         
-        $records = $this->common_model->GetRecord('accounts_journal_voucher','jv_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_petty_cash_voucher','pcv_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
        
- 
         $data = array();
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
-              "jv_id"=>$i,
-              "jv_voucher_no"=>$record->jv_voucher_no,
-              "jv_voucher_date"=>date('d-m-Y',strtotime($record->jv_voucher_date)),
-              "jv_sales_order_id"=>$record->so_order_no,
-              "jv_account"=>$record->at_name,
+              "pcv_id"=>$i,
+              "pcv_voucher_no"=>$record->pcv_voucher_no,
+              "pcv_date"=>date('d-m-Y',strtotime($record->pcv_date)),
+              "pcv_credit_account"=>$record->ca_name,
               "action" =>$action,
            );
            $i++; 
@@ -117,8 +110,12 @@ class PettyCashVoucher extends BaseController
     //view page
     public function index()
     {  
+
+        $data = array();
        
-        $data['sales_order'] = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
+        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+
+        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
         $data['content'] = view('accounts/petty-cash-voucher',$data);
 
@@ -134,18 +131,53 @@ class PettyCashVoucher extends BaseController
     Public function Add()
     {   
 
-        $insert_data = $this->request->getPost();
+        $insert_data['pcv_date'] = $this->request->getPost('pcv_date');
 
-        $insert_data['pcv_credit_acount_id'] = 0; 
+        $insert_data['pcv_credit_account'] = $this->request->getPost('pcv_credit_account');
 
-        $insert_data['pcv_debit_account'] = 0; 
+        $insert_data['pcv_total'] = $this->request->getPost('total_amount'); 
 
         $insert_data['pcv_added_by'] = 0; 
 
         $insert_data['pcv_added_date'] = date('Y-m-d'); 
 
-        $this->common_model->InsertData('accounts_petty_cash_voucher',$insert_data);
-       
+        $id = $this->common_model->InsertData('accounts_petty_cash_voucher',$insert_data);
+
+        $pcv_no = 'PCV'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        
+        $cond = array('pcv_id' => $id);
+
+        $update_data['pcv_voucher_no'] = $pcv_no;
+
+        $this->common_model->EditData($update_data,$cond,'accounts_petty_cash_voucher');
+        
+        for($i=0;$i<count($this->request->getPost('pcv_sale_invoice'));$i++)
+        {
+
+            $sales_invoice = $_POST['pcv_sale_invoice'][$i];
+
+            $account = $_POST['pcv_account'][$i];
+
+            $amount = $_POST['pcv_debit'][$i];
+
+            $remarks = $_POST['pcv_remarks'][$i];
+
+
+            $insert_invoice['pci_sales_order'] =  $sales_invoice;
+
+            $insert_invoice['pci_debit_account'] = $account;
+
+            $insert_invoice['pci_amount'] = $amount;
+
+            $insert_invoice['pci_narration'] = $remarks;
+
+            $insert_invoice['pci_voucher_id'] = $id;
+
+            $this->common_model->InsertData('accounts_petty_cash_invoices',$insert_invoice);
+
+        }
+
+    
        
     }
 

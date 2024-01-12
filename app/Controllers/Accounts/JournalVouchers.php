@@ -129,6 +129,8 @@ class JournalVouchers extends BaseController
         
         $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
+        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
         $data['content'] = view('accounts/journal-vouchers',$data);
 
         return view('accounts/accounts-module',$data);
@@ -142,9 +144,6 @@ class JournalVouchers extends BaseController
     // add
     Public function Add()
     {   
-
-       
-
 
         $insert_data['jv_added_by'] = 0; 
 

@@ -253,9 +253,8 @@
                                         <tr>
                                         <th></th>
                                         <th>Sl No</th>
-                                        <th>Account</th>
+                                        <th>Invoice No</th>
                                         <th>Amount</th>
-                                        <th>Reference</th>
                                         </tr>
                                     </thead>
 
@@ -1066,7 +1065,7 @@ var data = JSON.parse(data);
 
 $.each(data.html, function(key,value) {
 //alert(value.so_o);
-tbody.append('<tr><td>'+value['so_date']+'</td><td><input type="hidden" name="so_id[]" value="'+value['so_id']+'">'+value['so_order_no']+'</td><td><input class="form-control" name="so_remarks[]" type="text"></td><td>'+value['so_total']+'</td></tr>');
+tbody.append('<tr><td>'+value['pf_date']+'</td><td><input type="hidden" name="pf_id[]" value="'+value['pf_id']+'">'+value['pf_uid']+'</td><td><input class="form-control" name="pf_remarks[]" type="text"></td><td>'+value['pf_total_cost']+'</td></tr>');
 
 }); 
 

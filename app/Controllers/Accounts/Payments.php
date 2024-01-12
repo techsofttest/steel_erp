@@ -128,7 +128,7 @@ class Payments extends BaseController
     }
 
 
-    // add account head
+        // add account head
         Public function Add()
         {   
 
@@ -171,12 +171,12 @@ class Payments extends BaseController
 
 
         //Add invoices
-        for($i=0;$i<count($this->request->getPost('so_id'));$i++)
+        for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
         {
 
-        $inv_id = $_POST['so_id'][$i];
+        $inv_id = $_POST['pf_id'][$i];
 
-        $inv_remarks = $_POST['so_remarks'][$i];
+        $inv_remarks = $_POST['pf_remarks'][$i];
 
         $insert_inv_data['pi_payment'] = $id;
 
@@ -187,8 +187,6 @@ class Payments extends BaseController
         $this->common_model->InsertData('accounts_payment_invoices',$insert_inv_data);
 
         }
-
-
 
         $p_ref_no = 'PAY'.str_pad($id, 7, '0', STR_PAD_LEFT);
         
@@ -277,14 +275,6 @@ class Payments extends BaseController
         'fk' => 'pay_debit_account',
         ),
 
-        array(
-            'table' => 'accounts_charts_of_accounts',
-            'pk' => 'ca_id',
-            'fk' => 'pay_debit_account',
-            ),
-
-
-
     );
 
     $data['payment'] = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
@@ -292,9 +282,9 @@ class Payments extends BaseController
     $joins_inv = array(
         
         array(
-        'table' => 'crm_sales_orders',
-        'pk' => 'so_id',
-        'fk' => 'pi_invoice',
+            'table' => 'crm_proforma_invoices',
+            'pk' => 'pf_id',
+            'fk' => 'pi_invoice',
         ),
 
     );
@@ -306,7 +296,7 @@ class Payments extends BaseController
     foreach($invoices as $invoice)
     {
 
-    $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->so_date))."</td><td>{$invoice->so_order_no}</td><td>{$invoice->pi_remarks}</td><td>{$invoice->so_total}</td></tr>";
+        $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->pf_date))."</td><td>{$invoice->pf_uid}</td><td>{$invoice->pi_remarks}</td><td>{$invoice->pf_total_cost}</td></tr>";
     
     }
 
@@ -335,6 +325,7 @@ class Payments extends BaseController
 
 
 
+    /*
 
     public function FetchInvoices()
     {
@@ -406,6 +397,83 @@ class Payments extends BaseController
 
 
     }
+
+    */
+
+
+
+
+    public function FetchInvoices()
+    {
+
+    if($_POST)
+    {
+
+    $ac_id = $this->request->getPost('id');
+
+    $joins = array(
+           
+    );
+
+    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
+
+    $cond = array('pf_customer' => $customer->cc_id);
+
+    $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+
+    $data="";
+
+    foreach($invoices as $inv)
+    {
+
+    $data.='<tr id="'.$inv->pf_id.'">
+    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
+    <th>'.$inv->pf_uid.'</th>
+    <th>'.$inv->pf_total_cost.'</th>
+    </tr>';
+
+    }
+
+    echo json_encode($data);
+
+
+    }
+
+
+    }
+
+
+
+    public function SelectedInvoices()
+    {
+
+    if($_POST)
+    {
+
+    $data['total'] = 0;
+
+    foreach($this->request->getPost('invoice_selected') as $inv)
+    {
+
+    $invoice = $this->common_model->SingleRowArray('crm_proforma_invoices',array('pf_id' => $inv));
+
+    $data['html'][] = $invoice;
+
+    $data['total'] = $invoice['pf_total_cost']+$data['total'];
+
+    }
+
+   
+    echo json_encode($data);
+
+    }
+
+
+
+    }
+
+
 
 
 

@@ -5,6 +5,7 @@ namespace App\Controllers\Accounts;
 use App\Controllers\BaseController;
 
 
+
 class Receipts extends BaseController
 {
 
@@ -164,12 +165,12 @@ class Receipts extends BaseController
         $id = $this->common_model->InsertData('accounts_receipts',$insert_data);
 
         //Add invoices
-        for($i=0;$i<count($this->request->getPost('so_id'));$i++)
+        for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
         {
 
-        $inv_id = $_POST['so_id'][$i];
+        $inv_id = $_POST['pf_id'][$i];
 
-        $inv_remarks = $_POST['so_remarks'][$i];
+        $inv_remarks = $_POST['pf_remarks'][$i];
 
         $insert_inv_data['ri_receipt'] = $id;
 
@@ -285,8 +286,8 @@ class Receipts extends BaseController
     $joins_inv = array(
         
         array(
-        'table' => 'crm_sales_orders',
-        'pk' => 'so_id',
+        'table' => 'crm_proforma_invoices',
+        'pk' => 'pf_id',
         'fk' => 'ri_invoice',
         ),
 
@@ -299,7 +300,7 @@ class Receipts extends BaseController
     foreach($invoices as $invoice)
     {
 
-    $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->so_date))."</td><td>{$invoice->so_order_no}</td><td>{$invoice->ri_remarks}</td><td>{$invoice->so_total}</td></tr>";
+    $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->pf_date))."</td><td>{$invoice->pf_uid}</td><td>{$invoice->ri_remarks}</td><td>{$invoice->pf_total_cost}</td></tr>";
     
     }
 
@@ -343,21 +344,20 @@ class Receipts extends BaseController
 
     $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
 
-    $cond = array('so_customer' => $customer->cc_id);
+    $cond = array('pf_customer' => $customer->cc_id);
 
-    $invoices = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+    $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
 
     $data="";
 
     foreach($invoices as $inv)
     {
 
-    $data.='<tr id="'.$inv->so_id.'">
-    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->so_id.'"></th>
-    <th>'.date('d-m-Y',strtotime($inv->so_date)).'</th>
-    <th>'.$inv->so_order_no.'</th>
-    <th>'.$inv->so_scheduled_date_of_delivery.'</th>
-    <th>'.$inv->so_total.'</th>
+    $data.='<tr id="'.$inv->pf_id.'">
+    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
+    <th>'.$inv->pf_uid.'</th>
+    <th>'.$inv->pf_total_cost.'</th>
     </tr>';
 
     }
@@ -383,11 +383,11 @@ class Receipts extends BaseController
     foreach($this->request->getPost('invoice_selected') as $inv)
     {
 
-    $invoice = $this->common_model->SingleRowArray('crm_sales_orders',array('so_id' => $inv));
+    $invoice = $this->common_model->SingleRowArray('crm_proforma_invoices',array('pf_id' => $inv));
 
     $data['html'][] = $invoice;
 
-    $data['total'] = $invoice['so_total']+$data['total'];
+    $data['total'] = $invoice['pf_total_cost']+$data['total'];
 
     }
 
@@ -397,6 +397,273 @@ class Receipts extends BaseController
     }
 
 
+
+    }
+
+
+    
+
+
+    public function Print(){
+
+
+    $mpdf = new \Mpdf\Mpdf();
+
+    $html ='
+
+    <style>
+    th, td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    </style>
+
+    <table>
+    
+    <tr>
+    
+    <td>
+
+    <h3>Al Fuzail Engineering Services WLL</h3>
+    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+    
+    
+    </td>
+    
+    </tr>
+
+    </table>
+
+
+
+    <table width="100%" style="margin-top:10px;">
+    
+
+    <tr width="100%">
+    
+    <td align="right"><h3>Receipt Voucher</h3></td>
+
+    </tr>
+
+    </table>
+
+
+    <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+
+    <tr>
+    
+    <td width="50%">
+    
+    Reference : RV-2020-0418
+    
+    </td>
+    
+        
+    <td width="50%" align="right">
+    
+    Received By : Cheque
+
+    </td>
+    
+    </tr>
+
+
+    <tr>
+    
+    <td width="50%">
+    
+    Date : RV-2020-0418
+    
+    </td>
+    
+        
+    <td width="50%" align="right">
+    
+    Cheque : 90289
+    </td>
+    
+    </tr>
+
+
+    <tr>
+    
+    <td width="50%">
+    
+    Debit Account : RV-2020-0418
+    
+    </td>
+    
+        
+    <td width="50%" align="right">
+    
+    Date : 10-02-2923
+    </td>
+    
+    </tr>
+
+
+    <tr>
+    
+    <td width="50%">
+    
+    Receipt No : RV-2020-0418
+    
+    </td>
+    
+        
+    <td width="50%" align="right">
+    
+    Bank : 10-02-2923
+
+    </td>
+    
+    </tr>
+
+
+
+    <tr>
+    
+    <td width="50%">
+    
+    Division No : RV-2020-0418
+    
+    </td>
+    
+        
+    <td width="50%" align="right">
+    
+    Collected By : Faisel
+    
+    </td>
+    
+    </tr>
+
+
+    
+    </table>
+
+
+
+
+    <table  width="100%" style="margin-top:2px;">
+    
+
+    <tr  style="border-bottom:3px solid;">
+    
+    <th align="left">Credit Account</th>
+
+    <th align="left">Reference</th>
+
+    <th align="left">Invoice Date</th>
+
+    <th align="left">Invoice Amount</th>
+
+    <th align="left">Due Date</th>
+
+    <th align="left">Payment</th>
+
+    </tr>
+
+
+
+    <tr>
+
+
+    
+    <td>SAB Trading Co</td>
+
+    <td>Ref123</td>
+
+    <td>10-01-2024</td>
+
+    <td>1350</td>
+
+    <td>15-01-2024</td>
+
+    <td>2500</td>
+    
+    </tr>
+
+
+    <tr>
+    
+    <td>SAB Trading Co</td>
+
+    <td>Ref123</td>
+
+    <td>10-01-2024</td>
+
+    <td>1350</td>
+
+    <td>15-01-2024</td>
+
+    <td>2500</td>
+    
+    </tr>
+
+
+    <tr>
+    
+    <td>SAB Trading Co</td>
+
+    <td>Ref123</td>
+
+    <td>10-01-2024</td>
+
+    <td>1350</td>
+
+    <td>15-01-2024</td>
+
+    <td>2500</td>
+    
+    </tr>
+    
+    </table>
+
+    ';
+
+    $footer = '
+
+    <table>
+    
+    <tr>
+    
+    <td>Amount : Qatari Riyals Twenty seven thousand five hundred only</td>
+
+    <td>27,500</td>
+
+    </tr>
+
+    </table>
+
+
+    <table>
+    
+    <tr>
+
+    <th style="padding-right:50px;">Prepared by : (print)</th>
+
+    <th style="padding-right:50px;">Received by:</th>
+
+    <th style="padding-right:50px;">Finance Manager</th>
+
+    <th style="padding-right:50px;">CEO</th>
+
+    </tr>
+
+    </table>
+
+
+    ';
+
+    
+    $mpdf->WriteHTML($html);
+    $mpdf->SetFooter($footer);
+    $this->response->setHeader('Content-Type', 'application/pdf');
+    $mpdf->Output();
 
     }
 
