@@ -103,8 +103,7 @@ class ProFormaInvoice extends BaseController
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
-
-
+        
         $data['content'] = view('crm/pro-forma-invoice',$data);
 
         return view('crm/crm-module',$data);
@@ -157,10 +156,6 @@ class ProFormaInvoice extends BaseController
         echo json_encode($data);
 
     }
-
-
-
-
 
 
 
@@ -247,12 +242,6 @@ class ProFormaInvoice extends BaseController
     }
 
 
-
-
-
-
-
-  
 
 
 
@@ -394,9 +383,13 @@ class ProFormaInvoice extends BaseController
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('pf_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_proforma_invoices',$cond);
+        
+        $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_proforma_product',$cond1);
  
          
      }

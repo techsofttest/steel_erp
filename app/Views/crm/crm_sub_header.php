@@ -10,9 +10,9 @@
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotation"){echo "active"; }?>"  href="<?= base_url();?>Crm/SalesQuotation" role="tab" aria-selected="false">Sales Quotation</a> </li>
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="SalesOrder"){echo "active";}?>"  href="<?= base_url();?>Crm/SalesOrder" role="tab" aria-selected="false">Sales Order</a> </li>
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="ProFormaInvoice"){echo "active"; }?>" href="<?= base_url();?>Crm/ProFormaInvoice"  role="tab" aria-selected="false">Pro-forma Invoice</a> </li>
-          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-7" role="tab" aria-selected="false">Delivery Note / Cash Invoice</a> </li>
-          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-8" role="tab" aria-selected="false">Credit Invoice </a> </li>
-          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-9" role="tab" aria-selected="false">Sales return </a> </li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="DeliverNote"){echo "active";}?>"  href="<?= base_url();?>Crm/DeliverNote" role="tab" aria-selected="false">Delivery Note / Cash Invoice</a> </li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="CreditInvoice"){echo "active";}?>"  href="<?= base_url();?>Crm/CreditInvoice" role="tab" aria-selected="false">Credit Invoice </a> </li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="SalesReturn"){echo "active";}?>"  href="<?= base_url();?>Crm/SalesReturn" role="tab" aria-selected="false">Sales return </a> </li>
         </ul>
 			</div>
 		</div>

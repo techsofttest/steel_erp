@@ -576,43 +576,33 @@
 
 
 
-        /*enquiry droup drown search*/
-        /*
-        $(".ser_product_det").select2({
-            placeholder: "Product Description",
-            theme : "default form-control-",
-            dropdownParent: $('#AddModal'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /*###*/
-    
+        /**/
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
+
+        /**/
 
 
 

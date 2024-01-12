@@ -522,15 +522,6 @@
         
 
 
-
-       
-
-
-
-       
-
-
-
         /*view*/ 
         $("body").on('click', '.view_btn', function(){ 
             var id = $(this).data('id');
@@ -804,6 +795,33 @@
 
         });
 
+        /**/
+
+
+        /**/
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
         /**/
 
 

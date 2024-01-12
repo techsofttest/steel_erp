@@ -842,6 +842,33 @@
         /**/
 
 
+        /*delete*/ 
+        $("body").on('click', '.delete_btn', function(){ 
+            alert("sucess");
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
+        /*###*/
+
+
 
 
      

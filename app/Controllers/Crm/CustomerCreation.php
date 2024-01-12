@@ -507,12 +507,14 @@ private function uploadFile($fieldName, $uploadPath)
     //delete account head
     public function Delete()
     {
-        $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('cc_id' => $this->request->getPost('ID'));
  
-        $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_customer_creation',$cond);
  
-         
-     }
+        $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('crm_contact_details',$cond1);
+    }
 
 
 

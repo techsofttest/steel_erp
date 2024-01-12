@@ -447,14 +447,6 @@ class SalesQuotation extends BaseController
     }
 
 
-    //delete account head
-    public function Delete()
-    {
-        $cond = array('at_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('accounts_account_types',$cond);
-   
-    }
 
 
     //fetch inquiry
@@ -522,9 +514,23 @@ class SalesQuotation extends BaseController
     {
         $cond = array('pd_id' => $this->request->getPost('ID'));
  
-        $this->common_model->DeleteData('crm_product_detail',$cond);
+        $this->common_model->DeleteData('crm_quotation_details',$cond);
 
         
+    }
+
+
+    public function Delete()
+    {
+        $cond = array('qd_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_quotation_details',$cond);
+
+        $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
+
+
     }
 
 

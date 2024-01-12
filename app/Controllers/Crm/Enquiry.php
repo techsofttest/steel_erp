@@ -354,15 +354,18 @@ class Enquiry extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        //delete account head
+        public function Delete()
+        {
+            $cond = array('enquiry_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+            $this->common_model->DeleteData('crm_enquiry',$cond);
+
+            $cond = array('pd_customer_details' => $this->request->getPost('ID'));
  
-         
-     }
+            $this->common_model->DeleteData('crm_product_detail',$cond);
+ 
+        }
 
 
 

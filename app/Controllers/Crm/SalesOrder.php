@@ -522,9 +522,13 @@ class SalesOrder extends BaseController
     //delete account head
     public function Delete()
     {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('so_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_sales_orders',$cond);
+
+        $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_sales_product_details',$cond1);
  
          
     }

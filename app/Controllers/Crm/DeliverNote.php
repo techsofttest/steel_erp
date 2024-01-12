@@ -396,9 +396,14 @@ class DeliverNote extends BaseController
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+         $cond = array('dn_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+         $this->common_model->DeleteData('crm_delivery_note',$cond);
+
+
+         $cond1 = array('dpd_delivery_id' => $this->request->getPost('ID'));
+ 
+         $this->common_model->DeleteData('crm_delivery_product_details',$cond1);
  
          
      }

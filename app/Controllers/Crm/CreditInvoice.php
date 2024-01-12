@@ -91,6 +91,7 @@ class CreditInvoice extends BaseController
     //view page
     public function index()
     {   
+        
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
@@ -417,9 +418,14 @@ class CreditInvoice extends BaseController
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('cci_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_credit_invoice',$cond);
+
+
+        $cond1 = array('ipd_credit_invoice' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_credit_invoice_prod_det',$cond1);
  
          
      }

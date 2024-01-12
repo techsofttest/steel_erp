@@ -219,7 +219,7 @@
 
                                                         <div class="col-md-2 col-lg-2">
                                                             <label for="basicInput" class="form-label">Status On Invoice</label>
-                                                            
+
                                                             <select class="form-select" name="cci_status_on_invoice" required>
                                                                 <option value="" selected disabled>Select Status On Invoice</option>
                                                                 <?php foreach($status_invoice as $stat_invoice){?> 
@@ -661,6 +661,34 @@
         /**/
 
 
+
+        /*delete*/ 
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
+        /*###*/
+
+
        
         /**/
 
@@ -817,25 +845,6 @@
 
           
         });
-
-        /**/
-
-
-        /*function totalCalcutate()
-        {  
-            var total = 0;
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = $(this).val();
-                total += parseInt(sub_tot)||0;
-                
-            });
-
-            $('input[name=pf_total_cost]').val(total);
-
-           $("#total_cost_id").html('Grand Total:' + total);
-
-        }*/
 
         /**/
 

@@ -408,9 +408,13 @@ class CashInvoice extends BaseController
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('ci_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_cash_invoice',$cond);
+
+        $cond1 = array('ci_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('cipd_cash_invoice',$cond1);
  
          
      }

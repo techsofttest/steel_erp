@@ -416,9 +416,14 @@ class SalesReturn extends BaseController
      //delete account head
      public function Delete()
      {
-         $cond = array('at_id' => $this->request->getPost('ID'));
+        $cond = array('sr_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_types',$cond);
+        $this->common_model->DeleteData('crm_sales_return',$cond);
+
+
+        $cond1 = array('srp_sales_return' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_sales_return_prod_det',$cond1);
  
          
      }

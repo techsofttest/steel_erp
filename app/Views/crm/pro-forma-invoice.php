@@ -28,7 +28,7 @@
                                                 <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Invoice Details</a>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                                                <a class="nav-link src-nav-link disabled"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
                                             </li>
                                             
                                             <!-- Add more tabs as needed -->
@@ -822,7 +822,7 @@
 
         });
 
-   /**/
+        /**/
 
 
         function totalCalcutate()
@@ -842,9 +842,36 @@
         }
 
 
+        /**/
 
 
-/**/
+        /*delete*/
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
+
+        /**/
 
 
 
