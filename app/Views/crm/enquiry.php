@@ -337,7 +337,7 @@
                 messages: {
                     required: 'This field is required',
                 },
-                errorPlacement: function(error, element) {} ,
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
@@ -362,6 +362,12 @@
         });
 
 
+        /* Select 2 Remove Validation On Change */
+        $("select[name=enquiry_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+
+
         $(function() {
             var form = $('#add_form2');
             
@@ -372,6 +378,7 @@
                 messages: {
                     required: 'This field is required',
                 },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
@@ -509,7 +516,41 @@
                     var data = JSON.parse(data);
                 
                     $("#contact_person_id").html(data.customer_name);
-                    
+
+
+                /*Apply Select 2 to  Added Product Drop Down*/
+                $(".ser_product_det:last").select2({
+                    placeholder: "Select Product",
+                    theme : "default form-control-",
+                    dropdownParent: $('#AddModal'),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: true,
+                        data: function (params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+                        
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                                pagination: {
+                                // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },              
+                    }
+                })
+                /*###*/
+                            
                     
                 }
 
@@ -526,8 +567,9 @@
 
 			if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-
+	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                 /*customer droup drown search*/
+                 InitSelect2();
 			}
 	    });
 
@@ -575,6 +617,46 @@
         })
         /*###*/
 
+
+
+
+          /*Product Drop Down*/
+          function InitSelect2(){
+          $(".ser_product_det:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control-",
+            dropdownParent: $('#AddModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        }
+
+        InitSelect2();
+
+        /*###*/
 
 
         /**/
