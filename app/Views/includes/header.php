@@ -37,9 +37,15 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"/>
 
 <style>
+
+    /* Form Validation */
     label.error 
     {
         color: red;
+    }
+
+    .error ~ .select2 .select2-selection__rendered {
+    border: 1px solid red;
     }
 
     /* For Select 2 Dropdown */

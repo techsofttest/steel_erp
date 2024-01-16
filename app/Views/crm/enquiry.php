@@ -337,6 +337,7 @@
                 messages: {
                     required: 'This field is required',
                 },
+                errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
