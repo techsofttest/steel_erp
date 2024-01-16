@@ -204,7 +204,16 @@
         font-size: 17px;
         color: black;
     }
-
+   
+    .divider 
+    {
+        border-bottom: 1px solid #eee3e3;
+        margin: 15px 0px;
+    }
+    .print_color i
+    {
+        color:red;
+    }
     /* ##### */
      
 
