@@ -221,6 +221,16 @@
         color:red;
     }
     /* ##### */
+
+
+
+    /* New Layout Input Style */
+
+    .Dashboard-form .form-control {
+    border: unset;
+    border-bottom: 1px solid #0000003b;
+    border-radius: 0px;
+    }
      
 
     
