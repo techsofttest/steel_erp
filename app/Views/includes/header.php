@@ -41,11 +41,11 @@
     /* Form Validation */
     label.error 
     {
-        color: red;
+    color: red;
     }
 
     .error ~ .select2 .select2-selection__rendered {
-    border: 1px solid red;
+    border: 1px solid red !important;
     }
 
     /* For Select 2 Dropdown */
@@ -68,11 +68,11 @@
     }
     
     .form-control.error {
-    border: 1px solid red;
+    border: 1px solid red !important;
     }
 
     .form-select.error {
-    border: 1px solid red;
+    border: 1px solid red !important;
     }
 
     .form-control-
