@@ -233,10 +233,18 @@
     margin-bottom: 5px;
     }
 
+    .Dashboard-form .form-select {
+    margin-bottom:0px;
+    border: unset;
+    border-bottom: 1px solid #0000003b;
+    border-radius: 0px;
+}
+
     .Dashboard-form label {
     margin: 0;
     
     }
+
      
 
     
