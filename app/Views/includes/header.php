@@ -77,13 +77,14 @@
 
     .form-control-
     {
-        margin-bottom:10px;
-        /*padding: 0.5rem 0.9rem;*/
+      
         line-height: 1.5;
         /*appearance: none;*/
         background-color: var(--vz-input-bg-custom);
-        border: var(--vz-border-width) solid var(--vz-input-border-custom);
-        border-radius: var(--vz-border-radius);
+        border: unset;
+        border-bottom: 1px solid #0000003b;
+        border-radius: 0px;
+        margin-bottom: 5px;
     }
 
     .tecs span 
