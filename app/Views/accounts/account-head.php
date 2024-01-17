@@ -23,38 +23,72 @@
                 <div class="card-body">
                     <div class="live-preview">
                        
-                            <div class="row align-items-end">
+                           
+
+                    <!-- Single Row Start -->
+                            <div class="row align-items-center mb-2">
 
                             <div class="col-col-md-3 col-lg-3">
-                                    <div>
-                                        <label for="basiInput" class="form-label">Id</label>
-                                        <input type="text" id=""  name="ah_head_id" class="form-control" required>
+                                   
+                                <label for="basiInput" class="form-label">Id</label>
                                         
-                                    </div>
                                 </div>
 
-                               <div class="col-col-md-4 col-lg-4">
-                                    <div>
-                                        <label for="basiInput" class="form-label">Account Name</label>
-                                        <input type="text" id="account_type_inp"  name="ah_account_name" class="form-control" required>
-                                        
-                                    </div>
+                                <div class="col-col-md-9 col-lg-9">
+
+                                <input type="text" id=""  name="ah_head_id" class="form-control" required>
+
                                 </div>
-                                <div class="col-col-md-4 col-lg-4">
-                                    <div>
+
+                            </div>
+
+                        <!-- ### -->
+
+
+
+                          
+                            <div class="row align-items-center mb-2">
+
+                               <div class="col-col-md-3 col-lg-3">
+                                  
+                                        <label for="basiInput" class="form-label">Account Name</label>
+                                       
+                                </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+                                <input type="text" id="account_type_inp"  name="ah_account_name" class="form-control" required>
+                                </div>    
+
+                            </div>
+
+
+
+                            <div class="row align-items-center mb-2">
+
+
+                                <div class="col-col-md-3 col-lg-3">
+
                                         <label for="basiInput" class="form-label">Account Type</label>
-                                        <select class="form-select" name="ah_account_type" required>
+                                  
+                                </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+                                <select class="form-select" name="ah_account_type" required>
                                             <option value="" selected disabled>Select Account Type</option>
                                             <?php foreach($account_types as $account_type){?> 
                                                 <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
                                             <?php } ?>
                                         </select>
-                                    </div>
                                 </div>
-                                
-                                
-                                
+
+
                             </div>
+                                
+                                
+                                
+                         
                             <!--end row-->
                         </form>
                     </div>

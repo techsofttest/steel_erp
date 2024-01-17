@@ -230,6 +230,12 @@
     border: unset;
     border-bottom: 1px solid #0000003b;
     border-radius: 0px;
+    margin-bottom: 5px;
+    }
+
+    .Dashboard-form label {
+    margin: 0;
+    
     }
      
 
