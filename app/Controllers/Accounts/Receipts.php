@@ -4,6 +4,8 @@ namespace App\Controllers\Accounts;
 
 use App\Controllers\BaseController;
 
+use NumberToWords\NumberToWords;
+
 
 
 class Receipts extends BaseController
@@ -406,9 +408,114 @@ class Receipts extends BaseController
 
     public function Print(){
 
+    $id =13;
 
-    $mpdf = new \Mpdf\Mpdf();
+    $cond = array('r_id' => $id);
 
+    ##Joins if any //Pass Joins as Multi dim array
+    $joins = array(
+              
+           array(
+           'table' => 'master_receipt_method',
+           'pk' => 'rm_id',
+           'fk' => 'r_method',
+           ),
+   
+           array(
+           'table' => 'master_banks',
+           'pk' => 'bank_id',
+           'fk' => 'r_bank',
+           ),
+   
+           array(
+           'table' => 'accounts_charts_of_accounts',
+           'pk' => 'ca_id',
+           'fk' => 'r_debit_account',
+           ),
+   
+           array(
+           'table' => 'master_collectors',
+           'pk' => 'col_id',
+           'fk' => 'r_collected_by',
+           ),
+   
+       );
+   
+    $receipt = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
+
+
+    $total_amount = NumberToWords::transformNumber('en',$receipt->r_amount); // outputs "fifty dollars ninety nine cents"
+   
+       $joins_inv = array(
+           array(
+           'table' => 'crm_proforma_invoices',
+           'pk' => 'pf_id',
+           'fk' => 'ri_invoice',
+           ),
+
+           array(
+            'table' => 'crm_customer_creation',
+            'pk' => 'cc_id',
+            'table2' => 'crm_proforma_invoices',
+            'fk' => 'pf_customer',
+           ),
+   
+       );
+   
+    $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
+   
+
+    $invoice_sec = "";
+
+    $first = true;
+
+    
+    foreach($invoices as $inv)
+    {
+
+    if($first == true)
+    {
+        $cus_name = $inv->cc_customer_name;
+    }
+    else
+    {
+        $cus_name="";
+    }
+
+    $invoice_sec .="
+    
+    <tr>
+
+    <td>{$cus_name}</td>
+
+    <td>{$inv->pf_uid}</td>
+
+    <td>".date('d-m-Y',strtotime($inv->pf_date))."</td>
+
+    <td>{$inv->pf_total_cost}</td>
+
+    <td>15-01-2024</td>
+
+    <td>{$inv->pf_total_cost}</td>
+    
+    </tr>
+
+    ";
+
+    $first = false;
+
+    }
+
+
+
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'Letter',
+        'default_font_size' => 9, 
+        'margin_left' => 5, 
+        'margin_right' => 5, 
+    ]);
+    
+    
     $html ='
 
     <style>
@@ -457,14 +564,14 @@ class Receipts extends BaseController
     
     <td width="50%">
     
-    Reference : RV-2020-0418
+    Reference : '.$receipt->r_ref_no.'
     
     </td>
     
         
     <td width="50%" align="right">
     
-    Received By : Cheque
+    Received By : '.$receipt->rm_name.'
 
     </td>
     
@@ -475,7 +582,7 @@ class Receipts extends BaseController
     
     <td width="50%">
     
-    Date : RV-2020-0418
+    Date : '.date('d-m-Y',strtotime($receipt->r_date)).'
     
     </td>
     
@@ -492,7 +599,7 @@ class Receipts extends BaseController
     
     <td width="50%">
     
-    Debit Account : RV-2020-0418
+    Debit Account : '.$receipt->ca_name.'
     
     </td>
     
@@ -500,6 +607,7 @@ class Receipts extends BaseController
     <td width="50%" align="right">
     
     Date : 10-02-2923
+
     </td>
     
     </tr>
@@ -509,14 +617,14 @@ class Receipts extends BaseController
     
     <td width="50%">
     
-    Receipt No : RV-2020-0418
+    Receipt No : '.$receipt->r_number.'
     
     </td>
     
         
     <td width="50%" align="right">
     
-    Bank : 10-02-2923
+    Bank : '.$receipt->bank_name.'
 
     </td>
     
@@ -535,7 +643,7 @@ class Receipts extends BaseController
         
     <td width="50%" align="right">
     
-    Collected By : Faisel
+    Collected By : '.$receipt->col_name.'
     
     </td>
     
@@ -568,72 +676,39 @@ class Receipts extends BaseController
     </tr>
 
 
+   '.$invoice_sec.'
 
-    <tr>
 
-
+    <tr style="padding-top:20px;">
     
-    <td>SAB Trading Co</td>
+    <td colspan="5">Reallocation</td>
 
-    <td>Ref123</td>
-
-    <td>10-01-2024</td>
-
-    <td>1350</td>
-
-    <td>15-01-2024</td>
-
-    <td>2500</td>
+    <td>9000.00</td>
     
     </tr>
 
 
-    <tr>
+    <tr style="padding-top:20px;">
     
-    <td>SAB Trading Co</td>
+    <td colspan="5">Discount</td>
 
-    <td>Ref123</td>
-
-    <td>10-01-2024</td>
-
-    <td>1350</td>
-
-    <td>15-01-2024</td>
-
-    <td>2500</td>
+    <td>9000.00</td>
     
     </tr>
 
-
-    <tr>
-    
-    <td>SAB Trading Co</td>
-
-    <td>Ref123</td>
-
-    <td>10-01-2024</td>
-
-    <td>1350</td>
-
-    <td>15-01-2024</td>
-
-    <td>2500</td>
-    
-    </tr>
-    
     </table>
 
     ';
 
     $footer = '
 
-    <table>
+    <table width="100%">
     
     <tr>
     
-    <td>Amount : Qatari Riyals Twenty seven thousand five hundred only</td>
+    <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
 
-    <td>27,500</td>
+    <td colspan="1" align="left" style="text-align:right;"><b>'.$receipt->r_amount.'</b></td>
 
     </tr>
 
@@ -644,13 +719,13 @@ class Receipts extends BaseController
     
     <tr>
 
-    <th style="padding-right:50px;">Prepared by : (print)</th>
+    <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
 
-    <th style="padding-right:50px;">Received by:</th>
+    <th width="25%" style="padding-right:60px;">Received by:</th>
 
-    <th style="padding-right:50px;">Finance Manager</th>
+    <th width="25%" style="padding-right:60px;">Finance Manager</th>
 
-    <th style="padding-right:50px;">CEO</th>
+    <th width="25%" style="padding-right:60px;">CEO</th>
 
     </tr>
 
