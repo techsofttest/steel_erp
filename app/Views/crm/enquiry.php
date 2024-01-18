@@ -322,6 +322,116 @@
 
 
 
+<!--Edit modal section start-->
+
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+                                
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Enquiry Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                    </li>
+                    
+                    <!-- Add more tabs as needed -->
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab3" role="tabpanel" aria-labelledby="tab1-tab">
+                        <form class="Dashboard-form class" id="add_form1">
+                            <!-- Tab 1 content goes here -->
+                            <div class="row">
+                                
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basiInput" class="form-label">Date</label>
+                                    <input type="date" name=""  class="form-control edit_enquiry_date" readonly>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Customer</label>
+                                    <select class="form-control edit_enquiry_customer edit_ser_customer"></select>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                    <select class="form-select edit_enquiry_contact"></select>
+                                  
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Sales Executive</label>
+                                    <select class="form-select edit_enquiry_sales"></select>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Validity</label>
+                                    <input type="text" name="" class="form-control edit_enquiry_validity" readonly>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Project</label>
+                                    <input type="text" name=""  class="form-control edit_enquiry_project" readonly>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Enquiry Reference</label>
+                                    <input type="text" name=""  class="form-control edit_enquiry_reffe" readonly>
+                                </div>
+
+                                <div class="col-md-2 col-lg-2">
+                                    <label for="basicInput" class="form-label">Assigned To</label>
+                                    <select class="form-select edit_enquiry_employ"></select>
+                                </div>
+                                    
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                               
+                            </div>
+                        </form>
+                    </div>
+                                                
+                    <!---->
+                    <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab2-tab">
+                        <form class="Dashboard-form class" id="product_detail_id">
+                            <!-- Tab 2 content goes here -->
+                            
+                            
+                           
+                        </form>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                               
+                        </div>
+                    </div>
+
+                    <!---->
+
+                </div>
+
+            </div>
+                                    
+        </div>
+                                
+    </div>
+</div>
+
+<!--Edit modal section end-->
+
+
+
+
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
@@ -445,10 +555,58 @@
 
 
             });
-            
+
             
         });
         /*####*/
+
+
+        /*Update section start*/
+
+
+        $("body").on('click', '.edit_btn', function(){ 
+                
+                var id = $(this).data('id');
+
+                $('#EditModal').modal('show');
+           
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Crm/Enquiry/Edit",
+                    
+                    method : "POST",
+
+                    data: {ID: id},
+
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+
+                        console.log(data.contact_details);
+
+                        $('.edit_enquiry_date').val(data.enquiry_date);
+
+                        $('.edit_enquiry_validity').val(data.enquiry_validity);
+
+                        $('.edit_enquiry_project').val(data.enquiry_project);
+
+                        $('.edit_enquiry_reffe').val(data.enquiry_enq_referance);
+
+                        $('.edit_enquiry_contact').html(data.contact_details);
+
+                        $('.edit_enquiry_sales').html(data.sales_executive);
+
+                        $('.edit_enquiry_employ').html(data.employees);
+                      
+                    }
+
+
+                });
+            
+            
+            });
+
+            /*Update section end*/
 
 
 
@@ -614,7 +772,50 @@
                     };
                 },              
             }
+         
         })
+        /*###*/
+
+
+
+
+        /*Edit customer droup drown search*/
+
+        $(".edit_ser_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control-",
+            dropdownParent: $('#EditModal'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/EditFetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+
         /*###*/
 
 

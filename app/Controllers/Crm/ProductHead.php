@@ -142,18 +142,16 @@ class ProductHead extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('ph_id' => $this->request->getPost('ID'));
+
+
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('ph_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('crm_product_heads',$cond);
+        $this->common_model->DeleteData('crm_product_heads',$cond);
  
-         
-     }
-
-
-
+    }
 
 
 }

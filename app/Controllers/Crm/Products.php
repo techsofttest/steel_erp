@@ -110,6 +110,7 @@ class Products extends BaseController
     //view page
     public function index()
     {   
+        
        
         $data['content'] = view('crm/products');
 
@@ -129,6 +130,8 @@ class Products extends BaseController
         $insert_data['product_added_date'] = date('Y-m-d'); 
 
         $id = $this->common_model->InsertData('crm_products',$insert_data);
+        
+        
 
     }
 
@@ -192,6 +195,53 @@ class Products extends BaseController
  
          
      }
+
+    public function Code()
+    {
+        
+        $cond2 = array('product_product_head' => $this->request->getPost('ID'));
+
+        $product_head = $this->common_model->FetchWhere('crm_products',$cond2);
+
+        if(empty($product_head))
+        {
+            $cond = array('ph_id' => $this->request->getPost('ID'));
+
+            $single_product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
+
+            $data['product_head_code'] =  $single_product_head->ph_code.'0001';
+
+            
+        }
+
+        else
+        {   
+            $prod_head_data = [];
+            foreach($product_head as $prod_head)
+            {
+                $prod_head_data[] = $prod_head->product_code;
+
+            }
+            
+            rsort($prod_head_data);
+
+            $prod_head_data = array_values($prod_head_data)[0];
+
+            // Extract numeric part
+            $numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
+
+            // Increment numeric part
+            $numeric_part++;
+
+            // Format back into the string
+            $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
+           
+
+        }
+
+        echo json_encode($data);
+
+    }
 
 
 

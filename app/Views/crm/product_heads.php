@@ -50,23 +50,38 @@
         
                                                         <div class="card-body">
                                                             <div class="live-preview">
-                                                                <div class="row align-items-end">
+                                                                <!-- Single Row Start -->
+                                                                <div class="row align-items-center mb-2">
+                                                                    
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <div>
-                                                                            <label for="basiInput" class="form-label">Code</label>
-                                                                            <input type="text"   name="ph_code" class="form-control" required>
-                                                                        </div>
+                                                                        <label for="basiInput" class="form-label">Code</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-6 col-lg-6">
-                                                                        <div>
-                                                                            <label for="basiInput" class="form-label">Product Head</label>
-                                                                            <input type="text"  name="ph_product_head" class="form-control" required>
-                                                                        </div>
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="ph_code" class="form-control" required>
+                                                                    </div>
+                                                                            
+                                                                </div> 
+                                                                <!-- ### -->  
+                                                                
+                                                                <!--Single Row Start-->
+
+                                                                <div class="row align-items-center mb-2">
+                                                                    
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Product Head</label>
                                                                     </div>
 
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text"  name="ph_product_head" class="form-control" required>
+                                                                    </div>
+                                                                            
                                                                 </div>
-                                                                <!--end row-->
+
+
+                                                                <!-- ## -->
+                                                                    
+
                     
                                                             </div>
                 

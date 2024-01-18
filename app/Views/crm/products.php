@@ -47,34 +47,74 @@
                                                     <div class="card">
         
                                                         <div class="card-body">
+                                                            
                                                             <div class="live-preview">
-                                                                <div class="row align-items-end">
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <div>
-                                                                            <label for="basiInput" class="form-label">Code</label>
-                                                                            <input type="text"   name="product_code" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-4 col-lg-4">
-                                                                        <div>
-                                                                            <label for="basiInput" class="form-label">Product Detail</label>
-                                                                            <input type="text"   name="product_details" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-
                                                                     
+                                                            
 
-                                                                    <div class="col-col-md-5 col-lg-5">
-                                                                        <div>
-                                                                            <label for="basiInput" class="form-label">Product Head</label>
-                                                                            <select class="form-select product_head_select" name="product_product_head" required></select>
-                                                                        </div>
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                                        <label for="basiInput" class="form-label">Product Name</label>
+
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text"   name="product_details" class="form-control" required>
+
                                                                     </div>
 
                                                                 </div>
-                                                                <!--end row-->
-                    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                                        <label for="basiInput" class="form-label">Product Head</label>
+
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <select class="form-select product_head_select product_head"  name="product_product_head" required></select>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+       
+                                                                        <label for="basiInput" class="form-label">Code</label>
+            
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text"   name="product_code" class="form-control product_code" required>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <!-- ### -->
+                                                             
                                                             </div>
                 
                                                         </div>
@@ -109,7 +149,7 @@
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Code</th>
-                                                    <th>Product Detail</th>
+                                                    <th>Product Name</th>
                                                     <th>Product Head</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -117,11 +157,7 @@
                                             
                                             <tbody>
 
-                                                
-
-
-
-
+                                            
 
                                             </tbody>
 
@@ -256,6 +292,7 @@
                         success: function(data) {
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
+                            $('.product_head').html("");
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload( null, false )
                             
@@ -341,6 +378,42 @@
 
 
         /*###*/
+
+        
+
+
+        /*fetch code by product head*/
+
+
+        $("body").on('change', '.product_head', function(){ 
+            
+            var id = $(this).val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Products/Code",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                    console.log(data.product_head_code); 
+                   $(".product_code").val(data.product_head_code);
+                   
+                    
+                }
+
+
+            });
+            
+            
+        });
+       
+
+        /*####*/
 
 
         /*delete*/ 

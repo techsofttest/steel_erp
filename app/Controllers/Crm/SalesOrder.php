@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'CRM/SalesOrder/Print/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
            
            $data[] = array( 
               "so_id"            =>$i,
@@ -114,6 +114,8 @@ class SalesOrder extends BaseController
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
+
+        $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
 
         $data['content'] = view('crm/sales-order',$data);
 
@@ -425,7 +427,7 @@ class SalesOrder extends BaseController
 
          
         $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td><td>Action</td></tr>';
+        Serial No.</td><td>Product Description &nbsp <span class="edit_add_more product_modal"><i class="ri-add-circle-line"></i></span></td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td><td>Action</td></tr>';
 
         foreach($product_details_data as $prod_det)
         {   
@@ -433,8 +435,8 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row" id="'.$prod_det->qpd_id.'">
             <td><input type="text"  name="spd_serial_no[]"  value="'.$prod_det->qpd_serial_no.'" class="form-control non_border_input" readonly></td>
-            <td>
-                <select class="form-select droup_product" name="spd_product_details[]" required>';
+            <td style="width:20%">
+                <select class="form-select droup_product add_prod" name="spd_product_details[]" required>';
                     
                     foreach($products as $prod){
                         $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
@@ -543,6 +545,381 @@ class SalesOrder extends BaseController
 
         
     }
+
+
+
+    public function FetchProduct()
+    {
+        $product_head = $this->common_model->FetchAllOrder('crm_products','product_id','asc');
+
+        $data["product_head_out"] = "";
+        
+        foreach($product_head as $prod_head)
+        {
+        
+            $data["product_head_out"] .= '<option value="'.$prod_head->product_id.'">'.$prod_head->product_details.'</option>';
+
+        } 
+        
+        echo json_encode($data);
+
+    }
+
+
+
+    public function Print($id){
+
+        $cond= array('so_id' => $id);
+
+        $joins = array(
+           
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+           
+        );
+        
+        $sales_order = $this->common_model->SingleRowJoin('crm_sales_orders',$cond,$joins);
+
+        if(!empty($sales_order)){
+
+            $sales_order->so_id;
+
+            $cond1 = array('spd_sales_order' => $sales_order->so_id);
+
+            $product_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
+
+            $i =1;
+            foreach($product_details as $prod_det)
+            {
+                $item_no = "{$sales_order->so_order_no}"; 
+
+                $si = "{$i}";
+
+                $prod_desc = "{$prod_det->spd_product_details}";
+
+                $prod_qty = "{$prod_det->spd_quantity}";
+
+                $prod_unit = "{$prod_det->spd_unit}";
+
+                $prod_rate = "{$prod_det->spd_rate}";
+
+                $prod_discount = "{$prod_det->spd_discount}";
+
+                $prod_amount = "{$prod_det->spd_amount}";
+
+            
+            }
+            $i++;
+            $mpdf = new \Mpdf\Mpdf();
+
+        
+        
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
+        
+            <td>
+        
+            <h2>Al Fuzail Engineering Services WLL</h2>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Date:31-Jul-2016</td>
+            <td>Sales Order No.:03562</td>
+            <td align="right"><h3>Sales Order</h3></td>
+        
+            </tr>
+        
+            </table>
+        
+        
+            <table  width="100%" style="margin-top:2px;border-top:2px solid;border-bottom:2px solid;">
+        
+            <tr>
+            
+            <td > </td>
+            
+            <td >'.$sales_order->cc_customer_name.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Customer</td>
+            
+                
+            <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+            <td >Post Box : -, Doha - '.$sales_order->cc_post_box.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+            
+            </tr>
+        
+        
+            </table>
+        
+        
+        
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
+            
+        
+            <tr>
+            
+            <th align="left" style="border-bottom: 2px solid;">Item No.</th>
+        
+            <th align="left" style="border-bottom: 2px solid;">Description</th>
+        
+            <th align="left" style="border-bottom: 2px solid;">Qty</th>
+        
+            <th align="left" style="border-bottom: 2px solid;">Unit</th>
+        
+            <th align="left" style="border-bottom: 2px solid;">Rate</th>
+
+            <th align="left" style="border-bottom: 2px solid;">Disc %</th>
+
+            <th align="left" style="border-bottom: 2px solid;">Amount</th>
+        
+            
+            </tr>
+
+            
+        
+            <tr>
+            
+            <td>'.$si.'-'.$item_no.'</td>
+        
+            <td>'.$prod_desc.'</td>
+        
+            <td>'.$prod_qty.'</td>
+        
+            <td>'.$prod_unit.'</td>
+        
+            <td>'.$prod_rate.'</td>
+        
+            <td>'.$prod_discount.'</td>
+
+            <td>'.$prod_amount.'</td>
+            
+            </tr>
+
+            
+            </table>
+        
+            ';
+        
+            $footer = '
+        
+            <table style="border-bottom:1px solid">
+            
+            <tr>
+            
+            <td>Promised Date</td>
+        
+            <td>15-Aug-2016</td>
+
+            <td>Gross Total</td>
+
+            <td>2,445.00</td>
+        
+            </tr>
+
+            <tr>
+
+            <td>Promised Date</td>
+        
+            <td></td>
+
+            <td>Less. Special Discount</td>
+
+            <td>122.25</td>
+            
+            </tr>
+
+
+            <tr>
+
+            <td>Amount in words</td>
+        
+            <td>Two thousand three hundred twenty two & seventy five Dirhams onl</td>
+
+            <td>Net Quote Value</td>
+
+            <td>2,322.75</td>
+            
+            </tr>
+
+            </table>
+
+
+            <table>
+            
+            <tr>
+                <td style="width:20%">Order Terms</td>
+
+                <td style="width:20%">LPO Reference</td>
+
+                <td style="width:20%">Verbal</td>
+
+                <td style="width:20%">Payment:</td>
+
+                <td style="width:20%">Cash on delivery</td>
+                
+            </tr>
+
+            <tr>
+                <td style="width:20%"></td>
+
+                <td style="width:20%">Quote Reference</td>
+
+                <td style="width:20%">02462</td>
+
+                <td style="width:20%">Delivery</td>
+
+                <td style="width:20%">Ex-works</td>
+
+            </tr>
+            
+            </table>
+
+
+            <table style="border-top:1px solid">
+
+            <tr>
+            
+                <td>Antony Raphel - Production In-charge</td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+                
+                <td></td>
+
+                <td></td>
+
+            
+
+            
+                <td>Justin Jose - Operations Manager</td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+            
+
+                
+
+                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+            
+            </tr>
+            
+            
+            </table>
+        
+        
+        
+            ';
+        
+            
+            $mpdf->WriteHTML($html);
+            $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output();
+
+        }
+
+
+    
+    }
+    
 
 
 

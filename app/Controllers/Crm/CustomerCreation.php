@@ -123,12 +123,18 @@ class CustomerCreation extends BaseController
 
 
 
+    
+
+
+
     //view page
     public function index()
     {   
         $data['charts_accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
         
         $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
+
+       
 
         $data['content'] = view('crm/customer-creation',$data);
 
@@ -157,7 +163,7 @@ class CustomerCreation extends BaseController
 
     public function AddTab2()
     {
-        $insert_data = $this->request->getPost();
+       
         if($_POST){
 	        if(!empty($_POST['contact_person']))
 			{
@@ -195,52 +201,153 @@ class CustomerCreation extends BaseController
 
     public function AddTab3()
     {
-    $cond = array('cc_id' => $this->request->getPost('customer_creation'));
-    $update_data = $this->request->getPost();
+        $cond = array('cc_id' => $this->request->getPost('customer_creation'));
+        $update_data = $this->request->getPost();
 
-    if (array_key_exists('customer_creation', $update_data)) {
-        unset($update_data['customer_creation']);
+        if (array_key_exists('customer_creation', $update_data)) {
+            unset($update_data['customer_creation']);
+        }
+
+        // Remove unnecessary unset statements for date fields
+
+        $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
+        $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
+        $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
+
+        // Handle file upload
+        if ($_FILES['cc_attach_cr']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
+            $update_data['cc_attach_cr'] = $ccAttachCrFileName;
+        }
+
+        if ($_FILES['cc_est_attach_card']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
+            $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
+        }
+
+        if ($_FILES['cc_id_card']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
+            $update_data['cc_id_card'] = $ccAttachCrFileName;
+        }
+
+
+        $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
     }
 
-    // Remove unnecessary unset statements for date fields
+    // Function to handle file upload
+    public function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
 
-    $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
-    $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
-    $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
 
-    // Handle file upload
-    if ($_FILES['cc_attach_cr']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
-        $update_data['cc_attach_cr'] = $ccAttachCrFileName;
-    }
-
-    if ($_FILES['cc_est_attach_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
-        $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
-    }
-
-    if ($_FILES['cc_id_card']['name'] !== '') {
-        $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
-        $update_data['cc_id_card'] = $ccAttachCrFileName;
+        return null;
     }
 
 
-    $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
-}
 
-// Function to handle file upload
-private function uploadFile($fieldName, $uploadPath)
-{
-    $file = $this->request->getFile($fieldName);
+    //update tab1
+    public function UpdateTab1()
+    {   
+        $cond = array('cc_id' => $this->request->getPost('cc_id'));
 
-    if ($file->isValid() && !$file->hasMoved()) {
-        $newName = $file->getRandomName();
-        $file->move($uploadPath, $newName);
-        return $newName;
+        $update_data = $this->request->getPost();
+       
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('cc_id', $update_data)) 
+        {
+             unset($update_data['cc_id']);
+        }       
+
+        $update_data['cc_modified_date'] = date('Y-m-d'); 
+
+        $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
+
+        $data['customer_creation_id'] = $this->request->getPost('cc_id');
+
+       echo json_encode($data);
     }
 
-    return null;
-}
+
+    
+    //update tab2
+    public function UpdateTab2()
+    {
+        if($_POST)
+        {
+	        if(!empty($_POST['contact_person']))
+			{
+			    $count =  count($_POST['contact_person']);
+					
+				if($count!=0)
+			    {  
+					for($j=0;$j<=$count-1;$j++)
+					{
+							
+					    $update_data  	= array(  
+							'contact_person'            =>  $_POST['contact_person'][$j],
+							'contact_designation'       =>  $_POST['contact_designation'][$j],
+							'contact_mobile'            =>  $_POST['contact_mobile'][$j],
+						    'contact_email'             =>  $_POST['contact_email'][$j],
+                           // 'contact_customer_creation' =>  $_POST['contact_customer_creation'],
+	  
+					    );
+                       
+                        $cond = array('contact_id' => $_POST['contact_id'][$j]);
+
+						$this->common_model->EditData($update_data,$cond,'crm_contact_details');
+
+				       // $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
+				
+				    } 
+				}
+			}
+		
+        }
+       
+    }
+
+    //update tab3
+
+    public function UpdateTab3()
+    {
+        $cond = array('cc_id' => $this->request->getPost('cc_id'));
+        $update_data = $this->request->getPost();
+
+        if (array_key_exists('cc_id', $update_data)) {
+            unset($update_data['cc_id']);
+        }
+
+        
+        $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
+        $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
+        $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
+
+        // Handle file upload
+        if (isset($_FILES['cc_attach_cr']) && $_FILES['cc_attach_cr']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
+            $update_data['cc_attach_cr'] = $ccAttachCrFileName;
+        }
+        
+        // Handle file upload for 'cc_est_attach_card'
+        if (isset($_FILES['cc_est_attach_card']) && $_FILES['cc_est_attach_card']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
+            $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
+        }
+        
+        // Handle file upload for 'cc_id_card'
+        if (isset($_FILES['cc_id_card']) && $_FILES['cc_id_card']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
+            $update_data['cc_id_card'] = $ccAttachCrFileName;
+        }
+
+
+        $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
+    }
 
 
 
@@ -368,6 +475,8 @@ private function uploadFile($fieldName, $uploadPath)
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
 
+        $customer_creation_id = $this->request->getPost('ID');
+
         $data['cc_customer_name']        = $customer_creation->cc_customer_name;
 
         $data['cc_post_box']             = $customer_creation->cc_post_box;
@@ -398,8 +507,14 @@ private function uploadFile($fieldName, $uploadPath)
 
         $data['cc_id_card_expiry_date']  = $customer_creation->cc_id_card_expiry_date;
 
-        $data['cc_id']  = $customer_creation->cc_id;
+        $data['cc_id']                   = $customer_creation->cc_id;
 
+        $data['attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+        
+        $data['attach_est_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
+	
+	    $data['attach_id_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_id_card) . '" target="_blank">View</a>';  
+    
         $data['account_type_out'] ="";
 
         foreach($account_types as $account_type)
@@ -438,61 +553,24 @@ private function uploadFile($fieldName, $uploadPath)
         {
             $data['contact'] .='<tr id="'.$contact->contact_id.'">
             <td>'.$i.'</td>
-            <td><input type="text"   value='.$contact->contact_person.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
-            <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
+            <td><input type="text" name="contact_person[]"  value='.$contact->contact_person.' class="form-control" required></td>
+            <td><input type="text" name="contact_designation[]"  value='.$contact->contact_designation.' class="form-control" required></td>
+            <td><input type="text" name="contact_mobile[]"  value='.$contact->contact_mobile.' class="form-control" required></td>
+            <td> <input type="email" name="contact_email[]" value='.$contact->contact_email.' class="form-control" required></td>
             <td class="row_remove" data-id="'.$contact->contact_id.'"><i class="ri-close-line"></i>Remove</td>
-            </tr>'; 
+            </tr><input type="hidden" name="contact_id[]" value='.$contact->contact_id.'>'; 
             $i++;  
         }
         
-        $data['contact'] .= '</tbody> <tbody class="person-more" class="travelerinfo"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_person"><i class="ri-add-circle-line"></i>Add More</span></div>';
+        $data['contact'] .= '</tbody> <tbody class="travelerinfo"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more update_add_more" data-id='.$customer_creation_id.'><i class="ri-add-circle-line"></i>Add More</span></div><div class="modal-footer justify-content-center"><button class="btn btn btn-success">Save</button></div>';
         
         echo json_encode($data);
     }
 
 
-    public function UpdateTab1()
-    {
-        $cond = array('cc_id' => $this->request->getPost('cc_id'));
-        
-        $update_data = $this->request->getPost(); 
-
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('cc_id', $update_data)) 
-        {
-             unset($update_data['cc_id']);
-        }       
-
-        $update_data['cc_modified_date'] = date('Y-m-d'); 
-
-        $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
-    }
 
 
-    // update account head 
-    public function Update()
-    {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
-        
-        $update_data = $this->request->getPost(); 
-
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
-        {
-             unset($update_data['account_id']);
-        }       
-
-        $update_data['at_added_by'] = 0; 
-
-        $update_data['at_modify_date'] = date('Y-m-d'); 
-
-
-
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
-       
-    }
+   
     
     //delete contact details
     public function DeleteContact()
@@ -508,12 +586,33 @@ private function uploadFile($fieldName, $uploadPath)
     public function Delete()
     {
         $cond = array('cc_id' => $this->request->getPost('ID'));
+
+        $cus_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
+
+        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_attach_cr);
+
+        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_est_attach_card);
+
+        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_id_card);
  
         $this->common_model->DeleteData('crm_customer_creation',$cond);
  
         $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
 
         $this->common_model->DeleteData('crm_contact_details',$cond1);
+
+        
+    }
+
+    //add contact (in edit)
+
+    public function AddContact()
+    {
+        $insert_data = $this->request->getPost();
+
+        $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
+
+       // echo json_encode($data);
     }
 
 

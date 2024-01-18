@@ -622,7 +622,7 @@
         /**/
         $("body").on('change', '.delivery_note', function(){ 
             
-            alert("sucess");
+          
             
             var id = $(this).val();
             

@@ -225,6 +225,75 @@
                         
 </div>
 
+
+<!--product modal section start-->
+<div class="modal fade" id="ProductModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form  class="Dashboard-form class" id="ProductForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="live-preview">
+                                        <div class="row align-items-end">
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Code</label>
+                                                    <input type="text"   name="product_code" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-col-md-4 col-lg-4">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Product Detail</label>
+                                                    <input type="text"   name="product_details" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                                                    
+                                            <div class="col-col-md-5 col-lg-5">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Product Head</label>
+                                                        <select class="form-select prod_head_clz" name="product_product_head" required>
+                                                            <option>Select Product Head</option>
+                                                            <?php foreach($product_head as $prod_head){?> 
+
+                                                                <option value="<?php echo $prod_head->ph_id;?>"><?php echo $prod_head->ph_product_head;?></option>
+
+                                                            <?php } ?>
+                                                        </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!--end row-->
+                    
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button  class="btn btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--product modal section end-->
+
+
 <!--view modal section start-->
 
 <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -519,6 +588,67 @@
         /**/
 
 
+        /*product modal submit start*/
+
+        $(function() {
+            var form = $('#ProductForm');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Products/Add",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+                            //$('#add_form')[0].reset();
+                            //$('#AddModal').modal('hide');
+
+                            $.ajax({
+                                url: "<?php echo base_url(); ?>Crm/SalesOrder/FetchProduct",
+                                method: "POST",
+                                //data: { key: 'value' },
+                                success: function(secondData) {
+                                    // Handle the response of the second AJAX call
+                                    var secdata = JSON.parse(secondData);
+                                    console.log(secdata);
+                                    $(".add_prod").html(secdata.product_head_out);
+                                }
+                            });
+
+                            $('#AddModal').modal('show');
+                            $('#ProductModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload( null, false )
+                        }
+                    });
+                }
+            });
+        });
+
+        /*product modal submit end*/
+
+       
+
+
+        /*product modal start*/
+
+        $("body").on('click', '.product_modal', function(){ 
+	   
+            $('#AddModal').modal('hide');
+
+            $('#ProductModal').modal('show');
+
+        });
+
+        /*product modal end*/
         
 
 
@@ -716,7 +846,7 @@
                 
                 //pp++;
                 
-                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			//}
 

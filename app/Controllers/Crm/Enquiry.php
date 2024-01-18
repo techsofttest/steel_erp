@@ -107,6 +107,29 @@ class Enquiry extends BaseController
     }
 
 
+    // search droup drown (customer-edit)
+    public function EditFetchCustomer()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+        
+        $enquiry = $this->common_model->FetchAllOrder('crm_enquiry','enquiry_id','desc');
+
+        $data['enquiry_customer'] = $enquiry->enquiry_customer;
+        
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
 
     // search droup drown (product description)
     public function FetchProdDes()
@@ -354,18 +377,85 @@ class Enquiry extends BaseController
        
     }
 
-        //delete account head
-        public function Delete()
-        {
-            $cond = array('enquiry_id' => $this->request->getPost('ID'));
- 
-            $this->common_model->DeleteData('crm_enquiry',$cond);
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
-            $cond = array('pd_customer_details' => $this->request->getPost('ID'));
- 
-            $this->common_model->DeleteData('crm_product_detail',$cond);
- 
+        $this->common_model->DeleteData('crm_enquiry',$cond);
+
+        $cond = array('pd_customer_details' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('crm_product_detail',$cond);
+
+    }
+
+
+    //fetch data form edit
+    public function Edit()
+    {
+        $cond = array('enquiry_id' => $this->request->getPost('ID'));
+
+        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
+
+        $data['enquiry_date']  = $enquiry->enquiry_date;
+
+        $data['enquiry_validity']  = $enquiry->enquiry_validity;
+
+        $data['enquiry_project']  = $enquiry->enquiry_project;
+
+        $data['enquiry_enq_referance']  = $enquiry->enquiry_enq_referance;
+
+        $contact_details = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+        
+        $data['contact_details'] ="";
+
+        foreach ($contact_details as $contact) {
+            $data['contact_details'] .= '<option value="' . $contact->contact_id . '"';
+        
+            if ($contact->contact_id == $enquiry->enquiry_contact_person) {
+                $data['contact_details'] .= ' selected'; // Add a space before 'selected'
+            }
+        
+            $data['contact_details'] .= '>' . $contact->contact_person . '</option>';
         }
+
+        $sales_executives = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_executive'] = "";
+
+        foreach($sales_executives as $sale_exce)
+        {
+            $data['sales_executive'] .='<option value="'.$sale_exce->se_id.'"';
+
+            if($sale_exce->se_id == $enquiry->enquiry_sales_executive)
+            {
+                $data['sales_executive'] .= ' selected';
+            }
+            
+            $data['sales_executive'] .='>'.$sale_exce->se_name.'</option>';
+        }
+
+        $employees = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+
+        $data['employees'] = "";
+
+        foreach($employees as $employ)
+        {
+            $data['employees'] .='<option value="'.$employ->employees_id.'"';
+
+                if($employ->employees_id == $enquiry->enquiry_employees)
+                {
+                    $data['employees'] .= ' selected';
+                }
+            
+            $data['employees'] .='>'.$employ->employees_name.'</option>';
+        }
+
+        echo json_encode($data);
+
+       
+    }
 
 
 

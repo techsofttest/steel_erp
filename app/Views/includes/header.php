@@ -152,7 +152,7 @@
 
     .modal-body {
     padding-top: 10px !important;
-    padding-bottom: 0px !important;
+    padding-bottom: 19px !important;
     }
 
     .modal-header {
@@ -241,11 +241,31 @@
     border-radius: 0px;
 }
 
-    .Dashboard-form label {
-    margin: 0;
-    
-    }
+.Dashboard-form label {
+margin: 0;
 
+}
+
+.card-seprate_divider{
+    border-top: 1px solid #f4f4f4;
+    margin-bottom: 20px;
+}
+.sub_heading{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.sub_heading_text{
+    padding: 8px 11px;
+    margin-right: 10px;
+}
+.sub_heading_btn {
+    background: #d3d3d347;
+    color: #405189;
+    border-radius: 5px;
+    border-top: 3px solid #405189;
+    
+}
      
 
     

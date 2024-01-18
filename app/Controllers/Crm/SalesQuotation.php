@@ -138,6 +138,8 @@ class SalesQuotation extends BaseController
         $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
 
         //$data['delivery_term'] = $this->common_model->FetchAllOrder('crm_products','product_details','desc');
+        
+        $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
 
         $data['content'] = view('crm/sales-quotation',$data);
 
@@ -474,15 +476,15 @@ class SalesQuotation extends BaseController
 
         $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
 
-        $data['product_detail'] = '<table class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td>Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount(%)</td><td>Amount</td><td>Action</td></tr>'; 
+        $data['product_detail'] = '<table class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td>Serial No.</td><td>Product Description &nbsp <span class="edit_add_more product_modal"><i class="ri-add-circle-line"></i></span></td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount(%)</td><td>Amount</td><td>Action</td></tr>'; 
         
         $i=1;
         foreach($product_detail as $prod_det){
 
         $data['product_detail'] .= '<tr class="prod_row">
                                         <td><input type="number" name="qpd_serial_no[]" value="'.$i.'" class="form-control non_border_input" style="style="border:none"" required></td>
-                                        <td>
-                                            <select class="form-select droup_product" name="qpd_product_description[]" required>';
+                                        <td style="width:20%">
+                                            <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
                                                
                                                 foreach($products as $prod){
                                                     $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
@@ -532,6 +534,219 @@ class SalesQuotation extends BaseController
 
 
     }
+
+
+
+    public function FetchProduct()
+    {
+        $product_head = $this->common_model->FetchAllOrder('crm_products','product_id','asc');
+
+        $data["product_head_out"] = "";
+        
+        foreach($product_head as $prod_head)
+        {
+        
+            $data["product_head_out"] .= '<option value="'.$prod_head->product_id.'">'.$prod_head->product_details.'</option>';
+
+        } 
+        
+        echo json_encode($data);
+
+    }
+
+
+
+    public function Print($id){
+
+        $mpdf = new \Mpdf\Mpdf();
+
+        
+        $cond = array('qd_id' => $id);
+
+        
+        $joins = array(
+            
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'qd_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'qd_sales_executive',
+            ),
+           
+            
+        );
+
+        $quotation = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
+        
+        $cond1 = array('qpd_quotation_details' => $quotation->qd_id);
+
+        $joins1 = array(
+            
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+           
+            
+        );
+
+        $quotation_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);
+        
+        
+
+        foreach($quotation_details as $quot_det)
+        {
+            $prod_det ="{$quot_det->product_details}";
+
+            
+        }
+
+        $html ='
+    
+        <style>
+
+        th, td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            font-size:12px;
+        }
+        </style>
+    
+        <table>
+        
+        <tr>
+        
+        <td>
+    
+        <h3>Al Fuzail Engineering Services WLL</h3>
+        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        
+        
+        </td>
+        
+        </tr>
+    
+        </table>
+    
+    
+    
+        <table width="100%" style="margin-top:10px;">
+        
+    
+        <tr width="100%">
+        
+        <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
+
+        <td align="right"><h3>Sales Quotation Report</h3></td>
+    
+        </tr>
+    
+        </table>
+    
+    
+    
+        <table  width="100%" style="margin-top:2px;border-top:2px solid;border-collapse: collapse; border-spacing: 0;">
+        
+    
+        <tr  style="border-bottom:3px solid;">
+        
+        <th align="left">Date</th>
+    
+        <th align="left">Quotation Ref.</th>
+    
+        <th align="left">Customer</th>
+    
+        <th align="left">Sales Executive</th>
+    
+        <th align="left">Amount</th>
+    
+        <th align="left">Product</th>
+
+        <th align="left">Quantity</th>
+
+        <th align="left">Rate</th>
+
+        <th align="left">Amount</th>
+    
+        </tr>
+    
+    
+    
+        <tr>
+    
+    
+        
+        <td style="border-bottom:2px solid">'.$quotation->qd_date.'</td>
+    
+        <td style="border-bottom:2px solid">'.$quotation->qd_quotation_number.'</td>
+    
+        <td style="border-bottom:2px solid">'.$quotation->cc_customer_name.'</td>
+    
+        <td style="border-bottom:2px solid">'.$quotation->se_name.'</td>
+    
+        <td style="border-bottom:2px solid">2500</td>
+    
+        <td style="border-bottom:2px solid">'.$prod_det.'</td>
+
+        <td style="border-bottom:2px solid">2</td>
+
+        <td style="border-bottom:2px solid">4,600.00</td>
+
+        <td style="border-bottom:2px solid">6,265.00</td>
+        
+        </tr>
+
+        <tr>
+        
+            <td>Total</td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td>864,925.00</td>
+
+            <td></td>
+
+            <td></td>
+
+            <td></td>
+
+            <td>864,925.00</td>
+        
+        </tr>
+    
+    
+        
+        </table>
+
+       
+    
+        ';
+    
+        $footer = '';
+    
+        
+        $mpdf->WriteHTML($html);
+        $mpdf->SetFooter($footer);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output();
+    
+        }
+    
+
+
+
 
 
 

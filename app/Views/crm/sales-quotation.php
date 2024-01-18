@@ -178,7 +178,7 @@
 
                                                                 <div class="col-md-3 col-lg-3">
                                                                     <label for="basiInput" class="form-label">Material / Services</label>
-                                                                    <!--<input type="text" name="qd_materials" class="form-control" required>--->
+                                                                    
                                                                     <select id="quotation_material" class="form-control quotation_material_clz" name="quotation_material[]" required>
                                                                         <option value="" selected disabled>Select Material / Services</option>
                                                                         <?php foreach($products as $prod){?> 
@@ -188,7 +188,7 @@
                                                                 </div>
 
                                                                 
-                                                                <div class="col-md-3 col-lg-3">
+                                                                <div class="col-md-3 col-lg-2">
                                                                     <label for="basiInput" class="form-label">Qty</label>
                                                                     <input type="number" name="qc_qty[]" class="form-control cost_qty" required>
                                                                 </div>
@@ -204,27 +204,39 @@
                                                                     <input type="number" name="qc_amount[]" readonly class="form-control cost_amount" required style="width:95%">
                                                                 </div>
 
+
+                                                                <div class="col-md-3 col-lg-1" style="margin-top: 29px;">
+
+                                                                    <div class="edit_add_more_div"><span class="edit_add_more add_cost_more"><i class="ri-add-circle-line"></i>Add More</span></div>
+
+
+                                                                </div>
+
+                                                                <div></div>
+
                                                             </div>
 
                                                         </div>
 
 
 
-                                                        <!--<div class="cost_cal"></div>-->
+                                                        
                                                         <div class="col-lg-12 cost_cal"></div>
 
-
+                                                        <div class="divider"></div>  
                                                         
-                                                        <div class="col-lg-12">
+                                                        <!--<div class="col-lg-12">
                                                             
                                                             <div class="edit_add_more_div"><span class="edit_add_more add_cost_more"><i class="ri-add-circle-line"></i>Add More</span></div>
 
-                                                        </div>
+                                                        </div>-->
 
 
 
                                                         <div class="col-lg-12">
                                                             <div class="row">
+                                                                <div class="col-lg-3"></div>
+
                                                                 <div class="col-lg-3"></div>
 
                                                                 <div class="col-md-2 col-lg-2">
@@ -244,7 +256,7 @@
                                                                 </div>
 
 
-                                                                <div class="col-lg-3"></div>
+                                                                
 
                                                             </div>
                                                         </div>
@@ -327,6 +339,76 @@
     
                         
 </div>
+
+
+<!--product modal section start-->
+<div class="modal fade" id="ProductModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form  class="Dashboard-form class" id="ProductForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="live-preview">
+                                        <div class="row align-items-end">
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Code</label>
+                                                    <input type="text"   name="product_code" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-col-md-4 col-lg-4">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Product Detail</label>
+                                                    <input type="text"   name="product_details" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                                                    
+                                            <div class="col-col-md-5 col-lg-5">
+                                                <div>
+                                                    <label for="basiInput" class="form-label">Product Head</label>
+                                                        <select class="form-select prod_head_clz" name="product_product_head" required>
+                                                            <option>Select Product Head</option>
+                                                            <?php foreach($product_head as $prod_head){?> 
+
+                                                                <option value="<?php echo $prod_head->ph_id;?>"><?php echo $prod_head->ph_product_head;?></option>
+
+                                                            <?php } ?>
+                                                        </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!--end row-->
+                    
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button  class="btn btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--product modal section end-->
+
+
 
 <!--view modal section start-->
 
@@ -505,6 +587,8 @@
 
 
 
+
+
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
@@ -619,6 +703,61 @@
         });
 
 
+        /*product modal submit start*/
+
+        $(function() {
+            var form = $('#ProductForm');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Products/Add",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+                            //$('#add_form')[0].reset();
+                            //$('#AddModal').modal('hide');
+
+                            $.ajax({
+                                url: "<?php echo base_url(); ?>Crm/SalesQuotation/FetchProduct",
+                                method: "POST",
+                                //data: { key: 'value' },
+                                success: function(secondData) {
+                                    // Handle the response of the second AJAX call
+                                    var secdata = JSON.parse(secondData);
+                                    console.log(secdata);
+                                    $(".add_prod").html(secdata.product_head_out);
+                                    
+                                    /*$(".prod_row").each(function(index, row) {
+                                        var addProdSelect = $(row).find('.add_prod');
+                                        addProdSelect.html(secdata.product_head_out);
+                                    });*/
+                                   
+
+                                }
+                            });
+
+                            $('#AddModal').modal('show');
+                            $('#ProductModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload( null, false )
+                        }
+                    });
+                }
+            });
+        });
+
+        /*product modal submit end*/
+
+
 
        
 
@@ -713,34 +852,6 @@
         });
 
 
-        /*$("body").on('change', '#contact_person_id', function(){ 
-            var id = $(this).val();
-           
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotation/ProjectEnquiry",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                
-                    $("#qd_project_id").val(data.enquiry_project);
-
-                    $("#qd_enquiry_reference_id").val(data.enquiry_enq_referance);
-                    
-                    
-                }
-
-
-            });
-        });*/
-
-
-       
 
         var max_fieldspp  = 30;
 
@@ -752,7 +863,7 @@
 			if(pp < max_fieldspp){ 
                 pp++;
         
-                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required='' readonly></td><td><select class='form-select' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required='' readonly></td><td><select class='form-select add_prod' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 	    });
@@ -775,16 +886,20 @@
             
 			if(cc < max_fieldcost){ 
                 cc++;
-        
-                //$(".cost_cal").append("<div class='row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control' required></div><div class='col-md-2 col-lg-2'><label for='basicInput' class='form-label'>Amount</label><input type='number' name='qd_amount' class='form-control' required></div><div class='col-lg-1 remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+            
+                    
+                // $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+                
+                $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-2'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='col-lg-1 remove-cost' style='margin-top: 32px;position: unset;'><div class='remainpass cost_remove'><i class='ri-close-line'></i>Remove</div></div></div>");
+                
 
-               // $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-               
-               $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-               
+                // $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-2'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='col-md-3 col-lg-1'><div class='remove-cost' style='margin-top: 33px;'><div class='remainpass cost_remove'><i class='ri-close-line'></i>Remove</div></div></div></div>");
+                
                 
 			}
+
 	    });
+        
 
         $(document).on("click", ".remove-cost", function() 
         {
@@ -962,14 +1077,25 @@
                 }
 
 
+            });
+        
         });
 
-
-        
-           
-    });
-
         /**/
+
+
+
+        /*product modal start*/
+
+        $("body").on('click', '.product_modal', function(){ 
+	   
+            $('#AddModal').modal('hide');
+
+            $('#ProductModal').modal('show');
+   
+        });
+
+        /*product modal end*/
 
 
 
