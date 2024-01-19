@@ -11,219 +11,105 @@
                     <!--product head tab--> 
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
-                        <!--add enquiry modal start-->
-                        <div class="modal fade" id="Enquiry" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Enquiry</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
+                        <!--modal content start-->
+                        <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Enquiry Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
 
-				                        <div class="modal-body">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
+                                            </li>
+                                            
+                                            <!-- Add more tabs as needed -->
+                                        </ul>
 
-                                            <div class="live-preview">
-                                                
-                                                <div class="row">
-                                                 
-                                                    <div class="col-lg-6">
-
-                                                        <div class="row">
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Referance</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-
-                                                            <!-- Single Row Start -->
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Date</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_date" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-                                                            <!-- Single Row Start -->
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                                                <form class="Dashboard-form class" id="add_form1">
+                                                    <!-- Tab 1 content goes here -->
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basiInput" class="form-label">date</label>
+                                                            <input type="date" name="enquiry_date" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Customer</label>
                                                             
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
-                                                                            <option value="" selected disabled>Select Customer</option>
+                                                            <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
+                                                                <option value="" selected disabled>Select Customer</option>
                                                                
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>   
-
-                                                            <!-- ### --> 
-
-                                                            <!-- Single Row Start -->
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Contact Person</label>
                                                             
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id" required>
-                                                                            <option value="" selected disabled>Contact Person</option>
+                                                            <select class="form-select" name="enquiry_contact_person" id="contact_person_id" required>
+                                                                <option value="" selected disabled>Contact Person</option>
                                                                 
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>   
-
-                                                            <!-- ### --> 
-
+                                                            </select>
                                                         </div>
-
-                                                    </div>
-
-
-                                                    <div class="col-lg-6">
-
-                                                        <div class="row">
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Assigned To</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select" name="enquiry_employees" required>
-                                                                        <option value="" selected disabled>Assigned To</option>
-                                                                        <?php foreach($employees as $employ){?> 
-                                                                            <option value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
-                                                                        <?php } ?>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Sales Executive</label>
+                                                            
+                                                            <select class="form-select" name="enquiry_sales_executive" required>
+                                                                <option value="" selected disabled>Sales Executive</option>
+                                                                <?php foreach($sales_executive as $sale_exc){?> 
+                                                                    <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
+                                                                <?php } ?>
                                                                 
-                                                                     </select>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Source</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Time Frame</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Project</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_project" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-
-
+                                                            </select>
                                                         </div>
-
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Validity</label>
+                                                            <input type="text" name="enquiry_validity" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Project</label>
+                                                            <input type="text" name="enquiry_project" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Enquiry Reference</label>
+                                                            <input type="text" name="enquiry_enq_referance" class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <label for="basicInput" class="form-label">Assigned To</label>
+                                                            
+                                                            <select class="form-select" name="enquiry_employees" required>
+                                                                <option value="" selected disabled>Assigned To</option>
+                                                                <?php foreach($employees as $employ){?> 
+                                                                    <option value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
+                                                                <?php } ?>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                         
                                                     </div>
-                                                   
-
-
-
-                                                   
-
-                                                </div>
-
-
-                                                <!--table section start-->
-                                                <div class="mt-4">
+                                                    <div class="modal-footer justify-content-center">
+                                                        
+                                                        <button class="btn btn btn-success">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                                
+                                            
+                                            
+                                            <!---->
+                                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                                                <form class="Dashboard-form class" id="add_form2">
+                                                    <!-- Tab 2 content goes here -->
                                                     <table class="table table-bordered table-striped delTable">
                                                         <tbody class="travelerinfo">
                                                             <tr>
@@ -250,45 +136,27 @@
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
                                                     </table>
-                                                </div>
+                                                    <input type="hidden" class="enquiry_id" name="pd_customer_details">
+                                                    <div class="modal-footer justify-content-center">
+                                                        
+                                                        <button class="btn btn btn-success">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
 
+                                            <!---->
 
-                                                <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button>Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                        </div>
 
-                                                <!--table section end-->
-
-
-                                            </div>  
-                                            
-                                            
-                                             
-
-
-					                           
-						                    
-				                        </div>
-
-
-                                        
-			                        </div>
-		                        </form>
-
-	                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
                         </div>
 
 
-                        <!--####-->
+                        <!--modal content end-->
 
 
 
@@ -297,7 +165,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#Enquiry" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -643,10 +511,102 @@
 
 
 
+        /*view*/ 
+        $("body").on('click', '.view_btn', function(){ 
+            var id = $(this).data('id');
+           
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                   
+                    $("#enquiry_enq_number_id").val(data.enquiry_enq_number);
+
+                    $("#enquiry_date_id").val(data.enquiry_date);
+
+                    $("#enquiry_validity_id").val(data.enquiry_validity);
+
+                    $("#enquiry_project_id").val(data.enquiry_project);
+
+                    $("#enquiry_enq_referance_id").val(data.enquiry_enq_referance);
+
+                    $("#enquiry_sales_executive_id").val(data.sales_executive);
+                    
+                    $("#enquiry_customer_id").val(data.customer_creation);
+
+                    $("#enquiry_contact_person_id").val(data.contact_details);
+
+                    $("#enquiry_employees").val(data.enquiry_employees);
+
+                    $("#product_detail_id").html(data.prod_details);
+                   
+                    $('#ViewModal').modal('show');
+                    
+                   
+                    
+                }
 
 
+            });
+
+            
+        });
+        /*####*/
 
 
+        /*Update section start*/
+
+
+        $("body").on('click', '.edit_btn', function(){ 
+                
+                var id = $(this).data('id');
+
+                $('#EditModal').modal('show');
+           
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Crm/Enquiry/Edit",
+                    
+                    method : "POST",
+
+                    data: {ID: id},
+
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+
+                        console.log(data.contact_details);
+
+                        $('.edit_enquiry_date').val(data.enquiry_date);
+
+                        $('.edit_enquiry_validity').val(data.enquiry_validity);
+
+                        $('.edit_enquiry_project').val(data.enquiry_project);
+
+                        $('.edit_enquiry_reffe').val(data.enquiry_enq_referance);
+
+                        $('.edit_enquiry_contact').html(data.contact_details);
+
+                        $('.edit_enquiry_sales').html(data.sales_executive);
+
+                        $('.edit_enquiry_employ').html(data.employees);
+                      
+                    }
+
+
+                });
+            
+            
+            });
+
+            /*Update section end*/
 
 
 
@@ -898,6 +858,36 @@
         InitSelect2();
 
         /*###*/
+
+
+        /**/
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                }
+
+
+            });
+
+        });
+
+        /**/
+
 
 
      

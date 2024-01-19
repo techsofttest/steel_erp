@@ -93,7 +93,7 @@ class CustomerCreation extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
 
         $data['total_count'] =count($data['result']);
 
@@ -104,7 +104,7 @@ class CustomerCreation extends BaseController
 
 
     //search droup drown (GL account Type)
-    public function FetchTypes1()
+    /*public function FetchTypes1()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -119,7 +119,7 @@ class CustomerCreation extends BaseController
 
         return json_encode($data);
 
-    }
+    }*/
 
 
 
@@ -201,7 +201,7 @@ class CustomerCreation extends BaseController
 
     public function AddTab3()
     {
-        $cond = array('cc_id' => $this->request->getPost('customer_creation'));
+        $cond = array('cc_id' => $this->request->getPost('cc_id'));
         $update_data = $this->request->getPost();
 
         if (array_key_exists('customer_creation', $update_data)) {
@@ -210,9 +210,9 @@ class CustomerCreation extends BaseController
 
         // Remove unnecessary unset statements for date fields
 
-        $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
-        $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
-        $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
+        $update_data['cc_cr_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_cr_expiry")));
+        $update_data['cc_est_id_attach'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_attach")));
+        $update_data['cc_qid_attach'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_attach")));
 
         // Handle file upload
         if ($_FILES['cc_attach_cr']['name'] !== '') {
@@ -220,14 +220,14 @@ class CustomerCreation extends BaseController
             $update_data['cc_attach_cr'] = $ccAttachCrFileName;
         }
 
-        if ($_FILES['cc_est_attach_card']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
-            $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
+        if ($_FILES['cc_est_id_attach']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_est_id_attach','uploads/CustomerCreation');
+            $update_data['cc_est_id_attach'] = $ccAttachCrFileName;
         }
 
-        if ($_FILES['cc_id_card']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
-            $update_data['cc_id_card'] = $ccAttachCrFileName;
+        if ($_FILES['cc_qid_attach']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('cc_qid_attach','uploads/CustomerCreation');
+            $update_data['cc_qid_attach'] = $ccAttachCrFileName;
         }
 
 
@@ -613,6 +613,58 @@ class CustomerCreation extends BaseController
         $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
 
        // echo json_encode($data);
+    }
+
+
+    public function Code()
+    {
+        
+        $cond2 = array('cc_account_head' => $this->request->getPost('ID'));
+
+        $product_head = $this->common_model->FetchWhere('crm_customer_creation',$cond2);
+
+        if(empty($product_head))
+        {   
+           
+            $cond = array('ah_id' => $this->request->getPost('ID'));
+
+            $single_product_head = $this->common_model->SingleRow('accounts_account_heads',$cond);
+
+            $data['product_head_code'] =  $single_product_head->ah_head_id.'0001';
+
+           
+            
+        }
+
+        else
+        {   
+          
+
+            $prod_head_data = [];
+            foreach($product_head as $prod_head)
+            {
+                $prod_head_data[] = $prod_head->cc_account_id;
+
+            }
+            
+            rsort($prod_head_data);
+
+            $prod_head_data = array_values($prod_head_data)[0];
+
+            // Extract numeric part
+            $numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
+
+            // Increment numeric part
+            $numeric_part++;
+
+            // Format back into the string
+            $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
+           
+
+        }
+
+        echo json_encode($data);
+
     }
 
 

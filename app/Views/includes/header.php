@@ -254,6 +254,7 @@ margin: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-top: -16px
 }
 .sub_heading_text{
     padding: 8px 11px;
@@ -263,8 +264,14 @@ margin: 0;
     background: #d3d3d347;
     color: #405189;
     border-radius: 5px;
-    border-top: 3px solid #405189;
+    border-top: 3px solid #405189 !important;
+    border: unset;
     
+}
+.enq_tab_submit button
+{
+    border: unset;
+    background: unset;
 }
      
 
