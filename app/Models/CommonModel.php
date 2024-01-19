@@ -100,7 +100,12 @@ class CommonModel extends Model
         if(!empty($joins))
         foreach($joins as $join)
     {
-        $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+        $table2 = $table;
+        if(!empty($join['table2']))
+        {
+        $table2 = $join['table2'];
+        }
+        $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
     }
 
         $result = $query->get()->getRow();
@@ -167,7 +172,12 @@ class CommonModel extends Model
 
         foreach($joins as $join)
         {
-            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+            $table2 = $table;
+            if(!empty($join['table2']))
+            {
+            $table2 = $join['table2'];
+            }
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
         }
        
         $result = $query->get()->getResult();
@@ -175,7 +185,6 @@ class CommonModel extends Model
         return $result;
 
     }
-
     //Fetch where limit
     public function FetchWhereLimit($id,$coloum_id,$order_key,$order,$table,$end,$start)
     {
@@ -184,7 +193,7 @@ class CommonModel extends Model
         ->select('*')
         ->where($coloum_id,$id)
         ->limit($end,$start)
-        ->orderBy($order_key,'Desc')
+        ->orderBy($order_key,$order)
         ->get()
         ->getRow();
     }
@@ -376,6 +385,23 @@ class CommonModel extends Model
         return $result;
     }
     
+
+    //For Next Autoincrement
+
+    public function FetchNextId($table,$prefix)
+    {
+
+    $query = $this->db->query('SHOW TABLE STATUS WHERE `name` LIKE "'. $this->db->getPrefix().''.$table.'";');
+
+    $row = $query->getRow();
+
+    $id = $row->Auto_increment;
+
+    $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
+
+    return $uid;
+
+    }
     
 
  
