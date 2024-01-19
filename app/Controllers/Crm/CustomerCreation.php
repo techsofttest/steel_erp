@@ -630,9 +630,10 @@ class CustomerCreation extends BaseController
 
             $single_product_head = $this->common_model->SingleRow('accounts_account_heads',$cond);
 
-            $data['product_head_code'] =  $single_product_head->ah_head_id.'0001';
+          //  $data['product_head_code'] =  $single_product_head->ah_head_id.'0001';
 
-           
+          $data['product_head_code'] =  ++$single_product_head->ah_head_id;
+          
             
         }
 
@@ -651,14 +652,19 @@ class CustomerCreation extends BaseController
 
             $prod_head_data = array_values($prod_head_data)[0];
 
+           
+            $data['product_head_code'] = ++$prod_head_data;
+
+            //$data['product_head_code'] = "";
+
             // Extract numeric part
-            $numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
+            //$numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
 
             // Increment numeric part
-            $numeric_part++;
+            //$numeric_part++;
 
             // Format back into the string
-            $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
+            //$data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
            
 
         }

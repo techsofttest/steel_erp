@@ -1229,7 +1229,7 @@
                  success:function(data)
                  {   
                      var data = JSON.parse(data);
-                     console.log(data.product_head_code); 
+                     
                     $(".account_id").val(data.product_head_code);
                     
                      
