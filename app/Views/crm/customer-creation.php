@@ -258,7 +258,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close modal_close"  aria-label="Close"></button>
                                         </div>
 				                        <div class="modal-body">
 
@@ -320,7 +320,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Official Documents</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close modal_close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 				                        <div class="modal-body">
 
@@ -1229,8 +1229,8 @@
                  success:function(data)
                  {   
                      var data = JSON.parse(data);
-                     
-                    $(".account_id").val(data.product_head_code);
+                    
+                    $(".account_id").val(data.account_id);
                     
                      
                  }
@@ -1242,6 +1242,26 @@
         });
 
         /*####*/
+
+
+        /*close contact details modal*/ 
+         
+        $('.modal_close').on('click', function() {
+          
+
+            $('#CustomerCreation').modal('show');
+
+            $('#ContactDeatils').modal('hide');
+
+            $('#OfficalDocument').modal('hide');
+           
+        });
+
+        /*####*/
+
+
+
+       
 
 
 

@@ -621,18 +621,16 @@ class CustomerCreation extends BaseController
         
         $cond2 = array('cc_account_head' => $this->request->getPost('ID'));
 
-        $product_head = $this->common_model->FetchWhere('crm_customer_creation',$cond2);
+        $customer_creation = $this->common_model->FetchWhere('crm_customer_creation',$cond2);
 
-        if(empty($product_head))
+        if(empty($customer_creation))
         {   
            
             $cond = array('ah_id' => $this->request->getPost('ID'));
 
-            $single_product_head = $this->common_model->SingleRow('accounts_account_heads',$cond);
+            $single_account_head = $this->common_model->SingleRow('accounts_account_heads',$cond);
 
-          //  $data['product_head_code'] =  $single_product_head->ah_head_id.'0001';
-
-          $data['product_head_code'] =  ++$single_product_head->ah_head_id;
+            $data['account_id'] =  ++$single_account_head->ah_head_id;
           
             
         }
@@ -640,33 +638,12 @@ class CustomerCreation extends BaseController
         else
         {   
           
-
-            $prod_head_data = [];
-            foreach($product_head as $prod_head)
-            {
-                $prod_head_data[] = $prod_head->cc_account_id;
-
-            }
-            
-            rsort($prod_head_data);
-
-            $prod_head_data = array_values($prod_head_data)[0];
-
+            $cust_creat = $this->common_model->FetchWhereLimit($this->request->getPost('ID'),'cc_account_head','cc_account_id','DESC','crm_customer_creation',0,1);
            
-            $data['product_head_code'] = ++$prod_head_data;
+            $cust_creat_data = $cust_creat->cc_account_id;
 
-            //$data['product_head_code'] = "";
-
-            // Extract numeric part
-            //$numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
-
-            // Increment numeric part
-            //$numeric_part++;
-
-            // Format back into the string
-            //$data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
+            $data['account_id'] = ++$cust_creat_data;
            
-
         }
 
         echo json_encode($data);

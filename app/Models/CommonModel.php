@@ -176,6 +176,19 @@ class CommonModel extends Model
 
     }
 
+    //Fetch where limit
+    public function FetchWhereLimit($id,$coloum_id,$order_key,$order,$table,$end,$start)
+    {
+        return $this->db
+        ->table($table)
+        ->select('*')
+        ->where($coloum_id,$id)
+        ->limit($end,$start)
+        ->orderBy($order_key,'Desc')
+        ->get()
+        ->getRow();
+    }
+
 
 
     //Fetch All 
