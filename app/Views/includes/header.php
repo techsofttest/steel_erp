@@ -48,6 +48,7 @@
     border: 1px solid red !important;
     }
 
+   
     /* For Select 2 Dropdown */
 
     
@@ -189,7 +190,7 @@
     .add_more_icon
     {
         cursor: pointer;
-        color: green;
+       
         
     }
     
@@ -235,7 +236,7 @@
     }
 
     .Dashboard-form .form-select {
-    margin-bottom:0px;
+    margin-bottom:5px;
     border: unset;
     border-bottom: 1px solid #0000003b;
     border-radius: 0px;
@@ -310,7 +311,6 @@ table.menu td{
 }
 
 
-    
 </style>
 
 </head>
