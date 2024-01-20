@@ -186,7 +186,7 @@
         padding-bottom: 18px;
         
     }
-    .edit_add_more
+    .add_more_icon
     {
         cursor: pointer;
         color: green;
@@ -274,7 +274,24 @@ margin: 0;
     background: unset;
 }
      
-
+table {
+    width: 100%;
+}
+table.menu {
+    width: auto;
+    margin-right: 0px;
+   
+}
+table.menu td{
+    padding: 10px 30px;
+    
+    --vz-table-bg-type: var(--vz-table-striped-bg);
+}
+.sub_heading_btn{
+    color: #000000ba;
+    
+   
+}
     
 </style>
 
