@@ -1,3 +1,27 @@
+<style>
+    span.select2.customer_width {
+        width: 80% !important;
+    } 
+    .contact_more_modal
+    {
+        position: absolute;
+        left: 471px;
+        padding: 2px 27px;
+        z-index: 999;
+        border: 1px solid black;
+        border: 1px solid #0000003b;
+    }
+    .cust_more_modal
+    {
+        position: absolute;
+        left: 471px;
+        padding: 2px 27px;
+        z-index: 999;
+        border: 1px solid black;
+        border: 1px solid #0000003b;
+    }
+</style>
+
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -77,11 +101,11 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer<span class="add_more_icon cust_more_modal"><i class="ri-add-circle-line"></i></span></label>
+                                                                        <label for="basicInput" class="form-label">Customer<span class="add_more_icon cust_more_modal">New</span></label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
+                                                                        <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" style="width:80%;" required>
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                
                                                                         </select>
@@ -100,15 +124,18 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal"><i class="ri-add-circle-line"></i></span></label>
+                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id" required>
+                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id" style="width: 80%;" required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
+                                                                        
                                                                     </div>
+
+                                                                    
 
                                                                 </div> 
 
@@ -823,8 +850,8 @@
 		                        <form  class="Dashboard-form class" id="add_cus_form4">
 			                        <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
+                                            <button type="button" class="btn-close modal_close_2" aria-label="Close"></button>
                                         </div>
 				                        <div class="modal-body">
 
@@ -1176,6 +1203,23 @@
 
       /*####*/
 
+
+      /*close contact details modal*/ 
+         
+      $('.modal_close_2').on('click', function() {
+          
+
+        $('#ContactDeatils2').modal('hide');
+
+        $('#Enquiry').modal('show');
+
+         
+      });
+
+      /*####*/
+
+
+
       /*add customer creation*/    
       $(function() {
             var form = $('#add_cus_form1');
@@ -1421,7 +1465,7 @@
         /*customer droup drown search*/
         $(".ser_customer").select2({
             placeholder: "Select Customer",
-            theme : "default form-control-",
+            theme : "default form-control- customer_width",
             dropdownParent: $('#Enquiry'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/Enquiry/FetchCustomer",
