@@ -280,10 +280,12 @@ table {
 table.menu {
     width: auto;
     margin-right: 0px;
+    border: 1px solid;
    
 }
 table.menu td{
     padding: 10px 30px;
+    border: 1px solid;
     
     --vz-table-bg-type: var(--vz-table-striped-bg);
 }
@@ -306,6 +308,8 @@ table.menu td{
     border:unset;
 
 }
+
+
     
 </style>
 

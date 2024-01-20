@@ -67,6 +67,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required></select>
+                                                                        <!--<input type="text" class="form-control account_head_select account_head_clz" name="cc_account_head"  required>--->
                                                                     </div>
 
                                                                 </div> 

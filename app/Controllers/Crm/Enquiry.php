@@ -38,7 +38,7 @@ class Enquiry extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('enquiry_enq_number');
+        $searchColumns = array('enquiry_reff');
 
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_enquiry','enquiry_id',$searchValue,$searchColumns);
     
@@ -61,7 +61,7 @@ class Enquiry extends BaseController
            
            $data[] = array( 
               "enquiry_id"         =>$i,
-              'enquiry_enq_number' => $record->enquiry_enq_number,
+              'enquiry_reff'       => $record->enquiry_reff,
               'enquiry_date'       => date('d-m-Y',strtotime($record->enquiry_date)),
               'enquiry_customer'   => $record->cc_customer_name,
               "action"             => $action,
@@ -107,7 +107,7 @@ class Enquiry extends BaseController
     }
 
 
-    // search droup drown (customer-edit)
+    
     public function EditFetchCustomer()
     {
 
@@ -164,6 +164,12 @@ class Enquiry extends BaseController
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
 
+        $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+        
+        $your_date = strtotime("1 day", strtotime(date("d-m-Y")));
+     
+        $data['increment_date_date'] = date("Y-m-d", $your_date);
+
         $data['content'] = view('crm/enquiry',$data);
 
         return view('crm/crm-module',$data);
@@ -175,33 +181,34 @@ class Enquiry extends BaseController
     Public function Add()
     {   
         
-        $insert_data = $this->request->getPost();
+        $insert_data = [
+                
+            'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
 
-        $insert_data['enquiry_added_by'] = 0; 
+            'enquiry_date'           => $this->request->getPost('enquiry_date'),
 
-        $insert_data['enquiry_added_date'] = date('Y-m-d'); 
+            'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
 
-        $id = $this->common_model->InsertData('crm_enquiry',$insert_data);
+            'enquiry_contact_person' => $this->request->getPost('enquiry_contact_person'),
 
-        $data['enquiry_id'] = $id;
+            'enquiry_assign_to'      => $this->request->getPost('enquiry_assign_to'),
 
-        $p_ref_no = 'ENQ'.str_pad($id, 7, '0', STR_PAD_LEFT);
+            'enquiry_source'         => $this->request->getPost('enquiry_source'),
+
+            'enquiry_time_frame'     => $this->request->getPost('enquiry_time_frame'),
+
+            'enquiry_project'        => $this->request->getPost('enquiry_project'),
+
+            'enquiry_added_by'        => 0,
+
+            'enquiry_added_date'      => date("Y-m-d"),
+
+
+        ];
+
+        $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
         
-        $cond = array('enquiry_id' => $id);
-
-        $update_data['enquiry_enq_number'] = $p_ref_no;
-
-        $this->common_model->EditData($update_data,$cond,'crm_enquiry');
-
-        echo json_encode($data);
-
-    }
-
-    public function AddTab2()
-    {
-        $insert_data = $this->request->getPost();
-        if($_POST){
-	        if(!empty($_POST['pd_product_detail']))
+        if(!empty($_POST['pd_product_detail']))
 			{
 			    $count =  count($_POST['pd_product_detail']);
 					
@@ -211,11 +218,10 @@ class Enquiry extends BaseController
 					{
 							
 					    $insert_data  	= array(  
-							'pd_serial_no'            =>  $_POST['pd_serial_no'][$j],
 							'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
-							'pd_unit'                 =>   $_POST['pd_unit'][$j],
+							'pd_unit'                 =>  $_POST['pd_unit'][$j],
 						    'pd_quantity'             =>  $_POST['pd_quantity'][$j],
-                            'pd_customer_details	' =>  $_POST['pd_customer_details'],
+                            'pd_customer_details	' =>  $enquiry_id,
 	  
 					    );
 					
@@ -224,19 +230,11 @@ class Enquiry extends BaseController
 				
 				    } 
 				}
-			}
-			
-			
-        }
-        
+			} 
 
-       
     }
 
-
-
-  
-
+ 
 
 
 
@@ -457,6 +455,30 @@ class Enquiry extends BaseController
        
     }
 
+
+
+    public function AddContactDetails()
+    {
+        $insert_data = $this->request->getPost();
+
+        $cond = array('contact_customer_creation' => $this->request->getPost('contact_customer_creation'));
+
+        $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+
+        $data['contact_person'] ="";
+
+        foreach($contact_details as $cont_det)
+        {
+            $data['contact_person'] .='<option value='.$cont_det->contact_id.'';
+           
+            $data['contact_person'] .='>' .$cont_det->contact_person. '</option>'; 
+        }
+        
+
+        echo json_encode($data);
+    }
 
 
 

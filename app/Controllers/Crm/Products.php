@@ -111,7 +111,6 @@ class Products extends BaseController
     public function index()
     {   
         
-       
         $data['content'] = view('crm/products');
 
         return view('crm/crm-module',$data);
@@ -130,9 +129,7 @@ class Products extends BaseController
         $insert_data['product_added_date'] = date('Y-m-d'); 
 
         $id = $this->common_model->InsertData('crm_products',$insert_data);
-        
-        
-
+    
     }
 
 
@@ -152,10 +149,10 @@ class Products extends BaseController
         
         $data['prod_head_out'] ="";
         foreach ($product_head as $prod_head) {
-            $data['prod_head_out'] .= '<option value="' . $prod_head->ph_id . '"'; 
+            $data['prod_head_out'] .= '<option value="' . $prod_head->ph_id. '"'; 
         
             // Check if the current product head is selected
-            if ($prod_head->ph_id == $product->product_product_head) {
+            if ($prod_head->ph_id == $product->product_product_head){
                 $data['prod_head_out'] .= ' selected'; 
             }
         
@@ -177,7 +174,7 @@ class Products extends BaseController
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('product_id', $update_data)) 
         {
-             unset($update_data['product_id']);
+            unset($update_data['product_id']);
         }       
 
         $update_data['product_modified_date'] = date('Y-m-d'); 
@@ -186,15 +183,15 @@ class Products extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {
-         $cond = array('product_id' => $this->request->getPost('ID'));
+    //delete account head
+    public function Delete()
+    {
+        $cond = array('product_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('crm_products',$cond);
- 
-         
-     }
+        $this->common_model->DeleteData('crm_products',$cond);
+    
+    }
+
 
     public function Code()
     {
@@ -210,23 +207,16 @@ class Products extends BaseController
             $single_product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
 
             $data['product_head_code'] =  $single_product_head->ph_code.'0001';
-
-            
+ 
         }
 
         else
         {   
-            $prod_head_data = [];
-            foreach($product_head as $prod_head)
-            {
-                $prod_head_data[] = $prod_head->product_code;
-
-            }
+           
+            $prod_head = $this->common_model->FetchWhereLimit($this->request->getPost('ID'),'product_product_head','product_code','DESC','crm_products',0,1);
+           
+            $prod_head_data = $prod_head->product_code;
             
-            rsort($prod_head_data);
-
-            $prod_head_data = array_values($prod_head_data)[0];
-
             // Extract numeric part
             $numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
 
@@ -235,8 +225,7 @@ class Products extends BaseController
 
             // Format back into the string
             $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
-           
-
+          
         }
 
         echo json_encode($data);

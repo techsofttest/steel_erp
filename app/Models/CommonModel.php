@@ -391,15 +391,15 @@ class CommonModel extends Model
     public function FetchNextId($table,$prefix)
     {
 
-    $query = $this->db->query('SHOW TABLE STATUS WHERE `name` LIKE "'. $this->db->getPrefix().''.$table.'";');
+        $query = $this->db->query('SHOW TABLE STATUS WHERE `name` LIKE "'. $this->db->getPrefix().''.$table.'";');
 
-    $row = $query->getRow();
+        $row = $query->getRow();
 
-    $id = $row->Auto_increment;
+        $id = $row->Auto_increment;
 
-    $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
 
-    return $uid;
+        return $uid;
 
     }
     
