@@ -292,6 +292,20 @@ table.menu td{
     
    
 }
+
+
+.table-bordered tr
+    {
+    border-bottom: 1px solid #0000003b !important;
+    border: unset;
+    }
+
+    .table-bordered tbody, td, tfoot, th, thead, tr
+    {
+
+    border:unset;
+
+}
     
 </style>
 
