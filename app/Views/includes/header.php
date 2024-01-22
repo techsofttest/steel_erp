@@ -228,18 +228,18 @@
 
     /* New Layout Input Style */
 
-    .Dashboard-form .form-control {
-    border: unset;
-    border-bottom: 1px solid #0000003b;
-    border-radius: 0px;
-    margin-bottom: 5px;
-    }
+.Dashboard-form .form-control {
+border: unset;
+border-bottom: 1px solid #0000003b;
+border-radius: 0px;
+margin-bottom: 5px;
+}
 
-    .Dashboard-form .form-select {
-    margin-bottom:5px;
-    border: unset;
-    border-bottom: 1px solid #0000003b;
-    border-radius: 0px;
+.Dashboard-form .form-select {
+margin-bottom:5px;
+border: unset;
+border-bottom: 1px solid #0000003b;
+border-radius: 0px;
 }
 
 .Dashboard-form label {
@@ -324,6 +324,7 @@ table.menu td{
             <div class="navbar-header">
                 <div class="d-flex">
                     <!-- LOGO -->
+
                     <div class="navbar-brand-box horizontal-logo">
                         <a href="<?= base_url(); ?>" class="logo logo-dark">
                             <span class="logo-sm">
@@ -342,6 +343,7 @@ table.menu td{
                                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="17">
                             </span>
                         </a>
+
                     </div>
 
                     <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
@@ -365,9 +367,6 @@ table.menu td{
                 </div>
 
                 <div class="d-flex align-items-center">
-
-                
-
 
                 
 
