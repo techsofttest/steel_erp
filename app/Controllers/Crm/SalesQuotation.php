@@ -38,7 +38,7 @@ class SalesQuotation extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('qd_quotation_number');
+        $searchColumns = array('qd_reffer_no');
 
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_quotation_details','qd_id',$searchValue,$searchColumns);
     
@@ -61,7 +61,7 @@ class SalesQuotation extends BaseController
            
            $data[] = array( 
               "qd_id"               =>$i,
-              'qd_quotation_number' => $record->qd_quotation_number,
+              'qd_reffer_no'        => $record->qd_reffer_no,
               'qd_date'             => date('d-m-Y',strtotime($record->qd_date)),
               'qd_customer'         => $record->cc_customer_name,
               "action"              => $action,
@@ -141,6 +141,8 @@ class SalesQuotation extends BaseController
         
         $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
 
+        $data['sales_quotation_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+
         $data['content'] = view('crm/sales-quotation',$data);
 
         return view('crm/crm-module',$data);
@@ -152,64 +154,128 @@ class SalesQuotation extends BaseController
     Public function Add()
     {   
         
-        $insert_data = $this->request->getPost();
 
-        $insert_data['qd_added_by'] = 0; 
+        $insert_data = [
 
-        $insert_data['qd_added_date'] = date('Y-m-d'); 
+            'qd_reffer_no'                  => $this->request->getPost('qd_reffer_no'),
 
-        $id = $this->common_model->InsertData('crm_quotation_details',$insert_data);
+            'qd_date'                       => $this->request->getPost('qd_date'),
 
-        $data['qd_id'] = $id;
+            'qd_customer'                   => $this->request->getPost('qd_customer'),
+
+            'qd_enq_ref'                    => $this->request->getPost('qd_enq_ref'),
+
+            'qd_validity'                   => $this->request->getPost('qd_validity'),
+
+            'qd_sales_executive'            => $this->request->getPost('qd_sales_executive'),
+
+            'qd_contact_person'             => $this->request->getPost('qd_contact_person'),
+
+            'qd_payment_term'               => $this->request->getPost('qd_payment_term'),
+
+            'qd_delivery_term'              => $this->request->getPost('qd_delivery_term'),
+
+            'qd_project'                    => $this->request->getPost('qd_project'),
+
+            'qd_sales_quot_amount_in_words' => $this->request->getPost('qd_sales_quot_amount_in_words'),
+
+            'qd_sales_amount'               => $this->request->getPost('qd_sales_amount'),
+
+            'qd_added_by'                   => 0,
+        ];
+
         
-        $p_ref_no = 'SQ'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('qd_id' => $id);
 
-        $update_data['qd_quotation_number'] = $p_ref_no;
+        $data['quotation_id'] = $this->common_model->InsertData('crm_quotation_details',$insert_data);
 
-        $this->common_model->EditData($update_data,$cond,'crm_quotation_details');
+        if(!empty($_POST['qpd_product_description']))
+        {
+            $count =  count($_POST['qpd_product_description']);
+                
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
+                        
+                    $insert_data  	= array(  
+                        
+                        'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
+                        'qpd_unit'                 =>  $_POST['qpd_unit'][$j],
+                        'qpd_quantity'             =>  $_POST['qpd_quantity'][$j],
+                        'qpd_rate'                 =>  $_POST['qpd_rate'][$j],
+                        'qpd_discount'             =>  $_POST['qpd_discount'][$j],
+                        'qpd_amount'               =>  $_POST['qpd_amount'][$j],
+                        'qpd_quotation_details'    =>  $data['quotation_id'],
+    
+                    );
+                
+                    
+                    $id = $this->common_model->InsertData('crm_quotation_product_details',$insert_data);
+            
+                } 
+            }
+        }
 
         echo json_encode($data);
 
     }
 
+  
     public function AddTab2()
-    {
-        //$insert_data = $this->request->getPost();
-        if($_POST)
+    {   
+        
+
+        if(!empty($_POST['qc_material']))
         {
-	        if(!empty($_POST['qpd_unit']))
-			{
-			    $count =  count($_POST['qpd_unit']);
-					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
-							
-					    $insert_data  	= array(  
-							'qpd_serial_no'            =>  $_POST['qpd_serial_no'][$j],
-							'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
-							'qpd_unit'                 =>  $_POST['qpd_unit'][$j],
-						    'qpd_quantity'             =>  $_POST['qpd_quantity'][$j],
-                            'qpd_rate'                 =>  $_POST['qpd_rate'][$j],
-                            'qpd_discount'             =>  $_POST['qpd_discount'][$j],
-                            'qpd_amount'               =>  $_POST['qpd_amount'][$j],
-                            'qpd_quotation_details'    =>  $_POST['qpd_quotation_details'],
-	  
-					    );
-					
-						
-				        $id = $this->common_model->InsertData('crm_quotation_product_details',$insert_data);
-				
-				    } 
-				}
-			}
-			
-			
+            $count =  count($_POST['qc_material']);
+
+            $quotation = $_POST['qc_quotation_id'];
+                
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
+                        
+                    $insert_data  	= array(  
+                        
+                        'qc_material'            =>  $_POST['qc_material'][$j],
+                        'qc_unit'                =>  $_POST['qc_unit'][$j],
+                        'qc_qty'                 =>  $_POST['qc_qty'][$j],
+                        'qc_rate'               =>  $_POST['qc_rate'][$j],
+                        'qc_amount'              =>  $_POST['qc_amount'][$j],
+                        'qc_quotation_id'      =>  $quotation,
+    
+                    );
+                
+                    
+                    $id = $this->common_model->InsertData('crm_quotation_cost_calculation',$insert_data);
+            
+                } 
+            }
+
+            $cond = array('qd_id'=>$quotation);
+
+            $update_data = [
+                'qd_cost_amount'           => $this->request->getPost('qd_cost_amount'),
+                'qd_cost_amount_in_words'  => $this->request->getPost('qd_cost_amount_in_words'),
+                //'qd_percentage'            => $this->request->getPost('qd_sales_amount'),
+            ];
+
+
+           
+
+            $this->common_model->EditData($update_data,$cond,'crm_quotation_details');
+
+
         }
-     
+
+       
+
+
+
+
+
+        echo json_encode($data);
     }
 
 
@@ -385,19 +451,44 @@ class SalesQuotation extends BaseController
 
         $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond1);
 
-        
-        $data['customer_name'] ="";
+        $cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
 
-        $data['customer_name'] ='<option value="" selected disabled>Select  Contact Person</option>';
+        $single_enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
+
+        
+        $data['customer_person'] ="";
+
+        $data['customer_person'] ='<option value="" selected disabled>Select  Contact Person</option>';
 
         foreach($contact_details as $con_det)
         {
-            $data['customer_name'] .='<option value='.$con_det->contact_id.'';
+            
+            
+            $data['customer_person'] .='<option  value='.$con_det->contact_id.'';
+           if($con_det->contact_id  == $single_enquiry->enquiry_contact_person){
+            $data['customer_person'] .=    " selected ";}
            
-            $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
+            $data['customer_person'] .='>' .$con_det->contact_person. '</option>';
+
         }
 
         $data['cc_credit_term'] = $customer_creation->cc_credit_term;
+
+
+        //new
+        $cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
+
+        $enquiry_customer = $this->common_model->FetchWhere('crm_enquiry',$cond2);
+
+        $data['enquiry_customer'] = "";
+        $data['enquiry_customer'] ='<option value="" selected disabled>Selected Enquiry</option>';  
+
+        foreach($enquiry_customer as $enq_cust)
+        {
+            $data['enquiry_customer'] .='<option value='.$enq_cust->enquiry_id.'';
+           
+            $data['enquiry_customer'] .='>' .$enq_cust->enquiry_reff. '</option>'; 
+        }
 
         echo json_encode($data);
 
@@ -551,6 +642,71 @@ class SalesQuotation extends BaseController
         } 
         
         echo json_encode($data);
+
+    }
+
+
+    public function FetchProject()
+    {
+        
+        $cond = array('enquiry_id' => $this->request->getPost('ID'));
+
+        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
+
+        $data['enquiry_project'] = $enquiry->enquiry_project;
+
+        $cond1 = array('pd_enquiry_id' => $this->request->getPost('ID'));
+
+        
+
+        $product_details = $this->common_model->FetchWhere('crm_product_detail',$cond1);
+
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        
+        $data['product_detail'] = "";
+
+       
+            $data['product_detail'] .='
+                                        <tr>
+                                            <td>Serial No.</td>
+                                            <td>Product Description</td>
+                                            <td>Unit</td>
+                                            <td>Qty</td>
+                                            <td>Rate</td>
+                                            <td>Discount</td>
+                                            <td>Amount</td>
+                                            <td>Action</td>
+                                        </tr>';
+                                        $i=1;
+                                        foreach($product_details as $prod_det)
+                                        {
+
+                                        $data['product_detail'] .=  '<tr class="prod_row">
+                                            <td style="width: 10%;">'.$i.'</td>
+                                            <td style="width:20%">
+                                                <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
+                                               
+                                                    foreach($products as $prod){
+                                                        $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
+                                                        if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
+                                                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                    }
+                                                $data['product_detail'] .='</select>
+                                            </td>
+                                            <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
+                                            <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
+                                            <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
+                                            <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
+                                            <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
+                                            <td class="row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
+                                        </tr>';
+                                        $i++;
+                                    }
+
+
+
+        echo json_encode($data);
+
 
     }
 
@@ -743,6 +899,9 @@ class SalesQuotation extends BaseController
         $mpdf->Output();
     
         }
+
+
+    
     
 
 
