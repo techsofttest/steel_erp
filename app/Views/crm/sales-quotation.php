@@ -1813,7 +1813,7 @@
         
         /*cost calculation add more*/
 
-        var max_fieldcost = 30;
+        /*var max_fieldcost = 30;
         var cc = 1;
         
         $("body").on('click', '.add_cost_more', function(){
@@ -1836,7 +1836,7 @@
             cc--;
             totalCalcutate();
            
-        });
+        });*/
 
         /**/
 
