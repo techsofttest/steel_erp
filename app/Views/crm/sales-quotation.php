@@ -1791,7 +1791,9 @@
         var pp = 1;
         
         $("body").on('click', '.add_product3', function(){
-            var pp = $('.prod_row').length
+           // var pp = $('.prod_row').length
+
+           var pp = $('.cost_cal_row').length
             
 			if(pp < max_fieldspp){ 
                 pp++;
@@ -2098,15 +2100,15 @@
         
         $("body").on('keyup', '.cost_qty_clz, .cost_rate_clz', function(){ 
 
-            var $valueSelect = $(this);
+            var valueSelect = $(this);
 
-            var $qtySelectElement = $valueSelect.closest('.cost_cal_row').find('.cost_qty_clz');
+            var qtySelectElement = valueSelect.closest('.cost_cal_row').find('.cost_qty_clz');
 
-            var qty = $qtySelectElement.val();
+            var qty = qtySelectElement.val();
 
-            var $rateSelectElement = $valueSelect.closest('.cost_cal_row').find('.cost_rate_clz');
+            var rateSelectElement = valueSelect.closest('.cost_cal_row').find('.cost_rate_clz');
 
-            var rate = $rateSelectElement.val();
+            var rate = rateSelectElement.val();
 
             var parsedRate = parseFloat(rate);
 
@@ -2114,13 +2116,10 @@
 
             var multipliedTotal = parsedRate * parsedQuantity;
 
-            var $amountElement = $valueSelect.closest('.cost_cal_row').find('.cost_amount_clz');
+            var amountElement = valueSelect.closest('.cost_cal_row').find('.cost_amount_clz');
 
+            amountElement.val(multipliedTotal);
 
-
-            $amountElement.val(multipliedTotal);
-
-        
             totalCalcutate();
 
           
@@ -2559,7 +2558,7 @@
 
         /*product detail calculation*/
 
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+        /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
 
             var $discountSelect = $(this);
 
@@ -2588,7 +2587,7 @@
             $amountElement.val(Number(orginalPrice).toFixed(2));
 
 
-        });
+        });*/
 
 
         /**/

@@ -77,6 +77,11 @@
     <!-- Notification Alerts -->
 
     <script src="<?php echo base_url(); ?>public/assets/js/alertify.min.js"></script> 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
    
 
     <script>

@@ -221,7 +221,7 @@ class Enquiry extends BaseController
 							'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
 							'pd_unit'                 =>  $_POST['pd_unit'][$j],
 						    'pd_quantity'             =>  $_POST['pd_quantity'][$j],
-                            'pd_customer_details	' =>  $enquiry_id,
+                            'pd_enquiry_id'           =>  $enquiry_id,
 	  
 					    );
 					
@@ -272,7 +272,7 @@ class Enquiry extends BaseController
 
         $enquiry = $this->common_model->SingleRowJoin('crm_enquiry',$cond,$joins);
 
-        $cond1 = array('pd_customer_details' => $this->request->getPost('ID'));
+        $cond1 = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
         $joins1 = array(
             array(
@@ -382,7 +382,7 @@ class Enquiry extends BaseController
 
         $this->common_model->DeleteData('crm_enquiry',$cond);
 
-        $cond = array('pd_customer_details' => $this->request->getPost('ID'));
+        $cond = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
         $this->common_model->DeleteData('crm_product_detail',$cond);
 

@@ -1313,7 +1313,6 @@
                         contentType: false, // Don't set content type
                         success: function(data) {
                         
-
                             $('#add_cus_form1')[0].reset();
                             $('#add_cus_form2')[0].reset();
                             $('#add_cus_form3')[0].reset();
@@ -1321,6 +1320,7 @@
                             $('#Enquiry').modal('show');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
+                            
                         }
                     });
                 }
@@ -1347,15 +1347,16 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
+
                             var responseData = JSON.parse(data);
                             
                             $("#contact_person_id").html(responseData.contact_person);
-
+                            
                             $('#ContactDeatils2').modal('hide');
                             
                             $('#Enquiry').modal('show');
 
-                           
+                            $('#add_cus_form4')[0].reset();
 
                         }
                     });
@@ -1389,6 +1390,39 @@
         });
 
         /*####*/
+
+
+        $('#cc_telephone').on('input', function() {
+            // Allow digits, hyphens, and spaces
+            //$(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
+            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+        });
+
+
+        $('#cc_fax').on('input', function() {
+            
+            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+        });
+
+
+        /*$('.contact_mobile_clz').on('input', function() {
+            
+            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+        });*/
+
+        $("body").on('keyup', '.contact_mobile_clz', function(){
+           
+            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+            
+       });
+
+
+
+        $('#edit_telephone_id').on('input', function() {
+            // Allow digits, hyphens, and spaces
+            $(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
+        });
+
 
 
 
