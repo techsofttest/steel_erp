@@ -458,7 +458,7 @@ class CommonModel extends Model
 
         ->where('enquiry_customer',$id)
 
-        ->where('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM crm_quotation_details)')
+        ->where('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM '.$this->db->getPrefix().'crm_quotation_details)')
 
         ->get();
 

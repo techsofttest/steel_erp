@@ -444,7 +444,6 @@ class SalesQuotation extends BaseController
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
 
-        
         $cond1 = array('cc_id' => $this->request->getPost('ID'));
 
         $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond1);
