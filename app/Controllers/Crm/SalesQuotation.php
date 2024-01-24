@@ -141,7 +141,7 @@ class SalesQuotation extends BaseController
         
         $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
 
-        $data['sales_quotation_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+        $data['sales_quotation_id'] = $this->common_model->FetchNextId('crm_quotation_details','SQ');
 
         $data['content'] = view('crm/sales-quotation',$data);
 
@@ -261,8 +261,6 @@ class SalesQuotation extends BaseController
                 //'qd_percentage'            => $this->request->getPost('qd_sales_amount'),
             ];
 
-
-           
 
             $this->common_model->EditData($update_data,$cond,'crm_quotation_details');
 
@@ -476,9 +474,22 @@ class SalesQuotation extends BaseController
 
 
         //new
-        $cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
+        //$cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
 
-        $enquiry_customer = $this->common_model->FetchWhere('crm_enquiry',$cond2);
+        //$enquiry_customer = $this->common_model->FetchWhere('crm_enquiry',$cond2);
+
+         /*$joins = array(
+            
+            array(
+                'table' => 'crm_quotation_details',
+                'pk'    => 'qd_id',
+                'fk'    => 'qd_enq_ref',
+            ),
+        
+        );*/
+
+
+        $enquiry_customer = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
 
         $data['enquiry_customer'] = "";
         $data['enquiry_customer'] ='<option value="" selected disabled>Selected Enquiry</option>';  

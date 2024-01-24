@@ -402,6 +402,68 @@ class CommonModel extends Model
         return $uid;
 
     }
+
+    //check data alread in table
+
+    public function CheckData($table,$coloum1,$data1)
+    {
+        return $this->db
+        ->table($table)
+        ->where($coloum1,$data1)
+        ->get()
+        ->getResult();
+    }
+
+
+    //fetch enquiry in quotation
+
+    /*public function FetchEnquiryInQuot($id)
+    {   
+        
+        $subQuery = $this->db->table('crm_quotation_details')
+        
+        ->select('qd_customer')
+
+        ->where('qd_enq_ref', $id)
+
+        ->getCompiledSelect();
+
+        $query = $this->db->table('crm_enquiry')
+        
+        ->select('*')
+
+        ->where('enquiry_customer',$id)
+
+        ->join('crm_quotation_details','crm_quotation_details.qd_enq_ref=crm_enquiry.enquiry_id','left')
+
+       ->where("{$id} NOT IN ($subQuery)")
+
+        ->get();
+
+        echo $this->db->getLastQuery();
+
+        exit();
+
+        return $query->getResult();
+    }*/
+
+
+    public function FetchEnquiryInQuot($id)
+    {
+        $query = $this->db->table('crm_enquiry')
+        
+        ->select('*')
+
+        //->join('crm_quotation_details','crm_quotation_details.qd_enq_ref=crm_enquiry.enquiry_id','left')
+
+        ->where('enquiry_customer',$id)
+
+        ->where('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM crm_quotation_details)')
+
+        ->get();
+
+        return $query->getResult();
+    }
     
 
  
