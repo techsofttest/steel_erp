@@ -2012,6 +2012,8 @@
            
             var orginalPrice = multipliedTotal - per_amount;
 
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
             $amountElement.val(orginalPrice);
@@ -2111,6 +2113,8 @@
             var parsedQuantity = parseFloat(qty);
 
             var multipliedTotal = parsedRate * parsedQuantity;
+
+            multipliedTotal = multipliedTotal.toFixed(2);
 
             var amountElement = valueSelect.closest('.cost_cal_row').find('.cost_amount_clz');
 
@@ -2620,17 +2624,18 @@
 
       function TotalAmount()
         {
-            var total = 0;
+
+            var total= 0;
 
             $('body .amount_clz_id').each(function()
             {
-                var sub_tot = $(this).val();
+                var sub_tot = parseFloat($(this).val());
 
-                total += parseFloat($(this).val())||0;
+                total += parseFloat(sub_tot.toFixed(2))||0;
                //total = Number(total).toFixed(2)
             });
 
-           console.log(total);
+           total = total.toFixed(2);
 
            $('.amount_total').val(total);
 
@@ -2656,17 +2661,14 @@
             $('body .cost_amount_clz').each(function()
             {
                 
-                //var sub_tot = Number($(this).val()).toFixed(2);
+                var sub_tot = parseFloat($(this).val());
 
-                total += parseFloat($(this).val()).toFixed(2)||0;
+                total += parseFloat(sub_tot.toFixed(2))||0;
 
                 //
             });
 
-
-            //console.log(total);
-
-            total = Number(total).toFixed(2)
+            total = total.toFixed(2);
 
             $('.total_cost_cal').val(total);
             
