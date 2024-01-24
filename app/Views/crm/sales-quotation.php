@@ -2004,7 +2004,7 @@
 
             var parsedRate = parseFloat(rate);
 
-            var parsedQuantity = parseFloat(quantity); 
+            var parsedQuantity = quantity; 
 
             var multipliedTotal = parsedRate * parsedQuantity;
 
@@ -2076,10 +2076,6 @@
                     };
                 },
                 processResults: function(data, params) {
-                    //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -2615,7 +2611,7 @@
            {
                 var result = cost_total / quotation_total;
 
-                var percentage = result *100
+                var percentage = result * 100
 
             }
         }
@@ -2630,20 +2626,19 @@
             {
                 var sub_tot = $(this).val();
 
-                total += parseFloat(sub_tot)||0;
-
-               total = Number(total).toFixed(2)
-
+                total += parseFloat($(this).val())||0;
+               //total = Number(total).toFixed(2)
             });
 
-           
+           console.log(total);
+
            $('.amount_total').val(total);
 
-           var result = numberToWords.toWords(total);
+           var resultQuotation = numberToWords.toWords(total);
 
-            $(".sales_quotation_amount_in_word").text(result);
+            $(".sales_quotation_amount_in_word").text(resultQuotation);
 
-            $(".sales_quotation_amount_in_word_val").val(result);
+            $(".sales_quotation_amount_in_word_val").val(resultQuotation);
             
 
         }
@@ -2660,16 +2655,18 @@
             
             $('body .cost_amount_clz').each(function()
             {
-              
-                var sub_tot = $(this).val();
+                
+                //var sub_tot = Number($(this).val()).toFixed(2);
 
-                total += parseFloat(sub_tot)||0;
+                total += parseFloat($(this).val()).toFixed(2)||0;
 
-                total = Number(total).toFixed(2)
-
+                //
             });
 
-            console.log(total);
+
+            //console.log(total);
+
+            total = Number(total).toFixed(2)
 
             $('.total_cost_cal').val(total);
             
