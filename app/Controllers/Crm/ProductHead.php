@@ -96,12 +96,27 @@ class ProductHead extends BaseController
     {   
         
         $insert_data = $this->request->getPost();
+        
+        $ph_code = $this->common_model->CheckData('crm_product_heads','ph_code',$insert_data['ph_code']);
+        
+        $ph_product_head = $this->common_model->CheckData('crm_product_heads','ph_product_head',$insert_data['ph_product_head']);
+        
+        if(empty($ph_code) && empty($ph_product_head))
+        {
+            $insert_data['ph_added_by'] = 0; 
 
-        $insert_data['ph_added_by'] = 0; 
+            $insert_data['ph_added_date'] = date('Y-m-d'); 
 
-        $insert_data['ph_added_date'] = date('Y-m-d'); 
+            $id = $this->common_model->InsertData('crm_product_heads',$insert_data);
+            
+            $data['status'] ="true";
+        }
+        else
+        {
+           $data['status'] = "false";
+        }
 
-        $id = $this->common_model->InsertData('crm_product_heads',$insert_data);
+       echo json_encode($data);
 
     }
 

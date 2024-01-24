@@ -57,7 +57,7 @@
                     <!--product head tab--> 
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
-                        <!--add enquiry modal start-->
+                        <!--sales quotation modal start-->
                         <div class="modal fade" id="SalesQuotation" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
 		                        <form  class="Dashboard-form class" id="add_form1">
@@ -367,13 +367,13 @@
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Cost</td>
-                                                                <td><input type="text" class="form-control" readonly></td>
+                                                                <td><input type="text" class="form-control total_cost_cal" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
-                                                                <td>Total</td>
-                                                                <td><input type="text" class="form-control"></td>
+                                                                <td>Percentage</td>
+                                                                <td><input type="text" class="form-control total_percent"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -478,8 +478,10 @@
                                                                 <td colspan="2">Amount in words</td>
                                                                 <td colspan="3" class="cost_cal_amount_in_words"></td>
                                                                 <input type="hidden" name="qd_cost_amount_in_words" value="" class="cost_cal_amount_in_words_val">
+                                                                
                                                                 <td>Total</td>
                                                                 <td><input type="text" name="qd_cost_amount" class="total_cost_cal form-control" readonly></td>
+                                                                <input type="hidden" name="qd_percentage" value="" class="total_percent">
                                                             </tr>
                                                             
                                                             
@@ -1564,7 +1566,11 @@
                         data: $(currentForm).serialize(),
                         success: function(data) {
                             
-                           
+                            $('#SalesQuotation').modal('show');
+
+                            $('#CostCalculation').modal('hide'); 
+
+                            $('.enq_tab_submit').hide();
                         
                         }
                     });
@@ -2616,6 +2622,12 @@
                 var result = cost_total / quotation_total;
 
                 var percentage = result * 100
+
+                var percent =  percentage.toFixed(2)
+
+                $('.total_percent').val(percent);
+
+              
 
             }
         }

@@ -93,6 +93,24 @@ class SalesOrder extends BaseController
         /*pagination end*/
     } 
 
+
+    public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
     //view page
     public function index()
     {   
@@ -116,6 +134,8 @@ class SalesOrder extends BaseController
         $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
 
         $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
+        
+        $data['sales_order_id'] = $this->common_model->FetchNextId('crm_sales_orders','SO');
 
         $data['content'] = view('crm/sales-order',$data);
 

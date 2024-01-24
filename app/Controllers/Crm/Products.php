@@ -124,11 +124,26 @@ class Products extends BaseController
         
         $insert_data = $this->request->getPost();
 
-        $insert_data['product_added_by'] = 0; 
+        $ph_code = $this->common_model->CheckData('crm_products','product_details',$insert_data['product_details']);
+        
+        if(empty($ph_code))
+        {
+            $insert_data['product_added_by'] = 0; 
 
-        $insert_data['product_added_date'] = date('Y-m-d'); 
+            $insert_data['product_added_date'] = date('Y-m-d'); 
 
-        $id = $this->common_model->InsertData('crm_products',$insert_data);
+            $id = $this->common_model->InsertData('crm_products',$insert_data);
+
+            $data['status'] = "true";
+        }
+        else
+        {
+            $data['status'] = "false";
+        }
+
+        echo json_encode($data);
+
+        
     
     }
 

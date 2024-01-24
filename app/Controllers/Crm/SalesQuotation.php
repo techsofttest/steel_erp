@@ -258,22 +258,20 @@ class SalesQuotation extends BaseController
             $update_data = [
                 'qd_cost_amount'           => $this->request->getPost('qd_cost_amount'),
                 'qd_cost_amount_in_words'  => $this->request->getPost('qd_cost_amount_in_words'),
-                //'qd_percentage'            => $this->request->getPost('qd_sales_amount'),
+                'qd_percentage'            => $this->request->getPost('qd_percentage'),
             ];
 
 
             $this->common_model->EditData($update_data,$cond,'crm_quotation_details');
-
-
+            
+           
         }
 
-       
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
 
-
-
-
-
-        echo json_encode($data);
+        
+  
+        //echo json_encode($data);
     }
 
 
@@ -691,7 +689,7 @@ class SalesQuotation extends BaseController
                                         foreach($product_details as $prod_det)
                                         {
 
-                                        $data['product_detail'] .=  '<tr class="prod_row">
+                                        $data['product_detail'] .=  '<tr class="prod_row" id="'.$prod_det->pd_id.'">
                                             <td style="width: 10%;">'.$i.'</td>
                                             <td style="width:20%">
                                                 <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';

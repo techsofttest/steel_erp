@@ -358,12 +358,23 @@
                         url: "<?php echo base_url(); ?>Crm/ProductHead/Add",
                         method: "POST",
                         data: $(form).serialize(),
-                        success: function(data) {
+                        success: function(data) 
+                        {
+                            var data = JSON.parse(data);
+                           
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload( null, false )
-                            
+                            if(data.status === "true")
+                            {
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload( null, false )
+                            }
+                            else
+                            {
+                                alertify.error('Data is already exist').delay(3).dismissOthers();
+                                datatable.ajax.reload( null, false )
+                            }
+
                         }
                        
                     });
@@ -507,8 +518,8 @@
             'columns': [
                 { data: 'ph_id' },
                 { data: 'ph_code' },
-                { data : 'ph_product_head'},
-                { data : 'action'},
+                { data :'ph_product_head'},
+                { data :'action'},
                 
                ]
     
