@@ -105,9 +105,7 @@ class SalesQuotation extends BaseController
 
     }
 
-
-
-    public function FetchTypes1()
+    public function FetchCostMetal()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -123,6 +121,25 @@ class SalesQuotation extends BaseController
         return json_encode($data);
 
     }
+
+
+
+   /* public function FetchTypes1()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }*/
 
 
 
@@ -551,7 +568,7 @@ class SalesQuotation extends BaseController
 
 
     //fetch inquiry
-    public function FetchEnquiry()
+    /*public function FetchEnquiry()
     {   
        
         $cond = array('enquiry_id' => $this->request->getPost('ID'));
@@ -606,7 +623,7 @@ class SalesQuotation extends BaseController
 
         echo json_encode($data);
        
-    }
+    }*/
 
 
 
@@ -674,42 +691,32 @@ class SalesQuotation extends BaseController
         $data['product_detail'] = "";
 
        
-            $data['product_detail'] .='
-                                        <tr>
-                                            <td>Serial No.</td>
-                                            <td>Product Description</td>
-                                            <td>Unit</td>
-                                            <td>Qty</td>
-                                            <td>Rate</td>
-                                            <td>Discount</td>
-                                            <td>Amount</td>
-                                            <td>Action</td>
-                                        </tr>';
-                                        $i=1;
-                                        foreach($product_details as $prod_det)
-                                        {
+            
+            $i=1;
+            foreach($product_details as $prod_det)
+            {
 
-                                        $data['product_detail'] .=  '<tr class="prod_row" id="'.$prod_det->pd_id.'">
-                                            <td style="width: 10%;">'.$i.'</td>
-                                            <td style="width:20%">
-                                                <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
-                                               
-                                                    foreach($products as $prod){
-                                                        $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
-                                                        if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
-                                                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                    }
-                                                $data['product_detail'] .='</select>
-                                            </td>
-                                            <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
-                                            <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
-                                            <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
-                                            <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
-                                            <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
-                                            <td class="row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
-                                        </tr>';
-                                        $i++;
-                                    }
+            $data['product_detail'] .=  '<tr class="prod_row enq_remove" id="'.$prod_det->pd_id.'">
+                <td style="width: 10%;" class="si_no">'.$i.'</td>
+                <td style="width:20%">
+                    <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
+                    
+                        foreach($products as $prod){
+                            $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
+                            if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
+                            $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                        }
+                    $data['product_detail'] .='</select>
+                </td>
+                <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
+                <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
+                <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
+                <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
+                <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
+                <td class="remove-btnpp row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
+            </tr>';
+            $i++;
+        }
 
 
 
