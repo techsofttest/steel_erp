@@ -1790,6 +1790,8 @@
             
             slno();
 
+            InitProductSelect2();
+
 	    });
 
 
@@ -1905,6 +1907,50 @@
         InitSelect2();
 
         /*####*/
+
+
+
+
+        /* Product Init Select 2 */
+
+
+        function InitProductSelect2(){
+          $(".add_prod:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control-",
+            dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         })
+        }
+
+        InitProductSelect2();
+
+
+        /* ### */
 
 
         
@@ -2023,6 +2069,8 @@
                     $(".project_clz").val(data.enquiry_project);
 
                     $(".product-more2").append(data.product_detail);
+
+                   //InitProductSelect2();
 
                     slno();
 
