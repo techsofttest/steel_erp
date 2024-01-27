@@ -11,7 +11,15 @@
     border: 1px solid #0000003b;
 
 }
-
+ .contact_more_modal
+    {
+        position: absolute;
+        left: 471px;
+        padding: 1px 27px;
+        z-index: 999;
+        border: 1px solid black;
+        border: 1px solid #0000003b;
+    }
 </style>
 
 
@@ -59,7 +67,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" id="" value="<?php echo $sales_order_id;?>" class="form-control" required readonly>
+                                                                        <input type="text" name="so_reffer_no" id="" value="<?php echo $sales_order_id;?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -129,7 +137,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select" name="so_quotation_ref" id="quotation_ref" required>
+                                                                        <select class="form-select quotation_ref" name="so_quotation_ref" id="">
                                                                             <option value="" selected disabled>Quotation Ref</option>
                                                                
                                                                         </select>
@@ -186,16 +194,15 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<select class="form-select enqinput" name="qd_sales_executive" id="qd_sales_executive_id" required>
+                                                                        <select class="form-select enqinput sales_executive_clz" name="so_sales_executive"  required>
                                                                             <option value="" selected disabled>Sales Executive</option>
                                                                             <?php foreach($sales_executive as $sale_exc){?> 
                                                                                 <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
                                                                             <?php } ?>
                                                                             
                                                                 
-                                                                        </select>--->
-                                                                        <input type="text" name="so_sales_executive" id="sales_executive" class="form-control" required>
-                                                            
+                                                                        </select>
+                                                                       
                                                                     </div>
 
                                                                 </div> 
@@ -211,17 +218,21 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<select class="form-select contact_person_clz" name="qd_contact_person" style="width: 80%;" id="" required>
+                                                                        <select class="form-select contact_person_clz" name="so_contact_person" style="width: 80%;" required>
                                                                             <option value="" selected disabled>Contact Person</option>
+                                                                            <!--<?php foreach($contacts as $cont){?> 
                                                                             
+                                                                                <option value="<?php echo $cont->contact_id; ?>"><?php echo $cont->contact_person;?></option>
+                                                                                
+                                                                            <?php } ?>--->
                                                                 
-                                                                        </select>--->
-                                                                        <input type="text" name="so_contact_person" id="contact_person" class="form-control" required>
-                                                        
+                                                                        </select>
+                                                                       
+                                                                       
                                                                     </div>
 
                                                                 </div> 
@@ -243,7 +254,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_payment_term" id="payment_term" class="form-control" required>
+                                                                        <input type="text" name="so_payment_term"  class="form-control payment_term" required>
                                                                     </div>
 
                                                                 </div> 
@@ -264,15 +275,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <!--<select id="qd_delivery_term_id" name="qd_delivery_term" required>
-                                                                            <option>Selected Disabled</option>
-                                                                            <?php foreach($delivery_term as $delv_term){?> 
-                                                                                <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option> 
-                                                                            <?php } ?>
-                                                                            
-
-                                                                        </select>--->
-                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control" required>
+                                                                       
+                                                                        <input type="date" name="so_delivery_term" id="delivery_term" class="form-control" required>
                                                             
                                                                         
                                                                     </div>
@@ -293,7 +297,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_project" id="project" class="form-control" required>
+                                                                        <input type="text" name="so_project"  class="form-control project" required>
                                                                     </div>
 
                                                                 </div> 
@@ -318,7 +322,7 @@
                                                 <!--table section start-->
                                                 <div class="mt-4">
                                                     <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo contact_tbody">
+                                                        <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td>Serial No.</td>
                                                                 <td>Product Description</td>
@@ -331,7 +335,7 @@
                                                             </tr>
                                                             
                                                            
-                                                        </tbody>
+                                                        </thead>
                                                         
                                                         <tbody  class="travelerinfo product-more2"></tbody>
                                                         <tbody>
@@ -344,10 +348,10 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2">Amount in words</td>
-                                                                <td colspan="3" class="sales_quotation_amount_in_word"></td>
-                                                                <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
+                                                                <td colspan="3" class="sales_order_amount_in_word"></td>
+                                                                <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="qd_sales_amount" class="amount_total form-control" readonly></td>
+                                                                <td><input type="text" name="so_amount_total" class="amount_total form-control" readonly></td>
                                                             </tr>
                                                             
                                                           
@@ -400,7 +404,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close modal_close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 				                        <div class="modal-body">
 
@@ -449,7 +453,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required></select>
-                                                                        <!--<input type="text" class="form-control account_head_select account_head_clz" name="cc_account_head"  required>--->
+                                                                       
+                                                                        
                                                                     </div>
 
                                                                 </div> 
@@ -918,6 +923,67 @@
 
                         <!--offical document modal section end-->
 
+                        <!--second contact detail modal section start-->
+                         
+                        <div class="modal fade" id="ContactDeatils2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="add_cus_form4">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
+                                            <button type="button" class="btn-close modal_close_2" aria-label="Close"></button>
+                                        </div>
+				                        <div class="modal-body">
+
+                                          
+                                               
+                                            
+                                            <div class="card-seprate_divider"></div>
+
+                                            <div class="live-preview">
+                                            <table  class="table table-bordered table-striped delTable">
+                                                        <tbody class="travelerinfo">
+                                                            <tr>
+                                                                <td >No</td>
+                                                                <td>Contact Person </td>
+                                                                <td>Designation</td>
+                                                                <td>Mobile</td>
+                                                                <td>Email</td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td><input type="text" name="contact_person" class="form-control " required></td>
+                                                                <td><input type="text" name="contact_designation" class="form-control " required></td>
+                                                                <td><input type="text" name="contact_mobile"  class="form-control contact_mobile_clz" required></td>
+                                                                <td> <input type="email" name="contact_email" class="form-control " required></td>
+                                                                
+                                                            </tr>
+                                                        </tbody>
+                                                       
+                
+                                                    </table>
+                                                    <input type="hidden" class="customer_creation_id2" name="contact_customer_creation">
+                                                    <div class="modal-footer justify-content-center">
+                                                      
+                                                        <button class="btn btn btn-success">Save</button>
+                                                    </div>
+                                            </div>   
+					                           
+						                       
+					
+					                        
+				                        </div>
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+
+                        <!--contact detail modal section end-->
+
                         
 
                         
@@ -980,245 +1046,6 @@
 </div>
 
 
-<!--product modal section start-->
-<div class="modal fade" id="ProductModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form  class="Dashboard-form class" id="ProductForm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="live-preview">
-                                        <div class="row align-items-end">
-                                            <div class="col-col-md-3 col-lg-3">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Code</label>
-                                                    <input type="text"   name="product_code" class="form-control" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-col-md-4 col-lg-4">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Product Detail</label>
-                                                    <input type="text"   name="product_details" class="form-control" required>
-                                                </div>
-                                            </div>
-
-                                                                    
-                                            <div class="col-col-md-5 col-lg-5">
-                                                <div>
-                                                    <label for="basiInput" class="form-label">Product Head</label>
-                                                        <select class="form-select prod_head_clz" name="product_product_head" required>
-                                                            <option>Select Product Head</option>
-                                                            <?php foreach($product_head as $prod_head){?> 
-
-                                                                <option value="<?php echo $prod_head->ph_id;?>"><?php echo $prod_head->ph_product_head;?></option>
-
-                                                            <?php } ?>
-                                                        </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!--end row-->
-                    
-                                    </div>
-                
-                                </div>
-                            </div>
-                        </div>
-                        <!--end col-->
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button  class="btn btn btn-success">Save</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
-</div>
-
-<!--product modal section end-->
-
-
-<!--view modal section start-->
-
-<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Sales Order</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <!-- Nav tabs -->
-                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="true">Sales Order Details</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab5" role="tab" aria-controls="tab5" aria-selected="false">Product Details</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab6" role="tab" aria-controls="tab6" aria-selected="false">More Details</a>
-                                            </li>
-                                          
-                                            
-                                            <!-- Add more tabs as needed -->
-                                        </ul>
-
-                                        <!-- Tab panes -->
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                                                <form class="Dashboard-form class" id="">
-                                                    <!-- Tab 1 content goes here -->
-                                                    <div class="row">
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">Sales Order No.</label>
-                                                            <input type="text" name="" id="sales_order_no_id" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">Date</label>
-                                                            <input type="date" name="" id="sales_order_date_id" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Customer Name</label>
-                                                            <input type="text" name="" id="sales_order_customer_id" class="form-control" required>
-                                                            
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">LPO reference</label>
-                                                            <input type="text" name="" id="sales_order_lpo_id" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Quotation Ref</label>
-                                                            <input type="text" name="" id="sales_order_quot_ref_id" class="form-control" required>
-                                                            
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Contact Person</label>
-                                                            <input type="text" name="" id="sales_order_contact_person_id" class="form-control" readonly>
-                                                        
-                                                           
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Sales Executive</label>
-                                                            <input type="text" name="" id="sales_order_executive" class="form-control" readonly>
-                                                            
-                                                        </div>
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Payment Term</label>
-                                                            <input type="text" name="" id="sales_order_payment_term" class="form-control" readonly>
-                                                        </div>
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Delivery Term</label>
-                                                            <input type="text" name="" id="sales_order_delivery_term" class="form-control" readonly>
-                                                            
-                                                        </div>
-
-                                                      
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="" id="sales_order_project" class="form-control" readonly>
-                                                        </div>
-                                                        
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer justify-content-center">
-                                                       
-                                                    </div>
-                                                </form>
-                                            </div>
-                                                
-                                            
-                                            
-                                            <!---->
-                                            <div class="tab-pane fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-                                                <form class="Dashboard-form class" id="">
-                                                    <div class="product_detail_id"></div>
-                                                    <!-- Tab 2 content goes here -->
-                                                    
-                                                    <input type="hidden" name="spd_sales_order"  class="spd_sales_order_id">
-                                                    <div class="modal-footer justify-content-center"> 
-                                                        
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <!---->
-
-                                            <!---->
-                                             
-                                            <div class="tab-pane fade" id="tab6" role="tabpanel" aria-labelledby="tab6-tab">
-                                                <form class="Dashboard-form class" id="" enctype= multipart/form-data>
-                                                    <!-- Tab 3 content goes here -->
-                                                    <div class="row">
-                                                        
-                                                       
-                                                       
-                                                        <div class="col-md-4 col-lg-4">
-                                                            <label for="basicInput" class="form-label">Scheduled date of delivery</label>
-                                                            <input type="date" name="" id="sales_order_delivery_id" class="form-control" required>
-                                                            
-                                                        </div>
-                                                        
-                                                        <div class="col-lg-12 tab_attachment_head">
-                                                            <h5 class="">Attachments</h5>
-                                                            <table  class="table table-bordered table-striped delTable view_tab_cond">
-                                                                <tbody class="travelerinfo">
-                                                                    <tr>
-                                                                        <td >Label</td>
-                                                                        <td>View</td>
-                                                                    </tr>
-                                                                    
-                                                                    <tr>
-                                                                        <td>LPO & Drawings</td>
-                                                                        <td id="lpo_and_drawing_id"></td>
-                                                                    </tr>
-
-                                                                   
-
-
-
-                                                                </tbody>
-
-
-                                                            </table>
-
-                                                        </div>
-                                                        
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer justify-content-center">
-                                                        
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            <!---->
-
-
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
-
-
-<!--view  modal section end-->
-
 
 
 
@@ -1246,92 +1073,16 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            var responseData = JSON.parse(data);
+                         
                            
-                            $(".spd_sales_order_id").val(responseData.so_id);
-                            
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            nextTab.removeClass("disabled");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
-
-        $(function() {
-            var form = $('#add_form2');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesOrder/AddTab2",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                           
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            nextTab.removeClass("disabled");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-
-
-        /*form3 add start*/
-        
-        $(function() {
-            var form = $('#add_form3');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Create FormData object to handle file uploads
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesOrder/AddTab3",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
                             $('#add_form1')[0].reset();
-                            $('#add_form2')[0].reset();
-                            $('#add_form3')[0].reset();
-                            $('#AddModal').modal('hide');
+                           
+                            $('#SalesOrder').modal('hide');
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
+                            
+                            
                         }
                     });
                 }
@@ -1339,7 +1090,10 @@
         });
 
 
-        /**/
+       
+
+
+       
 
 
         /*product modal submit start*/
@@ -1389,6 +1143,48 @@
 
         /*product modal submit end*/
 
+
+        /* Product Init Select 2 */
+
+
+        function InitProductSelect2(){
+          $(".add_prod:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control-",
+            dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         })
+        }
+
+        InitProductSelect2();
+
+
+        /* ### */
+
        
 
 
@@ -1404,64 +1200,6 @@
 
         /*product modal end*/
         
-
-
-        /*view*/ 
-        $("body").on('click', '.view_btn', function(){ 
-            var id = $(this).data('id');
-            
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesOrder/View",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                    
-                    $("#sales_order_no_id").val(data.so_order_no);
-
-                    $("#sales_order_date_id").val(data.so_date);
-
-                    $("#sales_order_customer_id").val(data.cc_customer_name);
-
-                    $("#sales_order_lpo_id").val(data.so_lpo);
-
-                    $("#sales_order_quot_ref_id").val(data.qd_quotation_number);
-
-                    $("#sales_order_contact_person_id").val(data.so_contact_person);
-
-                    $("#sales_order_executive").val(data.so_sales_executive);
-
-                    $("#sales_order_payment_term").val(data.so_payment_term);
-
-                    $("#sales_order_delivery_term").val(data.so_delivery_term);
-
-                    $("#sales_order_project").val(data.so_project);
-
-                    $(".product_detail_id").html(data.prod_details);
-
-                    $("#sales_order_delivery_id").val(data.so_scheduled_date_of_delivery);
-
-                    $("#lpo_and_drawing_id").html(data.lpo_and_drawing);
-
-                    $('#ViewModal').modal('show');
-                    
-                   
-                    
-                }
-
-
-            });
-            
-            
-        });
-        /*####*/
-
-
 
 
 
@@ -1496,7 +1234,7 @@
             },
             'columns': [
                 { data: 'so_id'},
-                { data: 'so_order_no' },
+                { data: 'so_reffer_no' },
                 { data: 'so_date'},
                 { data: 'so_customer'},
                 { data: 'so_quotation_ref'},
@@ -1528,10 +1266,10 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
-                    $("#contact_person_id").html(data.customer_name);
 
-                    $("#quotation_ref").html(data.quotation_det);
+                    $(".contact_person_clz").html(data.customer_name);
+
+                    $(".quotation_ref").html(data.quotation_det);
                     
                     
                 }
@@ -1544,40 +1282,42 @@
 
 
 
-        $("body").on('change', '#quotation_ref', function(){ 
+        $("body").on('change', '.quotation_ref', function(){ 
+
+            $(".sales_remove").remove();
+
             var id = $(this).val();
            
+            var quot_id = $('#customer_id').val();
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesOrder/QuotationRef",
 
                 method : "POST",
 
-                data: {ID: id},
+                //data: {ID: id},
+                data:{
+                    ID: id,
+                    quotID: quot_id
+                },
 
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
+
+                    console.log(data.prod_details);
                    
-                    $("#contact_person_id").html(data.customer_name);
+                    $(".contact_person_clz").html(data.contact_person);
 
-                    $("#quotation_ref").html(data.quotation_det);
+                    $(".sales_executive_clz").html(data.qd_sales_executive);
 
-                    $("#contact_person").val(data.qd_contact_person);
+                    $(".payment_term").val(data.qd_payment_term);
 
-                    $("#sales_executive").val(data.qd_sales_executive);
+                    $(".project").val(data.qd_project);
 
-                    $("#payment_term").val(data.qd_payment_term);
+                    $(".product-more2").append(data.prod_details);
 
-                    $("#delivery_term").val(data.qd_delivery_term);
-
-                    $("#project").val(data.qd_project);
-
-                    $(".product_detail_id").html(data.prod_details);
-
-                    
-                    
-                    
                 }
 
 
@@ -1587,22 +1327,27 @@
 
         /*product section start*/
 
-       // var max_fieldspp      = 30;
-        //var pp = 1;
+        var max_fieldspp      = 30;
+
+        var pp = 1;
         
         $("body").on('click', '.add_product2', function(){
             
             var pp = $('.prod_row').length
             
-            alert(pp)
+           
             
-			//if(pp < max_fieldspp){ 
+			if(pp < max_fieldspp){ 
                 
-                //pp++;
+                pp++;
                 
-                $(".product-more2").append("<tr class='prod_row'><td><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row'><td class='si_no'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
-			//}
+			}
+
+            slno();
+
+            InitProductSelect2();
 
 	    });
 
@@ -1610,10 +1355,27 @@
         {
 	 
             $(this).parent().remove();
-                pp--;
+            slno();
         });
 
         /**/
+
+        /*serial no correction section start*/
+
+        function slno(){
+
+            var pp =1;
+
+            $('body .prod_row').each(function() {
+
+                $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+
+                pp++;
+            });
+
+        }
+
+        /*###*/
 
 
 
@@ -1621,7 +1383,7 @@
         
         $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
 
-            var discount = $(this).val();
+          //  var discount = $(this).val();
 
             var $discountSelect = $(this);
 
@@ -1641,45 +1403,52 @@
 
             var orginalPrice = multipliedTotal - discount
 
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
             $amountElement.val(orginalPrice);
 
-
+            TotalAmount();
 
         });
 
         /**/
 
 
+        /*total amount calculation start*/
 
-        /*delete product detail row*/
+        function TotalAmount()
+        {
 
-        $("body").on('click', '.row_remove', function(){ 
-	   
-            var id = $(this).data('id');
-       
-            $.ajax({
+            var total= 0;
 
-                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteContact",
+            $('body .amount_clz_id').each(function()
+            {
+                var sub_tot = parseFloat($(this).val());
 
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
-                    $('#' + id).remove();
-                    $('#' + id).fadeIn();
-                }
-
-
+                total += parseFloat(sub_tot.toFixed(2))||0;
+               //total = Number(total).toFixed(2)
             });
 
-        });
+           total = total.toFixed(2);
 
-        /**/
+           $('.amount_total').val(total);
+
+           var resultSalesOrder= numberToWords.toWords(total);
+
+            $(".sales_order_amount_in_word").text(resultSalesOrder);
+
+            $(".sales_order_amount_in_word_val").val(resultSalesOrder);
+            
+
+        }
+
+        /*total amount calculation end*/
+
+
+
+       
 
 
         /**/
@@ -1709,7 +1478,7 @@
         /**/
 
 
-               /*new customer creation section start*/
+        /*new customer creation section start*/
 
 
        /* account head  search droup drown start*/
@@ -1735,6 +1504,7 @@
                    
                     var page = params.page || 1;
                     return {
+                        //results: $.map(data.result, function (item) { return {id: item.so_id, text: item.so_customer}}),
                         results: $.map(data.result, function (item) { return {id: item.ah_id, text: item.ah_head_id}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
@@ -1941,7 +1711,8 @@
                             $('#add_cus_form2')[0].reset();
                             $('#add_cus_form3')[0].reset();
                             $('#OfficalDocument').modal('hide');
-                            $('#Enquiry').modal('show');
+                            $('#SalesOrder').modal('show');
+                            $('.account_head_clz').val('').trigger('change');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                             
@@ -2059,11 +1830,78 @@
 
 
 
-
-        
-
-
        /*new customer creation end*/
+
+
+
+        /*new contact person section start*/
+
+        $("body").on('click', '.contact_more_modal', function(){ 
+	        
+            var customer_id = $('#customer_id').val();
+
+           
+
+            if(customer_id === null)
+            {
+             
+                alertify.success('Please Select Customer').delay(2).dismissOthers();
+            
+            }
+            else{
+
+                $('#SalesOrder').modal('hide');
+
+                $('#ContactDeatils2').modal('show');
+
+                $('.customer_creation_id2').val(customer_id);
+
+            }
+
+        });
+
+
+        /*add second contact detail section start( with no add more)*/
+
+        $(function() {
+            var form = $('#add_cus_form4');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Enquiry/AddContactDetails",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+                            
+                            $(".contact_person_clz").html(responseData.contact_person);
+                            
+                            $('#ContactDeatils2').modal('hide');
+                            
+                            $('#SalesOrder').modal('show');
+
+                            $('#add_cus_form4')[0].reset();
+
+                        }
+                    });
+                }
+            });
+        });
+
+        /*###*/
+
+
+       /*new contact person section end*/
 
 
 
