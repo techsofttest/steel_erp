@@ -4,7 +4,7 @@
 
     .cheque_sec
     {
-        display:none;
+        display:flex;
     }
 
     .cheque_sec_view
@@ -46,14 +46,12 @@
                     <div class="row align-items-end">
 
 
-
                     <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Reference No</label>
                                 <input type="text"  id="r_ref_view" class="form-control" value="" disabled>
                             </div>
-                        </div>
-
+                    </div>
 
 
                         <div class="col-col-md-2 col-lg-2">
@@ -248,13 +246,15 @@
 
 <div class="modal fade" id="InvoicesModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form action="#" method="POST" class="Dashboard-form class" id="invoices_add">
+            <form method="POST" class="Dashboard-form class" id="invoices_add">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
                 <button type="button" class="btn-close" data-bs-target="#AddModal" data-bs-toggle="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
+            <input type="hidden" name="credit_id" value="">
 
     <div class="row">
 
@@ -269,31 +269,72 @@
             
                     <div class="row align-items-end">
 
-
                         <div class="col-col-md-12 col-lg-12">
 
+                        <div class="row align-items-center">
+
+                        <div class="col-lg-10"> 
 
                         <table class="table table-bordered">
 
 
                                     <thead>
                                         <tr>
-                                        <th></th>
+                                        <th>Sl No</th>
                                         <th>Date</th>
                                         <th>Invoice No</th>
+                                        <th>LPO Ref</th>
                                         <th>Amount</th>
-                                        
+                                        <th>Receipt</th>
+                                        <th>Tick</th>
                                         </tr>
                                     </thead>
 
 
                                     <tbody id="invoices_sec">
 
+
                                     </tbody>
+
+
+                                    <!--
+                                    <tr>
+
+                                    <td>Total Receipt</td>
+
+                                    <td></td>
+
+                                    <td>Adjusted</td>
+
+                                    <td></td>
+
+
+                                    <td>Balance</td>
+
+                                    <td></td>
+
+                                    </tr>
+                                    -->
 
 
                         </table>
 
+                        </div>
+
+
+
+                        <div class="col-lg-2">
+
+                        
+                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
+
+                        <button class="w-100">FIFO</button>
+
+                        <button class="w-100" type="submit">Save</button>
+
+
+
+                        </div>
 
 
                         </div>
@@ -302,7 +343,147 @@
 
 
 
-                        
+
+                        </div>
+
+
+
+
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+
+            <!-- <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
+                <button type="submit" class="btn btn btn-success">Add</button>
+            </div> -->
+
+        </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<!-- ### -->
+
+
+
+
+<!-- Advance Sales Order modal -->
+
+
+
+<!-- View Modal -->
+
+
+<div class="modal fade" id="SalesOrderModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="InvoicesModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+    <div class="card">
+       
+        <div class="card-body">
+            <div class="live-preview">
+            
+                    <div class="row align-items-end">
+
+
+                        <div class="col-col-md-12 col-lg-12">
+
+                        <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                    <thead>
+                                        <tr>
+                                        <th>Sl No</th>
+                                        <th>Sales Order</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Receipt</th>
+                                        <th>Tick</th>
+                                        <th></th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody id="so_body">
+
+                                        <tr class="so_row">
+
+                                        <td class="so_slno">1</td>
+
+                                        <td>
+                                        <select class="form-control" name="so_select">
+
+                                        <option value="">Select Sales Order</option>
+
+                                        <option value="1">SO123456</option>
+
+                                        <option value="2">SO123456</option>
+
+                                        </select>
+                                        
+                                        </td>
+
+                                        <td>Pixel Trading</td>
+                                        <td>10000</td>
+                                        <td><input class="form-control" type="number" name="so_reciept[]"></td>
+                                        <td><input type="checkbox" name="so_selected[]"></td>
+
+                                        
+                                        <th> <a href="javascript:void(0);" class="so_del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+
+
+                                        </tr>
+
+
+
+                                    </tbody>
+
+                                    <tr>
+
+                                    <td colspan="6">
+
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                    <a class="so_add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+
+                                    </div>
+
+                                    </td>
+
+                                    </tr>
+                                    
+
+
+                        </table>
+
+
+
+                        </div>
+
                         
                         
                     </div>
@@ -318,13 +499,16 @@
 </div>
 
 </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
-                <button type="submit" class="btn btn btn-success">Add</button>
-            </div>
+
+
+   <div class="modal-footer justify-content-center">
+    
+                <button type="submit" class="btn btn btn-success">Save</button>
+    </div>
+           
 
         </div>
-        </form>
+     
 
     </div>
 </div>
@@ -332,8 +516,7 @@
 
 
 
-
-<!-- ### -->
+<!-- ## -->
 
 
 
@@ -352,7 +535,7 @@
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form  class="Dashboard-form class" id="add_form">
+            <form  class="Dashboard-form class" data-submit="false" data-rcid="" id="add_form">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Receipt</h5>
@@ -365,139 +548,74 @@
 
 
 <div class="col-lg-12">
+    
     <div class="card">
        
         <div class="card-body">
+
             <div class="live-preview">
             
-                    <div class="row align-items-end">
+                    <div class="row align-items-start">
+
+                    <!-- Section 1 -->
+
+                    <div class="col-lg-6">
+
+                    <div class="row align-items-center mb-2">
+
+                    <div class="col-col-md-3 col-lg-3">
+
+                    <label for="basiInput" class="form-label">Reference</label>
+
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                    <input type="text" id="ruid"  class="form-control" readonly required>
+
+                    </div>
+
+                    </div>
 
 
-                        <div class="col-col-md-2 col-lg-2">
-                            <div>
-                                <label for="basiInput" class="form-label">Date</label>
-                                <input type="date"  name="r_date" class="form-control" required>
-                            </div>
+
+                    <div class="row align-items-center mb-2">
+
+                    <div class="col-col-md-3 col-lg-3">
+                           
+                            <label for="basiInput" class="form-label">Date</label>
+
+                    </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="date"  name="r_date" value="<?= date('Y-m-d') ?>" class="form-control" required>
+
                         </div>
 
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
 
                         <div class="col-col-md-3 col-lg-3">
 
-                            <div>
-
-                                <label for="basiInput" class="form-label">Debit Account</label>
-                                <!--<input type="text"  name="r_debit_account" class="form-control" required>-->
-
-                                <select class="form-control" name="r_debit_account">
-
-                                <option value="">Select Account</option>
-
-                                <?php foreach($accounts as $a_ac){ ?>
-
-                                    <option value="<?php echo $a_ac->ca_id; ?>"><?php echo $a_ac->ca_name; ?></option>
-
-                                <?php } ?>
-
-                                </select>
-
-                            </div>
+                            <label for="basiInput" class="form-label">Debit Account</label>
+                            <!--<input type="text"  name="r_debit_account" class="form-control" required>-->
 
                         </div>
 
 
-                        <div class="col-col-md-2 col-lg-2">
-                            <div>
-                                <label for="basiInput" class="form-label">Receipt No</label>
-                                <input type="text"  name="r_receipt_no" class="form-control" required>
-                            </div>
-                        </div>
+                        <div class="col-col-md-9 col-lg-9">
 
+                        <select class="form-control" name="r_debit_account">
 
-                        <div class="col-col-md-3 col-lg-3">
+                        <option value="">Select Account</option>
 
-                            <div>
+                        <?php foreach($accounts as $a_ac){ ?>
 
-                                <label for="basiInput" class="form-label">Receipt Method</label>
-                                
-                                <select name="r_method" class="form-control" required>
-
-                                <option value="">Select Receipt Method</option>
-
-                                <?php foreach($r_methods as $r_method){ ?>
-
-                                <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
-
-                                <?php } ?>
-
-                                </select>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="col-col-md-2 col-lg-2 cheque_sec">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Number</label>
-                                <input type="text"  name="r_cheque_no" class="form-control" required>
-                            </div>
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2 cheque_sec">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Date</label>
-                                <input type="date"  name="r_cheque_date" class="form-control" required>
-                            </div>
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2 cheque_sec">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Copy</label>
-                                <input type="file"  name="r_cheque_copy" class="form-control" required>
-                            </div>
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2">
-
-                            <div>
-
-                                <label for="basiInput" class="form-label">Bank</label>
-                                
-                                <select name="r_bank" class="form-control" required>
-                                
-                                <option value="">Select Bank</option>
-
-                                <?php foreach($banks as $a_bank){ ?>
-                                <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
-                                <?php } ?>
-
-                                </select>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="col-col-md-3 col-lg-3">
-
-                        <div>
-
-                        <label for="basiInput" class="form-label">Collected By</label>
-                        
-                        <select name="r_collected_by" class="form-control" required>
-
-                        <option value="">Select Collector</option>
-
-                        <?php 
-                        foreach($collectors as $col_add){
-                        ?>
-
-                        <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
+                         <option value="<?php echo $a_ac->ca_id; ?>"><?php echo $a_ac->ca_name; ?></option>
 
                         <?php } ?>
 
@@ -505,35 +623,166 @@
 
                         </div>
 
-                    </div>
+                        </div> 
 
 
-                        <div class="col-col-md-3 col-lg-3">
 
-                            <div>
-                                
-                                <label for="basiInput" class="form-label">Credit Account</label>
-                                
-                                <select name="r_credit_account" class="form-control" required>
 
-                                <option value="">Select Credit Account</option>
+                         <div class="row align-items-center mb-2">
 
-                                <?php foreach($customers as $cus) { ?>
+                            <div class="col-col-md-3 col-lg-3">
 
-                                <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
+                            <label for="basiInput" class="form-label">Receipt No</label>
+                            
+                         </div>
 
-                                <?php } ?>
+                        <div class="col-col-md-9 col-lg-9">
 
-                                </select>
+                        <input type="text"  name="r_receipt_no" class="form-control" required>
 
-                            </div>
+                        </div>
 
                         </div>
 
 
 
-                        <input type="hidden" name="r_amount" value="">
+                    </div> <!-- Section 1 end -->
 
+
+
+
+
+
+
+                    <div class="col-lg-6">
+
+
+                    <div class="row align-items-center mb-2">
+
+                    <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Receipt Method</label>
+
+                    </div>
+                        
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                        <select name="r_method" class="form-control" required>
+
+                        <option value="">Select Receipt Method</option>
+
+                        <?php foreach($r_methods as $r_method){ ?>
+
+                        <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+
+                        <?php } ?>
+
+                        </select>
+
+                    </div>
+
+                    </div>
+
+
+
+                      <!--
+
+                    <div class="row align-items-center mb-2">
+                        
+                        <div class="col-col-md-3 col-lg-3">
+                                
+                            <label for="basiInput" class="form-label">Credit Account</label>
+                                
+                        </div>
+
+
+                      
+                        <div class="col-col-md-9 col-lg-9">
+
+                            <select name="r_credit_account" class="form-control" required>
+
+                            <option value="">Select Credit Account</option>
+
+                            <?php foreach($customers as $cus) { ?>
+
+                            <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                            <?php } ?>
+
+                            </select>
+
+                        </div>
+                        
+
+                    </div>
+
+                    -->
+
+
+
+                    <div class="row align-items-center mb-2">
+                    <div class="col-col-md-3 col-lg-3">
+                        <label for="basiInput" class="form-label">Bank</label>
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+                        <select name="r_bank" class="form-control" required>
+                        <option value="">Select Bank</option>
+                        <?php foreach($banks as $a_bank){ ?>
+                        <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
+                        <?php } ?>
+                        </select>
+                    </div>
+                    
+                    </div>
+
+
+
+
+
+
+                    <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                    <div class="col-col-md-3 col-lg-3">
+                       
+                        <label for="basiInput" class="form-label">Cheque Number</label>
+                              
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                      <input type="text"  name="r_cheque_no" class="form-control" required>
+
+                    </div>
+
+                    </div>
+
+
+
+
+                    <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                    <div class="col-col-md-3 col-lg-3">
+                            
+                        <label for="basiInput" class="form-label">Cheque Date</label>
+
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                    <input type="date"  name="r_cheque_date" class="form-control" required>
+
+                    </div>
+
+                    </div>
+
+                    
+
+                    </div>
+
+
+                        <input type="hidden" name="r_amount" value="">
 
 
                         <div class="col-col-md-12 col-lg-12">
@@ -544,15 +793,89 @@
                                     <thead>
                                         <tr>
                                         <th>Date</th>
-                                        <th>Invoice No</th>
-                                        <th>Remarks</th>
+                                        <th>Credit Account</th>
                                         <th>Amount</th>
+                                        <th>Link</th>
+                                        <th>Narration</th>
                                         </tr>
                                     </thead>
 
+
                                     <tbody id="sel_invoices">
 
+                                    <tr class="invoice_row">
+
+
+                                    <td>
+
+                                    <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
+
+                                    <input class="form-control" type="date" name="inv_date[]">
+                                
+                                    </td>
+
+
+                                    <td> 
+
+                                       <select class="form-control credit_account" name="r_credit_account[]">
+
+                                       <option value="">Select Credit Account</option>
+
+                                       <?php foreach($customers as $cus) { ?>
+
+                                        <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                                        <?php } ?>
+
+                                       </select> 
+                                    </td>
+
+
+                                    <td>
+
+                                        <input class="form-control" type="number" name="inv_amount[]">
+
+                                    </td>
+
+
+                                    <td>
+                                      <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
+                                    </td>
+
+                                    <td>
+
+                                    <input class="form-control" type="text" name="narration[]"/>
+
+                                    </td>
+
+
+                                    <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+
+
+                                    </tr>
+
+
+
+                                    
+                                    <tr>
+
+                                    <td colspan="6">
+
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                      <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                                
+                                    </div>
+                                    
+                                    </td>
+
+                                    </tr>
+
+
                                     </tbody>
+
+
+
 
 
                                     <tr>
@@ -565,21 +888,98 @@
                                     </tr>
 
 
+
+
                         </table>
 
 
+                        </div>
+
+
+
+                        <div class="row">
+
+
+                        <div class="col-lg-6">
+
+
+                        <div class="row align-items-center justify-content-start mb-2">
+                        
+                        <div class="col-col-md-3 col-lg-3">
+    
+                            <label for="basiInput" class="form-label">Collected By</label>
+                            
+                        </div>
+    
+    
+                        <div class="col-col-md-6 col-lg-6">
+    
+                            <select name="r_collected_by" class="form-control" required>
+    
+                            <option value="">Select Collector</option>
+    
+                            <?php 
+                            foreach($collectors as $col_add){
+                            ?>
+    
+                            <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
+    
+                            <?php } ?>
+    
+                            </select>
+    
+                        </div>
+    
+    
+                        </div>
+
+
+
+
+                        <div class="row align-items-center justify-content-start mb-2 cheque_sec d-none">
+
+                        <div class="col-col-md-3 col-lg-3">
+                            <label for="basiInput" class="form-label">Cheque Copy</label>
+                        </div>
+
+                        <div class="col-col-md-6 col-lg-6">
+                            <input type="file"  name="r_cheque_copy" class="form-control" required>
+                        </div>
 
                         </div>
 
 
-                         <div class="col-col-md-12 col-lg-12 text-center">
 
-                         <a href="javascript:void(0);"  class="btn btn-primary add_invoices">Add Invoices</a>
-                         
+
                         </div>
 
+
+
+
+
+
+                        <div class="col-lg-6">
+
+
+                        <div style="float: right;">
+                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                        <tr>
+                                                            <td><button class="submit_btn">Print</button></td>
+                                                            <td><button class="submit_btn">Email</button></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><button class="submit_btn" type="submit">Save</button></td>
+                                                            <td><button class="submit_btn">PDF</button></td>
+                                                        </tr>
+                                                    </table>
+                         </div>
+                        
+
+                        </div>
 
                         
+                        </div>
+
                         
                         
                     </div>
@@ -595,9 +995,11 @@
 </div>
 
 </div>
+            <!--                                    
             <div class="modal-footer justify-content-center">
                 <button  class="btn btn btn-success">Save</button>
             </div>
+            -->
 
         </div>
         </form>
@@ -612,17 +1014,13 @@
 
     <!-- ### -->
 
-
-
-
-   
     
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Reciepts</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -745,7 +1143,7 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function(event) { 
+     document.addEventListener("DOMContentLoaded", function(event) { 
     
         /*account head add section*/    
    
@@ -753,7 +1151,6 @@
             $('#add_form').validate({
                 rules: {
                     required: 'required',
-                    
                 },
                 messages: {
                     required: 'This field is required',
@@ -761,15 +1158,18 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
+
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/Receipts/Add",
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
-                            $('#add_form')[0].reset();
+                            //$('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload( null, false )
+                            $('#add_form').attr('data-submit','true');
+                            $('#add_form').attr('data-rcid',data);
+                            datatable.ajax.reload( null, false)
                         }
                        
                     });
@@ -824,6 +1224,115 @@
             
         });
         /*####*/
+
+
+
+
+
+        /* Sales Order  */
+
+        $("body").on('click', '.so_add_more', function(){
+
+            var cc = $('.so_row').length;
+
+			if(cc < 30){ 
+
+            cc++;
+           
+            var $clone =  $('.so_row:first').clone();
+
+            $clone.find("input").val("");
+
+            $clone.find("select").val("");
+
+            $clone.find(".so_slno").html(cc);
+
+            $clone.find(".so_del_elem").show();
+
+            $clone.insertAfter('.so_row:last');
+
+			}
+
+	    });
+
+
+        $(document).on("click", ".so_del_elem", function() 
+        {
+            $(this).closest('.so_row').remove();
+            cc--;
+            //totalCalcutate();                                                                           
+            //grossCalculate();
+        });
+
+        /**/
+
+        function so_slno(){
+
+        var pp =1;
+
+        $('body .so_row').each(function() {
+
+        $(this).find('.so_slno').html('<td class="si_no">' + pp + '</td>');
+
+        pp++;
+
+        });
+
+        }
+
+
+        /* ### */
+
+
+
+
+
+
+
+
+        /*cost calculation add more*/
+
+        var max_fieldcost = 30;
+
+        $("body").on('click', '.add_more', function(){
+
+         
+            var cc = $('.invoice_row').length;
+
+			if(cc < max_fieldcost){ 
+
+            cc++;
+            //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+          
+            var $clone =  $('.invoice_row:first').clone();
+
+            $clone.find("input").val("");
+
+            $clone.find("select").val("");
+
+            $clone.find(".sl_no").html(cc);
+
+            $clone.find(".del_elem").show();
+
+            $clone.find('.credit_sl_no').val('2');
+
+            $clone.insertAfter('.invoice_row:last');
+
+			}
+
+	    });
+
+
+
+        $(document).on("click", ".del_elem", function() 
+        {
+            $(this).closest('.invoice_row').remove();
+            cc--;
+            //totalCalcutate();                                                                           
+            //grossCalculate();
+        });
+
+        /**/
 
 
 
@@ -1027,11 +1536,11 @@
 
             if($(this).children(':selected').text()=="Cheque")
             {
-            $('.cheque_sec').fadeIn(200);
+            $('.cheque_sec').removeClass("d-none");
             }
             else
             {
-            $('.cheque_sec').fadeOut(200);
+            $('.cheque_sec').addClass("d-none");
             }
 
         });
@@ -1064,9 +1573,33 @@
 
      
         $("body").on('click', '.add_invoices', function(){ 
-            
-            
-            if( $('select[name=r_credit_account]').val() =="")
+        
+            /*
+            if(!$("#add_form").valid())
+            {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+            */
+
+
+            if($('#add_form').attr('data-submit')=='false')
+            {
+             $('#add_form').submit();
+
+                if(!$("#add_form").valid())
+                {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+                }
+
+            }
+
+            var parent = $(this).closest('tr');
+
+            var c_account = parent.find('.credit_account');
+
+            if( c_account.val() =="")
             {
 
             alertify.error('Select Credit Account!').delay(3).dismissOthers();   
@@ -1077,7 +1610,7 @@
             
             //var id=1;
 
-            var id = $('select[name=r_credit_account]').val(); //Customer_ID
+            var id = c_account.val(); //Customer_ID
 
             $.ajax({
 
@@ -1092,16 +1625,16 @@
                 success:function(data)
                 {
 
-                    /*
-                    if(data=="")
+                    
+                    if(data.status==0)
                     {
-                    alertify.error('No Orders Found!').delay(3).dismissOthers();   
+                    alertify.error('No Invoices Found!').delay(3).dismissOthers();   
 
                     return false;
                     }
-                    */
+                    
 
-                    $('#invoices_sec').hide().html(data).fadeIn(200);
+                    $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
 
                     $('#AddModal').modal('hide');
 
@@ -1117,6 +1650,7 @@
         /*##*/
 
 
+        /*
         $("body").on('submit', '#invoices_add', function(e){ 
 
         e.preventDefault();
@@ -1141,7 +1675,6 @@
         var data = JSON.parse(data);
 
         //console.log(data);
-
         $.each(data.html, function(key,value) {
         //alert(value.so_o);
         tbody.append('<tr><td>'+value['pf_date']+'</td><td><input type="hidden" name="pf_id[]" value="'+value['pf_id']+'">'+value['pf_uid']+'</td><td><input class="form-control" name="pf_remarks[]" type="text"></td><td>'+value['pf_total_cost']+'</td></tr>');
@@ -1156,7 +1689,6 @@
 
         });
 
-       
 
         $('#AddModal').modal('show');
 
@@ -1166,16 +1698,52 @@
 
 
         });
+        */
 
+
+
+        $('.add_model_btn').click(function(){
+
+
+            $.ajax({
+
+            url : "<?php echo base_url(); ?>Accounts/Receipts/FetchReference",
+
+            method : "GET",
+
+            success:function(data)
+            {
+
+            $('#ruid').val(data);
+
+            }
+
+            });
+
+        });
+
+
+
+        //Store in json array instead of db 
+
+        $('#invoices_add').submit(function(e){
+
+        e.preventDefault();
+
+
+
+        });
 
 
 
      
-
     });
 
 
+
 </script>
+
+
 
 
 
