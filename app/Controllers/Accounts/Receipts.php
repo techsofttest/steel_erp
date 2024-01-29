@@ -7,7 +7,6 @@ use App\Controllers\BaseController;
 use NumberToWords\NumberToWords;
 
 
-
 class Receipts extends BaseController
 {
 
@@ -112,6 +111,7 @@ class Receipts extends BaseController
 
 
     //view page
+
     public function index()
     {   
 
@@ -167,6 +167,9 @@ class Receipts extends BaseController
         $id = $this->common_model->InsertData('accounts_receipts',$insert_data);
 
         //Add invoices
+        if(!empty($this->request->getPost('pf_id')))
+        {
+
         for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
         {
 
@@ -183,6 +186,8 @@ class Receipts extends BaseController
         $this->common_model->InsertData('accounts_receipt_invoices',$insert_inv_data);
 
         }
+
+        }
         
         $r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
 
@@ -192,10 +197,50 @@ class Receipts extends BaseController
 
         $this->common_model->EditData($update_data,$cond,'accounts_receipts');
 
+        echo $id;
+
+    }
+
+    //refresh table with ajax
+
+
+
+
+
+
+
+    public function AddInvoices()
+    {
+
+
+
+        if($_POST)
+        {
+
+            for($i=0;$i<count($this->request->getPost('credit_account_invoice'));$i++)
+            {
+
+            $insert_data['ri_receipt'] = $this->request->getPost('credit_account_invoice')[$i];
+
+            $insert_data['ri_credit_account	'] = $this->request->getPost('credit_account_invoice')[$i];
+
+            $insert_data['ri_amount'] =  $this->request->getPost('inv_receipt_amount')[$i];
+
+            $this->common_model->InsertData('accounts_receipt_invoices',$insert_data);
+
+            }
+
+        }
+
+
     }
 
 
-    //refresh table with ajax
+
+
+
+
+
  
     //account head modal 
     public function Edit()
@@ -344,28 +389,36 @@ class Receipts extends BaseController
            
     );
 
-    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
+    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
 
     $cond = array('pf_customer' => $customer->cc_id);
 
     $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+   
+    $data['status']=0;
 
-    $data="";
+    $data['invoices']="";
 
+    $sl =0;
     foreach($invoices as $inv)
     {
-
-    $data.='<tr id="'.$inv->pf_id.'">
-    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    $sl++;
+    $data['invoices'].='<tr id="'.$inv->pf_id.'">
+    <input type="hidden" name="credit_account_invoice[]" value="'.$ac_id.'">
+    <th>'.$sl.'</th>
     <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
     <th>'.$inv->pf_uid.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->pf_lfo_ref.'"></th>
     <th>'.$inv->pf_total_cost.'</th>
+    <th><input class="form-control" name="inv_receipt_amount[]" type="number"></th>
+    <th><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
     </tr>';
+
+    $data['status']=1;
 
     }
 
     echo json_encode($data);
-
 
     }
 
@@ -398,7 +451,17 @@ class Receipts extends BaseController
 
     }
 
+    }
 
+
+
+
+    public function FetchReference()
+    {
+
+    $uid = $this->common_model->FetchNextId('accounts_receipts',"REC");
+
+    echo $uid;
 
     }
 
@@ -514,7 +577,8 @@ class Receipts extends BaseController
         'margin_left' => 5, 
         'margin_right' => 5, 
     ]);
-    
+
+
     
     $html ='
 
@@ -590,6 +654,7 @@ class Receipts extends BaseController
     <td width="50%" align="right">
     
     Cheque : 90289
+
     </td>
     
     </tr>
@@ -741,6 +806,8 @@ class Receipts extends BaseController
     $mpdf->Output();
 
     }
+
+
 
 
 
