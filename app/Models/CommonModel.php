@@ -416,15 +416,13 @@ class CommonModel extends Model
 
 
  
-
+    /*fetch enquiry in quot*/
 
     public function FetchEnquiryInQuot($id)
     {
         $query = $this->db->table('crm_enquiry')
         
         ->select('*')
-
-        //->join('crm_quotation_details','crm_quotation_details.qd_enq_ref=crm_enquiry.enquiry_id','left')
 
         ->where('enquiry_customer',$id)
 
@@ -434,7 +432,50 @@ class CommonModel extends Model
 
         return $query->getResult();
     }
+
+    /*fetch Quot in sales order*/
     
+    public function FetcQuotInSales($id)
+    {
+        $query = $this->db->table('crm_quotation_details')
+        
+        ->select('*')
+
+        ->where('qd_customer',$id)
+
+        ->where('crm_quotation_details.qd_id  NOT IN (SELECT so_quotation_ref FROM '.$this->db->getPrefix().'crm_sales_orders)')
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+    /*####*/
+
+    /*fetch  sales order  which are not in cash invoice(in deliverynote)*/
+
+    public function FetchSalesInCashInvoice($id)
+    {
+        $query = $this->db->table('crm_sales_orders')
+        
+        ->select('*')
+
+        ->where('so_customer',$id)
+
+        ->where('crm_sales_orders.so_id  NOT IN (SELECT ci_sales_order FROM '.$this->db->getPrefix().'crm_cash_invoice)')
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+    /*###*/
+
+
+   
+
+
+   
 
  
 

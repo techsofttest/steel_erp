@@ -1187,6 +1187,7 @@
                             $('#add_form2')[0].reset();
                             $('#add_form3')[0].reset();
                             $('#OfficalDocument').modal('hide');
+                            $('.account_head_clz').val('').trigger('change');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                         }

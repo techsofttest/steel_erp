@@ -88,16 +88,36 @@ class DeliverNote extends BaseController
         /*pagination end*/
     } 
 
+
+    public function FetchProducts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
     //view page
     public function index()
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+
+        $data['delivery_note_id'] = $this->common_model->FetchNextId('crm_delivery_note','DN');
 
         $data['content'] = view('crm/delivernote',$data);
 
@@ -156,31 +176,70 @@ class DeliverNote extends BaseController
     // add account head
     Public function Add()
     {   
-        $insert_data = $this->request->getPost();
-
-        $insert_data['dn_added_by'] = 0;
         
-        $insert_data['dn_added_date'] = date('Y-m-d'); 
 
-        $id = $this->common_model->InsertData('crm_delivery_note',$insert_data);
+        $insert_data = [
 
-        $data['dn_id'] = $id;
+            'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
 
-        $p_ref_no = 'DN'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('dn_id' => $id);
+            'dn_date'             => $this->request->getPost('dn_date'),
 
-        $update_data['dn_reffer_no'] = $p_ref_no;
+            'dn_customer'         => $this->request->getPost('dn_customer'),
 
-        $this->common_model->EditData($update_data,$cond,'crm_delivery_note');
+            'dn_sales_order_num'  => $this->request->getPost('dn_sales_order_num'),
 
-        echo json_encode($data);
+            'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
+
+            'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
+
+            'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
+
+            'dn_project'          => $this->request->getPost('dn_project'),
+
+            'dn_added_by'         => 0,
+
+            'dn_added_date'       => date('Y-m-d'),
+
+        ];
+
+        $delivery_note = $this->common_model->InsertData('crm_delivery_note',$insert_data);
+
+
+        if(!empty($_POST['dpd_prod_det']))
+		{
+            $count =  count($_POST['dpd_prod_det']);
+                
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
+                        
+                    $insert_data  	= array(  
+                        
+                        'dpd_prod_det'     =>  $_POST['dpd_prod_det'][$j],
+                        'dpd_unit'         =>  $_POST['dpd_unit'][$j],
+                        'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
+                        'dpd_delivery_qty' =>  $_POST['dpd_delivery_qty'][$j],
+                        'dpd_current_qty'  =>  $_POST['dpd_current_qty'][$j],
+                        'dpd_delivery_id'  =>  $delivery_note,
+                        
+                    );
+
+                    $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
+                    
+                } 
+            }
+
+                   
+		}
+
+
 
     }
 
 
 
-    public function AddTab2()
+    /*public function AddTab2()
     {
          
         if($_POST)
@@ -216,7 +275,7 @@ class DeliverNote extends BaseController
         }
         
 
-    }
+    }*/
     
 
 
@@ -346,12 +405,13 @@ class DeliverNote extends BaseController
 
     public function SalesOrder()
     {
-        $cond = array('so_customer' => $this->request->getPost('ID'));
+        //$cond = array('so_customer' => $this->request->getPost('ID'));
 
-       
-        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        //$sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+
+        $sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
         
-        $data['sales_order'] ="";
+        //$data['sales_order'] ="";
 
         $data['sales_order'] ='<option value="" selected disabled>Select Sales Order Number</option>';
 
@@ -359,11 +419,24 @@ class DeliverNote extends BaseController
         {
             $data['sales_order'] .='<option value='.$sales_order->so_id.'';
            
-            $data['sales_order'] .='>' .$sales_order->so_order_no. '</option>'; 
+            $data['sales_order'] .='>' .$sales_order->so_reffer_no. '</option>'; 
         }
         
         
+        
+        $cond2 = array('contact_customer_creation' => $this->request->getPost('ID'));
 
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+       
+        $data['contact_person'] = "<option value='' selected disabled>Select Contact Person</option>";
+       
+        foreach($contact_details as $con_det)
+        {
+            
+           $data['contact_person'] .= '<option value='.$con_det->contact_id.'>'.$con_det->contact_person.'</option>';
+        }
+
+        
         echo json_encode($data);
 
 
@@ -424,51 +497,65 @@ class DeliverNote extends BaseController
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
+            $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
+
+            $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
+            
+           
+            $data['contact_person'] = "";
+
+            foreach($contact_details as $con_det)
+            {
+                
+                $data['contact_person'] .= '<option value=' .$con_det->contact_id;
+                if ($con_det->contact_id == $sales_order->so_contact_person)
+                {
+                    $data['contact_person'] .= ' selected';
+                }
+                $data['contact_person'] .= '>' . $con_det->contact_person . '</option>';
+
+                
+            }
+
+
+            
+
             $data['so_lpo'] = $sales_order->so_lpo;
 
-            $data['so_contact_person'] = $sales_order->so_contact_person;
+            $data['so_payment_term'] = $sales_order->so_payment_term;
 
             $data['so_project'] = $sales_order->so_project;
 
             $data['product_detail'] ='';
             
-            
-
-            $data['product_detail'] .=' <table class="table table-bordered table-striped delTable">
-                                            <tbody class="travelerinfo">
-                                                <tr>
-                                                    <td>Serial No.</td>
-                                                    <td>Product Description</td>
-                                                    <td>Unit</td>
-                                                    <td>Quantity</td>
-                                                    <td>Action</td>
-                                                </tr>';
-                                                $i = 1;  
-                                                foreach($sales_order_details as $sales_det){
-                       $data['product_detail'] .='<tr class="prod_row" id="'.$sales_det->spd_id.'">
-                                                    <td>'.$i.'</td>
-                                                    <td>
-                                                        <select class="form-select ser_product_det" name="dpd_prod_det[]" required>';
-                                                            
-                                                            foreach($products as $prod){
-                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                                if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
-                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                            }
-                                                        $data['product_detail'] .= '</select>
-                                                    </td>
-                                                    <td><input type="text" name="dpd_prod_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
-                                                    <td><input type="number" name="dpd_quantity[]" value="'.$sales_det->spd_quantity.'"  class="form-control" required></td>
-                                                    <td class="row_remove" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
+           
+            $i = 1;  
+            foreach($sales_order_details as $sales_det){
+                $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
+                                                <td class="si_no">'.$i.'</td>
+                                                <td>
+                                                    <select class="form-select ser_product_det" name="dpd_prod_det[]" required>';
+                                                                
+                                                    foreach($products as $prod){
+                                                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                        if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                        }
+                                                    $data['product_detail'] .= '</select>
+                                                </td>
+                                                    <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                                    <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" required></td>
+                                                    <td><input type="number" name="dpd_delivery_qty[]"  class="form-control delivery_qty" required></td>
+                                                    <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery" required></td>
+                                                    <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
                                                     
                                                 </tr>';
                                                 $i++;
                                                 }
 
 
-                     $data['product_detail'] .='</tbody><tbody class="travelerinfo product-more"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';  
-                                        
-                                          
+                                      
                                           
                                              
 
@@ -486,8 +573,6 @@ class DeliverNote extends BaseController
 
         }
 
-     
     
-
 
 }

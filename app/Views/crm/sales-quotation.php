@@ -64,7 +64,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Quotation</h5>
-                                            <button type="button" class="btn-close quotation_close_modal"></button>
+                                            <button type="button" class="btn-close  quotation_close_modal" data-bs-dismiss="modal"></button>
                                         </div>
 
 				                        <div class="modal-body">
@@ -373,7 +373,7 @@
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Percentage</td>
-                                                                <td><input type="text" class="form-control total_percent"></td>
+                                                                <td><input type="text" class="form-control total_percent" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -622,7 +622,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close cust_prime_modal"  aria-label="Close"></button>
                                         </div>
 				                        <div class="modal-body">
 
@@ -1327,181 +1327,335 @@
 <!--product modal section end-->
 
 
+<!--SalesQuotation view section start-->
 
-<!--view modal section start-->
-
-<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-                                
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Sales Quotation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="true">Quotation Details</a>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab5" role="tab" aria-controls="tab5" aria-selected="false">Product Details</a>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab6" role="tab" aria-controls="tab6" aria-selected="false">Cost Calculation</a>
-                    </li>
-                    
-                <!-- Add more tabs as needed -->
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                        <form class="Dashboard-form class" id="">
-                            <!-- Tab 1 content goes here -->
-                            <div class="row">
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Quotation Number</label>
-                                    <input type="text" name="" id="quotation_number_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Date</label>
-                                    <input type="date" name="" id="quotation_date_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Customer</label>
-                                    <input class="form-control" id="quotation_customer_id" name="" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Enquiry</label>
-                                    <input class="form-control" id="quotation_enquiry_id" name="" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Contact Person</label>
-                                    <input class="form-control" id="quotation_con_person_id" name="" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Sales Executive</label>
-                                    <input class="form-control" id="quotation_sales_executive_id" name="" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Payment Term</label>
-                                    <input type="text" name="" id="quotation_payment_term_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Delivery Term</label>
-                                    <input class="form-control" id="quotation_delivery_term_id" name="" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Validity</label>
-                                    <input type="text" name="" id="quotation_validity_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Project</label>
-                                    <input type="text" name="" id="quotation_project_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Enquiry Reference</label>
-                                    <input type="text" name="" id="quotation_enquiry_reference_id" class="form-control" readonly>
-                                </div>
-                                                            
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                
-                            </div>
-                        </form>
-                    </div>
-                                                    
-                                                
-                    <!---->
-                    <div class="tab-pane fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-
-                        <form class="Dashboard-form class" id="product_detail_table">
-                            <!-- Tab 2 content goes here -->
-                            
-                            
-                            
-                        </form>
-
-                        <div class="modal-footer justify-content-center">
-                                
-                        </div>
-
-                    </div>
-
-                    <!---->
-
-                    <!---->
-                    <div class="tab-pane fade" id="tab6" role="tabpanel" aria-labelledby="tab6-tab">
-                        <form class="Dashboard-form class" id="add_form3">
-                            <!-- Tab 1 content goes here -->
-                            <div class="row">
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Material / Services</label>
-                                    <input type="text" id="quotation_material" class="form-control" readonly>
-                                   
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Qty</label>
-                                    <input type="number"  id="quotation_qty" class="form-control" readonly>
-                                </div>
-                                
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Rate</label>
-                                    <input type="number" id="quotation_rate" class="form-control" readonly>
-                                </div>
-                                
-
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Amount</label>
-                                    <input type="number"  id="quotation_amount" class="form-control quotation_amount" readonly>
-                                </div>
-
-                                <div id=""></div>
-
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Cost of Sales</label>
-                                    <input type="number"  id="quotation_cost_of_sale" class="form-control" readonly>
-                                </div>
-
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">% of Gross profit</label>
-                                    <input type="number" id="quotation_gross_profile" class="form-control" readonly>
-                                </div>
-                                
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                
-                            </div>
-                        </form>
-                    </div>
-
-                    <!---->
-
+<div class="modal fade" id="SalesQuotView" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sales Quotation</h5>
+                    <button type="button" class="btn-close  quotation_close_modal" data-bs-dismiss="modal"></button>
                 </div>
 
-            </div>
-                                    
-        </div>
-                                
-    </div>
+			    <div class="modal-body">
 
+                    <div class="live-preview">
+                                                
+                        <div class="row">
+                                                 
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="tex"   class="form-control"  readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="date" class="form-control">
+                                            </div>
+
+                                        </div>  
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Customer Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Enquiry Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" class="form-control" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Validity</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text"  class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                                            
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Sales Executive</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text"  class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text"  class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                                            
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Delivery Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" class="form-control" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Project</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                </div>
+
+                            </div>
+                                                                                          
+
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                        <td>Action</td>
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                
+                                <tbody  class="travelerinfo product-more2"></tbody>
+                                <!--<tbody>-->
+                                    <tr>
+                                        <td colspan="8" align="center" class="tecs">
+                                            <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                        </td>
+                                    </tr>
+                                <!--</tbody>--->
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">Amount in words</td>
+                                        <td colspan="3" class="sales_quotation_amount_in_word"></td>
+                                        <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
+                                        <td>Total</td>
+                                        <td><input type="text" name="qd_sales_amount" class="amount_total form-control" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="3"></td>
+                                        <td>Cost</td>
+                                        <td><input type="text" class="form-control total_cost_cal" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="3"></td>
+                                        <td>Percentage</td>
+                                        <td><input type="text" class="form-control total_percent" readonly></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div style="float: right;">
+                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                <tr>
+                                    <td><button>Print</button></td>
+                                    <td><button>Email</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button type="submit">Save</button></td>
+                                    <td><button>PDF</button></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!--table section end-->
+
+                    </div>  
+                                            
+                </div>
+
+
+            </div>
+		</form>
+
+	</div>
 </div>
 
-
-<!--view  modal section end-->
-
+<!--SalesQuotatuion view section end-->
 
 
 
@@ -1566,11 +1720,13 @@
                         data: $(currentForm).serialize(),
                         success: function(data) {
                             
-                            $('#SalesQuotation').modal('show');
+                            $('#SalesQuotView').modal('show');
 
                             $('#CostCalculation').modal('hide'); 
 
-                            $('.enq_tab_submit').hide();
+                            
+
+                            datatable.ajax.reload(null, false);
                         
                         }
                     });
@@ -1580,7 +1736,7 @@
 
 
 
-        $(function() {
+        /*$(function() {
 
             var form = $('#add_form3');
             
@@ -1614,7 +1770,7 @@
                     });
                 }
             });
-        });
+        });*/
 
 
         /*product modal submit start*/
@@ -1650,11 +1806,7 @@
                                     console.log(secdata);
                                     $(".add_prod").html(secdata.product_head_out);
                                     
-                                    /*$(".prod_row").each(function(index, row) {
-                                        var addProdSelect = $(row).find('.add_prod');
-                                        addProdSelect.html(secdata.product_head_out);
-                                    });*/
-                                   
+                                 
 
                                 }
                             });
@@ -1953,42 +2105,6 @@
         /* ### */
 
 
-        
-
-
-
-
-
-        
-        /*cost calculation add more*/
-
-        /*var max_fieldcost = 30;
-        var cc = 1;
-        
-        $("body").on('click', '.add_cost_more', function(){
-           
-            
-			if(cc < max_fieldcost){ 
-                
-                cc++;
-            
-                $(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option><?php foreach($products as $prod){?> <option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details?></option><?php } ?></select></div><div class='col-md-3 col-lg-2'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='col-lg-1 remove-cost' style='margin-top: 32px;position: unset;'><div class='remainpass cost_remove'><i class='ri-close-line'></i>Remove</div></div></div>");
-              
-			}
-
-	    });
-        
-
-        $(document).on("click", ".remove-cost", function() 
-        {
-            $(this).parent().remove();
-            cc--;
-            totalCalcutate();
-           
-        });*/
-
-        /**/
-
 
 
 
@@ -2053,6 +2169,8 @@
 
             var id = $(this).val();
 
+            var cust_id = $('#customer_id').val();
+
             
             $.ajax({
 
@@ -2060,7 +2178,10 @@
 
                 method : "POST",
 
-                data: {ID: id},
+                data: {
+                    ID: id,
+                    custID: cust_id,
+                },
 
                 success:function(data)
                 {   
@@ -2069,6 +2190,8 @@
                     $(".project_clz").val(data.enquiry_project);
 
                     $(".product-more2").append(data.product_detail);
+
+                    $(".contact_person_clz").html(data.customer_person);
 
                    //InitProductSelect2();
 
@@ -2088,53 +2211,7 @@
 
 
 
-        //fetch data by Enquiry Number 
-        /*$("body").on('change', '#enquiry_numb', function(){ 
-            
-            var id = $(this).val();
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchEnquiry",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                    
-                    document.getElementById('contact_person_id').value=data.contact_person;
-                    
-                    document.getElementById('qd_sales_executive_id').value=data.sales_executive;
-
-                    $("#qd_validity_id").val(data.enquiry_validity);
-
-                    $("#qd_project_id").val(data.enquiry_project);
-
-                    $("#qd_enquiry_reference_id").val(data.enquiry_enq_referance);
-                    
-                    $('#contact_person_id').addClass('enqinput');
-
-                    $('#qd_sales_executive_id').addClass('enqinput');
-
-                    $('#qd_validity_id').addClass('enqinput');
-
-                    $('#qd_project_id').addClass('enqinput');
-
-                    $('#qd_enquiry_reference_id').addClass('enqinput');
-
-                    $('.product_det_form').html(data.product_detail);
-                  
-                }
-
-
-            });
-
-
-        });*/
-        /**/
+       
 
         $(function() {
             $('#qd_delivery_term_id').selectize({
@@ -2188,21 +2265,7 @@
 
         /**/
 
-        /*delete product detail row*/
-
-        /*$("body").on('click', '.row_remove', function(){ 
-	       
-            var id = $(this).data('id');
-           
-            $('#' + id).fadeOut('fast', function() {
-        
-                $(this).remove();
-
-            });
-        
-        });*/
-
-        /**/
+       
 
 
 
@@ -2408,6 +2471,21 @@
 
       /*####*/
 
+      /*customer creation primerary modal close section start*/
+
+      $('.cust_prime_modal').on('click', function() {
+          
+
+          $('#CustomerCreation').modal('hide');
+
+          $('#SalesQuotation').modal('show');
+
+         
+         
+      });
+
+      /*####*/
+
 
       /*close contact details modal*/ 
          
@@ -2523,7 +2601,8 @@
                             $('#add_cus_form2')[0].reset();
                             $('#add_cus_form3')[0].reset();
                             $('#OfficalDocument').modal('hide');
-                            $('#Enquiry').modal('show');
+                            $('#SalesQuotation').modal('show');
+                            $('.account_head_clz').val('').trigger('change');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                             
@@ -2685,15 +2764,22 @@
 
         /*quotation modal close*/
 
-        $("body").on('click', '.quotation_close_modal', function(){ 
+        /*$("body").on('click', '.quotation_close_modal', function(){ 
 	        
-            $('#SalesQuotation').modal('hide');
-
-            $('.enq_tab_submit').show();
-
             $('#add_form1')[0].reset();
 
         });
+
+        var myModalEl = document.getElementById('SalesQuotation')
+
+        myModalEl.addEventListener('hidden.bs.modal', function (event) {
+                 
+           
+
+            $('.enq_tab_submit').show();
+
+                
+        })*/
 
         /**/
 
@@ -2724,43 +2810,6 @@
 
         });
         /*###*/
-
-
-        /*product detail calculation*/
-
-        /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
-
-            var $discountSelect = $(this);
-
-            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
-
-            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
-
-            var quantity = parseInt($quantitySelectElement.val())||0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = parseFloat(quantity); 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount/100)*multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
-
-            $amountElement.val(Number(orginalPrice).toFixed(2));
-
-
-        });*/
-
-
-        /**/
 
 
 

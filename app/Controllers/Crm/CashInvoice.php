@@ -47,7 +47,7 @@ class CashInvoice extends BaseController
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
-                'fk'    => 'ci_customer_number1',
+                'fk'    => 'ci_customer',
             ),
            
         );
@@ -61,11 +61,11 @@ class CashInvoice extends BaseController
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
-              'ci_id'                => $i,
-              'ci_reffer_no'         => $record->ci_reffer_no,
-              'ci_date'              => date('d-m-Y',strtotime($record->ci_date)),
-              'ci_customer_number1'  => $record->cc_customer_name,
-              'action'               => $action,
+              'ci_id'        => $i,
+              'ci_reffer_no' => $record->ci_reffer_no,
+              'ci_date'      => date('d-m-Y',strtotime($record->ci_date)),
+              'ci_customer'  => $record->ci_customer,
+              'action'       => $action,
            );
            $i++; 
         }
@@ -88,6 +88,25 @@ class CashInvoice extends BaseController
         /*pagination end*/
     } 
 
+
+    public function FetchProducts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
     //view page
     public function index()
     {   
@@ -104,6 +123,8 @@ class CashInvoice extends BaseController
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
         
         $data['cash_invoice'] = $this->common_model->FetchAllOrder('master_cash_invoice_status','cis_id ','desc');
+        
+        $data['cash_invoice_id'] = $this->common_model->FetchNextId('crm_cash_invoice','CIN'); 
 
         $data['content'] = view('crm/cash-invoice',$data);
 
@@ -158,112 +179,70 @@ class CashInvoice extends BaseController
 
 
 
-
-
-
-
     // add account head
     Public function Add()
     {   
-        $insert_data = $this->request->getPost();
+        $insert_data = [
 
-        $insert_data['ci_addded_by'] = 0;
-        
-        $insert_data['ci_added_date'] = date('Y-m-d'); 
+            'ci_reffer_no'       => $this->request->getPost('ci_reffer_no'),
 
-        $id = $this->common_model->InsertData('crm_cash_invoice',$insert_data);
+            'ci_date'            => $this->request->getPost('ci_date'),
 
-        $data['ci_id'] = $id;
+            'ci_customer'        => $this->request->getPost('ci_customer'),
 
-        $p_ref_no = 'CI'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('ci_id' => $id);
+            'ci_sales_order'     => $this->request->getPost('ci_sales_order'),
 
-        $update_data['ci_reffer_no'] = $p_ref_no;
+            'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
 
-        $this->common_model->EditData($update_data,$cond,'crm_cash_invoice');
+            'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
 
-        echo json_encode($data);
+            'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
 
-    }
+            'ci_project'         => $this->request->getPost('ci_project'),
 
-    public function AddTab2()
-    {
-         
-        if($_POST)
-        {
+            'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
 
-	        if(!empty($_POST['cipd_prod_det']))
-			{
-			    $count =  count($_POST['cipd_prod_det']);
-					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
-							
-					    $insert_data  	= array(  
-							
-							'cipd_prod_det'     =>  $_POST['cipd_prod_det'][$j],
-							'cipd_unit'         =>  $_POST['cipd_unit'][$j],
-						    'cipd_order_qtn'    =>  $_POST['cipd_order_qtn'][$j],
-                            'cipd_qtn'          =>  $_POST['cipd_qtn'][$j],
-                            'cipd_rate'         =>  $_POST['cipd_rate'][$j],
-                            'cipd_discount'     =>  $_POST['cipd_discount'][$j],
-                            'cipd_amount'       =>  $_POST['cipd_amount'][$j],
-                            'cipd_cash_invoice' =>  $_POST['cipd_cash_invoice'],
-                          
-					    );
+            'ci_addded_by'       => 0,
 
-				        $this->common_model->InsertData('crm_cash_invoice_prod_det',$insert_data);
-                      
-				    } 
-				}
+            'ci_added_date'      => date('Y-m-d'),
+
+        ];
+
+        $cash_invoice = $this->common_model->InsertData('crm_cash_invoice',$insert_data);
+
+        if(!empty($_POST['cipd_prod_det']))
+		{
+            $count =  count($_POST['cipd_prod_det']);
+                
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
+                        
+                    $product_data  	= array(  
+                        
+                        'cipd_prod_det'      =>  $_POST['cipd_prod_det'][$j],
+                        'cipd_unit'          =>  $_POST['cipd_unit'][$j],
+                        'cipd_qtn'           =>  $_POST['cipd_qtn'][$j],
+                        'cipd_rate'          =>  $_POST['cipd_rate'][$j],
+                        'cipd_discount'      =>  $_POST['cipd_discount'][$j],
+                        'cipd_amount'        =>  $_POST['cipd_amount'][$j],
+                        'cipd_cash_invoice' =>  $cash_invoice,
+                        
+                    );
+
+                    $this->common_model->InsertData('crm_cash_invoice_prod_det',$product_data);
+                    
+                } 
+            }
 
                    
-			}
+		}
 
-			
-        }
+
         
 
     }
-
-
-    public function AddTab3()
-    {
-        $cond = array('ci_id' => $this->request->getPost('ci_id'));
-        $update_data = $this->request->getPost();
-      
-        if (array_key_exists('ci_id', $update_data)) {
-            unset($update_data['ci_id']);
-        }
-
-        
-        // Handle file upload
-        if (isset($_FILES['ci_signed_cash_invoice']) && $_FILES['ci_signed_cash_invoice']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('ci_signed_cash_invoice', 'uploads/CashInvoice');
-            $update_data['ci_signed_cash_invoice'] = $ccAttachCrFileName;
-        }
-
-        $this->common_model->EditData($update_data, $cond, 'crm_cash_invoice');
-    }
-    
-    // Function to handle file upload
-    private function uploadFile($fieldName, $uploadPath)
-    {
-        $file = $this->request->getFile($fieldName);
-
-        if ($file->isValid() && !$file->hasMoved()) 
-        {
-            $newName = $file->getRandomName();
-            $file->move($uploadPath, $newName);
-            return $newName;
-        }
-
-        return null;
-    }
-
 
 
 
@@ -358,11 +337,9 @@ class CashInvoice extends BaseController
 
     public function SalesOrder()
     {
-        $cond = array('so_customer' => $this->request->getPost('ID'));
-
-       
-        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
         
+        $sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
+
         $data['sales_order'] ="";
 
         $data['sales_order'] ='<option value="" selected disabled>Select Sales Order Number</option>';
@@ -371,13 +348,23 @@ class CashInvoice extends BaseController
         {
             $data['sales_order'] .='<option value='.$sales_order->so_id.'';
            
-            $data['sales_order'] .='>' .$sales_order->so_order_no. '</option>'; 
+            $data['sales_order'] .='>' .$sales_order->so_reffer_no. '</option>'; 
         }
-        
-        
 
+
+        $cond2 = array('contact_customer_creation' => $this->request->getPost('ID'));
+        
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
+        $data['contact_details'] = '<option>Select Contact Person</option>'; 
+       
+        foreach($contact_details as $cont_det)
+        {
+            $data['contact_details'] .='<option value='.$cont_det->contact_id.'>'.$cont_det->contact_person.'</option>';
+        }
+
+       
         echo json_encode($data);
-
 
     }
 
@@ -486,55 +473,89 @@ class CashInvoice extends BaseController
 
             $data['so_lpo'] = $sales_order->so_lpo;
 
-            $data['so_contact_person'] = $sales_order->so_contact_person;
+            $data['so_payment_term'] = $sales_order->so_payment_term;
 
             $data['so_project'] = $sales_order->so_project;
 
+            $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
+           
+            $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
+            $data['contact_detail'] = ""; 
+
+            foreach($contact_details as $cont_det)
+            {
+                $data['contact_detail'] .='<option value='.$cont_det->contact_id.'';
+                if($cont_det->contact_id == $sales_order->so_contact_person){ $data['contact_detail'] .=' selected';}
+                $data['contact_detail'] .='>'.$cont_det->contact_person.'</option>';
+            }
+ 
+            /*product detail section start*/
+
             $data['product_detail'] ='';
 
-            $data['product_detail'] .=' <table class="table table-bordered table-striped delTable">
-                                            <tbody class="travelerinfo">
-                                                <tr>
-                                                    <td>Serial No.</td>
-                                                    <td>Product Description</td>
-                                                    <td>Unit</td>
-                                                    <td>Order Quantity</td>
-                                                    <td>Quantity</td>
-                                                    <td>Rate</td>
-                                                    <td>Discount(%)</td>
-                                                    <td>Amount</td>
-                                                    <td>Action</td>
-                                                </tr>';
-                                                $i = 1;  
-                                                foreach($sales_order_details as $sales_det){
-                       $data['product_detail'] .='<tr class="prod_row" id="'.$sales_det->spd_id.'">
-                                                    <td>'.$i.'</td>
-                                                    <td>
-                                                        <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
+            $i = 1;
+
+            foreach($sales_order_details as $sales_det){
+            $data['product_detail'] .='<tr class="prod_row cash_invoice_remove"  id="'.$sales_det->spd_id.'">
+                                            <td class="si_no">'.$i.'</td>
+                                            <td>
+                                                <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
                                                             
-                                                            foreach($products as $prod){
-                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                                if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
-                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                            }
-                                                        $data['product_detail'] .= '</select>
-                                                    </td>
-                                                    <td><input type="text"   name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
-                                                    <td><input type="number" name="cipd_order_qtn[]" value="'.$sales_det->spd_quantity.'"  class="form-control real_qty" required></td>
-                                                    <td><input type="number" name="cipd_qtn[]" value="'.$sales_det->spd_quantity.'" class="form-control qtn_limit qtn_clz_id" required></td>
-                                                    <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id" required></td>
-                                                    <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'"  class="form-control discount_clz_id" required></td>
-                                                    <td><input type="number" name="cipd_amount[]" value="'.$sales_det->spd_amount.'"  class="form-control amount_clz_id" required></td>
-                                                    <td class="row_remove" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
-                                                    
-                                                </tr>';
-                                                
-                                                $i++;
+                                                foreach($products as $prod){
+                                                    $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                    if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                    $data['product_detail'] .='>'.$prod->product_details.'</option>';
                                                 }
+                                                $data['product_detail'] .= '</select>
+
+                                            </td>
+                                            <td><input type="text"   name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                            <td><input type="number" name="cipd_qtn[]" value="'.$sales_det->spd_quantity.'"  class="form-control real_qty" required></td>
+                                            <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id" required></td>
+                                            <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'"  class="form-control discount_clz_id" required></td>
+                                            <td><input type="number" name="cipd_amount[]" value="'.$sales_det->spd_amount.'"  class="form-control discount_clz_id" required></td>
+                                            <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
+                                            
+                                        </tr>';
+                                                
+                                        $i++;
+            }
+
+            /*#####*/
 
 
-                     $data['product_detail'] .='</tbody><tbody class="travelerinfo product-more"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';  
-                      
+            /*select table section start*/
+
+            $data['select_table'] ="";
+
+            foreach($sales_order_details as $sales_det){
+            
+            $i=1;    
+
+            $data['select_table'] .='<tr>
+                                        <td class="si_no">'.$i.'</td>
+                                        <td>
+                                            <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
+                                                        
+                                            foreach($products as $prod){
+                                                $data['select_table'] .='<option value="'.$prod->product_id.'"'; 
+                                                if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                $data['select_table'] .='>'.$prod->product_details.'</option>';
+                                            }
+                                            $data['select_table'] .= '</select>
+
+                                    </td>
+                                    <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'"  class="form-control" required></td>
+                                    <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_quantity.'"  class="form-control" required></td>
+                                    <td><input type="checkbox" name="dpd_unit[]"  class="" required></td>
+            
+                                        </tr>';
+
+                                        $i++;
+            }                            
+
+            /*#####*/
 
             echo json_encode($data);
 

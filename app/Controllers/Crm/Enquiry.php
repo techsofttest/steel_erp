@@ -143,7 +143,7 @@ class Enquiry extends BaseController
       
         $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
-        $data['total_count'] =count($data['result']);
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
@@ -467,7 +467,7 @@ class Enquiry extends BaseController
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
 
-        $data['contact_person'] ="";
+        $data['contact_person'] ="<option value='' selected disabled>Select Contact Person</option>";
 
         foreach($contact_details as $cont_det)
         {

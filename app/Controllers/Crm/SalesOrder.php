@@ -38,7 +38,7 @@ class SalesOrder extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('so_order_no');
+        $searchColumns = array('so_reffer_no');
 
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_sales_orders','so_id',$searchValue,$searchColumns);
     
@@ -66,10 +66,10 @@ class SalesOrder extends BaseController
            
            $data[] = array( 
               "so_id"            =>$i,
-              'so_order_no'      => $record->so_order_no,
+              'so_reffer_no'      => $record->so_reffer_no,
               'so_date'          => date('d-m-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
-              'so_quotation_ref' => $record->qd_quotation_number,
+              'so_quotation_ref' => $record->qd_reffer_no,
               "action"           => $action,
            );
            $i++; 
@@ -111,6 +111,25 @@ class SalesOrder extends BaseController
 
     }
 
+
+    public function FetchProducts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
     //view page
     public function index()
     {   
@@ -131,9 +150,8 @@ class SalesOrder extends BaseController
         
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
-
-        $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
+     
+        $data['contacts'] = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
         
         $data['sales_order_id'] = $this->common_model->FetchNextId('crm_sales_orders','SO');
 
@@ -148,242 +166,79 @@ class SalesOrder extends BaseController
     Public function Add()
     {   
         
-        $insert_data = $this->request->getPost();
+        $insert_data = [
 
-        $insert_data['so_added_by'] = 0; 
+            'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
 
-        $insert_data['so_added_date'] = date('Y-m-d'); 
+            'so_date'                   => $this->request->getPost('so_date'),
 
-        $id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
+            'so_customer'               => $this->request->getPost('so_customer'),
 
-        $data['so_id'] = $id;
+            'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
 
-        $p_ref_no = 'SO'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('so_id' => $id);
+            'so_lpo'                    => $this->request->getPost('so_lpo'),
 
-        $update_data['so_order_no'] = $p_ref_no;
+            'so_sales_executive'        => $this->request->getPost('so_sales_executive'),
 
-        $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
+            'so_contact_person'         => $this->request->getPost('so_contact_person'),
 
-        echo json_encode($data);
+            'so_payment_term'           => $this->request->getPost('so_payment_term'),
 
-    }
+            'so_delivery_term'          => $this->request->getPost('so_delivery_term'),
 
-    public function AddTab2()
-    {
-        $insert_data = $this->request->getPost();
-        if($_POST){
-	        if(!empty($_POST['spd_unit']))
-			{
-			    $count =  count($_POST['spd_unit']);
-				
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{   /*convert number to words*/
-                        $number  = $_POST['spd_amount'][$j];
-                        $no = floor($number);
-                        $hundred = null;
-                        $digits_1 = strlen($no); //to find lenght of the number
-                        $i = 0;
-                        // Numbers can stored in array format
-                        $str = array();
+            'so_project'                => $this->request->getPost('so_project'),
 
-                        $words = array('0' => '', '1' => 'One', '2' => 'Two',
-                        '3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six',
-                        '7' => 'Seven', '8' => 'Eight', '9' => 'Nine',
-                        '10' => 'Ten', '11' => 'Eleven', '12' => 'Twelve',
-                        '13' => 'Thirteen', '14' => 'Fourteen',
-                        '15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen',
-                        '18' => 'Eighteen', '19' =>'Nineteen', '20' => 'Twenty',
-                        '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty',
-                        '60' => 'Sixty', '70' => 'Seventy',
-                        '80' => 'Eighty', '90' => 'Ninety');
-                        $digits = array('', 'Hundred', 'Thousand', 'lakh', 'Crore');
-                        while ($i < $digits_1)
-                        {
-                            $divider = ($i == 2) ? 10 : 100;
-                            //Round numbers down to the nearest integer
-                            $number =floor($no % $divider);
-                            $no = floor($no / $divider);
-                            $i +=($divider == 10) ? 1 : 2;
+            'so_amount_total'           => $this->request->getPost('so_amount_total'),
 
-                            if ($number)
-                            {
-                            $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-                            $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
-                            $str [] = ($number < 21) ? $words[$number] . " " .
-                            $digits[$counter] .
-                            $plural . " " .
-                            $hundred: $words[floor($number / 10) * 10]. " " .
-                            $words[$number % 10] . " ".
-                            $digits[$counter] . $plural . " " .
-                            $hundred;
-                            }
-                            else $str[] = null;
-                        }
-                        $str = array_reverse($str);
-                        $result = implode('', $str); //Join array elements with a string
-                        /**/
+            'so_amount_total_in_words'  => $this->request->getPost('so_amount_total_in_words'),
+
+            'so_added_date'             => date('Y-m-d'),
+        ];
+
+        $sales_order_id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
+
+
+        /*product table section start*/
+
+        if(!empty($_POST['spd_unit']))
+        {
+            $count =  count($_POST['spd_unit']);
+            
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {   
+                    
+
+                    $prod_data  	= array(  
                         
-
-					    $insert_data  	= array(  
-							
-							'spd_product_details'   =>  $_POST['spd_product_details'][$j],
-							'spd_unit'              =>  $_POST['spd_unit'][$j],
-						    'spd_quantity'          =>  $_POST['spd_quantity'][$j],
-                            'spd_rate'              =>  $_POST['spd_rate'][$j],
-                            'spd_discount'          =>  $_POST['spd_discount'][$j],
-                            'spd_amount'            =>  $_POST['spd_amount'][$j],
-                            'spd_amount_in_words'   =>  $result,
-                            'spd_sales_order'       =>  $_POST['spd_sales_order'],
-	  
-					    );
-					
-						
-				        $id = $this->common_model->InsertData('crm_sales_product_details',$insert_data);
-				
-				    } 
-				}
-			}
-			
-			
-        }
-        
-
-       
-    }
-
-
-
-    public function AddTab3()
-    {
-        $cond = array('so_id' => $this->request->getPost('so_id'));
-        $update_data = $this->request->getPost();
-        //print_r($update_data); exit();
-        if (array_key_exists('so_id', $update_data)) {
-            unset($update_data['so_id']);
-        }
-
-        
-        // Handle file upload
-        if (isset($_FILES['so_lpo_and_drawing']) && $_FILES['so_lpo_and_drawing']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('so_lpo_and_drawing', 'uploads/SalesOrder');
-            $update_data['so_lpo_and_drawing'] = $ccAttachCrFileName;
-        }
-
-        $this->common_model->EditData($update_data, $cond, 'crm_sales_orders');
-    }
+                        'spd_product_details'   =>  $_POST['spd_product_details'][$j],
+                        'spd_unit'              =>  $_POST['spd_unit'][$j],
+                        'spd_quantity'          =>  $_POST['spd_quantity'][$j],
+                        'spd_rate'              =>  $_POST['spd_rate'][$j],
+                        'spd_discount'          =>  $_POST['spd_discount'][$j],
+                        'spd_amount'            =>  $_POST['spd_amount'][$j],
+                        'spd_sales_order'       =>  $sales_order_id,
     
-    // Function to handle file upload
-    private function uploadFile($fieldName, $uploadPath)
-    {
-        $file = $this->request->getFile($fieldName);
-
-        if ($file->isValid() && !$file->hasMoved()) 
-        {
-            $newName = $file->getRandomName();
-            $file->move($uploadPath, $newName);
-            return $newName;
+                    );
+                
+                    
+                    $id = $this->common_model->InsertData('crm_sales_product_details',$prod_data);
+            
+                } 
+            }
         }
 
-        return null;
+        /*####*/
+
+
+
     }
 
 
 
-  
 
-
-
-
-    //account head modal 
-    public function View()
-    {
-        
-        $cond = array('so_id' => $this->request->getPost('ID'));
-
-        
-
-        $joins = array(
-           
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'so_customer',
-            ),
-            array(
-                'table' => 'crm_quotation_details',
-                'pk'    => 'qd_id',
-                'fk'    => 'so_quotation_ref',
-            )
-
-
-        );
-
-        $sales_orders = $this->common_model->SingleRowJoin('crm_sales_orders',$cond,$joins);
-
-
-        $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
-
-        $product_details_data = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
-         
-
-        $data['so_order_no']                   = $sales_orders->so_order_no;
-
-         $data['so_date']                      = $sales_orders->so_date;
-
-        $data['cc_customer_name']              = $sales_orders->cc_customer_name;
-
-        $data['so_lpo']                        = $sales_orders->so_lpo;
-
-        $data['qd_quotation_number']           = $sales_orders->qd_quotation_number;
-
-        $data['so_contact_person']             = $sales_orders->so_contact_person;
-
-        $data['so_sales_executive']            = $sales_orders->so_sales_executive;
-
-        $data['so_payment_term']               = $sales_orders->so_payment_term;
-
-        $data['so_delivery_term']              = $sales_orders->so_delivery_term;
-
-        $data['so_project']                    = $sales_orders->so_project;
-
-        $data['so_scheduled_date_of_delivery'] = $sales_orders->so_scheduled_date_of_delivery;
-
-
-       
-
-
-         
-        
-        $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td><td>Amount In Words</td></tr>';
-
-        foreach($product_details_data as $prod_det)
-        {
-            $data['prod_details'] .='<tr>
-            <td><input type="text"   value="'.$prod_det->spd_serial_no.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->spd_product_details.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->spd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_amount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_amount_in_words.'" class="form-control " readonly></td>
-            </tr>'; 
-             
-        }
-        
-        $data['prod_details'] .= '</tbody></table>';
-
-        $data['lpo_and_drawing'] = '<a href="' . base_url('uploads/SalesOrder/' . $sales_orders->so_lpo_and_drawing) . '" target="_blank">View</a>';  
-
-
-        
-        echo json_encode($data);
-    }
+ 
 
 
     public function ContactPerson()
@@ -394,7 +249,9 @@ class SalesOrder extends BaseController
 
         $cond1 = array('qd_customer' => $this->request->getPost('ID'));
 
-        $quotation_details = $this->common_model->FetchWhere('crm_quotation_details',$cond1);
+        //$quotation_details = $this->common_model->FetchWhere('crm_quotation_details',$cond1);
+
+        $quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
 
         $data['quotation_det'] ="";
         
@@ -404,7 +261,7 @@ class SalesOrder extends BaseController
         {
             $data['quotation_det'] .='<option value='.$quot_det->qd_id.'';
            
-            $data['quotation_det'] .='>' .$quot_det->qd_quotation_number. '</option>'; 
+            $data['quotation_det'] .='>' .$quot_det->qd_reffer_no. '</option>'; 
         }
 
 
@@ -418,7 +275,8 @@ class SalesOrder extends BaseController
            
             $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
         }
-
+        
+        
         echo json_encode($data);
 
 
@@ -431,6 +289,14 @@ class SalesOrder extends BaseController
 
         $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
 
+        $sales_executive = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $cond2 = array('contact_customer_creation' => $this->request->getPost('quotID'));
+
+       
+        $contact_person = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+        
+        
         $joins1 = array(
             array(
                 'table' => 'crm_products',
@@ -446,15 +312,14 @@ class SalesOrder extends BaseController
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
          
-        $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description &nbsp <span class="edit_add_more product_modal"><i class="ri-add-circle-line"></i></span></td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td><td>Action</td></tr>';
-
+        $data['prod_details'] ='';
+        $i =1; 
         foreach($product_details_data as $prod_det)
         {   
             $prod_det->qpd_amount;
 
-            $data['prod_details'] .='<tr class="prod_row" id="'.$prod_det->qpd_id.'">
-            <td><input type="text"  name="spd_serial_no[]"  value="'.$prod_det->qpd_serial_no.'" class="form-control non_border_input" readonly></td>
+            $data['prod_details'] .='<tr class="prod_row sales_remove" id="'.$prod_det->qpd_id.'">
+            <td class="si_no">'.$i.'</td>
             <td style="width:20%">
                 <select class="form-select droup_product add_prod" name="spd_product_details[]" required>';
                     
@@ -467,31 +332,21 @@ class SalesOrder extends BaseController
             </td>
             <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->qpd_unit.'" class="form-control " required></td>
             <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->qpd_quantity.'" class="form-control qtn_clz_id"  required></td>
-            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->qpd_rate.'" class="form-control rate_clz_id" required></td>
-            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->qpd_discount.'" class="form-control discount_clz_id" required></td>
-            <td> <input type="text" name="spd_amount[]" value="'.$prod_det->qpd_amount.'" class="form-control amount_clz_id" required></td>
-            <td class="row_remove" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
+            <td> <input type="text" name="spd_rate[]"  class="form-control rate_clz_id" required></td>
+            <td> <input type="text" name="spd_discount[]"  class="form-control discount_clz_id" required></td>
+            <td> <input type="text" name="spd_amount[]"  class="form-control amount_clz_id" required></td>
+            <td class="row_remove remove-btnpp" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>'; 
-             
+            $i++; 
         }
-        
-        $data['prod_details'] .= '</tbody><tbody class="travelerinfo product-more2"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product2"><i class="ri-add-circle-line"></i>Add More</span></div>';
-
+       
         /**/
 
 
         $joins = array(
-            array(
-                'table' => 'executives_sales_executive',
-                'pk'    => 'se_id',
-                'fk'    => 'qd_sales_executive',
-            ),
+           
             
-            array(
-                'table' => 'crm_contact_details',
-                'pk'    => 'contact_id',
-                'fk'    => 'qd_contact_person',
-            ),
+            
             array(
                 'table' => 'master_delivery_term',
                 'pk'    => 'dt_id',
@@ -503,9 +358,30 @@ class SalesOrder extends BaseController
 
         $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
 
-        $data['qd_contact_person']  =  $quotation_details->contact_person;
+        
+       
+        
+        $data['qd_sales_executive'] = "";
 
-        $data['qd_sales_executive'] =  $quotation_details->se_name;
+        foreach($sales_executive as $sales_excu)
+        {
+            $data['qd_sales_executive'] .= '<option value='.$sales_excu->se_id.'';
+            if($sales_excu->se_id == $quotation_details->qd_sales_executive){$data['qd_sales_executive'] .= " selected";}
+            $data['qd_sales_executive'] .='>'.$sales_excu->se_name.'</option>';
+        }
+
+
+        $data['contact_person'] = '';
+
+        foreach($contact_person as $cont_per)
+        {
+           
+            $data['contact_person'] .= '<option value='.$cont_per->contact_id.'';
+            if($cont_per->contact_id == $quotation_details->qd_contact_person){  $data['contact_person'] .= " selected"; }
+            $data['contact_person'] .='>'.$cont_per->contact_person.'</option>';
+        }
+
+
 
         $data['qd_payment_term'] =  $quotation_details->qd_payment_term;
 
@@ -940,9 +816,6 @@ class SalesOrder extends BaseController
     
     }
     
-
-
-
 
 
 }

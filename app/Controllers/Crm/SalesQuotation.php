@@ -124,22 +124,7 @@ class SalesQuotation extends BaseController
 
 
 
-   /* public function FetchTypes1()
-    {
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
-
-        $data['total_count'] =count($data['result']);
-
-        return json_encode($data);
-
-    }*/
+   
 
 
 
@@ -286,9 +271,30 @@ class SalesQuotation extends BaseController
 
         $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
 
+
+        $data['reffer_no'] = $quotation_details->qd_reffer_no;
+
+        $data['date'] = $quotation_details->qd_date;
+
+        $data['customer'] = $quotation_details->qd_customer;
+
+        $data['enquiry_ref'] = $quotation_details->qd_enq_ref;
+
+        $data['validity'] = $quotation_details->qd_validity;
+
+        $data['sales_executive'] = $quotation_details->qd_sales_executive;
+
+        $data['contact_person'] = $quotation_details->qd_contact_person;
+
+        $data['payment_term'] = $quotation_details->qd_payment_term;
+
+        $data['delivery_term'] = $quotation_details->qd_delivery_term;
+
+        $data['project'] = $quotation_details->qd_project;
+
         
   
-        //echo json_encode($data);
+        echo json_encode($data);
     }
 
 
@@ -457,7 +463,7 @@ class SalesQuotation extends BaseController
     {
         $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
 
-        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+       
 
         $cond1 = array('cc_id' => $this->request->getPost('ID'));
 
@@ -467,7 +473,16 @@ class SalesQuotation extends BaseController
 
         $single_enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
 
-        
+       
+        $data['cc_credit_term'] = $customer_creation->cc_credit_term;
+
+
+        //new
+       
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);		
+
+ 
         $data['customer_person'] ="";
 
         $data['customer_person'] ='<option value="" selected disabled>Select  Contact Person</option>';
@@ -476,31 +491,8 @@ class SalesQuotation extends BaseController
         {
             
             
-            $data['customer_person'] .='<option  value='.$con_det->contact_id.'';
-           if($con_det->contact_id  == $single_enquiry->enquiry_contact_person){
-            $data['customer_person'] .=    " selected ";}
-           
-            $data['customer_person'] .='>' .$con_det->contact_person. '</option>';
-
+            $data['customer_person'] .='<option value='.$con_det->contact_id.'>'.$con_det->contact_person.'</option>';
         }
-
-        $data['cc_credit_term'] = $customer_creation->cc_credit_term;
-
-
-        //new
-        //$cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
-
-        //$enquiry_customer = $this->common_model->FetchWhere('crm_enquiry',$cond2);
-
-         /*$joins = array(
-            
-            array(
-                'table' => 'crm_quotation_details',
-                'pk'    => 'qd_id',
-                'fk'    => 'qd_enq_ref',
-            ),
-        
-        );*/
 
 
         $enquiry_customer = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
@@ -567,66 +559,6 @@ class SalesQuotation extends BaseController
 
 
 
-    //fetch inquiry
-    /*public function FetchEnquiry()
-    {   
-       
-        $cond = array('enquiry_id' => $this->request->getPost('ID'));
-
-        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
-       
-        $cond1 = array('pd_customer_details' => $this->request->getPost('ID'));
-
-        $product_detail = $this->common_model->FetchWhere('crm_product_detail',$cond1);
-
-        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
-       
-        
-        $data['contact_person'] = $enquiry->enquiry_contact_person;
-
-        $data['sales_executive'] = $enquiry->enquiry_sales_executive;
-
-        $data['enquiry_validity'] = $enquiry->enquiry_validity;
-
-        $data['enquiry_project'] = $enquiry->enquiry_project;
-
-        $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
-
-        $data['product_detail'] = '<table class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td>Serial No.</td><td>Product Description &nbsp <span class="edit_add_more product_modal"><i class="ri-add-circle-line"></i></span></td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount(%)</td><td>Amount</td><td>Action</td></tr>'; 
-        
-        $i=1;
-        foreach($product_detail as $prod_det){
-
-        $data['product_detail'] .= '<tr class="prod_row">
-                                        <td><input type="number" name="qpd_serial_no[]" value="'.$i.'" class="form-control non_border_input" style="style="border:none"" required></td>
-                                        <td style="width:20%">
-                                            <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
-                                               
-                                                foreach($products as $prod){
-                                                    $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
-                                                    if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
-                                                    $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                }
-                                            $data['product_detail'] .='</select>
-                                        </td>
-                                        <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
-                                        <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
-                                        <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
-                                        <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
-                                        <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
-                                        <td class="row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
-                                    </tr>';
-        $i++;
-        }
-        
-        $data['product_detail'] .= '</tbody><tbody class="travelerinfo product-more2"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more add_product2"><i class="ri-add-circle-line"></i>Add More</span></div><input type="hidden" name="qpd_quotation_details" class="quotation_details_id"><div class="modal-footer justify-content-center"><button class="btn btn btn-success">Save</button></div>';
-
-        echo json_encode($data);
-       
-    }*/
-
-
-
     //delete contact details
     public function DeleteContact()
     {
@@ -682,11 +614,29 @@ class SalesQuotation extends BaseController
 
         $cond1 = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
-        
-
         $product_details = $this->common_model->FetchWhere('crm_product_detail',$cond1);
 
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+        
+        $data['customer_person'] ="";
+
+        $data['customer_person'] ='<option value="" selected disabled>Select  Contact Person</option>';
+
+        foreach($contact_details as $con_det)
+        {
+            
+            
+            $data['customer_person'] .='<option  value='.$con_det->contact_id.'';
+           if($con_det->contact_id  == $enquiry->enquiry_contact_person){
+            $data['customer_person'] .=    " selected ";}
+           
+            $data['customer_person'] .='>' .$con_det->contact_person. '</option>';
+
+        }
         
         $data['product_detail'] = "";
 
@@ -917,13 +867,6 @@ class SalesQuotation extends BaseController
 
 
     
-    
-
-
-
-
-
-
-
+   
 
 }

@@ -20,6 +20,17 @@
         border: 1px solid black;
         border: 1px solid #0000003b;
     }
+.left_input .row
+{
+    justify-content: unset;
+   
+}
+.row_align
+{
+    display: flex;
+    align-items: center;
+    justify-content: unset !important;
+}
 </style>
 
 
@@ -360,7 +371,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -371,7 +382,43 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
+                                                </div>--->
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-3">
+                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="file" name=""  class="form-control" required>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
+                                                
 
                                                 <!--table section end-->
 
@@ -1385,31 +1432,35 @@
 
           //  var discount = $(this).val();
 
-            var $discountSelect = $(this);
+        var $discountSelect = $(this);
 
-            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+        var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
 
-            var rate = $discountSelectElement.val();
+        var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
-            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
+        var rate = $discountSelectElement.val();
 
-            var quantity = $quantitySelectElement.val();
+        var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
-            var parsedRate = parseFloat(rate);
+        var quantity = parseInt($quantitySelectElement.val())||0;
 
-            var parsedQuantity = parseFloat(quantity); 
+        var parsedRate = parseFloat(rate);
 
-            var multipliedTotal = parsedRate * parsedQuantity;
+        var parsedQuantity = quantity; 
 
-            var orginalPrice = multipliedTotal - discount
+        var multipliedTotal = parsedRate * parsedQuantity;
 
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+        var per_amount = (discount/100)*multipliedTotal;
 
-            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+        var orginalPrice = multipliedTotal - per_amount;
 
-            $amountElement.val(orginalPrice);
+        var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
 
-            TotalAmount();
+        var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+
+        $amountElement.val(orginalPrice);
+
+        TotalAmount();
 
         });
 

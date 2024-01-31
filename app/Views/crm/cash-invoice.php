@@ -1,3 +1,27 @@
+<style>
+.cust_more_modal {
+    position: absolute;
+    left: 470px;
+    padding: 1px 27px;
+    z-index: 999;
+    border: 1px solid black;
+    border: 1px solid #0000003b;
+}
+.left_input .row
+{
+    justify-content: unset;
+   
+}
+.row_align
+{
+    display: flex;
+    align-items: center;
+    justify-content: unset !important;
+}
+
+</style>
+
+
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -33,186 +57,349 @@
                     <!--product head tab--> 
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
-                        <!--modal content start-->
-                        <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Cash Invoice</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <!-- Nav tabs -->
-                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Cash Invoice</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Attachment</a>
-                                            </li>
-                                            
-                                            <!-- Add more tabs as needed -->
-                                        </ul>
-
-                                        <!-- Tab panes -->
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                                                <form class="Dashboard-form class" id="add_form1">
-                                                    <!-- Tab 1 content goes here -->
-                                                    <div class="row">
-                                                        
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">Date</label>
-                                                            <input type="date" name="ci_date" class="form-control" required>
-                                                        </div>
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Customer Name</label>
-                                                            
-                                                            <select class="form-select customer_sel" name="ci_customer_number1" id="customer_id" required>
-                                                               
-                                                            </select>
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Sales Account</label>
-                                                            <select class="form-select" name="ci_sale_account" required>
-                                                                <option value="" selected disabled>Select Sales Account</option>
-                                                                <?php foreach($charts_of_accounts as $chart_account){?> 
-                                                                    <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-
-                                                            <label for="basicInput" class="form-label">Sales Order Number</label>
-
-                                                            <select class="form-select sales_order_add_clz" name="ci_sales_order" id="sales_order_add" required>
-
-                                                                <option value="" selected disabled>Select Sales Order</option>
-                                                                
-                                                            </select>
-
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">LPO Reference</label>
-                                                            <input type="text" name="ci_lpo_reff" class="form-control lpo_ref" required>
-                                                        </div>
-
-
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Contact Person</label>
-                                                            <input type="text" name="ci_contact_person" class="form-control cont_person" required>
-                                                           
-                                                        </div>
-
-                                              
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="ci_project"  class="form-control project_clz" required>
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Customer Name</label>
-                                                            <select class="form-select" name="ci_customer_number2" required>
-                                                                <option value="" selected disabled>Select Customer Name</option>
-                                                                <?php foreach($customer_creation as $cust_creat){?> 
-                                                                    <option><?php echo $cust_creat->cc_customer_name;?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-
-
-                                                        
-                                                       
-                                                         
-                                                    </div>
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                                
-                                            
-                                            
-                                            <!---->
-                                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                                <form class="Dashboard-form class" id="add_form2">
-                                                    <div class="product_det_clz"></div>
-                                                    
-                                                    <input type="hidden" class="dpd_del_clz" name="cipd_cash_invoice">
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Submit</button>
-                                                    </div>
-                                                </form> 
-                                            </div>   
-                                            <!---->
-
-
-                                            <!--tab3--->
-                                             
-                                            <div class="tab-pane fade" id="tab3" role="tabpane3" aria-labelledby="tab3-tab">
-                                                <form class="Dashboard-form class" id="add_form3">
-                                                    <!-- Tab 1 content goes here -->
-                                                    <div class="row">
-                                                        
-                                                        <div class="col-md-2 col-lg-2">
-                                                            
-                                                            <label for="basiInput" class="form-label ">Update Cash Invoice Status</label>
-                                                            
-                                                            <select class="form-select" name="ci_cash_invoice_status" required>
-                                                                <option value="" selected disabled>Select Cash Invoice Status</option>
-
-                                                                <?php foreach($cash_invoice as $cash_inv){?> 
-
-                                                                    <option value="<?php echo $cash_inv->cis_id; ?>"><?php echo $cash_inv->cis_cash_invoice_status;?></option>    
-
-                                                                <?php } ?>
-
-                                                            </select>
-
-                                                        </div>
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">Signed Cash Invoice</label>
-                                                            <input type="file" name="ci_signed_cash_invoice" class="form-control" required>
-                                                        </div>
-
-                                                        <input type="hidden" class="dpd_del_clz" name="ci_id">
-
-                                                    </div>
-
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-
-                                            <!--####-->
-
+                        <!--cash invoice modal content start-->
+                        
+                        <div class="modal fade" id="CashInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="add_form1">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cash Invoice</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
-                                    </div>
-                                    
-                                </div>
-                                
-                            </div>
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="ci_reffer_no" id="" value="<?php echo $cash_invoice_id; ?>" class="form-control" required readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="date" name="ci_date" class="form-control" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+
+                                                                        <select class="form-select customer_sel customer_id" name="ci_customer" required></select>
+
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon cust_more_modal">Select</span></label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                        
+
+                                                                        <select class="form-select sales_order_add_clz" name="ci_sales_order" id="sales_order_add" style="width:80%;" required>
+
+                                                                            <option value="" selected disabled>Select Sales Order</option>
+                                                                
+                                                                        </select>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                           
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">LPO Reference</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                    <input type="text" name="ci_lpo_reff" class="form-control lpo_ref" required>
+                                                                    
+                                                                </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+                                                           
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                   
+                                                                    <select class="form-select cont_person" name="ci_contact_person" id="" required></select>
+                                                                       
+                                                                    
+                                                                </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Terms</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="ci_payment_term" class="form-control payment_terms" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                         
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="ci_project"  class="form-control project_clz" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                             
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                         
+                                                        </thead>
+                                                        
+                                                        <tbody  class="travelerinfo product-more2"></tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="8" align="center" class="tecs">
+                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                       
+                                                    </table>
+                                                </div>
+
+                                                
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-3">
+                                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                               
+                                                                <select class="form-select" name="ci_credit_account" id="" required>
+                                                                    <option>Select Credit Account</option>
+                                                                    <?php foreach($charts_of_accounts as $chart_account){?> 
+                                                                         <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                     
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-3">
+                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="file" name=""  class="form-control" required>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                             
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
+					                           
+						                    
+				                        </div>
+
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
                         </div>
 
 
@@ -225,7 +412,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Delivery Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CashInvoice" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -273,110 +460,140 @@
                         
 </div>
 
-<!--view modal section start-->
 
-<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-                                
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enquiry Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
-                    </li>
-                    
-                    <!-- Add more tabs as needed -->
-                </ul>
+<!--select modal section start-->
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tab3" role="tabpanel" aria-labelledby="tab1-tab">
-                        <form class="Dashboard-form class" id="add_form1">
-                            <!-- Tab 1 content goes here -->
-                            <div class="row">
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Enquiry Number</label>
-                                    <input type="text" name="" id="enquiry_enq_number_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">date</label>
-                                    <input type="date" name="" id="enquiry_date_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Customer</label>
-                                    <input type="text" name="" id="enquiry_customer_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Contact Person</label>
-                                    <input type="text" name="" id="enquiry_contact_person_id" class="form-control" readonly>
-                                    
-                                   
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Sales Executive</label>
-                                    <input type="text" name="" id="enquiry_sales_executive_id" class="form-control" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Validity</label>
-                                    <input type="text" name="" id="enquiry_validity_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Project</label>
-                                    <input type="text" name="" id="enquiry_project_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Enquiry Reference</label>
-                                    <input type="text" name="" id="enquiry_enq_referance_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Assigned To</label>
-                                    <input type="text" name="" id="enquiry_employees" class="form-control" readonly>
-                                </div>
-                                    
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                               
-                            </div>
-                        </form>
-                    </div>
-                                                
-                    <!---->
-                    <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab2-tab">
-                        <form class="Dashboard-form class" id="product_detail_id">
-                            <!-- Tab 2 content goes here -->
-                            
-                            
-                           
-                        </form>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                               
-                        </div>
-                    </div>
 
-                    <!---->
-
+<div class="modal fade" id="SelectModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close select_modal_close" aria-label="Close"></button>
                 </div>
 
-            </div>
-                                    
-        </div>
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
                                 
-    </div>
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo contactProduct3">
+                                    
+                                    
+                                </tbody>
+
+                                
+
+                            </table>
+                            
+                        </div>
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
 </div>
 
-<!--view  modal section end-->
+
+
+<!--select  modal section end-->
+
+
+<!--save modal section start-->
+
+<div class="modal fade" id="SaveModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Date</td>
+                                        <td>Recipt Ref</td>
+                                        <td>Amount</td>
+                                        <td>Adjust</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo">
+                                    
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="date" name="" value="30-01-2024" class="form-control" required></td>
+                                        <td><input type="text" name="" value="RF567" class="form-control" required></td>
+                                        <td><input type="text" name="" value="420" class="form-control" required></td>
+                                        <td><input type="text" name="" value="2" class="form-control" required></td>
+                                        <td><input type="checkbox" name="" value="" class="" required></td>
+                                    </tr>
+                                    
+                                </tbody>
+
+                                
+
+                            </table>
+                            
+                        </div>
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+<!--save modal section end-->
+
+
 
 
 
@@ -404,103 +621,30 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            var responseData = JSON.parse(data);
-                           
-                            $(".dpd_del_clz").val(responseData.dn_id);
-                            
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                            totalCalcutate();
-                        }
-                    });
-                }
-            });
-        });
-
-
-        $(function() {
-            var form = $('#add_form2');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CashInvoice/AddTab2",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            /*$('#add_form1')[0].reset();
-                            $('#add_form2')[0].reset();
-                          
-                            $('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);*/
-
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-
-
-
-        
-        
-        $(function() {
-            var form = $('#add_form3');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Create FormData object to handle file uploads
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CashInvoice/AddTab3",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
+                     
                             $('#add_form1')[0].reset();
-                            $('#add_form2')[0].reset();
-                            $('#add_form3')[0].reset();
-                            $('#AddModal').modal('hide');
+
+                            $('select').empty();
+
+                            $('.cash_invoice_remove').remove();
+
+                            $('#CashInvoice').modal('hide');
+
+                            $('#SaveModal').modal('show');
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
                             datatable.ajax.reload(null, false);
+                           
                         }
                     });
                 }
             });
         });
+
+
+
+
 
 
         /*data table start*/ 
@@ -536,7 +680,7 @@
                 { data: 'ci_id' },
                 { data: 'ci_reffer_no' },
                 { data: 'ci_date'},
-                { data: 'ci_customer_number1'},
+                { data: 'ci_customer'},
                 { data: 'action'},
                 
                ]
@@ -550,16 +694,16 @@
         /*###*/
 
 
-        $("body").on('change', '#customer_id', function(){ 
+        $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
 
-            $('.sales_order').val('');
+           
             
             //Fetch Contact Person
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/DeliverNote/SalesOrder",
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/SalesOrder",
 
                 method : "POST",
 
@@ -568,10 +712,11 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
+
                     $(".sales_order_add_clz").html(data.sales_order);
-                    
-                    
+
+                    $(".cont_person").html(data.contact_details);
+   
                 }
 
 
@@ -584,7 +729,11 @@
         /**/
         $("body").on('change', '.sales_order_add_clz', function(){ 
 
+            $('.cash_invoice_remove').remove();
+
             var id = $(this).val();
+
+            var cust_id = $('.customer_id').val();
             
             //Fetch Contact Person
             $.ajax({
@@ -593,29 +742,28 @@
 
                 method : "POST",
 
-                data: {ID: id},
+                data: {ID: id,
+                       custID:cust_id
+                },
 
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
-                    $(".sales_order_add_clz").html(data.sales_order);
 
+                
                     $(".lpo_ref").val(data.so_lpo);
 
-                    $(".so_contact_person").val(data.so_lpo);
-
-                    $(".cont_person").val(data.so_contact_person);
+                    $(".payment_terms").val(data.so_payment_term);
 
                     $(".project_clz").val(data.so_project);
 
-                    $(".product_det_clz").html(data.product_detail);
+                    $(".product-more2").append(data.product_detail);
 
-                    $('.lpo_ref').addClass('sales_order');
+                    $(".cont_person").html(data.contact_detail);
 
-                    $('.cont_person').addClass('sales_order');
-
-                    $('.project_clz').addClass('sales_order');
+                    $(".contactProduct3").html(data.select_table);
+                    
+                    slno();
                    
                 }
 
@@ -628,28 +776,7 @@
 
 
 
-        /**/
-
-        var max_fieldspp      = 30;
-        var pp = 1;
-        
-        $("body").on('click', '.add_product', function(){
-            var pp = $('.prod_row').length
-			if(pp < max_fieldspp){ 
-			    pp++;
-	           
-                $(".product-more").append("<tr class='prod_row'><td>" + pp + "</td><td><select class='form-select ser_product_det' name='cipd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='cipd_unit[]' class='form-control ' required=''></td><td><input type='number' name='cipd_order_qtn[]' class='form-control real_qty' required=''></td><td><input type='number' name='cipd_qtn[]'  class='form-control qtn_limit qtn_clz_id' required></td><td><input type='number' name='cipd_rate[]' class='form-control rate_clz_id' required></td><td><input type='number' name='cipd_discount[]' class='form-control discount_clz_id' required></td><td><input type='number' name='cipd_amount[]' class='form-control amount_clz_id' required></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-
-			}
-	    });
-
-        $(document).on("click", ".remove-btnpp", function() 
-        {
-	        $(this).parent().remove();
-	        pp--;
-        });
-
-        /**/
+       
 
 
        
@@ -657,9 +784,9 @@
         $(".customer_sel").select2({
             placeholder: "Select Customer",
             theme : "default form-control-",
-            dropdownParent: $('#AddModal'),
+            dropdownParent: $('#CashInvoice'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/ProFormaInvoice/FetchCustomers",
+                url: "<?= base_url(); ?>Crm/CashInvoice/FetchCustomers",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -691,155 +818,9 @@
 
 
 
-        /* Fetch Sales Orders */
 
 
 
-        /*onchange function Sales Order Number*/
-
-        $('#sales_order_add').change(function(){
-
-            var id = $(this).val();
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchSalesOrder",
-
-            method : "POST",
-
-            data : {id:id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
-                
-                $('#product_detail_table').html(data.saleorder_output);
-
-            }
-
-
-            });
-
-
-        });
-
-        /**/
-
-
-
-
-        /*product detail calculation*/
-        
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
-            
-            var discount = $(this).val();
-
-            var discountSelect = $(this);
-
-            var discountSelectElement = discountSelect.closest('.prod_row').find('.rate_clz_id');
-
-            var rate = discountSelectElement.val();
-
-            var quantitySelectElement = discountSelect.closest('.prod_row').find('.qtn_clz_id');
-
-            var quantity = quantitySelectElement.val();
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = parseFloat(quantity); 
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var result = discount / 100;
-
-            var orginalPrice = multipliedTotal * result
-
-            var $amountElement = discountSelect.closest('.prod_row').find('.amount_clz_id');
-
-            $amountElement.val(orginalPrice);
-
-            totalCalcutate()
-
-        });
-
-        /*delete product detail row*/
-
-        $("body").on('click', '.row_remove', function(){ 
-	   
-            var id = $(this).data('id');
-  
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/DeleteContact",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
-                    $('#' + id).remove();
-                    $('#' + id).fadeIn();
-                }
-
-
-            });
-
-        });
-
-   /**/
-
-
-        function totalCalcutate()
-        {  
-            var total = 0;
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = $(this).val();
-                total += parseInt(sub_tot)||0;
-                console.log(total);
-            });
-
-            $('input[name=pf_total_cost]').val(total);
-
-           $("#total_cost_id").html('Grand Total:' + total);
-
-        }
-
-        /**/
-
-
-
-        /**/
-
-        $("body").on('change keyup', '.qtn_limit', function(){ 
-            
-            var id = $(this).val();
-
-            var $totadaySelect = $(this);
-
-            var parentDiv = $(this).closest('.prod_row');
-
-            var realQuantityClass = parentDiv.find('.real_qty'); 
-
-            var realQtyValue = realQuantityClass.val();
-
-           
-
-            if(id > realQtyValue)
-            {
-                alertify.error('Quantity should be less than Order Quantity').delay(3).dismissOthers();
-                
-                $(this).val("");
-
-              
-            }
-
-
-        });
-
-        /**/
 
 
         /*delete*/ 
@@ -867,6 +848,128 @@
 
         });
         /*###*/
+
+
+
+        /*close select modal start*/
+
+        $("body").on('click', '.select_modal_close', function(){ 
+            
+            $('#SelectModal').modal('hide');
+
+            $('#CashInvoice').modal('show');
+
+        });
+
+        /*close select modal end*/
+
+
+
+
+
+        /*product section start*/
+
+        var max_fieldspp      = 30;
+
+        var pp = 1;
+
+        $("body").on('click', '.add_product2', function(){
+        
+            var pp = $('.prod_row').length
+
+            if(pp < max_fieldspp){ 
+            
+                pp++;
+                
+                $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='cipd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text'   name='cipd_unit[]' class='form-control ' required=''></td><td><input type='number' name='cipd_qtn[]' class='form-control order_qty' required=''></td><td><input type='number' name='cipd_rate[]' class='form-control delivery_qty' required=''></td><td><input type='number' name='cipd_discount[]' class='form-control current_delivery' required=''></td><td><input type='number' name='cipd_amount[]' class='form-control current_delivery' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+
+            }
+
+            slno();
+
+            InitProductSelect2();
+
+        });
+
+        $(document).on("click", ".remove-btnpp", function() 
+        {
+
+            $(this).parent().remove();
+            slno();
+        });
+
+
+
+        /*serial no correction section start*/
+
+        function slno(){
+
+            var pp =1;
+
+            $('body .prod_row').each(function() {
+
+                $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+
+                pp++;
+            });
+
+        }
+
+        /*###*/
+
+        /*product section end*/
+
+
+        /* Product Init Select 2 */
+
+
+         function InitProductSelect2(){
+          $(".add_prod:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control-",
+            dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/CashInvoice/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         })
+        }
+
+        InitProductSelect2();
+
+
+        /* ### */
+
+        /*select modal section start*/ 
+        $("body").on('click', '.cust_more_modal', function(){ 
+            
+            $('#SelectModal').modal('show');
+ 
+            $('#CashInvoice').modal('hide');
+ 
+         });
+         /*###*/
 
 
 

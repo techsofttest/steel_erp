@@ -461,15 +461,7 @@ class CreditInvoice extends BaseController
         }
 
 
-        //delete contact details
-        public function DeleteContact()
-        {
-            //$cond = array('pp_id' => $this->request->getPost('ID'));
- 
-           // $this->common_model->DeleteData('crm_proforma_product',$cond);
-
-        }
-
+      
      
     
 

@@ -995,7 +995,7 @@
                             $('#add_form1')[0].reset();
                             $('#Enquiry').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                           
+                            datatable.ajax.reload(null, false);
                             
                         }
                     });
@@ -1317,6 +1317,7 @@
                             $('#add_cus_form2')[0].reset();
                             $('#add_cus_form3')[0].reset();
                             $('#OfficalDocument').modal('hide');
+                            $('.account_head_clz').val('').trigger('change');
                             $('#Enquiry').modal('show');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);

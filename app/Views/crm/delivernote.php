@@ -1,3 +1,28 @@
+<style>
+.cust_more_modal {
+    position: absolute;
+    left: 470px;
+    padding: 1px 27px;
+    z-index: 999;
+    border: 1px solid black;
+    border: 1px solid #0000003b;
+}
+.left_input .row
+{
+    justify-content: unset;
+   
+}
+.row_align
+{
+    display: flex;
+    align-items: center;
+    justify-content: unset !important;
+}
+
+
+</style>
+
+
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -28,188 +53,336 @@
                     </div>
                 </div>
                 
+
+                
+                
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
                     <!--product head tab--> 
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
-                        <!--modal content start-->
-                        <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Delivery Note</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <!-- Nav tabs -->
-                                        <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Delivery Note</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link src-nav-link"  id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">File Attachment</a>
-                                            </li>
-                                            
-                                            <!-- Add more tabs as needed -->
-                                        </ul>
-
-                                        <!-- Tab panes -->
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                                                <form class="Dashboard-form class" id="add_form1">
-                                                    <!-- Tab 1 content goes here -->
-                                                    <div class="row">
-                                                        
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basiInput" class="form-label">Date</label>
-                                                            <input type="date" name="dn_date" class="form-control" required>
-                                                        </div>
+                        <!--deliver note  modal content start-->
 
 
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Customer Name</label>
-                                                            
-                                                            <select class="form-select customer_sel" name="dn_customer" id="customer_id" required>
-                                                               
-                                                            </select>
-                                                        </div>
+                        <div class="modal fade" id="DeliverNote" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="add_form1">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Deliver Note</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
 
+				                        <div class="modal-body">
 
-                                                        <div class="col-md-2 col-lg-2">
-
-                                                            <label for="basicInput" class="form-label">Sales Order Number</label>
-
-                                                            <select class="form-select sales_order_add_clz" name="dn_sales_order_num" id="sales_order_add" required>
-
-                                                                <option value="" selected disabled>Select Sales Order</option>
-                                                                
-                                                            </select>
-
-                                                        </div>
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">LPO Reference</label>
-                                                            <input type="text" name="dn_lpo_reference" class="form-control lpo_ref" required>
-                                                        </div>
-
-
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Contact Person</label>
-                                                            <input type="text" name="dn_conact_person" class="form-control cont_person" required>
-                                                           
-                                                        </div>
-
-                                              
-
-
-                                                        <div class="col-md-2 col-lg-2">
-                                                            <label for="basicInput" class="form-label">Project</label>
-                                                            <input type="text" name="dn_project"  class="form-control project_clz" required>
-                                                        </div>
-                                                       
-                                                         
-                                                    </div>
-
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Submit</button>
-                                                    </div>
-
-                                                </form>
-                                            </div>
+                                            <div class="live-preview">
                                                 
-                                            
-                                            
-                                            <!---->
-                                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                                <form class="Dashboard-form class" id="add_form2">
-                                                    <div class="prod_table_clz"></div>
-                                                    <!--<table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_reffer_no" id="" value="<?php echo $delivery_note_id; ?>" class="form-control" required readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="date" name="dn_date" class="form-control" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+
+                                                                    <select class="form-select customer_sel customer_id" name="dn_customer"  required>
+                                                               
+                                                                    </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon cust_more_modal">Select</span></label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                        <select class="form-select sales_order_add_clz" name="dn_sales_order_num" id="sales_order_add" style="width:80%;" required>
+
+                                                                            <option value="" selected disabled>Select Sales Order</option>
+
+                                                                        </select>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">LPO Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <input type="text" name="dn_lpo_reference" class="form-control lpo_ref" required>
+                                                                    
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+                                                           
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                       <select class="form-select cont_person" name="dn_conact_person" id="" required></select>
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Terms</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_payment_terms" class="form-control payment_term_clz" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                         
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_project"  class="form-control project_clz" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                             
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td>Serial No.</td>
                                                                 <td>Product Description</td>
                                                                 <td>Unit</td>
-                                                                <td>Quantity</td>
+                                                                <td>Order Qty</td>
+                                                                <td>Delivery Qty</td>
+                                                                <td>Current Delivery</td>
                                                                 <td>Action</td>
                                                             </tr>
-
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>
-                                                                    <select class="form-select ser_product_det" name="dpd_prod_det[]" required>
-                                                                        <option selected>Select Product Description</option>
-                                                                        <?php foreach($products as $prod){?>
-                                                                            <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
-                                                                        <?php } ?>
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="text" name="dpd_prod_unit[]" class="form-control" required></td>
-                                                                <td><input type="number" name="dpd_quantity[]" class="form-control" required></td>
-                                                                <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
-                                                            </tr>
                                                             
-                                                        </tbody>
-                                                        <tbody id="product-more" class="travelerinfo"></tbody>
-                                                    </table>--->
-                                                    <input type="hidden" class="dpd_del_clz" name="dpd_delivery_id">
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Submit</button>
-                                                    </div>
-                                                </form> 
-                                            </div>   
-                                            <!---->
-
-
-                                            <!--tab 3-->
-
-                                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                                                <form class="Dashboard-form class" id="add_form3">
-                                                    <!-- Tab 1 content goes here -->
-                                                    <div class="row">
+                                                           
+                                                        </thead>
                                                         
-                                                        <div class="col-md-2 col-lg-3">
-                                                            <label for="basiInput" class="form-label">Signed delivery note</label>
-                                                            <input type="file" name="dn_signed_delivery_note" class="form-control" required>
+                                                        <tbody  class="travelerinfo product-more2"></tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="8" align="center" class="tecs">
+                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                       
+                                                    </table>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-2">
+                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="file" name=""  class="form-control" required>
+                                                            </div>
+
                                                         </div>
 
-                                                        <input type="hidden" name="dn_id" class="dpd_del_clz">
-                                
+                                                        
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
 
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Submit</button>
                                                     </div>
+                                                </div>
 
-                                                </form>
-                                            </div>
-
-                                            <!---->
+                                                <!--table section end-->
 
 
+                                            </div>  
                                             
+                                            
+                                             
 
 
+					                           
+						                    
+				                        </div>
 
-                                        </div>
 
-                                    </div>
-                                    
-                                </div>
-                                
-                            </div>
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
                         </div>
 
+                        
+                        
 
-                        <!--modal content end-->
+                        <!--deliver note modal content end-->
 
 
 
@@ -218,7 +391,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Delivery Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#DeliverNote" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -266,110 +439,75 @@
                         
 </div>
 
-<!--view modal section start-->
+<!--select modal section start-->
 
-<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-                                
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enquiry Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-border-top-primary" role="tablist" style="margin-bottom: 20px;">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab1" aria-selected="true">Customer Details</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link src-nav-link"  id="tab2-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab2" aria-selected="false">Product Details</a>
-                    </li>
-                    
-                    <!-- Add more tabs as needed -->
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tab3" role="tabpanel" aria-labelledby="tab1-tab">
-                        <form class="Dashboard-form class" id="add_form1">
-                            <!-- Tab 1 content goes here -->
-                            <div class="row">
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">Enquiry Number</label>
-                                    <input type="text" name="" id="enquiry_enq_number_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basiInput" class="form-label">date</label>
-                                    <input type="date" name="" id="enquiry_date_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Customer</label>
-                                    <input type="text" name="" id="enquiry_customer_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Contact Person</label>
-                                    <input type="text" name="" id="enquiry_contact_person_id" class="form-control" readonly>
-                                    
-                                   
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Sales Executive</label>
-                                    <input type="text" name="" id="enquiry_sales_executive_id" class="form-control" readonly>
-                                    
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Validity</label>
-                                    <input type="text" name="" id="enquiry_validity_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Project</label>
-                                    <input type="text" name="" id="enquiry_project_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Enquiry Reference</label>
-                                    <input type="text" name="" id="enquiry_enq_referance_id" class="form-control" readonly>
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    <label for="basicInput" class="form-label">Assigned To</label>
-                                    <input type="text" name="" id="enquiry_employees" class="form-control" readonly>
-                                </div>
-                                    
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                               
-                            </div>
-                        </form>
-                    </div>
-                                                
-                    <!---->
-                    <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab2-tab">
-                        <form class="Dashboard-form class" id="product_detail_id">
-                            <!-- Tab 2 content goes here -->
-                            
-                            
-                           
-                        </form>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                               
-                        </div>
-                    </div>
-
-                    <!---->
-
+<div class="modal fade" id="SelectModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="add_form1">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-            </div>
-                                    
-        </div>
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
                                 
-    </div>
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo">
+                                    
+                                    <tr>
+                                        <td class="si_no">1</td>
+                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
+                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
+                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
+                                        <td><input type="checkbox" name="dpd_unit[]"  class="form-control" required></td>
+                                      
+                                    </tr>
+
+                                </tbody>
+
+                                
+
+                            </table>
+                            
+                        </div>
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
 </div>
 
-<!--view  modal section end-->
+
+
+<!--select  modal section end-->
 
 
 
@@ -397,87 +535,13 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            var responseData = JSON.parse(data);
-                            
-                            $(".dpd_del_clz").val(responseData.dn_id);
-                            // Trigger a click event on the next tab
-                            var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                            totalCalcutate();
-                        }
-                    });
-                }
-            });
-        });
-
-
-        $(function() {
-            var form = $('#add_form2');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/DeliverNote/AddTab2",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                           // Trigger a click event on the next tab
-                           var nextTab = $('.nav-tabs .src-nav-link.active').parent().next().find("a");
-                            if (nextTab.length > 0) {
-                                nextTab.tab('show');
-                            } else {
-                                console.error("Next tab not found!");
-                            }
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-
-
-        $(function() {
-            var form = $('#add_form3');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Create FormData object to handle file uploads
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/DeliverNote/AddTab3",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
+                          
                             $('#add_form1')[0].reset();
-                            $('#add_form2')[0].reset();
-                            $('#add_form3')[0].reset();
-                            $('#AddModal').modal('hide');
+                           
+                            $('#DeliverNote').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
+                       
                         }
                     });
                 }
@@ -486,58 +550,8 @@
 
 
 
-        /*view*/ 
-        $("body").on('click', '.view_btn', function(){ 
-            var id = $(this).data('id');
-           
-            $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/Enquiry/View",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                   
-                    $("#enquiry_enq_number_id").val(data.enquiry_enq_number);
-
-                    $("#enquiry_date_id").val(data.enquiry_date);
-
-                    $("#enquiry_validity_id").val(data.enquiry_validity);
-
-                    $("#enquiry_project_id").val(data.enquiry_project);
-
-                    $("#enquiry_enq_referance_id").val(data.enquiry_enq_referance);
-
-                    $("#enquiry_sales_executive_id").val(data.sales_executive);
-                    
-                    $("#enquiry_customer_id").val(data.customer_creation);
-
-                    $("#enquiry_contact_person_id").val(data.contact_details);
-
-                    $("#enquiry_employees").val(data.enquiry_employees);
-
-                    $("#product_detail_id").html(data.prod_details);
-                   
-                    $('#ViewModal').modal('show');
-                    
-                   
-                    
-                }
-
-
-            });
-            
-            
-        });
-        /*####*/
-
-
-
-
+      
 
         /*data table start*/ 
 
@@ -586,7 +600,7 @@
         /*###*/
 
 
-        $("body").on('change', '#customer_id', function(){ 
+        $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
             
@@ -602,8 +616,12 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
+
+                  
+
                     $(".sales_order_add_clz").html(data.sales_order);
+
+                    $(".cont_person").html(data.contact_person);
                     
                     
                 }
@@ -620,8 +638,13 @@
         /**/
         $("body").on('change', '.sales_order_add_clz', function(){ 
 
+            $('.delivery_note_remove').remove();
+
             var id = $(this).val();
-            
+
+            var cust_id = $('.customer_id').val();
+
+           
             //Fetch Contact Person
             $.ajax({
 
@@ -629,25 +652,27 @@
 
                 method : "POST",
 
-                data: {ID: id},
+                data: {ID: id,
+                       custID : cust_id,
+                },
+                
 
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                
-                    $(".sales_order_add_clz").html(data.sales_order);
-
+                     
                     $(".lpo_ref").val(data.so_lpo);
 
-                    $(".so_contact_person").val(data.so_lpo);
-
-                    $(".cont_person").val(data.so_contact_person);
+                    $(".cont_person").html(data.contact_person);
 
                     $(".project_clz").val(data.so_project);
 
-                    $(".prod_table_clz").html(data.product_detail);
-                    
-                    
+                    $(".payment_term_clz").val(data.so_payment_term);
+
+                    $(".product-more2").append(data.product_detail);
+
+                    slno();
+                  
                 }
 
 
@@ -685,41 +710,26 @@
         /*###*/
 
 
-       
-        /**/
+         /*select modal section start*/ 
+         $("body").on('click', '.cust_more_modal', function(){ 
+            
+           $('#SelectModal').modal('show');
 
-        var max_fieldspp      = 30;
-        var pp = 1;
-        
-        $("body").on('click', '.add_product', function(){
-            var pp = $('.prod_row').length
-			if(pp < max_fieldspp){ 
-			    pp++;
-	            $(".product-more").append("<tr class='prod_row'><td>" + pp + "</td><td><select class='form-select' name='dpd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='dpd_prod_unit[]' class='form-control ' required=''></td><td><input type='number' name='dpd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+           $('#DeliverNote').modal('hide');
 
-			}
-	    });
-
-        $(document).on("click", ".remove-btnpp", function() 
-        {
-	 
-	        $(this).parent().remove();
-	        pp--;
         });
-
-        /**/
-
+        /*###*/
 
 
-
+       
 
         /*customer droup drown search*/
         $(".customer_sel").select2({
             placeholder: "Select Customer",
             theme : "default form-control-",
-            dropdownParent: $('#AddModal'),
+            dropdownParent: $('#DeliverNote'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/ProFormaInvoice/FetchCustomers",
+                url: "<?= base_url(); ?>Crm/DeliverNote/FetchCustomers",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -751,112 +761,156 @@
 
 
 
-        /* Fetch Sales Orders */
+     
 
+        /*product section start*/
 
+        var max_fieldspp      = 30;
 
-        /*onchange function Sales Order Number*/
+        var pp = 1;
 
-        $('#sales_order_add').change(function(){
-
-            var id = $(this).val();
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchSalesOrder",
-
-            method : "POST",
-
-            data : {id:id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
+        $("body").on('click', '.add_product2', function(){
+          
+            var pp = $('.prod_row').length
+        
+            if(pp < max_fieldspp){ 
+            
+                pp++;
                 
-                $('#product_detail_table').html(data.saleorder_output);
+                $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='dpd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='dpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='dpd_order_qty[]' class='form-control order_qty' required=''></td><td><input type='number' name='dpd_delivery_qty[]' class='form-control delivery_qty' required=''></td><td><input type='number' name='dpd_current_qty[]' class='form-control current_delivery' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
             }
 
+            slno();
 
-            });
+            InitProductSelect2();
 
+        });
 
+        $(document).on("click", ".remove-btnpp", function() 
+        {
+
+            $(this).parent().remove();
+            slno();
         });
 
         /**/
 
+        /*serial no correction section start*/
+
+        function slno(){
+
+            var pp =1;
+
+            $('body .prod_row').each(function() {
+
+                $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+
+                pp++;
+            });
+
+        }
+
+        /*###*/
 
 
 
         /*product detail calculation*/
-        
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
 
-            var discount = $(this).val();
 
-            var discountSelect = $(this);
+        /*limit quantity start*/
 
-            var discountSelectElement = discountSelect.closest('.prod_row').find('.rate_clz_id');
 
-            var rate = discountSelectElement.val();
+        $("body").on('keyup', '.delivery_qty , .current_delivery', function(){ 
 
-            var quantitySelectElement = discountSelect.closest('.prod_row').find('.qtn_clz_id');
+            var dataSelect = $(this);
 
-            var quantity = quantitySelectElement.val();
+            var deliverySelectElement = dataSelect.closest('.prod_row').find('.delivery_qty');
+            
+            var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
 
-            var parsedRate = parseFloat(rate);
+            var currentSelectElement = dataSelect.closest('.prod_row').find('.current_delivery');
 
-            var parsedQuantity = parseFloat(quantity); 
+            var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
 
-            var multipliedTotal = parsedRate * parsedQuantity;
+            var total = delivery + current;
 
-            var result = discount / 100;
+            var orderSelectElement = dataSelect.closest('.prod_row').find('.order_qty');
 
-            var orginalPrice = multipliedTotal * result
+            var order = orderSelectElement.val();
+           
 
-            var $amountElement = discountSelect.closest('.prod_row').find('.amount_clz_id');
+            if(total > order)
+            {   
+                var deliveryNull = deliverySelectElement.val("");
 
-            $amountElement.val(orginalPrice);
+                var $deliveryNullElement = dataSelect.closest('.prod_row').find('.delivery_qty');
 
-            totalCalcutate()
+                $deliveryNullElement.val(deliveryNull);   
+                
+                
+                var currencyNull = currentSelectElement.val("");
+
+                var $currencyNullElement = dataSelect.closest('.prod_row').find('.current_delivery');
+
+                $currencyNullElement.val(currencyNull);  
+
+                alertify.success('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
+                
+                
+
+            }
+
+           
 
         });
 
-        /*delete product detail row*/
 
-        $("body").on('click', '.row_remove', function(){ 
-	   
-            var id = $(this).data('id');
-
-            $('#' + id).fadeOut('fast', function() {
-        
-                $(this).remove();
-
-            });
-
-          
-        });
-
-        /**/
+        /*limit quantity end*/
 
 
-        function totalCalcutate()
-        {  
-            var total = 0;
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = $(this).val();
-                total += parseInt(sub_tot)||0;
-                console.log(total);
-            });
 
-            $('input[name=pf_total_cost]').val(total);
+        /* Product Init Select 2 */
 
-           $("#total_cost_id").html('Grand Total:' + total);
 
+        function InitProductSelect2(){
+
+            $(".add_prod:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control-",
+                dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/DeliverNote/FetchProducts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
         }
 
-        /**/
+        InitProductSelect2();
+
+
+        /* ### */
 
        
 
