@@ -452,7 +452,7 @@ class CommonModel extends Model
 
     /*####*/
 
-    /*fetch  sales order  which are not in cash invoice(in deliverynote)*/
+    /*fetch  sales order  which are not in cash invoice(in deliverynote and cash invoice)*/
 
     public function FetchSalesInCashInvoice($id)
     {
@@ -470,6 +470,24 @@ class CommonModel extends Model
     }
 
     /*###*/
+
+
+    /**/
+    public  function FetchSalesOrder($table,$cond,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getResult();
+    }
+    /**/
 
 
    

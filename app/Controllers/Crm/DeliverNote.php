@@ -207,28 +207,58 @@ class DeliverNote extends BaseController
 
         if(!empty($_POST['dpd_prod_det']))
 		{
-            $count =  count($_POST['dpd_prod_det']);
+            //$count =  count($_POST['dpd_prod_det']);
                 
-            if($count!=0)
-            {  
-                for($j=0;$j<=$count-1;$j++)
-                {
-                        
+            //if($count!=0)
+            //{  
+                /*for($j=0;$j<=$count-1;$j++)
+                {*/
+                    $delivery_qty = $_POST['dpd_delivery_qty']; 
+
+                    $current_qty = $_POST['dpd_current_qty'];
+
+                    //$sales_prod_id = $_POST['sales_prod_id'];
+
+                    $new_deli_qty =  $delivery_qty + $current_qty;
+                    
                     $insert_data  	= array(  
                         
-                        'dpd_prod_det'     =>  $_POST['dpd_prod_det'][$j],
-                        'dpd_unit'         =>  $_POST['dpd_unit'][$j],
-                        'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
-                        'dpd_delivery_qty' =>  $_POST['dpd_delivery_qty'][$j],
-                        'dpd_current_qty'  =>  $_POST['dpd_current_qty'][$j],
+                        'dpd_prod_det'     =>  $_POST['dpd_prod_det'],
+                        'dpd_unit'         =>  $_POST['dpd_unit'],
+                        'dpd_order_qty'    =>  $_POST['dpd_order_qty'],
+                        'dpd_delivery_qty' =>  $new_deli_qty,
+                        'dpd_current_qty'  =>  $current_qty,
                         'dpd_delivery_id'  =>  $delivery_note,
                         
                     );
 
                     $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
+
+                    $update_data =  array('spd_delivered_qty' => $new_deli_qty);
+
+                    $cond = array('spd_id' => $_POST['sales_prod_id']); 
+
+                    $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
+
+
+
+                    $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond); 
+
+                   
+
+                    if($sales_prod->spd_quantity == $sales_prod->spd_delivered_qty)
+                    {
+                        $cond2 = array('so_id' => $sales_prod->spd_sales_order);
+
+                        $update_data2 = array('so_deliver_flag'=>1);
+
+                        $this->common_model->EditData($update_data2,$cond2,'crm_sales_orders');
+                    }
+
+                   
                     
-                } 
-            }
+                //} 
+            //}
 
                    
 		}
@@ -243,7 +273,7 @@ class DeliverNote extends BaseController
     
 
 
-    public function AddTab3()
+    /*public function AddTab3()
     {
         $cond = array('dn_id' => $this->request->getPost('dn_id'));
         $update_data = $this->request->getPost();
@@ -275,7 +305,7 @@ class DeliverNote extends BaseController
         }
 
         return null;
-    }
+    }*/
 
 
 
@@ -369,11 +399,13 @@ class DeliverNote extends BaseController
 
     public function SalesOrder()
     {
-        //$cond = array('so_customer' => $this->request->getPost('ID'));
+        $cond = array('so_customer' => $this->request->getPost('ID'));
 
         //$sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
-        $sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
+        //$sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
+
+        $sales_orders = $this->common_model->FetchSalesOrder('crm_sales_orders',$cond,array('so_deliver_flag'=>0));
         
         //$data['sales_order'] ="";
 
@@ -499,7 +531,7 @@ class DeliverNote extends BaseController
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
                                                 <td>
-                                                    <select class="form-select ser_product_det" name="dpd_prod_det[]" required>';
+                                                    <select class="form-select ser_product_det" name="dpd_prod_det" required>';
                                                                 
                                                     foreach($products as $prod){
                                                         $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
@@ -508,10 +540,11 @@ class DeliverNote extends BaseController
                                                         }
                                                     $data['product_detail'] .= '</select>
                                                 </td>
-                                                    <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
-                                                    <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" required></td>
-                                                    <td><input type="number" name="dpd_delivery_qty[]"  class="form-control delivery_qty" required></td>
-                                                    <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery" required></td>
+                                                    <td><input type="text" name="dpd_unit" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                                    <td><input type="number" name="dpd_order_qty" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" required></td>
+                                                    <td><input type="number" name="dpd_delivery_qty" value="'.$sales_det->spd_delivered_qty.'"  class="form-control delivery_qty" required></td>
+                                                    <td><input type="number" name="dpd_current_qty"  class="form-control current_delivery" required></td>
+                                                    <input type="hidden" name="sales_prod_id" value="'.$sales_det->spd_id.'" class="form-control" required>
                                                     <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
                                                     
                                                 </tr>';

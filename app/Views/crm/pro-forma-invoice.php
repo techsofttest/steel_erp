@@ -889,7 +889,7 @@
 
             $(".performa_amount_in_word_val").val(resultSalesOrder);
             
-
+            currentClaim()
         }
 
         /*total amount calculation end*/
@@ -1043,11 +1043,11 @@
 
         var discountAmount = discountAmount.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
 
-        var qar = amountTotal - discountAmount;
+        //var qar = amountTotal - discountAmount;
 
-        $('.claim_qar').val(qar);
+        $('.claim_qar').val(discountAmount);
 
-        console.log(qar);
+        //console.log(qar);
     } 
 
     /*current claim section end*/

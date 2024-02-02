@@ -305,7 +305,7 @@
                                                                 <td>Product Description</td>
                                                                 <td>Unit</td>
                                                                 <td>Order Qty</td>
-                                                                <td>Delivery Qty</td>
+                                                                <td>Delivered Qty</td>
                                                                 <td>Current Delivery</td>
                                                                 <td>Action</td>
                                                             </tr>
@@ -314,13 +314,13 @@
                                                         </thead>
                                                         
                                                         <tbody  class="travelerinfo product-more2"></tbody>
-                                                        <tbody>
+                                                        <!--<tbody>
                                                             <tr>
                                                                 <td colspan="8" align="center" class="tecs">
                                                                     <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
+                                                        </tbody>-->
                                                        
                                                     </table>
                                                 </div>
@@ -539,6 +539,14 @@
                         success: function(data) {
                           
                             $('#add_form1')[0].reset();
+
+                            $('.delivery_note_remove').remove();
+
+                            $('.sales_order_add_clz').val('').trigger('change');
+
+                            $('.cont_person').val('').trigger('change');
+
+                            $('.customer_id').val('').trigger('change');
                            
                             $('#DeliverNote').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
@@ -845,11 +853,11 @@
 
             if(total > order)
             {   
-                var deliveryNull = deliverySelectElement.val("");
+                /*var deliveryNull = deliverySelectElement.val("");
 
                 var $deliveryNullElement = dataSelect.closest('.prod_row').find('.delivery_qty');
 
-                $deliveryNullElement.val(deliveryNull);   
+                $deliveryNullElement.val(deliveryNull);*/   
                 
                 
                 var currencyNull = currentSelectElement.val("");
@@ -858,7 +866,7 @@
 
                 $currencyNullElement.val(currencyNull);  
 
-                alertify.success('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
+                alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
                 
                 
 
