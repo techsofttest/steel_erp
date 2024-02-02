@@ -69,8 +69,6 @@
     <!--jquery validate-->
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-  
-
     <script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
     
 

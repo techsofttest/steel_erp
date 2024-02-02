@@ -280,7 +280,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select id="qd_delivery_term_id" name="qd_delivery_term" required>
+                                                                        <select id="qd_delivery_term_id" name="qd_delivery_term" class="delivery_term_clz" required>
                                                                             <option>Selected Disabled</option>
                                                                             <?php foreach($delivery_term as $delv_term){?> 
                                                                                 <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option> 
@@ -429,7 +429,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Cost Calculation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close close_sub_modal" aria-label="Close"></button>
                                         </div>
 
 				                        <div class="modal-body">
@@ -537,7 +537,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close close_sub_modal2"  aria-label="Close"></button>
                                         </div>
 
 				                        <div class="modal-body">
@@ -1358,7 +1358,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="tex"   class="form-control"  readonly>
+                                                <input type="text"   class="form-control vew_ref"  readonly>
                                             </div>
 
                                         </div> 
@@ -1378,7 +1378,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="date" class="form-control">
+                                                <input type="date"  class="form-control view_date">
                                             </div>
 
                                         </div>  
@@ -1399,7 +1399,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" class="form-control" readonly>
+                                                <input type="text" class="form-control view_cust" readonly>
                                             </div>
 
                                         </div> 
@@ -1423,7 +1423,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" class="form-control" readonly>
+                                                <input type="text" class="form-control view_enq" readonly>
                                                 
                                             </div>
 
@@ -1444,7 +1444,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text"  class="form-control" readonly>
+                                                <input type="text"  class="form-control view_validity" readonly>
                                             </div>
 
                                         </div> 
@@ -1477,7 +1477,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text"  class="form-control" readonly>
+                                                <input type="text"  class="form-control view_sales" readonly>
                                             </div>
 
                                         </div> 
@@ -1497,7 +1497,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text"  class="form-control" readonly>
+                                                <input type="text"  class="form-control view_contact" readonly>
                                             </div>
 
                                         </div> 
@@ -1519,7 +1519,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" class="form-control" readonly>
+                                                <input type="text" class="form-control view_payment" readonly>
                                             </div>
 
                                         </div> 
@@ -1540,7 +1540,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" class="form-control" readonly>
+                                                <input type="text" class="form-control view_delivery" readonly>
                                                 
                                             </div>
 
@@ -1560,7 +1560,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" class="form-control" readonly>
+                                                <input type="text" class="form-control view_project" readonly>
                                             </div>
 
                                         </div> 
@@ -1584,23 +1584,23 @@
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         <td>Serial No.</td>
-                                        <td>Product Description</td>
+                                        <!--<td>Product Description</td>--->
                                         <td>Unit</td>
                                         <td>Qty</td>
                                         <td>Rate</td>
                                         <td>Discount</td>
                                         <td>Amount</td>
-                                        <td>Action</td>
+                                       
                                     </tr>
                                     
                                     
                                 </thead>
                                 
-                                <tbody  class="travelerinfo product-more2"></tbody>
+                                <tbody  class="travelerinfo product-more4"></tbody>
                                 <!--<tbody>-->
                                     <tr>
                                         <td colspan="8" align="center" class="tecs">
-                                            <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                            <span class="add_icon add_product4"><i class="ri-add-circle-line"></i>Add </span>
                                         </td>
                                     </tr>
                                 <!--</tbody>--->
@@ -1719,12 +1719,44 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            
+
+                            var responseData = JSON.parse(data);
+
+                            $('.vew_ref').val(responseData.date);
+
+                            $('.view_date').val(responseData.reffer_no);
+
+                            $('.view_cust').val(responseData.customer);
+
+                            $('.view_enq').val(responseData.enquiry_ref);
+
+                            $('.view_validity').val(responseData.validity);
+
+                            $('.view_sales').val(responseData.sales_executive);
+
+                            $('.view_contact').val(responseData.contact_person);
+
+                            $('.view_payment').val(responseData.payment_term);
+
+                            $('.view_delivery').val(responseData.delivery_term);
+
+                            $('.view_project').val(responseData.project);
+
+                            $('.product-more4').html(responseData.view_product);
+
                             $('#SalesQuotView').modal('show');
 
                             $('#CostCalculation').modal('hide'); 
 
-                            
+                            $('#add_form1')[0].reset();
+
+                            $('.droup_customer_id').val('').trigger('change');
+
+                            $('.qd_enquiry_reference_clz').val('').trigger('change');
+
+                            $('.contact_person_clz').val('').trigger('change');
+
+                            $('.delivery_term_clz')[0].selectize.clear();
 
                             datatable.ajax.reload(null, false);
                         
@@ -1760,16 +1792,19 @@
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
                         success: function(data) {
+                           
                             $('#add_form1')[0].reset();
                             $('#add_form2')[0].reset();
                             $('#add_form3')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
+                            
                         }
                     });
                 }
             });
+
         });*/
 
 
@@ -2280,6 +2315,35 @@
         });
 
         /*product modal end*/
+
+
+
+
+        /*sales quotaion sub modal section start*/
+
+               
+        $("body").on('click', '.close_sub_modal', function(){ 
+	   
+            $('#CostCalculation').modal('hide');
+
+            $('#SalesQuotation').modal('show');
+
+        });
+
+
+        $("body").on('click', '.close_sub_modal2', function(){ 
+	   
+            $('#CostClick').modal('hide');
+
+            $('#CostCalculation').modal('show');
+
+        });
+
+
+
+
+        /*sales quotation sub modal section end*/
+
 
 
 

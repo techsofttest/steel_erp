@@ -411,7 +411,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Delivery Note</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Cash Invoice</h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#CashInvoice" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -970,6 +970,9 @@
  
          });
          /*###*/
+
+
+        
 
 
 

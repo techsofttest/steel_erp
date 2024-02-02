@@ -20,6 +20,19 @@
         border: 1px solid black;
         border: 1px solid #0000003b;
     }
+    span.select2.select_width
+    {
+        width: 70% !important;
+    }
+    .prod_add_more
+    {
+        position: absolute;
+        left: 340px;
+        padding: 4px 27px;
+        z-index: 999;
+        border: 1px solid black;
+        border: 1px solid #0000003b;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -85,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_date" class="form-control" required>
+                                                                        <input type="date" name="enquiry_date" class="form-control enquiry_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -101,7 +114,7 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer<span class="add_more_icon cust_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Customer Name<span class="add_more_icon cust_more_modal">New</span></label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
@@ -206,7 +219,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_time_frame" class="form-control" value="<?php echo $increment_date_date;?>" required>
+                                                                        <input type="date" name="enquiry_time_frame" class="form-control time_frame_date" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -262,7 +275,8 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 10%;">1</td>
-                                                                <td>
+                                                                <td style="width:28%">
+                                                                <span class="add_more_icon prod_add_more">New</span>
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[]" required>
                                                                         <option selected>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
@@ -556,6 +570,112 @@
 
 
                         <!--Customer Creation content end-->
+
+
+                        <!--Product Modal start-->
+
+                        <div class="modal fade" id="prodModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form  class="Dashboard-form class" id="prod_form">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+        
+                                                        <div class="card-body">
+                                                            
+                                                            <div class="live-preview">
+                                                                    
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                                        <label for="basiInput" class="form-label">Product Name</label>
+
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text"   name="product_details" class="form-control" required>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                                        <label for="basiInput" class="form-label">Product Head</label>
+
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <select class="form-select product_head_select product_head"  name="product_product_head" required></select>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+       
+                                                                        <label for="basiInput" class="form-label">Code</label>
+            
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text"   name="product_code" class="form-control product_code" required>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <!-- ### -->
+                                                             
+                                                            </div>
+                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end col-->
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button  class="btn btn btn-success">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+
+                        <!--Product Modal end-->
 
 
                          <!--contact detail modal section start-->
@@ -1158,6 +1278,9 @@
 
        /*####*/
 
+
+
+
        /*show contact detail modal*/ 
          
        $('.contact_detail_modal').on('click', function() {
@@ -1170,6 +1293,8 @@
        });
 
        /*####*/
+
+
 
 
        /*show official documnet modal*/ 
@@ -1188,6 +1313,8 @@
       /*####*/
 
 
+
+
       /*close contact details modal*/ 
          
        $('.modal_close').on('click', function() {
@@ -1202,6 +1329,8 @@
       });
 
       /*####*/
+
+
 
 
       /*close contact details modal*/ 
@@ -1438,8 +1567,11 @@
 
 			if(pp < max_fieldspp){ 
 			    pp++;
-	            $("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-                 /*customer droup drown search*/
+	            //$("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more").append("<tr><td><input type='number' value='"+pp+"' name='pd_serial_no[]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+
+                
+                /*customer droup drown search*/
                  InitSelect2();
 			}
 	    });
@@ -1495,6 +1627,58 @@
      
         /*####*/
 
+
+
+        /*Time Frame section start*/
+
+         
+        $("body").on('change', '.enquiry_date', function(){ 
+	        
+           var date = $(this).val();
+
+           
+
+           $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/EnquiryDate",
+
+                method : "POST",
+
+                data: {Date: date},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                
+                      $('.time_frame_date').val(data.increment_date_date)
+                
+                    
+                }
+
+
+            });
+
+
+        });
+
+     
+
+        /*Time Frame section end*/
+
+
+
+        /*Add New Product start*/
+
+        $("body").on('click', '.prod_add_more', function(){ 
+	        
+             $('#Enquiry').modal('hide');
+
+             $('#prodModal').modal('show');
+ 
+         });
+
+
+        /*Add New Product end*/
 
 
         /*customer droup drown search*/
@@ -1577,13 +1761,13 @@
         /*###*/
 
 
-
+        
 
           /*Product Drop Down*/
           function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
-            theme : "default form-control-",
+            theme : "default form-control- select_width",
             dropdownParent: $('#Enquiry'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
@@ -1645,6 +1829,128 @@
         });
 
         /**/
+
+
+        /*droupdrown*/
+        $(".product_head_select").select2({
+        placeholder: "Select Product Head",
+        theme : "default form-control-",
+        dropdownParent: $('#prodModal'),
+        ajax: {
+                url: "<?= base_url(); ?>Crm/Products/FetchTypes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.ph_id, text: item.ph_product_head}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /*###*/
+
+
+        /*prouct insert section start*/
+
+        $(function() {
+            $('#prod_form').validate({
+                rules: {
+                    required: 'required',
+                    
+                },
+                messages: {
+                    required: 'This field is required',
+                    
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Products/Add",
+                        method: "POST",
+                        data: $(form).serialize(),
+                        success: function(data) {
+                            var data = JSON.parse(data);
+                            $('#prod_form')[0].reset();
+                            //$('#AddModal').modal('hide');
+                            $('.product_head').html("");
+                            if(data.status === "true")
+                            {
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload( null, false )
+                            }
+                            else{
+                                alertify.error('Data is already exist').delay(3).dismissOthers();
+                                datatable.ajax.reload( null, false )
+                            }
+                            
+                            
+                            $('#prodModal').modal('hide');
+
+                            $('#Enquiry').modal('show');
+
+                            
+                        }
+                       
+                    });
+                    return false; // prevent the form from submitting
+                }
+            });
+        });
+
+        /*product insert section end*/
+
+
+
+        /*product head section start*/
+
+
+        $("body").on('change', '.product_head', function(){ 
+            
+            var id = $(this).val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Products/Code",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $(".product_code").val(data.product_head_code);
+                   
+                    
+                }
+
+
+            });
+            
+            
+        });
+
+
+        /*product head section end*/
 
 
        

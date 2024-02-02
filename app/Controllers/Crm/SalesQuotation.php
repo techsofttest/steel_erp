@@ -257,6 +257,8 @@ class SalesQuotation extends BaseController
 
             $cond = array('qd_id'=>$quotation);
 
+            
+
             $update_data = [
                 'qd_cost_amount'           => $this->request->getPost('qd_cost_amount'),
                 'qd_cost_amount_in_words'  => $this->request->getPost('qd_cost_amount_in_words'),
@@ -268,29 +270,99 @@ class SalesQuotation extends BaseController
             
            
         }
+         
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'qd_customer',
+            ),
+            array(
+                'table' => 'crm_enquiry',
+                'pk'    => 'enquiry_id',
+                'fk'    => 'qd_enq_ref',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'qd_sales_executive',
+            ),
+            array(
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
+                'fk'    => 'qd_contact_person',
+            ),
+            array(
+                'table' => 'master_delivery_term',
+                'pk'    => 'dt_id',
+                'fk'    => 'qd_delivery_term',
+            ),
+           
 
-        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
+        );
+
+
+        $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
 
 
         $data['reffer_no'] = $quotation_details->qd_reffer_no;
 
         $data['date'] = $quotation_details->qd_date;
 
-        $data['customer'] = $quotation_details->qd_customer;
+        $data['customer'] = $quotation_details->cc_customer_name;
 
-        $data['enquiry_ref'] = $quotation_details->qd_enq_ref;
+        $data['enquiry_ref'] = $quotation_details->enquiry_reff;
 
         $data['validity'] = $quotation_details->qd_validity;
 
-        $data['sales_executive'] = $quotation_details->qd_sales_executive;
+        $data['sales_executive'] = $quotation_details->se_name;
 
-        $data['contact_person'] = $quotation_details->qd_contact_person;
+        $data['contact_person'] = $quotation_details->contact_person;
 
         $data['payment_term'] = $quotation_details->qd_payment_term;
 
-        $data['delivery_term'] = $quotation_details->qd_delivery_term;
+        $data['delivery_term'] = $quotation_details->dt_name;
 
         $data['project'] = $quotation_details->qd_project;
+
+
+        $cond2 = array('qpd_quotation_details'=>$quotation);
+
+        $joins2 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+           
+
+        );
+
+        $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond2);
+
+        //$products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+
+        $data['view_product'] = "";
+
+       
+            
+            $i=1;
+            foreach($product_details as $prod_det)
+            {
+
+            $data['view_product'] .=  '<tr>
+                <td style="width: 10%;">'.$i.'</td>
+                <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
+                <td><input type="number" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
+                <td><input type="number"  value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
+                <td><input type="number" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
+                <td><input type="number"  value="'.$prod_det->qpd_amount.'" class="form-control" readonly></td>
+                
+            </tr>';
+            $i++;
+        }
+
 
         
   

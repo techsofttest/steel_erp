@@ -104,6 +104,8 @@ class CreditInvoice extends BaseController
         
         $data['status_invoice'] = $this->common_model->FetchAllOrder('master_status_invoice','msi_id','desc');
 
+        $data['credit_invoice_id'] = $this->common_model->FetchNextId('crm_credit_invoice','CINV'); 
+
         $data['content'] = view('crm/credit-invoice',$data);
 
         return view('crm/crm-module',$data);
@@ -161,25 +163,64 @@ class CreditInvoice extends BaseController
     // add account head
     Public function Add()
     {   
-        $insert_data = $this->request->getPost();
+       
+        $insert_data = [
 
-        $insert_data['cci_added_by'] = 0;
-        
-        $insert_data['cci_added_date'] = date('Y-m-d'); 
+            'cci_reffer_no'      => $this->request->getPost('cci_reffer_no'),
 
-        $id = $this->common_model->InsertData('crm_credit_invoice',$insert_data);
+            'cci_date'           => $this->request->getPost('cci_date'),
 
-        $data['cci_id'] = $id;
+            'cci_customer'       => $this->request->getPost('cci_customer'),
 
-        $p_ref_no = 'CCI'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('cci_id' => $id);
+            'cci_sales_order'    => $this->request->getPost('cci_sales_order'),
 
-        $update_data['cci_reffer_no'] = $p_ref_no;
+            'cci_lpo_reff'       => $this->request->getPost('cci_lpo_reff'),
 
-        $this->common_model->EditData($update_data,$cond,'crm_credit_invoice');
+            'cci_contact_person' => $this->request->getPost('cci_contact_person'),
 
-        echo json_encode($data);
+            'cci_payment_term'   => $this->request->getPost('cci_payment_term'),
+
+            'cci_project'        => $this->request->getPost('cci_project'),
+
+            'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
+
+            'cci_added_by'       => 0,
+
+            'cci_added_date'   => date('Y-m-d'),
+ 
+        ];
+
+        $credit_invoice_id = $this->common_model->InsertData('crm_credit_invoice',$insert_data);
+
+        if(!empty($_POST['ipd_prod_detl']))
+		{
+            $count =  count($_POST['ipd_prod_detl']);
+                
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
+                        
+                    $contact_detail  	= array(  
+
+                        'ipd_prod_detl'      =>  $_POST['ipd_prod_detl'][$j],
+                        'ipd_unit'           =>  $_POST['ipd_unit'][$j],
+                        'ipd_quantity'       =>  $_POST['ipd_quantity'][$j],
+                        'ipd_rate'           =>  $_POST['ipd_rate'][$j],
+                        'ipd_discount'       =>  $_POST['ipd_discount'][$j],
+                        'ipd_amount'         =>  $_POST['ipd_amount'][$j],
+                        'ipd_credit_invoice' =>  $credit_invoice_id,
+    
+                    );
+                
+                    
+                    $id = $this->common_model->InsertData('crm_credit_invoice_prod_det',$contact_detail);
+            
+                } 
+            }
+		} 
+
+        //echo json_encode($data);
 
     }
 
@@ -367,7 +408,7 @@ class CreditInvoice extends BaseController
         {
             $data['sales_order'] .='<option value='.$sales_order->so_id.'';
            
-            $data['sales_order'] .='>' .$sales_order->so_order_no. '</option>'; 
+            $data['sales_order'] .='>' .$sales_order->so_reffer_no. '</option>'; 
         }
 
 
@@ -385,6 +426,32 @@ class CreditInvoice extends BaseController
            
             $data['delivery_note'] .='>' .$del_note->dn_reffer_no. '</option>'; 
         }
+
+
+        /*contact person */
+
+        $cond2 = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+    
+        $data['contact_person'] = "<option value ='' selected disabled>Select Contact Person</option>";
+    
+        foreach($contact_details as $con_det)
+        {
+            
+            $data['contact_person'] .= '<option value=' .$con_det->contact_id;
+          
+            $data['contact_person'] .= '>' . $con_det->contact_person . '</option>';
+    
+            
+        }
+
+
+        /*#####*/
+
+
+        
+
 
         echo json_encode($data);
 
@@ -436,11 +503,86 @@ class CreditInvoice extends BaseController
 
         public function FetchSalesData()
         {
-            $cond = array('dn_id' => $this->request->getPost('ID'));
+            $cond = array('so_id' => $this->request->getPost('ID'));
 
-            $delivery_note = $this->common_model->SingleRow('crm_delivery_note',$cond);
+            $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
 
-            $cond3 = array('so_id' => $delivery_note->dn_sales_order_num);
+            $data['so_lpo'] = $sales_order->so_lpo;
+
+            $data['so_contact_person'] = $sales_order->so_contact_person;
+
+            $data['so_project'] = $sales_order->so_project;
+
+            $data['so_payment_term'] = $sales_order->so_payment_term;
+
+            $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
+
+            $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
+            $data['contact_person'] = "<option value ='' selected disabled>Select Contact Person</option>";
+
+            foreach($contact_details as $con_det)
+            {
+                
+                $data['contact_person'] .= '<option value=' .$con_det->contact_id;
+                if ($con_det->contact_id == $sales_order->so_contact_person)
+                {
+                    $data['contact_person'] .= ' selected';
+                }
+                $data['contact_person'] .= '>' . $con_det->contact_person . '</option>';
+
+                
+            }
+
+
+
+            /*product detail start*/
+
+            $cond3 = array('spd_sales_order' => $this->request->getPost('ID'));
+
+            $sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond3);
+        
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+            $i = 1; 
+            
+            $data['product_detail'] = "";
+
+            foreach($sales_order_details as $sales_det){
+
+            $data['product_detail'] .='<tr class="prod_row credit_invoice_remove" id="'.$sales_det->spd_id.'">
+                                            <td class="si_no">'.$i.'</td>
+                                            <td>
+                                                <select class="form-select ser_product_det" name="ipd_prod_detl[]" required>';
+                                                            
+                                                foreach($products as $prod){
+                                                    $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                    if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                    $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                    }
+                                                $data['product_detail'] .= '</select>
+                                            </td>
+                                            <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                            <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->spd_quantity.'"  class="form-control qtn_clz_id" required></td>
+                                            <td><input type="number" name="ipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id"  required></td>
+                                            <td><input type="number" name="ipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id" required></td>
+                                            <td><input type="number" name="ipd_amount[]" value="'.$sales_det->spd_amount.'" class="form-control amount_clz_id" required></td>
+                                            <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
+                                            
+                                        </tr>';
+                                        $i++;
+								}
+
+
+            /*####*/
+
+
+
+
+
+
+
+            /*$cond3 = array('so_id' => $delivery_note->dn_sales_order_num);
             
             $sales_orders = $this->common_model->SingleRow('crm_sales_orders',$cond3);
 
@@ -454,7 +596,7 @@ class CreditInvoice extends BaseController
 
             $sales_order_details = $this->common_model->FetchWhere('crm_delivery_note',$cond1);
 
-            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');*/
 
             echo json_encode($data);
 

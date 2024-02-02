@@ -167,7 +167,7 @@ class ProFormaInvoice extends BaseController
 
         $data['orders'] ="";
 
-        $data['orders'] ='<option value="" selected disabled>Select  Contact Person</option>';
+        $data['orders'] ='<option value="" selected disabled>Select Sales Order</option>';
 
         foreach($orders as $order)
         {
@@ -176,7 +176,24 @@ class ProFormaInvoice extends BaseController
             $data['orders'] .='>' .$order->so_reffer_no. '</option>'; 
         }
 
+        $cond = array('contact_customer_creation' => $id);
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+
+        $data['contact_person'] ="";
+
+        $data['contact_person'] ='<option value="" selected disabled>Select  Contact Person</option>';
+    
+        foreach($contact_details as $con_det)
+        {
+            $data['contact_person'] .='<option value='.$con_det->contact_id.'';
+           
+            $data['contact_person'] .='>' .$con_det->contact_person. '</option>'; 
+        }
+
         echo json_encode($data);
+
+
 
     }
 

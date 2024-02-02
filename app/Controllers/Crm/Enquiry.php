@@ -166,9 +166,9 @@ class Enquiry extends BaseController
 
         $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
         
-        $your_date = strtotime("1 day", strtotime(date("d-m-Y")));
+        /*$your_date = strtotime("1 day", strtotime(date("d-m-Y")));
      
-        $data['increment_date_date'] = date("Y-m-d", $your_date);
+        $data['increment_date_date'] = date("Y-m-d", $your_date);*/
 
         $data['content'] = view('crm/enquiry',$data);
 
@@ -476,6 +476,17 @@ class Enquiry extends BaseController
             $data['contact_person'] .='>' .$cont_det->contact_person. '</option>'; 
         }
         
+
+        echo json_encode($data);
+    }
+
+    public function EnquiryDate()
+    {
+        $date = $this->request->getPost('Date');
+
+        $your_date = strtotime("1 day", strtotime($date));
+     
+        $data['increment_date_date'] = date("Y-m-d", $your_date);
 
         echo json_encode($data);
     }

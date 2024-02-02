@@ -36,12 +36,14 @@
         
                         <!-- Start Subtabs -->
                         <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3" role="tablist">
+                            
                             <li class="nav-item">
                                 <a class="nav-link active" href="<?= base_url(); ?>Crm/DeliverNote" role="tab">
                                     <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
                                     <span class="d-none d-sm-block">Delivery Note</span>
                                 </a>
                             </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url(); ?>Crm/CashInvoice" role="tab">
                                     <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
@@ -796,6 +798,7 @@
 
         /**/
 
+
         /*serial no correction section start*/
 
         function slno(){
@@ -912,12 +915,7 @@
 
         /* ### */
 
-       
-
-       
-
-
-
+      
 
 
     });

@@ -312,6 +312,11 @@ table.menu td{
     border:unset;
 
 }
+.select2-container
+{
+    color: black;
+    font-weight: 500;
+}
 
 
 </style>

@@ -33,7 +33,7 @@
 		                        <form  class="Dashboard-form class" id="add_form1">
 			                        <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Performa Invoice</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Pro-forma Invoice</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
@@ -331,11 +331,29 @@
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
+                                                                <td colspan="2"></td>
+                                                                <td colspan="3"></td>
+                                                                
+                                                                <td>Total Order value</td>
+                                                                <td><input type="text" name="pf_total_amount" class="amount_total form-control" readonly></td>
+                                                            </tr>
+
+
+                                                            <tr>
+                                                                <td colspan="2"></td>
+                                                                <td colspan="3"></td>
+                                                                
+                                                                <td>Current Claim %</td>
+                                                                <td><input type="number" name="pf_total_amount" onkeyup="currentClaim()" class="form-control current_cliam_clz"></td>
+                                                            </tr>
+
+
+                                                            <tr>
                                                                 <td colspan="2">Amount in words</td>
                                                                 <td colspan="3" class="performa_amount_in_word_val"></td>
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                                                <td>Total</td>
-                                                                <td><input type="text" name="pf_total_amount" class="amount_total form-control" readonly></td>
+                                                                <td>Current Claim Value -QAR</td>
+                                                                <td><input type="number" name="" class="form-control claim_qar" readonly></td>
                                                             </tr>
                                                             
                                                           
@@ -681,34 +699,6 @@
 
 
 
-        /*var max_fieldspp      = 30;
-        var pp = 1;
-        //$("#add_product").click(function(){
-        $("body").on('click', '.add_product', function(){
-            
-            var pp = $('.prod_row').length
-
-			//if(pp < max_fieldspp){ 
-			    pp++;
-	            
-                $("#product-more").append("<tr class='prod_row'><td>"+pp+"</td><td style='width:20%'><select class='form-select' name='pd_product_detail[]' required><option selected>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit[]' class='form-control' required></td><td><input type='number' name='pp_quantity[]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate[]' class='form-control rate_clz_id' required></td><td><input type='number' name='pp_discount[]' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount[]' class='form-control amount_clz_id' required></td><td><input type='text' name='pp_current_claim[]' class='form-control ' required></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-
-			//}
-	    });
-
-        $(document).on("click", ".remove-btnpp", function() 
-        {
-	        $(this).parent().remove();
-	        pp--;
-        });*/
-
-
-
- 
-
-
-
-
 
 
 
@@ -753,6 +743,9 @@
         /* Fetch Sales Orders */
 
 
+       
+
+
 
         $('.customer_clz_id').change(function(){
 
@@ -769,7 +762,10 @@
             success:function(data)
             {
                 var data = JSON.parse(data);
-            $('.sales_order_add_clz').html(data.orders);
+
+                $('.sales_order_add_clz').html(data.orders);
+
+                $('.contact_person_clz').html(data.contact_person);
 
             }
 
@@ -826,38 +822,6 @@
         /*###*/
 
 
-        /*onchange function Sales Order Number*/
-
-       /* $('#sales_order_add').change(function(){
-
-            var id = $(this).val();
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchSalesOrder",
-
-            method : "POST",
-
-            data : {id:id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
-                
-                $('#product_detail_table').html(data.saleorder_output);
-
-            }
-
-
-            });
-
-
-        });*/
-
-        /**/
-
-
-
 
         /*product detail calculation*/
         
@@ -895,27 +859,10 @@
 
         });
 
+        
+      
+
        
-
-
-        /*function totalCalcutate()
-        {  
-            var total = 0;
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = $(this).val();
-                total += parseInt(sub_tot)||0;
-                console.log(total);
-            });
-
-            $('input[name=pf_total_cost]').val(total);
-
-           $("#total_cost_id").html('Grand Total:' + total);
-
-        }*/
-
-
-        /**/
 
         /*total amount calculation start*/
 
@@ -946,6 +893,12 @@
         }
 
         /*total amount calculation end*/
+
+
+       
+
+
+
 
 
         /*delete*/
@@ -1077,6 +1030,27 @@
 
     });
 
+
+    /*current claim section start*/
+
+    function currentClaim()
+    {  
+        var current_claim = $('.current_cliam_clz').val();
+
+        var amountTotal = $('.amount_total').val();
+
+        var discountAmount = (current_claim/100)*amountTotal
+
+        var discountAmount = discountAmount.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+        var qar = amountTotal - discountAmount;
+
+        $('.claim_qar').val(qar);
+
+        console.log(qar);
+    } 
+
+    /*current claim section end*/
 
 
 </script>

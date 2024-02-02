@@ -239,43 +239,7 @@ class DeliverNote extends BaseController
 
 
 
-    /*public function AddTab2()
-    {
-         
-        if($_POST)
-        {
-
-	        if(!empty($_POST['dpd_prod_det']))
-			{
-			    $count =  count($_POST['dpd_prod_det']);
-					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
-							
-					    $insert_data  	= array(  
-							
-							'dpd_prod_det'    =>   $_POST['dpd_prod_det'][$j],
-							'dpd_prod_unit'   =>  $_POST['dpd_prod_unit'][$j],
-						    'dpd_quantity'    =>  $_POST['dpd_quantity'][$j],
-                            'dpd_delivery_id' =>  $_POST['dpd_delivery_id'],
-                          
-					    );
-
-				        $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
-                      
-				    } 
-				}
-
-                   
-			}
-
-			
-        }
-        
-
-    }*/
+ 
     
 
 

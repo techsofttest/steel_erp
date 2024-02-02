@@ -71,6 +71,7 @@
                                                                     </div>
 
                                                                 </div> 
+                                                                
                                                             </div>
 
                                                             <!-- ### --> 
@@ -273,7 +274,7 @@
                                                         <tbody class="travelerinfo">
                                                             <tr>
                                                                 <td >No</td>
-                                                                <td>Contact Person </td>
+                                                                <td>Contact Person</td>
                                                                 <td>Designation</td>
                                                                 <td>Mobile</td>
                                                                 <td>Email</td>
@@ -1455,7 +1456,7 @@
         /* account head  search droup drown start*/
         
         $(".account_head_select").select2({
-            placeholder: "Select Account Id",
+            placeholder: "Select Account Name",
             theme : "default form-control-",
             dropdownParent: $('#CustomerCreation'),
             ajax: {
@@ -1475,7 +1476,7 @@
                    
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.ah_id, text: item.ah_head_id}}),
+                        results: $.map(data.result, function (item) { return {id: item.ah_id, text: item.ah_account_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
