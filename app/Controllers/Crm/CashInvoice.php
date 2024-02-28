@@ -227,7 +227,7 @@ class CashInvoice extends BaseController
                         'cipd_rate'          =>  $_POST['cipd_rate'][$j],
                         'cipd_discount'      =>  $_POST['cipd_discount'][$j],
                         'cipd_amount'        =>  $_POST['cipd_amount'][$j],
-                        'cipd_cash_invoice' =>  $cash_invoice,
+                        'cipd_cash_invoice'  =>  $cash_invoice,
                         
                     );
 
@@ -338,7 +338,9 @@ class CashInvoice extends BaseController
     public function SalesOrder()
     {
         
-        $sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
+        //$sales_orders = $this->common_model->FetchSalesInCashInvoice($this->request->getPost('ID'));
+        $cond = array('so_customer' => $this->request->getPost('ID')); 
+        $sales_orders = $this->common_model->FetchSalesOrder('crm_sales_orders',$cond,array('so_deliver_flag'=>0));
 
         $data['sales_order'] ="";
 
@@ -363,6 +365,11 @@ class CashInvoice extends BaseController
             $data['contact_details'] .='<option value='.$cont_det->contact_id.'>'.$cont_det->contact_person.'</option>';
         }
 
+        $cond3 = array('cc_id' => $this->request->getPost('ID'));
+
+        $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond3); 
+        
+        $data['credit_term'] = $customer_creation->cc_credit_term;
        
         echo json_encode($data);
 
@@ -469,11 +476,10 @@ class CashInvoice extends BaseController
 
             $sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
 
+
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
             $data['so_lpo'] = $sales_order->so_lpo;
-
-            $data['so_payment_term'] = $sales_order->so_payment_term;
 
             $data['so_project'] = $sales_order->so_project;
 
@@ -497,29 +503,39 @@ class CashInvoice extends BaseController
             $i = 1;
 
             foreach($sales_order_details as $sales_det){
-            $data['product_detail'] .='<tr class="prod_row cash_invoice_remove"  id="'.$sales_det->spd_id.'">
-                                            <td class="si_no">'.$i.'</td>
-                                            <td>
-                                                <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
-                                                            
-                                                foreach($products as $prod){
-                                                    $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                    if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
-                                                    $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                }
-                                                $data['product_detail'] .= '</select>
+                  
+              $qty =   $sales_det->spd_quantity;
+              $current_qty = $sales_det->spd_delivered_qty;
 
-                                            </td>
-                                            <td><input type="text"   name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
-                                            <td><input type="number" name="cipd_qtn[]" value="'.$sales_det->spd_quantity.'"  class="form-control real_qty" required></td>
-                                            <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id" required></td>
-                                            <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'"  class="form-control discount_clz_id" required></td>
-                                            <td><input type="number" name="cipd_amount[]" value="'.$sales_det->spd_amount.'"  class="form-control discount_clz_id" required></td>
-                                            <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
-                                            
-                                        </tr>';
+              $remaining_qty = $qty - $current_qty;
+              
+             
+
+                $data['product_detail'] .='<tr class="prod_row cash_invoice_remove"  id="'.$sales_det->spd_id.'">
+                                                <td class="si_no">'.$i.'</td>
+                                                <td>
+                                                    <select class="form-select ser_product_det" name="cipd_prod_det[]" required>';
+                                                                
+                                                    foreach($products as $prod){
+                                                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                        if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                                                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                    }
+                                                    $data['product_detail'] .= '</select>
+
+                                                </td>
+                                                <td><input type="text"   name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" required></td>
+                                                <td><input type="number" name="cipd_qtn[]" value="'.$remaining_qty.'"  class="form-control qtn_clz_id" required></td>
+                                                <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id" required></td>
+                                                <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'"  class="form-control discount_clz_id" required></td>
+                                                <td><input type="number" name="cipd_amount[]" value="'.$sales_det->spd_amount.'"  class="form-control amount_clz_id" required></td>
+                                                <td class="row_remove remove-btnpp" data-id="'.$sales_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
                                                 
-                                        $i++;
+                                            </tr>';
+                                                    
+                                            $i++;
+                
+
             }
 
             /*#####*/

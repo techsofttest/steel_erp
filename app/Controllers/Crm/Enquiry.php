@@ -166,10 +166,7 @@ class Enquiry extends BaseController
 
         $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
         
-        /*$your_date = strtotime("1 day", strtotime(date("d-m-Y")));
-     
-        $data['increment_date_date'] = date("Y-m-d", $your_date);*/
-
+      
         $data['content'] = view('crm/enquiry',$data);
 
         return view('crm/crm-module',$data);
@@ -185,7 +182,7 @@ class Enquiry extends BaseController
                 
             'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
 
-            'enquiry_date'           => $this->request->getPost('enquiry_date'),
+            'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
 
             'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
 
@@ -195,13 +192,13 @@ class Enquiry extends BaseController
 
             'enquiry_source'         => $this->request->getPost('enquiry_source'),
 
-            'enquiry_time_frame'     => $this->request->getPost('enquiry_time_frame'),
+            'enquiry_time_frame'     => date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame'))),
 
             'enquiry_project'        => $this->request->getPost('enquiry_project'),
 
-            'enquiry_added_by'        => 0,
+            'enquiry_added_by'       => 0,
 
-            'enquiry_added_date'      => date("Y-m-d"),
+            'enquiry_added_date'     => date("Y-m-d"),
 
 
         ];
@@ -209,28 +206,29 @@ class Enquiry extends BaseController
         $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
         
         if(!empty($_POST['pd_product_detail']))
-			{
-			    $count =  count($_POST['pd_product_detail']);
+		{
+			$count =  count($_POST['pd_product_detail']);
 					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
+			if($count!=0)
+			{  
+				for($j=0;$j<=$count-1;$j++)
+				{
 							
-					    $insert_data  	= array(  
-							'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
-							'pd_unit'                 =>  $_POST['pd_unit'][$j],
-						    'pd_quantity'             =>  $_POST['pd_quantity'][$j],
-                            'pd_enquiry_id'           =>  $enquiry_id,
-	  
-					    );
-					
-						
-				        $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
+                    $insert_data  	= array(  
+                        
+                        'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
+                        'pd_unit'                 =>  $_POST['pd_unit'][$j],
+                        'pd_quantity'             =>  $_POST['pd_quantity'][$j],
+                        'pd_enquiry_id'           =>  $enquiry_id,
+    
+                    );
+                
+                    
+                    $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
 				
-				    } 
-				}
-			} 
+				} 
+			}
+		} 
 
     }
 
@@ -244,14 +242,8 @@ class Enquiry extends BaseController
         
         $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
-        
-
         $joins = array(
-            array(
-                'table' => 'executives_sales_executive',
-                'pk'    => 'se_id',
-                'fk'    => 'enquiry_sales_executive',
-            ),
+          
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -265,7 +257,7 @@ class Enquiry extends BaseController
             array(
                 'table' => 'employees',
                 'pk'    => 'employees_id',
-                'fk'    => 'enquiry_employees',
+                'fk'    => 'enquiry_assign_to',
             ),
 
         );
@@ -287,43 +279,39 @@ class Enquiry extends BaseController
         $product_details_data = $this->common_model->FetchWhereJoin('crm_product_detail',$cond1,$joins1);
          
 
-        $data['enquiry_enq_number'] = $enquiry->enquiry_enq_number;
+        $data['enquiry_reff']       = $enquiry->enquiry_reff;
 
-        $data['enquiry_date']      = $enquiry->enquiry_date;
+        $data['enquiry_date']       = date('d-M-Y',strtotime($enquiry->enquiry_date));
 
-        $data['enquiry_validity'] = $enquiry->enquiry_validity;
+        $data['cc_customer_name']   = $enquiry->cc_customer_name;
 
-        $data['enquiry_project'] = $enquiry->enquiry_project;
+        $data['contact_person']     = $enquiry->contact_person;
 
-        $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
+        $data['enquiry_assign_to']  = $enquiry->employees_name;
 
-        $data['sales_executive'] = $enquiry->se_name;
+        $data['enquiry_source']     = $enquiry->enquiry_source;
 
-        $data['customer_creation'] = $enquiry->cc_customer_name;
+        $data['enquiry_time_frame'] = date('d-M-Y',strtotime($enquiry->enquiry_time_frame));
 
-        $data['contact_details'] = $enquiry->contact_person;
+        $data['enquiry_project']    = $enquiry->enquiry_project;
 
-        $data['enquiry_employees'] = $enquiry->employees_name;
-
-
-         
+        $data['prod_details'] = "";
         
-        $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td></tr>';
+        $i=1;
 
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"   value="'.$prod_det->pd_serial_no.'" class="form-control " readonly></td>
+            <td><input type="text"   value="'.$i.'" class="form-control " readonly></td>
             <td><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control " readonly></td>
             <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control " readonly></td>
             </tr>'; 
-             
+
+            $i++;  
         }
         
-        $data['prod_details'] .= '</tbody></table>';
-
+       
         
         echo json_encode($data);
     }
@@ -353,25 +341,30 @@ class Enquiry extends BaseController
 
 
     // update account head 
-    public function Update()
+    public function UpdateTab()
     {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+        $cond = array('enquiry_id' => $this->request->getPost('enquiry_id'));
         
         $update_data = $this->request->getPost(); 
 
         // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        if (array_key_exists('enquiry_id', $update_data)) 
         {
-             unset($update_data['account_id']);
-        }       
+             unset($update_data['enquiry_id']);
+        }    
+        
+        $update_data['enquiry_date'] = date('Y-m-d',strtotime($this->request->getPost('enquiry_date')));
 
-        $update_data['at_added_by'] = 0; 
+        $update_data['enquiry_time_frame'] = date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame')));
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
+        $update_data['enquiry_modified'] = date('Y-m-d'); 
 
+        $this->common_model->EditData($update_data,$cond,'crm_enquiry');
+        
+        $data['enquiry_id']  = $this->request->getPost('enquiry_id');
 
+        echo json_encode($data);
 
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
        
     }
 
@@ -392,67 +385,118 @@ class Enquiry extends BaseController
     //fetch data form edit
     public function Edit()
     {
+       
         $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
         $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond);
 
-        $data['enquiry_date']  = $enquiry->enquiry_date;
+        $cond1 = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
-        $data['enquiry_validity']  = $enquiry->enquiry_validity;
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'pd_product_detail',
+            ),
+            
 
-        $data['enquiry_project']  = $enquiry->enquiry_project;
+        );
 
-        $data['enquiry_enq_referance']  = $enquiry->enquiry_enq_referance;
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_product_detail',$cond1,$joins1);
 
-        $contact_details = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
-        
-        $data['contact_details'] ="";
+        $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        foreach ($contact_details as $contact) {
-            $data['contact_details'] .= '<option value="' . $contact->contact_id . '"';
-        
-            if ($contact->contact_id == $enquiry->enquiry_contact_person) {
-                $data['contact_details'] .= ' selected'; // Add a space before 'selected'
-            }
-        
-            $data['contact_details'] .= '>' . $contact->contact_person . '</option>';
-        }
+        $cond2 = array('contact_customer_creation'=>$enquiry->enquiry_customer);
 
-        $sales_executives = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
 
-        $data['sales_executive'] = "";
 
-        foreach($sales_executives as $sale_exce)
+        $employes = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+         
+        $data['enquiry_reff']       = $enquiry->enquiry_reff;
+
+        $data['enquiry_date']       = date('d-M-Y',strtotime($enquiry->enquiry_date));
+
+        $data['enquiry_source']     = $enquiry->enquiry_source;
+
+        $data['enquiry_time_frame'] = date('d-M-Y',strtotime($enquiry->enquiry_time_frame));
+
+        $data['enquiry_project']    = $enquiry->enquiry_project;
+
+        $data['enquiry_id']    = $enquiry->enquiry_id;
+
+
+        $data['customer_creation'] ="";
+
+        foreach($customer_creation as $cus_creation)
         {
-            $data['sales_executive'] .='<option value="'.$sale_exce->se_id.'"';
-
-            if($sale_exce->se_id == $enquiry->enquiry_sales_executive)
+            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($cus_creation->cc_id  == $enquiry->enquiry_customer)
             {
-                $data['sales_executive'] .= ' selected';
+                $data['customer_creation'] .= ' selected'; 
             }
-            
-            $data['sales_executive'] .='>'.$sale_exce->se_name.'</option>';
+        
+            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
         }
 
-        $employees = $this->common_model->FetchAllOrder('employees','employees_id','desc');
 
-        $data['employees'] = "";
+        $data['contact_person'] ="";
 
-        foreach($employees as $employ)
+        foreach($contact_details as $cont_det)
         {
-            $data['employees'] .='<option value="'.$employ->employees_id.'"';
-
-                if($employ->employees_id == $enquiry->enquiry_employees)
-                {
-                    $data['employees'] .= ' selected';
-                }
-            
-            $data['employees'] .='>'.$employ->employees_name.'</option>';
+            $data['contact_person'] .= '<option value="' .$cont_det->contact_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($cont_det->contact_id   == $enquiry->enquiry_contact_person)
+            {
+                $data['contact_person'] .= ' selected'; 
+            }
+        
+            $data['contact_person'] .= '>' . $cont_det->contact_person. '</option>';
         }
 
+
+        $data['assigned_to'] ="";
+
+        foreach($employes as $employ)
+        {
+            $data['assigned_to'] .= '<option value="' .$employ->employees_id . '"'; 
+        
+            // Check if the current product head is selected
+            if ($employ->employees_id    == $enquiry->enquiry_assign_to)
+            {
+                $data['assigned_to'] .= ' selected'; 
+            }
+        
+            $data['assigned_to'] .= '>' . $employ->employees_name. '</option>';
+        }
+
+         
+        $data['prod_details'] = "";
+        
+        $i=1;
+
+        foreach($product_details_data as $prod_det)
+        {
+            $data['prod_details'] .='<tr class="prod_row1">
+            <td class="si_no1">'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>R
+            <td>'.$prod_det->pd_unit.'</td>
+            <td>'.$prod_det->pd_quantity.'</td>
+            <td>
+                <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+	            <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pd_id.'" data-toggle="tooltip"  data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            </td>
+            </tr>'; 
+
+            $i++;  
+        }
+        
+       
         echo json_encode($data);
 
-       
     }
 
 
@@ -486,11 +530,133 @@ class Enquiry extends BaseController
 
         $your_date = strtotime("1 day", strtotime($date));
      
-        $data['increment_date_date'] = date("Y-m-d", $your_date);
+        $data['increment_date_date'] = date("d-M-Y", $your_date);
 
         echo json_encode($data);
     }
 
+    public function FetchSingleProd()
+    {
+        $cond = array('pd_id' => $this->request->getPost('ID'));
+
+        $joins = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'pd_product_detail',
+            ),
+            
+
+        );
+
+        $prod_det = $this->common_model->SingleRowJoin('crm_product_detail',$cond,$joins);
+
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+       
+
+        $data['prod_details'] ="";  
+
+       
+            $data['prod_details'] .='<tr>
+            <td><input type="text"   value="1" class="form-control " readonly></td>
+            <td> 
+                    <select class="form-select" name="pd_product_detail" required>';
+                            
+                    foreach($products as $prod){
+                        $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                        if($prod->product_id == $prod_det->pd_product_detail){ $data['prod_details'] .= "selected"; }
+                        $data['prod_details'] .='>'.$prod->product_details.'</option>';
+                    }
+                $data['prod_details'] .='</select>
+            </td>
+
+            <td><input type="text" name="pd_unit"  value="'.$prod_det->pd_unit.'" class="form-control " required></td>
+            <td> <input type="number" name="pd_quantity" value="'.$prod_det->pd_quantity.'" class="form-control " required></td>
+            <input type="hidden" name="pd_id" value="'.$prod_det->pd_id .'">
+            </tr>'; 
+
+          
+       
+		
+        echo json_encode($data);
+
+        
+    }
+
+
+    //update single product
+
+    public function UpdateSingleEnquiry()
+    {
+        $cond = array('pd_id' => $this->request->getPost('pd_id'));
+        
+        $update_data = $this->request->getPost();
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('pd_id', $update_data)) 
+        {
+            unset($update_data['pd_id']);
+        }    
+        
+        $this->common_model->EditData($update_data,$cond,'crm_product_detail');
+
+        $single_product = $this->common_model->SingleRow('crm_product_detail',$cond);
+
+        $data['enquiry_id'] = $single_product->pd_enquiry_id; 
+
+        echo json_encode($data);  
+ 
+    }
+
+    //delete single Product
+
+    public function DeleteProduct()
+    {
+        $cond = array('pd_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_product_detail',$cond);
+    }
+
+
+    //edit add single product
+
+    public function AddSingleProduct()
+    {
+        $insert_data = $this->request->getPost();
+
+        $prod_det = $this->common_model->InsertData('crm_product_detail',$insert_data);
+
+        $cond  = array('pd_id' => $prod_det);
+        
+        $enquiry_prod = $this->common_model->SingleRow('crm_product_detail',$cond);
+
+        $data['enquiry_id'] = $enquiry_prod->pd_enquiry_id;
+
+        echo json_encode($data);
+    }
+
+
+    public function FetchContact()
+    {
+        $cond = array('contact_customer_creation' => $this->request->getPost('custID'));
+        
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+        
+        $data['contact_person'] ="<option value='' selected disabled>Select Contact Person</option>";
+
+        foreach($contact_details as $cont_det)
+        {
+            $data['contact_person'] .= '<option value="' .$cont_det->contact_id . '"'; 
+        
+        
+            $data['contact_person'] .= '>' . $cont_det->contact_person. '</option>';
+        }
+
+        echo json_encode($data);
+
+
+    }
 
 
 

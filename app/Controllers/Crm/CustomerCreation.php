@@ -103,29 +103,6 @@ class CustomerCreation extends BaseController
 
 
 
-    //search droup drown (GL account Type)
-    /*public function FetchTypes1()
-    {
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_types','at_name','asc',$term,$start,$end);
-
-        $data['total_count'] =count($data['result']);
-
-        return json_encode($data);
-
-    }*/
-
-
-
-    
-
-
 
     //view page
     public function index()
@@ -164,7 +141,8 @@ class CustomerCreation extends BaseController
     public function AddTab2()
     {
        
-        if($_POST){
+        if($_POST)
+        {
 	        if(!empty($_POST['contact_person']))
 			{
 			    $count =  count($_POST['contact_person']);
@@ -175,15 +153,15 @@ class CustomerCreation extends BaseController
 					{
 							
 					    $insert_data  	= array(  
-							'contact_person'            =>  $_POST['contact_person'][$j],
+							
+                            'contact_person'            =>  $_POST['contact_person'][$j],
 							'contact_designation'       =>  $_POST['contact_designation'][$j],
 							'contact_mobile'            =>  $_POST['contact_mobile'][$j],
 						    'contact_email'             =>  $_POST['contact_email'][$j],
                             'contact_customer_creation' =>  $_POST['contact_customer_creation'],
 	  
 					    );
-					
-							
+
 				        $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
 				
 				    } 
@@ -207,10 +185,12 @@ class CustomerCreation extends BaseController
         }
 
         // Remove unnecessary unset statements for date fields
-
+       
         $update_data['cc_cr_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_cr_expiry")));
-        $update_data['cc_est_id_attach'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_attach")));
-        $update_data['cc_qid_attach'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_attach")));
+
+        
+        $update_data['cc_est_id_expery'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_expery")));
+        $update_data['cc_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_expiry")));
 
         // Handle file upload
         if ($_FILES['cc_attach_cr']['name'] !== '') {
@@ -232,6 +212,10 @@ class CustomerCreation extends BaseController
         $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
     }
 
+
+
+    
+
     // Function to handle file upload
     public function uploadFile($fieldName, $uploadPath)
     {
@@ -247,14 +231,18 @@ class CustomerCreation extends BaseController
     }
 
 
+    
+
 
     //update tab1
     public function UpdateTab1()
     {   
         $cond = array('cc_id' => $this->request->getPost('cc_id'));
-
+        
+        
         $update_data = $this->request->getPost();
-       
+
+   
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('cc_id', $update_data)) 
         {
@@ -266,82 +254,101 @@ class CustomerCreation extends BaseController
         $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
 
         $data['customer_creation_id'] = $this->request->getPost('cc_id');
+       
 
        echo json_encode($data);
     }
 
 
-    
-    //update tab2
-    public function UpdateTab2()
-    {
-        if($_POST)
-        {
-	        if(!empty($_POST['contact_person']))
-			{
-			    $count =  count($_POST['contact_person']);
-					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
-							
-					    $update_data  	= array(  
-							'contact_person'            =>  $_POST['contact_person'][$j],
-							'contact_designation'       =>  $_POST['contact_designation'][$j],
-							'contact_mobile'            =>  $_POST['contact_mobile'][$j],
-						    'contact_email'             =>  $_POST['contact_email'][$j],
-                           // 'contact_customer_creation' =>  $_POST['contact_customer_creation'],
-	  
-					    );
-                       
-                        $cond = array('contact_id' => $_POST['contact_id'][$j]);
-
-						$this->common_model->EditData($update_data,$cond,'crm_contact_details');
-
-				       // $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
-				
-				    } 
-				}
-			}
-		
-        }
-       
-    }
 
     //update tab3
 
     public function UpdateTab3()
     {
         $cond = array('cc_id' => $this->request->getPost('cc_id'));
+
+        $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
+         
+        
         $update_data = $this->request->getPost();
 
+       
+      
         if (array_key_exists('cc_id', $update_data)) {
             unset($update_data['cc_id']);
         }
 
         
-        $update_data['cc_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_expiry_date")));
-        $update_data['cc_est_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_expiry_date")));
-        $update_data['cc_id_card_expiry_date'] = date('Y-m-d', strtotime($this->request->getPost("cc_id_card_expiry_date")));
+        $update_data['cc_cr_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_cr_expiry")));
+        $update_data['cc_est_id_expery'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_expery")));
+        $update_data['cc_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_expiry")));
 
         // Handle file upload
         if (isset($_FILES['cc_attach_cr']) && $_FILES['cc_attach_cr']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
+            
+               
+            if($this->request->getFile('cc_attach_cr') != '' ){ 
+               
+                $previousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_attach_cr;
+               
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $ccAttachCrFileName = $this->uploadFile('cc_attach_cr', 'uploads/CustomerCreation');
+        
+            // Update the data with the new image filename
             $update_data['cc_attach_cr'] = $ccAttachCrFileName;
         }
+
+
+
         
         // Handle file upload for 'cc_est_attach_card'
-        if (isset($_FILES['cc_est_attach_card']) && $_FILES['cc_est_attach_card']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('cc_est_attach_card','uploads/CustomerCreation');
-            $update_data['cc_est_attach_card'] = $ccAttachCrFileName;
+        if (isset($_FILES['cc_est_id_attach']) && $_FILES['cc_est_id_attach']['name'] !== '') {
+            
+               
+            if($this->request->getFile('cc_est_id_attach') != '' ){ 
+               
+                $estPreviousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_est_id_attach;
+               
+                if (file_exists($estPreviousImagePath)) {
+                    unlink($estPreviousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $ccEstIdAttachFileName = $this->uploadFile('cc_est_id_attach', 'uploads/CustomerCreation');
+        
+            // Update the data with the new image filename
+            $update_data['cc_est_id_attach'] = $ccEstIdAttachFileName;
         }
+
+
         
         // Handle file upload for 'cc_id_card'
-        if (isset($_FILES['cc_id_card']) && $_FILES['cc_id_card']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('cc_id_card','uploads/CustomerCreation');
-            $update_data['cc_id_card'] = $ccAttachCrFileName;
+        if (isset($_FILES['cc_qid_attach']) && $_FILES['cc_qid_attach']['name'] !== '') {
+            
+               
+            if($this->request->getFile('cc_qid_attach') != '' ){ 
+               
+                $qidPreviousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_qid_attach;
+               
+                if (file_exists($qidPreviousImagePath)) {
+                    unlink($qidPreviousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $ccQidAttachFileName = $this->uploadFile('cc_qid_attach', 'uploads/CustomerCreation');
+        
+            // Update the data with the new image filename
+            $update_data['cc_qid_attach'] = $ccQidAttachFileName;
         }
+
+
 
 
         $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
@@ -365,16 +372,14 @@ class CustomerCreation extends BaseController
             'fk'    => 'cc_account_id',
             ),
             array(
-            'table' => 'accounts_account_types',
-            'pk'    => 'at_id',
-            'fk'    => 'cc_account_type',
+            'table' => 'accounts_account_heads',
+            'pk'    => 'ah_id',
+            'fk'    => 'cc_account_head',
             ),
 
         );
 
         $cus_creation = $this->common_model->SingleRowJoin('crm_customer_creation',$cond,$joins);
-
-        
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
 
@@ -382,76 +387,68 @@ class CustomerCreation extends BaseController
 
         $account_types = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
         
-        $data['cc_customer_name'] = $cus_creation->cc_customer_name;
+        $data['customer_name']      = $cus_creation->cc_customer_name;
 
-        $data['cc_post_box']      = $cus_creation->cc_post_box;
+        $data['account_name']       = $cus_creation->ah_account_name;
 
-        $data['cc_telephone']     = $cus_creation->cc_telephone;
+        $data['account_id']         = $cus_creation->cc_account_id;
 
-        $data['cc_fax'] = $cus_creation->cc_fax;
+        $data['post_box']           = $cus_creation->cc_post_box;
 
-        $data['cc_email'] = $cus_creation->cc_email;
+        $data['cc_fax']             = $cus_creation->cc_fax;
 
-        $data['cc_credit_term'] = $cus_creation->cc_credit_term;
+        $data['phone']              = $cus_creation->cc_telephone;
 
-        $data['cc_credit_period'] = $cus_creation->cc_credit_period;
+        $data['fax']                = $cus_creation->cc_fax;
 
-        $data['cc_credit_limit'] = $cus_creation->cc_credit_limit;
+        $data['email']              = $cus_creation->cc_email;
 
-        $data['cc_cr_number'] = $cus_creation->cc_cr_number;
+        $data['credit_term']        = $cus_creation->cc_credit_term;
 
-        $data['cc_expiry_date'] = $cus_creation->cc_expiry_date;
+        $data['credit_period']      = $cus_creation->cc_credit_period;
 
-        $data['cc_est_card_no'] = $cus_creation->cc_est_card_no;
+        $data['credit_limit']       = $cus_creation->cc_credit_limit;
 
-        $data['cc_est_expiry_date'] = $cus_creation->cc_est_expiry_date;
+        $data['cr_num']             = $cus_creation->cc_cr_number;
 
-        $data['cc_est_signatory_name'] = $cus_creation->cc_est_signatory_name	;
+        $data['cr_expiry']          = date('d-M-Y',strtotime($cus_creation->cc_cr_expiry));
 
-        $data['cc_card_number'] = $cus_creation->cc_card_number;
+        $data['est_id']             = $cus_creation->cc_est_id;
 
-        $data['cc_id_card_expiry_date'] = $cus_creation->cc_id_card_expiry_date;
+        $data['est_id_expery']      = date('d-M-Y',strtotime($cus_creation->cc_est_id_expery));
 
-        $data['ca_account_id'] = $cus_creation->ca_account_id;
+        $data['signatory_name']     = $cus_creation->cc_signatory_name;
 
-        $data['cc_account_type'] = $cus_creation->at_name;
+        $data['qid_number']         = $cus_creation->cc_qid_number;
 
+        $data['qid_expiry']         = date('d-M-Y',strtotime($cus_creation->cc_qid_expiry));
 
-        $data['acc_type'] ="";
+      
+        $data['cc_attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
 
-        foreach($account_types as $account)
-        {
-            $data['acc_type'] .='<option value='.$account->at_id.'';
-            if($account->at_id  == $cus_creation->cc_account_type){
-            $data['acc_type'] .=    " selected ";}
-            $data['acc_type'] .='>' .$account->at_name. '</option>'; 
-        }
-       
-       
+        $data['cc_est_id_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_est_id_attach) . '" target="_blank">View</a>';  
+         
+        $data['cc_qid_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_qid_attach) . '" target="_blank">View</a>';  
+         
+         
          
         $i=1;
-        $data['contact'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >No</td><td>Contact Person </td><td>Designation</td><td>Mobile</td><td>Email</td></tr>';
+       
+        $data['contact'] ='';
 
         foreach($contact_details as $contact)
         {
-            $data['contact'] .='<tr>
-            <td>'.$i.'</td>
-            <td><input type="text"   value='.$contact->contact_person.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_designation.' class="form-control " readonly></td>
-            <td><input type="text"   value='.$contact->contact_mobile.' class="form-control " readonly></td>
-            <td> <input type="email" value='.$contact->contact_email.' class="form-control " readonly></td>
+            $data['contact'] .='<tr class="prod_row">
+            <td class="si_no">'.$i.'</td>
+            <td><input type="text"   value="'.$contact->contact_person.'" class="form-control" readonly></td>
+            <td><input type="text"   value="'.$contact->contact_designation.'" class="form-control" readonly></td>
+            <td><input type="text"   value="'.$contact->contact_mobile.'" class="form-control" readonly></td>
+            <td> <input type="email" value="'.$contact->contact_email.'" class="form-control" readonly></td>
             </tr>'; 
             $i++;  
         }
         
-        $data['contact'] .= '</tbody></table>';
-
-        $data['attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
-
-        $data['attach_est_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
-        
-        $data['attach_id_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_id_card) . '" target="_blank">View</a>';  
-
+       
         
         echo json_encode($data);
     }
@@ -465,6 +462,8 @@ class CustomerCreation extends BaseController
 
         $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
 
+        $account_heads = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','desc');
+
         $charts_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
 
         $account_types = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
@@ -475,93 +474,94 @@ class CustomerCreation extends BaseController
 
         $customer_creation_id = $this->request->getPost('ID');
 
-        $data['cc_customer_name']        = $customer_creation->cc_customer_name;
+        $data['customer_name']    = $customer_creation->cc_customer_name;
 
-        $data['cc_post_box']             = $customer_creation->cc_post_box;
+        $data['account_id']       = $customer_creation->cc_account_id;
 
-        $data['cc_telephone']            = $customer_creation->cc_telephone;
+        $data['post_box']         = $customer_creation->cc_post_box;
 
-        $data['cc_fax']                  = $customer_creation->cc_fax;
+        $data['telephone']        = $customer_creation->cc_telephone;
 
-        $data['cc_email']                = $customer_creation->cc_email;
+        $data['fax']              = $customer_creation->cc_fax;
 
-        $data['cc_credit_term']          = $customer_creation->cc_credit_term;
+        $data['email']            = $customer_creation->cc_email;
 
-        $data['cc_credit_period']        = $customer_creation->cc_credit_period;
+        $data['credit_term']      = $customer_creation->cc_credit_term;
 
-        $data['cc_credit_limit']         = $customer_creation->cc_credit_limit;
+        $data['credit_period']    = $customer_creation->cc_credit_period;
 
-        $data['cc_cr_number']            = $customer_creation->cc_cr_number;
+        $data['credit_limit']     = $customer_creation->cc_credit_limit;
 
-        $data['cc_expiry_date']          = $customer_creation->cc_expiry_date;
+        $data['cust_id']          = $customer_creation->cc_id;
 
-        $data['cc_est_card_no']          = $customer_creation->cc_est_card_no;
+        $data['cr_no']            = $customer_creation->cc_cr_number;
 
-        $data['cc_est_expiry_date']      = $customer_creation->cc_est_expiry_date;
+        $data['cr_expiry']        = date('d-M-Y',strtotime($customer_creation->cc_cr_expiry));
 
-        $data['cc_est_signatory_name']   = $customer_creation->cc_est_signatory_name;
+        $data['est_id']           = $customer_creation->cc_est_id;
 
-        $data['cc_card_number']          = $customer_creation->cc_card_number;
-
-        $data['cc_id_card_expiry_date']  = $customer_creation->cc_id_card_expiry_date;
-
-        $data['cc_id']                   = $customer_creation->cc_id;
-
-        $data['attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+        $data['est_id_expery']    = date('d-M-Y',strtotime($customer_creation->cc_est_id_expery));
         
-        $data['attach_est_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_est_attach_card) . '" target="_blank">View</a>';  
-	
-	    $data['attach_id_card'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_id_card) . '" target="_blank">View</a>';  
-    
-        $data['account_type_out'] ="";
+        $data['signatory_name']   = $customer_creation->cc_signatory_name;
 
-        foreach($account_types as $account_type)
+        $data['qid_number']       = $customer_creation->cc_qid_number;
+
+        $data['qid_expiry']       = date('d-M-Y',strtotime($customer_creation->cc_qid_expiry));
+
+        
+        /*image section start*/
+
+        $data['cc_attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+        
+        $data['cc_est_id_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_est_id_attach) . '" target="_blank">View</a>';  
+	 
+	    $data['cc_qid_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_qid_attach) . '" target="_blank">View</a>';  
+	 
+        /*image section end*/
+       
+
+
+        
+        $data['account_head'] ="";
+
+        foreach($account_heads as $account_head)
         {
-            $data['account_type_out'] .= '<option value="' .$account_type->at_id. '"'; 
+            $data['account_head'] .= '<option value="' .$account_head->ah_id. '"'; 
         
             // Check if the current product head is selected
-            if ($account_type->at_id == $customer_creation->cc_account_type)
+            if ($account_head->ah_id == $customer_creation->cc_account_head)
             {
-                $data['account_type_out'] .= ' selected'; 
+                $data['account_head'] .= ' selected'; 
             }
         
-            $data['account_type_out'] .= '>' . $account_type->at_name . '</option>';
+            $data['account_head'] .= '>' . $account_head->ah_account_name . '</option>';
         }
 
 
-        $data['chart_account_type'] ="";
 
-        foreach($charts_accounts as $chart_account)
-        {
-            $data['chart_account_type'] .= '<option value="' .$chart_account->ca_id. '"'; 
-        
-            // Check if the current product head is selected
-            if ($chart_account->ca_id == $customer_creation->cc_account_id)
-            {
-                $data['chart_account_type'] .= ' selected'; 
-            }
-        
-            $data['chart_account_type'] .= '>' . $chart_account->ca_account_id . '</option>';
-        }
+        /*contact table start*/
 
         $i=1;
-        $data['contact'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >No</td><td>Contact Person </td><td>Designation</td><td>Mobile</td><td>Email</td><td>Action</td></tr>';
-
+        $data['contact'] ="";
         foreach($contact_details as $contact)
         {
-            $data['contact'] .='<tr id="'.$contact->contact_id.'">
-            <td>'.$i.'</td>
-            <td><input type="text" name="contact_person[]"  value='.$contact->contact_person.' class="form-control" required></td>
-            <td><input type="text" name="contact_designation[]"  value='.$contact->contact_designation.' class="form-control" required></td>
-            <td><input type="text" name="contact_mobile[]"  value='.$contact->contact_mobile.' class="form-control" required></td>
-            <td> <input type="email" name="contact_email[]" value='.$contact->contact_email.' class="form-control" required></td>
-            <td class="row_remove" data-id="'.$contact->contact_id.'"><i class="ri-close-line"></i>Remove</td>
-            </tr><input type="hidden" name="contact_id[]" value='.$contact->contact_id.'>'; 
+            $data['contact'] .='<tr class="edit_prod_row" id="'.$contact->contact_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$contact->contact_person.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$contact->contact_email.'" class="form-control" readonly></td>
+            <td class="row_remove delete_contact" data-id="'.$contact->contact_id.'"><i class="ri-close-line"></i>Remove</td>
+            <td class="row_contact_edit row_edit" data-id="'.$contact->contact_id.'"><i class="ri-pencil-fill"></i>Edit</td>
+           
+            </tr>
+            <input type="hidden" class="contact_cust" value="'.$contact->contact_customer_creation.'">
+            '; 
             $i++;  
+
         }
-        
-        $data['contact'] .= '</tbody> <tbody class="travelerinfo"></tbody></table><div class="edit_add_more_div"><span class="edit_add_more update_add_more" data-id='.$customer_creation_id.'><i class="ri-add-circle-line"></i>Add More</span></div><div class="modal-footer justify-content-center"><button class="btn btn btn-success">Save</button></div>';
-        
+       
+
         echo json_encode($data);
     }
 
@@ -587,6 +587,10 @@ class CustomerCreation extends BaseController
 
         $cus_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
 
+        $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
+
         @unlink('uploads/CustomerCreation/'.$cus_creation->cc_attach_cr);
 
         @unlink('uploads/CustomerCreation/'.$cus_creation->cc_est_attach_card);
@@ -595,11 +599,27 @@ class CustomerCreation extends BaseController
  
         $this->common_model->DeleteData('crm_customer_creation',$cond);
  
-        $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
-
         $this->common_model->DeleteData('crm_contact_details',$cond1);
 
-        
+        //delete enquiry
+
+        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
+
+        if(!empty($enquiry))
+        {
+           
+            $enquiry_id = $enquiry->enquiry_id;
+
+            $cond3 = array('pd_enquiry_id' =>  $enquiry_id);
+            
+            $this->common_model->DeleteData('crm_enquiry',$cond2);
+
+            $this->common_model->DeleteData('crm_product_detail',$cond3);
+
+        }
+
+
+
     }
 
     //add contact (in edit)
@@ -621,6 +641,13 @@ class CustomerCreation extends BaseController
 
         $customer_creation = $this->common_model->FetchWhere('crm_customer_creation',$cond2);
 
+
+        $cond3 = array('cc_id' => $this->request->getPost('custID'));
+
+        
+
+      
+
         if(empty($customer_creation))
         {   
            
@@ -637,10 +664,21 @@ class CustomerCreation extends BaseController
         {   
           
             $cust_creat = $this->common_model->FetchWhereLimit($this->request->getPost('ID'),'cc_account_head','cc_account_id','DESC','crm_customer_creation',0,1);
-           
-            $cust_creat_data = $cust_creat->cc_account_id;
+            
+            $cust_check_data = $this->common_model->CheckTwiceCond('crm_customer_creation',$cond2,$cond3);
 
-            $data['account_id'] = ++$cust_creat_data;
+            if(!empty($cust_check_data))
+            {
+                $data['account_id'] = $cust_check_data->cc_account_id;
+            }
+            else
+            {
+
+                $cust_creat_data = $cust_creat->cc_account_id;
+
+                $data['account_id'] = ++$cust_creat_data;
+
+            }
            
         }
 
@@ -648,6 +686,73 @@ class CustomerCreation extends BaseController
 
     }
 
+    public function FetchSingleContact()
+    {
+        $cond = array('contact_id' => $this->request->getPost('ID'));
+        
+        $single_contact = $this->common_model->SingleRow('crm_contact_details',$cond);
+         
+        $data['single_contact'] = "";
+        
+        $data['single_contact'] .='<tr>
+                                    <td>1</td>
+                                    <td><input type=text"  name="contact_person" class="form-control" value="'.$single_contact->contact_person.'"></td>
+                                    <td><input type="text" name="contact_designation" class="form-control" value="'.$single_contact->contact_designation.'"></td>
+                                    <td><input type="text" name="contact_mobile" class="form-control cond_telephone" value="'.$single_contact->contact_mobile.'"></td>
+                                    <td><input type="text" name="contact_email" class="form-control" value='.$single_contact->contact_email.'></td>
+	                                <input type="hidden"   name="contact_id" value='.$single_contact->contact_id.'>
+                                </tr>';
+  
+        echo json_encode($data);
+
+    }
+
+
+    public function UpdateSingleContact()
+    {
+        $cond = array('contact_id' => $this->request->getPost('contact_id'));
+        
+        
+        $update_data = $this->request->getPost();
+
+       
+
+   
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('contact_id', $update_data)) 
+        {
+             unset($update_data['contact_id']);
+        }    
+        
+        if (array_key_exists('contact_customer_creation', $update_data)) 
+        {
+             unset($update_data['contact_customer_creation']);
+        }   
+
+       
+
+        $this->common_model->EditData($update_data,$cond,'crm_contact_details');
+
+        $single_contact = $this->common_model->SingleRow('crm_contact_details',$cond);
+
+        $data['customer_creation_id'] = $single_contact->contact_customer_creation; 
+
+
+        echo json_encode($data);
+    }
+
+
+    public function AddSingleContact()
+    {
+        $insert_data = $this->request->getPost();
+
+        $this->common_model->InsertData('crm_contact_details',$insert_data);
+
+        $data['cust_id'] = $this->request->getPost('contact_customer_creation');
+        
+        echo json_encode($data);
+        
+    }
 
 
 

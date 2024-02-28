@@ -220,7 +220,6 @@ class CreditInvoice extends BaseController
             }
 		} 
 
-        //echo json_encode($data);
 
     }
 

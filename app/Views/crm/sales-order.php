@@ -48,9 +48,9 @@
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
                         <!--sales order section start-->
-                        <div class="modal fade" id="SalesOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="AddSalesOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" id="add_sales_order_form">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
@@ -98,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="so_date" id="" class="form-control" required>
+                                                                        <input type="text" name="so_date" id="" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -121,9 +121,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select droup_customer_id" name="so_customer" id="customer_id" style="width:80%;" required>
                                                                             <option value="" selected disabled>Select Customer</option>
-                                                                            <?php foreach($customer_creation as $c_creation){?> 
-                                                                                <option value="<?php echo $c_creation->cc_id;?>"><?php echo $c_creation->cc_customer_name;?></option>
-                                                                            <?php } ?>
+                                                                           
                                                                         </select>
                                                                     </div>
 
@@ -285,11 +283,9 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        
-                                                                       
-                                                                        <input type="date" name="so_delivery_term" id="delivery_term" class="form-control" required>
+                                                                      
+                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker" required>
                                                             
-                                                                        
                                                                     </div>
 
                                                                 </div> 
@@ -371,18 +367,7 @@
                                                 </div>
 
 
-                                                <!--<div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button type="submit">Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>--->
+                                               
 
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -394,7 +379,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control" required>
+                                                                <input type="file" name=""  class="form-control">
                                                             </div>
 
                                                         </div>
@@ -444,30 +429,48 @@
                         <!--sales order section end-->
 
 
-                         <!--Customer Creation modal content start-->
-                         <div class="modal fade" id="CustomerCreation" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                        <!--sales order edit section start-->
+
+                        <div class="modal fade" id="EditSalesOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form1">
+		                        <form  class="Dashboard-form class" id="add_sales_order_form">
 			                        <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close modal_close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
+
 				                        <div class="modal-body">
 
-                                            <div class="sub_heading">
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn customer_detail_modal">Customer Details</a>
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn contact_detail_modal">Contact Details</a>
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn offical_document_modal">Official Documents</a>
-                                            </div>   
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
                                             <div class="live-preview">
+                                                
                                                 <div class="row">
+                                                 
                                                     <div class="col-lg-6">
+
                                                         <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_reffer_no" id="" value="" class="form-control edit_reff" required readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
@@ -475,11 +478,11 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Customer Name</label>
+                                                                        <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_customer_name" class="form-control" required>
+                                                                        <input type="text" name="so_date" id="" class="form-control datepicker edit_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -490,22 +493,114 @@
 
 
                                                             <!-- Single Row Start -->
+
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Account Head</label>
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required></select>
-                                                                       
+                                                                        <select class="form-select edit_customer" name="so_customer" id="customer_id" required>
+                                                                            <option value="" selected disabled>Select Customer</option>
+                                                                           
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Quot Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <select class="form-select quotation_ref edit_quot" name="so_quotation_ref" id="">
+                                                                            <option value="" selected disabled>Quotation Ref</option>
+                                                               
+                                                                        </select>
                                                                         
                                                                     </div>
 
                                                                 </div> 
-                                                            </div>
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">LPO Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_lpo" id="qd_quotation_number_id" class="form-control edit_lpo" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Executive</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select enqinput sales_executive_clz edit_executive" name="so_sales_executive"  required>
+                                                                            <option value="" selected disabled>Sales Executive</option>
+                                                                            <?php foreach($sales_executive as $sale_exc){?> 
+                                                                                <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
+                                                                            <?php } ?>
+                                                                            
+                                                                
+                                                                        </select>
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
 
                                                             <!-- ### --> 
 
@@ -516,11 +611,21 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Account ID</label>
+                                                                        <label for="basicInput" class="form-label edit_contact_person">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_account_id" class="form-control account_id" required>
+                                                                        <select class="form-select contact_person_clz" name="so_contact_person" style="width: 80%;" required>
+                                                                            <option value="" selected disabled>Contact Person</option>
+                                                                            <!--<?php foreach($contacts as $cont){?> 
+                                                                            
+                                                                                <option value="<?php echo $cont->contact_id; ?>"><?php echo $cont->contact_person;?></option>
+                                                                                
+                                                                            <?php } ?>--->
+                                                                
+                                                                        </select>
+                                                                       
+                                                                       
                                                                     </div>
 
                                                                 </div> 
@@ -529,6 +634,28 @@
 
                                                             <!-- ### -->
 
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label edit_payment_term">Payment Term</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_payment_term"  class="form-control payment_term" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
@@ -536,144 +663,150 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Post Box</label>
+                                                                        <label for="basicInput" class="form-label">Delivery Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_post_box" class="form-control" required>
+                                                                        
+                                                                       
+                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker edit_delivery_date" required>
+                                                            
+                                                                        
                                                                     </div>
 
                                                                 </div> 
-                                                            </div>
 
-                                                            <!-- ### -->  
+                                                            </div>    
 
+                                                            <!-- ### --> 
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
+
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Telephone</label>
+                                                                        <label for="basicInput" class="form-label">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_telephone" id="cc_telephone"  class="form-control"  required>
+                                                                        <input type="text" name="so_project"  class="form-control project edit_project" required>
                                                                     </div>
 
                                                                 </div> 
-                                                            </div>
+
+                                                            </div>   
+                                                            
+                                                            <input type="hidden" name="" class="edit_so_id">
 
                                                             <!-- ### --> 
 
 
-                                                             <!--Single Row Start-->
-                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Fax</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_fax" id="cc_fax" class="form-control" required>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div> 
-
-                                                            <!-- ### -->  
+                                                             
 
 
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Email</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="email" name="cc_email" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
 
                                                         </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            
+                                                           
+                                                        </thead>
+                                                        
+                                                        <tbody  class="travelerinfo"></tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="8" align="center" class="tecs">
+                                                                    <span class="add_icon edit_add_prod"><i class="ri-add-circle-line"></i>Add </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="2">Amount in words</td>
+                                                                <td colspan="3" class="sales_order_amount_in_word"></td>
+                                                                <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="so_amount_total" class="amount_total form-control" readonly></td>
+                                                            </tr>
+                                                            
+                                                          
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                               
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-3">
+                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="file" name=""  class="form-control">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Term</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_credit_term" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Period (Days)</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_period" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Limit</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_limit" class="form-control" required>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div> 
-
-                                                            <!-- ### -->
-
-                                                            <div class="modal-footer justify-content-center">
-                                                                <button  class="btn btn btn-success">Save</button>
-                                                            </div>
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
                                                         </div>
+
                                                     </div>
-                                                    
                                                 </div>
-                                            </div>   
+                                                
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
 					                           
-						                       
-					
-					                        
+						                    
 				                        </div>
+
+
                                         
 			                        </div>
 		                        </form>
@@ -681,357 +814,471 @@
 	                        </div>
                         </div>
 
+
+                        <!--edit add section start-->
+
+                        
+                        <div class="modal fade" id="EditAddProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="edit_add_prod_form">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+                                            <button type="button" class="btn-close edit_close_sub_modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <tbody class="travelerinfo">
+                                                            
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                
+                                                            </tr>
+
+                                                            <tr class="edit_prod_row">
+                                                                <td style="width: 10%;" class="">1</td>
+                                                                <td>
+                                                                    <select class="form-select  edit_product_det spd_product_details" name="spd_product_details" required>
+                                                                        <option selected>Select Product Description</option>
+                                                                       
+                                                                    </select>
+                                                                </td>
+
+                                                                <td><input type="text"   name="spd_unit" class="form-control" required></td>
+                                                                <td><input type="number" name="spd_quantity" class="form-control" required></td>
+                                                                <td><input type="number" name="spd_rate" class="form-control" required></td>
+                                                                <td><input type="number" name="spd_discount" class="form-control" required></td>
+                                                                <td><input type="number" name="spd_amount" class="form-control" required></td>
+                                                                
+                                                                <input type="hidden" name="spd_id" class="edit_hidden_sales_id">
+
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                       
+                                                       
+                                                    </table>
+                                                </div>
+
+
+                                                <div class="modal-footer justify-content-center">
+                                                    
+                                                    <button class="btn btn btn-success">Save</button>
+
+                                                </div>
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+					                           
+						                    
+				                        </div>
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        <!--edit add section end-->
+
+
+
+                        <!---###sales order edit section end####-->
+
+
+
+                        <!--view sales order start-->
+
+
+                        <div class="modal fade" id="ViewSalesOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_reffer_no" id="" value="" class="form-control view_reff" required readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_date" id="" class="form-control view_date" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <!--<select class="form-select view_customer" name="so_customer" id="customer_id" readonly>
+                                                                            <option value="" selected disabled>Select Customer</option>
+                                                                           
+                                                                        </select>-->
+                                                                        <input type="text" name="so_customer" id="customer_id" class="form-control view_customer" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Quot Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <!--<select class="form-select quotation_ref view_quot" name="so_quotation_ref" id="" readonly>
+                                                                            <option value="" selected disabled>Quotation Ref</option>
+                                                               
+                                                                        </select>--->
+
+                                                                        <input type="text" name="so_quotation_ref" id="" class="form-control quotation_ref view_quot" readonly>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">LPO Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_lpo" id="qd_quotation_number_id" class="form-control view_lpo" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Executive</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                       
+                                                                        <input type="text" name="so_sales_executive"  class="form-control enqinput sales_executive_clz view_executive" readonly>
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label edit_contact_person">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                       
+
+                                                                        <input type="text" name="so_contact_person"  class="form-control contact_person_clz view_contact_person" readonly>
+                                                                       
+                                                                       
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label edit_payment_term">Payment Term</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_payment_term"  class="form-control payment_term view_payment_term" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Delivery Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                       
+                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker view_delivery_date" readonly>
+                                                            
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="so_project"  class="form-control project view_project" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                             
+
+                                                        </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--attachment section start-->
+
+                                                <div class="card-body">
+                                                    <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                                                        <thead>
+                                                            <tr>
+                                                                
+                                                                <th class="cust_img_rgt_border">File Name</th>
+                                                                <th class="cust_img_rgt_border">Download</th>
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="cust_img_rgt_border view_cr_no_att" ></td>
+                                                                <td class="cust_img_rgt_border view_est_id_att"></td>
+                                                                
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                
+                                                </div>
+
+
+                                                <!--#######-->
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                               
+                                                            </tr>
+                                                            
+                                                           
+                                                        </thead>
+                                                        
+                                                        <tbody  class="travelerinfo view_product_data"></tbody>
+                                                        
+                                                       
+                                                    </table>
+                                                </div>
+
+
+                                                <!--table section end-->
+
+                                              
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
+					                           
+						                    
+				                        </div>
+
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        <!--########-->
+
+
+                        <!--Customer Creation modal content start-->
+
+                        <?= $this->include('crm/add_modal_customer') ?>
+                         
 
                         <!--Customer Creation content end-->
 
 
 
-                         <!--contact detail modal section start-->
+                        <!--contact detail modal section start-->
                          
-                         <div class="modal fade" id="ContactDeatils" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form2">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
-                                            <button type="button" class="btn-close modal_close"  aria-label="Close"></button>
-                                        </div>
-				                        <div class="modal-body">
-
-                                          
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
-                                            <div class="live-preview">
-                                            <table  class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
-                                                            <tr>
-                                                                <td >No</td>
-                                                                <td>Contact Person </td>
-                                                                <td>Designation</td>
-                                                                <td>Mobile</td>
-                                                                <td>Email</td>
-                                                                <td>Action</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td><input type="text" name="contact_person[]" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_designation[]" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_mobile[]"  class="form-control contact_mobile_clz" required></td>
-                                                                <td> <input type="email" name="contact_email[]" class="form-control " required></td>
-                                                                <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tbody class="person-more" class="travelerinfo"></tbody>
-                
-                                                    </table>
-                                                    <input type="hidden" class="customer_creation_id" name="contact_customer_creation">
-                                                    <div class="modal-footer justify-content-center">
-                                                      
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-                                            </div>   
-					                           
-						                       
-					
-					                        
-				                        </div>
-                                        
-			                        </div>
-		                        </form>
-
-	                        </div>
-                        </div>
-
+                        <?= $this->include('crm/add_contact_person') ?>
 
                         <!--contact detail modal section end-->
 
 
-                        <!--official document modal section start-->
-
-                         <div class="modal fade" id="OfficalDocument" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog">
-		                        <form  class="Dashboard-form class" id="add_cus_form3">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Official Documents</h5>
-                                            <button type="button" class="btn-close modal_close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-				                        <div class="modal-body">
-
-                                          
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
-                                            <div class="live-preview">
-                                                
-                                                <div class="row">
-
-                                                    <!--Single Row Start-->
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basiInput" class="form-label">CR No</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_cr_number" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        
-                                                    </div>
-                                                    <!--####-->
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">	CR Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_attach_cr" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">	CR Expiry</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_cr_expiry" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_est_id" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_est_id_attach" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID Expery</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_est_id_expery" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Signatory Name</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="text" name="cc_signatory_name" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Number</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_qid_number" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_qid_attach" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Expiry</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_qid_expiry" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-                                                    <input type="hidden" class="customer_creation_id" name="cc_id">
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-
-
-                                                </div>
-                                                    
-                                            </div>   
-					                           
-						                       
-					
-					                        
-				                        </div>
-                                        
-			                        </div>
-
-		                        </form>
-
-	                        </div>
-                        </div>
-
-                        <!--offical document modal section end-->
-
+                      
                         <!--second contact detail modal section start-->
                          
-                        <div class="modal fade" id="ContactDeatils2" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form4">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
-                                            <button type="button" class="btn-close modal_close_2" aria-label="Close"></button>
-                                        </div>
-				                        <div class="modal-body">
-
-                                          
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
-                                            <div class="live-preview">
-                                            <table  class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
-                                                            <tr>
-                                                                <td >No</td>
-                                                                <td>Contact Person </td>
-                                                                <td>Designation</td>
-                                                                <td>Mobile</td>
-                                                                <td>Email</td>
-                                                                
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td><input type="text" name="contact_person" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_designation" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_mobile"  class="form-control contact_mobile_clz" required></td>
-                                                                <td> <input type="email" name="contact_email" class="form-control " required></td>
-                                                                
-                                                            </tr>
-                                                        </tbody>
-                                                       
-                
-                                                    </table>
-                                                    <input type="hidden" class="customer_creation_id2" name="contact_customer_creation">
-                                                    <div class="modal-footer justify-content-center">
-                                                      
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-                                            </div>   
-					                           
-						                       
-					
-					                        
-				                        </div>
-                                        
-			                        </div>
-		                        </form>
-
-	                        </div>
-                        </div>
-
+                        
 
                         <!--contact detail modal section end-->
-
-                       
 
 
                         <div class="row">
@@ -1039,7 +1286,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Order</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrder" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesOrder" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1098,9 +1345,9 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
     
         /*add section*/    
-          /*add section*/    
+         
         $(function() {
-            var form = $('#add_form1');
+            var form = $('#add_sales_order_form');
             
             form.validate({
                 rules: {
@@ -1118,14 +1365,23 @@
                         data: $(currentForm).serialize(),
                         success: function(data) {
                          
-                           
-                            $('#add_form1')[0].reset();
+                            $('#add_sales_order_form')[0].reset();
                            
                             $('#SalesOrder').modal('hide');
 
+                            $('#customer_id').val('').trigger('change');
+
+                            $('.quotation_ref').val('').trigger('change');
+
+                            $('.sales_executive_clz').val('').trigger('change');
+
+                            $('.contact_person_clz').val('').trigger('change');
+
+                            $('.sales_remove').remove();
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
-                            
+                           
                             
                         }
                     });
@@ -1134,10 +1390,6 @@
         });
 
 
-       
-
-
-       
 
 
         /*product modal submit start*/
@@ -1188,16 +1440,15 @@
         /*product modal submit end*/
 
 
-        /* Product Init Select 2 */
 
-
-        function InitProductSelect2(){
-          $(".add_prod:last").select2({
-            placeholder: "Select Product",
-            theme : "default form-control-",
-            dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+        
+        /*customer droup drown search*/
+        $(".droup_customer_id").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#AddSalesOrder'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                url: "<?= base_url(); ?>Crm/SalesOrder/FetchTypes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1210,10 +1461,13 @@
                     };
                 },
                 processResults: function(data, params) {
-                   
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
@@ -1221,13 +1475,10 @@
                     };
                 },              
             }
-         })
-        }
+         
+        })
+        /*###*/
 
-        InitProductSelect2();
-
-
-        /* ### */
 
        
 
@@ -1243,6 +1494,79 @@
         });
 
         /*product modal end*/
+
+
+       
+        //trigger when form is submitted
+
+        $("#add_office_doc").submit(function(e){
+
+            $('#AddSalesOrder').modal('show');
+
+            return false;
+
+        });
+
+        /*#####*/
+
+
+        
+
+
+        /*close product modal (open enquiry modal)*/
+
+        $('#ContactDeatils2').on('hidden.bs.modal', function () {
+
+            $('#AddSalesOrder').modal('show')
+        })
+
+        /*#####*/
+
+
+        /*add customer contact person section start*/
+         
+        $("body").on('click', '.contact_more_modal', function(){ 
+	        
+            var customer_id = $('#customer_id').val();
+
+            if(customer_id === null)
+            {
+                
+                alertify.success('Please Select Customer').delay(2).dismissOthers();
+            
+            }
+            else{
+                
+              
+                $('#ContactDeatils2').modal('show');
+
+                $('.customer_creation_id2').val(customer_id);
+
+                $('.droup_customer_id').val('').trigger('change');
+
+                $('.contact_person_clz').val('').trigger('change');
+
+            }
+
+        });
+
+     
+        /*####*/
+
+
+
+
+        /*customer creation modal show start*/
+
+        $("body").on('click', '.cust_more_modal', function(){ 
+	   
+            $('#AddSalesOrder').modal('hide');
+
+            $('#AddCustomerCreation').modal('show');
+
+        });
+
+        /*###### */
         
 
 
@@ -1314,8 +1638,9 @@
                     $(".contact_person_clz").html(data.customer_name);
 
                     $(".quotation_ref").html(data.quotation_det);
-                    
-                    
+
+                    $(".payment_term").val(data.credit_term);
+                   
                 }
 
 
@@ -1356,8 +1681,6 @@
 
                     $(".sales_executive_clz").html(data.qd_sales_executive);
 
-                    $(".payment_term").val(data.qd_payment_term);
-
                     $(".project").val(data.qd_project);
 
                     $(".product-more2").append(data.prod_details);
@@ -1377,21 +1700,20 @@
         
         $("body").on('click', '.add_product2', function(){
             
-            var pp = $('.prod_row').length
+            var pp = $('.prod_row2').length
             
-           
             
 			if(pp < max_fieldspp){ 
                 
                 pp++;
                 
-                $(".product-more2").append("<tr class='prod_row'><td class='si_no'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row2'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 
-            slno();
+            slno2();
 
-            InitProductSelect2();
+           // InitProductSelect2();
 
 	    });
 
@@ -1399,7 +1721,7 @@
         {
 	 
             $(this).parent().remove();
-            slno();
+            slno2();
         });
 
         /**/
@@ -1419,7 +1741,21 @@
 
         }
 
+        function slno2(){
+
+            var pp =1;
+
+            $('body .prod_row2').each(function() {
+
+                $(this).find('.si_no2').html('<td class="si_no2">' + pp + '</td>');
+
+                pp++;
+            });
+
+        }
+
         /*###*/
+
 
 
 
@@ -1429,35 +1765,37 @@
 
           //  var discount = $(this).val();
 
-        var $discountSelect = $(this);
+            var $discountSelect = $(this);
 
-        var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
+            var discount = parseInt($discountSelect.closest('.prod_row2').find('.discount_clz_id').val())||0;
 
-        var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+            var $discountSelectElement = $discountSelect.closest('.prod_row2').find('.rate_clz_id');
 
-        var rate = $discountSelectElement.val();
+            var rate = $discountSelectElement.val();
 
-        var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
+            var $quantitySelectElement = $discountSelect.closest('.prod_row2').find('.qtn_clz_id');
 
-        var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseInt($quantitySelectElement.val())||0;
 
-        var parsedRate = parseFloat(rate);
+            var parsedRate = parseFloat(rate);
 
-        var parsedQuantity = quantity; 
+            var parsedQuantity = quantity; 
 
-        var multipliedTotal = parsedRate * parsedQuantity;
+            var multipliedTotal = parsedRate * parsedQuantity;
 
-        var per_amount = (discount/100)*multipliedTotal;
+            var per_amount = (discount/100)*multipliedTotal;
 
-        var orginalPrice = multipliedTotal - per_amount;
+            var orginalPrice = multipliedTotal - per_amount;
 
-        var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+           
+            //alert(orginalPrice);
 
-        var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+            var $amountElement = $discountSelect.closest('.prod_row2').find('.amount_clz_id');
 
-        $amountElement.val(orginalPrice);
+            $amountElement.val(orginalPrice);
 
-        TotalAmount();
+            TotalAmount();
 
         });
 
@@ -1523,396 +1861,116 @@
             });
 
         });
-        /**/
+
+        /*add section end*/
 
 
-        /*new customer creation section start*/
+        /*edit section start*/
 
 
-       /* account head  search droup drown start*/
-        
-       $(".account_head_select").select2({
-            placeholder: "Select Account Id",
-            theme : "default form-control-",
-            dropdownParent: $('#CustomerCreation'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
+        $("body").on('click', '.edit_btn', function(){ 
+
+            var id = $(this).data('id');
+            
+           
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+                    $(".edit_reff").val(data.reff_no);
+
+                    $(".edit_date").val(data.date);
+
+                    $(".edit_customer").html(data.customer_creation);
+
+                    $(".edit_quot").html(data.quotation);
+
+                    $(".edit_lpo").val(data.lpo);
+
+                    $(".edit_executive").val(data.sales_executive);
+
+                    $(".contact_person_clz").val(data.contact_person);
+                    
+                    $(".payment_term").val(data.payment_term);
+
+                    $(".edit_delivery_date").val(data.delivery_term);
+
+                    $(".edit_project").val(data.project);
+
+                    $(".edit_so_id").val(data.so_id);
+
+                    $('#EditSalesOrder').modal("show");
                    
-                    var page = params.page || 1;
-                    return {
-                        //results: $.map(data.result, function (item) { return {id: item.so_id, text: item.so_customer}}),
-                        results: $.map(data.result, function (item) { return {id: item.ah_id, text: item.ah_head_id}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-
-        /*###*/
-
-
-        /*create account id by account head*/ 
-         
-            $('.account_head_clz').on('change', function() {
-          
-
-            var id = $(this).val();
-
-           $.ajax({
-
-               url : "<?php echo base_url(); ?>Crm/CustomerCreation/Code",
-
-               method : "POST",
-
-               data: {ID: id},
-
-               success:function(data)
-               {   
-                   var data = JSON.parse(data);
-                  
-                  $(".account_id").val(data.account_id);
-                  
-                   
-               }
-
-
-           });
-         
-           
-        });
-
-       /*####*/
-
-       /*show contact detail modal*/ 
-         
-       $('.contact_detail_modal').on('click', function() {
-          
-          $('#CustomerCreation').modal('hide');
-
-          $('#ContactDeatils').modal('show');
-          
-          
-       });
-
-       /*####*/
-
-
-       /*show official documnet modal*/ 
-        
-       $('.offical_document_modal').on('click', function() {
-         
-         $('#ContactDeatils').modal('hide');
-
-         $('#CustomerCreation').modal('hide');
-
-         $('#OfficalDocument').modal('show');
-         
-         
-      });
-
-      /*####*/
-
-
-      /*close contact details modal*/ 
-         
-       $('.modal_close').on('click', function() {
-          
-          $('#CustomerCreation').modal('hide');
-
-          $('#ContactDeatils').modal('hide');
-
-          $('#OfficalDocument').modal('hide');
-
-          $('#SalesOrder').modal('show');
-         
-      });
-
-      /*####*/
-
-
-      /*close contact details modal*/ 
-         
-      $('.modal_close_2').on('click', function() {
-          
-
-        $('#ContactDeatils2').modal('hide');
-
-        $('#Enquiry').modal('show');
-
-         
-      });
-
-      /*####*/
-
-
-
-
-      /*add customer creation*/    
-      $(function() {
-            var form = $('#add_cus_form1');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/Add",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-                            
-                            $(".customer_creation_id").val(responseData.customer_creation_id);
-                            
-                            $('#CustomerCreation').modal('hide');
-
-                            $('#ContactDeatils').modal('show');
-
-                        }
-                    });
+                    
                 }
+
+
             });
-        });
-        /*####*/
-
-
-        /*add contact details*/
-        $(function() {
-            var form = $('#add_cus_form2');
-           
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab2",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                           
-                           $('#ContactDeatils').modal('hide');
-
-                           $('#OfficalDocument').modal('show');
-                            
-                           
-                        }
-                    });
-                }
-            });
-        });
-        /**/
-
-
-        /*add oficial documents*/
-        $(function() {
-            var form = $('#add_cus_form3');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Create FormData object to handle file uploads
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab3",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-                        
-                            $('#add_cus_form1')[0].reset();
-                            $('#add_cus_form2')[0].reset();
-                            $('#add_cus_form3')[0].reset();
-                            $('#OfficalDocument').modal('hide');
-                            $('#SalesOrder').modal('show');
-                            $('.account_head_clz').val('').trigger('change');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);
-                            
-                        }
-                    });
-                }
-            });
-        });
-        /**/
-
-        
-
-
-        /*add more contact details*/
-
-         var max_fieldss      = 30;
-        var y = 1;
-
-       
-        $("body").on('click', '.add_person', function(){
-           
-			if(y < max_fieldss){ //max input box allowed
-				y++;
-	            $(".person-more").append("<tr><td>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='text' name='contact_mobile[]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
-	 
-			}
-	    });
-
-
-        $(document).on("click", ".remove-btnnp", function() {
-	 
-	        $(this).parent().remove();
-	        y--;
-        });
-
-        /*####*/
-
-
-        $('#cc_telephone').on('input', function() {
-           
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-        });
-
-
-        $('#cc_fax').on('input', function() {
-            
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-        });
-
-
-       
-
-        $("body").on('keyup', '.contact_mobile_clz', function(){
-           
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-            
-       });
-
-
-
-        $('#edit_telephone_id').on('input', function() {
-            
-            $(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
 
         });
 
-        /*customer creation show  modal start*/
-         
-       $("body").on('click', '.cust_more_modal', function(){ 
-	        
-            $('#SalesOrder').modal('hide');
 
-            $('#CustomerCreation').modal('show');
-
-        });
-
-     
-        /*####*/
-
-
-        /* customer droup drown */
-
-        $(".droup_customer_id").select2({
-            placeholder: "Select Customer",
-            theme : "default form-control- customer_width",
-            dropdownParent: $('#SalesOrder'),
-
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesOrder/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-
-        /**/
-
-
-
-       /*new customer creation end*/
-
-
-
-        /*new contact person section start*/
-
-        $("body").on('click', '.contact_more_modal', function(){ 
-	        
-            var customer_id = $('#customer_id').val();
-
-           
-
-            if(customer_id === null)
-            {
+        $("body").on('click', '.edit_add_prod', function(){ 
              
-                alertify.success('Please Select Customer').delay(2).dismissOthers();
-            
-            }
-            else{
+          
+             $('#EditAddProduct').modal('show');
 
-                $('#SalesOrder').modal('hide');
+             $('#EditSalesOrder').modal('hide');
 
-                $('#ContactDeatils2').modal('show');
+             var sales_id = $('.edit_so_id').val();
 
-                $('.customer_creation_id2').val(customer_id);
-
-            }
+             $('.edit_hidden_sales_id').val(sales_id);
 
         });
 
 
-        /*add second contact detail section start( with no add more)*/
+        function InitProductSelect2(){
+            $(".edit_product_det:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control-",
+                dropdownParent: $($('.edit_product_det:last').closest('.edit_prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+
+        InitProductSelect2();
+
 
         $(function() {
-            var form = $('#add_cus_form4');
+            var form = $('#edit_add_prod_form');
             
             form.validate({
                 rules: {
@@ -1925,35 +1983,100 @@
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/Enquiry/AddContactDetails",
+                        url: "<?php echo base_url(); ?>Crm/SalesOrder/AddProduct",
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
+                         
+                           /* $('#add_sales_order_form')[0].reset();
+                           
+                            $('#SalesOrder').modal('hide');
 
-                            var responseData = JSON.parse(data);
-                            
-                            $(".contact_person_clz").html(responseData.contact_person);
-                            
-                            $('#ContactDeatils2').modal('hide');
-                            
-                            $('#SalesOrder').modal('show');
+                            $('#customer_id').val('').trigger('change');
 
-                            $('#add_cus_form4')[0].reset();
+                            $('.quotation_ref').val('').trigger('change');
 
+                            $('.sales_executive_clz').val('').trigger('change');
+
+                            $('.contact_person_clz').val('').trigger('change');
+
+                            $('.sales_remove').remove();
+
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload(null, false);*/
+                           
+                            
                         }
                     });
                 }
             });
         });
 
-        /*###*/
-
-
-       /*new contact person section end*/
 
 
 
+        /*edit section end*/
 
+
+
+        /*view section start*/
+
+        $("body").on('click', '.view_btn', function(){ 
+	        
+            var id = $(this).data("id");
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+                    $(".view_reff").val(data.reff_no);
+                    
+                    $(".view_date").val(data.date);
+
+                    $(".view_customer").val(data.customer);
+
+                    $(".view_quot").val(data.quot_ref);
+
+                    $(".view_lpo").val(data.lpo);
+
+                    $(".view_executive").val(data.sales_exec);
+
+                    $(".view_contact_person").val(data.contact_person);
+
+                    $(".view_payment_term").val(data.payment_term);
+
+                    $(".view_delivery_date").val(data.delivery_term);
+
+                    $(".view_project").val(data.project);
+
+                    $(".view_product_data").html(data.prod_details);
+
+                    $('#ViewSalesOrder').modal('show');
+                
+                    
+                }
+
+
+            });
+
+            
+
+        });
+
+        /*view section end*/
+
+
+
+
+       
     });
 
 

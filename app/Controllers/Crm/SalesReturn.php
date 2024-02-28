@@ -103,7 +103,7 @@ class SalesReturn extends BaseController
 
         $data['credit_invoice'] = $this->common_model->FetchAllOrder('crm_credit_invoice','cci_id','desc');
 
-        $data['cash_invoice_id'] = $this->common_model->FetchNextId('sales_return','CIN'); 
+       // $data['sales_return'] = $this->common_model->FetchNextId('sales_return','SRN'); 
 
         $data['content'] = view('crm/sales-return',$data);
 

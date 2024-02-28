@@ -124,7 +124,7 @@ class Products extends BaseController
         
         $insert_data = $this->request->getPost();
 
-        $ph_code = $this->common_model->CheckData('crm_products','product_details',$insert_data['product_details']);
+        $ph_code = $this->common_model->CheckData('crm_products','product_details',trim($insert_data['product_details']));
         
         if(empty($ph_code))
         {
@@ -143,8 +143,6 @@ class Products extends BaseController
 
         echo json_encode($data);
 
-        
-    
     }
 
 
@@ -160,7 +158,7 @@ class Products extends BaseController
 
         $data['product_code'] = $product->product_code;
 
-        $data['product_details'] = $product->product_details;
+        $data['product_name'] = $product->product_details;
         
         $data['prod_head_out'] ="";
         foreach ($product_head as $prod_head) {
@@ -181,20 +179,36 @@ class Products extends BaseController
 
     // update account head 
     public function Update()
-    {    
+    {   
         $cond = array('product_id' => $this->request->getPost('product_id'));
         
         $update_data = $this->request->getPost(); 
+
+        $product_name = $this->common_model->CheckDataWhere('crm_products','product_details',trim($update_data['product_details']),trim($this->request->getPost('product_id')),'product_id');
+       
+      
 
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('product_id', $update_data)) 
         {
             unset($update_data['product_id']);
-        }       
+        }  
+        
+        if(empty($product_name))
+        {   
+            
+            $update_data['product_modified_date'] = date('Y-m-d'); 
 
-        $update_data['product_modified_date'] = date('Y-m-d'); 
+            $this->common_model->EditData($update_data,$cond,'crm_products');
 
-        $this->common_model->EditData($update_data,$cond,'crm_products');
+            $data['status'] ="true";
+        }
+        else
+        {
+           $data['status'] = "false";
+        }
+
+        echo json_encode($data);
        
     }
 
@@ -241,6 +255,71 @@ class Products extends BaseController
             // Format back into the string
             $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
           
+        }
+
+        echo json_encode($data);
+
+    }
+
+
+    //edit code
+    public function EditCode()
+    {  
+
+        $cond3 = array('product_id' => $this->request->getPost('ProdID'));
+
+        $prod_data = $this->common_model->SingleRow('crm_products',$cond3);
+        
+       
+
+        $cond2 = array('product_product_head' => $this->request->getPost('ID'));
+
+        $product_head = $this->common_model->FetchWhere('crm_products',$cond2);
+
+        if(empty($product_head))
+        {
+            $cond = array('ph_id' => $this->request->getPost('ID'));
+
+            $single_product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
+
+            $data['product_head_code'] =  $single_product_head->ph_code.'0001';
+
+ 
+        }
+
+      
+        else
+        {   
+           
+            $prod_head = $this->common_model->FetchWhereLimit($this->request->getPost('ID'),'product_product_head','product_code','DESC','crm_products',0,1);
+            
+            $prod_head_data = $prod_head->product_code;
+            
+            $prod_check_data = $this->common_model->CheckTwiceCond('crm_products',$cond3,$cond2);
+           
+              
+          
+            if(!empty($prod_check_data))
+            {
+               
+                $data['product_head_code'] =  $prod_data->product_code;
+                
+            }
+
+            else
+            {
+              
+                // Extract numeric part
+                $numeric_part = preg_replace('/[^0-9]/', '', $prod_head_data);
+
+                // Increment numeric part
+                $numeric_part++;
+
+                // Format back into the string
+                $data['product_head_code'] = substr($prod_head_data, 0, strlen($prod_head_data) - strlen($numeric_part)) . str_pad($numeric_part, strlen($numeric_part), '0', STR_PAD_LEFT);
+                
+            }
+           
         }
 
         echo json_encode($data);

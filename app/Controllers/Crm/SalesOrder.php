@@ -104,6 +104,19 @@ class SalesOrder extends BaseController
         $start = $end + $resultCount;
       
         $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+        
+       /* $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+           
+
+        );*/
+      
+       // $data['result'] = $this->common_model->ReportFetchLimit('crm_sales_orders','so_customer','asc',$term,$start,$end,$joins,'so_customer');
+    
 
         $data['total_count'] =count($data['result']);
 
@@ -130,11 +143,13 @@ class SalesOrder extends BaseController
     }
 
 
+
+
     //view page
     public function index()
     {   
        
-        $joins = array(
+        /*$joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -142,9 +157,11 @@ class SalesOrder extends BaseController
             ),
            
 
-        );
+        );*/
 
-        $data['customer_creation'] = $this->common_model->FetchCustomerCreation('crm_quotation_details',$joins);
+        //$data['customer_creation'] = $this->common_model->FetchCustomerCreation('crm_quotation_details',$joins);
+        
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
@@ -170,7 +187,7 @@ class SalesOrder extends BaseController
 
             'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
 
-            'so_date'                   => $this->request->getPost('so_date'),
+            'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
 
             'so_customer'               => $this->request->getPost('so_customer'),
 
@@ -184,7 +201,7 @@ class SalesOrder extends BaseController
 
             'so_payment_term'           => $this->request->getPost('so_payment_term'),
 
-            'so_delivery_term'          => $this->request->getPost('so_delivery_term'),
+            'so_delivery_term'          => date('Y-m-d',strtotime($this->request->getPost('so_delivery_term'))),
 
             'so_project'                => $this->request->getPost('so_project'),
 
@@ -222,7 +239,6 @@ class SalesOrder extends BaseController
     
                     );
                 
-                    
                     $id = $this->common_model->InsertData('crm_sales_product_details',$prod_data);
             
                 } 
@@ -238,9 +254,6 @@ class SalesOrder extends BaseController
 
 
 
- 
-
-
     public function ContactPerson()
     {
         $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
@@ -250,7 +263,7 @@ class SalesOrder extends BaseController
         $cond1 = array('qd_customer' => $this->request->getPost('ID'));
 
         //$quotation_details = $this->common_model->FetchWhere('crm_quotation_details',$cond1);
-
+       
         $quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
 
         $data['quotation_det'] ="";
@@ -276,6 +289,12 @@ class SalesOrder extends BaseController
             $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
         }
         
+        //credit term
+        $cond2 = array('cc_id' => $this->request->getPost('ID'));
+
+        $payment_term = $this->common_model->SingleRow('crm_customer_creation',$cond2);
+
+        $data['credit_term'] = $payment_term->cc_credit_term;
         
         echo json_encode($data);
 
@@ -318,8 +337,8 @@ class SalesOrder extends BaseController
         {   
             $prod_det->qpd_amount;
 
-            $data['prod_details'] .='<tr class="prod_row sales_remove" id="'.$prod_det->qpd_id.'">
-            <td class="si_no">'.$i.'</td>
+            $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->qpd_id.'">
+            <td class="si_no2">'.$i.'</td>
             <td style="width:20%">
                 <select class="form-select droup_product add_prod" name="spd_product_details[]" required>';
                     
@@ -383,7 +402,7 @@ class SalesOrder extends BaseController
 
 
 
-        $data['qd_payment_term'] =  $quotation_details->qd_payment_term;
+        //$data['qd_payment_term'] =  $quotation_details->qd_payment_term;
 
         $data['qd_delivery_term']   =  $quotation_details->dt_name;
 
@@ -459,6 +478,200 @@ class SalesOrder extends BaseController
         
         echo json_encode($data);
 
+    }
+
+
+    public function Edit()
+    {
+        $cond1 = array('so_id' => $this->request->getPost('ID'));
+
+        $sales_order     = $this->common_model->SingleRow('crm_sales_orders',$cond1);
+
+        $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+        $quotation_details = $this->common_model->FetchAllOrder('crm_quotation_details','qd_id','desc');
+
+        //$quotation_details = $this->common_model->FetcQuotWhere($sales_order->so_reffer_no);
+
+      
+        $data['reff_no']         = $sales_order->so_reffer_no;
+
+        $data['date']            = $sales_order->so_date;
+
+        $data['lpo']             = $sales_order->so_lpo;
+
+        $data['sales_executive'] = $sales_order->so_sales_executive;
+
+        $data['payment_term']    = $sales_order->so_payment_term;
+
+        $data['delivery_term']   = $sales_order->so_delivery_term;
+
+        $data['project']         = $sales_order->so_project;
+
+        $data['so_id']         = $sales_order->so_id;
+
+
+
+        $data['customer_creation'] ="";
+
+        // customer craetion
+        foreach($customer_creation as $cus_creation)
+        {
+            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+        
+            // Check if the current product head is selected
+            if ($cus_creation->cc_id  == $sales_order->so_customer)
+            {
+                $data['customer_creation'] .= ' selected'; 
+            }
+        
+            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+        }
+
+        //quotation_details
+        
+        $data['quotation'] ="";
+
+        foreach($quotation_details as $quot_det)
+        {
+            $data['quotation'] .= '<option value="' .$quot_det->qd_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($quot_det->qd_id  == $sales_order->so_quotation_ref)
+            {
+                $data['quotation'] .= ' selected'; 
+            }
+        
+            $data['quotation'] .= '>' . $quot_det->	qd_reffer_no. '</option>';
+        }
+
+        //contact_person
+        /*$data['contact'] ="";
+
+        foreach($quotation_details as $quot_det)
+        {
+            $data['quotation'] .= '<option value="' .$quot_det->qd_id. '"'; 
+        
+            // Check if the current product head is selected
+            if ($quot_det->qd_id  == $sales_order->so_quotation_ref)
+            {
+                $data['quotation'] .= ' selected'; 
+            }
+        
+            $data['quotation'] .= '>' . $quot_det->	qd_reffer_no. '</option>';
+        }*/
+
+        echo json_encode($data);
+
+    }
+
+
+    Public function View()
+    {
+        
+        $cond = array('so_id' => $this->request->getPost('ID'));
+
+        $joins = array(
+	   
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+
+            array(
+                'table' => 'crm_quotation_details',
+                'pk'    => 'qd_id',
+                'fk'    => 'so_quotation_ref',
+            ),
+
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+
+            array(
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
+                'fk'    => 'so_contact_person',
+            ),
+           
+        );
+
+        $sales_order  = $this->common_model->SingleRowJoin('crm_sales_orders',$cond,$joins);
+
+        $data['reff_no']        = $sales_order->so_reffer_no;
+
+        $data['date']           = $sales_order->so_date;
+
+        $data['customer']       = $sales_order->cc_customer_name;
+
+        $data['quot_ref']       = $sales_order->qd_reffer_no;
+
+        $data['lpo']            = $sales_order->so_lpo;
+
+        $data['sales_exec']     = $sales_order->se_name;
+
+        $data['contact_person'] = $sales_order->contact_person;
+
+        $data['payment_term']   = $sales_order->so_payment_term;
+
+        $data['delivery_term']  = $sales_order->so_delivery_term;
+
+        $data['project']        = $sales_order->so_project;
+
+        //table section start
+        
+        $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
+
+        $joins1 = array(
+            
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details',
+            ),
+           
+
+        );
+
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond1,$joins1);
+        
+        //$products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['prod_details'] ='';
+        $i =1; 
+        foreach($product_details_data as $prod_det)
+        {   
+            //$prod_det->qpd_amount;
+
+            $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
+            <td class="si_no2">'.$i.'</td>
+            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control " readonly></td>
+            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id"  readonly></td>
+            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" readonly></td>
+            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" readonly></td>
+            <td> <input type="text" name="spd_amount[]" value="'.$prod_det->spd_amount.'"  class="form-control amount_clz_id" readonly></td>
+          
+            </tr>'; 
+            $i++; 
+        }
+        
+        //table section end
+
+
+
+        echo json_encode($data);
+
+
+    }
+
+
+    public function AddProduct()
+    {
+        $id = $this->common_model->InsertData('crm_products',$insert_data);
     }
 
 

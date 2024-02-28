@@ -97,9 +97,9 @@ class ProductHead extends BaseController
         
         $insert_data = $this->request->getPost();
         
-        $ph_code = $this->common_model->CheckData('crm_product_heads','ph_code',$insert_data['ph_code']);
+        $ph_code = $this->common_model->CheckData('crm_product_heads','ph_code',trim($insert_data['ph_code']));
         
-        $ph_product_head = $this->common_model->CheckData('crm_product_heads','ph_product_head',$insert_data['ph_product_head']);
+        $ph_product_head = $this->common_model->CheckData('crm_product_heads','ph_product_head',trim($insert_data['ph_product_head']));
         
         if(empty($ph_code) && empty($ph_product_head))
         {
@@ -144,17 +144,33 @@ class ProductHead extends BaseController
         
         $update_data = $this->request->getPost(); 
 
+        $ph_code = $this->common_model->CheckDataWhere('crm_product_heads','ph_code',trim($update_data['ph_code']),trim($this->request->getPost('ph_id')),'ph_id');
+        
+        $ph_product_head = $this->common_model->CheckDataWhere('crm_product_heads','ph_product_head',trim($update_data['ph_product_head']),trim($this->request->getPost('ph_id')),'ph_id');
+        
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('ph_id', $update_data)) 
         {
-             unset($update_data['ph_id']);
-        }       
-
+            unset($update_data['ph_id']);
+        }  
         
-        $update_data['ph_modified_date'] = date('Y-m-d'); 
-
-        $this->common_model->EditData($update_data,$cond,'crm_product_heads');
        
+        if(empty($ph_code) && empty($ph_product_head))
+        {
+            $update_data['ph_modified_date'] = date('Y-m-d'); 
+
+            $this->common_model->EditData($update_data,$cond,'crm_product_heads');
+            
+            $data['status'] ="true";
+        }
+        else
+        {
+           $data['status'] = "false";
+        }
+
+
+        echo json_encode($data);
+
     }
 
 
@@ -165,6 +181,12 @@ class ProductHead extends BaseController
         $cond = array('ph_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_product_heads',$cond);
+
+        //delete product
+
+        $cond2 = array('product_product_head' => $this->request->getPost('ID'));
+        
+        $this->common_model->DeleteData('crm_products',$cond2);
  
     }
 

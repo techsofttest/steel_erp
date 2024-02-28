@@ -30,27 +30,7 @@
             
             <div class="col-lg-12">
 
-                <div class="card">
-                    <div class="card-body">
-        
-                        <!-- Start Subtabs -->
-                        <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url(); ?>Crm/DeliverNote" role="tab">
-                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
-                                    <span class="d-none d-sm-block">Delivery Note</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="<?= base_url(); ?>Crm/CashInvoice" role="tab">
-                                    <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
-                                    <span class="d-none d-sm-block">Cash Invoice</span>
-                                </a>
-                            </li>
-                    
-                        </ul>
-                    </div>
-                </div>
+                
                 
                 <!-- Tab panes -->
                 <div class="tab-content text-muted">
@@ -109,7 +89,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="ci_date" class="form-control" required>
+                                                                        <input type="text" name="ci_date" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -222,16 +202,14 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        
-                                                                   
-                                                                    <select class="form-select cont_person" name="ci_contact_person" id="" required></select>
-                                                                       
                                                                     
-                                                                </div>
+                                                                        <select class="form-select cont_person" name="ci_contact_person" id="" required></select>
+                                                                     
+                                                                    </div>
 
                                                                 </div> 
 
@@ -330,6 +308,7 @@
                                                     <div class="col-lg-6">
                                                         
                                                         <div class="row row_align mb-4">
+                                                            
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Credit Account</label>
                                                             </div>
@@ -337,10 +316,13 @@
                                                             <div class="col-lg-4">
                                                                
                                                                 <select class="form-select" name="ci_credit_account" id="" required>
+                                                                    
                                                                     <option>Select Credit Account</option>
+
                                                                     <?php foreach($charts_of_accounts as $chart_account){?> 
                                                                          <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
                                                                     <?php } ?>
+
                                                                 </select>
                                                                      
                                                             </div>
@@ -368,14 +350,17 @@
                                                                     <td><button>Print</button></td>
                                                                     <td><button>Email</button></td>
                                                                 </tr>
+
                                                                 <tr>
                                                                     <td><button type="submit">Save</button></td>
                                                                     <td><button>PDF</button></td>
                                                                 </tr>
+
                                                             </table>
                                                         </div>
 
                                                     </div>
+
                                                 </div>
                                                 
                                                 
@@ -716,6 +701,10 @@
                     $(".sales_order_add_clz").html(data.sales_order);
 
                     $(".cont_person").html(data.contact_details);
+
+                    $(".payment_terms").val(data.credit_term);
+
+                    
    
                 }
 
@@ -752,8 +741,6 @@
 
                 
                     $(".lpo_ref").val(data.so_lpo);
-
-                    $(".payment_terms").val(data.so_payment_term);
 
                     $(".project_clz").val(data.so_project);
 
@@ -881,7 +868,7 @@
             
                 pp++;
                 
-                $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='cipd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text'   name='cipd_unit[]' class='form-control ' required=''></td><td><input type='number' name='cipd_qtn[]' class='form-control order_qty' required=''></td><td><input type='number' name='cipd_rate[]' class='form-control delivery_qty' required=''></td><td><input type='number' name='cipd_discount[]' class='form-control current_delivery' required=''></td><td><input type='number' name='cipd_amount[]' class='form-control current_delivery' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='cipd_prod_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text'   name='cipd_unit[]' class='form-control ' required=''></td><td><input type='number' name='cipd_qtn[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='cipd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='cipd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='cipd_amount[]' class='form-control amount_clz_id' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
             }
 
@@ -970,6 +957,81 @@
  
          });
          /*###*/
+
+
+         /*product detail calculation*/
+        
+        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+           
+           var $discountSelect = $(this);
+
+           var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
+           
+           var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+
+           var rate = $discountSelectElement.val();
+
+           var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
+
+           var quantity = parseInt($quantitySelectElement.val())||0;
+
+           var parsedRate = parseFloat(rate);
+
+           var parsedQuantity = quantity; 
+
+           var multipliedTotal = parsedRate * parsedQuantity;
+
+           var per_amount = (discount/100)*multipliedTotal;
+          
+           var orginalPrice = multipliedTotal - per_amount;
+
+           var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+           var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+
+           $amountElement.val(orginalPrice);
+
+           TotalAmount();
+
+       });
+
+       
+     
+
+      
+
+       /*total amount calculation start*/
+
+       function TotalAmount()
+       {
+
+           var total= 0;
+
+           $('body .amount_clz_id').each(function()
+           {
+               var sub_tot = parseFloat($(this).val());
+
+               total += parseFloat(sub_tot.toFixed(2))||0;
+              //total = Number(total).toFixed(2)
+           });
+
+          total = total.toFixed(2);
+
+          $('.amount_total').val(total);
+
+          var resultSalesOrder= numberToWords.toWords(total);
+
+           $(".performa_amount_in_word").text(resultSalesOrder);
+
+           $(".performa_amount_in_word_val").val(resultSalesOrder);
+           
+           currentClaim()
+       }
+
+       /*total amount calculation end*/
+
+       
+
 
 
         

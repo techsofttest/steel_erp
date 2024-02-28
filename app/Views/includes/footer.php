@@ -80,26 +80,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js"></script>
    
     <script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
    
 
     <script>
 
-      $('input[type=date]').click(function(){
+       
 
-      this.showPicker();
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+                dateFormat: "dd-MM-yy" // Specify the date format as "dd-MM-yy"
+               
+               
+            });
+        });
 
-      });
 
 
-      function MinMax(el) {
-        if (el.value != "") {
-            if (parseInt(el.value) < parseInt(el.min)) {
-            el.value = el.min;
+        function MinMax(el) {
+            if (el.value != "") {
+                if (parseInt(el.value) < parseInt(el.min)) {
+                el.value = el.min;
+                }
+                if (parseInt(el.value) > parseInt(el.max)) {
+                el.value = el.max;
+                }
             }
-            if (parseInt(el.value) > parseInt(el.max)) {
-            el.value = el.max;
-            }
-        }
         }
 
 

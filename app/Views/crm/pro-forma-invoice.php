@@ -78,7 +78,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="pf_date" class="form-control" required>
+                                                                        <input type="text" name="pf_date" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -349,8 +349,8 @@
 
 
                                                             <tr>
-                                                                <td colspan="2">Amount in words</td>
-                                                                <td colspan="3" class="performa_amount_in_word_val"></td>
+                                                                <td colspan="2"></td>
+                                                                <td colspan="3" class=""></td>
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
                                                                 <td>Current Claim Value -QAR</td>
                                                                 <td><input type="number" name="" class="form-control claim_qar" readonly></td>
@@ -384,7 +384,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control" required>
+                                                                <input type="file" name=""  class="form-control" >
                                                             </div>
 
                                                         </div>
@@ -561,8 +561,6 @@
                     var data = JSON.parse(data);
 
                     console.log(data.contact_person);
-
-                    $(".payment_term_clz").val(data.payment_term);
 
                     $(".delivery_term").val(data.so_delivery_term);
 
@@ -751,6 +749,7 @@
 
             var id = $(this).val();
 
+
             $.ajax({
 
             url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
@@ -766,6 +765,8 @@
                 $('.sales_order_add_clz').html(data.orders);
 
                 $('.contact_person_clz').html(data.contact_person);
+
+                $('.payment_term_clz').val(data.payment_terms);
 
             }
 

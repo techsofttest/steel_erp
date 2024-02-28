@@ -83,7 +83,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="cci_date" class="form-control" required>
+                                                                        <input type="text" name="cci_date" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -337,7 +337,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control" required>
+                                                                <input type="file" name=""  class="form-control">
                                                             </div>
 
                                                         </div>

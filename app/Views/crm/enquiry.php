@@ -49,9 +49,9 @@
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
                         <!--add enquiry modal start-->
-                        <div class="modal fade" id="Enquiry" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="AddEnquiry" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" id="add_enquiry_form">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Enquiry</h5>
@@ -98,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_date" class="form-control enquiry_date" required>
+                                                                        <input type="text" name="enquiry_date" class="form-control enquiry_date datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -219,7 +219,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="enquiry_time_frame" class="form-control time_frame_date" value="" required>
+                                                                        <input type="text" name="enquiry_time_frame" class="form-control time_frame_date" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -273,15 +273,13 @@
                                                                 <td>Quantity</td>
                                                                 <td>Action</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td style="width: 10%;">1</td>
+                                                            <tr class="prod_row">
+                                                                <td style="width: 10%;"class="si_no">1</td>
                                                                 <td style="width:28%">
                                                                 <span class="add_more_icon prod_add_more">New</span>
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[]" required>
                                                                         <option selected>Select Product Description</option>
-                                                                        <?php foreach($products as $prod){?>
-                                                                            <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
-                                                                        <?php } ?>
+                                                                        
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="pd_unit[]" class="form-control" required></td>
@@ -332,686 +330,595 @@
                         <!--####-->
 
 
-                        <!--Customer Creation modal content start-->
-                        <div class="modal fade" id="CustomerCreation" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       <!---customer creation modal start-->
+
+
+                       <?= $this->include('crm/add_modal_customer') ?>
+                       
+
+                       <!--########-->
+
+
+
+                       <!---add contact modal start-->
+                        
+                       <?= $this->include('crm/add_contact_person') ?>
+
+                       <!--#######-->
+
+
+
+                       <!--add product modal start-->
+                       
+                       <?= $this->include('crm/add_product_modal') ?>
+
+                       <!--#######-->
+
+
+                       <!--view enquiry section start-->
+
+                        <div class="modal fade" id="ViewEnquiry" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form1">
+		                        <form  class="Dashboard-form class" id="">
 			                        <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Enquiry</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
+
 				                        <div class="modal-body">
-
-                                            <div class="sub_heading">
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn customer_detail_modal">Customer Details</a>
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn contact_detail_modal">Contact Details</a>
-                                                <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn offical_document_modal">Official Documents</a>
-                                            </div>   
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
-                                            <div class="live-preview">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Customer Name</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_customer_name" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### --> 
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Account Head</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required></select>
-                                                                        <!--<input type="text" class="form-control account_head_select account_head_clz" name="cc_account_head"  required>--->
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Account ID</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_account_id" class="form-control account_id" required>
-                                                                    </div>
-
-                                                                </div> 
-
-                                                            </div>    
-
-                                                            <!-- ### -->
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Post Box</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_post_box" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### -->  
-
-
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Telephone</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_telephone" id="cc_telephone"  class="form-control"  required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-                                                             <!--Single Row Start-->
-                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Fax</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_fax" id="cc_fax" class="form-control" required>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div> 
-
-                                                            <!-- ### -->  
-
-
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Email</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="email" name="cc_email" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Term</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_credit_term" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Period (Days)</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_period" class="form-control" required>
-                                                                    </div>
-
-                                                                </div> 
-                                                            </div>
-
-                                                            <!-- ### --> 
-
-
-
-                                                            <!--Single Row Start-->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Credit Limit</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_limit" class="form-control" required>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div> 
-
-                                                            <!-- ### -->
-
-                                                            <div class="modal-footer justify-content-center">
-                                                                <button  class="btn btn btn-success">Save</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>   
-					                           
-						                       
-					
-					                        
-				                        </div>
-                                        
-			                        </div>
-		                        </form>
-
-	                        </div>
-                        </div>
-
-
-                        <!--Customer Creation content end-->
-
-
-                        <!--Product Modal start-->
-
-                        <div class="modal fade" id="prodModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <form  class="Dashboard-form class" id="prod_form">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Product</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="card">
-        
-                                                        <div class="card-body">
-                                                            
-                                                            <div class="live-preview">
-                                                                    
-                                                            
-
-
-                                                            <!-- Single Row Start -->
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-
-                                                                        <label for="basiInput" class="form-label">Product Name</label>
-
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <input type="text"   name="product_details" class="form-control" required>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            <!-- ### -->
-
-
-                                                            <!-- Single Row Start -->
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-
-                                                                        <label for="basiInput" class="form-label">Product Head</label>
-
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <select class="form-select product_head_select product_head"  name="product_product_head" required></select>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            <!-- ### -->
-
-
-                                                            <!-- Single Row Start -->
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-       
-                                                                        <label for="basiInput" class="form-label">Code</label>
-            
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <input type="text"   name="product_code" class="form-control product_code" required>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            <!-- ### -->
-                                                             
-                                                            </div>
-                
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer justify-content-center">
-                                            <button  class="btn btn btn-success">Save</button>
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-
-
-                        <!--Product Modal end-->
-
-
-                         <!--contact detail modal section start-->
-                         
-                         <div class="modal fade" id="ContactDeatils" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form2">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Customer Creation</h5>
-                                            <button type="button" class="btn-close modal_close"  aria-label="Close"></button>
-                                        </div>
-				                        <div class="modal-body">
-
-                                          
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
-
-                                            <div class="live-preview">
-                                            <table  class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
-                                                            <tr>
-                                                                <td >No</td>
-                                                                <td>Contact Person </td>
-                                                                <td>Designation</td>
-                                                                <td>Mobile</td>
-                                                                <td>Email</td>
-                                                                <td>Action</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td><input type="text" name="contact_person[]" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_designation[]" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_mobile[]"  class="form-control contact_mobile_clz" required></td>
-                                                                <td> <input type="email" name="contact_email[]" class="form-control " required></td>
-                                                                <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tbody class="person-more" class="travelerinfo"></tbody>
-                
-                                                    </table>
-                                                    <input type="hidden" class="customer_creation_id" name="contact_customer_creation">
-                                                    <div class="modal-footer justify-content-center">
-                                                      
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-                                            </div>   
-					                           
-						                       
-					
-					                        
-				                        </div>
-                                        
-			                        </div>
-		                        </form>
-
-	                        </div>
-                        </div>
-
-
-                        <!--contact detail modal section end-->
-
-
-                        <!--official document modal section start-->
-
-                        <div class="modal fade" id="OfficalDocument" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog">
-		                        <form  class="Dashboard-form class" id="add_cus_form3">
-			                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Official Documents</h5>
-                                            <button type="button" class="btn-close modal_close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-				                        <div class="modal-body">
-
-                                          
-                                               
-                                            
-                                            <div class="card-seprate_divider"></div>
 
                                             <div class="live-preview">
                                                 
                                                 <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
 
-                                                    <!--Single Row Start-->
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basiInput" class="form-label">CR No</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_cr_number" class="form-control" required>
-                                                            </div>
+                                                        <div class="row">
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control view_reff" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control view_date" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control  view_customer" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>   
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                        <input type="text" class="form-control  view_contact_person" readonly>
+                                                                        
+                                                                    </div>
+
+                                                                    
+
+                                                                </div> 
+
+                                                            </div>   
+
+                                                            <!-- ### --> 
+
                                                         </div>
-                                                        
-                                                        
-                                                    </div>
-                                                    <!--####-->
 
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">	CR Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_attach_cr" class="form-control" required>
-                                                            </div>
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Assigned To</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control  view_assigned_to" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Source</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control view_enquiry_source" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Time Frame</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control view_time_frame"  readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text"  class="form-control view_project" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+
                                                         </div>
-                                                      
+
                                                     </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">	CR Expiry</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_cr_expiry" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_est_id" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_est_id_attach" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Est.ID Expery</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_est_id_expery" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Signatory Name</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="text" name="cc_signatory_name" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Number</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="number" name="cc_qid_number" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-
-                                                    <!--Single Row Start-->
-                                                    
-                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Attach</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="file" name="cc_qid_attach" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
+                                                   
 
 
 
-                                                    <!--Single Row Start-->
-                                                    
-                                                    <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">QID Expiry</label>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <input type="date" name="cc_qid_expiry" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                    
-
-                                                    <!--####-->
-
-                                                    <input type="hidden" class="customer_creation_id" name="cc_id">
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
-
+                                                   
 
                                                 </div>
-                                                    
-                                            </div>   
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Quantity</td>
+                                                               
+                                                            </tr>
+                                                           
+                                                        </thead>
+                                                        <tbody class="view_contact_details" class="travelerinfo"></tbody>
+                                                    </table>
+                                                </div>
+
+
+                                               
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
 					                           
-						                       
-					
-					                        
+						                    
 				                        </div>
+
+
                                         
 			                        </div>
-
 		                        </form>
 
 	                        </div>
                         </div>
 
-                        <!--offical document modal section end-->
+
+                        <!--view enquiry section end-->
 
 
-                        <!--second contact detail modal section start-->
+
+                        <!--edit enquiry section start-->
                          
-                         <div class="modal fade" id="ContactDeatils2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                        <div class="modal fade" id="EditEnquiry" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_cus_form4">
+		                        <form  class="Dashboard-form class" id="update_enquiry_form">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Enquiry</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="enquiry_reff" class="form-control edit_reff"  required readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="enquiry_date" class="form-control edit_date datepicker" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select ser_customer_edit edit_customer" name="enquiry_customer"  required>
+                                                                           
+                                                               
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>   
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select edit_contact_person" name="enquiry_contact_person" required>
+                                                                            <option value="" selected disabled>Contact Person</option>
+                                                                
+                                                                        </select>
+                                                                        
+                                                                    </div>
+
+                                                                    
+
+                                                                </div> 
+
+                                                            </div>   
+
+                                                            <!-- ### --> 
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Assigned To</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <select class="form-select edit_assign_to" name="enquiry_assign_to" required>
+                                                                        
+                                                                
+                                                                     </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Source</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="enquiry_source" class="form-control edit_source" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Time Frame</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="enquiry_time_frame" class="form-control edit_time_frame" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="enquiry_project" class="form-control edit_project" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <input type="hidden" name="enquiry_id" value="" class="edit_enquiry_id">
+
+                                                        </div>
+
+                                                    </div>
+                                                   
+
+
+
+                                                   
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Quantity</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            
+                                                        </thead>
+                                                        <tbody class="edit_contact_detail" class="travelerinfo"></tbody>
+                                                          <!--<tbody>-->
+                                                          <tr>
+                                                                <td colspan="8" align="center" class="tecs">
+                                                                    <span class="add_icon add_single_product"><i class="ri-add-circle-line"></i>Add </span>
+                                                                </td>
+                                                            </tr>
+                                                        <!--</tbody>--->
+                                                    </table>
+                                                </div>
+
+
+                                                <div style="float: right;">
+                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                        <tr>
+                                                            <td><button>Print</button></td>
+                                                            <td><button>Email</button></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><button type="submit">Save</button></td>
+                                                            <td><button>PDF</button></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
+					                           
+						                    
+				                        </div>
+
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        <!--edit single product detail start-->
+
+                        <div class="modal fade" id="EditSingleProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="edit_single_product">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
-                                            <button type="button" class="btn-close modal_close_2" aria-label="Close"></button>
+                                            <button type="button" class="btn-close sub_modal_close" ></button>
                                         </div>
 				                        <div class="modal-body">
 
-                                          
-                                               
-                                            
                                             <div class="card-seprate_divider"></div>
 
                                             <div class="live-preview">
-                                            <table  class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
-                                                            <tr>
-                                                                <td >No</td>
-                                                                <td>Contact Person </td>
-                                                                <td>Designation</td>
-                                                                <td>Mobile</td>
-                                                                <td>Email</td>
-                                                                
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td><input type="text" name="contact_person" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_designation" class="form-control " required></td>
-                                                                <td><input type="text" name="contact_mobile"  class="form-control contact_mobile_clz" required></td>
-                                                                <td> <input type="email" name="contact_email" class="form-control " required></td>
-                                                                
-                                                            </tr>
-                                                        </tbody>
+                                                <table  class="table table-bordered table-striped delTable">
+                                                    <tbody class="travelerinfo">
+                                                        <tr>
+                                                            <td >No</td>
+                                                            <td>Product Description</td>
+                                                            <td>Unit</td>
+                                                            <td>Quantity</td>
+                                                           
+                                                            
+                                                            
+                                                        </tr>
                                                        
+                                                    </tbody>
+                                                    
+                                                    <tbody class="single_contact_edit" class="travelerinfo">
+                                                        
+                                                    </tbody>
+
+                                                   
                 
-                                                    </table>
-                                                    <input type="hidden" class="customer_creation_id2" name="contact_customer_creation">
-                                                    <div class="modal-footer justify-content-center">
-                                                      
-                                                        <button class="btn btn btn-success">Save</button>
-                                                    </div>
+                                                </table>
+                                               
+                                                <div class="modal-footer justify-content-center">
+                                                    
+                                                    <button class="btn btn btn-success">Save</button>
+                                                </div>
                                             </div>   
-					                           
-						                       
-					
 					                        
 				                        </div>
                                         
@@ -1022,7 +929,78 @@
                         </div>
 
 
-                        <!--contact detail modal section end-->
+                        <!--edit single product detail end-->
+
+
+                        <!--edit add single prod start-->
+
+                        <div class="modal fade" id="EditAddProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="edit_add_product">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+                                            <button type="button" class="btn-close  sub_modal_close"></button>
+                                        </div>
+				                        <div class="modal-body">
+
+                                            <div class="card-seprate_divider"></div>
+
+                                            <div class="live-preview">
+                                                <table  class="table table-bordered table-striped delTable">
+                                                    <tbody class="travelerinfo">
+                                                        <tr>
+                                                            <td >No</td>
+                                                            <td>Product Description</td>
+                                                            <td>Unit</td>
+                                                            <td>Quantity</td>
+                                                           
+                                                        </tr>
+                                                       
+                                                    </tbody>
+                                                    
+                                                    <tbody class="" class="travelerinfo">
+
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>
+                                                                <select class="edit_add_prod" name="pd_product_detail" required>
+                                                                    <option>select</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" name="pd_unit" class="form-control" required></td>
+                                                            <td><input type="text" name="pd_quantity" class="form-control" required></td>
+                                                            <input type="hidden" name="pd_enquiry_id" class="edit_add_prod_id">
+                                                        </tr>
+                                                        
+                                                    </tbody>
+
+                                                   
+                
+                                                </table>
+                                                
+                                                <div class="modal-footer justify-content-center">
+                                                    
+                                                    <button class="btn btn btn-success">Save</button>
+                                                </div>
+                                            </div>   
+					                        
+				                        </div>
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        <!--edit add single prod end-->
+
+
+
+
+
+                        <!--edit enquiry section end-->
+
 
 
 
@@ -1031,7 +1009,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#Enquiry" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddEnquiry" class="btn btn-primary py-1">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1086,16 +1064,17 @@
 
 
 
-
-
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
     
-        /*add section*/    
+        /*add enquiry section start*/  
+
+
+
+        /*add section*/
         $(function() {
-            var form = $('#add_form1');
+            var form = $('#add_enquiry_form');
             
             form.validate({
                 rules: {
@@ -1112,9 +1091,503 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            $('#add_form1')[0].reset();
-                            $('#Enquiry').modal('hide');
+                            $('#add_enquiry_form')[0].reset();
+                            $('#customer_id').val('').trigger('change');
+                            $('.ser_product_det').val('').trigger('change');
+                            $('#AddEnquiry').modal('hide');
+                            $('.enquiry_remove').remove();
+                           
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                           
+                            datatable.ajax.reload(null, false);
+                           
+                            
+                        }
+                    });
+                   
+                }
+            });
+        });
+
+
+        /*#####*/
+
+        /*customer droup drown search*/
+        $(".ser_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#AddEnquiry'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+
+        /* Select 2 Remove Validation On Change */
+         $("select[name=enquiry_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
+
+
+
+        /*fetch data with customer*/
+
+        $("body").on('change', '#customer_id', function(){ 
+            var id = $(this).val();
+           
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/ContactPerson",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                
+                    $("#contact_person_id").html(data.customer_name);
+
+                  
+                    
+                }
+
+
+            });
+        });
+
+        /*####*/
+
+
+        /*add more product section start*/
+
+
+        var max_fieldspp  = 30;
+        var pp = 1;
+        $("#add_product").click(function(){
+
+			if(pp < max_fieldspp){ 
+			    pp++;
+	           
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no[]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+
+                slno();
+                /*customer droup drown search*/
+                 InitSelect2();
+			}
+	    });
+
+        $(document).on("click", ".remove-btnpp", function() 
+        {
+	        $(this).parent().remove();
+
+	        slno();
+        });
+
+
+
+        /*#####*/
+
+
+        /*Add New Product start*/
+
+         $("body").on('click', '.prod_add_more', function(){ 
+	        
+            $('#AddEnquiry').modal('hide');
+
+            $('#AddProdModal').modal('show');
+
+        });
+
+
+       /*Add New Product end*/
+
+
+       /*Product Drop Down*/
+       function InitSelect2(){
+          $(".ser_product_det:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- select_width",
+            dropdownParent: $('#AddEnquiry'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        }
+
+        InitSelect2();
+
+        /*###*/
+
+
+      
+
+        //trigger when form is submitted
+
+        $("#add_office_doc").submit(function(e){
+
+            $('#AddEnquiry').modal('show');
+
+            return false;
+
+        });
+
+        /*#####*/
+
+
+
+
+        /*close product modal (open enquiry modal)*/
+
+        $('#AddProdModal').on('hidden.bs.modal', function () {
+
+        $('#AddEnquiry').modal('show')
+        })
+
+        /*#####*/
+
+
+
+        /*close product modal (open enquiry modal)*/
+
+        $('#ContactDeatils2').on('hidden.bs.modal', function () {
+
+        $('#AddEnquiry').modal('show')
+        })
+
+        /*#####*/
+
+
+        
+
+        /*Time Frame section start*/
+
+         
+         $("body").on('change', '.enquiry_date', function(){ 
+	        
+            var date = $(this).val();
+ 
+            
+ 
+            $.ajax({
+ 
+                 url : "<?php echo base_url(); ?>Crm/Enquiry/EnquiryDate",
+ 
+                 method : "POST",
+ 
+                 data: {Date: date},
+ 
+                 success:function(data)
+                 {   
+                     var data = JSON.parse(data);
+                 
+                       $('.time_frame_date').val(data.increment_date_date)
+                 
+                     
+                 }
+ 
+ 
+             });
+ 
+ 
+         });
+ 
+      
+ 
+        /*Time Frame section end*/
+
+
+
+        /*add enquiry section end*/
+
+
+
+
+        /*view section start*/
+
+
+        $("body").on('click', '.view_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                    
+                    $('.view_reff').val(data.enquiry_reff);
+
+                    $('.view_date').val(data.enquiry_date);
+
+                    $('.view_customer').val(data.cc_customer_name);
+
+                    $('.view_contact_person').val(data.contact_person);
+
+                    $('.view_assigned_to').val(data.enquiry_assign_to);
+
+                    $('.view_enquiry_source').val(data.enquiry_source);
+
+                    $('.view_time_frame').val(data.enquiry_time_frame);
+
+                    $('.view_project').val(data.enquiry_project);
+
+                    $('.view_contact_details').html(data.prod_details);
+
+
+                    $('#ViewEnquiry').modal('show');
+                
+                }
+
+
+            });
+
+        })
+
+
+        /*view section end*/
+
+
+
+        /*edit section start*/
+
+        $("body").on('click', '.edit_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    
+                    
+                    $('.edit_reff').val(data.enquiry_reff);
+
+                    $('.edit_date').val(data.enquiry_date);
+
+                    $('.edit_customer').html(data.customer_creation);
+
+                    $('.edit_contact_person').html(data.contact_person);
+
+                    $('.edit_assign_to').html(data.assigned_to);
+
+                    $('.edit_source').val(data.enquiry_source);
+
+                    $('.edit_time_frame').val(data.enquiry_time_frame);
+
+                    $('.edit_project').val(data.enquiry_project);
+
+                    $('.edit_enquiry_id').val(data.enquiry_id);
+
+                  
+                    $('.edit_contact_detail').html(data.prod_details);
+
+                       $('#EditEnquiry').modal('show');
+                   
+                
+                }
+
+
+            });
+
+        })
+
+        /*customer droup drown search*/
+         $(".ser_customer_edit").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- ",
+            dropdownParent: $('#EditEnquiry'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+        /*edit single product detail start*/
+
+            
+
+        /*edit single product detail end*/
+
+
+        $("body").on('click', '.edit_prod_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            $('#EditSingleProduct').modal('show');
+
+            $('#EditEnquiry').modal('hide');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/FetchSingleProd",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $('.single_contact_edit').html(data.prod_details);
+                    
+                   
+                
+                }
+
+
+            });
+
+        })
+
+
+        /*close  edit sub modal*/
+
+        $("body").on('click', '.sub_modal_close', function(){ 
+            
+            $('#EditAddProduct').modal('hide');
+          
+            $('#EditSingleProduct').modal('hide');
+
+            $('#EditEnquiry').modal('show');
+
+        
+
+        })
+
+
+
+        /*######*/
+
+
+
+        /* update single enquiry start*/
+
+        $(function() {
+            var form = $('#edit_single_product');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Enquiry/UpdateSingleEnquiry",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+
+                            var prodID = responseData.enquiry_id;
+
+                            $('#EditSingleProduct').modal('hide');
+
+	                        $('.edit_btn[data-id="'+prodID+'"]').trigger('click');
+
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
                             datatable.ajax.reload(null, false);
                             
                         }
@@ -1124,12 +1597,285 @@
         });
 
 
-        /* Select 2 Remove Validation On Change */
-        $("select[name=enquiry_customer]").on("change",function(e) {
-            $(this).parent().find(".error").removeClass("error");         
+        /*#######*/
+
+
+        /*delete single enquiry start*/
+
+        $("body").on('click', '.delete_prod_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/DeleteProduct",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        slno();
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    }); 
+
+                   
+
+                   
+
+                }
+
+
+            });
+
+          
+        })
+
+
+        /*delete single enquiry end*/
+        
+        
+        /*edit add single product start*/
+         
+        $("body").on('click', '.add_single_product', function(){ 
+
+            $('#EditEnquiry').modal('hide');
+
+            $('#EditAddProduct').modal('show');
+
+            var enquiry_id = $('.edit_enquiry_id').val();
+
+            $('.edit_add_prod_id').val(enquiry_id);
+
+
+
+        })
+
+
+        $(function() {
+            var form = $('#edit_add_product');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Enquiry/AddSingleProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+                           
+                            var responseData = JSON.parse(data);
+
+                            var enquiryID = responseData.enquiry_id;
+
+
+
+                            $('#EditAddProduct').modal('hide');
+
+                            $('.edit_btn[data-id="'+enquiryID+'"]').trigger('click');
+
+                            $('#edit_add_product')[0].reset();
+
+                            $('.edit_add_prod').val('').trigger('change');
+
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+                            
+                        }
+                    });
+                }
+            });
         });
 
 
+
+        /*edit add single product end*/
+
+
+        /*update enquiry section start*/
+
+        $(function() {
+            var form = $('#update_enquiry_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/Enquiry/UpdateTab",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+
+                            var enqID = responseData.enquiry_id;
+
+                            $('#EditEnquiry').modal('hide');
+
+	                        $('.view_btn[data-id="'+enqID+'"]').trigger('click');
+
+                            alertify.success('Data Updated Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+                            
+                        }
+                    });
+                }
+            });
+        });
+
+
+        /*update enquiry section end*/
+
+
+
+
+
+        /* edit add product detail (option)*/
+            
+            $(".edit_add_prod").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#EditAddProduct'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+       
+
+
+        /*####*/
+
+
+
+
+        /*fetch contact detail by customer name*/
+
+        $("body").on('change', '.edit_customer', function(){ 
+
+            var cust_id = $(this).val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/FetchContact",
+
+                method : "POST",
+
+                data: {custID: cust_id},
+
+                success:function(data)
+                {   
+                    
+                    var responseData = JSON.parse(data);
+
+                    console.log(responseData.contact_person);
+
+                    $('.edit_contact_person').html(responseData.contact_person);
+
+                }
+
+            });
+
+           
+
+        })
+
+        /*#######*/
+
+
+
+        /*Time Frame section start*/
+
+         
+         $("body").on('change', '.edit_date', function(){ 
+	        
+            var date = $(this).val();
+ 
+            
+ 
+            $.ajax({
+ 
+                 url : "<?php echo base_url(); ?>Crm/Enquiry/EnquiryDate",
+ 
+                 method : "POST",
+ 
+                 data: {Date: date},
+ 
+                 success:function(data)
+                 {   
+                     var data = JSON.parse(data);
+                 
+                       $('.edit_time_frame').val(data.increment_date_date)
+                 
+                     
+                 }
+ 
+ 
+             });
+ 
+ 
+        });
+ 
+      
+ 
+         /*Time Frame section end*/
+
+
+
+
+
+        /*edit section end*/
+
+
+
+        
 
 
 
@@ -1182,405 +1928,9 @@
         });
         /*###*/
 
-        $("body").on('change', '#customer_id', function(){ 
-            var id = $(this).val();
-           
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/Enquiry/ContactPerson",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                
-                    $("#contact_person_id").html(data.customer_name);
-
-                  
-                    
-                }
-
-
-            });
-        });
-
-        /*add new customer creation section start*/ 
-
-
-        /* account head  search droup drown start*/
         
-        $(".account_head_select").select2({
-            placeholder: "Select Account Id",
-            theme : "default form-control-",
-            dropdownParent: $('#CustomerCreation'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.ah_id, text: item.ah_head_id}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
 
-        /*###*/
-
-
-        /*create account id by account head*/ 
-         
-            $('.account_head_clz').on('change', function() {
-          
-
-            var id = $(this).val();
-
-           $.ajax({
-
-               url : "<?php echo base_url(); ?>Crm/CustomerCreation/Code",
-
-               method : "POST",
-
-               data: {ID: id},
-
-               success:function(data)
-               {   
-                   var data = JSON.parse(data);
-                  
-                  $(".account_id").val(data.account_id);
-                  
-                   
-               }
-
-
-           });
-         
-           
-        });
-
-       /*####*/
-
-
-
-
-       /*show contact detail modal*/ 
-         
-       $('.contact_detail_modal').on('click', function() {
-          
-          $('#CustomerCreation').modal('hide');
-
-          $('#ContactDeatils').modal('show');
-          
-          
-       });
-
-       /*####*/
-
-
-
-
-       /*show official documnet modal*/ 
-        
-       $('.offical_document_modal').on('click', function() {
-         
-         $('#ContactDeatils').modal('hide');
-
-         $('#CustomerCreation').modal('hide');
-
-         $('#OfficalDocument').modal('show');
-         
-         
-      });
-
-      /*####*/
-
-
-
-
-      /*close contact details modal*/ 
-         
-       $('.modal_close').on('click', function() {
-          
-
-          $('#CustomerCreation').modal('show');
-
-          $('#ContactDeatils').modal('hide');
-
-          $('#OfficalDocument').modal('hide');
-         
-      });
-
-      /*####*/
-
-
-
-
-      /*close contact details modal*/ 
-         
-      $('.modal_close_2').on('click', function() {
-          
-
-        $('#ContactDeatils2').modal('hide');
-
-        $('#Enquiry').modal('show');
-
-         
-      });
-
-      /*####*/
-
-
-
-      /*add customer creation*/    
-      $(function() {
-            var form = $('#add_cus_form1');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/Add",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-                            
-                            $(".customer_creation_id").val(responseData.customer_creation_id);
-                            
-                            $('#CustomerCreation').modal('hide');
-
-                            $('#ContactDeatils').modal('show');
-
-                        }
-                    });
-                }
-            });
-        });
-        /*####*/
-
-
-        /*add contact details*/
-        $(function() {
-            var form = $('#add_cus_form2');
-           
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab2",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                           
-                           $('#ContactDeatils').modal('hide');
-
-                           $('#OfficalDocument').modal('show');
-                            
-                           
-                        }
-                    });
-                }
-            });
-        });
-        /**/
-
-
-        /*add oficial documents*/
-        $(function() {
-            var form = $('#add_cus_form3');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Create FormData object to handle file uploads
-                    var formData = new FormData(currentForm);
-
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddTab3",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-                        
-                            $('#add_cus_form1')[0].reset();
-                            $('#add_cus_form2')[0].reset();
-                            $('#add_cus_form3')[0].reset();
-                            $('#OfficalDocument').modal('hide');
-                            $('.account_head_clz').val('').trigger('change');
-                            $('#Enquiry').modal('show');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);
-                            
-                        }
-                    });
-                }
-            });
-        });
-        /**/
-
-        /*add second contact detail section start( with no add more)*/
-        $(function() {
-            var form = $('#add_cus_form4');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/Enquiry/AddContactDetails",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-
-                            var responseData = JSON.parse(data);
-                            
-                            $("#contact_person_id").html(responseData.contact_person);
-                            
-                            $('#ContactDeatils2').modal('hide');
-                            
-                            $('#Enquiry').modal('show');
-
-                            $('#add_cus_form4')[0].reset();
-
-                        }
-                    });
-                }
-            });
-        });
-
-        /*###*/
-
-
-        /*add more contact details*/
-
-         var max_fieldss      = 30;
-        var y = 1;
-
-       
-        $("body").on('click', '.add_person', function(){
-           
-			if(y < max_fieldss){ //max input box allowed
-				y++;
-	            $(".person-more").append("<tr><td>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='text' name='contact_mobile[]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
-	 
-			}
-	    });
-
-
-        $(document).on("click", ".remove-btnnp", function() {
-	 
-	        $(this).parent().remove();
-	        y--;
-        });
-
-        /*####*/
-
-
-        $('#cc_telephone').on('input', function() {
-            // Allow digits, hyphens, and spaces
-            //$(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-        });
-
-
-        $('#cc_fax').on('input', function() {
-            
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-        });
-
-
-        /*$('.contact_mobile_clz').on('input', function() {
-            
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-        });*/
-
-        $("body").on('keyup', '.contact_mobile_clz', function(){
-           
-            $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
-            
-       });
-
-
-
-        $('#edit_telephone_id').on('input', function() {
-            // Allow digits, hyphens, and spaces
-            $(this).val($(this).val().replace(/[^0-9\- ]/g, ''));
-        });
-
-
-
-
-       /*customer creation section end*/
-
-
-       
-
-        var max_fieldspp  = 30;
-        var pp = 1;
-        $("#add_product").click(function(){
-
-			if(pp < max_fieldspp){ 
-			    pp++;
-	            //$("#product-more").append("<tr><td><input type='number' value="+pp+" name='pd_serial_no[]' class='form-control ' required='' readonly></td><td><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control ' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control ' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-                $("#product-more").append("<tr><td><input type='number' value='"+pp+"' name='pd_serial_no[]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-
-                
-                /*customer droup drown search*/
-                 InitSelect2();
-			}
-	    });
-
-        $(document).on("click", ".remove-btnpp", function() 
-        {
-	        $(this).parent().remove();
-	        pp--;
-        });
+      
 
 
         /*add customer section start*/
@@ -1588,9 +1938,9 @@
         $("body").on('click', '.cust_more_modal', function(){ 
 	        
            
-            $('#Enquiry').modal('hide');
+            $('#AddEnquiry').modal('hide');
 
-            $('#CustomerCreation').modal('show');
+            $('#AddCustomerCreation').modal('show');
 
         });
 
@@ -1598,7 +1948,8 @@
         /*####*/
 
         
-        /*add customer contact person section start*/
+        
+          /*add customer contact person section start*/
          
         $("body").on('click', '.contact_more_modal', function(){ 
 	        
@@ -1614,9 +1965,11 @@
             }
             else{
 
-                $('#Enquiry').modal('hide');
+               // $('#AddEnquiry').modal('hide');
 
                 $('#ContactDeatils2').modal('show');
+
+                $('#AddEnquiry').modal('hide');
 
                 $('.customer_creation_id2').val(customer_id);
 
@@ -1628,178 +1981,53 @@
         /*####*/
 
 
+       
 
-        /*Time Frame section start*/
 
-         
-        $("body").on('change', '.enquiry_date', function(){ 
-	        
-           var date = $(this).val();
 
-           
+        /*serial no correction section start*/
 
-           $.ajax({
+        function slno(){
 
-                url : "<?php echo base_url(); ?>Crm/Enquiry/EnquiryDate",
 
-                method : "POST",
+            var pp =1;
+            
+            $('body .prod_row').each(function() {
 
-                data: {Date: date},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                $(this).find('.si_no').html(pp);
+                  
                 
-                      $('.time_frame_date').val(data.increment_date_date)
                 
-                    
-                }
-
+                pp++;
 
             });
 
 
-        });
+        }
 
-     
-
-        /*Time Frame section end*/
+        function slno(){
 
 
+            var pp =1;
 
-        /*Add New Product start*/
+            $('body .prod_row1').each(function() {
 
-        $("body").on('click', '.prod_add_more', function(){ 
-	        
-             $('#Enquiry').modal('hide');
+                $(this).find('.si_no1').html(pp);
+                
+                
+                pp++;
 
-             $('#prodModal').modal('show');
- 
-         });
+            });
 
-
-        /*Add New Product end*/
-
-
-        /*customer droup drown search*/
-        $(".ser_customer").select2({
-            placeholder: "Select Customer",
-            theme : "default form-control- customer_width",
-            dropdownParent: $('#Enquiry'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchCustomer",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    //console.log(data);
-                    //NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-         
-        })
-        /*###*/
-
-
-
-
-        /*Edit customer droup drown search*/
-
-        $(".edit_ser_customer").select2({
-            placeholder: "Select Customer",
-            theme : "default form-control-",
-            dropdownParent: $('#EditModal'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/EditFetchCustomer",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    //console.log(data);
-                    //NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-         
-        })
+        }
 
         /*###*/
+
 
 
         
 
-          /*Product Drop Down*/
-          function InitSelect2(){
-          $(".ser_product_det:last").select2({
-            placeholder: "Select Product",
-            theme : "default form-control- select_width",
-            dropdownParent: $('#Enquiry'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        }
-
-        InitSelect2();
-
-        /*###*/
+          
 
 
         /**/
@@ -1831,130 +2059,7 @@
         /**/
 
 
-        /*droupdrown*/
-        $(".product_head_select").select2({
-        placeholder: "Select Product Head",
-        theme : "default form-control-",
-        dropdownParent: $('#prodModal'),
-        ajax: {
-                url: "<?= base_url(); ?>Crm/Products/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.ph_id, text: item.ph_product_head}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /*###*/
 
-
-        /*prouct insert section start*/
-
-        $(function() {
-            $('#prod_form').validate({
-                rules: {
-                    required: 'required',
-                    
-                },
-                messages: {
-                    required: 'This field is required',
-                    
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(form) {
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/Products/Add",
-                        method: "POST",
-                        data: $(form).serialize(),
-                        success: function(data) {
-                            var data = JSON.parse(data);
-                            $('#prod_form')[0].reset();
-                            //$('#AddModal').modal('hide');
-                            $('.product_head').html("");
-                            if(data.status === "true")
-                            {
-                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                                datatable.ajax.reload( null, false )
-                            }
-                            else{
-                                alertify.error('Data is already exist').delay(3).dismissOthers();
-                                datatable.ajax.reload( null, false )
-                            }
-                            
-                            
-                            $('#prodModal').modal('hide');
-
-                            $('#Enquiry').modal('show');
-
-                            
-                        }
-                       
-                    });
-                    return false; // prevent the form from submitting
-                }
-            });
-        });
-
-        /*product insert section end*/
-
-
-
-        /*product head section start*/
-
-
-        $("body").on('change', '.product_head', function(){ 
-            
-            var id = $(this).val();
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/Products/Code",
-
-                method : "POST",
-
-                data: {ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-
-                    $(".product_code").val(data.product_head_code);
-                   
-                    
-                }
-
-
-            });
-            
-            
-        });
-
-
-        /*product head section end*/
-
-
-       
-     
 
     });
 

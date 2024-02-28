@@ -1,0 +1,17 @@
+date:26-02-2024
+day :monday
+
+product detail and product completed
+
+date: 27-02-2024
+day:tuesday
+
+customer creation  checked
+pending
+*remove red border while enter data
+*required in add in second tab(contact details)
+
+
+enquiry checked
+pending
+*remove red border while eneter data

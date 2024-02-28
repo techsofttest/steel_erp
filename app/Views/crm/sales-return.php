@@ -89,7 +89,6 @@
                                                                         
                                                                         <select class="form-select customer_sel customer_id" name="cci_customer" required></select>
                                                                
-                                                                        
                                                                     </div>
 
                                                                 </div> 
@@ -127,13 +126,7 @@
 
                                                            
                                                             <!-- ### --> 
-
-
-                                                            
-
-                                                           
-
-                                                            
+ 
 
                                                         </div>
 
@@ -144,8 +137,7 @@
 
                                                         <div class="row">
                                                             
-
-                                                            
+                                          
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
@@ -160,7 +152,7 @@
                                                                         
                                                                         <input type="text" name="cci_lpo_reff" class="form-control lpo_ref" required>
                                                                     
-                                                                </div>
+                                                                    </div>
 
                                                                 </div> 
 
@@ -237,8 +229,6 @@
 
                                                             <!-- ### --> 
 
-
-                                                             
 
 
 

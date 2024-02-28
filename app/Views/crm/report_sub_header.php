@@ -1,26 +1,26 @@
+<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 <div class="row">
   <div class="col-lg-12">
-  
-  <div class="card">
-                                <div class="card-body">
-                           <ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
-                                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#nav-crm-top-1-1" role="tab" aria-selected="true">Product Details </a></li>
-                                        <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-2" role="tab" aria-selected="false">Customer Creation</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-3" role="tab" aria-selected="false">Enquiry</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-4" role="tab" aria-selected="false">Sales Quotation</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-5" role="tab" aria-selected="false">Sales Order</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-6" role="tab" aria-selected="false">Pro-forma Invoice</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-7" role="tab" aria-selected="false">Delivery Note / Cash Invoice</a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-8" role="tab" aria-selected="false">Credit Invoice </a> </li>
-<li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-9" role="tab" aria-selected="false">Sales return </a> </li>
-
-
-                                     
-
-									
-                                     
-                                    </ul>
-									  </div>
-										    </div>
-											  </div>
-											    </div>
+    <div class="card">
+      <div class="card-body">
+        <ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
+        
+          <li class="nav-item"><a class="nav-link <?php //if($uri->getSegment(3)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport" onclick="modal_open()" role="tab" aria-selected="true">Sales Quot Report </a></li>
+          
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotAnalysisReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotAnalysisReport" role="tab" aria-selected="false">Sales Quot Analysis Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderReport" role="tab" aria-selected="false">Sales Order Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderToDn"){echo "active" ;}?>"  href="<?= base_url();?>Crm/SalesOrderToDn" role="tab" aria-selected="false">Sales Order To DN / Cash In Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="DeliveryNoteReport"){echo "active";}?>"  href="<?= base_url();?>Crm/DeliveryNoteReport" role="tab" aria-selected="false">Delivery Note Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="DnToCreditInvoice"){echo "active";}?>"  href="<?= base_url();?>Crm/DnToCreditInvoice" role="tab" aria-selected="false">DN To Credit Invoice Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="InvoiceReport"){echo "active";}?>"  href="<?= base_url();?>Crm/InvoiceReport" role="tab" aria-selected="false">Invoice Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesReturnReport"){echo "active";}?>"  href="<?= base_url();?>Crm/SalesReturnReport" role="tab" aria-selected="false">Sales Return Report </a> </li>
+          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-9" role="tab" aria-selected="false">Sales Summery Report </a> </li>
+          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-10" role="tab" aria-selected="false">Backlog </a> </li>
+          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-11" role="tab" aria-selected="false">Job Profitability Report </a> </li>
+          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-12" role="tab" aria-selected="false">Job Summery Report</a> </li>
+        
+        </ul>
+			</div>
+		</div>
+	</div>
+</div>

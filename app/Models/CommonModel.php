@@ -256,7 +256,73 @@ class CommonModel extends Model
         
     }
 
+    //report  select two droup drown
+    /*public function ReportFetchLimit($table, $order_key, $order, $term, $end, $start, $joins = [])
+    {
+        $query = $this->db->table($table)->select('*');
 
+        foreach ($joins as $join) {
+            $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+        }
+
+        $query->like($order_key, $term)
+            ->limit($end, $start)
+            ->orderBy($order_key, $order);
+
+        return $query->get()->getResult();
+    }*/
+
+
+    public function ReportFetchLimit($table, $order_key, $order, $term, $end, $start,$joins = [],$group_by)
+    {
+        $query = $this->db->table($table)->select('*');
+
+        foreach ($joins as $join) {
+            $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+        }
+
+        $query->like($order_key, $term)
+            ->limit($end, $start)
+            ->orderBy($order_key, $order)
+            ->groupBy($group_by);
+
+
+        return $query->get()->getResult();
+    }
+
+
+    /*public function ReportFetchLimit($table, $order_key, $order, $term, $end, $start, $group_by, $joins = [])
+    {
+        $query = $this->db->table($table)->select('*');
+    
+        foreach ($joins as $join) {
+            $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+        }
+    
+        $query->like($order_key, $term)
+              ->limit($end, $start)
+              ->orderBy($order_key, $order);
+    
+        if (!empty($group_by)) {
+            // Ensure $group_by is an array
+            if (!is_array($group_by)) {
+                $group_by = [$group_by];
+            }
+    
+            foreach ($group_by as $group) {
+                // Check if $group is a valid column name
+                if (is_string($group) && strpos($group, '.') !== false) {
+                    $query->groupBy($group);
+                }
+            }
+        }
+    
+        return $query->get()->getResult();
+    }*/
+    
+
+
+    
 
 
     // create slug
@@ -346,8 +412,9 @@ class CommonModel extends Model
         $query = $this->db->table($table)
         ->select('*');
 
-        foreach($searchColoum as $col){
-        $query->orLike($col, $searchValue);
+        foreach($searchColoum as $col)
+        {
+            $query->orLike($col, $searchValue);
         }
 
         $query->orderBy($columnName,$columnSortOrder);
@@ -414,27 +481,108 @@ class CommonModel extends Model
         ->getResult();
     }
 
+    //check data alread in table expect select one
+    
+    public function CheckDataWhere($table,$coloum1,$data1,$id,$id_coloum)
+    {
+       return $this->db
+       //$this->db
+        ->table($table)
+        ->whereNotIn($id_coloum,(array)$id)
+        ->where($coloum1,$data1)
+        ->get()
+        //echo $this->db->getLastQuery();
+        //exit();
+        ->getResult();
+    }
+          
 
+   
  
     /*fetch enquiry in quot*/
+
+   
 
     public function FetchEnquiryInQuot($id)
     {
         $query = $this->db->table('crm_enquiry')
-        
+
         ->select('*')
 
-        ->where('enquiry_customer',$id)
+        ->where('enquiry_customer', $id)
 
-        ->where('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM '.$this->db->getPrefix().'crm_quotation_details)')
+        ->join('crm_quotation_details', 'crm_enquiry.enquiry_id = crm_quotation_details.qd_enq_ref', 'left')
+
+        ->groupStart()
+
+            ->where('crm_quotation_details.qd_enq_ref IS NULL') // Include rows where qd_enq_ref is NULL
+            
+            ->orWhere('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM '.$this->db->getPrefix().'crm_quotation_details)')
+
+        ->groupEnd()
 
         ->get();
 
         return $query->getResult();
     }
 
+
+
+    /*Edit Fetch enquiry in  quot*/
+    
+    /*public function EditEnquiryInQuot($id,$enquiry_id)
+    {
+        $query = $this->db->table('crm_enquiry')
+
+        ->select('*')
+
+        ->whereNotIn('enquiry_id' ,(array)$enquiry_id)
+
+        ->where('enquiry_customer', $id)
+
+        ->join('crm_quotation_details', 'crm_enquiry.enquiry_id = crm_quotation_details.qd_enq_ref', 'left')
+
+        ->groupStart()
+
+            ->where('crm_quotation_details.qd_enq_ref IS NULL') // Include rows where qd_enq_ref is NULL
+            
+            ->orWhere('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM '.$this->db->getPrefix().'crm_quotation_details)')
+
+        ->groupEnd()
+
+        ->get();
+
+
+        return $query->getResult();
+    }*/
+
+
+
+    /*####*/
+
+
+
+
     /*fetch Quot in sales order*/
     
+    /*public function FetcQuotInSales($id)
+    {
+        $query = $this->db->table('crm_quotation_details')
+        
+        ->select('*')
+
+        ->where('qd_customer',$id)
+
+        ->where('crm_quotation_details.qd_id  NOT IN (SELECT so_quotation_ref FROM '.$this->db->getPrefix().'crm_sales_orders)')
+
+        ->get();
+
+        //echo $this->db->getLastQuery(); exit();
+
+        return $query->getResult();
+    }*/
+
+
     public function FetcQuotInSales($id)
     {
         $query = $this->db->table('crm_quotation_details')
@@ -447,8 +595,12 @@ class CommonModel extends Model
 
         ->get();
 
-        return $query->getResult();
+        echo $this->db->getLastQuery(); exit();
+        
+        //return $query->getResult();
     }
+
+
 
     /*####*/
 
@@ -487,8 +639,343 @@ class CommonModel extends Model
 
         return $query->getResult();
     }
+
+     
     /**/
 
+
+    public function FetchProd($table,$cond,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+
+    public function FetchProdData($table,$cond,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+
+    //check date
+    
+    public function CheckDate($from_date,$from_date_col,$to_date,$to_date_col,$customer,$customer_col,$sales_executive,$sales_executive_col,$product,$prod_col,$sales_order,$sales_order_col,$table,$joins)
+    {
+        $query = $this->db->table($table)
+            ->select('*');
+            // Join additional tables if specified
+            foreach ($joins as $join) {
+                $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+            
+
+        if (!empty($from_date)) {
+           
+            $query->where($from_date_col.' >=', $from_date);
+        }
+
+        
+        if (!empty($to_date)) {
+           
+            $query->where($from_date_col . ' <=', $to_date);
+        }
+
+        
+        if (!empty($customer)) {
+            $query->like($customer_col, $customer);
+        }
+
+        
+        if (!empty($sales_executive)) {
+            $query->like($sales_executive_col, $sales_executive);
+        }
+
+        if(!empty($product))
+        {
+            //$query->like($prod_col, $product);
+            $query->like($join['table'] . '.' . $prod_col, $product);
+        }
+
+        if(!empty($sales_order))
+        {
+          
+            $query->like($sales_order_col, $sales_order);
+        }
+        
+
+        
+        $result = $query->get()->getResult();
+
+
+       // echo $this->db->getLastQuery();
+        
+        //exit();
+       
+        return $result;
+
+       
+    }
+
+
+    public function FetchWhereUniqueJoin($table,$cond,$joins,$group_coloum)
+    {
+        $query = $this->db->table($table)
+        ->where($cond);
+
+        if(!empty($joins))
+
+        foreach($joins as $join)
+        {
+            $table2 = $table;
+            if(!empty($join['table2']))
+            {
+            $table2 = $join['table2'];
+            }
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+        }
+        $query->groupBy($group_coloum);
+
+        $result = $query->get()->getResult();
+
+        return $result;
+    }
+    
+
+    //fetch product by customer
+
+    //for sales quotation
+
+    public function FetchProductByCustomer($table,$id)
+    {
+        $query = $this->db->table($table)
+                      ->select('*')
+                      ->where('qd_customer', $id)
+                      ->get();
+
+        $result = $query->getResult();
+
+        $i = 0;
+
+        foreach ($result as $quotation_details) {
+            $result[$i]->product_details = $this->product_details($quotation_details->qd_id);
+            $i++;
+        }
+
+        return $result;
+    }
+
+
+
+    public function product_details($pid)
+    {
+        $query = $this->db->table('crm_quotation_product_details')
+                        ->select('*')
+                        ->where('qpd_quotation_details', $pid)
+                        ->join('crm_products', 'crm_products.product_id = crm_quotation_product_details.qpd_product_description', 'left')
+                        ->groupBy('crm_quotation_product_details.qpd_product_description') 
+                        ->get();
+                       
+        return $query->getResult();
+    }
+
+
+    //fetch sales orders 
+    
+    public function FetchSalesProdByCustomer($table,$id)
+    {
+        $query = $this->db->table($table)
+                      ->select('*')
+                      ->where('so_customer', $id)
+                      ->get();
+
+        $result = $query->getResult();
+
+        $i = 0;
+
+        foreach ($result as $quotation_details) {
+            $result[$i]->sales_prod_details = $this->sales_prod_details($quotation_details->so_id);
+            $i++;
+        }
+
+        return $result;
+    }
+
+
+
+    public function sales_prod_details($pid)
+    {
+        $query = $this->db->table('crm_sales_product_details')
+                        ->select('*')
+                        ->where('spd_sales_order', $pid)
+                        ->join('crm_products', 'crm_products.product_id = crm_sales_product_details.spd_product_details', 'left')
+                        ->groupBy('crm_sales_product_details.spd_product_details') 
+                        ->get();
+                        //echo $this->db->getLastQuery();  exit();             
+                        return $query->getResult();
+    }
+    
+    // fetch delivery note
+
+    public function FetchDeliveryProdByCustomer($table,$id)
+    {
+        $query = $this->db->table($table)
+                      ->select('*')
+                      ->where('dn_customer', $id)
+                      ->get();
+
+        $result = $query->getResult();
+
+        $i = 0;
+
+        foreach ($result as $delivery_details) {
+            $result[$i]->delivery_prod_details = $this->delivery_prod_details($delivery_details->dn_id);
+            $i++;
+        }
+
+        return $result;
+    }
+
+
+
+    public function delivery_prod_details($pid)
+    {
+        $query = $this->db->table('crm_delivery_product_details')
+                        ->select('*')
+                        ->where('dpd_delivery_id', $pid)
+                        ->join('crm_products', 'crm_products.product_id = crm_delivery_product_details.dpd_prod_det', 'left')
+                        ->groupBy('crm_delivery_product_details.dpd_prod_det') 
+                        ->get();
+                       
+                        return $query->getResult();
+    }
+
+
+    //invoice report
+
+    public function FetchCreditProdByCustomer($table,$id)
+    {
+        $query = $this->db->table($table)
+        ->select('*')
+        ->where('cci_customer', $id)
+        ->get();
+
+        $result = $query->getResult();
+
+        $i = 0;
+
+        foreach ($result as $credit_details) {
+        $result[$i]->credit_prod_details = $this->credit_prod_details($credit_details->cci_id);
+        $i++;
+        }
+
+        return $result; 
+
+    }
+
+    public function credit_prod_details($pid)
+    {
+        $query = $this->db->table('crm_credit_invoice_prod_det')
+                        ->select('*')
+                        ->where('ipd_credit_invoice', $pid)
+                        ->join('crm_products', 'crm_products.product_id = Crm_credit_invoice_prod_det.ipd_prod_detl', 'left')
+                        ->groupBy('Crm_credit_invoice_prod_det.ipd_prod_detl') 
+                        ->get();
+                        return $query->getResult();
+    }
+
+    /*###fetch product by customer end##*/
+
+
+    /*public function FetcQuotWhere($id)
+    {
+        $query = $this->db->table('crm_quotation_details')
+        
+        ->select('*')
+
+        ->where('qd_customer',$id)
+
+        //->whereNotIn('so_reffer_no',(array)$id)
+
+        //->where('crm_quotation_details.qd_id  NOT IN (SELECT so_quotation_ref FROM '.$this->db->getPrefix().'crm_sales_orders)')
+        ->where('crm_quotation_details.qd_id', 'NOT IN', function($query) use ($id) {
+            $query->select('so_quotation_ref')
+                  ->from($this->db->getPrefix().'crm_sales_orders')
+                  ->whereNotIn('so_reffer_no', (array)$id);
+        })
+        ->get();
+
+        echo $this->db->getLastQuery();
+
+        exit();
+
+        return $query->getResult();
+    }*/
+
+
+    /*public function FetcQuotWhere($id)
+    {
+        $query = $this->db->table('crm_quotation_details')
+        
+        ->select('*')
+
+        ->where('qd_customer',$id)
+
+        ->whereNotIn('qd_id', function($query) use ($id) {
+            $query->select('so_quotation_ref')
+                ->from($this->db->getPrefix().'crm_sales_orders')
+                ->whereNotIn('so_reffer_no', (array)$id);
+        })
+        ->get();
+
+        echo $this->db->getLastQuery();
+
+        exit();
+
+        return $query->getResult();
+    }*/
+
+
+    public function CheckTwiceCond($table,$cond1,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond1)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getRow();
+ 
+
+       
+    }
+
+
+
+
+    
 
    
 

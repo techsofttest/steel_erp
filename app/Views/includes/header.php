@@ -38,17 +38,19 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css"/>
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 <style>
 
     /* Form Validation */
     label.error 
     {
-    color: red;
+        color: red;
     }
 
-    .error ~ .select2 .select2-selection__rendered {
-    border: 1px solid red !important;
+    .error ~ .select2 .select2-selection__rendered 
+    {
+        border: 1px solid red !important;
     }
 
    
@@ -225,7 +227,50 @@
     {
         color:red;
     }
+    .row_edit
+    {
+        
+        color: green !important;
+        cursor: pointer;
+    }
+    .cust_img_text_stl
+    {
+      
+        color: black !important;
+        font-weight: 300 !important;
+    }
     /* ##### */
+
+    /*crm report icons*/
+    .report_icon i
+    {
+        font-size: 18px;
+    }
+
+    .report_icon 
+    {
+        margin-right: 2px;
+    }
+    
+    .report_icon_excel i
+    {
+        color: green;
+    }
+
+    .report_icon_pdf i
+    {
+        color:red;
+    }
+
+    .report_icon_mail i
+    {
+        color: dodgerblue;
+    }
+    .table
+    {
+        --vz-table-striped-bg: unset;
+    }
+    /*######*/
 
 
 
@@ -318,6 +363,10 @@ table.menu td{
     font-weight: 500;
 }
 
+.cust_img_rgt_border
+{
+    border-right: 1px solid #9E9E9E;
+}
 
 </style>
 
@@ -334,6 +383,7 @@ table.menu td{
                     <!-- LOGO -->
 
                     <div class="navbar-brand-box horizontal-logo">
+                        
                         <a href="<?= base_url(); ?>" class="logo logo-dark">
                             <span class="logo-sm">
                                 <img src="<?php echo base_url(); ?>public/assets/images/logo.png" alt="" height="22">

@@ -159,11 +159,10 @@ class ProFormaInvoice extends BaseController
 
         $id = $this->request->getPost('id');
 
+       
         $where['so_customer'] = $id;
 
         $orders = $this->common_model->FetchWhere('crm_sales_orders',$where);
-
-       
 
         $data['orders'] ="";
 
@@ -191,6 +190,15 @@ class ProFormaInvoice extends BaseController
             $data['contact_person'] .='>' .$con_det->contact_person. '</option>'; 
         }
 
+        //fetch payment terms
+
+        $cond2 = array('cc_id' => $id);
+
+        $customer = $this->common_model->SingleRow('crm_customer_creation',$cond2);
+        
+        $data['payment_terms'] = $customer->cc_credit_term;
+
+
         echo json_encode($data);
 
 
@@ -206,7 +214,7 @@ class ProFormaInvoice extends BaseController
 
             'pf_reffer_no'              => $this->request->getPost('pf_reffer_no'),
 
-            'pf_date'                   => $this->request->getPost('pf_date'),
+            'pf_date'                   => date('Y-m-d',strtotime($this->request->getPost('pf_date'))),
 
             'pf_customer'               => $this->request->getPost('pf_customer'),
 
@@ -323,8 +331,6 @@ class ProFormaInvoice extends BaseController
 
 
 
-
-
     //account head modal 
     public function View()
     {
@@ -371,26 +377,25 @@ class ProFormaInvoice extends BaseController
         $product_details_data = $this->common_model->FetchWhereJoin('crm_product_detail',$cond1,$joins1);
          
 
-        $data['enquiry_enq_number'] = $enquiry->enquiry_enq_number;
+        $data['enquiry_enq_number']    = $enquiry->enquiry_enq_number;
 
-        $data['enquiry_date']      = $enquiry->enquiry_date;
+        $data['enquiry_date']          = $enquiry->enquiry_date;
 
-        $data['enquiry_validity'] = $enquiry->enquiry_validity;
+        $data['enquiry_validity']      = $enquiry->enquiry_validity;
 
-        $data['enquiry_project'] = $enquiry->enquiry_project;
+        $data['enquiry_project']       = $enquiry->enquiry_project;
 
         $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
 
-        $data['sales_executive'] = $enquiry->se_name;
+        $data['sales_executive']       = $enquiry->se_name;
 
-        $data['customer_creation'] = $enquiry->cc_customer_name;
+        $data['customer_creation']     = $enquiry->cc_customer_name;
 
-        $data['contact_details'] = $enquiry->contact_person;
+        $data['contact_details']       = $enquiry->contact_person;
 
-        $data['enquiry_employees'] = $enquiry->employees_name;
+        $data['enquiry_employees']     = $enquiry->employees_name;
 
 
-         
         
         $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
         Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td></tr>';
@@ -469,8 +474,7 @@ class ProFormaInvoice extends BaseController
         $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_proforma_product',$cond1);
- 
-         
+  
      }
 
 
@@ -550,7 +554,6 @@ class ProFormaInvoice extends BaseController
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-            $data['payment_term'] = $sales_order->so_payment_term;
 
             $data['so_delivery_term'] = $sales_order->so_delivery_term;
 
@@ -613,12 +616,11 @@ class ProFormaInvoice extends BaseController
 
                    $data['sales_order_contact'] .=  '</select>
                                             </td>
-                                            <td><input type="text" name="pp_unit[]" value="'.$prod_det->spd_unit.'" class="form-control" required></td>
+                                            <td><input type="text"   name="pp_unit[]" value="'.$prod_det->spd_unit.'" class="form-control" required></td>
                                             <td><input type="number" name="pp_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id" required></td>
                                             <td><input type="number" name="pp_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" required></td>
                                             <td><input type="number" name="pp_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
                                             <td><input type="number" name="pp_amount[]" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" required></td>
-                                          
                                             <td class="row_remove remove-btnpp" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i>Remove</td>
                                         </tr>';
                                         $i++;

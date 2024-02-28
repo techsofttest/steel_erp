@@ -31,29 +31,7 @@
             
             <div class="col-lg-12">
 
-                <div class="card">
-                    <div class="card-body">
-        
-                        <!-- Start Subtabs -->
-                        <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3" role="tablist">
-                            
-                            <li class="nav-item">
-                                <a class="nav-link active" href="<?= base_url(); ?>Crm/DeliverNote" role="tab">
-                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
-                                    <span class="d-none d-sm-block">Delivery Note</span>
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url(); ?>Crm/CashInvoice" role="tab">
-                                    <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
-                                    <span class="d-none d-sm-block">Cash Invoice</span>
-                                </a>
-                            </li>
-                    
-                        </ul>
-                    </div>
-                </div>
+               
                 
 
                 
@@ -116,7 +94,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="date" name="dn_date" class="form-control" required>
+                                                                        <input type="text" name="dn_date" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -336,7 +314,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control" required>
+                                                                <input type="file" name=""  class="form-control">
                                                             </div>
 
                                                         </div>
@@ -627,13 +605,12 @@
                 {   
                     var data = JSON.parse(data);
 
-                  
-
                     $(".sales_order_add_clz").html(data.sales_order);
 
                     $(".cont_person").html(data.contact_person);
-                    
-                    
+
+                    $(".payment_term_clz").val(data.payment_term);
+                   
                 }
 
 
@@ -677,8 +654,7 @@
 
                     $(".project_clz").val(data.so_project);
 
-                    $(".payment_term_clz").val(data.so_payment_term);
-
+                   
                     $(".product-more2").append(data.product_detail);
 
                     slno();
