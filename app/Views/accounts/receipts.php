@@ -2362,6 +2362,8 @@
         $('.add_model_btn').click(function(){
 
 
+            $('#added_id').val('');
+
             $('#add_form')[0].reset();
 
             $.ajax({
