@@ -57,7 +57,7 @@
                         <div class="col-col-md-2 col-lg-2">
                             <div>
                                 <label for="basiInput" class="form-label">Date</label>
-                                <input type="text"  id="r_date" class="form-control" value="" disabled>
+                                <input type="text"  id="r_date" class="form-control datepicker" value="" disabled>
                             </div>
                         </div>
 
@@ -664,6 +664,7 @@
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
             <form  class="Dashboard-form class" data-submit="false" data-rcid="" id="add_form">
+                <input id="added_id" type="hidden" name="r_id" value="" autocomplete="off">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Receipt</h5>
@@ -717,7 +718,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="date"  name="r_date" value="<?= date('Y-m-d') ?>" class="form-control" required>
+                        <input type="text" name="r_date" value="<?= date('d-F-Y') ?>" class="form-control datepicker" required readonly>
 
                         </div>
 
@@ -1249,7 +1250,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="date" id="r_date_edit"  name="r_date" value="<?= date('Y-m-d') ?>" class="form-control" required>
+                        <input type="text" id="r_date_edit"  name="r_date" value="<?= date('d-F-Y'); ?>" class="form-control datepicker" required readonly>
 
                         </div>
 
@@ -1643,12 +1644,13 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
-                            //$('#add_form')[0].reset();
-                            //$('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            $('#add_form').attr('data-submit','true');
-                            $('#add_form').attr('data-rcid',data);
-                            datatable.ajax.reload( null, false)
+                        //$('#add_form')[0].reset();
+                        //$('#AddModal').modal('hide');
+                        alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                        $('#add_form').attr('data-submit','true');
+                        $('#add_form').attr('data-rcid',data);
+                        $('#added_id').val(data);
+                        datatable.ajax.reload( null, false)
                         }
                        
                     });
@@ -2166,7 +2168,7 @@
             }
             
             
-            if($('#add_form').attr('data-submit')=='false')
+            if($('#added_id').val()=='')
             {
 
              $('#add_form').submit();
@@ -2212,7 +2214,7 @@
 
             //var id=1;
 
-            var receipt = $('#add_form').attr('data-rcid');
+            var receipt = $('#added_id').val();
 
             var id = c_account.val(); //Customer_ID
 
@@ -2360,6 +2362,8 @@
         $('.add_model_btn').click(function(){
 
 
+            $('#add_form')[0].reset();
+
             $.ajax({
 
             url : "<?php echo base_url(); ?>Accounts/Receipts/FetchReference",
@@ -2381,8 +2385,6 @@
 
 
         //Update PF Invoices
-
-
 
         $("body").on('click', '.edit_pf_invoice', function(){
 
