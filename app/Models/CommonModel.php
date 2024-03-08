@@ -595,9 +595,9 @@ class CommonModel extends Model
 
         ->get();
 
-        echo $this->db->getLastQuery(); exit();
+        //echo $this->db->getLastQuery(); exit();
         
-        //return $query->getResult();
+        return $query->getResult();
     }
 
 
@@ -720,6 +720,11 @@ class CommonModel extends Model
           
             $query->like($sales_order_col, $sales_order);
         }
+
+
+        
+        $query->groupBy($join['table'] . '.' . $prod_col);
+        
         
 
         
