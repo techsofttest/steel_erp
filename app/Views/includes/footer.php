@@ -86,6 +86,25 @@
 
     <script>
 
+
+
+    
+        function FormatDate(rawDate)
+        {
+
+        var dateObj = new Date(rawDate);
+
+        // Array to convert month number to month name
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+        ];
+
+        // Format the date
+        var formattedDate = ('0' + dateObj.getDate()).slice(-2) + '-' + monthNames[dateObj.getMonth()] + '-' + dateObj.getFullYear();
+
+        return formattedDate;
+
+        }
        
 
         $(document).ready(function(){
