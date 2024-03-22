@@ -644,19 +644,25 @@ class CommonModel extends Model
     /**/
 
 
-    public function FetchProd($table,$cond,$cond2)
-    {
+    public function FetchProd($table, $cond, $cond2, $joins)
+   {
         $query = $this->db->table($table)
+            ->select('*')
+            ->where($cond)
+            ->where($cond2);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        $result = $query->get()->getResult();
         
-        ->select('*')
+        //echo $this->db->getLastQuery(); exit();
 
-        ->where($cond)
 
-        ->where($cond2)
-
-        ->get();
-
-        return $query->getResult();
+        return $result;
     }
 
 
@@ -683,8 +689,12 @@ class CommonModel extends Model
         $query = $this->db->table($table)
             ->select('*');
             // Join additional tables if specified
-            foreach ($joins as $join) {
-                $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            if(!empty($joins))
+            {
+                foreach($joins as $join) 
+                {
+                    $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+                }
             }
             
 
@@ -710,7 +720,7 @@ class CommonModel extends Model
         }
 
         if(!empty($product))
-        {
+        {    
             //$query->like($prod_col, $product);
             $query->like($join['table'] . '.' . $prod_col, $product);
         }
@@ -721,23 +731,17 @@ class CommonModel extends Model
             $query->like($sales_order_col, $sales_order);
         }
 
+        
+        if(!empty($join))
+        {
+            $query->groupBy($join['table'] . '.' . $prod_col);
 
-        
-        $query->groupBy($join['table'] . '.' . $prod_col);
-        
-        
-
-        
+        }
+       
         $result = $query->get()->getResult();
 
-
-       // echo $this->db->getLastQuery();
-        
-        //exit();
-       
         return $result;
 
-       
     }
 
 
@@ -798,6 +802,8 @@ class CommonModel extends Model
                         ->join('crm_products', 'crm_products.product_id = crm_quotation_product_details.qpd_product_description', 'left')
                         ->groupBy('crm_quotation_product_details.qpd_product_description') 
                         ->get();
+
+                     
                        
         return $query->getResult();
     }
@@ -976,6 +982,24 @@ class CommonModel extends Model
     }
 
 
+
+    public function CheckTwiceCond1($table,$cond1,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond1)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getResult();
+ 
+    }
+
+
     public function TwiceCondWithNot($table,$cond1,$cond2,$joins,$id_coloum,$id)
     {
         $query = $this->db->table($table)
@@ -1005,6 +1029,108 @@ class CommonModel extends Model
         //return $query->getRow();
     }
 
+
+    /*public function EditFetchProd($table, $cond, $cond2, $joins,$id,$id_coloum)
+    
+    {
+        $query = $this->db->table($table)
+        ->select('*')
+        ->whereNotIn($id_coloum,(array)$id)
+        ->where($cond)
+        ->where($cond2);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        $result = $query->get()->getResult();
+
+        echo $this->db->getLastQuery();
+
+        exit();
+
+        //return $result;
+    }*/
+
+
+    public function EditFetchProd($table, $cond, $cond2, $joins,$id,$id_coloum)
+    {
+        $query = $this->db->table($table)
+        ->select('*')
+        ->whereNotIn($id_coloum,(array)$id)
+        ->where($cond)
+        ->where($cond2);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        $result = $query->get()->getResult();
+
+
+        return $result;
+    }
+
+
+    public function FetchDataByGroup($table,$groupBy,$cond,$joins)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->groupBy($groupBy);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        $result = $query->get()->getResult();
+        
+       //echo $this->db->getLastQuery(); exit();
+
+        return $result;
+    }
+
+
+    public function FetchCreditProd($table,$cond,$joins)
+    {
+        $query = $this->db->table($table)
+
+        ->where($cond)
+
+        ->groupBy('crm_delivery_note.dn_reffer_no');
+
+        if(!empty($joins))
+
+        foreach($joins as $join)
+        {
+            $table2 = $table;
+            if(!empty($join['table2']))
+            {
+            $table2 = $join['table2'];
+            }
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+        }
+       
+        $result = $query->get()->getResult();
+        
+        //echo $this->db->getLastQuery(); exit();
+
+        return $result;
+
+    }
+
+
+
+    
 
 
 
