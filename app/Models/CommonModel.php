@@ -135,11 +135,6 @@ class CommonModel extends Model
 
 
 
-
-
-
-
-
     public function CountWhere($table,$cond)
     {
         $query = $this->db->table($table)
@@ -161,6 +156,31 @@ class CommonModel extends Model
         return $query->getResult();
 
     }
+
+
+    //Fetch Sum Of Coloumn Where
+
+
+    public function FetchSum($table,$column,$cond="")
+    {
+        $query = $this->db->table($table);
+
+        $query->selectSum($column);
+
+        if($cond !="")
+        {
+        $query->where($cond);
+        }
+
+        $result = $query->get()->getRow();
+
+        return $result->$column;
+        
+    }
+
+
+
+
 
     //Fetch where Join
     public function FetchWhereJoin($table,$cond,$joins)
