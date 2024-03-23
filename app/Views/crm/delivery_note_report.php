@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer" required><option>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -63,7 +63,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name="" required><option>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -72,7 +72,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product" required><option>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -88,20 +88,7 @@
 
                                                                 <!--table section end-->
 
-                                                                <div style="float: right;">
-                                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                            <td><button>Excel</button></td>
-                                                                            <td><button>PDF</button></td>
-                                                                            <td><button>Email</button></td>
-                                                                            <td><button type="submit">View</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>
-                                                                
+                                                               
                                                                 
                                                                 
 
@@ -113,6 +100,11 @@
                                                 </div>
                                                 <!--end col-->
                                             </div>
+                                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
                                         </div>
                                         
                                     </div>

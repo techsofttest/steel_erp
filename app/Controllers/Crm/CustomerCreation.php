@@ -126,6 +126,8 @@ class CustomerCreation extends BaseController
         
         $insert_data = $this->request->getPost();
 
+        
+
         $insert_data['cc_added_by'] = 0; 
 
         $insert_data['cc_added_date'] = date('Y-m-d'); 
@@ -221,7 +223,7 @@ class CustomerCreation extends BaseController
     {
         $file = $this->request->getFile($fieldName);
 
-        if ($file->isValid() && !$file->hasMoved()) {
+        if ($file->isValid() && !$file->hasMoved()){
             $newName = $file->getRandomName();
             $file->move($uploadPath, $newName);
             return $newName;
@@ -241,7 +243,8 @@ class CustomerCreation extends BaseController
         
         
         $update_data = $this->request->getPost();
-
+         
+         //print_r($update_data); exit();
    
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('cc_id', $update_data)) 
@@ -617,8 +620,66 @@ class CustomerCreation extends BaseController
             $this->common_model->DeleteData('crm_product_detail',$cond3);
 
         }
+         
+
+       //delete quotation
+
+       $cond6 = array('qd_customer' => $this->request->getPost('ID'));
+
+       $quotation_details = $this->common_model->FetchWhere('crm_quotation_details',$cond6);
+
+       foreach($quotation_details as $quot_det)
+       {    
+          
+            $this->common_model->DeleteData('crm_quotation_cost_calculation',array('qc_quotation_id'=>$quot_det->qd_id));
+            
+            $this->common_model->DeleteData('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_det->qd_id));
+   
+       }
+       
+       $this->common_model->DeleteData('crm_quotation_details',$cond6);
 
 
+       //delete sales orders
+       
+       $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_customer' => $this->request->getPost('ID')));
+       
+        foreach($sales_orders as $sales_order)
+        {
+            $this->common_model->DeleteData('crm_sales_product_details',array('spd_sales_order'=>$sales_order->so_id));
+        }
+
+       @unlink('uploads/SalesOrder/'.$sales_orders->so_file);
+
+       $this->common_model->DeleteData('crm_sales_orders',array('so_customer' => $this->request->getPost('ID')));
+
+
+       //delete proforma invoice
+       
+       $proforma_invoices = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_customer' => $this->request->getPost('ID')));
+       
+       foreach($proforma_invoices as $proforma_invoice)
+       {
+            $this->common_model->DeleteData('crm_proforma_product',array('pp_proforma'=>$proforma_invoice->pf_id));
+       }
+
+       @unlink('uploads/ProformaInvoice/'.$proforma_invoice->pf_file);
+
+       $this->common_model->DeleteData('crm_proforma_invoices',array('pf_customer' => $this->request->getPost('ID')));
+       
+       
+       //delete delivery note
+
+       $delivery_notes = $this->common_model->FetchWhere('crm_delivery_note',array('dn_customer' => $this->request->getPost('ID')));
+       
+       foreach($delivery_notes as $delivery_note)
+       {
+            $this->common_model->DeleteData('crm_delivery_product_details',array('dpd_delivery_id'=>$delivery_note->dn_id));
+       }
+
+       @unlink('uploads/DeliveryNote/'.$delivery_notes->dn_file);
+
+       $this->common_model->DeleteData('crm_delivery_note',array('dn_customer' => $this->request->getPost('ID')));
 
     }
 
@@ -645,9 +706,6 @@ class CustomerCreation extends BaseController
         $cond3 = array('cc_id' => $this->request->getPost('custID'));
 
         
-
-      
-
         if(empty($customer_creation))
         {   
            
@@ -656,8 +714,7 @@ class CustomerCreation extends BaseController
             $single_account_head = $this->common_model->SingleRow('accounts_account_heads',$cond);
 
             $data['account_id'] =  ++$single_account_head->ah_head_id;
-          
-            
+           
         }
 
         else
@@ -754,7 +811,7 @@ class CustomerCreation extends BaseController
         
     }
 
-
+ 
 
 
 }

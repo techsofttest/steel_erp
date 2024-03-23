@@ -77,7 +77,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_reff" class="form-control" value="<?php echo $enquiry_id; ?>" required readonly>
+                                                                        <input type="text" name="enquiry_reff" id="enqid" class="form-control" value="<?php echo $enquiry_id; ?>" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -292,7 +292,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -303,7 +303,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -317,6 +317,11 @@
 					                           
 						                    
 				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
 
 
                                         
@@ -843,7 +848,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!---<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -854,7 +859,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -868,6 +873,12 @@
 					                           
 						                    
 				                        </div>
+
+
+                                        
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
 
 
                                         
@@ -1009,7 +1020,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddEnquiry" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddEnquiry" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1347,6 +1358,30 @@
       
  
         /*Time Frame section end*/
+
+
+        /*reset reff no*/
+
+        $('.add_model_btn').click(function(){
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/Enquiry/FetchReference",
+
+                method : "GET",
+
+                success:function(data)
+                {
+
+                    $('#enqid').val(data);
+
+                }
+
+            });
+
+        });
+
+        /*####*/
 
 
 
@@ -1733,7 +1768,7 @@
 
                             $('#EditEnquiry').modal('hide');
 
-	                        $('.view_btn[data-id="'+enqID+'"]').trigger('click');
+	                        //$('.view_btn[data-id="'+enqID+'"]').trigger('click');
 
                             alertify.success('Data Updated Successfully').delay(3).dismissOthers();
 
@@ -1865,18 +1900,10 @@
  
       
  
-         /*Time Frame section end*/
-
-
-
+        /*Time Frame section end*/
 
 
         /*edit section end*/
-
-
-
-        
-
 
 
 

@@ -78,7 +78,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="" value="<?php echo $sales_order_id;?>" class="form-control" required readonly>
+                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -379,7 +379,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control">
+                                                                <input type="file" name="so_file"  class="form-control">
                                                             </div>
 
                                                         </div>
@@ -387,7 +387,9 @@
 
                                                         
                                                     </div>
-                                                    <div class="col-lg-6">
+
+                                                    <div class="col-lg-6"></div>
+                                                    <!--<div class="col-lg-6">
                                                         <div style="float: right;">
                                                             <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                 <tr>
@@ -401,7 +403,7 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
+                                                    </div>--->
                                                 </div>
                                                 
 
@@ -419,6 +421,11 @@
 				                        </div>
 
 
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
+
                                         
 			                        </div>
 		                        </form>
@@ -434,7 +441,7 @@
 
                         <div class="modal fade" id="EditSalesOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_sales_order_form">
+		                        <form  class="Dashboard-form class" id="edit_sales_order">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
@@ -499,14 +506,19 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
+
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
+
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
+                                                                        
                                                                         <select class="form-select edit_customer" name="so_customer" id="customer_id" required>
+                                                                            
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                            
                                                                         </select>
+
                                                                     </div>
 
                                                                 </div> 
@@ -530,8 +542,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select quotation_ref edit_quot" name="so_quotation_ref" id="">
-                                                                            <option value="" selected disabled>Quotation Ref</option>
+                                                                        <select class="form-select  edit_quot" name="so_quotation_ref" id="">
+                                                                            
                                                                
                                                                         </select>
                                                                         
@@ -588,10 +600,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <select class="form-select enqinput sales_executive_clz edit_executive" name="so_sales_executive"  required>
-                                                                            <option value="" selected disabled>Sales Executive</option>
-                                                                            <?php foreach($sales_executive as $sale_exc){?> 
-                                                                                <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
-                                                                            <?php } ?>
+                                                                            
+                                                                        
                                                                             
                                                                 
                                                                         </select>
@@ -611,18 +621,13 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label edit_contact_person">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select contact_person_clz" name="so_contact_person" style="width: 80%;" required>
+                                                                        <select class="form-select edit_contact_person" name="so_contact_person"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
-                                                                            <!--<?php foreach($contacts as $cont){?> 
                                                                             
-                                                                                <option value="<?php echo $cont->contact_id; ?>"><?php echo $cont->contact_person;?></option>
-                                                                                
-                                                                            <?php } ?>--->
-                                                                
                                                                         </select>
                                                                        
                                                                        
@@ -697,7 +702,7 @@
 
                                                             </div>   
                                                             
-                                                            <input type="hidden" name="" class="edit_so_id">
+                                                            <input type="hidden" name="so_id" class="edit_so_id">
 
                                                             <!-- ### --> 
 
@@ -732,7 +737,7 @@
                                                            
                                                         </thead>
                                                         
-                                                        <tbody  class="travelerinfo"></tbody>
+                                                        <tbody  class="travelerinfo edit_add_prod_det"></tbody>
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="8" align="center" class="tecs">
@@ -746,7 +751,7 @@
                                                                 <td colspan="3" class="sales_order_amount_in_word"></td>
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="so_amount_total" class="amount_total form-control" readonly></td>
+                                                                <td><input type="text" name="so_amount_total" class="edit_amount_total form-control" readonly></td>
                                                             </tr>
                                                             
                                                           
@@ -761,21 +766,15 @@
                                                     <div class="col-lg-6">
                                                         
 
-                                                        <div class="row row_align mb-4">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Attach</label>
-                                                            </div>
+                                                      
+                                                        <div class="card-body edit_image_table"></div>
 
-                                                            <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control">
-                                                            </div>
-
-                                                        </div>
 
 
                                                         
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-6"></div>
+                                                    <!--<div class="col-lg-6">
                                                         <div style="float: right;">
                                                             <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                 <tr>
@@ -789,7 +788,7 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
+                                                    </div>---->
                                                 </div>
                                                 
 
@@ -805,6 +804,11 @@
 					                           
 						                    
 				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
 
 
                                         
@@ -848,22 +852,23 @@
                                                                 
                                                             </tr>
 
-                                                            <tr class="edit_prod_row">
+                                                            <tr class="edit_add_prod_row">
                                                                 <td style="width: 10%;" class="">1</td>
                                                                 <td>
-                                                                    <select class="form-select  edit_product_det spd_product_details" name="spd_product_details" required>
+                                                                    <select class="form-select  edit_product_det" name="spd_product_details" required>
+                                                                        
                                                                         <option selected>Select Product Description</option>
                                                                        
                                                                     </select>
                                                                 </td>
 
                                                                 <td><input type="text"   name="spd_unit" class="form-control" required></td>
-                                                                <td><input type="number" name="spd_quantity" class="form-control" required></td>
-                                                                <td><input type="number" name="spd_rate" class="form-control" required></td>
-                                                                <td><input type="number" name="spd_discount" class="form-control" required></td>
-                                                                <td><input type="number" name="spd_amount" class="form-control" required></td>
+                                                                <td><input type="number" name="spd_quantity" class="form-control edit_add_qty" required></td>
+                                                                <td><input type="number" name="spd_rate" class="form-control edit_add_rate" required></td>
+                                                                <td><input type="number" name="spd_discount" class="form-control edit_add_discount" required></td>
+                                                                <td><input type="number" name="spd_amount" class="form-control edit_add_amount" required></td>
                                                                 
-                                                                <input type="hidden" name="spd_id" class="edit_hidden_sales_id">
+                                                                <input type="hidden" name="spd_sales_order" class="edit_hidden_sales_id">
 
                                                             </tr>
                                                            
@@ -898,6 +903,73 @@
                         </div>
 
                         <!--edit add section end-->
+
+
+                        <!--edit product section start-->
+
+                        <div class="modal fade" id="EditProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="edit_product_form">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+                                            <button type="button" class="btn-close edit_close_sub_modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo">
+                                                            
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody class="edit_product_table"></tbody>
+                                                       
+                                                       
+                                                    </table>
+                                                </div>
+
+
+                                                <div class="modal-footer justify-content-center">
+                                                    
+                                                    <button class="btn btn btn-success">Save</button>
+
+                                                </div>
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+					                           
+						                    
+				                        </div>
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        <!--edit product section end-->
 
 
 
@@ -979,11 +1051,9 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <!--<select class="form-select view_customer" name="so_customer" id="customer_id" readonly>
-                                                                            <option value="" selected disabled>Select Customer</option>
-                                                                           
-                                                                        </select>-->
+                                                                        
                                                                         <input type="text" name="so_customer" id="customer_id" class="form-control view_customer" readonly>
+                                                                    
                                                                     </div>
 
                                                                 </div> 
@@ -1007,11 +1077,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <!--<select class="form-select quotation_ref view_quot" name="so_quotation_ref" id="" readonly>
-                                                                            <option value="" selected disabled>Quotation Ref</option>
-                                                               
-                                                                        </select>--->
-
+                                                                       
                                                                         <input type="text" name="so_quotation_ref" id="" class="form-control quotation_ref view_quot" readonly>
                                                                         
                                                                     </div>
@@ -1178,33 +1244,7 @@
                                                 </div>
 
 
-                                                <!--attachment section start-->
-
-                                                <div class="card-body">
-                                                    <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
-                                                        <thead>
-                                                            <tr>
-                                                                
-                                                                <th class="cust_img_rgt_border">File Name</th>
-                                                                <th class="cust_img_rgt_border">Download</th>
-                                                               
-                                                            </tr>
-                                                        </thead>
                                                 
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="cust_img_rgt_border view_cr_no_att" ></td>
-                                                                <td class="cust_img_rgt_border view_est_id_att"></td>
-                                                                
-                                                            </tr>
-                                                        </tbody>
-
-                                                    </table>
-                
-                                                </div>
-
-
-                                                <!--#######-->
 
 
                                                 <!--table section start-->
@@ -1233,6 +1273,14 @@
 
 
                                                 <!--table section end-->
+
+
+                                                <!--attachment section start-->
+
+                                                <div class="card-body view_image_table" style="float: inline-start";></div>
+                                                    
+                
+                                                <!--#######-->
 
                                               
 
@@ -1286,7 +1334,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Order</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesOrder" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesOrder" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1358,16 +1406,20 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
+                    var formData = new FormData(currentForm);
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesOrder/Add",
                         method: "POST",
-                        data: $(currentForm).serialize(),
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        //data: $(currentForm).serialize(),
                         success: function(data) {
                          
                             $('#add_sales_order_form')[0].reset();
                            
-                            $('#SalesOrder').modal('hide');
+                            $('#AddSalesOrder').modal('hide');
 
                             $('#customer_id').val('').trigger('change');
 
@@ -1379,7 +1431,12 @@
 
                             $('.sales_remove').remove();
 
+                            $('.quotation_ref option').remove();
+
+                            $('.contact_person_clz option').remove();
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
                             datatable.ajax.reload(null, false);
                            
                             
@@ -1412,8 +1469,7 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            //$('#add_form')[0].reset();
-                            //$('#AddModal').modal('hide');
+                          
 
                             $.ajax({
                                 url: "<?php echo base_url(); ?>Crm/SalesOrder/FetchProduct",
@@ -1422,7 +1478,7 @@
                                 success: function(secondData) {
                                     // Handle the response of the second AJAX call
                                     var secdata = JSON.parse(secondData);
-                                    console.log(secdata);
+                                   
                                     $(".add_prod").html(secdata.product_head_out);
                                 }
                             });
@@ -1464,7 +1520,7 @@
                     //console.log(data);
                     //NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
-                    console.log(data);
+                    //console.log(data);
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -1643,7 +1699,6 @@
                    
                 }
 
-
             });
         });
 
@@ -1665,7 +1720,6 @@
 
                 method : "POST",
 
-                //data: {ID: id},
                 data:{
                     ID: id,
                     quotID: quot_id
@@ -1675,7 +1729,7 @@
                 {   
                     var data = JSON.parse(data);
 
-                    console.log(data.prod_details);
+                   
                    
                     $(".contact_person_clz").html(data.contact_person);
 
@@ -1789,8 +1843,6 @@
 
             var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
            
-            //alert(orginalPrice);
-
             var $amountElement = $discountSelect.closest('.prod_row2').find('.amount_clz_id');
 
             $amountElement.val(orginalPrice);
@@ -1814,7 +1866,7 @@
                 var sub_tot = parseFloat($(this).val());
 
                 total += parseFloat(sub_tot.toFixed(2))||0;
-               //total = Number(total).toFixed(2)
+               
             });
 
            total = total.toFixed(2);
@@ -1862,6 +1914,32 @@
 
         });
 
+
+        /*reset reffer number*/
+
+        $('.add_model_btn').click(function(){
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/FetchReference",
+
+                method : "GET",
+
+                success:function(data)
+                {
+
+                $('#soid').val(data);
+
+                }
+
+            });
+
+        });
+
+
+        /**/
+
+
         /*add section end*/
 
 
@@ -1896,10 +1974,10 @@
 
                     $(".edit_lpo").val(data.lpo);
 
-                    $(".edit_executive").val(data.sales_executive);
+                    $(".edit_executive").html(data.sales_executive);
 
-                    $(".contact_person_clz").val(data.contact_person);
-                    
+                    $(".edit_contact_person").html(data.contact_person);
+
                     $(".payment_term").val(data.payment_term);
 
                     $(".edit_delivery_date").val(data.delivery_term);
@@ -1907,6 +1985,16 @@
                     $(".edit_project").val(data.project);
 
                     $(".edit_so_id").val(data.so_id);
+
+                    $(".edit_add_prod_det").html(data.prod_details);
+
+                    $(".edit_amount_total").val(data.amount_total);
+
+                    $(".edit_file_name").html(data.file_name);
+
+                    $(".edit_file_attach").html(data.file_attach);
+
+                    $(".edit_image_table").html(data.image_table);
 
                     $('#EditSalesOrder').modal("show");
                    
@@ -1937,7 +2025,7 @@
             $(".edit_product_det:last").select2({
                 placeholder: "Select Product",
                 theme : "default form-control-",
-                dropdownParent: $($('.edit_product_det:last').closest('.edit_prod_row')),
+                dropdownParent: $($('.edit_product_det:last').closest('.edit_add_prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
                     dataType: 'json',
@@ -1969,6 +2057,124 @@
         InitProductSelect2();
 
 
+
+
+        //fetch quotation by customer
+
+        $("body").on('change', '.edit_customer', function(){ 
+            var id = $(this).val();
+
+           
+
+            var sales_order = $('.edit_so_id').val();
+           
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/EditQuotRef",
+
+                method : "POST",
+
+                data: {ID: id,
+                       SalesOrder : sales_order
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                    
+                    $(".edit_quot").html(data.quotation_det);
+
+                }
+
+
+            });
+        });
+
+
+        $("body").on('click', '.edit_close_sub_modal', function(){ 
+
+
+            $('#EditSalesOrder').modal("show");
+
+            $('#EditAddProduct').modal("hide");
+
+            $('#EditProduct').modal("hide");
+          
+
+        });
+
+
+
+
+        //edit add product calculation start
+
+        $("body").on('keyup', '.edit_add_discount, .edit_add_qty, .edit_add_rate', function(){ 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            
+            var $amountElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_amount');
+
+            $amountElement.val(orginalPrice);
+
+            
+        });
+
+        
+
+        /*####*/
+
+
+        /*calculate total amount*/
+
+        function EditProdTotal()
+        {
+
+            var total= 0;
+
+            $('body .edit_product_amount').each(function()
+            {
+                var sub_tot = parseFloat($(this).val());
+
+                total += parseFloat(sub_tot.toFixed(2))||0;
+            
+            });
+
+            total = total.toFixed(2);
+
+            $('.edit_amount_total').val(total);
+   
+
+        }
+
+
+        /*####*/
+
+
+
+        /*edit add form submit*/
+
         $(function() {
             var form = $('#edit_add_prod_form');
             
@@ -1983,27 +2189,65 @@
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesOrder/AddProduct",
+                        url: "<?php echo base_url(); ?>Crm/SalesOrder/EditAddProd",
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                         
-                           /* $('#add_sales_order_form')[0].reset();
+
+                            var responseData = JSON.parse(data);
+
+                            var saleID= (responseData.sales_order_id);
+
                            
-                            $('#SalesOrder').modal('hide');
+                            $('.edit_btn[data-id="'+saleID+'"]').trigger('click');
 
-                            $('#customer_id').val('').trigger('change');
+                            $('#EditAddProduct').modal('hide');
 
-                            $('.quotation_ref').val('').trigger('change');
+                            $('#edit_add_prod_form')[0].reset();
 
-                            $('.sales_executive_clz').val('').trigger('change');
+                            $('.edit_product_det').val('').trigger('change');
+                            
+                           
+                        }
+                    });
+                }
+            });
+        });
 
-                            $('.contact_person_clz').val('').trigger('change');
+        /*####*/
 
-                            $('.sales_remove').remove();
 
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);*/
+        /*update form*/
+
+        $(function() {
+            var form = $('#edit_sales_order');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    var formData = new FormData(currentForm);
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/SalesOrder/Update",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        //data: $(currentForm).serialize(),
+                        success: function(data) {
+                         
+                           
+                            $('#EditSalesOrder').modal('hide');
+
+                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
                            
                             
                         }
@@ -2014,8 +2258,306 @@
 
 
 
+        /*#####*/
+
+
+        /*fetch data by customer*/
+
+        $("body").on('change', '.edit_customer', function(){ 
+            var id = $(this).val();
+           
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/ContactPerson",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $(".edit_contact_person").html(data.customer_name);
+
+                    $(".edit_quot").html(data.quotation_det);
+
+                    $(".payment_term").val(data.credit_term);
+                   
+                }
+
+            });
+        });
+
+        /*###*/
+
+
+        /*fetch data by quot ref*/
+
+        $("body").on('change', '.edit_quot', function(){ 
+
+            //$(".sales_remove").remove();
+
+            var id = $(this).val();
+
+            var quot_id = $('.edit_customer').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/QuotationRef",
+
+                method : "POST",
+
+                
+                data:{
+                    ID: id,
+                    quotID: quot_id
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    
+                    $(".edit_contact_person").html(data.contact_person);
+
+                    $(".edit_executive").html(data.qd_sales_executive);
+
+                    $(".edit_project").val(data.qd_project);
+
+                  
+
+                }
+
+
+            });
+        });
+
+        /*####*/
+
+
+        /*product edit start*/
+
+        $("body").on('click', '.product_edit', function(){ 
+
+            $("#EditSalesOrder").modal("hide");
+
+            $("#EditProduct").modal("show");
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/EditProduct",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+                    $(".edit_product_table").html(data.prod_details);
+
+                   
+                }
+
+
+            });
+
+        });
+
+
+        /*#####*/
+
+
+        /*edit calculation section start*/
+
+        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+            var $amountElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+
+        });
+
+
+        /*####*/
+
+
+        /*update product*/
+        
+        $(function() {
+            var form = $('#edit_product_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/SalesOrder/UpdateProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+
+                            var salesId = responseData.sales_order_id
+                            
+
+                            $('#EditProduct').modal('hide');
+
+                            $('#EditSalesOrder').modal('show');
+
+                            $('.edit_btn[data-id="'+salesId+'"]').trigger('click');
+
+                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null,false)
+                            
+                        }
+                    });
+                }
+            });
+        });
+
+        /*#####*/
+
+
+        /*edit product detail (qty keyup)*/
+
+        $("body").on('keyup', '.edit_prod_qty', function(){ 
+
+            var qty = $(this).val();
+
+            var prod_id = $('.edit_prod_id').val();
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/GetProd",
+
+                method : "POST",
+
+                data:{prodID: prod_id},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+                    console.log(data.status);
+
+                     if(data.status==="true")
+                     {
+                        if(data.old_qty > qty)
+                        {
+                            alertify.error('Quantity cannont be decrease').delay(3).dismissOthers();
+                
+                        }
+                     }
+
+                     
+
+                
+                }
+            });
+           
+
+
+        });
+
+        /*#####*/
+
+
 
         /*edit section end*/
+
+
+
+
+        /*delete section start*/
+         
+        $("body").on('click', '.product_delete', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteProdDet",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                {   
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        deleteSlno();
+                        EditProdTotal()
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    }); 
+
+                
+                }
+
+
+            });
+        });
+
+        /*delete section end*/
+
+
+        function deleteSlno()
+	    {
+
+		    var pp =1;
+
+            $('body .edit_product_row').each(function() {
+
+                $(this).find('.delete_sino').html('<td class="delete_sino">' + pp + '</td>');
+
+                pp++;
+            });
+
+        }
+
+
 
 
 
@@ -2058,6 +2600,12 @@
                     $(".view_project").val(data.project);
 
                     $(".view_product_data").html(data.prod_details);
+
+                    $(".view_image_table").html(data.image_table);
+
+                    
+
+                    console.log(data.image_table);
 
                     $('#ViewSalesOrder').modal('show');
                 

@@ -59,16 +59,28 @@ class SalesQuotation extends BaseController
         );
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_quotation_details','qd_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
-    
+        
+       
         $data = array();
 
         $i=1;
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
+            if(!empty($record->qd_edit_quot_reff))
+            {
+               $reffer_num = $record->qd_reffer_no . "(" . $record->qd_edit_quot_reff . ")";
+            }
+            else
+            {
+                $reffer_num = $record->qd_reffer_no;
+            }
+    
+
+
            $data[] = array( 
               "qd_id"               =>$i,
-              'qd_reffer_no'        => $record->qd_reffer_no,
+              'qd_reffer_no'        => $reffer_num,
               'qd_date'             => date('d-m-Y',strtotime($record->qd_date)),
               'qd_customer'         => $record->cc_customer_name,
               'qd_enquiry'          => $record->enquiry_reff,
@@ -135,6 +147,7 @@ class SalesQuotation extends BaseController
     //view page
     public function index()
     {   
+        
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
@@ -152,7 +165,7 @@ class SalesQuotation extends BaseController
         $data['content'] = view('crm/sales-quotation',$data);
 
         return view('crm/crm-module',$data);
-
+       
     }
 
 
@@ -447,6 +460,11 @@ class SalesQuotation extends BaseController
                 'table' => 'master_delivery_term',
                 'pk'    => 'dt_id',
                 'fk'    => 'qd_delivery_term',
+            ),
+            array(
+                'table' => 'crm_enquiry',
+                'pk'    => 'enquiry_id',
+                'fk'    => 'qd_enq_ref',
             )
 
 
@@ -465,62 +483,74 @@ class SalesQuotation extends BaseController
         );
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);
-         
-
-        $data['reffer_no']  = $quotation_details->qd_reffer_no;
-
-        $data['date']              = $quotation_details->qd_date;
-
-        $data['customer_name']          = $quotation_details->cc_customer_name;
-
-        $data['qd_enquiry_reference'] = $quotation_details->qd_enq_ref;
-
-        $data['qd_validity']          = $quotation_details->qd_validity;
-
-        $data['qd_sales_executive']   = $quotation_details->se_name;
-
-        $data['qd_contact_person']    = $quotation_details->contact_person;
-
-        $data['qd_payment_term']      = $quotation_details->qd_payment_term;
-
-        $data['qd_delivery_term']     = $quotation_details->qd_delivery_term;
-
-        $data['qd_project']           = $quotation_details->qd_project;
-
-       
-
-       
-
         
 
+        $joins2 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qc_material',
+            ),
+        );
+
+        $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
+
+        $cost_calculation_data = $this->common_model->FetchWhereJoin('crm_quotation_cost_calculation',$cond2,$joins2);
+
+
+
+        $data['reffer_no']         = $quotation_details->qd_reffer_no;
+
+        $data['date']              = date('d-M-Y',strtotime($quotation_details->qd_date));
+
+        $data['customer_name']     = $quotation_details->cc_customer_name;
+
+        $data['enquiry_reference'] = $quotation_details->enquiry_reff;
+
+        $data['validity']          = $quotation_details->qd_validity;
+
+        $data['sales_executive']   = $quotation_details->se_name;
+
+        $data['contact_person']    = $quotation_details->contact_person;
+
+        $data['payment_term']      = $quotation_details->qd_payment_term;
+
+        $data['delivery_term']     = $quotation_details->qd_delivery_term;
+
+        $data['project']           = $quotation_details->qd_project;
+
+        $data['sales_amount']      = $quotation_details->qd_sales_amount;
+
+        $data['cost_amount']       = $quotation_details->qd_cost_amount;
+
+        $data['percentage']        = $quotation_details->qd_percentage;
+
+        $data['cost_details'] ="";
         
+        $i=1;
+        foreach($cost_calculation_data as $cost_cal_data)
+        {
+            $data['cost_details'] .='<tr>
+            <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control " readonly></td>
+            </tr>'; 
 
-        /*$data['qd_delivery_term']     = $quotation_details->dt_name;
+            $i++;
+             
+        }
 
-        $data['qd_materials']         = $quotation_details->qd_materials;
+        $data['prod_details'] ="";
 
-        $data['qd_qty']               = $quotation_details->qd_qty;
-
-        $data['qd_rate']              = $quotation_details->qd_rate;
-
-        $data['qd_amount']            = $quotation_details->qd_amount;
-
-        $data['qd_cost_of_sale']      = $quotation_details->qd_cost_of_sale;
-
-        $data['qd_gross_profit']      = $quotation_details->qd_gross_profit;
-
-        $data['qd_direct']      = $quotation_details->qd_direct;*/
-
-
-         
-        
-        /*$data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount</td><td>Amount</td></tr>';
+        $j=1;
 
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"  value="'.$prod_det->qpd_serial_no.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$j.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control " readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control " readonly></td>
@@ -528,11 +558,12 @@ class SalesQuotation extends BaseController
             <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control " readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_amount.'" class="form-control " readonly></td>
             </tr>'; 
-             
+            
+            $j++;
         }
         
-        $data['prod_details'] .= '</tbody></table>';*/
-
+      
+        
         
         echo json_encode($data);
     }
@@ -646,14 +677,14 @@ class SalesQuotation extends BaseController
 
 
     //delete contact details
-    public function DeleteContact()
+    /*public function DeleteContact()
     {
         $cond = array('pd_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_quotation_details',$cond);
 
         
-    }
+    }*/
 
 
     public function Delete()
@@ -665,6 +696,23 @@ class SalesQuotation extends BaseController
         $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
+
+        $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond2);
+
+        //delete sales order
+
+        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_quotation_ref' => $this->request->getPost('ID')));
+        
+        foreach($sales_orders as $sales_order)
+        {
+            $this->common_model->DeleteData('crm_sales_product_details',array('spd_sales_order'=>$sales_order->so_id));
+        }
+
+        @unlink('uploads/SalesOrder/'.$sales_orders->so_file);
+
+	    $this->common_model->DeleteData('crm_sales_orders',array('so_quotation_ref' => $this->request->getPost('ID')));
 
 
     }
@@ -994,45 +1042,36 @@ class SalesQuotation extends BaseController
        
         $enquiry_cust = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
 
-       // $enquiry_data = $this->common_model->SingleRow('crm_enquiry',array('enquiry_id' =>$this->request->getPost('EnquiryId')));
-          
+      
        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',array('qd_id' =>$this->request->getPost('QuotId')));
         
-       
+       if(!empty($quotation_details->qd_enq_ref))
+       {
         
-       $enquiry_data = $this->common_model->SingleRow('crm_enquiry',array('enquiry_id' =>$quotation_details->qd_enq_ref));
+            $enquiry_data = $this->common_model->SingleRow('crm_enquiry',array('enquiry_id' =>$quotation_details->qd_enq_ref));
+            
         
+        
+            if($this->request->getPost('ID') == $enquiry_data->enquiry_customer)
+            {
+            
 
-        /*$cus="";
-       
-        if(!empty($enquiry_data->enquiry_customer)){
-            $cus = $enquiry_data->enquiry_customer;
-        } 
-        else
-        {
-           
-        }
+                $data['enquiry_ref'] ='<option value='.$enquiry_data->enquiry_id.'>'.$enquiry_data->enquiry_reff.'</option>';  
+                
+            }
+            else
+            {   
+            
 
-      
-
-        $cus = $enquiry_data->enquiry_customer;*/
-       
-        if($this->request->getPost('ID') == $enquiry_data->enquiry_customer)
-        {
-           
-
-            $data['enquiry_ref'] ='<option value='.$enquiry_data->enquiry_id.'>'.$enquiry_data->enquiry_reff.'</option>';  
-            //echo "not empty";
-        }
-        else
-        {   
-           
-
-            $data['enquiry_ref'] ='<option value="" selected disabled>Selected Enquiry</option>'; 
-            //echo "empty";
-        }
+                $data['enquiry_ref'] ='<option value="" selected disabled>Selected Enquiry</option>'; 
+            
+            }
 	   
-        //$data['enquiry_ref'] ='<option value="" selected disabled>Selected Enquiry</option>';  
+        }
+        else
+        {
+            $data['enquiry_ref'] = '';
+        }
 
         foreach($enquiry_cust as $enq_cust)
         {
@@ -1053,6 +1092,12 @@ class SalesQuotation extends BaseController
         {
             $data['contact_person'] .='<option value='.$con_det->contact_id.'>'.$con_det->contact_person.'</option>';
         }
+
+        //payment term
+
+        $customer_creation = $this->common_model->SingleRow('crm_customer_creation',array('cc_id' => $this->request->getPost('ID')));
+        
+        $data['credit_term'] = $customer_creation->cc_credit_term;
 
 
         echo json_encode($data);
@@ -1359,11 +1404,27 @@ class SalesQuotation extends BaseController
      }
 
 
-    public function UpdateTab()
-    {
+    /*public function UpdateTab()
+    {   
+        $cond = array('qd_id' => $this->request->getPost('qd_id'));
+
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
+
+        if (empty($quotation_details->qd_edit_flag)) 
+        {
+            $output = $this->request->getPost('qd_reffer_no') . "-ERP-" . strrev($this->request->getPost('qd_reffer_no'));
+            
+        }
+        else
+        {
+            $output = $this->request->getPost('qd_reffer_no');
+            
+        }
+
+
         $updated_data = [
 
-            'qd_reffer_no'         => $this->request->getPost('qd_reffer_no'),
+            'qd_reffer_no'         => $output,
 
             'qd_date'              => date('Y-m-d',strtotime($this->request->getPost('qd_date'))),
 
@@ -1395,7 +1456,68 @@ class SalesQuotation extends BaseController
 
         echo json_encode($data); 
 
+    }*/
+
+
+    public function UpdateTab()
+    {   
+       
+        $cond = array('qd_id' => $this->request->getPost('qd_id'));
+
+        $quotation_details = $this->common_model->SingleRow('crm_quotation_details',$cond);
+
+        $quot_flag = ++$quotation_details->qd_edit_flag;
+        
+        $output = $this->request->getPost('qd_reffer_no') . "-REV-" ."0". $quot_flag;
+
+        $updated_data = [
+
+            'qd_date'              => date('Y-m-d',strtotime($this->request->getPost('qd_date'))),
+
+            'qd_customer'          => $this->request->getPost('qd_customer'),
+
+            'qd_enq_ref'           => $this->request->getPost('qd_enq_ref'),
+
+            'qd_validity'          => $this->request->getPost('qd_validity'),
+
+            'qd_sales_executive'   => $this->request->getPost('qd_sales_executive'),
+
+            'qd_contact_person'    => $this->request->getPost('qd_contact_person'),
+
+            'qd_payment_term'      => $this->request->getPost('qd_payment_term'),
+
+            'qd_delivery_term'     => $this->request->getPost('qd_delivery_term'),
+
+            'qd_project'           => $this->request->getPost('qd_project'),
+
+            'qd_modified_date'     => date('Y-m-d'),
+
+            'qd_edit_flag'         => $quot_flag,
+
+            'qd_edit_quot_reff'    => $output,
+            
+        ];
+
+        $cond2 = array('qd_id' => $this->request->getPost('qd_id'));
+
+        $this->common_model->EditData($updated_data,$cond2,'crm_quotation_details');
+
+        $data['qd_id']  =  $this->request->getPost('qd_id');
+
+        echo json_encode($data);
+        
+
     }
+
+
+    public function FetchReference()
+	{
+
+		$uid = $this->common_model->FetchNextId('crm_quotation_details',"SQ");
+	
+		echo $uid;
+
+	}
 
 
 

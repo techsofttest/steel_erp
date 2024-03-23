@@ -149,7 +149,6 @@ class Enquiry extends BaseController
 
     }
 
-
     
 
 
@@ -200,7 +199,6 @@ class Enquiry extends BaseController
 
             'enquiry_added_date'     => date("Y-m-d"),
 
-
         ];
 
         $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
@@ -223,7 +221,6 @@ class Enquiry extends BaseController
     
                     );
                 
-                    
                     $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
 				
 				} 
@@ -378,6 +375,25 @@ class Enquiry extends BaseController
         $cond = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
         $this->common_model->DeleteData('crm_product_detail',$cond);
+
+        //delete quotation
+
+        $cond3 = array('qd_enq_ref' => $this->request->getPost('ID'));
+
+        $quotation_detail = $this->common_model->SingleRow('crm_quotation_details',$cond3);
+
+        $quot_id = $quotation_detail->qd_id;
+
+        $cond4 = array('qpd_quotation_details' => $quot_id);
+
+        $this->common_model->DeleteData('crm_quotation_product_details',$cond4);
+
+        $cond5 = array('qc_quotation_id' => $quot_id);
+
+        $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond5);
+
+        $this->common_model->DeleteData('crm_quotation_details',$cond3);
+
 
     }
 
@@ -655,6 +671,17 @@ class Enquiry extends BaseController
 
         echo json_encode($data);
 
+
+    }
+
+
+    
+    public function FetchReference()
+    {
+
+        $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ");
+
+        echo $uid;
 
     }
 

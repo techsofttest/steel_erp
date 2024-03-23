@@ -16,10 +16,10 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="InvoiceReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="invoice_report_form">
+                                <form  class="Dashboard-form class" id="invoice_report">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Invoice Report </h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Invoice Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -40,9 +40,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer" required><option>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -63,23 +63,28 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order" required><option>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
-
                                                                             </tr>
 
-                                                                           
-                                          
+
+                                                                            <!--<tr>
+                                                                                <td>Sales Executive</td>
+                                                                                <td><select class="form-select executive_clz" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>--->
+
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product" required><option>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
-                                                                                
                                                                             </tr>
 
 
@@ -91,19 +96,7 @@
 
                                                                 <!--table section end-->
 
-                                                                <div style="float: right;">
-                                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                            <td><button>Excel</button></td>
-                                                                            <td><button>PDF</button></td>
-                                                                            <td><button>Email</button></td>
-                                                                            <td><button type="submit">View</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>
+                                                                
                                                                 
                                                                 
                                                                 
@@ -116,6 +109,10 @@
                                                 </div>
                                                 <!--end col-->
                                             </div>
+                                        </div>
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
                                         </div>
                                         
                                     </div>
@@ -137,14 +134,14 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Invoice Report</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrderToDn" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Invoice Number</th>
+                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
                                                     <th>Action</th>
                                                     
@@ -257,15 +254,11 @@
                 {   
                     var data = JSON.parse(data);
 
-                    //console.log(data.sales_reff);
-
-                    //$('.executive_clz').html(data.quot_det);
+                    $('.executive_clz').html(data.quot_det);
                     
-                    $('.product_clz').html(data.credit_prod);
+                    $('.product_clz').html(data.quot_prod);
 
                     $('.sales_order_ref').html(data.sales_reff);
-
-                   // $('.deliver_note_ref').html(data.delivier_note);
 
                 }
 
@@ -277,7 +270,7 @@
 
         /*quot report form submit*/
         $(function() {
-            var form = $('#invoice_report_form');
+            var form = $('#invoice_report');
             
             form.validate({
                 rules: {
@@ -307,10 +300,11 @@
 
                             $("#InvoiceReport").modal('hide');
 
-                            $('#invoice_report_form')[0].reset();
+                            $('#invoice_report')[0].reset();
 
                             $('.customer_clz').val('').trigger('change');
 
+                            $('.executive_clz').val('').trigger('change');
 
                             $('.product_clz').val('').trigger('change');
 

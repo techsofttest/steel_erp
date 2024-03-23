@@ -29,7 +29,6 @@ class DeliveryNoteReport extends BaseController
     //customer droupdrown
     public function FetchTypes()
     {
-
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
@@ -37,18 +36,18 @@ class DeliveryNoteReport extends BaseController
         $start = $end + $resultCount;
 
         $joins = array(
+            
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
                 'fk'    => 'dn_customer',
             ),
-           
-
+        
         );
       
         $data['result'] = $this->common_model->ReportFetchLimit('crm_delivery_note','dn_customer','asc',$term,$start,$end,$joins,'dn_customer');
     
-        $data['total_count'] =count($data['result']);
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
@@ -190,10 +189,6 @@ class DeliveryNoteReport extends BaseController
        
       
     }
-
-
-
-
 
 
 

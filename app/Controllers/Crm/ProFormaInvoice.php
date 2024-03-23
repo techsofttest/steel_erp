@@ -234,12 +234,24 @@ class ProFormaInvoice extends BaseController
 
             'pf_total_amount'           => $this->request->getPost('pf_total_amount'),
 
+            'pf_current_cliam'          => $this->request->getPost('pf_current_cliam'),
+
+            'pf_current_claim_value'    => $this->request->getPost('pf_current_claim_value'),
+
             'pf_total_amount_in_words'  => $this->request->getPost('pf_total_amount_in_words'),
 
             'pf_added_by'               => 0,
 
             'pf_added_on'               => date('Y-m-d'),
         ];
+
+        if ($_FILES['pf_file']['name'] !== '') 
+		{   
+           
+
+            $AttachFileName = $this->uploadFile('pf_file','uploads/ProformaInvoice');
+            $insert_data['pf_file'] = $AttachFileName;
+        }
 
         $sales_order_id = $this->common_model->InsertData('crm_proforma_invoices',$insert_data);
 
@@ -277,142 +289,138 @@ class ProFormaInvoice extends BaseController
 
     }
 
-    public function AddTab2()
+    public function uploadFile($fieldName, $uploadPath)
     {
-         
+        $file = $this->request->getFile($fieldName);
 
-        if($_POST){
-
-	        if(!empty($_POST['pp_product_det']))
-			{
-			    $count =  count($_POST['pp_product_det']);
-					
-				if($count!=0)
-			    {  
-					for($j=0;$j<=$count-1;$j++)
-					{
-							
-					    $insert_data  	= array(  
-							
-							'pp_product_det'   =>   $_POST['pp_product_det'][$j],
-							'pp_unit'           =>  $_POST['pp_unit'][$j],
-						    'pp_quantity'       =>  $_POST['pp_quantity'][$j],
-                            'pp_rate'           =>  $_POST['pp_rate'][$j],
-                            'pp_discount'       =>  $_POST['pp_discount'][$j],
-                            'pp_amount'         =>  $_POST['pp_amount'][$j],
-                            'pp_proforma'       =>  $_POST['pp_proforma'],
-	  
-					    );
-
-				        $this->common_model->InsertData('crm_proforma_product',$insert_data);
-                      
-                        
-				
-				    } 
-				}
-
-                   
-			}
-
-
-            $cond = array('pf_id' => $_POST['pp_proforma']);
-
-            $update_data['pf_total_cost'] = $_POST['pf_total_cost'];
-
-            $this->common_model->EditData($update_data,$cond,'crm_proforma_invoices');
-			
-			
+        if ($file->isValid() && !$file->hasMoved())
+        {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
         }
-        
 
-       
-    }
-
-
+        return null;
+	}
 
 
     //account head modal 
     public function View()
     {
         
-        $cond = array('enquiry_id' => $this->request->getPost('ID'));
+        $cond = array('pf_id' => $this->request->getPost('ID'));
 
         $joins = array(
             array(
-                'table' => 'executives_sales_executive',
-                'pk'    => 'se_id',
-                'fk'    => 'enquiry_sales_executive',
-            ),
-            array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
-                'fk'    => 'enquiry_customer',
+                'fk'    => 'pf_customer',
             ),
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pf_sales_order',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'pf_sales_executive',
+            ),
+           
             array(
                 'table' => 'crm_contact_details',
                 'pk'    => 'contact_id',
-                'fk'    => 'enquiry_contact_person',
+                'fk'    => 'pf_contact_person',
             ),
-            array(
-                'table' => 'employees',
-                'pk'    => 'employees_id',
-                'fk'    => 'enquiry_employees',
-            ),
+           
 
         );
 
-        $enquiry = $this->common_model->SingleRowJoin('crm_enquiry',$cond,$joins);
+        $proforma = $this->common_model->SingleRowJoin('crm_proforma_invoices',$cond,$joins);
 
-        $cond1 = array('pd_customer_details' => $this->request->getPost('ID'));
+        $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
 
         $joins1 = array(
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
-                'fk'    => 'pd_product_detail',
+                'fk'    => 'pp_product_det',
             ),
 
         );
 
-        $product_details_data = $this->common_model->FetchWhereJoin('crm_product_detail',$cond1,$joins1);
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_proforma_product',$cond1,$joins1);
          
 
-        $data['enquiry_enq_number']    = $enquiry->enquiry_enq_number;
+        $data['reff_no']              = $proforma->pf_reffer_no;
 
-        $data['enquiry_date']          = $enquiry->enquiry_date;
+        $data['date']                 = date('d-M-Y',strtotime($proforma->pf_date));
 
-        $data['enquiry_validity']      = $enquiry->enquiry_validity;
+        $data['customer']             = $proforma->cc_customer_name;
 
-        $data['enquiry_project']       = $enquiry->enquiry_project;
+        $data['sales_order']          = $proforma->so_reffer_no;
 
-        $data['enquiry_enq_referance'] = $enquiry->enquiry_enq_referance;
+        $data['lpo_reff']             = $proforma->pf_lpo_ref;
 
-        $data['sales_executive']       = $enquiry->se_name;
+        $data['sales_executive']      = $proforma->se_name;
 
-        $data['customer_creation']     = $enquiry->cc_customer_name;
+        $data['contact_person']       = $proforma->contact_person;
 
-        $data['contact_details']       = $enquiry->contact_person;
+        $data['payment_term']         = $proforma->pf_payment_terms;
 
-        $data['enquiry_employees']     = $enquiry->employees_name;
+        $data['delivery_term']        = date('d-M-Y',strtotime($proforma->pf_delivery_terms));
+
+        $data['project']              = $proforma->pf_project;
+
+        $data['total_amount']         = $proforma->pf_total_amount;
+
+        $data['current_claim']        = $proforma->pf_current_cliam;
+
+        $data['current_claim_value']  = $proforma->pf_current_claim_value;
 
 
-        
-        $data['prod_details'] ='<table  class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td >
-        Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td></tr>';
-
+        $data['prod_details'] ="";
+      
+        $i=1;  
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"   value="'.$prod_det->pd_serial_no.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control " readonly></td>
-            <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control " readonly></td>
+            <td>'.$i.'</td>
+            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_rate.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control " readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_amount.'" class="form-control " readonly></td>
             </tr>'; 
              
         }
         
-        $data['prod_details'] .= '</tbody></table>';
+        //image section start
 
+
+        
+
+        if(!empty($proforma->pf_file)){
+
+        $data['image_table']="";    
+
+        $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                            <thead>
+                                <tr>
+                                    <th class="cust_img_rgt_border">File Name</th>
+                                    <th class="cust_img_rgt_border">Download</th>
+                                </tr>
+                            <thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cust_img_rgt_border" >'. $proforma->pf_file.'</td>
+                                    <td class="cust_img_rgt_border"><a href="'.base_url('uploads/ProformaInvoice/' . $proforma->pf_file).'" target="_blank">View</a></td>
+                                </tr>
+                            </tbody>
+                        </table>';
+       
+        }
         
         echo json_encode($data);
     }
@@ -444,23 +452,54 @@ class ProFormaInvoice extends BaseController
     // update account head 
     public function Update()
     {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
         
-        $update_data = $this->request->getPost(); 
+        $cond = array('pf_id' => $this->request->getPost('pf_id'));
 
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        $proforma = $this->common_model->SingleRow('crm_proforma_invoices',$cond);
+
+        $update_data = $this->request->getPost();
+
+
+        
+        if (array_key_exists('pf_date', $update_data)) 
         {
-             unset($update_data['account_id']);
-        }       
+            unset($update_data['pf_date']);
+            
+        }   
+        
+        $update_data['pf_date'] = date('Y-m-d',strtotime($this->request->getPost('pf_date')));
 
-        $update_data['at_added_by'] = 0; 
+        if (array_key_exists('pf_id', $update_data)) 
+        {
+            unset($update_data['pf_id']);
+            
+        }   
+        
+        // Handle file upload
+        if (isset($_FILES['pf_file']) && $_FILES['pf_file']['name'] !== '') 
+        {
+            
+               
+            if($this->request->getFile('pf_file') != '' )
+            { 
+               
+                $previousImagePath = 'uploads/ProformaInvoice/' .$proforma->pf_file;
+               
+                if (file_exists($previousImagePath)) 
+                {
+                    unlink($previousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $AttachFileName = $this->uploadFile('pf_file', 'uploads/ProformaInvoice');
+        
+            // Update the data with the new image filename
+            $update_data['pf_file'] = $AttachFileName;
+        }
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
+        $this->common_model->EditData($update_data,$cond,'crm_proforma_invoices');
 
-
-
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
        
     }
 
@@ -478,68 +517,6 @@ class ProFormaInvoice extends BaseController
      }
 
 
-     /*public function FetchSalesOrder()
-     {
-        $cond = array('so_id' => $this->request->getPost('id'));
-
-        $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
-
-        $cond1 =  array('spd_sales_order'=> $sales_order->so_id);
-
-        $sales_prod_det = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
-
-        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
-
-        $data['saleorder_output'] ='';
-
-        $data['saleorder_output'] .= '<table class="table table-bordered table-striped delTable"><tbody class="travelerinfo"><tr><td>Serial No.</td><td>Product Description</td><td>Unit</td><td>Quantity</td><td>Rate</td><td>Discount(%)</td><td>Amount</td><td>Current Claim</td><td>Action</td></tr>';
-        
-        $i=1;
-        
-        foreach($sales_prod_det as $prod_det){
-
-            $data['saleorder_output'] .= '<tr class="prod_row" id="'.$prod_det->spd_id.'">
-                                            <td>'.$i.'</td>
-                                            <td style="width:20%">
-                                                <select class="form-select" name="pp_product_det[]" required>';
-                                                
-                                                foreach($products as $prod){
-
-                                                    $data['saleorder_output'] .= '<option value="'.$prod->product_id.'"';
-                                                    if($prod->product_id  == $prod_det->spd_product_details){  $data['saleorder_output'] .= "selected"; }
-                                                    $data['saleorder_output'] .='>'.$prod->product_details.'</option>';
-                                                }  
-
-                   $data['saleorder_output'] .=  '</select>
-                                            </td>
-                                            <td><input type="text" name="pp_unit[]" value="'.$prod_det->spd_unit.'" class="form-control" required></td>
-                                            <td><input type="number" name="pp_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id" required></td>
-                                            <td><input type="number" name="pp_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" required></td>
-                                            <td><input type="number" name="pp_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
-                                            <td><input type="number" name="pp_amount[]" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" required></td>
-                                            <td><input type="text" name="pp_current_claim[]" class="form-control" required></td>
-                                            <td class="row_remove" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i>Remove</td>
-                                        </tr>';
-                                        $i++;
-                                    }
-           $data['saleorder_output'] .= '</tbody><tbody id="product-more" class="travelerinfo"></tbody><tr><td colspan="9" style="text-align: center;"><span id="total_cost_id"></span></td></tr></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div><input type="hidden" name="pp_proforma" class="pf_id_clz"><input type="hidden" name="pf_total_cost">';
-           
-           
-           
-        
-            echo json_encode($data);
-
-        }*/
-
-
-        //delete contact details
-        public function DeleteContact()
-        {
-            //$cond = array('pp_id' => $this->request->getPost('ID'));
- 
-           // $this->common_model->DeleteData('crm_proforma_product',$cond);
-
-        }
 
 
         public function SalesOrder()
@@ -633,6 +610,378 @@ class ProFormaInvoice extends BaseController
             echo json_encode($data);
 
         }
+
+
+        public function Edit()
+        {
+            $cond = array('pf_id' => $this->request->getPost('ID'));
+
+            $joins = array(
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'pf_customer',
+                ),
+                array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'pf_sales_order',
+                ),
+                array(
+                    'table' => 'executives_sales_executive',
+                    'pk'    => 'se_id',
+                    'fk'    => 'pf_sales_executive',
+                ),
+            
+                array(
+                    'table' => 'crm_contact_details',
+                    'pk'    => 'contact_id',
+                    'fk'    => 'pf_contact_person',
+                ),
+            
+
+            );
+
+            $proforma = $this->common_model->SingleRowJoin('crm_proforma_invoices',$cond,$joins);
+
+           
+
+            $data['reff_no']              = $proforma->pf_reffer_no;
+
+            $data['date']                 = date('d-M-Y',strtotime($proforma->pf_date));
+
+            $data['lpo_reff']             = $proforma->pf_lpo_ref;
+
+            $data['payment_term']         = $proforma->pf_payment_terms;
+
+            $data['delivery_term']        = date('d-M-Y',strtotime($proforma->pf_delivery_terms));
+
+            $data['project']              = $proforma->pf_project;
+
+            $data['total_amount']         = $proforma->pf_total_amount;
+
+            $data['current_claim']        = $proforma->pf_current_cliam;
+
+            $data['current_claim_value']  = $proforma->pf_current_claim_value;
+
+            $data['performa_id']          = $proforma->pf_id;
+
+            
+
+            // customer craetion
+
+            $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+            $data['customer'] ="";
+            foreach($customer_creation as $cus_creation)
+            {
+                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+            
+                // Check if the current product head is selected
+                if ($cus_creation->cc_id  == $proforma->pf_customer)
+                {
+                    $data['customer'] .= ' selected'; 
+                }
+            
+                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
+            }
+
+            //sales orders
+            
+           
+            $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_id'=> $proforma->pf_sales_order));
+
+            $data['sales_order'] ="";
+            foreach($sales_orders as $sales_order)
+            {
+                $data['sales_order'] .= '<option value="' .$sales_order->so_id.'"'; 
+            
+                // Check if the current product head is selected
+                if ($sales_order->so_id   == $proforma->pf_sales_order)
+                {
+                    $data['sales_order'] .= ' selected'; 
+                }
+            
+                $data['sales_order'] .= '>' . $sales_order->so_reffer_no.'</option>';
+
+            }
+
+
+            //sales executive
+
+            $sales_executive   = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+            $data['sales_executive'] ="";
+            foreach($sales_executive as $sales_exec)
+            {
+                $data['sales_executive'] .= '<option value="' .$sales_exec->se_id.'"'; 
+            
+                // Check if the current product head is selected
+                if ($sales_exec->se_id  == $proforma->pf_sales_executive)
+                {
+                    $data['sales_executive'] .= ' selected'; 
+                }
+            
+                $data['sales_executive'] .= '>' . $sales_exec->se_name.'</option>';
+            }
+
+            
+            //contact person
+
+            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+            $data['contact_person'] ="";
+
+            foreach($contact_data as $cont_data)
+            {
+                $data['contact_person'] .= '<option value="' .$cont_data->contact_id .'"'; 
+            
+                // Check if the current product head is selected
+                if ($cont_data->contact_id   == $proforma->pf_contact_person)
+                {
+                    $data['contact_person'] .= ' selected'; 
+                }
+            
+                $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
+            }
+
+            //product section start
+
+            $cond2 = array('pp_proforma' => $this->request->getPost('ID'));
+
+            $joins1 = array(
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'pp_product_det',
+                ),
+               
+    
+            );
+
+            $product_details_data = $this->common_model->FetchWhereJoin('crm_proforma_product',$cond2,$joins1);
+
+
+            $data['prod_details'] ='';
+
+            $i =1; 
+
+            foreach($product_details_data as $prod_det)
+            {   
+                
+
+                $data['prod_details'] .='<tr class="prod_row2 performa_remove" id="'.$prod_det->pp_id.'">
+                <td class="si_no2">'.$i.'</td>
+                <td style="width:20%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+                <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control"  readonly></td>
+                <td> <input type="text" value="'.$prod_det->pp_rate.'"  class="form-control" readonly></td>
+                <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.$prod_det->pp_amount.'" class="form-control edit_total_amount" readonly></td>
+                <td style="width: 13%;">
+                    <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+                    <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+                </td>
+                </tr>'; 
+                $i++; 
+            }
+
+            //image section start
+            $data['image_table']="";
+
+            if(!empty($proforma->pf_file))
+            {
+            
+                $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                                    <thead>
+                                        <tr>
+                                            <th class="cust_img_rgt_border">File Name</th>
+                                            <th class="cust_img_rgt_border">Download</th>
+                                            <th class="cust_img_rgt_border">Update</th>
+                                        </tr>
+                                    <thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="cust_img_rgt_border" >'. $proforma->pf_file.'</td>
+                                            <td class="cust_img_rgt_border"><a href="'.base_url('uploads/ProformaInvoice/' . $proforma->pf_file).'" target="_blank">View</a></td>
+                                            <td class="cust_img_rgt_border" ><input type="file" name="pf_file"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>';
+
+            }
+            else
+            {
+                $data['image_table']='<div class="row row_align mb-4">
+                                            <div class="col-lg-3">
+                                                <label for="basicInput" class="form-label">Attach</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="file" name="pf_file" class="form-control">
+                                            </div>
+                                        </div>
+                ';
+            }
+
+            echo json_encode($data);
+        }
+
+        public function EditAddProd()
+        {
+            $insert_data = $this->request->getPost();
+
+            $proforma_prod_id = $this->common_model->InsertData('crm_proforma_product',$insert_data);
+
+            $cond = array('pp_id' => $proforma_prod_id);
+
+            $single_prod = $this->common_model->SingleRow('crm_proforma_product',$cond);
+
+            $cond2 = array('pp_proforma' => $single_prod->pp_proforma);
+
+            $product_details  = $this->common_model->FetchWhere('crm_proforma_product',$cond2);
+
+            $old_amount = 0;
+
+            foreach($product_details as $prod_det)
+            {
+                $old_amount =  $old_amount + $prod_det->pp_amount;
+            }
+            
+            $cond3 = array('pf_id'=>$single_prod->pp_proforma);
+          
+            $performa_data = $this->common_model->SingleRow('crm_proforma_invoices',$cond3);
+
+            
+
+            $claim = $performa_data->pf_current_cliam;
+
+            $claim_value = ($claim/100)*$old_amount;
+
+            $claim_value = number_format((float)$claim_value, 2, '.', '');  // Outputs -> 105.00
+
+
+            $sales_update = array('pf_total_amount' => $old_amount,'pf_current_claim_value' => $claim_value);
+
+            $this->common_model->EditData($sales_update,$cond3,'crm_proforma_invoices');
+            
+            $data['proforma_id'] = $single_prod->pp_proforma;
+            
+            echo json_encode($data); 
+        }
+
+
+        public function EditProduct()
+        {
+            $cond = array('pp_id' => $this->request->getPost('ID'));
+
+            $joins = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'pp_product_det',
+                ),
+                
+                
+            );
+    
+            $proforma_prod = $this->common_model->SingleRowJoin('crm_proforma_product',$cond,$joins);
+
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+            $data['product'] ="";
+
+            foreach($products as $prod)
+            {
+                $data['product'] .= '<option value="' .$prod->product_id. '"'; 
+            
+                // Check if the current product head is selected
+                if ($prod->product_id  == $proforma_prod->pp_product_det)
+                {
+                    $data['product'] .= ' selected'; 
+                }
+            
+                $data['product'] .= '>' . $prod->product_details . '</option>';
+            }
+
+            $data['unit']     = $proforma_prod->pp_unit;
+
+            $data['qty']      = $proforma_prod->pp_quantity;
+    
+            $data['rate']     = $proforma_prod->pp_rate;
+    
+            $data['discount'] = $proforma_prod->pp_discount;
+
+            $data['amount']   = $proforma_prod->pp_amount;
+    
+            echo json_encode($data);
+        }
+
+
+        public function UpdateProduct()
+        {
+            $cond = array('pp_id' => $this->request->getPost('pp_id'));
+
+            $update_data = $this->request->getPost();
+
+            if (array_key_exists('pp_id', $update_data)) 
+            {
+                unset($update_data['pp_id']);
+            }  
+            
+            $this->common_model->EditData($update_data,$cond,'crm_proforma_product');
+            
+            $single_prod_det = $this->common_model->SingleRow('crm_proforma_product',$cond);
+
+            $cond2 = array('pp_proforma'=>$single_prod_det->pp_proforma);
+
+            $proforma_product = $this->common_model->FetchWhere('crm_proforma_product',$cond2);
+            
+            $old_amount = 0;
+
+            foreach($proforma_product as $prod_det)
+            {
+                $old_amount =  $old_amount + $prod_det->pp_amount;
+            }
+
+            $cond3 = array('pf_id'=>$single_prod_det->pp_proforma);
+          
+            $performa_data = $this->common_model->SingleRow('crm_proforma_invoices',$cond3);
+
+
+            $claim = $performa_data->pf_current_cliam;
+
+            $claim_value = ($claim/100)*$old_amount;
+
+            $claim_value = number_format((float)$claim_value, 2, '.', '');  // Outputs -> 105.00
+
+            $sales_update = array('	pf_total_amount' => $old_amount,'pf_current_claim_value' => $claim_value);
+
+            $this->common_model->EditData($sales_update,$cond3,'crm_proforma_invoices');
+            
+            $data['proforma_id'] = $single_prod_det->pp_proforma;
+
+            echo json_encode($data); 
+        }
+
+        public function DeleteProduct()
+        {
+            $cond = array('pp_id' => $this->request->getPost('ID'));
+
+            $this->common_model->DeleteData('crm_proforma_product',$cond);
+        }
+
+
+        public function FetchReference()
+        {
+    
+            $uid = $this->common_model->FetchNextId('crm_proforma_invoices',"PINV");
+        
+            echo $uid;
+    
+        }
+       
 
 
 

@@ -88,10 +88,11 @@ class SalesQuotReport extends BaseController
 
         $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details',$this->request->getPost('ID'));
         
-        
-       
         $data['quot_prod'] = "<option value='' selected> Select Product</option>";
         $uniqueProductIds = []; // Array to store unique product IDs
+
+
+        
 
         foreach ($product_data as $prod_data) {
             // Check if product_details array is not empty
@@ -139,7 +140,6 @@ class SalesQuotReport extends BaseController
 
         $product         = trim($this->request->getPost('product'));
 
-       
 
         $joins = array(
             

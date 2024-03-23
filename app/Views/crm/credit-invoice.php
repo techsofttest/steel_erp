@@ -10,6 +10,14 @@
     align-items: center;
     justify-content: unset !important;
 }
+.cust_more_modal {
+    position: absolute;
+    left: 470px;
+    padding: 1px 27px;
+    z-index: 999;
+    border: 1px solid black;
+    border: 1px solid #0000003b;
+}
 
 
 </style>
@@ -131,7 +139,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <select class="form-select sales_order_add_clz" name="cci_sales_order"  required>
+                                                                        <select class="form-select sales_order_add_clz" name="cci_sales_order" id="sales_order_add" style="width:80%;" required>
 
                                                                             <option value="" selected disabled>Select Sales Order</option>
 
@@ -255,6 +263,8 @@
 
                                                             <!-- ### --> 
 
+                                                            <input type ="hidden" name="cci_id" class="hidden_credit_invoice_id">
+
 
                                                              
 
@@ -280,23 +290,23 @@
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
                                                                 <td>Amount</td>
-                                                                <td>Action</td>
+                                                                
 
                                                             </tr>
                                                          
                                                         </thead>
                                                         
                                                         <tbody  class="travelerinfo product_more2"></tbody>
-                                                        <tbody>
+                                                        <!--<tbody>
                                                             <tr>
                                                                 <td colspan="8" align="center" class="tecs">
                                                                     <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
+                                                        </tbody>--->
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2">Amount in words</td>
+                                                                <td colspan="2"></td>
                                                                 <td colspan="3" class="performa_amount_in_word_val"></td>
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
                                                                 <td>Total</td>
@@ -333,11 +343,11 @@
 
                                                         <div class="row row_align mb-4">
                                                             <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                                <label for="basicInput" class="form-label" style="display:none">Attach</label>
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control">
+                                                                <input type="file" name="" style="display:none"  class="form-control image_file">
                                                             </div>
 
                                                         </div>
@@ -346,6 +356,11 @@
                                                         
                                                     </div>
                                                     <div class="col-lg-6">
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="col-lg-6">
                                                         <div style="float: right;">
                                                             <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                 <tr>
@@ -359,7 +374,7 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
+                                                    </div>-->
                                                 </div>
                                                 
                                                 
@@ -447,6 +462,726 @@
 
 
 
+<!--select modal section start-->
+
+<div class="modal fade" id="SelectProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="selected_prod_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo select_prod_add"></tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
+                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+
+
+<!--select  modal section end-->
+
+
+
+<!--edit section start-->
+
+<div class="modal fade" id="EditCreditInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_credit_invoice">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Credit Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="live-preview">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+
+                                                             
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="cci_reffer_no" id=""  class="form-control edit_reff" required readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="cci_date" class="form-control datepicker edit_data" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Customer Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <select class="form-select edit_customer" name="cci_customer"  required></select>
+                                        
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Sales Order</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <!--<select class="form-select edit_sales_order" name="cci_sales_order"  id="sales_order_add" style="width:80%;" required>
+
+                                                    <option value="" selected disabled>Select Sales Order</option>
+
+                                                </select>--->
+
+                                                <input type="text" name="cci_sales_order" class="form-control edit_sales_order" required readonly>
+
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+
+                                <!-- Single Row Start -->
+                                <div class="col-lg-12">
+
+                                    <div class="row align-items-center mb-2">
+
+                                        <div class="col-col-md-3 col-lg-3">
+                                            <label for="basicInput" class="form-label">LPO Reference</label>
+                                        </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+
+                                            <input type="text" name="cci_lpo_reff" class="form-control edit_lpo_reff" required>
+
+                                        </div>
+                                    </div> 
+
+                                </div>    
+                                
+                                <!-- ### --> 
+                                                           
+
+
+                                <!-- Single Row Start -->
+                                <div class="col-lg-12">
+
+                                    <div class="row align-items-center mb-2">
+
+                                        <div class="col-col-md-3 col-lg-3">
+                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                        </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+                                            
+                                        
+                                        <select class="form-select edit_cont_person" name="cci_contact_person" id="" required></select>
+                                        
+                                        
+                                    </div>
+
+                                    </div> 
+
+                                </div>    
+
+                                <!-- ### -->
+
+                                                            
+                                <!-- Single Row Start -->
+                                <div class="col-lg-12">
+
+                                    <div class="row align-items-center mb-2">
+
+                                        <div class="col-col-md-3 col-lg-3">
+                                            <label for="basicInput" class="form-label">Payment Terms</label>
+                                        </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+                                            <input type="text" name="cci_payment_term" class="form-control edit_payment_term_clz" required>
+                                        </div>
+
+                                    </div> 
+
+                                </div>    
+
+                                <!-- ### --> 
+
+
+                                <!-- Single Row Start -->
+                                <div class="col-lg-12">
+
+                                    <div class="row align-items-center mb-2">
+
+                                        <div class="col-col-md-3 col-lg-3">
+                                            <label for="basicInput" class="form-label">Project</label>
+                                        </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+                                            <input type="text" name="cci_project"  class="form-control edit_project_clz" required>
+                                        </div>
+
+                                    </div> 
+
+                                </div>    
+
+                                <!-- ### --> 
+
+                                <input type ="hidden" name="cci_id" class="edit_credit_invoice_id">
+
+
+                            </div>
+
+                        </div>
+                    
+                    </div>
+
+
+                    <!--table section start-->
+                    <div class="mt-4">
+                        <table class="table table-bordered table-striped delTable">
+                            <thead class="travelerinfo contact_tbody">
+                                <tr>
+                                    <td>Serial No.</td>
+                                    <td>Product Description</td>
+                                    <td>Unit</td>
+                                    <td>Qty</td>
+                                    <td>Rate</td>
+                                    <td>Discount</td>
+                                    <td>Amount</td>
+                                    
+
+                                </tr>
+                                
+                            </thead>
+                            
+                            <tbody  class="travelerinfo edit_product_table"></tbody>
+                            <!--<tbody>
+                                <tr>
+                                    <td colspan="8" align="center" class="tecs">
+                                        <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                    </td>
+                                </tr>
+                            </tbody>--->
+                            <!--<tbody>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="3" class="performa_amount_in_word_val"></td>
+                                    <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
+                                    <td>Total</td>
+                                    <td><input type="text" name="cci_total_amount" class="amount_total form-control" readonly></td>
+                                </tr>
+                                
+                                
+                            </tbody>--->
+                            
+                        </table>
+                    </div>
+
+                                                
+                    <div class="row">
+                        <div class="col-lg-6">
+                                                        
+                            <div class="row row_align mb-4">
+                                <div class="col-lg-3">
+                                    <label for="basicInput" class="form-label">Credit Account</label>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    
+                                    <select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
+                                      
+                                    </select>
+                                            
+                                </div>
+
+                            </div>
+
+                            <div class="row row_align mb-4">
+                                <div class="col-lg-3">
+                                    <label for="basicInput" class="form-label" style="display:none">Attach</label>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <input type="file" name="" style="display:none"  class="form-control image_file">
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+
+                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                       </div>
+                        </div>
+                        <!--<div class="col-lg-6">
+                            <div style="float: right;">
+                                <table class="table table-bordered table-striped enq_tab_submit menu">
+                                    <tr>
+                                        <td><button>Print</button></td>
+                                        <td><button>Email</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="submit">Save</button></td>
+                                        <td><button>PDF</button></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>--->
+                    </div>
+                                                
+                    <!--table section end-->
+                </div>  
+                                            
+                                            
+            </div>
+        </div>
+    </form>
+
+	</div>
+</div>
+
+
+<!--edit setion end-->
+
+
+
+<!---view section start-->
+
+<div class="modal fade" id="ViewCreditInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Credit Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="row">
+                                                 
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                                             
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" id=""  class="form-control view_reff" required readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_date" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Customer Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <!--<select class="form-select view_customer" name="" required></select>-->
+                                                <input type="text" name="" class="form-control view_customer" required>
+                                        
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Sales Order</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <!--<select class="form-select view_sales_order" name="" id=""  required>
+
+                                                    <option value="" selected disabled>Select Sales Order</option>
+
+                                                </select>--->
+
+                                                <input type="text" name="" class="form-control view_sales_order" required>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">LPO Reference</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_lpo_reff" required>
+
+                                            </div>
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                                           
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                            <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                            
+                                           
+                                            <input type="text" name="" class="form-control view_contact_person" required>
+                                            
+                                            
+                                        </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                                            
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Terms</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_payment_term" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                                         
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Project</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name=""  class="form-control view_project" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                    
+
+
+                                </div>
+
+                            </div>
+                                                                                          
+
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                        
+
+                                    </tr>
+                                                         
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo view_prod_table"></tbody>
+                                                       
+                                <!--<tbody>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="3" class="performa_amount_in_word_val"></td>
+                                        <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
+                                        <td>Total</td>
+                                        <td><input type="text" name="cci_total_amount" class="amount_total form-control" readonly></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>--->
+                                                       
+                            </table>
+                            
+                        </div>
+
+                                                
+                        <div class="row">
+                            <div class="col-lg-6">
+                                                        
+                                <div class="row row_align mb-4">
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        
+                                        <input type="text" name=""  class="form-control view_credit_account" required>
+                                                
+                                    </div>
+
+                                </div>
+
+                                <div class="row row_align mb-4">
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label" style="display:none">Attach</label>
+                                    </div>
+
+                                    <!--<div class="col-lg-4">
+                                        <input type="file" name="" style="display:none"  class="form-control image_file">
+                                    </div>-->
+
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn btn-success" type="submit">Save</button>
+                                </div>
+                            </div>
+                                                   
+                        </div>
+                                                
+                                                
+                        <!--table section end-->
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+
+                                        
+			</div>
+		
+        </form>
+
+	</div>
+
+</div>
+
+
+<!--view section end-->
+
 
 
 
@@ -483,6 +1218,8 @@
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
+
+                            checkedIds.length = 0;
                            
                            
                         }
@@ -580,7 +1317,8 @@
         $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
-            
+
+           
             //Fetch Contact Person
             $.ajax({
 
@@ -645,7 +1383,7 @@
 
                     $(".cont_person").html(data.contact_person);
 
-                    $(".product_more2").append(data.product_detail);
+                    //$(".product_more2").append(data.product_detail);
 
                     TotalAmount();
                     
@@ -873,11 +1611,11 @@
 
            $('.amount_total').val(total);
 
-           var resultSalesOrder= numberToWords.toWords(total);
+           //var resultSalesOrder= numberToWords.toWords(total);
 
-            $(".performa_amount_in_word").text(resultSalesOrder);
+            //$(".performa_amount_in_word").text(resultSalesOrder);
 
-            $(".performa_amount_in_word_val").val(resultSalesOrder);
+            //$(".performa_amount_in_word_val").val(resultSalesOrder);
             
 
         }
@@ -994,10 +1732,357 @@
 
         /**/
 
+
+        /*add selected product*/
+
+
+        $("body").on('click', '.cust_more_modal', function()
+        { 
+            if(!$("#add_form1").valid())
+            {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+
+            if($('#add_form1').attr('data-submit')=='false')
+            {
+
+             $('#add_form1').submit();
+
+                if(!$("#add_form1").valid())
+                {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+                }
+
+            }
+
+            var formData = new FormData($('#add_form1')[0]);
+            var image = $('.image_file').prop('files')[0]; // Get the file from input field
+            formData.append('image', image); // Append the file to FormData object
+
+            $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CreditInvoice/Add",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            var id = data.sales_order;
+
+                            //var delivery_id = data.delivery_id;
+
+
+                           $('.hidden_credit_invoice_id').val(data.credit_invoice_id);
+  
+                            $('#SelectProduct').modal('show');
+
+                            $('#CreditInvoice').modal('hide');
+
+                            $.ajax({
+
+                                url : "<?php echo base_url(); ?>Crm/CreditInvoice/AddProduct",
+
+                                method : "POST",
+
+                                data: {ID: id},
+                                
+                                success:function(data)
+                                {   
+                                    var data = JSON.parse(data);
+                                    
+                                    $(".select_prod_add").html(data.product_detail);
+
+                                   // console.log(data.product_detail);
+
+                                }   
+
+                            });
+
+                           
+                            
+                        }
+                    });
+
+         });
+
+
+        /*#######*/
+
+
+
+        /*prod modal submit start*/
+
+        $("body").on('click', '.prod_modal_submit', function(){ 
+
+            var selectId = $('#select_prod_id').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/SelectedProduct",
+
+                method : "POST",
+
+                data: {ID: selectId},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+                                    
+                
+                    $('.product_more2').html(data.product_detail);
+
+                    $('#SelectProduct').modal("hide");
+
+                    $('#CreditInvoice').modal("show");
+
+                    $('.selected_table').show();
+
+                    TotalAmount();
+                }
+
+            });
+        });
+
+
+        /*prod modal submit end*/
+
+
+
+        /*edit section start*/
+
+        $("body").on('click', '.edit_btn', function(){ 
+
+            //var selectId = $('#select_prod_id').val();
+
+            var id = $(this).data('id');
+
+            $('#EditCreditInvoice').modal('show')
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+                                    
+                    console.log(data.customer);
+
+                    $('.edit_reff').val(data.reffer_no);
+
+                    $('.edit_data').val(data.date);
+
+                    $('.edit_customer').html(data.customer);
+
+                    $('.edit_sales_order').val(data.sales_order);
+
+                    $('.edit_lpo_reff').val(data.lpo_reff);
+
+                    $('.edit_cont_person').html(data.contact_person);
+
+                    $('.edit_payment_term_clz').val(data.payment_term);
+
+                    $('.edit_project_clz').val(data.project);
+
+                    $('.edit_credit_invoice_id').val(data.credit_invoice_id);
+
+                    $('.edit_product_table').html(data.product_detail);
+
+                    $('.edit_charts_account').html(data.charts_account);
+
+                    console.log(data.charts_account);
+
+                   // $('.edit_image_table').html(data.image_table);
+
+                    //console.log(data.product_detail);
+
+                /*$('.view_image_table').html(data.image_table);*/
+                }
+
+            });
+        });
+
+
+        /*update section start*/
+        
+        $(function() {
+            var form = $('#edit_credit_invoice');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CreditInvoice/Update",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            //TotalAmount();
+
+                            /*$('#add_form1')[0].reset();
+                           
+                            $('#CreditInvoice').modal('hide');
+
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);*/
+
+                            $('#EditCreditInvoice').modal('hide');
+
+                            alertify.success('Data Update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+                           
+                           
+                        }
+                    });
+                }
+            });
+        });
+        
+
+        /*####*/
+
+
+       
+
+
+
+
+        /*edit section end*/
+
+
+
+        /*view section start*/
+        
+        $("body").on('click', '.view_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            $('#ViewCreditInvoice').modal('show')
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+                                    
+                    //console.log(data.customer);
+
+                    $('.view_reff').val(data.reffer_no);
+
+                    $('.view_date').val(data.date);
+
+                    $('.view_customer').val(data.customer);
+
+                    $('.view_sales_order').val(data.sales_order);
+
+                    $('.view_lpo_reff').val(data.lpo_reff);
+
+                    $('.view_contact_person').val(data.contact_person);
+
+                    $('.view_payment_term').val(data.payment_term);
+
+                    $('.view_project').val(data.project);
+
+                    $('.view_credit_account').val(data.charts_account);
+
+                    $('.view_prod_table').html(data.product_detail);
+
+                     console.log(data.product_detail)
+                    
+                    
+                    /*$('.edit_credit_invoice_id').val(data.credit_invoice_id);
+
+                    $('.edit_product_table').html(data.product_detail);
+
+                    $('.edit_charts_account').html(data.charts_account);
+
+                    console.log(data.charts_account);*/
+
+                }
+
+            });
+        });
+
+        /*view section end*/
+
+
        
 
 
     });
+
+
+        /*checkbox section start*/
+
+        var checkedIds = [];
+
+// Check All function
+
+function checkAll(checkbox) 
+{
+    var checkboxes = document.getElementsByClassName('prod_checkmark');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = checkbox.checked;
+        handleCheckboxChange(checkboxes[i]); // Update the array and modal form
+    }
+}
+
+// Handle individual checkbox change
+function handleCheckboxChange(checkbox) 
+{
+    if (checkbox.checked) {
+        // Add the ID to the array if checked
+        checkedIds.push(checkbox.id);
+    } else {
+        // Remove the ID from the array if unchecked
+        checkedIds = checkedIds.filter(id => id !== checkbox.id);
+    }
+
+    // Log the current state of checked IDs
+    //console.log('Checked IDs: ', checkedIds);
+    document.getElementById('select_prod_id').value = checkedIds.join(',');
+}
+
+// Update modal form function
+/*function updateModalForm() 
+{
+    // Update the value of the hidden input in the modal form with the checked IDs
+    document.getElementById('select_prod_id').value = checkedIds.join(',');
+
+
+    // Log the checked IDs in the modal form
+    //console.log('Checked IDs in modal: ', checkedIds);
+}*/
+
+
+/*checkbox section end*/
 
 
 
