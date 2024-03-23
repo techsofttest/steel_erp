@@ -69,7 +69,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_reffer_no" id="" value="<?php echo $cash_invoice_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="ci_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -155,9 +155,6 @@
                                                             <!-- ### --> 
 
 
-                                                            
-
-                                                           
 
                                                             
 
@@ -171,7 +168,6 @@
                                                         <div class="row">
                                                             
 
-                                                            
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
@@ -261,7 +257,7 @@
 
                                                             <!-- ### --> 
 
-
+                                                            <input type="hidden" class="hidden_cash_invoice" name="ci_id">
                                                              
 
 
@@ -276,7 +272,7 @@
 
                                                 <!--table section start-->
                                                 <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
+                                                    <table class="table table-bordered table-striped delTable selected_table" style="display:none;">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td>Serial No.</td>
@@ -286,20 +282,13 @@
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
                                                                 <td>Amount</td>
-                                                                <td>Action</td>
+                                                               
                                                             </tr>
                                                          
                                                         </thead>
                                                         
                                                         <tbody  class="travelerinfo product-more2"></tbody>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                       
+                                                        
                                                     </table>
                                                 </div>
 
@@ -317,7 +306,7 @@
                                                                
                                                                 <select class="form-select" name="ci_credit_account" id="" required>
                                                                     
-                                                                    <option>Select Credit Account</option>
+                                                                    <option value="" selected disabled>Select Credit Account</option>
 
                                                                     <?php foreach($charts_of_accounts as $chart_account){?> 
                                                                          <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
@@ -335,7 +324,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control" required>
+                                                                <input type="file" name="ci_file"  class="form-control image_file">
                                                             </div>
 
                                                         </div>
@@ -344,6 +333,11 @@
                                                         
                                                     </div>
                                                     <div class="col-lg-6">
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button class="btn btn btn-success" type="submit">Save</button>
+                                                    </div>
+                                                    </div>
+                                                    <!--<div class="col-lg-6">
                                                         <div style="float: right;">
                                                             <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                 <tr>
@@ -359,12 +353,11 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
+                                                    </div>--->
 
                                                 </div>
                                                 
                                                 
-                                             
 
                                                 <!--table section end-->
 
@@ -372,15 +365,13 @@
                                             </div>  
                                             
                                             
-                                             
-
-
-					                           
 						                    
 				                        </div>
 
 
-                                        
+                                       
+
+
 			                        </div>
 		                        </form>
 
@@ -397,7 +388,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Cash Invoice</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CashInvoice" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CashInvoice" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -407,6 +398,7 @@
                                                     <th>Cash Invoice No</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+                                                    <th>Sales Order</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -450,9 +442,9 @@
 <!--select modal section start-->
 
 
-<div class="modal fade" id="SelectModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SelectProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
-		<form  class="Dashboard-form class" id="">
+		<form  class="Dashboard-form class" id="selected_prod_form">
 			<div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close select_modal_close" aria-label="Close"></button>
@@ -479,10 +471,7 @@
                                                            
                                 </thead>
                                                         
-                                <tbody  class="travelerinfo contactProduct3">
-                                    
-                                    
-                                </tbody>
+                                <tbody  class="travelerinfo select_prod_add"></tbody>
 
                                 
 
@@ -495,6 +484,16 @@
                                             
                                             
                 </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
+                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+
+                </div>
+
+
+
 
 
                                         
@@ -580,12 +579,700 @@
 
 
 
+<!--view section start-->
+
+<div class="modal fade" id="ViewCashInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cash Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+			    <div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="row">
+                                                 
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                                             
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control view_reff" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control view_date" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Customer Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" class="form-control view_customer" readonly>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Sales Order</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                
+
+                                              
+
+                                                <input type="text" class="form-control view_sales_order" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">LPO Reference</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                            <input type="text" class="form-control view_lpo" readonly>
+                                            
+                                        </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                                           
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                            
+                                                <input type="text" class="form-control view_contact" readonly>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                                            
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Terms</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control view_payment_terms" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                                         
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Project</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" class="form-control view_project" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                   
+                                                             
+                                </div>
+
+                            </div>
+                                                                                          
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                      
+                                    </tr>
+                                    
+                                </thead>
+                                
+                                <tbody  class="travelerinfo view_product"></tbody>
+                          
+                            </table>
+                        </div>
+
+                                                
+                        <div class="row">
+                            <div class="col-lg-6">
+                                
+                                <div class="row row_align mb-4">
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        
+                                        
+                                        <input type="text" class="form-control view_credit_account" readonly>
+
+                                        </select>
+                                                
+                                    </div>
+
+                                </div>
+
+                                <!--<div class="row row_align mb-4">
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label">Attach</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <input type="file" name="ci_file"  class="form-control image_file">
+                                    </div>
+
+                                </div>--->
+
+                                <div class="card-body view_image_table" style="float: inline-start";></div>
+
+
+                                
+                            </div>
+
+                            <div class="col-lg-6"></div>
+
+
+                        </div>
+                        
+                        <!--table section end-->
+
+                    </div>  
+                                            
+                </div>
+
+
+			</div>
+		</form>
+
+	</div>
+</div>
+
+
+<!--view section  end-->
+
+
+<!--edit section start-->
+
+<div class="modal fade" id="EditCashInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_cash_invoice">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cash Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="live-preview">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="ci_reffer_no"  class="form-control edit_reff" readonly>
+                                            </div>
+                                        </div> 
+
+                                    </div>    
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="ci_date" class="form-control datepicker edit_date" required>
+                                            </div>
+                                        </div> 
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Customer Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+
+                                                <select class="form-select edit_customer" name="ci_customer" required></select>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                                            
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon ">Select</span></label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                
+
+                                                <select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" style="width:80%;" required>
+
+                                                    <option value="" selected disabled>Select Sales Order</option>
+                                        
+                                                </select>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+                                                          
+                                    <!-- ### --> 
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">LPO Reference</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                            <input type="text" name="ci_lpo_reff" class="form-control edit_lpo_reff" required>
+                                            
+                                        </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                                           
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                            
+                                                <select class="form-select edit_contact_person" name="ci_contact_person" id="" required></select>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                                            
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Terms</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="ci_payment_term" class="form-control edit_payment_terms" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Project</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="ci_project"  class="form-control edit_project" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                    <input type="hidden" class="edit_cash_invoice_id" name="ci_id">
+                                                             
+                                </div>
+
+                            </div>
+                                                                                          
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                    
+                                </thead>
+                                
+                                <tbody  class="travelerinfo edit_product"></tbody>
+
+                                <tbody class="add_more_class"></tbody>   
+                                
+                            </table>
+                        </div>
+
+                                                
+                        <div class="row">
+                            <div class="col-lg-6">
+                                                        
+                                <div class="row row_align mb-4">
+                                                            
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        
+                                        <select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
+                                            
+                                            
+
+                                        </select>
+                                                
+                                    </div>
+
+                                </div>
+
+                                
+                                <!--<div class="row row_align mb-4">
+                                    <div class="col-lg-3">
+                                        <label for="basicInput" class="form-label">Attach</label>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <input type="file" name="ci_file"  class="form-control image_file">
+                                    </div>
+
+                                </div>--->
+
+                                <div class="card-body edit_image_table" style="float: inline-start";></div>
+
+                            </div>
+                            
+                            <div class="col-lg-6">
+
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn btn-success" type="submit">Save</button>
+                                </div>
+                               
+                            </div>
+                            <!--<div class="col-lg-6">
+                                <div style="float: right;">
+                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                        <tr>
+                                            <td><button>Print</button></td>
+                                            <td><button>Email</button></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><button type="submit">Save</button></td>
+                                            <td><button>PDF</button></td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>--->
+
+                        </div>
+                                                
+                        <!--table section end-->
+                    </div>  
+                                            
+                </div>
+
+                <!--<div class="modal-footer justify-content-center">
+                    <button class="btn btn btn-success" type="submit">Save</button>
+                </div>--->
+
+              
+
+
+			</div>
+		</form>
+
+	</div>
+</div>
+
+<!--edit section end-->
+
+
+
+<!--edit select modal section start-->
+
+<div class="modal fade" id="EditSelectProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_select_prod_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td> Qty</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo edit_select_prod_add"></tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <!--<input type="hidden" id="edit_select_prod_id" name="edit_select_prod_id" value="">--->                                
+                    <button class="btn btn btn-success">Save</button>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+<!--edit select  modal section end-->
+
+
+
 
 
 
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+        
     
         /*add section*/    
         $(function() {
@@ -600,24 +1287,31 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
+                    var formData = new FormData(currentForm);
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
                         method: "POST",
-                        data: $(currentForm).serialize(),
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
                         success: function(data) {
                      
                             $('#add_form1')[0].reset();
 
-                            $('select').empty();
+                            //$('select').empty();
 
                             $('.cash_invoice_remove').remove();
+
+                            //$('.cash_invoice_remove').val('').trigger('change');
 
                             $('#CashInvoice').modal('hide');
 
                             $('#SaveModal').modal('show');
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                            checkedIds.length = 0;
 
                             datatable.ajax.reload(null, false);
                            
@@ -666,6 +1360,7 @@
                 { data: 'ci_reffer_no' },
                 { data: 'ci_date'},
                 { data: 'ci_customer'},
+                { data: 'ci_sales_order'},
                 { data: 'action'},
                 
                ]
@@ -683,7 +1378,7 @@
 
             var id = $(this).val();
 
-           
+           alert(id)
             
             //Fetch Contact Person
             $.ajax({
@@ -704,7 +1399,6 @@
 
                     $(".payment_terms").val(data.credit_term);
 
-                    
    
                 }
 
@@ -744,7 +1438,7 @@
 
                     $(".project_clz").val(data.so_project);
 
-                    $(".product-more2").append(data.product_detail);
+                    //$(".product-more2").append(data.product_detail);
 
                     $(".cont_person").html(data.contact_detail);
 
@@ -789,7 +1483,7 @@
                     //console.log(data);
                     //  NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
-                    console.log(data);
+                    //console.log(data);
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -812,7 +1506,7 @@
 
         /*delete*/ 
         $("body").on('click', '.delete_btn', function(){ 
-            alert("sucess");
+            
             if (!confirm('Are you absolutely sure you want to delete?')) return false;
             var id = $(this).data('id');
             $.ajax({
@@ -842,7 +1536,7 @@
 
         $("body").on('click', '.select_modal_close', function(){ 
             
-            $('#SelectModal').modal('hide');
+            $('#SelectProduct').modal('hide');
 
             $('#CashInvoice').modal('show');
 
@@ -949,13 +1643,87 @@
         /* ### */
 
         /*select modal section start*/ 
-        $("body").on('click', '.cust_more_modal', function(){ 
+        /*$("body").on('click', '.cust_more_modal', function(){ 
             
-            $('#SelectModal').modal('show');
+            $('#SelectProduct').modal('show');
  
             $('#CashInvoice').modal('hide');
- 
-         });
+
+         });*/
+
+        $("body").on('click', '.cust_more_modal', function()
+        { 
+            if(!$("#add_form1").valid())
+            {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+
+            if($('#add_form1').attr('data-submit')=='false')
+            {
+
+             $('#add_form1').submit();
+
+                if(!$("#add_form1").valid())
+                {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+                }
+
+            }
+
+            var formData = new FormData($('#add_form1')[0]);
+            var image = $('.image_file').prop('files')[0]; // Get the file from input field
+            formData.append('image', image); // Append the file to FormData object
+
+            $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            var id = data.sales_order;
+
+                            var cash_invoice = data.cash_invoice;
+                         
+                            $('.hidden_cash_invoice').val(cash_invoice);
+  
+                            $('#SelectProduct').modal('show');
+
+                            $('#CashInvoice').modal('hide');
+
+                            $.ajax({
+
+                                url : "<?php echo base_url(); ?>Crm/CashInvoice/AddProduct",
+
+                                method : "POST",
+
+                                data: {ID: id,cashInvoice: cash_invoice},
+                                
+                                success:function(data)
+                                {   
+                                    var data = JSON.parse(data);
+                                    
+                                    $(".select_prod_add").html(data.product_detail);
+                                    
+                                    //console.log(data.product_detail);
+
+                                }   
+
+                            });
+
+                           
+                            
+                        }
+                    });
+
+        });
+
+
          /*###*/
 
 
@@ -1002,7 +1770,7 @@
 
        /*total amount calculation start*/
 
-       function TotalAmount()
+       /*function TotalAmount()
        {
 
            var total= 0;
@@ -1026,22 +1794,509 @@
            $(".performa_amount_in_word_val").val(resultSalesOrder);
            
            currentClaim()
-       }
+       }*/
 
        /*total amount calculation end*/
 
-       
+
+       /*prod modal submit start*/
+
+       $("body").on('click', '.prod_modal_submit', function(){ 
+
+            var selectId = $('#select_prod_id').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/SelectedProduct",
+
+                method : "POST",
+
+                data: {ID: selectId},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+                                    
+                    $('.product-more2').html(data.product_detail);
+
+                    $('#SelectProduct').modal("hide");
+
+                    $('#CashInvoice').modal("show");
+
+                    $('.selected_table').show();
+                }
+
+            });
+
+        });
 
 
-
-        
-
+    /*prod modal submit end*/
 
 
+    /*reset reffer no*/ 
+    $('.add_model_btn').click(function(){
 
-     
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/CashInvoice/FetchReference",
+
+            method : "GET",
+
+            success:function(data)
+            {
+
+                $('#ciid').val(data);
+
+            }
+        });
 
     });
+
+    /*####*/
+
+
+    /*view section start*/
+     
+  
+    $("body").on('click', '.view_btn', function(){ 
+            
+        $('#ViewCashInvoice').modal('show');
+
+        var id = $(this).data('id'); 
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/CashInvoice/View",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+
+                var data = JSON.parse(data);
+                
+                $('.view_reff').val(data.reffer_no);
+
+                $('.view_date').val(data.date);
+
+                $('.view_customer').val(data.customer);
+
+                $('.view_sales_order').val(data.sales_order);
+
+                $('.view_lpo').val(data.lpo_reff);
+
+                $('.view_contact').val(data.contact_person);
+
+                $('.view_payment_terms').val(data.payment_term);
+
+                $('.view_project').val(data.project);
+
+                $('.view_credit_account').val(data.credit_account);
+
+                $('.view_product').html(data.prod_details);
+                
+
+                $('.view_image_table').html(data.image_table);
+                
+                //console.log(data.prod_details);
+
+            
+            }
+
+        });
+
+        
+    });
+
+    /*view section end*/
+
+
+
+    /*edit section start*/
+    
+    $("body").on('click', '.edit_btn', function(){ 
+            
+            $('#EditCashInvoice').modal('show');
+    
+            var id = $(this).data('id'); 
+    
+            $.ajax({
+    
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
+    
+                method : "POST",
+    
+                data: {ID: id},
+    
+                success:function(data)
+                {
+    
+                    var data = JSON.parse(data);
+                    
+                    $('.edit_reff').val(data.reffer_no);
+    
+                    $('.edit_date').val(data.date);
+    
+                    $('.edit_customer').html(data.customer);
+    
+                    $('.edit_sales_order').html(data.sales_order);
+    
+                    $('.edit_lpo_reff').val(data.lpo_reff);
+    
+                    $('.edit_contact_person').html(data.contact_person);
+    
+                    $('.edit_payment_terms').val(data.payment_term);
+    
+                    $('.edit_project').val(data.project);
+
+                    $('.edit_project').val(data.project);
+
+    
+                    /*$('.view_credit_account').val(data.credit_account);
+    
+                    $('.view_image_table').html(data.image_table)*/;
+
+                    $('.edit_product').html(data.prod_details);
+
+                    $('.edit_cash_invoice_id').val(data.cash_invoice_id);
+
+                    $('.edit_charts_account').html(data.charts_of_account);
+
+                    $('.add_more_class').html(data.add_more);
+                    
+                    //console.log(data.prod_details);
+    
+                
+                }
+    
+            });
+    
+            
+        });
+
+
+        $("body").on('click', '.edit_customer', function(){ 
+            
+            $('#EditCashInvoice').modal('show');
+    
+            var id = $(this).data('id'); 
+    
+            $.ajax({
+    
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
+    
+                method : "POST",
+    
+                data: {ID: id},
+    
+                success:function(data)
+                {
+    
+                    var data = JSON.parse(data);
+                    
+                    $('.edit_reff').val(data.reffer_no);
+    
+                    $('.edit_date').val(data.date);
+    
+                    $('.edit_customer').html(data.customer);
+    
+                    $('.edit_sales_order').html(data.sales_order);
+    
+                    $('.edit_lpo_reff').val(data.lpo_reff);
+    
+                    $('.edit_contact_person').html(data.contact_person);
+    
+                    $('.edit_payment_terms').val(data.payment_term);
+    
+                    $('.edit_project').val(data.project);
+
+                    $('.edit_project').val(data.project);
+
+    
+                    /*$('.view_credit_account').val(data.credit_account);
+    
+                    $('.view_product').html(data.prod_details);
+    
+                    $('.view_image_table').html(data.image_table)*/;
+                    
+                    //console.log(data.sales_orders);
+    
+                
+                }
+    
+            });
+    
+            
+        });
+
+
+        /*update section start*/
+
+
+        $(function() {
+            var form = $('#edit_cash_invoice');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    var formData = new FormData(currentForm);
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CashInvoice/Update",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                     
+                            /*$('#add_form1')[0].reset();
+
+                            $('select').empty();
+
+                            $('.cash_invoice_remove').remove();
+
+                            $('#CashInvoice').modal('hide');
+
+                            $('#SaveModal').modal('show');*/
+
+                            $('#EditCashInvoice').modal('hide');
+
+                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+                           
+                        }
+                    });
+                }
+            });
+        });
+
+
+
+        /*#####*/
+
+
+        /*add more product*/
+
+
+        $("body").on('click', '.add_more_product', function(){ 
+             
+            var order_id = $('.edit_sales_order').val();
+ 
+            var prod_id = $('.edit_ci_prod_id').val();
+ 
+            var cash_invoice_id = $('.edit_cash_invoice_id').val();
+             
+            //alert(prod_id);
+ 
+             $.ajax({
+ 
+                 url : "<?php echo base_url(); ?>Crm/CashInvoice/EditAddProduct",
+ 
+                 method : "POST",
+ 
+                 data: {orderID: order_id,
+                     prodID: prod_id,
+                     cashInvoiceId: cash_invoice_id
+                 },
+ 
+                 success:function(data)
+                 {   
+                     var data = JSON.parse(data);
+                     
+                     $(".edit_select_prod_add").html(data.product_detail);
+ 
+                     $('#EditSelectProduct').modal('show');
+                     
+                     $('#EditCashInvoice').modal('hide');
+ 
+                 } 
+ 
+             });
+ 
+             
+         });
+ 
+ 
+         /*####*/
+
+
+          /*update product start*/
+         
+        $(function() {
+            var form = $('#edit_select_prod_form');
+
+            //alert("sucess");
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                   
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CashInvoice/UpdatedProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            var cashInvoiceId = data.cash_invoice_id;
+
+
+                            $('#edit_select_prod_form')[0].reset();
+
+                            $('#EditSelectProduct').modal('hide');
+
+                            $('.edit_btn[data-id="'+cashInvoiceId+'"]').trigger('click');
+
+                            $('.add_more_class').html(data.add_more);
+
+                           
+                       
+                        }
+                    });
+                }
+            });
+        });
+
+        /*update product end*/
+
+
+        /*delete prod section start*/
+
+
+        $("body").on('click', '.del_prod_remove', function(){ 
+
+            var dataSelect = $(this);
+            
+            var cashSelectElement = dataSelect.closest('.delete_cash_invoice').find('.hidden_cash_prod_id');
+
+            var prod_id = parseFloat(cashSelectElement.val()) 
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/DeleteProduct",
+
+                method : "POST",
+
+                data: {ProdID: prod_id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+
+                    if(data.status === "True")
+                    {
+                    $('#EditCashInvoice').modal('hide');
+
+                    datatable.ajax.reload(null,false);
+                    }
+
+
+                    var deliverID = data.delivery_id;
+
+                    $('.add_more_class').html(data.add_more);
+
+                    //$('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
+
+                    //alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                       // $('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
+
+
+
+                    }); 
+                    
+                
+                    
+                }
+
+            });
+        });
+
+        /*delete  prod section end*/
+
+
+
+
+    /*edit section end*/
+
+
+    
+
+
+    });
+
+
+    /*checkbox section start*/
+
+    var checkedIds = [];
+
+    // Check All function
+
+    function checkAll(checkbox) 
+    {
+        var checkboxes = document.getElementsByClassName('prod_checkmark');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = checkbox.checked;
+            handleCheckboxChange(checkboxes[i]); // Update the array and modal form
+        }
+    }
+
+    // Handle individual checkbox change
+    function handleCheckboxChange(checkbox) 
+    {   
+       
+        if (checkbox.checked) {
+            // Add the ID to the array if checked
+            checkedIds.push(checkbox.id);
+        } else {
+            // Remove the ID from the array if unchecked
+            checkedIds = checkedIds.filter(id => id !== checkbox.id);
+        }
+
+        // Log the current state of checked IDs
+        //console.log('Checked IDs: ', checkedIds);
+        document.getElementById('select_prod_id').value = checkedIds.join(',');
+    }
+
+    // Update modal form function
+    /*function updateModalForm() 
+    {
+        // Update the value of the hidden input in the modal form with the checked IDs
+        document.getElementById('select_prod_id').value = checkedIds.join(',');
+
+
+        // Log the checked IDs in the modal form
+        //console.log('Checked IDs in modal: ', checkedIds);
+    }*/
+
+
+    /*checkbox section end*/
 
 
 

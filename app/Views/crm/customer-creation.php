@@ -1586,7 +1586,7 @@
 
                             $('#EditCustomerCreation').modal('hide')
 
-                            $('.view_btn[data-id="'+custID+'"]').trigger('click');
+                            //$('.view_btn[data-id="'+custID+'"]').trigger('click');
 
                             alertify.success('Data updated Successfully').delay(3).dismissOthers();
 
@@ -1901,6 +1901,9 @@
         $('.edit_fax').on('input', function() {
             
             $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+
+           
+
         });
 
 
@@ -1992,6 +1995,9 @@
         });
 
         /*###*/
+
+        
+
 
 
      

@@ -87,7 +87,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="tex" name="qd_reffer_no"  value="<?php echo $sales_quotation_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="qd_reffer_no" id="sqid"  value="<?php echo $sales_quotation_id; ?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -380,7 +380,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -391,7 +391,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -406,9 +406,16 @@
 						                    
 				                        </div>
 
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
+
 
                                         
 			                        </div>
+
+                                   
+
 		                        </form>
 
 	                        </div>
@@ -490,7 +497,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -501,7 +508,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -515,6 +522,11 @@
 					                           
 						                    
 				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
 
 
                                         
@@ -986,7 +998,7 @@
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -997,7 +1009,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -1011,6 +1023,11 @@
 					                           
 						                    
 				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
 
 
                                         
@@ -1392,7 +1409,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="tex" name="qd_reffer_no"  class="form-control view_btn_ref" required readonly>
+                                                                        <input type="tex" name="qd_reffer_no"  class="form-control view_btn_ref" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1412,7 +1429,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date"  class="form-control datepicker view_btn_date" required>
+                                                                        <input type="text" name="qd_date"  class="form-control datepicker view_btn_date" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1433,9 +1450,9 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select view_btn_customer" name="qd_customer" id=""  required>
-                                                                           
-                                                                        </select>
+                                                                       
+                                                                        <input type="text" name="qd_customer"  class="form-control view_btn_customer" readonly>  
+                                                                        
                                                                     </div>
 
                                                                 </div> 
@@ -1459,7 +1476,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select name="qd_enq_ref"  id="" class="form-select view_btn_enquiry"></select>
+                                                                        <input type="text" name="qd_enq_ref"  class="form-control view_btn_enquiry" readonly>  
+
                                                                     </div>
 
                                                                 </div> 
@@ -1479,7 +1497,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_validity" id="" class="form-control view_btn_validity" required>
+                                                                        <input type="text" name="qd_validity" id="" class="form-control view_btn_validity" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1512,10 +1530,9 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select view_btn_sales_exce" name="qd_sales_executive" id="" required>
-                                                                            
-                                                                
-                                                                        </select>
+                                                                        
+                                                                        <input type="text" name="qd_sales_executive" id="" class="form-control view_btn_sales_exce" readonly>
+                                                                        
                                                                     </div>
 
                                                                 </div> 
@@ -1535,11 +1552,9 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select view_btn_contact_person" name="qd_contact_person"  required>
-                                                                            
-                                                                            
-                                                                
-                                                                        </select>
+                                                                          
+                                                                        <input type="text" name="qd_contact_person" id="" class="form-control view_btn_contact_person" readonly>
+                                                                         
                                                                     </div>
 
                                                                 </div> 
@@ -1561,7 +1576,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_payment_term" id="" class="form-control view_btn_payment" required>
+                                                                        <input type="text" name="qd_payment_term" id="" class="form-control view_btn_payment" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1582,8 +1597,9 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select id="qd_edit_delivery_term_id" name="qd_delivery_term" class="view_btn_delivery_term form-select" required></select>
-                                                                        
+                                                                       
+                                                                        <input type="text" name="qd_delivery_term" id="qd_edit_delivery_term_id" class="form-control view_btn_delivery_term" readonly>
+
                                                                     </div>
 
                                                                 </div> 
@@ -1602,7 +1618,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_project" id="" class="form-control view_btn_project" required>
+                                                                        <input type="text" name="qd_project" id="" class="form-control view_btn_project" readonly>
                                                                     </div>
 
                                                                     <input type="hidden" class="quoat_id" name="qd_id">
@@ -1639,23 +1655,16 @@
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td>Unit</td>
                                                                 <td>Qty</td>
-                                                                <td>Price Check</td>
                                                                 <td>Rate</td>
                                                                 <td>Amount</td>
-                                                                <td>Action</td>
+                                                                
                                                             </tr>
                                                            
                                                         </thead>
 
                                                         
-                                                        <tbody  class="travelerinfo edit_cost_cal"></tbody>
-                                                        <!--<tbody>-->
-                                                            <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon view_add_cost_cal"><i class="ri-add-circle-line"></i>Add </span>
-                                                                </td>
-                                                            </tr>
-                                                        <!--</tbody>--->
+                                                        <tbody  class="travelerinfo view_cost_cal"></tbody>
+                                                       
                                                         
                                                     </table>
                                                 </div>
@@ -1677,46 +1686,41 @@
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
                                                                 <td>Amount</td>
-                                                                <td>Action</td>
+                                                                
                                                             </tr>
                                                            
                                                         </thead>
 
                                                         
-                                                        <tbody  class="travelerinfo edit_product-more"></tbody>
-                                                        <!--<tbody>-->
-                                                            <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon view_add_prod_det"><i class="ri-add-circle-line"></i>Add </span>
-                                                                </td>
-                                                            </tr>
-                                                        <!--</tbody>--->
-                                                        <!--<tbody>
+                                                        <tbody  class="travelerinfo view_prod_det"></tbody>
+                                                      
+                                                        <tbody>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="" class="view_total_prod form-control" readonly></td>
+                                                                <td><input type="text" name="" class="view_btn_total_prod form-control" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Cost</td>
-                                                                <td><input type="text" class="form-control view_total_cost_cal" readonly></td>
+                                                                <td><input type="text" class="form-control view_btn_total_cost_cal" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Percentage</td>
-                                                                <td class="view_total_percent"><input type="text" class="form-control edit_total_percent" readonly></td>
+                                                                <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent" readonly></td>
                                                             </tr>
-                                                        </tbody>--->
+                                                        </tbody>
+
                                                     </table>
                                                 </div>
 
 
-                                                <div style="float: right;">
+                                                <!--<div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tr>
                                                             <td><button>Print</button></td>
@@ -1727,7 +1731,7 @@
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
-                                                </div>
+                                                </div>--->
 
                                                 <!--table section end-->
 
@@ -1763,7 +1767,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesQuotation" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesQuotation" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -2187,6 +2191,11 @@
                 </div>
 
 
+                <div class="modal-footer justify-content-center">
+                    <a href="javascript:void(0)" class="btn btn btn-success   quotation_close_modal" data-bs-dismiss="modal">Finish</a>
+                </div>
+
+
             </div>
 		</form>
 
@@ -2367,6 +2376,10 @@
 
                             $('#add_form1')[0].reset();
 
+                            $('#add_form2')[0].reset();
+
+                            $('.cost_product_det').val('').trigger('change');
+
                             $('.droup_customer_id').val('').trigger('change');
 
                             $('.qd_enquiry_reference_clz').val('').trigger('change');
@@ -2527,6 +2540,30 @@
 
             });
         });
+
+        /*reset refference number*/
+
+        $('.add_model_btn').click(function(){
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchReference",
+
+                method : "GET",
+
+                success:function(data)
+                {
+
+                $('#sqid').val(data);
+
+                }
+
+            });
+
+        });
+
+
+        /*####*/
 
 
         /*enquiry droup drown change (change table row)*/
@@ -3082,6 +3119,10 @@
                     $(".edit_contact_person").html(data.contact_person);
 
                     $(".edit_enquiry").html(data.enquiry_ref);
+
+                    $(".edit_payment").val(data.credit_term);
+
+                  
 
                 }
 
@@ -3800,9 +3841,11 @@
 
                             var quotID= (responseData.quotation_id);
 
-                            $('.edit_btn[data-id="'+quotID+'"]').trigger('click');
+                            $('#EditSalesQuotation').modal("hide");
 
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                           // $('.edit_btn[data-id="'+quotID+'"]').trigger('click');
+
+                            alertify.success('Data Updated Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
                          
@@ -3889,6 +3932,52 @@
         }
 
 
+        /*fetch  data by  enquiry ref*/
+
+        $("body").on('change', '.edit_enquiry', function(){ 
+
+            var id = $(this).val();
+	        
+            var cust_id = $('.edit_customer').val();
+ 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchProject",
+
+                method : "POST",
+
+                data: {
+                    ID: id,
+                    custID: cust_id,
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    $(".edit_project").val(data.enquiry_project);
+
+                    $(".edit_contact_person").html(data.customer_person);
+
+                //InitProductSelect2();
+
+                    //slno();
+
+
+                }
+
+
+            });
+ 
+        });
+
+         /**/
+
+
+
+        
+
+
         /*edit calculation end*/
 
 
@@ -3913,35 +4002,35 @@
                 {
                     var responseData = JSON.parse(data);
 
-                   // $(".edit_ref").val(responseData.reffer_no);
+                    $(".view_btn_ref").val(responseData.reffer_no);
 
-                    /*$(".edit_date").val(responseData.date);
+                    $(".view_btn_date").val(responseData.date);
 
-                    $(".edit_customer").html(responseData.customer_creation);
+                    $(".view_btn_customer").val(responseData.customer_name);
 
-                    $(".edit_enquiry").html(responseData.enquiry_ref);
+                    $(".view_btn_enquiry").val(responseData.enquiry_reference);
 
-                    $(".edit_validity").val(responseData.validity);
+                    $(".view_btn_validity").val(responseData.validity);
 
-                    $(".edit_sales_exce").html(responseData.sales_exec);
+                    $(".view_btn_sales_exce").val(responseData.sales_executive);
 
-                    $(".edit_contact_person").html(responseData.contact_person);
+                    $(".view_btn_contact_person").val(responseData.contact_person);
 
-                    $(".edit_payment").val(responseData.payment_term);
+                    $(".view_btn_payment").val(responseData.payment_term);
 
-                    $(".edit_delivery_term").html(responseData.delivery_term);
+                    $(".view_btn_delivery_term").val(responseData.delivery_term);
 
-                    $(".edit_project").val(responseData.project);
+                    $(".view_btn_project").val(responseData.project);
 
-                    $(".edit_product-more").html(responseData.prod_details);
+                    $(".view_cost_cal").html(responseData.cost_details);
 
-                    $(".edit_cost_cal").html(responseData.cost_prod_det);
+                    $(".view_prod_det").html(responseData.prod_details);
 
-                    $(".edit_total_cost_cal").val(responseData.cost_amount);
+                    $(".view_btn_total_prod").val(responseData.sales_amount);
 
-                    $(".edit_total_prod").val(responseData.quot_total_amount);
+                    $(".view_btn_total_cost_cal").val(responseData.cost_amount);
 
-                    $(".edit_total_percent").val(responseData.quot_percentage);*/
+                    $(".view_btn_total_percent").val(responseData.percentage);
 
                 }
 

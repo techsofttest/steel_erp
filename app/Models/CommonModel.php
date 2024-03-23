@@ -185,8 +185,8 @@ class CommonModel extends Model
     //Fetch where Join
     public function FetchWhereJoin($table,$cond,$joins)
     {
-        $query = $this->db->table($table)
-        ->where($cond);
+        $query = $this->db->table($table);
+
 
         if(!empty($joins))
 
@@ -199,8 +199,11 @@ class CommonModel extends Model
             }
             $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
         }
+
+        $query->where($cond);
        
         $result = $query->get()->getResult();
+        //echo $this->db->getLastQuery(); exit();
 
         return $result;
 
@@ -1120,13 +1123,17 @@ class CommonModel extends Model
     }
 
 
-    public function FetchCreditProd($table,$cond,$joins)
+    public function FetchCreditProd($table,$cond,$cond2,$joins)
     {
         $query = $this->db->table($table)
 
         ->where($cond)
 
-        ->groupBy('crm_delivery_note.dn_reffer_no');
+        ->where($cond2);
+
+        //->groupBy('crm_delivery_note.dn_reffer_no');
+
+        //->groupBy($group_coloum);
 
         if(!empty($joins))
 
@@ -1149,19 +1156,6 @@ class CommonModel extends Model
     }
 
 
-
-    
-
-
-
-    
-
-   
-
-
-   
-
- 
 
 
 }

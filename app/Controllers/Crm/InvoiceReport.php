@@ -27,6 +27,34 @@ class InvoiceReport extends BaseController
 
 
     //customer droupdrown
+    /*public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+           
+
+        );
+        
+        $data['result'] = $this->common_model->ReportFetchLimit('crm_sales_orders','so_customer','asc',$term,$start,$end,$joins);
+ 
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }*/
+
     public function FetchTypes()
     {
 
@@ -40,13 +68,13 @@ class InvoiceReport extends BaseController
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
-                'fk'    => 'cci_customer',
+                'fk'    => 'so_customer',
             ),
            
 
         );
       
-        $data['result'] = $this->common_model->ReportFetchLimit('crm_credit_invoice','cci_customer','asc',$term,$start,$end,$joins,'cci_customer');
+        $data['result'] = $this->common_model->ReportFetchLimit('crm_sales_orders','so_customer','asc',$term,$start,$end,$joins,'so_customer');
     
         $data['total_count'] =count($data['result']);
 
@@ -65,19 +93,12 @@ class InvoiceReport extends BaseController
     public function FetchData()
     {    
         //fetch sales order
-        $cond = array('cci_customer'=>$this->request->getPost('ID'));
+        $cond = array('so_customer'=>$this->request->getPost('ID'));
 
-        $joins = array(
-
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'cci_sales_order',
-            ),
-        );
+        $joins1 = array();
 
 
-        $sales_refference = $this->common_model->FetchWhereUniqueJoin('crm_credit_invoice',$cond,$joins,'cci_sales_order');
+        $sales_refference = $this->common_model->FetchWhereUniqueJoin('crm_sales_orders',$cond,$joins1,'so_reffer_no');
         
         $data['sales_reff'] = '<option value="" selected disabled>Select Order Ref</option>';
 
@@ -87,46 +108,54 @@ class InvoiceReport extends BaseController
             
         }
 
-        //fetch delivery note ref
+        //fetch executive
+       
+        $joins = array(
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+           
 
-        /*$joins1 =  array();
+        );
 
-        $delivery_notes = $this->common_model->FetchWhereUniqueJoin('crm_delivery_note',$cond,$joins1,'dn_reffer_no');
-        
-        $data['delivier_note'] ='<option value="" selected disabled>Select Delivery Note</option>';
 
-        foreach($delivery_notes as $delivery_note)
+        $quotation_details = $this->common_model->FetchWhereUniqueJoin('crm_sales_orders',$cond,$joins,'so_sales_executive');
+       
+
+        $data['quot_det'] = "<option value='' selected disabled>Select Sales Executive</option>"; 
+
+        foreach($quotation_details as $quot_det)
         {
-            $data['delivier_note'] .='<option value='.$delivery_note->dn_id.'>'.$delivery_note->dn_reffer_no.'</option>';
+            $data['quot_det'] .='<option value='.$quot_det->se_id.'>'.$quot_det->se_name.'</option>';
             
-        }*/
+        }
 
-        
+
         //fetch product
 
-        $product_data = $this->common_model->FetchCreditProdByCustomer('crm_credit_invoice',$this->request->getPost('ID'));
+        $product_data = $this->common_model->FetchSalesProdByCustomer('crm_sales_orders',$this->request->getPost('ID'));
         
-        $data['credit_prod'] = "<option value='' selected> Select Product</option>";
+        $data['quot_prod'] = "<option value='' selected> Select Product</option>";
         $uniqueProductIds = []; // Array to store unique product IDs
 
         foreach ($product_data as $prod_data) {
             // Check if product_details array is not empty
-            if (!empty($prod_data->credit_prod_details)) {
-                foreach ($prod_data->credit_prod_details as $credit_prod_det) {
+            if (!empty($prod_data->sales_prod_details)) {
+                foreach ($prod_data->sales_prod_details as $sales_prod_det) {
                     // Check if the product ID is not already processed
-                    if (!in_array($credit_prod_det->product_id, $uniqueProductIds)) {
+                    if (!in_array($sales_prod_det->product_id, $uniqueProductIds)) {
                         // Add the product ID to the array of unique IDs
-                        $uniqueProductIds[] = $credit_prod_det->product_id;
+                        $uniqueProductIds[] = $sales_prod_det->product_id;
                         // Add the option for this product to the dropdown
-                        $option_value = $credit_prod_det->product_id;
-                        $option_text = $credit_prod_det->product_details;
-                        $data['credit_prod'] .= '<option value="' . $option_value . '">' . $option_text . '</option>';
+                        $option_value = $sales_prod_det->product_id;
+                        $option_text = $sales_prod_det->product_details;
+                        $data['quot_prod'] .= '<option value="' . $option_value . '">' . $option_text . '</option>';
                     }
                 }
-            } 
-            else 
-            {
-                $data['credit_prod'] .= '<option value="">No Product Details Available</option>';
+            } else {
+                $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
             }
         }
 
@@ -140,29 +169,92 @@ class InvoiceReport extends BaseController
     //fetch data
     public function GetData()
     {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
+        /*$from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
 
         $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
 
-        $customer        = trim($this->request->getPost('customer_clz'));
+        $customer        = trim($this->request->getPost('customer'));
 
-        $sales_order    = trim($this->request->getPost('sales_order'));
+        $sales_order     = trim($this->request->getPost('sales_order'));
 
-        $product        = trim($this->request->getPost('product'));
+        $sales_executive = trim($this->request->getPost('sales_executive'));
+
+        $product         = trim($this->request->getPost('product'));
 
        
         $joins = array(
             array(
-                'table' => 'crm_credit_invoice_prod_det',
-                'pk'    => 'ipd_credit_invoice',
-                'fk'    => 'cci_id',
+                'table' => 'crm_sales_product_details',
+                'pk'    => 'spd_sales_order',
+                'fk'    => 'dn_id',
             ),
            
 
         );
 
       
-        $invoice_report = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer','','',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins);
+        $sales_order = $this->common_model->CheckDate($from_date,'dn_id',$to_date,'',$customer,'dn_customer',$sales_executive,'so_sales_executive',$product,'spd_product_details',$sales_order,'so_reffer_no','crm_sales_orders',$joins);
+        
+       
+
+        $data['product_data'] =""; 
+
+        if(!empty($sales_order))
+        {
+
+            $data['status'] ="true";
+
+            $i=1;
+            foreach($sales_order as $sales)
+            {   
+                
+                $data['product_data'] .='<tr>
+                <td>'.$i.'</td>
+                <td>'.$sales->so_reffer_no.'</td>
+                <td>'.$sales->so_date.'</td>
+                <td>
+                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
+                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
+                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
+                                
+                </td>
+                </tr>';
+                $i++; 
+
+            }
+        }
+        else
+        {
+            $data['status'] ="False";
+        }
+
+        echo json_encode($data);*/
+
+        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
+
+        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
+
+        $customer        = trim($this->request->getPost('customer'));
+
+        //$sales_executive = trim($this->request->getPost('sales_executive'));
+
+        $product         = trim($this->request->getPost('product'));
+
+        $sales_order     = trim($this->request->getPost('sales_order'));
+
+
+        $joins = array(
+            array(
+                'table' => 'crm_cash_invoice_prod_det',
+                'pk'    => 'cipd_cash_invoice',
+                'fk'    => 'ci_id',
+            ),
+           
+
+        );
+
+
+        $invoice_report = $this->common_model->CheckDate($from_date,'ci_date',$to_date,'',$customer,'ci_customer','','',$product,'cipd_prod_det',$sales_order,'ci_reffer_no','crm_cash_invoice',$joins);
         
        
 
@@ -175,13 +267,13 @@ class InvoiceReport extends BaseController
             
             
             $i=1;
-            foreach($invoice_report as $inv_report)
+            foreach($invoice_report as $invoice)
             {   
                 
                 $data['product_data'] .='<tr>
                 <td>'.$i.'</td>
-                <td>'.$inv_report->cci_reffer_no.'</td>
-                <td>'.$inv_report->cci_date.'</td>
+                <td>'.$invoice->ci_reffer_no.'</td>
+                <td>'.$invoice->ci_date.'</td>
                 <td>
                     <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
                     <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
@@ -197,7 +289,6 @@ class InvoiceReport extends BaseController
         }
 
         echo json_encode($data);
-       
       
     }
 

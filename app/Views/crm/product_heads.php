@@ -238,10 +238,13 @@
                             
                             if(data.status === "true")
                             {   
-                                $('#add_product_head_form')[0].reset();
                                
+                                $('#add_product_head_form')[0].reset();
+                                $('#AddProductHead').modal('hide')
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
                                 datatable.ajax.reload( null, false )
+                                
+
                             }
                             else
                             {

@@ -15,3 +15,42 @@ pending
 enquiry checked
 pending
 *remove red border while eneter data
+
+
+01-03-2024
+
+sales order pending 
+
+
+06-03-2024
+day:wednesday
+sales quoation (completed)
+
+08-03-2024
+day:thursday
+slaes order(completed)
+
+11-03-2024
+day:monday
+pro-forma invoice(completed)
+
+
+performa in voice- delete pending
+
+
+rest reffer num - sales quoat,performa invoice,sales order(other pending)
+
+
+common problem 
+
+without refresh ref no same
+
+check all customer come 
+
+
+
+
+
+pending - sales quotation - edit calculation
+
+pending - sales order - edit calculation

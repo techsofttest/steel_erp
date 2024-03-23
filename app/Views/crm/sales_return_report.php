@@ -91,22 +91,7 @@
 
                                                                 <!--table section end-->
 
-                                                                <div style="float: right;">
-                                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                            <td><button>Excel</button></td>
-                                                                            <td><button>PDF</button></td>
-                                                                            <td><button>Email</button></td>
-                                                                            <td><button type="submit">View</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>
-                                                                
-                                                                
-                                                                
+                                                               
 
                     
                                                             </div>
@@ -116,6 +101,11 @@
                                                 </div>
                                                 <!--end col-->
                                             </div>
+                                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
                                         </div>
                                         
                                     </div>

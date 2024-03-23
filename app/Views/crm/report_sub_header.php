@@ -5,7 +5,7 @@
       <div class="card-body">
         <ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
         
-          <li class="nav-item"><a class="nav-link <?php //if($uri->getSegment(3)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport" onclick="modal_open()" role="tab" aria-selected="true">Sales Quot Report </a></li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport"  role="tab" aria-selected="true">Sales Quot Report </a></li>
           
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotAnalysisReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotAnalysisReport" role="tab" aria-selected="false">Sales Quot Analysis Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderReport" role="tab" aria-selected="false">Sales Order Report</a> </li>
@@ -14,10 +14,10 @@
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="DnToCreditInvoice"){echo "active";}?>"  href="<?= base_url();?>Crm/DnToCreditInvoice" role="tab" aria-selected="false">DN To Credit Invoice Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="InvoiceReport"){echo "active";}?>"  href="<?= base_url();?>Crm/InvoiceReport" role="tab" aria-selected="false">Invoice Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesReturnReport"){echo "active";}?>"  href="<?= base_url();?>Crm/SalesReturnReport" role="tab" aria-selected="false">Sales Return Report </a> </li>
-          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-9" role="tab" aria-selected="false">Sales Summery Report </a> </li>
-          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-10" role="tab" aria-selected="false">Backlog </a> </li>
-          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-11" role="tab" aria-selected="false">Job Profitability Report </a> </li>
-          <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#nav-crm-top-1-12" role="tab" aria-selected="false">Job Summery Report</a> </li>
+          <li class="nav-item"> <a class="nav-link " data-bs-toggle="tab" href="#nav-crm-top-1-9" role="tab" aria-selected="false">Sales Summery Report </a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="BackLog"){echo "active";}?>"  href="<?= base_url();?>Crm/BackLog" role="tab" aria-selected="false">Backlog </a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobProfitability"){echo "active";}?>"  href="<?= base_url();?>Crm/JobProfitability" role="tab" aria-selected="false">Job Profitability Report </a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobSummery"){echo "active";}?>"  href="<?= base_url();?>Crm/JobSummery" role="tab" aria-selected="false">Job Summery Report</a> </li>
         
         </ul>
 			</div>

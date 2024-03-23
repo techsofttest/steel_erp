@@ -63,10 +63,20 @@ class SalesOrder extends BaseController
         $i=1;
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'CRM/SalesOrder/Print/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
-           
+             
+            if(!empty($record->so_edit_reff_no))
+            {
+               $reffer_num = $record->so_reffer_no . "(" . $record->so_edit_reff_no . ")";
+            }
+            else
+            {
+                $reffer_num = $record->so_reffer_no;
+            }
+
+
            $data[] = array( 
               "so_id"            =>$i,
-              'so_reffer_no'      => $record->so_reffer_no,
+              'so_reffer_no'      => $reffer_num,
               'so_date'          => date('d-m-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
               'so_quotation_ref' => $record->qd_reffer_no,
@@ -104,19 +114,7 @@ class SalesOrder extends BaseController
         $start = $end + $resultCount;
       
         $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
-        
-       /* $joins = array(
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'so_customer',
-            ),
-           
-
-        );*/
       
-       // $data['result'] = $this->common_model->ReportFetchLimit('crm_sales_orders','so_customer','asc',$term,$start,$end,$joins,'so_customer');
-    
 
         $data['total_count'] =count($data['result']);
 
@@ -148,18 +146,6 @@ class SalesOrder extends BaseController
     //view page
     public function index()
     {   
-       
-        /*$joins = array(
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'qd_customer',
-            ),
-           
-
-        );*/
-
-        //$data['customer_creation'] = $this->common_model->FetchCustomerCreation('crm_quotation_details',$joins);
         
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
@@ -182,7 +168,16 @@ class SalesOrder extends BaseController
     // add account head
     Public function Add()
     {   
+        if(!empty($this->request->getPost('so_quotation_ref')))
+        {
+            $quotation_ref = $this->request->getPost('so_quotation_ref');
+        }
+        else
+        {
+            $quotation_ref =0;
+        }
         
+
         $insert_data = [
 
             'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
@@ -191,7 +186,7 @@ class SalesOrder extends BaseController
 
             'so_customer'               => $this->request->getPost('so_customer'),
 
-            'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
+            'so_quotation_ref'          => $quotation_ref,
 
             'so_lpo'                    => $this->request->getPost('so_lpo'),
 
@@ -212,7 +207,17 @@ class SalesOrder extends BaseController
             'so_added_date'             => date('Y-m-d'),
         ];
 
+        // Handle file upload
+        if ($_FILES['so_file']['name'] !== '') 
+		{   
+           
+
+            $soAttachFileName = $this->uploadFile('so_file','uploads/SalesOrder');
+            $insert_data['so_file'] = $soAttachFileName;
+        }
+
         $sales_order_id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
+
 
 
         /*product table section start*/
@@ -225,8 +230,6 @@ class SalesOrder extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {   
-                    
-
                     $prod_data  	= array(  
                         
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
@@ -247,8 +250,21 @@ class SalesOrder extends BaseController
 
         /*####*/
 
+    }
 
 
+    public function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
+
+        if ($file->isValid() && !$file->hasMoved())
+		{
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
+
+        return null;
     }
 
 
@@ -262,8 +278,6 @@ class SalesOrder extends BaseController
 
         $cond1 = array('qd_customer' => $this->request->getPost('ID'));
 
-        //$quotation_details = $this->common_model->FetchWhere('crm_quotation_details',$cond1);
-       
         $quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
 
         $data['quotation_det'] ="";
@@ -301,7 +315,7 @@ class SalesOrder extends BaseController
 
     }
 
-
+    //common fun for add and edit
     public function QuotationRef()
     {
         $cond = array('qd_id' => $this->request->getPost('ID'));
@@ -311,10 +325,9 @@ class SalesOrder extends BaseController
         $sales_executive = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
         $cond2 = array('contact_customer_creation' => $this->request->getPost('quotID'));
-
-       
-        $contact_person = $this->common_model->FetchWhere('crm_contact_details',$cond2);
         
+        $contact_person = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
         
         $joins1 = array(
             array(
@@ -378,7 +391,7 @@ class SalesOrder extends BaseController
         $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
 
         
-       
+        
         
         $data['qd_sales_executive'] = "";
 
@@ -389,7 +402,7 @@ class SalesOrder extends BaseController
             $data['qd_sales_executive'] .='>'.$sales_excu->se_name.'</option>';
         }
 
-
+      
         $data['contact_person'] = '';
 
         foreach($contact_person as $cont_per)
@@ -399,10 +412,7 @@ class SalesOrder extends BaseController
             if($cont_per->contact_id == $quotation_details->qd_contact_person){  $data['contact_person'] .= " selected"; }
             $data['contact_person'] .='>'.$cont_per->contact_person.'</option>';
         }
-
-
-
-        //$data['qd_payment_term'] =  $quotation_details->qd_payment_term;
+       
 
         $data['qd_delivery_term']   =  $quotation_details->dt_name;
 
@@ -414,27 +424,143 @@ class SalesOrder extends BaseController
 
 
     // update account head 
-    public function Update()
-    {    
-        $cond = array('at_id' => $this->request->getPost('account_id'));
+    /*public function Update()
+    {   
+        $cond = array('so_id' => $this->request->getPost('so_id'));
+
+        $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
         
-        $update_data = $this->request->getPost(); 
 
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        if (empty($sales_order->so_edit_flag)) 
         {
-             unset($update_data['account_id']);
-        }       
+            $output = $this->request->getPost('so_reffer_no') . "-ERP-" . strrev($this->request->getPost('so_reffer_no'));
+            
+        }
+        else
+        {
+            $output = $this->request->getPost('so_reffer_no');
+            
+        }
+        
+        
+       
 
-        $update_data['at_added_by'] = 0; 
+       $update_data = [
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
+        'so_reffer_no'              => $output,
+
+        'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
+
+        'so_customer'               => $this->request->getPost('so_customer'),
+
+        'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
+
+        'so_lpo'                    => $this->request->getPost('so_lpo'),
+
+        'so_sales_executive'        => $this->request->getPost('so_sales_executive'),
+
+        'so_contact_person'         => $this->request->getPost('so_contact_person'),
+
+        'so_payment_term'           => $this->request->getPost('so_payment_term'),
+
+        'so_delivery_term'          => date('Y-m-d',strtotime($this->request->getPost('so_delivery_term'))),
+
+        'so_project'                => $this->request->getPost('so_project'),
+
+        'so_edit_flag'              => 1,
+
+        
+        ];
+
+        // Handle file upload
+        if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
+            
+            
+            if($this->request->getFile('so_file') != '' ){ 
+            
+                $previousImagePath = 'uploads/SalesOrder/' .$sales_order->so_file;
+            
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $AttachFileName = $this->uploadFile('so_file', 'uploads/SalesOrder');
+        
+            // Update the data with the new image filename
+            $update_data['so_file'] = $AttachFileName;
+        }
+
+        $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
+       
+    }*/
 
 
+    public function Update()
+    {   
+        $cond = array('so_id' => $this->request->getPost('so_id'));
 
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');
+        $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
+        
+        $sales_flag = ++$sales_order->so_edit_flag;
+        
+        $output = $this->request->getPost('so_reffer_no') . "-REV-" ."0". $sales_flag;
+
+
+       $update_data = [
+
+        'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
+
+        'so_customer'               => $this->request->getPost('so_customer'),
+
+        'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
+
+        'so_lpo'                    => $this->request->getPost('so_lpo'),
+
+        'so_sales_executive'        => $this->request->getPost('so_sales_executive'),
+
+        'so_contact_person'         => $this->request->getPost('so_contact_person'),
+
+        'so_payment_term'           => $this->request->getPost('so_payment_term'),
+
+        'so_delivery_term'          => date('Y-m-d',strtotime($this->request->getPost('so_delivery_term'))),
+
+        'so_project'                => $this->request->getPost('so_project'),
+
+        'so_edit_flag'              => $sales_flag,
+
+        'so_edit_reff_no'           => $output,
+
+        
+        ];
+
+        // Handle file upload
+        if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
+            
+            
+            if($this->request->getFile('so_file') != '' ){ 
+            
+                $previousImagePath = 'uploads/SalesOrder/' .$sales_order->so_file;
+            
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+            }
+            
+            // Upload the new image
+            $AttachFileName = $this->uploadFile('so_file', 'uploads/SalesOrder');
+        
+            // Update the data with the new image filename
+            $update_data['so_file'] = $AttachFileName;
+        }
+
+        $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
        
     }
+
+
+
 
     //delete account head
     public function Delete()
@@ -446,7 +572,37 @@ class SalesOrder extends BaseController
         $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_sales_product_details',$cond1);
- 
+
+
+        //pro-forma invoice
+        
+        $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+
+        foreach($proforma_data as $proforma)
+        {
+            $cond2 = array('pp_proforma' => $proforma->pf_id);
+
+            $this->common_model->DeleteData('crm_proforma_product',$cond2);
+        }
+
+
+        $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+
+        //delivery note
+
+        $delivery_notes = $this->common_model->FetchWhere('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
+        
+        foreach($delivery_notes as $delivery_note)
+        {
+            $cond3 = array('dpd_delivery_id' => $delivery_note->dn_id);
+
+            $this->common_model->DeleteData('crm_delivery_product_details',$cond3);
+        }
+
+        $this->common_model->DeleteData('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
+
+
+
          
     }
 
@@ -485,31 +641,41 @@ class SalesOrder extends BaseController
     {
         $cond1 = array('so_id' => $this->request->getPost('ID'));
 
-        $sales_order     = $this->common_model->SingleRow('crm_sales_orders',$cond1);
+        $joins = array(
+           
+            array(
+                'table' => 'crm_quotation_details',
+                'pk'    => 'qd_id',
+                'fk'    => 'so_quotation_ref',
+            ),
+           
+        );	
+
+        $sales_order       = $this->common_model->SingleRowJoin('crm_sales_orders',$cond1,$joins);
 
         $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $quotation_details = $this->common_model->FetchAllOrder('crm_quotation_details','qd_id','desc');
+        $sales_executive   = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
-        //$quotation_details = $this->common_model->FetcQuotWhere($sales_order->so_reffer_no);
-
-      
         $data['reff_no']         = $sales_order->so_reffer_no;
 
-        $data['date']            = $sales_order->so_date;
+        $data['date']            = date('d-M-Y',strtotime($sales_order->so_date));
 
         $data['lpo']             = $sales_order->so_lpo;
 
-        $data['sales_executive'] = $sales_order->so_sales_executive;
-
         $data['payment_term']    = $sales_order->so_payment_term;
 
-        $data['delivery_term']   = $sales_order->so_delivery_term;
+        $data['delivery_term']   = date('d-M-Y',strtotime($sales_order->so_delivery_term));
 
         $data['project']         = $sales_order->so_project;
 
-        $data['so_id']         = $sales_order->so_id;
+        $data['so_id']           = $sales_order->so_id;
 
+        $data['amount_total']    = $sales_order->so_amount_total;
+
+        $data['file_name']       = $sales_order->so_file;
+
+        $data['file_attach']     = '<a href="' . base_url('uploads/SalesOrder/' . $sales_order->so_file) . '" target="_blank">View</a>';  
 
 
         $data['customer_creation'] ="";
@@ -532,35 +698,122 @@ class SalesOrder extends BaseController
         
         $data['quotation'] ="";
 
-        foreach($quotation_details as $quot_det)
+        $data['quotation'] .='<option value="'.$sales_order->qd_id.'">'.$sales_order->qd_reffer_no.'</option>';
+
+
+        //sales executive
+       
+        foreach($sales_executive as $sales_exec)
         {
-            $data['quotation'] .= '<option value="' .$quot_det->qd_id. '"'; 
+            $data['sales_executive'] = '<option value="' .$sales_exec->se_id.'"'; 
         
             // Check if the current product head is selected
-            if ($quot_det->qd_id  == $sales_order->so_quotation_ref)
+            if ($sales_exec->se_id  == $sales_order->qd_sales_executive)
             {
-                $data['quotation'] .= ' selected'; 
+                $data['sales_executive'] .= ' selected'; 
             }
         
-            $data['quotation'] .= '>' . $quot_det->	qd_reffer_no. '</option>';
+            $data['sales_executive'] .= '>' . $sales_exec->se_name.'</option>';
         }
 
-        //contact_person
-        /*$data['contact'] ="";
+        //contact person
 
-        foreach($quotation_details as $quot_det)
+        $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+        foreach($contact_data as $cont_data)
         {
-            $data['quotation'] .= '<option value="' .$quot_det->qd_id. '"'; 
+            $data['contact_person'] = '<option value="' .$cont_data->contact_id .'"'; 
         
             // Check if the current product head is selected
-            if ($quot_det->qd_id  == $sales_order->so_quotation_ref)
+            if ($cont_data->contact_id   == $sales_order->so_contact_person)
             {
-                $data['quotation'] .= ' selected'; 
+                $data['contact_person'] .= ' selected'; 
             }
         
-            $data['quotation'] .= '>' . $quot_det->	qd_reffer_no. '</option>';
-        }*/
+            $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
+        }
 
+
+        //product section start
+
+        $cond2 = array('spd_sales_order' => $this->request->getPost('ID'));
+
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details	',
+            ),
+           
+
+        );
+
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond2,$joins1);
+       
+
+        $data['prod_details'] ='';
+
+        $i =1; 
+
+        foreach($product_details_data as $prod_det)
+        {   
+            
+
+            $data['prod_details'] .='<tr class="prod_row2 sales_remove edit_product_row" id="'.$prod_det->spd_id.'">
+            <td class="delete_sino">'.$i.'</td>
+            <td style="width:20%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+            <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->spd_quantity.'" class="form-control"  readonly></td>
+            <td> <input type="text" value="'.$prod_det->spd_rate.'"  class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->spd_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->spd_amount.'" class="form-control edit_product_amount" readonly></td>
+            <td style="width:15%">
+                <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+		        <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->spd_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            </td>
+            </tr>'; 
+            $i++; 
+        }
+
+        //image section start
+        $data['image_table']="";
+
+            if(!empty($sales_order->so_file))
+            {
+            
+                $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                                    <thead>
+                                        <tr>
+                                            <th class="cust_img_rgt_border">File Name</th>
+                                            <th class="cust_img_rgt_border">Download</th>
+                                            <th class="cust_img_rgt_border">Update</th>
+                                        </tr>
+                                    <thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="cust_img_rgt_border edit_file_name" >'. $sales_order->so_file.'</td>
+                                            <td class="cust_img_rgt_border edit_file_attach"><a href="'.base_url('uploads/SalesOrder/' .$sales_order->so_file).'" target="_blank">View</a></td>
+                                            <td class="cust_img_rgt_border" ><input type="file" name="so_file"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>';
+
+            }
+            else
+            {
+                $data['image_table']='<div class="row row_align mb-4">
+                                            <div class="col-lg-3">
+                                                <label for="basicInput" class="form-label">Attach</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="file" name="so_file" class="form-control">
+                                            </div>
+                                        </div>
+                ';
+            }
+
+        
+       
         echo json_encode($data);
 
     }
@@ -603,7 +856,7 @@ class SalesOrder extends BaseController
 
         $data['reff_no']        = $sales_order->so_reffer_no;
 
-        $data['date']           = $sales_order->so_date;
+        $data['date']           = date('d-M-Y',strtotime($sales_order->so_date));
 
         $data['customer']       = $sales_order->cc_customer_name;
 
@@ -620,6 +873,12 @@ class SalesOrder extends BaseController
         $data['delivery_term']  = $sales_order->so_delivery_term;
 
         $data['project']        = $sales_order->so_project;
+
+        $data['file_name']      = $sales_order->so_file;
+
+        
+        $data['file_attach'] = '<a href="' . base_url('uploads/SalesOrder/' . $sales_order->so_file) . '" target="_blank">View</a>';  
+
 
         //table section start
         
@@ -638,13 +897,12 @@ class SalesOrder extends BaseController
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond1,$joins1);
         
-        //$products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
-
+       
         $data['prod_details'] ='';
         $i =1; 
         foreach($product_details_data as $prod_det)
         {   
-            //$prod_det->qpd_amount;
+           
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
             <td class="si_no2">'.$i.'</td>
@@ -662,6 +920,43 @@ class SalesOrder extends BaseController
         //table section end
 
 
+        //image section start
+        $data['image_table']="";
+
+            if(!empty($sales_order->so_file))
+            {
+            
+                $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                                    <thead>
+                                        <tr>
+                                            <th class="cust_img_rgt_border">File Name</th>
+                                            <th class="cust_img_rgt_border">Download</th>
+                                            
+                                        </tr>
+                                    <thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="cust_img_rgt_border view_file_name" >'. $sales_order->so_file.'</td>
+                                            <td class="cust_img_rgt_border view_file_attach"><a href="'.base_url('uploads/SalesOrder/' .$sales_order->so_file).'" target="_blank">View</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>';
+
+            }
+            else
+            {
+                $data['image_table']='<div class="row row_align mb-4">
+                                            <div class="col-lg-3">
+                                                <label for="basicInput" class="form-label">Attach</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="file" name="so_file" class="form-control">
+                                            </div>
+                                        </div>
+                ';
+            }
+
+
 
         echo json_encode($data);
 
@@ -669,9 +964,260 @@ class SalesOrder extends BaseController
     }
 
 
-    public function AddProduct()
+
+    public function EditQuotRef()
     {
-        $id = $this->common_model->InsertData('crm_products',$insert_data);
+        $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
+
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+
+        $quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
+
+        
+
+        $cond1 =  array('so_id' => $this->request->getPost('SalesOrder'));
+
+        $joins1 = array(
+
+            array(
+                
+                'table' => 'crm_quotation_details',
+                'pk'    => 'qd_id',
+                'fk'    => 'so_quotation_ref',
+            ),
+           
+        );
+        
+        $sales_order     = $this->common_model->SingleRowJoin('crm_sales_orders',$cond1,$joins1);
+
+        $cond2 = array('so_customer' => $this->request->getPost('ID'));
+
+        $check_data = $this->common_model->CheckTwiceCond('crm_sales_orders',$cond1,$cond2);
+
+
+        if(!empty($check_data))
+        {   
+            $data['quotation_det'] ='<option value="" selected disabled>Select Quotation</option>';
+            $data['quotation_det'] .='<option value="'.$sales_order->qd_id.'">'.$sales_order->qd_reffer_no.'</option>';
+        }
+        else
+        {
+            $data['quotation_det'] ='<option value="" selected disabled>Select Quotation</option>';
+        }
+        
+        
+        
+
+        foreach($quotation_details as $quot_det)
+        {
+            $data['quotation_det'] .='<option value='.$quot_det->qd_id.'';
+           
+            $data['quotation_det'] .='>' .$quot_det->qd_reffer_no. '</option>'; 
+        }
+
+        
+
+
+        echo json_encode($data);
+    }
+
+    public function EditAddProd()
+    {
+        $insert_data = $this->request->getPost();
+
+       
+
+        $sales_det = $this->common_model->InsertData('crm_sales_product_details',$insert_data);
+
+        $cond = array('spd_id' => $sales_det);
+
+        $single_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+        $cond2 = array('spd_sales_order' => $single_prod->spd_sales_order);
+
+        $product_details  = $this->common_model->FetchWhere('crm_sales_product_details',$cond2);
+
+        $old_amount = 0;
+
+        foreach($product_details as $prod_det)
+        {
+            $old_amount =  $old_amount + $prod_det->spd_amount;
+        }
+
+        $sales_update = array('so_amount_total' => $old_amount);
+
+        $cond3 = array('so_id'=>$single_prod->spd_sales_order);
+
+        $this->common_model->EditData($sales_update,$cond3,'crm_sales_orders');
+
+        $data['sales_order_id']  =  $single_prod->spd_sales_order;
+
+        echo json_encode($data); 
+  
+    }
+
+
+    public function FetchReference()
+	{
+
+		$uid = $this->common_model->FetchNextId('crm_sales_orders',"SO");
+	
+		echo $uid;
+
+	}
+
+
+    public function EditProduct()
+    {
+        $cond = array('spd_id' => $this->request->getPost('ID'));
+
+        $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['prod_details'] ="";
+        
+            $data['prod_details'] .='<tr class="edit_prod_row">
+            <td>1</td>
+           
+            <td><select class="form-select droup_product" name="spd_product_details	" required>';
+                    
+                foreach($products as $prod){
+                    $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                    if($prod->product_id == $prod_det->spd_product_details){ $data['prod_details'] .= "selected"; }
+                    $data['prod_details'] .='>'.$prod->product_details.'</option>';
+                }
+						
+            $data['prod_details'] .='</select></td>
+
+            <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control " required></td>
+            <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty" required></td>
+            <td> <input type="text" name="spd_rate" value="'.$prod_det->spd_rate.'" class="form-control edit_prod_rate" required></td>
+            <td> <input type="text" name="spd_discount" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount" required></td>
+            <td> <input type="text" name="spd_amount" value="'.$prod_det->spd_amount.'" class="form-control edit_prod_amount" readonly></td>
+           <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
+           </tr>'; 
+
+            echo json_encode($data); 
+    }
+
+    public function UpdateProduct()
+    {   
+        $cond = array('spd_id' => $this->request->getPost('spd_id'));
+
+        
+        $update_data = $this->request->getPost();
+
+        if (array_key_exists('spd_id', $update_data)) 
+        {
+            unset($update_data['spd_id']);
+        }    
+        $update_data['spd_deliver_flag'] =0;
+
+        $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
+
+
+        $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+        
+        $data['sales_order_id'] = $prod_det->spd_sales_order;
+
+
+        //update delivery product table
+        
+        $delivery_products = $this->common_model->FetchWhere('crm_delivery_product_details',array('dpd_so_id'=>$this->request->getPost('spd_id')));
+        
+       if(!empty($delivery_products))
+       {
+            foreach($delivery_products as $del_prod)
+            {
+                  $update_data2['dpd_order_qty']  = $prod_det->spd_quantity;
+
+                  $this->common_model->EditData($update_data2,array('dpd_id'=>$del_prod->dpd_id),'crm_delivery_product_details');
+
+            }
+            
+           // $update_data3['spd_deliver_flag'] = "0";
+            
+            //$this->common_model->EditData($update_data3,array('spd_id'=>$prod_det->spd_id),'crm_sales_product_details');
+
+            $update_data4['so_deliver_flag'] = "0";
+            
+            $this->common_model->EditData($update_data4,array('so_id'=>$prod_det->spd_sales_order),'crm_sales_orders');
+       }
+
+
+            
+
+
+       //calculation 
+
+        $product_cond = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$prod_det->spd_sales_order));
+        
+        $this->TotalCalculation($product_cond,array('so_id' => $prod_det->spd_sales_order));
+
+
+        echo json_encode($data);
+       
+    }
+
+    public function DeleteProdDet()
+    {
+        $cond = array('spd_id' => $this->request->getPost('ID'));
+ 
+        $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+        $product_cond = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$prod_det->spd_sales_order));
+        
+        $this->common_model->DeleteData('crm_sales_product_details',$cond);
+
+        $this->TotalCalculation($product_cond,array('so_id' => $prod_det->spd_sales_order));
+    }
+
+
+    public function TotalCalculation($product_cond,$cond)
+    {
+        $old_amount = 0;
+
+        foreach($product_cond as $prod_cond)
+        {
+            $old_amount =  $old_amount + $prod_cond->spd_amount;
+        }
+
+        $total_amount = number_format((float)$old_amount, 2, '.', '');  // Outputs -> 105.00
+
+        $sales_update = array('so_amount_total' => $total_amount);
+
+        $this->common_model->EditData($sales_update,$cond,'crm_sales_orders');
+    }
+
+
+     public function GetProd()
+     {
+       
+        $delivery_prod = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_so_id' => $this->request->getPost('prodID')));
+        
+
+        $sales_prod_det = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $this->request->getPost('prodID')));
+        
+        
+
+        if(!empty($delivery_prod))
+        {
+            $data['old_qty'] = $sales_prod_det->spd_quantity;
+            
+            $data['status'] ="true";
+        }
+        else
+        {
+            $data['old_qty'] ="";
+            
+            $data['status'] = "false";
+ 
+        }
+       
+
+        echo json_encode($data);
+    
     }
 
 

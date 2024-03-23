@@ -74,7 +74,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="" value="<?php echo $delivery_note_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -261,8 +261,327 @@
 
                                                             <!-- ### --> 
 
+                                                            <input type="hidden" class="hidden_delivery_id" name="dn_id">
+
 
                                                              
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable selected_table" style="display:none;">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Order Qty</td>
+                                                                <td>Delivered Qty</td>
+                                                                <td>Current Delivery</td>
+                                                               
+                                                            </tr>
+                                                            
+                                                           
+                                                        </thead>
+                                                        
+                                                        <tbody  class="travelerinfo product-more2"></tbody>
+                                                        
+                                                    </table>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+                                                        <div class="row row_align mb-4">
+                                                            <div class="col-lg-2">
+                                                                <label for="basicInput" class="form-label">Attach</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="file" name="dn_file" Class="image_file"  class="form-control">
+                                                            </div>
+
+                                                        </div>
+
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6"></div>
+                                                    <!---<div class="col-lg-6">
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>--->
+                                                </div>
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
+					                           
+						                    
+				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
+
+
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+                        
+                        
+
+                        <!--deliver note modal content end-->
+
+
+
+                        <!--delivery view modal start-->
+
+
+                        <div class="modal fade" id="ViewDeliverNote" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Deliver Note</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control view_date" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    
+                                                                     <input type="text" name="" class="form-control view_customer" readonly>
+                                                               
+                                                                    </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Order </label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                        <input type="text" name="" class="form-control view_sales" readonly>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">LPO Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <input type="text" name="" class="form-control view_lpo" readonly>
+                                                                    
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+                                                           
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                       
+                                                                       <input type="text" name="" class="form-control view_contact" readonly>
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Terms</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control view_payment" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                         
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name=""  class="form-control view_project" readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
 
 
 
@@ -284,22 +603,15 @@
                                                                 <td>Unit</td>
                                                                 <td>Order Qty</td>
                                                                 <td>Delivered Qty</td>
-                                                                <td>Current Delivery</td>
-                                                                <td>Action</td>
+                                                               
+                                                                
                                                             </tr>
                                                             
                                                            
                                                         </thead>
                                                         
-                                                        <tbody  class="travelerinfo product-more2"></tbody>
-                                                        <!--<tbody>
-                                                            <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>-->
-                                                       
+                                                        <tbody  class="travelerinfo view_prod_data"></tbody>
+                                                        
                                                     </table>
                                                 </div>
 
@@ -308,20 +620,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         
-                                                        <div class="row row_align mb-4">
-                                                            <div class="col-lg-2">
-                                                                <label for="basicInput" class="form-label">Attach</label>
-                                                            </div>
-
-                                                            <div class="col-lg-4">
-                                                                <input type="file" name=""  class="form-control">
-                                                            </div>
-
-                                                        </div>
+                                                        <div class="card-body view_image_table" style="float: inline-start;"></div>
 
                                                         
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-6"></div>
+                                                    <!---<div class="col-lg-6">
                                                         <div style="float: right;">
                                                             <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                 <tr>
@@ -335,7 +639,7 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
+                                                    </div>--->
                                                 </div>
 
                                                 <!--table section end-->
@@ -359,10 +663,328 @@
 	                        </div>
                         </div>
 
-                        
-                        
 
-                        <!--deliver note modal content end-->
+
+
+                        <!--delivery view modal end-->
+
+
+
+
+                        <!--delivery edit modal start-->
+
+                        <div class="modal fade" id="EditDeliveryNote" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog modal-xl">
+		                        <form  class="Dashboard-form class" id="edit_delivery_note">
+			                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Deliver Note</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+				                        <div class="modal-body">
+
+                                            <div class="live-preview">
+                                                
+                                                <div class="row">
+                                                 
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                             
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_reffer_no" id="" class="form-control edit_reff"  readonly>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_date" class="form-control datepicker edit_date" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+
+                                                                    <select class="form-select edit_customer" name="dn_customer"  required>
+                                                               
+                                                                    </select>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Sales Order <!--<span class="add_more_icon cust_more_modal">Select</span>--></label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                       
+                                                                        <input type="text" name="dn_sales_order_num" class="form-control  edit_sales_order" readonly>
+                                                                        <input type="hidden" class="edit_sales_order_id">
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                           
+                                                            <!-- ### --> 
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">LPO Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                        <input type="text" name="dn_lpo_reference" class="form-control edit_lpo_ref" required>
+                                                                    
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+                                                           
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        
+                                                                       <select class="form-select edit_contact_person" name="dn_conact_person" id="" required></select>
+                                                                       
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### -->
+
+                                                            
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Terms</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_payment_terms" class="form-control edit_payment_term" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+
+                                                         
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="dn_project"  class="form-control edit_project" required>
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div>    
+
+                                                            <!-- ### --> 
+
+                                                            <input type="hidden" class="edit_delivery_id" name="dn_id">
+
+
+                                                             
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                                                          
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable selected_table">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Order Qty</td>
+                                                                <td>Delivered Qty</td>
+                                                                <td>Action</td>
+
+                                                            </tr>
+                                                            
+                                                           
+                                                        </thead>
+                                                        
+                                                        <tbody  class="travelerinfo edit_product_table"></tbody>
+
+                                                        <tbody class="add_more_class"></tbody>        
+                                                        
+                                                    </table>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        
+                                                        <div class="card-body edit_image_table" style="float: inline-start;"></div>
+
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                   
+                       
+                                                    </div>
+                                                    <!---<div class="col-lg-6">
+                                                        <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>--->
+                                                </div>
+
+                                                <!--table section end-->
+
+
+                                            </div>  
+                                            
+                                            
+                                             
+
+
+					                           
+						                    
+				                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
+
+
+
+                                        
+			                        </div>
+		                        </form>
+
+	                        </div>
+                        </div>
+
+
+                        <!--delivery edit modal end-->
 
 
 
@@ -371,7 +993,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Delivery Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#DeliverNote" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#DeliverNote" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -422,9 +1044,9 @@
 <!--select modal section start-->
 
 
-<div class="modal fade" id="SelectModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SelectProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
-		<form  class="Dashboard-form class" id="add_form1">
+		<form  class="Dashboard-form class" id="selected_prod_form">
 			<div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -451,30 +1073,29 @@
                                                            
                                 </thead>
                                                         
-                                <tbody  class="travelerinfo">
-                                    
-                                    <tr>
-                                        <td class="si_no">1</td>
-                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
-                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
-                                        <td><input type="text" name="dpd_unit[]"  class="form-control" required></td>
-                                        <td><input type="checkbox" name="dpd_unit[]"  class="form-control" required></td>
-                                      
-                                    </tr>
+                                <tbody  class="travelerinfo select_prod_add"></tbody>
 
-                                </tbody>
-
-                                
 
                             </table>
                             
                         </div>
 
 
+
+
                     </div>  
                                             
                                             
                 </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
+                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+
+                </div>
+
+
 
 
                                         
@@ -488,6 +1109,75 @@
 
 
 <!--select  modal section end-->
+
+
+<!--edit select modal section start-->
+
+<div class="modal fade" id="EditSelectProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_select_prod_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Order Qty</td>
+                                        <td>Delivered Qty</td>
+                                        <td>Current Delivery</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo edit_select_prod_add"></tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <!--<input type="hidden" id="edit_select_prod_id" name="edit_select_prod_id" value="">--->                                
+                    <button class="btn btn btn-success">Save</button>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+<!--edit select  modal section end-->
 
 
 
@@ -510,21 +1200,30 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
+                    var formData = new FormData(currentForm);
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
                         method: "POST",
-                        data: $(currentForm).serialize(),
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                       // data: $(currentForm).serialize(),
                         success: function(data) {
                           
                             $('#add_form1')[0].reset();
 
-                            $('.delivery_note_remove').remove();
+                           // $('.delivery_note_remove').remove();
+                            $('body').find('.delivery_note_remove').remove();
+
+                            $('.prod_checkmark').prop('checked', false); // Unchecks it
 
                             $('.sales_order_add_clz').val('').trigger('change');
 
                             $('.cont_person').val('').trigger('change');
 
                             $('.customer_id').val('').trigger('change');
+
+                            $('.hidden_delivery_id').val("");
                            
                             $('#DeliverNote').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
@@ -655,7 +1354,7 @@
                     $(".project_clz").val(data.so_project);
 
                    
-                    $(".product-more2").append(data.product_detail);
+                    //$(".product-more2").append(data.product_detail);
 
                     slno();
                   
@@ -696,19 +1395,6 @@
         /*###*/
 
 
-         /*select modal section start*/ 
-         $("body").on('click', '.cust_more_modal', function(){ 
-            
-           $('#SelectModal').modal('show');
-
-           $('#DeliverNote').modal('hide');
-
-        });
-        /*###*/
-
-
-       
-
         /*customer droup drown search*/
         $(".customer_sel").select2({
             placeholder: "Select Customer",
@@ -731,7 +1417,7 @@
                     //console.log(data);
                     //  NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
-                    console.log(data);
+                    //console.log(data);
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -829,13 +1515,7 @@
 
             if(total > order)
             {   
-                /*var deliveryNull = deliverySelectElement.val("");
-
-                var $deliveryNullElement = dataSelect.closest('.prod_row').find('.delivery_qty');
-
-                $deliveryNullElement.val(deliveryNull);*/   
-                
-                
+               
                 var currencyNull = currentSelectElement.val("");
 
                 var $currencyNullElement = dataSelect.closest('.prod_row').find('.current_delivery');
@@ -899,10 +1579,676 @@
 
         /* ### */
 
-      
 
+       
+        
+
+
+        /*add selected product*/
+
+
+        $("body").on('click', '.cust_more_modal', function()
+        { 
+            if(!$("#add_form1").valid())
+            {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+
+            if($('#add_form1').attr('data-submit')=='false')
+            {
+
+             $('#add_form1').submit();
+
+                if(!$("#add_form1").valid())
+                {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+                }
+
+            }
+
+            var formData = new FormData($('#add_form1')[0]);
+            var image = $('.image_file').prop('files')[0]; // Get the file from input field
+            formData.append('image', image); // Append the file to FormData object
+
+            $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            var id = data.sales_order;
+
+                            var delivery_id = data.delivery_id;
+
+
+                           $('.hidden_delivery_id').val(delivery_id);
+  
+                            $('#SelectProduct').modal('show');
+
+                            $('#DeliverNote').modal('hide');
+
+                            $.ajax({
+
+                                url : "<?php echo base_url(); ?>Crm/DeliverNote/AddProduct",
+
+                                method : "POST",
+
+                                data: {ID: id},
+                                
+                                success:function(data)
+                                {   
+                                    var data = JSON.parse(data);
+                                    
+                                    $(".select_prod_add").html(data.product_detail);
+
+                                    //('.select_prod_remove').remove();
+                                    
+                                    //console.log(data.product_detail)
+                                }   
+
+                            });
+
+                           
+                            
+                        }
+                    });
+
+         });
+
+
+        /*#######*/
+
+
+     
+
+
+        /*prod modal submit start*/
+
+        $("body").on('click', '.prod_modal_submit', function(){ 
+
+            var selectId = $('#select_prod_id').val();
+
+         
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/DeliverNote/SelectedProduct",
+
+                method : "POST",
+
+                data: {ID: selectId},
+
+                success:function(data)
+                {
+                   
+                    var data = JSON.parse(data);
+                    
+                    //$('body').find('.delivery_note_remove').remove();
+                   
+                    $('.product-more2').html(data.product_detail);
+
+                    $('#SelectProduct').modal("hide");
+
+                    $('#DeliverNote').modal("show");
+
+                    $('.selected_table').show();
+                      
+                    checkedIds.length = 0; 
+                    //console.log(data.product_detail);
+
+                    
+                }
+
+            });
+        });
+
+
+    /*prod modal submit end*/
+
+
+    /*reset reffer id*/
+
+    $('.add_model_btn').click(function(){
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/DeliverNote/FetchReference",
+
+            method : "GET",
+
+            success:function(data)
+            {
+
+            $('#dnid').val(data);
+
+            }
+
+        });
 
     });
+
+
+
+    /*######*/
+
+
+    /*view section start*/
+    
+    $("body").on('click', '.view_btn', function(){ 
+
+        var id = $(this).data('id');
+
+        $('#DeliverNote').modal("hide");
+
+        $('#ViewDeliverNote').modal("show");
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/DeliverNote/View",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+            
+                var data = JSON.parse(data);
+                                
+                //console.log(data.product_detail);
+
+                $('.view_ref').val(data.reffer_no);
+
+                $('.view_date').val(data.date);
+
+                $('.view_customer').val(data.customer);
+
+                $('.view_sales').val(data.sales_order);
+
+                $('.view_lpo').val(data.lpo_reff);
+
+                $('.view_contact').val(data.contact_person);
+
+                $('.view_payment').val(data.payment_term);
+
+                $('.view_project').val(data.project);
+
+                $('.view_prod_data').html(data.product_detail);
+
+                $('.view_image_table').html(data.image_table);
+            }
+
+        });
+
+    });
+
+    /*view section en*/
+
+
+    /*edit section start*/
+
+    $("body").on('click', '.edit_btn', function(){ 
+
+        var id = $(this).data('id');
+
+       
+        $('#EditDeliveryNote').modal("show");
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/DeliverNote/Edit",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+            
+                var data = JSON.parse(data);
+                                
+                //console.log(data.customer);
+
+                $('.edit_reff').val(data.reffer_no);
+
+                $('.edit_date').val(data.date);
+
+                $('.edit_customer').html(data.customer);
+
+                $('.edit_sales_order').val(data.sales_order);
+
+                $('.edit_lpo_ref').val(data.lpo_reff);
+
+                $('.edit_contact_person').html(data.contact_person);
+
+                $('.edit_payment_term').val(data.payment_term);
+
+                $('.edit_project').val(data.project);
+
+                $('.edit_delivery_id').val(data.dn_id);
+
+                $('.edit_product_table').html(data.product_detail);
+
+                $('.edit_image_table').html(data.image_table);
+
+                $('.add_more_class').html(data.add_more);
+
+                $('.edit_sales_order_id').val(data.sales_order_id);
+
+                //console.log(data.product_detail);
+
+               /*$('.view_image_table').html(data.image_table);*/
+            }
+
+        });
+
+    });
+
+
+    //fetch data by customer
+    $("body").on('change', '.edit_customer', function(){ 
+
+        var id = $(this).val();
+
+      //  var delivery_id= $('.edit_delivery_id').val();
+        
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/DeliverNote/SalesOrder",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+            
+                var data = JSON.parse(data);
+
+                //$('.edit_sales_order').html(data.orders);
+
+                $('.edit_contact_person').html(data.contact_person);
+
+                $('.edit_payment_term').val(data.payment_term);
+
+                
+            }
+
+        });
+
+    });
+
+
+    /*####*/
+
+
+    //form update
+
+    $(function() {
+            var form = $('#edit_delivery_note');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    var formData = new FormData(currentForm);
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/DeliverNote/Update",
+                        method: "POST",
+                        //data: $(currentForm).serialize(),
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                          
+                            $('#EditDeliveryNote').modal('hide');
+
+                            alertify.success('Data Update Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload(null, false);
+                       
+                        }
+                    });
+                }
+            });
+        });
+        
+        
+        /*edit product remove start*/
+        
+
+        $("body").on('click', '.del_prod_remove', function(){ 
+
+            
+
+            var dataSelect = $(this);
+
+            var deliverySelectElement = dataSelect.closest('.delete_delivery_data').find('.hidden_del_prod_id');
+
+            var prod_id = parseFloat(deliverySelectElement.val()) 
+            
+           
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/DeliverNote/DeleteProduct",
+
+                method : "POST",
+
+                data: {ProdID: prod_id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+
+                    if(data.status === "True")
+                    {
+                      $('#EditDeliveryNote').modal('hide');
+
+                      datatable.ajax.reload(null,false);
+                    }
+
+
+                    var deliverID = data.delivery_id;
+
+                    $('.add_more_class').html(data.add_more);
+
+                    //$('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
+
+                    //alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                        $('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
+
+
+
+                    }); 
+                    
+                   
+                    
+                }
+
+            });
+
+        });
+
+
+        /*edit product remove end*/
+
+
+        /*add more product*/
+
+
+        $("body").on('click', '.add_more_product', function(){ 
+             
+            var order_id = $('.edit_sales_order_id').val();
+
+            var prod_id = $('.hidden_del_prod_id').val();
+
+            var delivery_id = $('.edit_delivery_id').val();
+            
+            //alert(prod_id);
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/DeliverNote/EditAddProduct",
+
+                method : "POST",
+
+                data: {orderID: order_id,
+                    prodID: prod_id,
+                    deliveryID: delivery_id
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+                    
+                    $(".edit_select_prod_add").html(data.product_detail);
+
+                    $('#EditSelectProduct').modal('show');
+                    
+                    $('#EditDeliveryNote').modal('hide');
+
+                } 
+
+            });
+
+            
+        });
+
+
+        /*####*/
+
+
+        /*prod modal submit start*/
+
+        /*$("body").on('click', '.edit_prod_modal_submit', function(){ 
+
+            var selectId = $('#edit_select_prod_id').val();
+
+ 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/DeliverNote/UpdatedProduct",
+
+                method : "POST",
+
+                data: {ID: selectId},
+
+                success:function(data)
+                {
+                
+                    
+                    
+                    
+                }
+
+            }); 
+        });*/
+
+        /*prod modal submit end*/
+
+        
+        /*update product start*/
+         
+        $(function() {
+            var form = $('#edit_select_prod_form');
+
+            //alert("sucess");
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                   
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/DeliverNote/UpdatedProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            var deliveryID = data.delivery_id;
+
+
+                            $('#edit_select_prod_form')[0].reset();
+
+                            $('#EditSelectProduct').modal('hide');
+
+                            $('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
+
+                            $('.add_more_class').html(data.add_more);
+
+                           
+                       
+                        }
+                    });
+                }
+            });
+        });
+
+        /*update product end*/
+
+
+
+        /*edit limit quantity start*/
+
+
+        $("body").on('keyup', '.edit_delivery_qty , .edit_current_qty', function(){ 
+
+            var dataSelect = $(this);
+
+            var deliverySelectElement = dataSelect.closest('.edit_select_div').find('.edit_delivery_qty');
+
+            var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
+            var currentSelectElement = dataSelect.closest('.edit_select_div').find('.edit_current_qty');
+
+            var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
+            var total = delivery + current;
+
+            var orderSelectElement = dataSelect.closest('.edit_select_div').find('.edit_order_qty');
+
+            var order = orderSelectElement.val();
+
+
+            if(total > order)
+            {   
+            
+                var currencyNull = currentSelectElement.val("");
+
+                var $currencyNullElement = dataSelect.closest('.edit_select_div').find('.edit_current_qty');
+
+                $currencyNullElement.val(currencyNull);  
+
+                alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
+                
+                
+
+            }
+
+        });
+
+
+        /*edit limit quantity end*/
+
+
+    /*edit section end*/
+
+
+
+
+
+    
+
+    });
+
+
+    /*checkbox section start*/
+
+    
+
+    var checkedIds = [];
+
+    //checkedIds.splice(0)
+
+    checkedIds.length = 0;
+
+
+   
+    
+    // Check All function
+
+    function checkAll(checkbox) 
+    {
+        var checkboxes = document.getElementsByClassName('prod_checkmark');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = checkbox.checked;
+            handleCheckboxChange(checkboxes[i]); // Update the array and modal form
+        }
+    }
+
+    // Handle individual checkbox change
+    function handleCheckboxChange(checkbox) 
+    {   
+        //checkedIds.length = 0;
+
+        if (checkbox.checked) {
+            // Add the ID to the array if checked
+            checkedIds.push(checkbox.id);
+        } else {
+            // Remove the ID from the array if unchecked
+            checkedIds = checkedIds.filter(id => id !== checkbox.id);
+        }
+
+        // Log the current state of checked IDs
+        //console.log('Checked IDs: ', checkedIds);
+        document.getElementById('select_prod_id').value = checkedIds.join(',');
+    }
+
+    // Update modal form function
+    /*function updateModalForm() 
+    {
+        // Update the value of the hidden input in the modal form with the checked IDs
+        document.getElementById('select_prod_id').value = checkedIds.join(',');
+
+
+        // Log the checked IDs in the modal form
+        //console.log('Checked IDs in modal: ', checkedIds);
+    }*/
+    
+    function editHandleCheckboxChange(checkbox) 
+    {   
+        //checkedIds.length = 0;
+
+        if (checkbox.checked) {
+            // Add the ID to the array if checked
+            checkedIds.push(checkbox.id);
+        } else {
+            // Remove the ID from the array if unchecked
+            checkedIds = checkedIds.filter(id => id !== checkbox.id);
+        }
+
+        // Log the current state of checked IDs
+        //console.log('Checked IDs: ', checkedIds);
+        document.getElementById('edit_select_prod_id').value = checkedIds.join(',');
+    }
+
+    /*checkbox section end*/
+
+
+
+    
+
+
+  
+    
 
 
 
