@@ -313,9 +313,8 @@
 
                             $('.product_clz').val('').trigger('change');
 
-                            datatable.ajax.reload(null, false);
+                            //datatable.ajax.reload(null, false);
 
-                            
                         
                         }
                     });

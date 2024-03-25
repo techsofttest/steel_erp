@@ -703,8 +703,7 @@
                     $(".sales_order_add_clz").html(data.sales_order);
 
                     $(".delivery_note").html(data.delivery_note);
-                    
-                    
+                   
                 }
 
 
@@ -789,9 +788,9 @@
         $(".customer_sel").select2({
             placeholder: "Select Customer",
             theme : "default form-control-",
-            dropdownParent: $('#AddModal'),
+            dropdownParent: $('#add_form1'),
             ajax: {
-                url: "<?= base_url(); ?>Crm/CreditInvoice/FetchCustomers",
+                url: "<?= base_url(); ?>Crm/SalesReturn/FetchData",
                 dataType: 'json',
                 delay: 250,
                 cache: false,

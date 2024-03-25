@@ -83,12 +83,11 @@ class SalesQuotReport extends BaseController
             
         }
 
-
         //fetch product
 
         $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details',$this->request->getPost('ID'));
         
-        $data['quot_prod'] = "<option value='' selected> Select Product</option>";
+        $data['quot_prod'] = "<option value='' selected>Select Product</option>";
         $uniqueProductIds = []; // Array to store unique product IDs
 
 
@@ -112,14 +111,6 @@ class SalesQuotReport extends BaseController
                 $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
             }
         }
-
-
-
-
-
-
-        
-        
 
         echo json_encode($data);
 
@@ -159,14 +150,14 @@ class SalesQuotReport extends BaseController
 
        
         $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description','','','crm_quotation_details',$joins);
+        
         $data['product_data'] =""; 
 
-       if(!empty($single_quots)){
+        if(!empty($single_quots))
+        {
 
             $data['status'] ="true";
 
-            
-            
             $i=1;
             foreach($single_quots as $single_quot)
             {   

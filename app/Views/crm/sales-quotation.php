@@ -2533,10 +2533,8 @@
                     $("#qd_payment_term_id").val(data.cc_credit_term);
 
                     $(".qd_enquiry_reference_clz").html(data.enquiry_customer);
-                    
-                    
+                 
                 }
-
 
             });
         });
@@ -2554,7 +2552,7 @@
                 success:function(data)
                 {
 
-                $('#sqid').val(data);
+                    $('#sqid').val(data);
 
                 }
 
@@ -2659,7 +2657,6 @@
 
                 //console.log('Updated content for cost_ci_no:', $(this).find('.cost_ci_no').html());
 
-
                 cc++;
             });
 
@@ -2672,36 +2669,36 @@
         /*cost of materials selecet box section start*/
          
         function InitSelect2(){
-          $(".cost_product_det:last").select2({
-            placeholder: "Select Product",
-            theme : "default form-control-",
-            dropdownParent: $('#CostCalculation'),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-         })
+            $(".cost_product_det:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control-",
+                dropdownParent: $('#CostCalculation'),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
         }
 
         InitSelect2();
@@ -2710,56 +2707,50 @@
 
 
 
-
         /* Product Init Select 2 */
 
 
         function InitProductSelect2(){
-          $(".add_prod:last").select2({
-            placeholder: "Select Product",
-            theme : "default form-control-",
-            dropdownParent: $($('.add_prod:last').closest('.prod_row')),
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-         })
+            $(".add_prod:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control-",
+                dropdownParent: $($('.add_prod:last').closest('.prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
         }
 
         InitProductSelect2();
 
-
         /* ### */
-
-
-
 
 
         /*fetch project using enquiry ref start*/
 
         $("body").on('change', '.qd_enquiry_reference_clz', function(){ 
-            
              
             $(".enq_remove").remove();
 
@@ -2767,7 +2758,6 @@
 
             var cust_id = $('#customer_id').val();
 
-            
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchProject",
@@ -2775,6 +2765,7 @@
                 method : "POST",
 
                 data: {
+                    
                     ID: id,
                     custID: cust_id,
                 },
@@ -2793,13 +2784,10 @@
 
                     slno();
 
-
                 }
 
 
             });
-
-
 
         });
 

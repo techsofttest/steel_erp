@@ -286,8 +286,7 @@ class CreditInvoice extends BaseController
                     $delivery_note_prod1 =  $this->common_model->CheckTwiceCond1('crm_delivery_product_details',$cond2,$cond3);
                     
                     if(count($delivery_note_prod)  == count($delivery_note_prod1))
-                    {   
-
+                    {  
                         $update_data2 = array('dn_invoice_flag' => 1);
                         
                         $this->common_model->EditData($update_data2,array('dn_id' => $credit_invoice_id),'crm_delivery_note');
