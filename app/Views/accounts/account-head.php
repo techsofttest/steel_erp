@@ -36,7 +36,7 @@
 
                                 <div class="col-col-md-9 col-lg-9">
 
-                                <input type="text" id=""  name="ah_head_id" class="form-control" required>
+                                <input type="number" id=""  name="ah_head_id" class="form-control" required>
 
                                 </div>
 
@@ -170,7 +170,7 @@
         <form action="#" id="update_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Account Head</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -182,30 +182,46 @@
                                 <div class="card-body">
                                     <div class="live-preview">
                                         
-                                            <div class="row align-items-end">
+                                            <div class="row align-items-center">
 
 
 
+                                            <div class="row">
                                             <div class="col-col-md-3 col-lg-3">
-                                                    <div>
+                                                    
                                                         <label for="basiInput" class="form-label">Id</label>
-                                                        <input type="text" id="edit_account_hid" value="" name="ah_head_id" class="form-control " required>
+                                            </div>
+                                                    <div class="col-col-md-9 col-lg-9">
+                                                        <input type="number" id="edit_account_hid" value="" name="ah_head_id" class="form-control " required>
                                                     </div>
                                                 </div>
+                                            
 
 
-                                            <div class="col-col-md-3 col-lg-3">
-                                                    <div>
+
+                                            <div class="row">
+                                           
+                                                    <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Account Name</label>
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">   
                                                         <input type="text" id="edit_account_name" value="" name="ah_account_name" class="form-control " required>
                                                     </div>
+
                                                 </div>
 
 
-                                                <div class="col-col-md-6 col-lg-6">
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account Type</label>
+                                                <div class="row">
 
+                                                    <div class="col-col-md-3 col-lg-3">
+                                                    
+                                                            <label for="basiInput" class="form-label">Account Type</label>
+
+                                                    </div>
+
+
+                                                    <div class="col-col-md-9 col-lg-9">
                                                         <select class="form-select" id="edit_account_type" name="ah_account_type" required>
                                                         <option value="" selected disabled>Select Account Type</option>
                                                         <?php foreach($account_types as $account_type){?> 
@@ -214,6 +230,7 @@
                                                         </select>
                                                         
                                                     </div>
+
                                                 </div>
 
 
@@ -270,9 +287,21 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            if(data.status==0)
+                            {
+
+                            alertify.error(data.message).delay(2).dismissOthers();
+
+                            return false;
+
+                            }
+
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(2).dismissOthers();
+                            alertify.error('Data Added Successfully').delay(2).dismissOthers();
                             datatable.ajax.reload(null,false);
                         }
                     });

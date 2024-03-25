@@ -137,6 +137,14 @@
 
 
 
+
+                      
+
+
+
+
+
+
                         <div class="col-col-md-2 col-lg-2">
 
                         <div>
@@ -172,7 +180,7 @@
                                     <thead>
                                         <tr>
                                         <th>Date</th>
-                                        <th>Order No</th>
+                                        <th>Credit Account</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
                                         </tr>
@@ -382,12 +390,171 @@
 
 
 
+
+
+<!-- Edit Invoices Modal -->
+
+
+<!-- Invoices Seletion Modal -->
+
+
+<div class="modal fade" id="InvoicesEditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+            <form method="POST" class="Dashboard-form class invoices_add" id="invoices_add">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
+                <button type="button" class="btn-close" data-bs-target="#EditModal" data-bs-toggle="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            <input type="hidden" name="credit_id" value="">
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+
+    <div class="card">
+       
+        <div class="card-body">
+
+            <div class="live-preview">
+            
+                    <div class="row align-items-end">
+
+                        <div class="col-col-md-12 col-lg-12">
+
+                        <div class="row align-items-center">
+
+                        <div class="col-lg-10"> 
+
+                        <table class="table table-bordered">
+
+
+                                    <thead>
+                                        <tr>
+                                        <th>Sl No</th>
+                                        <th>Date</th>
+                                        <th>Invoice No</th>
+                                        <th>LPO Ref</th>
+                                        <th>Amount</th>
+                                        <th>Receipt</th>
+                                        <th>Tick</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody id="edit_invoices_sec">
+
+
+                                    </tbody>
+
+
+                                    <!--
+                                    <tr>
+
+                                    <td>Total Receipt</td>
+
+                                    <td></td>
+
+                                    <td>Adjusted</td>
+
+                                    <td></td>
+
+
+                                    <td>Balance</td>
+
+                                    <td></td>
+
+                                    </tr>
+                                    -->
+
+
+                        </table>
+
+                        </div>
+
+
+
+                        <div class="col-lg-2">
+
+                        
+                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
+
+                        <button class="w-100">FIFO</button>
+
+                        <button class="w-100" type="submit">Save</button>
+
+
+
+                        </div>
+
+
+                        </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+
+            <!-- <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
+                <button type="submit" class="btn btn btn-success">Add</button>
+            </div> -->
+
+        </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!-- ### -->
+
+
+
+
+
+<!--####-->
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Invoices Seletion Modal -->
 
 
 <div class="modal fade" id="EditInvoiceModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form method="POST" class="Dashboard-form class" id="invoices_add">
+            <form method="POST" class="Dashboard-form class invoices_add" id="invoices_add">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
@@ -938,7 +1105,7 @@
 
                                     <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
 
-                                    <input class="form-control credit_date" type="date" name="inv_date[]">
+                                    <input class="form-control credit_date datepicker" type="text" name="inv_date[]">
                                 
                                     </td>
 
@@ -1006,7 +1173,7 @@
 
                                     <tr>
 
-                                    <td colspan="1">Amount in words</td>
+                                    <td colspan="1"></td>
 
                                     <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
 
@@ -1197,7 +1364,7 @@
         <form id="edit_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Receipt</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Receipt</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -1432,7 +1599,25 @@
 
                     <div class="col-col-md-9 col-lg-9">
 
-                    <input type="date"  name="r_cheque_date" class="form-control">
+                    <input type="text"  name="r_cheque_date" class="form-control datepicker">
+
+                    </div>
+
+                    </div>
+
+
+
+                    <div class="row align-items-center mb-2 cheque_file_sec cheque_sec d-none">
+
+                    <div class="col-col-md-3 col-lg-3">
+                            
+                        <label for="basiInput" class="form-label">Cheque File</label>
+
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                    <a class="" target="_blank" id="cheque_file_view" href="javascript:void(0);">View</a>
 
                     </div>
 
@@ -1450,7 +1635,7 @@
                         <div class="row">
 
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 ps-0">
 
 
                         <div class="row align-items-center justify-content-start mb-2">
@@ -1485,16 +1670,30 @@
 
 
 
-
-                        <div class="row align-items-center justify-content-start mb-2 cheque_sec d-none">
+                        <div class="row align-items-center justify-content-start mb-2 cheque_file_edit_sec cheque_sec d-none">
 
                         <div class="col-col-md-3 col-lg-3">
-                            <label for="basiInput" class="form-label">Cheque Copy</label>
+                            <label for="basiInput" class="form-label">Update Cheque Copy</label>
                         </div>
 
                         <div class="col-col-md-6 col-lg-6">
                             <input type="file"  name="r_cheque_copy" class="form-control">
                         </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center justify-content-start mb-2 view_copy cheque_sec d-none">
+
+                        <div class="col-col-md-3 col-lg-3">
+                            <label for="basiInput" class="form-label">Cheque Copy</label>
+                        </div>
+
+                        <div class="col-col-md-6 col-lg-6" id="view_cheque_copy">
+                            
+                        </div>
+
 
                         </div>
 
@@ -1553,10 +1752,67 @@
             </tbody>
 
 
+            
+            <tbody>
+
+
+                    <tr class="edit_add_credit">
+
+                    <td>
+
+
+                                    <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
+
+                                    <input class="form-control credit_date datepicker" type="text" readonly name="inv_date[]">
+                                
+                                    </td>
+
+
+                                    <td> 
+
+                                       <select class="form-control credit_account" name="r_credit_account[]">
+
+                                       <option value="">Select Credit Account</option>
+
+                                       <?php foreach($customers as $cus) { ?>
+
+                                        <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                                        <?php } ?>
+
+                                       </select> 
+                                    </td>
+
+
+                                    <td>
+
+                                        <input class="form-control credit_amount" type="number" name="inv_amount[]">
+
+                                    </td>
+
+
+                                    <td>
+
+                                    <input class="form-control credit_narration" type="text" name="narration[]"/>
+
+                                    </td>
+
+
+                                    <th> <a href="javascript:void(0);" class="btn btn-success edit_invoice_add" >Add</a></th>
+
+
+                                    </tr>
+                                    
+
+
+            </tbody>
+
+            
+
 
             <tr>
 
-            <td colspan="1">Amount in words</td>
+            <td colspan="1"></td>
 
             <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
 
@@ -1639,10 +1895,15 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
 
+                    var formData = new FormData(form);
+
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/Receipts/Add",
                         method: "POST",
-                        data: $(form).serialize(),
+                        //data: $(form).serialize(),
+                        data:formData,
+                        processData: false, 
+                        contentType: false,
                         success: function(data) {
                         //$('#add_form')[0].reset();
                         //$('#AddModal').modal('hide');
@@ -1666,6 +1927,21 @@
 
         /*account head modal start*/ 
         $("body").on('click', '.edit_btn', function(){ 
+
+            $("#EditModal :input").prop("disabled", false);
+
+            $('#EditModal .submit_btn').show();
+
+            $('#EditModal .edit_invoice').show();
+
+            $('#EditModal .view_linked').show();
+
+            $('.edit_copy').css('display','flex');
+
+            $('.view_copy').css('display','none');
+
+            $('#EditModal .edit_add_credit').show();
+
 
             var id = $(this).data('id');
 
@@ -1694,6 +1970,29 @@
                     $('#r_no_edit').val(data.rc.r_number);
 
                     $('#r_method_edit').val(data.rc.r_method);
+
+                    if(data.rc.r_method=="1")
+                    {
+                   
+                    $('.cheque_sec').removeClass("d-none");
+
+                    $('.cheque_file_sec').removeClass("d-none");
+           
+                    $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
+
+                    $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
+
+                    $('#EditModal #cheque_file_view').attr('href','<?= base_url();?>uploads/Receipts/'+data.rc.r_cheque_copy+'');
+
+                    }
+                    else
+                    {
+
+                    $('.cheque_sec').addClass("d-none");
+
+                    $('.cheque_file_sec').addClass("d-none");
+
+                    }
 
                     $('#r_bank_edit').val(data.rc.r_bank);
 
@@ -1763,6 +2062,54 @@
         //$('#InvoiceEditModal').modal('show');
 
         });
+
+
+
+
+        $("body").on('click', '.edit_invoice', function(){
+
+        var id = $(this).data('id'); 
+
+        });
+
+
+
+        $("body").on('click', '.del_credit', function(){
+
+        if( !confirm('Delete this credit?')) {
+             return false;
+        }
+
+        var id = $(this).data('id'); 
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/Receipts/DeleteCredit",
+
+        method : "POST",
+
+        data: {id: id},
+
+        success:function(data)
+        {   
+           
+        var data = JSON.parse(data);
+
+        $('#view'+id+'').fadeOut(300).remove();
+
+        $('#total_amount_edit').html(data.total);
+
+        alertify.error('Data Deleted Successfully').delay(3).dismissOthers();
+
+        }
+
+        });
+        
+
+        });
+
+
+
 
 
         /* Edit Invoice End */
@@ -1839,9 +2186,6 @@
         $("body").on('click', '.add_more', function(){
 
 
-
-
-
          
             var cc = $('.invoice_row').length;
 
@@ -1886,6 +2230,111 @@
 
            /*account head modal start*/ 
            $("body").on('click', '.view_btn', function(){
+
+                var id = $(this).data('id');
+
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/Receipts/Edit",
+
+                    method : "POST",
+
+                    data: {r_id: id},
+
+                    success:function(data)
+                    {   
+                        if(data)
+                        {
+                        var data = JSON.parse(data);
+
+                        $('#ruid_edit').val(data.rc.r_ref_no);
+
+                        $('#id_edit').val(data.rc.r_id);
+
+                        $('#r_date_edit').val(data.rc.r_date);
+
+                        $('#r_debit_account_edit').val(data.rc.r_debit_account);
+
+                        $('#r_no_edit').val(data.rc.r_number);
+
+                        $('#r_method_edit').val(data.rc.r_method);
+
+
+                        if(data.rc.r_method=="1")
+                        {
+                    
+                        $('.cheque_sec').removeClass("d-none");
+
+                        $('.cheque_file_sec').removeClass("d-none");
+            
+                        $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
+
+                        $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
+
+                        if(data.rc.r_cheque_copy != "")
+                        {
+                        $('#EditModal #cheque_file_view').attr('href','<?= base_url();?>uploads/Receipts/'+data.rc.r_cheque_copy+'');
+                        }
+                        else
+                        {
+                        $('.cheque_file_sec').addClass("d-none");  
+                        }
+
+                        }
+                        else
+                        {
+                        $('.cheque_sec').addClass("d-none");
+
+                        $('.cheque_file_sec').addClass("d-none");
+
+                        }
+
+
+                        $('#r_bank_edit').val(data.rc.r_bank);
+
+                        $('#r_collected_by_edit').val(data.rc.r_collected_by);
+
+                        $('#total_amount_edit').html(data.rc.r_amount);
+
+                        $('#sel_invoices_edit').html(data.invoices);
+
+
+
+
+                        $("#EditModal :input").prop("disabled", true);
+
+                        $('#EditModal .btn-close').prop("disabled",false);
+
+                        $('#EditModal .submit_btn').hide();
+
+                        $('#EditModal .edit_invoice').hide();
+
+                        $('#EditModal .view_linked').hide();
+
+                        $('.edit_copy').css('display','none');
+
+                        $('.view_copy').css('display','flex');
+
+                        $('#EditModal .edit_add_credit').hide();
+
+
+                        $('#EditModal').modal('show');
+                    
+                        }
+                        else
+                        {
+                        alertify.error('Something went wrong!').delay(8).dismissOthers();  
+                        }
+                        
+                    }
+
+
+                });
+
+
+
+
+                /*
 
             var id = $(this).data('id');
 
@@ -1946,6 +2395,8 @@
 
 
             });
+
+            */
             
             
         });
@@ -2269,6 +2720,68 @@
 
 
 
+        $("body").on('click', '.edit_linked', function(){ 
+
+            var id = $(this).data('id');
+
+            var rid = $(this).data('rid');
+
+            $.ajax({
+
+            url : "<?php echo base_url(); ?>Accounts/Receipts/EditLinked",
+
+            method : "POST",
+
+            data: {id: id,r_id:rid},
+
+            dataType: "json",
+
+            success:function(data)
+            {
+
+                if(data.status==0)
+                {
+                alertify.error('No Invoices Found!').delay(3).dismissOthers();   
+
+                return false;
+                }
+                
+                $('#edit_invoices_sec').hide().html(data.invoices).fadeIn(200);
+
+                $('#EditModal').modal('hide');
+
+                $('#InvoicesEditModal').modal('show');
+
+            }
+
+
+            });
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         $("body").on('change', '.so_select', function(){ 
 
@@ -2504,6 +3017,61 @@
         //Linked Edit View
 
 
+        $('body').on('click','.edit_invoice_add',function(){
+
+        var rid = $('#id_edit').val();
+
+        var parent = $(this).closest('.edit_add_credit');
+
+        var date = parent.find('.credit_date').val();
+
+        var credit_account = parent.find('.credit_account').val();
+
+        var credit_amount = parent.find('.credit_amount').val();
+
+        var narration = parent.find('.credit_narration').val();
+
+        if((date=="") || (credit_account=="") || (credit_amount=="") )
+        {
+
+        alertify.error('Fill required fields').delay(3).dismissOthers();  
+
+        return false;
+
+        }
+
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/Receipts/EditAddCredit",
+
+        method : "POST",
+
+        data: {receipt_id:rid,credit_date:date,credit_account:credit_account,credit_amount:credit_amount,narration:narration},
+
+        success:function(data)
+        {
+
+        var data = JSON.parse(data);
+
+        $('#sel_invoices_edit').append(data.invoices);
+
+        $('#total_amount_edit').html(data.total);
+
+        parent.find(':input').val('');
+
+        }
+        }); 
+
+        
+
+        });
+
+
+
+
+
+
         $('body').on('click','.view_linked',function(){
 
         var id = $(this).data('id');
@@ -2552,9 +3120,9 @@
 
         var id = $(this).data('id'); 
 
-        parent = $(this).closest('.view_pf_invoice');
+        parent = $(this).closest('.view_credit');
 
-        var credit_id = parent.find('input[name=credit_id]').val();
+        var credit_id = id;
 
         var date = parent.find('input[name=date]').val();
 
@@ -2575,9 +3143,11 @@
         success:function(data)
         {
 
+        //console.log(data);
+
         var data = JSON.parse(data);
 
-        $('#edit_pf'+data.inv_id+'').html(data.invoices);
+        $('#view'+data.inv_id+'').html(data.invoices);
 
         $('#total_amount_edit').html(data.total);
 
@@ -2627,8 +3197,6 @@
 
         e.preventDefault();
 
-        $('#invoices_add').serialize();
-
         $.ajax({
 
         url : "<?php echo base_url(); ?>Accounts/Receipts/AddInvoices",
@@ -2642,9 +3210,9 @@
 
         alertify.success('Saved!').delay(3).dismissOthers();   
 
-        $('#InvoicesModal').modal('hide');
+        //$('#InvoicesModal').modal('hide');
 
-        $('#AddModal').modal('show');
+        //$('#AddModal').modal('show');
 
         }
 

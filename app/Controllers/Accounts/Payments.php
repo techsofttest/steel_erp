@@ -4,6 +4,8 @@ namespace App\Controllers\Accounts;
 
 use App\Controllers\BaseController;
 
+use NumberToWords\NumberToWords;
+
 
 class Payments extends BaseController
 {
@@ -128,7 +130,7 @@ class Payments extends BaseController
     }
 
 
-        // add account head
+        // Add Payment
         Public function Add()
         {   
 
@@ -140,7 +142,7 @@ class Payments extends BaseController
 
         $insert_data['pay_amount'] = $this->request->getPost('p_amount');
 
-        if(!empty($this->request->getPost('p_method')==1))
+        if($this->request->getPost('p_method')=="1")
         {
 
         $insert_data['pay_cheque_no'] = $this->request->getPost('p_cheque_no');
@@ -150,10 +152,14 @@ class Payments extends BaseController
         }
 
         $insert_data['pay_bank'] = $this->request->getPost('p_bank');
-
-        $insert_data['pay_debit_account'] = $this->request->getPost('p_debit_account');
+     
 
         $insert_data['pay_total'] = $this->request->getPost('p_amount');
+
+
+        if(empty($this->request->getPost('p_id')))
+
+        {
 
         $insert_data['pay_added_by'] = 1;
 
@@ -166,11 +172,25 @@ class Payments extends BaseController
         }
         */
 
-
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
+
+        }
+
+        else
+        {
+
+        $id = $this->request->getPost('p_id');
+        
+        $p_cond = array('pay_id' => $id);
+
+        $this->common_model->EditData($insert_data,$p_cond,'accounts_payments');
+
+        }
 
 
         //Add invoices
+        if(!empty($this->request->getPost('pf_id')))
+        {
         for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
         {
 
@@ -188,6 +208,8 @@ class Payments extends BaseController
 
         }
 
+        }
+
         $p_ref_no = 'PAY'.str_pad($id, 7, '0', STR_PAD_LEFT);
         
         $cond = array('pay_id' => $id);
@@ -196,53 +218,647 @@ class Payments extends BaseController
 
         $this->common_model->EditData($update_data,$cond,'accounts_payments');
 
+        echo $id;
+
     }
+
+
+
+    //##
+
+
 
     //refresh table with ajax
  
     //account head modal 
     public function Edit()
     {
+
+    $cond = array('pay_id' => $this->request->getPost('id'));
+    
+    $joins = array(
         
-        $cond = array('ca_id' => $this->request->getPost('id'));
+    );
 
-         ##Joins if any //Pass Joins as Multi dim array
-         $joins = array(
-           
+    $data['pay'] = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
+
+    $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+
+
+    $debit_cond = array('pd_payment' => $data['pay']->pay_id);
+
+    $debit_joins = array(
+        array(
+        'table' => 'crm_customer_creation',
+        'pk' => 'cc_id',
+        'fk' => 'pd_debit_account',
+        ),
+    );    
+
+    $debits = $this->common_model->FetchWhereJoin('accounts_payment_debit',$debit_cond,$debit_joins);
+
+    $data['debit'] = "";
+
+    $dd='';
+
+    foreach($customers as $cus) { 
+
+       $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+
+    }
+
+
+    foreach($debits as $debit)
+    {
+
+        $data['debit'] .='
+        <tr class="view_debit" id="view'.$debit->pd_id.'">
+        <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pd_id.'">
+
+        <td>
+
+        <p class="view">'.date('d-F-Y',strtotime($debit->pd_date)).'</p>
+
+        <input style="display:none;" class="edit form-control datepicker" readonly type="text" name="date" value="'.date('d-F-Y',strtotime($debit->pd_date)).'">
+
+        </td>
+
+
+        <td>
+
+        <p class="view">'.$debit->cc_customer_name.'</p>
+
+        <select style="display:none;" class="edit form-control" name="c_name">
+
+        <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+
+        '.$dd.'
+        
+        </select>
+       
+        </td>
+
+
+        <td>
+        
+        <p class="view">'.$debit->pd_payment_amount.'</p>
+
+        <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$debit->pd_payment_amount.'">
+        
+        </td>
+
+
+        <td>
+
+         <p class="view">'.$debit->pd_remarks.'</p>
+
+         <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$debit->pd_remarks.'">
+        
+        </td>
+
+
+        <td>
+        
+        <div class="view">
+        <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>
+
+        <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pd_id.'">Linked</a>
+
+        <a href="javascript:void(0);" class="del_debit btn btn-danger" data-id="'.$debit->pd_id.'">Delete</a>
+
+        </div>
+
+        <div class="edit" style="display:none;">
+        
+        <button class="btn btn-success update_invoice_btn" type="button">Update</button>
+
+        <button class="btn btn-danger cancel_invoice_btn" data-id="'.$debit->pd_id.'" type="button">Cancel</button>
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        ';
+    }
+
+
+    echo json_encode($data);
+
+    }
+
+
+
+    // update account head 
+    public function Update()
+    {    
+        $cond = array('pay_id' => $this->request->getPost('p_id'));
+
+        $update_data['pay_date'] = date('Y-m-d',strtotime($this->request->getPost('p_date')));
+
+        $update_data['pay_credit_account'] = $this->request->getPost('p_credit_account');
+
+        $update_data['pay_method'] = $this->request->getPost('p_method');
+
+        if($this->request->getPost('p_method')=="1")
+        {
+
+        $update_data['pay_cheque_no'] = $this->request->getPost('p_cheque_no');
+
+        $update_data['pay_cheque_date'] = date('Y-m-d',strtotime($this->request->getpost('p_cheque_date')));
+
+        }
+        else
+        {
+
+        $update_data['pay_cheque_no'] = NULL;
+
+        $update_data['pay_cheque_date'] = NULL;
+
+        }
+
+        $update_data['pay_amount'] = $this->request->getPost('p_amount');
+
+        $update_data['pay_bank'] = $this->request->getPost('p_bank');
+
+        $this->common_model->EditData($update_data,$cond,'accounts_payments');
+        
+    }
+
+
+
+
+
+    public function UpdateDebitDetails()
+    {
+
+        if($_POST)
+        {
+
+        $id = $this->request->getPost('d_id');
+
+        $cond = array('pd_id' => $id);
+
+        $date = date('Y-m-d',strtotime($this->request->getPost('d_date')));
+
+        $debit_account = $this->request->getPost('d_account');
+
+        $amount = $this->request->getPost('d_amount');
+
+        $narration = $this->request->getPost('d_narration');
+
+
+        $update_data['pd_debit_account'] = $debit_account;
+
+        $update_data['pd_payment_amount'] = $amount;
+
+        $update_data['pd_remarks'] = $narration;
+        
+        $update_data['pd_date'] = $date;
+
+        $this->common_model->EditData($update_data,$cond,'accounts_payment_debit');
+
+        $this->FetchDebitData($id);
+
+        }
+
+    }
+
+
+    
+    public function FetchDebitData($id,$tr="")
+    {
+
+    $invoice_cond = array('pd_id' => $id); 
+
+    $data['inv_id'] =  $id;
+
+    $invoice_joins = array(
+        array(
+        'table' => 'crm_customer_creation',
+        'pk' => 'cc_id',
+        'fk' => 'pd_debit_account',
+        ),
+    );    
+
+    $debit = $this->common_model->SingleRowJoin('accounts_payment_debit',$invoice_cond,$invoice_joins);
+
+    //Recalculate Total
+
+    $pay_id = $debit->pd_payment;
+
+    $all_debits = $this->common_model->FetchWhere('accounts_payment_debit',array('pd_payment' => $pay_id));
+
+    $total = 0;
+
+    foreach($all_debits as $deb_tot)
+    {
+
+    $total = $total+=$deb_tot->pd_payment_amount;
+
+    }
+
+    $payment_data['pay_amount'] = $total;
+
+    $payment_cond['pay_id'] = $pay_id;
+
+    $this->common_model->EditData($payment_data,$payment_cond,'accounts_payments');
+
+    $data['total'] = $total;
+
+    //
+
+    $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+
+    $dd='';
+
+    foreach($customers as $cus) { 
+
+       $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+
+    }
+
+
+    $data['debit'] ="";
+
+
+    if($tr!="")
+    {
+
+    $data['debit'] .='<tr class="view_debit" id="view'.$debit->pd_id.'">';
+
+    }
+
+
+    $data['debit'] .='
+   
+    <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pd_id.'">
+
+    <td>
+
+    <p class="view">'.date('d-F-Y',strtotime($debit->pd_date)).'</p>
+
+    <input style="display:none;" class="edit form-control datepicker" type="text" readonly name="date" value="'.date('Y-m-d',strtotime($debit->pd_date)).'">
+
+    </td>
+
+
+    <td>
+
+    <p class="view">'.$debit->cc_customer_name.'</p>
+
+    <select style="display:none;" class="edit form-control" name="c_name">
+
+    <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+
+    '.$dd.'
+    
+    </select>
+   
+    </td>
+
+
+    <td>
+    
+    <p class="view">'.$debit->pd_payment_amount.'</p>
+
+    <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$debit->pd_payment_amount.'">
+    
+    </td>
+
+
+    <td>
+
+     <p class="view">'.$debit->pd_remarks.'</p>
+
+     <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$debit->pd_remarks.'">
+    
+    </td>
+
+
+    <td>
+    
+    <div class="view">
+    <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>
+    
+    <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pd_id.'">Linked</a>
+
+    <a href="javascript:void(0);" class="del_debit btn btn-danger" data-id="'.$debit->pd_id.'">Delete</a>
+
+    </div>
+
+    <div class="edit" style="display:none;">
+    
+    <button class="btn btn-success update_invoice_btn" type="button">Update</button>
+
+    <button class="btn btn-danger cancel_invoice_btn" data-id="'.$debit->pd_id.'" type="button">Cancel</button>
+
+    </div>
+
+    </td>
+
+    ';
+
+    if($tr!="")
+    {
+    
+    $data['debit'] .="</tr>";
+
+    }
+
+    echo json_encode($data);
+
+    }
+
+
+
+
+    public function DeleteDebit()
+    {
+
+        if($_POST)
+        {
+
+        $id = $this->request->getPost('id');
+
+        $cond = array('pd_id' => $id);
+
+        $payment = $this->common_model->SingleRow('accounts_payment_debit',$cond);
+
+        $pay_id = $payment->pd_payment;
+
+
+        $this->common_model->DeleteData('accounts_payment_debit',$cond);
+
+        $cond_data = array('pdi_debit_id' => $id);
+
+        $this->common_model->DeleteData('accounts_payment_debit_invoices',$cond_data);
+
+
+        //Recalculate Total
+
+        $all_debits = $this->common_model->FetchWhere('accounts_payment_debit',array('pd_payment' => $pay_id));
+
+        $total = 0;
+
+        foreach($all_debits as $deb_tot)
+        {
+
+        $total = $total+=$deb_tot->pd_payment_amount;
+
+        }
+
+
+        $pay_data['pay_amount'] = $total;
+
+        $pay_cond['pay_id'] = $pay_id;
+
+        $this->common_model->EditData($pay_data,$pay_cond,'accounts_payments');
+
+        $data['total'] = $total;
+
+        echo json_encode($data);
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+    public function EditPfInvoice()
+    {
+
+        $cond = array('pdi_debit_id' => $this->request->getPost('id'));
+
+        $joins = array(
+
             array(
-            'table' => 'accounts_account_types',
-            'pk' => 'at_id',
-            'fk' => 'ca_account_type',
+            'table' => 'crm_proforma_invoices',
+            'pk' => 'pf_id',
+            'fk' => 'pdi_invoice',
             ),
-
+    
         );
 
-        $data = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',$cond,$joins);
+
+        $invoices = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices',$cond,$joins);
+       
+        $data['status']=0;
+    
+        $data['invoices']="";
+    
+        $sl =0;
+        foreach($invoices as $inv)
+        {
+        $sl++;
+
+        $data['invoices'].=
+        
+        '
+        <tr class="view_pf_invoice" id="edit_pf'.$inv->pdi_id.'">
+
+        <input type="hidden" name="ri_id" value="'.$inv->pdi_id.'">
+
+        <th>'.$sl.'</th>
+
+        <th>
+
+        <p class="">'.date('d-F-Y',strtotime($inv->pdi_date)).'</p>
+
+        </th>
+
+
+        <th>
+
+        <p class="">'.$inv->pf_reffer_no.'</p>
+
+        </th>
+
+
+        <th>
+
+        <p class="view">'.$inv->pdi_lpo_ref.'</p>
+
+        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->pdi_lpo_ref.'">
+        
+        </th>
+        
+        <th>
+        
+        <p class="">'.$inv->pf_total_amount.'</p>
+
+        </th>
+
+        <th>
+
+        <p class="view">'.$inv->pdi_payment_amount.'</p>
+
+        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->pdi_payment_amount.'">
+        
+        </th>
+
+        <th>
+
+        <div class="view">
+
+        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->pdi_id.'">Edit</a>
+        
+        </div>
+
+        <div class="edit" style="display:none;">
+        
+        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->pdi_id.'" type="button">Update</button>
+
+        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->pdi_id.'" type="button">Cancel</button>
+
+        </div>
+        
+        </th>
+
+        </tr>'
+        
+        ;
+    
+        $data['status']=1;
+    
+        }
+    
+        echo json_encode($data);
+    
+
+    }
+
+
+
+    public function UpdatePfDetails()
+    {
+
+    $id = $this->request->getPost('id');
+
+    $cond = array('pdi_id' => $id);
+
+    $update_data['pdi_lpo_ref'] = $this->request->getPost('lpo_ref');
+
+    $update_data['pdi_payment_amount'] = $this->request->getPost('receipt_amount');
+
+    $this->common_model->EditData($update_data,$cond,'accounts_payment_debit_invoices');
+
+    $this->FetchPfDetails($id);
+
+    }
+
+
+
+    public function FetchPfdetails($id)
+    {
+
+    $cond = array('pdi_id' => $id);
+
+    $joins = array(
+
+        array(
+        'table' => 'crm_proforma_invoices',
+        'pk' => 'pf_id',
+        'fk' => 'pdi_invoice',
+        ),
+
+    );
+
+    $inv = $this->common_model->SingleRowJoin('accounts_payment_debit_invoices',$cond,$joins);
+
+    $sl = 1;
+
+    $data['inv_id'] = $id ;
+
+    $data['invoices'] = "";
+
+    $data['invoices'].=
+        
+        '
+        <input type="hidden" name="ri_id" value="'.$inv->pdi_id.'">
+
+        <th>'.$sl.'</th>
+
+        <th>
+
+        <p class="">'.date('d-F-Y',strtotime($inv->pdi_date)).'</p>
+
+        </th>
+
+
+        <th>
+
+        <p class="">'.$inv->pf_reffer_no.'</p>
+
+        </th>
+
+
+        <th>
+
+        <p class="view">'.$inv->pdi_lpo_ref.'</p>
+
+        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->pdi_lpo_ref.'">
+        
+        </th>
+    
+        <th>
+        
+        <p class="">'.$inv->pf_total_amount.'</p>
+
+        </th>
+
+        <th>
+
+        <p class="view">'.$inv->pdi_payment_amount.'</p>
+
+        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->pdi_payment_amount.'">
+        
+        </th>
+
+        <th>
+
+        <div class="view">
+
+        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->pdi_id.'">Edit</a>
+      
+        </div>
+
+        <div class="edit" style="display:none;">
+        
+        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->pdi_id.'" type="button">Update</button>
+
+        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->pdi_id.'" type="button">Cancel</button>
+
+        </div>
+        
+        </th>
+
+       '
+        ;
 
         echo json_encode($data);
 
     }
 
-   // update account head 
-    public function Update()
-    {    
-        $cond = array('ca_id' => $this->request->getPost('id'));
 
-        $update_data = $this->request->getPost(); 
 
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('id', $update_data)) 
-        {
-             unset($update_data['id']);
-        }       
 
-        $update_data['ca_modify_date'] = date('Y-m-d'); 
 
-        $this->common_model->EditData($update_data,$cond,'accounts_charts_of_accounts');
-        
-      
 
-    }
+
+
+
+
+
+
+
 
 
 
@@ -296,7 +912,7 @@ class Payments extends BaseController
     foreach($invoices as $invoice)
     {
 
-        $data['invoices'] .="<tr><td>".date('d-m-Y',strtotime($invoice->pf_date))."</td><td>{$invoice->pf_uid}</td><td>{$invoice->pi_remarks}</td><td>{$invoice->pf_total_cost}</td></tr>";
+        $data['invoices'] .="<tr><td>".date('d-F-Y',strtotime($invoice->pf_date))."</td><td>{$invoice->pf_reffer_no}</td><td>{$invoice->pi_remarks}</td><td>{$invoice->pf_total_amount}</td></tr>";
     
     }
 
@@ -411,37 +1027,118 @@ class Payments extends BaseController
 
     $ac_id = $this->request->getPost('id');
 
+
     $joins = array(
            
     );
 
-    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_account_id' => $ac_id),$joins);
+    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
 
     $cond = array('pf_customer' => $customer->cc_id);
 
     $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+   
+    $data['status']=0;
 
-    $data="";
+    $data['invoices']="";
 
+    $sl =0;
     foreach($invoices as $inv)
     {
-
-    $data.='<tr id="'.$inv->pf_id.'">
-    <th class="checkbx"><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    $sl++;
+    $data['invoices'].='<tr id="'.$inv->pf_id.'">
+    <input type="hidden" name="credit_account_invoice[]" value="'.$ac_id.'">
+    <th>'.$sl.'</th>
     <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
-    <th>'.$inv->pf_uid.'</th>
-    <th>'.$inv->pf_total_cost.'</th>
+    <th>'.$inv->pf_reffer_no.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->pf_lpo_ref.'" required></th>
+    <th>'.$inv->pf_total_amount.'</th>
+    <th><input class="form-control" name="inv_receipt_amount[]" type="number"></th>
+    <th><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
     </tr>';
+
+    $data['status']=1;
 
     }
 
     echo json_encode($data);
 
-
     }
 
 
     }
+
+
+
+
+    public function FetchReference()
+    {
+
+    $uid = $this->common_model->FetchNextId('accounts_payments',"PAY");
+
+    echo $uid;
+
+    }
+
+
+
+
+
+    
+    public function AddInvoices()
+    {
+
+
+        if($_POST)
+        {
+
+            for($i=0;$i<count($this->request->getPost('inv_receipt_amount'));$i++)
+            {
+
+            if(isset($this->request->getPost('invoice_selected')[$i]))
+
+            {
+
+            $insert_data['rid_receipt_invoice'] = $this->request->getPost('receipt_id')[$i];
+
+            $insert_data['rid_invoice'] = $this->request->getPost('credit_account_invoice')[$i];
+
+            $insert_data['rid_lpo_ref'] = $this->request->getPost('inv_lpo_ref')[$i];
+
+            $insert_data['rid_receipt'] = $this->request->getPost('inv_receipt_amount')[$i];
+
+        
+            $check_invoice = $this->common_model->SingleRow('accounts_receipt_invoice_data',array('rid_receipt_invoice' => $insert_data['rid_receipt_invoice'],'rid_invoice' => $insert_data['rid_invoice']));
+
+            if(empty($check_invoice))
+            {
+            $rid = $this->common_model->InsertData('accounts_receipt_invoice_data',$insert_data);
+            }
+
+            else
+            {
+
+            $update_cond = array('rid_id' => $check_invoice->rid_id);
+
+            $rid =$this->common_model->EditData($insert_data,$update_cond,'accounts_receipt_invoice_data');
+
+            }
+
+
+
+            }
+
+            
+
+
+            }
+
+        }
+
+    }
+
+
+
 
 
 
@@ -460,7 +1157,7 @@ class Payments extends BaseController
 
     $data['html'][] = $invoice;
 
-    $data['total'] = $invoice['pf_total_cost']+$data['total'];
+    $data['total'] = $invoice['pf_total_amount']+$data['total'];
 
     }
 
@@ -472,6 +1169,49 @@ class Payments extends BaseController
 
 
     }
+
+
+
+
+
+
+
+    public function EditAddDebit()
+    {
+
+        if($_POST)
+        {
+
+        $insert_data['pd_payment'] = $this->request->getPost('pid');
+
+        $insert_data['pd_date'] = date('Y-m-d',strtotime($this->request->getPost('date')));
+
+        $insert_data['pd_debit_account'] = $this->request->getPost('account');
+        
+        $insert_data['pd_payment_amount'] = $this->request->getPost('amount');
+        
+        $insert_data['pd_remarks'] = $this->request->getPost('narration');
+
+        $pid = $this->common_model->InsertData('accounts_payment_debit',$insert_data);
+
+        $this->FetchDebitData($pid,1);
+            
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -491,6 +1231,328 @@ class Payments extends BaseController
 
         return null;
     }
+
+
+
+
+    public function Print(){
+
+     $id = 10;
+
+     $cond = array('pay_id' => $id);
+
+     ##Joins if any //Pass Joins as Multi dim array
+     $joins = array(
+           
+        array(
+        'table' => 'master_receipt_method',
+        'pk' => 'rm_id',
+        'fk' => 'pay_method',
+        ),
+
+        array(
+        'table' => 'master_banks',
+        'pk' => 'bank_id',
+        'fk' => 'pay_bank',
+        ),
+
+        array(
+        'table' => 'accounts_charts_of_accounts',
+        'pk' => 'ca_id',
+        'fk' => 'pay_debit_account',
+        ),
+
+    );
+
+    $payment = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
+
+    
+    $total_amount = NumberToWords::transformNumber('en',$payment->pay_total); // outputs "fifty dollars ninety nine cents"
+   
+
+    $joins_inv = array(
+        
+        array(
+            'table' => 'crm_proforma_invoices',
+            'pk' => 'pf_id',
+            'fk' => 'pi_invoice',
+        ),
+
+        array(
+            'table' => 'crm_customer_creation',
+            'pk' => 'cc_id',
+            'table2' => 'crm_proforma_invoices',
+            'fk' => 'pf_customer',
+           ),
+
+    );
+
+    $invoices = $this->common_model->FetchWhereJoin('accounts_payment_invoices',array('pi_payment'=>$id),$joins_inv);
+
+
+
+    $invoice_sec = "";
+
+    $first = true;
+
+    
+    foreach($invoices as $inv)
+    {
+
+    if($first == true)
+    {
+    $cus_name = $inv->cc_customer_name;
+    }
+    else
+    {
+    $cus_name="";
+    }
+
+    $invoice_sec .="
+    
+    <tr>
+
+    <td>{$cus_name}</td>
+
+    <td>{$inv->pf_reffer_no}</td>
+
+    <td>".date('d-m-Y',strtotime($inv->pf_date))."</td>
+
+    <td>{$inv->pf_total_amount}</td>
+
+    <td>15-01-2024</td>
+
+    <td>{$inv->pf_total_amount}</td>
+    
+    </tr>
+
+    ";
+
+    $first = false;
+
+    }
+
+
+
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter',
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5, 
+        ]);
+    
+        $html ='
+    
+        <style>
+        th, td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        </style>
+    
+        <table>
+        
+        <tr>
+        
+        <td>
+    
+        <h3>Al Fuzail Engineering Services WLL</h3>
+        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        
+        
+        </td>
+        
+        </tr>
+    
+        </table>
+
+    
+        <table width="100%" style="margin-top:10px;">
+        
+        <tr width="100%">
+        
+        <td align="right"><h3>Payment Voucher</h3></td>
+    
+        </tr>
+    
+        </table>
+    
+    
+        <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Reference : '.$payment->pay_ref_no.'
+        
+        </td>
+        
+            
+        <td width="50%" align="right">
+        
+        Paid By : Cheque
+    
+        </td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Date : '.date('d-m-Y',strtotime($payment->pay_date)).'
+        
+        </td>
+        
+            
+        <td width="50%" align="right">
+        
+        Cheque : 90289
+        </td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Credit Account : RV-2020-0418
+        
+        </td>
+        
+            
+        <td width="50%" align="right">
+        
+        Date : 10-02-2923
+
+        </td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Division : RV-2020-0418
+        
+        </td>
+        
+            
+        <td width="50%" align="right">
+        
+        Bank : 10-02-2923
+    
+        </td>
+        
+        </tr>
+    
+    
+    
+        
+        </table>
+    
+    
+    
+    
+        <table  width="100%" style="margin-top:2px;">
+        
+    
+        <tr  style="border-bottom:3px solid;">
+        
+        <th align="left">Debit Account</th>
+    
+        <th align="left">Reference</th>
+    
+        <th align="left">Invoice Date</th>
+    
+        <th align="left">Invoice Amount</th>
+    
+        <th align="left">Due Date</th>
+    
+        <th align="left">Payment</th>
+    
+        </tr>
+    
+    
+    
+        '.$invoice_sec.'
+    
+    
+    
+        <tr style="padding-top:20px;">
+        
+        <td colspan="5">Reallocation</td>
+    
+        <td>9000.00</td>
+        
+        </tr>
+    
+    
+        <tr style="padding-top:20px;">
+        
+        <td colspan="5">Discount</td>
+    
+        <td>9000.00</td>
+        
+        </tr>
+    
+    
+        
+        </table>
+    
+        ';
+    
+        $footer = '
+
+        <table width="100%">
+        
+        <tr>
+        
+        <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+    
+        <td colspan="1" align="left" style="text-align:right;"><b>'.$payment->pay_total.'</b></td>
+    
+        </tr>
+    
+        </table>
+    
+    
+        <table>
+        
+        <tr>
+    
+        <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+    
+        <th width="25%" style="padding-right:60px;">Received by:</th>
+    
+        <th width="25%" style="padding-right:60px;">Finance Manager</th>
+    
+        <th width="25%" style="padding-right:60px;">CEO</th>
+    
+        </tr>
+    
+        </table>
+    
+        ';
+    
+        
+        $mpdf->WriteHTML($html);
+        $mpdf->SetFooter($footer);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output();
+    
+        }
+
+
+
+
 
 
 

@@ -28,30 +28,165 @@
 
     <div class="card-body">
                     <div class="live-preview">
-						<form action="#" method="post" class="Dashboard-form" id="add_form">
-                            <div class="row align-items-end">
-							    <div class="col-col-md-4 col-lg-4">
-                                    <div>
+
+                            <div class="row align-items-start">
+
+
+                                <div class="col-lg-6">
+
+
+
+                                <div class="row align-items-center mb-2">
+
+                                    <div class="col-col-md-3 col-lg-3">
                                         <label for="basiInput" class="form-label">Date</label>
+                                    </div>
+                                        
+                                <div class="col-col-md-9 col-lg-9">
                                         <input type="date" onclick="this.showPicker()"  name="pcv_date" class="form-control " required>
                                     </div>
                                 </div>
-								<!--end col-->
-                                <div class="col-col-md-4 col-lg-4">
-                                    <div>
-                                        <label for="basiInput" class="form-label">Credit Account</label>
-                                        <select class="form-select " name="pcv_credit_account" required>
-                                            <option selected="" >Select</option>
-                                            
-                                            <?php foreach($accounts as $account){ ?>
 
-                                                <option value="<?php echo $account->ca_id; ?>"><?php echo $account->ca_name; ?></option>
+
+								<!--end col-->
+                                <div class="row align-items-center mb-2">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                    <label for="basiInput" class="form-label">Credit Account</label>
+
+                                </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+                                        <select class="form-select " name="pcv_credit_account" required>
+                                           
+                                            <option value="">Select Credit Account</option>
+
+                                            <?php foreach($customers as $cus) { ?>
+
+                                            <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
 
                                             <?php } ?>
 
                                         </select>
                                     </div>
                                 </div>
+
+
+
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                                    
+                                    <div class="col-col-md-3 col-lg-3">
+
+                                        <label for="basiInput" class="form-label">Attach</label>
+
+                                    </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                    <input type="file"  name="" class="form-control ">
+
+                                </div>
+
+
+
+
+                                 </div>
+
+
+
+
+
+
+                                </div>
+
+
+
+
+                            <div class="col-lg-6">
+
+
+
+
+                            <div class="row align-items-center mb-2">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                    <label for="basiInput" class="form-label">Payment Method</label>
+
+                                </div>
+                                    
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                    <select name="pcv_pay_method" class="form-control" required>
+
+                                    <option value="">Select Payment Method</option>
+
+                                    <?php foreach($r_methods as $r_method){ ?>
+
+                                    <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+
+                                    <?php } ?>
+
+                                    </select>
+
+                                </div>
+
+                                </div>
+
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                                <div class="col-col-md-3 col-lg-3">
+                                        <label for="basiInput" class="form-label">Cheque Number</label>
+                                        </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+                                        <input type="text"  name="p_cheque_no" class="form-control" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+                                    
+
+                                    <div class="col-col-md-3 col-lg-3">
+
+                                        <label for="basiInput" class="form-label">Cheque Date</label>
+                                    
+                                    </div>
+
+
+                                    <div class="col-col-md-9 col-lg-9">
+
+                                    <input type="date"  name="p_cheque_date" class="form-control" required>
+
+                                    </div>
+
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+
+
 
 
 
@@ -69,6 +204,7 @@
                 <th>Sales Order No</th>
                 <th>Debit Account</th>
                 <th>Amount</th>
+                <th>Link</th>
                 <th>Narration</th>
                 <th></th>
                 </tr>
@@ -89,7 +225,7 @@
 
                 <?php foreach($sales_orders as $sorder){ ?>
 
-                <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_order_no; ?></option>
+                <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_reffer_no; ?></option>
 
                 <?php } ?>
 
@@ -98,13 +234,13 @@
                 </th>
 
 
-                <th> <select name="pcv_account[]" class="form-control">
+                <th> <select name="pcv_account[]" class="form-control inv_account">
 
                 <option value="">Select Account</option>
 
-                <?php foreach($accounts as $account){ ?>
+                <?php foreach($customers as $cus) { ?>
 
-                <option value="<?php echo $account->ca_id; ?>"><?= $account->ca_name; ?></option>
+                <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
 
                 <?php } ?>
                 
@@ -113,6 +249,10 @@
                 </th>
                 
                 <th><input name="pcv_debit[]" type="number" class="form-control pcv_amount" ></th>
+
+                <th>
+                    <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
+                </th>
 
                 <th><input name="pcv_remarks[]" type="text" class="form-control" ></th>
 
@@ -123,14 +263,28 @@
 
             </tbody>
 
-            <tr>
 
+            <!--
+            <tr>
             <td colspan="3">Total</td>
 
             <td id="total_amount_disp">0</td>
             
             <input type="hidden" id="total_amount_inp" name="total_amount">
 
+            </tr>
+            -->
+
+
+            <tr>
+
+            <td colspan="1"></td>
+
+            <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+
+            <td align="right" colspan="3">Total</td>
+
+            <th  id="total_amount_disp">0</th>
 
             </tr>
 
@@ -150,6 +304,27 @@
 
 
 
+                                <div>
+
+                                <div style="float: right;">
+                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                                <tr>
+                                                                    <td><button>Print</button></td>
+                                                                    <td><button>Email</button></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="submit">Save</button></td>
+                                                                    <td><button>PDF</button></td>
+                                                                </tr>
+                                                            </table>
+                                </div>
+
+                                </div>
+
+
+
+
+
                             </div>
                         <!--end row-->
 						</form>
@@ -165,9 +340,460 @@
 </div>
 
 </div>
-            <div class="modal-footer justify-content-center">
+            <!-- <div class="modal-footer justify-content-center">
                 <button  class="btn btn btn-success">Save</button>
+            </div> -->
+
+        </div>
+        </form>
+
+    </div>
+</div>
+
+    <!-- ### -->
+
+
+
+
+    <!--Edit Modal section start-->
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form id="edit_form" class="Dashboard-form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                
+                    <div class="row">
+
+
+
+                    <div class="col-lg-12">
+    <div class="card">
+
+
+
+    <div class="card-body">
+                    <div class="live-preview">
+					
+                            <div class="row align-items-start">
+
+
+                                <div class="col-lg-6">
+
+
+
+                                <div class="row align-items-center mb-2">
+
+                                <input type="hidden" id="pcv_id_edit" name="pcv_id" value="">
+
+                                    <div class="col-col-md-3 col-lg-3">
+                                        <label for="basiInput" class="form-label">Date</label>
+                                    </div>
+                                        
+                                <div class="col-col-md-9 col-lg-9">
+                                        <input id="pcv_date_edit" type="date" onclick="this.showPicker()"  name="pcv_date" class="form-control " required>
+                                    </div>
+                                </div>
+
+
+								<!--end col-->
+                                <div class="row align-items-center mb-2">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                    <label for="basiInput" class="form-label">Credit Account</label>
+
+                                </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                        <select id="pcv_credit_edit" class="form-select " name="pcv_credit_account" required>
+                                           
+                                            <option value="">Select Credit Account</option>
+
+                                            <?php foreach($customers as $cus) { ?>
+
+                                            <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
+
+                                            <?php } ?>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                                    
+                                    <div class="col-col-md-3 col-lg-3">
+
+                                        <label for="basiInput" class="form-label">Attach</label>
+
+                                    </div>
+
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                    <input type="file"  name="" class="form-control ">
+
+                                </div>
+
+
+
+
+                                 </div>
+
+
+
+
+
+
+                                </div>
+
+
+
+
+                            <div class="col-lg-6">
+
+
+
+
+                            <div class="row align-items-center mb-2">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                    <label for="basiInput" class="form-label">Payment Method</label>
+
+                                </div>
+                                    
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                    <select name="pcv_pay_method" id="pcv_pay_method" class="form-control" required>
+
+                                    <option value="">Select Payment Method</option>
+
+                                    <?php foreach($r_methods as $r_method){ ?>
+
+                                    <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+
+                                    <?php } ?>
+
+                                    </select>
+
+                                </div>
+
+                                </div>
+
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                                <div class="col-col-md-3 col-lg-3">
+                                    <label for="basiInput" class="form-label">Cheque Number</label>
+                                </div>
+
+                                        <div class="col-col-md-9 col-lg-9">
+                                        <input type="text"  name="p_cheque_no" class="form-control">
+                                    </div>
+                                </div>
+
+
+                                <div class="row align-items-center mb-2 cheque_sec d-none">
+                                    
+
+                                    <div class="col-col-md-3 col-lg-3">
+
+                                        <label for="basiInput" class="form-label">Cheque Date</label>
+                                    
+                                    </div>
+
+
+                                    <div class="col-col-md-9 col-lg-9">
+
+                                    <input type="date"  name="p_cheque_date" class="form-control">
+
+                                    </div>
+
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+
+                            <div class="col-lg-6">
+
+
+                            <div style="float: right;">
+
+                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                        
+                                    <tr>
+                                           <td><button class="submit_btn" type="submit">Update</button></td>
+                                    </tr>
+
+                                    </table>
+                            </div>
+
+
+                            </div>
+
+
+
+
+                        <div class="col-col-md-12 col-lg-12">
+
+
+<table class="table table-bordered" style="overflow-y:scroll;">
+
+            <thead>
+                <tr>
+                <th>Sales Order No</th>
+                <th>Debit Account</th>
+                <th>Amount</th>
+                <th>Narration</th>
+                <th>Actions</th>
+                </tr>
+            </thead>
+
+
+            <tbody id="sel_invoices_edit">
+
+         
+            <tr>
+
+            <td colspan="6">
+
+            <div class="col-lg-12 text-center">
+                                    
+              <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+        
+            </div>
+            
+            </td>
+
+            </tr>
+
+
+            </tbody>
+
+
+
+            <tr>
+
+            <td colspan="1"></td>
+
+            <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+
+            <td align="right" colspan="3">Total</td>
+
+            <th  id="total_amount_edit">0</th>
+
+
+            </tr>
+
+
+
+
+</table>
+
+
+</div>
+
+
+
+
+                        
+                        </div>
+
+                        
+                        
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+                        <!--end col-->
+
+
+                    </div>
+                
+            </div>
+
+
+
+        </div>
+        </form>
+
+    </div>
+</div>
+
+<!--Edit modal section end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+<!-- Invoices Seletion Modal -->
+
+
+<div class="modal fade" id="InvoicesModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+            <form method="POST" class="Dashboard-form class" id="invoices_add">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
+                <button type="button" class="btn-close" data-bs-target="#AddModal" data-bs-toggle="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            <input type="hidden" name="credit_id" value="">
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+
+    <div class="card">
+       
+        <div class="card-body">
+
+            <div class="live-preview">
+            
+                    <div class="row align-items-end">
+
+                        <div class="col-col-md-12 col-lg-12">
+
+                        <div class="row align-items-center">
+
+                        <div class="col-lg-10"> 
+
+                        <table class="table table-bordered">
+
+
+                                    <thead>
+                                        <tr>
+                                        <th>Sl No</th>
+                                        <th>Date</th>
+                                        <th>Invoice No</th>
+                                        <th>LPO Ref</th>
+                                        <th>Amount</th>
+                                        <th>Receipt</th>
+                                        <th>Tick</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody id="invoices_sec">
+
+
+                                    </tbody>
+
+
+                                    <!--
+                                    <tr>
+
+                                    <td>Total Receipt</td>
+
+                                    <td></td>
+
+                                    <td>Adjusted</td>
+
+                                    <td></td>
+
+
+                                    <td>Balance</td>
+
+                                    <td></td>
+
+                                    </tr>
+                                    -->
+
+
+                        </table>
+
+                        </div>
+
+
+
+                        <div class="col-lg-2">
+
+                        
+                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
+
+                        <button class="w-100">FIFO</button>
+
+                        <button class="w-100" type="submit">Save</button>
+
+
+
+                        </div>
+
+
+                        </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+
+            <!-- <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
+                <button type="submit" class="btn btn btn-success">Add</button>
+            </div> -->
 
         </div>
         </form>
@@ -177,10 +803,153 @@
 
 
 
+<!-- ### -->
 
 
 
-    <!-- ### -->
+
+
+  
+<!-- View Modal -->
+
+
+<div class="modal fade" id="SalesOrderModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl">
+
+    <form class="" id="sales_order_add">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+    <div class="card">
+       
+        <div class="card-body">
+            <div class="live-preview">
+            
+                    <div class="row align-items-end">
+
+
+                        <div class="col-col-md-12 col-lg-12">
+
+                        <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                    <thead>
+                                        <tr>
+                                        <th>Sl No</th>
+                                        <th>Vendor</th>
+                                        <th>LPO Ref</th>
+                                        <th>Amount</th>
+                                        <th>Receipt</th>
+                                        <th>Tick</th>
+                                        <th></th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody id="lpo_body">
+
+                                        <tr class="lpo_row">
+
+                                        <td class="lpo_slno">1</td>
+
+                                        <td>
+
+                                        <select class="form-control" name="lpo_select">
+
+                                        <option value="">Select Vendor</option>
+
+
+
+                                        </select>
+                                        
+                                        </td>
+
+                                        <td>LPO12345</td>
+                                        <td>10000</td>
+                                        <td><input class="form-control" type="number" name="lpo_reciept[]"></td>
+                                        <td><input type="checkbox" name="lpo_selected[]"></td>
+
+                                        
+                                        <th> <a href="javascript:void(0);" class="lpo_del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+
+
+                                        </tr>
+
+
+
+                                    </tbody>
+
+                                    <tr>
+
+                                    <td colspan="6">
+
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                    <a class="lpo_add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+
+                                    </div>
+
+                                    </td>
+
+                                    </tr>
+                                    
+
+
+                        </table>
+
+
+
+                        </div>
+
+                        
+                        
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+
+
+   <div class="modal-footer justify-content-center">
+    
+                <button type="submit" class="btn btn btn-success">Save</button>
+    </div>
+           
+
+        </div>
+     
+</form>
+
+    </div>
+</div>
+
+
+<!-- ## -->
+
+
+
+
+
+
+
 
 
 
@@ -232,7 +1001,13 @@
 
     document.addEventListener("DOMContentLoaded", function(event){
 
-        /*add*/
+       
+
+
+        /* Start Add Petty Cash Voucher */
+
+
+        //Add Function 
         $(function() {
             $('#add_form').validate({
                 
@@ -259,10 +1034,12 @@
                 }
             });
         });
-        /*####*/
+
+        //###
 
 
-            /*cost calculation add more*/
+
+          /*Add More Debit*/
 
             var max_fieldcost = 30;
 
@@ -273,13 +1050,14 @@
             if(cc < max_fieldcost){ 
 
             cc++;
+
             //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-        
+
             var $clone =  $('.so_row:first').clone();
 
             $clone.find("input").val("");
 
-            $clone.find("select").val(0);
+            $clone.find("select").val("");
 
             $clone.find(".sl_no").html(cc);
 
@@ -289,41 +1067,80 @@
 
             }
 
-        });
+            });
+
+            // ####
 
 
 
-        $(document).on("click", ".del_elem", function() 
-        {
-        
-        $(this).closest('.so_row').remove();
-        
-        var sl_no =1;
 
-        $('body .so_row').each(function()
-        {
+            // Delete Add More Field
 
-        $(this).find('.sl_no').html(sl_no);
+            $(document).on("click", ".del_elem", function() 
+            {
 
-        sl_no++;
+            $(this).closest('.so_row').remove();
 
-        });
+            var sl_no =1;
 
-        totalCalcutate();  
+            $('body .so_row').each(function()
+            {
 
-        });
+            $(this).find('.sl_no').html(sl_no);
 
-        /**/
+            sl_no++;
 
+            });
 
-        $("body").on('keyup', '.pcv_amount', function(){ 
+            totalCalcutate();  
 
-        totalCalcutate();    
+            });
 
-        });
+            //#####
 
 
 
+            //Calcuate Total On Amount Keyup
+
+            $("body").on('keyup', '.pcv_amount', function(){ 
+
+            totalCalcutate();    
+
+            });
+
+            //#######
+
+
+
+
+             /* Show Cheque Fields  */
+
+            $('select[name=pcv_pay_method]').change(function(){
+
+            if($(this).children(':selected').text()=="Cheque")
+            {
+            $('.cheque_sec').removeClass("d-none");
+            }
+            else
+            {
+            $('.cheque_sec').addClass("d-none");
+            }
+
+            });
+
+            /* ### */
+
+
+
+
+
+        /* End Add Petty Cash Voucher */
+
+
+          
+
+
+        /*
         function totalCalcutate()
         {
  
@@ -344,6 +1161,402 @@
 
 
         }
+        */
+
+        
+        
+
+    /* Start Edit Petty Cash Voucher */
+
+
+    //Onclick Edit Show And Populate Modal
+    $("body").on('click', '.edit_btn', function(){ 
+
+    var id = $(this).data('id');
+
+
+    $("#EditModal :input").prop("disabled", false);
+
+    $('#EditModal .submit_btn').show();
+
+    $('#EditModal .edit_invoice').show();
+
+    $('#EditModal .view_linked').show();
+
+
+
+    $.ajax({
+
+    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Edit",
+
+    method : "POST",
+
+    data: {id: id},
+
+    success:function(data)
+    {   
+        if(data)
+        {
+
+        var data = JSON.parse(data);
+
+        $('#pcv_id_edit').val(data.pcv.pcv_id);
+
+        $('#pcv_date_edit').val(data.pcv.pcv_date);
+
+        $('#pcv_credit_edit').val(data.pcv.pcv_credit_account);
+
+        $('#pcv_pay_method').val(data.pcv.pcv_pay_method);
+
+        $('#total_amount_edit').html(data.pcv.pcv_total);
+
+        $('#sel_invoices_edit').html(data.debit);
+
+        $('#EditModal').modal('show');
+        
+        }
+        else
+        {
+        alertify.error('Something went wrong!').delay(8).dismissOthers();  
+        }
+        
+        }
+
+
+        });
+
+
+        });
+
+        //######
+
+
+
+        //Update Petty Cash Voucher
+
+        $(document).ready(function(){
+            $('#edit_form').submit(function(e){
+
+                e.preventDefault();
+                
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Update",
+
+                    method : "POST",
+
+                    data : $('#edit_form').serialize(),
+
+                    success:function(data)
+                    {
+                        
+                        $('#EditModal').modal('hide');
+
+                        alertify.success('Data Updated Successfully').delay(8).dismissOthers();
+
+                        datatable.ajax.reload( null, false );
+                    }
+
+
+                });
+            });
+        });
+
+        /*###*/
+
+
+
+
+        /* End Edit Petty Cash Voucher*/
+
+
+
+
+
+
+        //Onclick Edit Show And Populate Modal
+    $("body").on('click', '.view_btn', function(){ 
+
+var id = $(this).data('id');
+
+
+$.ajax({
+
+url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Edit",
+
+method : "POST",
+
+data: {id: id},
+
+success:function(data)
+{   
+    if(data)
+    {
+
+    var data = JSON.parse(data);
+
+    $('#pcv_id_edit').val(data.pcv.pcv_id);
+
+    $('#pcv_date_edit').val(data.pcv.pcv_date);
+
+    $('#pcv_credit_edit').val(data.pcv.pcv_credit_account);
+
+    $('#pcv_pay_method').val(data.pcv.pcv_pay_method);
+
+    $('#total_amount_edit').html(data.pcv.pcv_total);
+
+    $('#sel_invoices_edit').html(data.debit);
+
+
+    $("#EditModal :input").prop("disabled", true);
+
+    $('#EditModal .btn-close').prop("disabled",false);
+
+    $('#EditModal .submit_btn').hide();
+
+    $('#EditModal .edit_invoice').hide();
+
+    $('#EditModal .view_linked').hide();
+
+
+    $('#EditModal').modal('show');
+    
+    }
+    else
+    {
+    alertify.error('Something went wrong!').delay(8).dismissOthers();  
+    }
+    
+    }
+
+
+    });
+
+
+    });
+
+    //######
+
+
+
+
+
+
+
+
+
+
+        /* Start Debit Section */
+
+
+
+        //Add 
+        
+        $("body").on('submit', '#invoices_add', function(e){ 
+
+        e.preventDefault();
+
+        /*
+        $('#sel_invoices').html('');
+
+        var form = $(this);
+
+        var tbody =  $('#sel_invoices');
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/Payments/SelectedInvoices",
+
+        method : "POST",
+
+        data: form.serialize(),
+
+        processData: false,
+
+        success:function(data)
+        {
+
+        var data = JSON.parse(data);
+
+        //console.log(data);
+
+        $.each(data.html, function(key,value) {
+        //alert(value.so_o);
+        tbody.append('<tr><td>'+value['pf_date']+'</td><td><input type="hidden" name="pf_id[]" value="'+value['pf_id']+'">'+value['pf_uid']+'</td><td><input class="form-control" name="pf_remarks[]" type="text"></td><td>'+value['pf_total_cost']+'</td></tr>');
+
+        }); 
+
+        $('#total_amount').html(data.total);
+
+        $('input[name=p_amount]').val(data.total);
+
+
+        }
+
+        });
+
+        */
+
+
+
+        $('#AddModal').modal('show');
+
+        $('#InvoicesModal').modal('hide');
+
+        alertify.success('Saved!').delay(8).dismissOthers();
+
+
+        });
+
+
+
+
+
+    /* Edit Invoice Start */
+
+     $("body").on('click', '.edit_invoice', function(){
+
+    var id = $(this).data('id'); 
+
+    $('#view'+id+'').find('.edit').show();
+
+    $('#view'+id+'').find('.view').hide();
+
+    $('#pd_id_edit').val(id);
+
+    $.ajax({
+
+    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/EditInvoice",
+
+    method : "POST",
+
+    data: {inv_id: id},
+
+    success:function(data)
+    {   
+        var data = JSON.parse(data);
+
+        $('#ri_date_edit').val(data.ri.ri_date);
+
+        $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
+
+        $('#ri_amount_edit').val(data.ri.ri_amount);
+
+        $('#ri_remarks_edit').val(data.ri.ri_remarks);
+
+    }
+
+    });
+
+    //$('#EditModal').modal('hide');
+
+    //$('#InvoiceEditModal').modal('show');
+
+    });
+
+
+
+
+    //Cancel Credit Edit
+
+    $('body').on('click','.cancel_invoice_btn',function(){
+
+        var id = $(this).data('id'); 
+
+        $('#view'+id+'').find('.edit').hide();
+
+        $('#view'+id+'').find('.view').show();
+
+        });
+
+
+        //
+
+
+
+
+
+        //Update Invoices
+
+        $('body').on('click','.update_invoice_btn',function(){
+
+        var id = $(this).data('id'); 
+
+        parent = $(this).closest('.view_debit');
+
+        var debit_id = parent.find('input[name=debit_id]').val();
+
+        var date = parent.find('input[name=date]').val();
+
+        var debit_account = parent.find('select[name=c_name]').val();
+
+        var amount = parent.find('input[name=amount]').val();
+
+        var narration = parent.find('input[name=remarks]').val();
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/UpdateDebitDetails",
+
+        method : "POST",
+
+        data: {d_id:debit_id,d_date:date,d_account:debit_account,d_amount:amount,d_narration:narration},
+
+        success:function(data)
+        {
+
+        var data = JSON.parse(data);
+
+        $('#view'+data.inv_id+'').html(data.debit);
+
+        $('#total_amount_edit').html(data.total);
+
+        $('#view'+data.inv_id+'').find('.edit').hide();
+
+        $('#view'+data.inv_id+'').find('.view').fadeIn(200);
+
+        }
+        }); 
+
+        });
+
+        //#########
+
+
+        //Cancel Credit Edit
+
+        $('body').on('click','.cancel_invoice_btn',function(){
+
+        var id = $(this).data('id'); 
+
+        $('#view'+id+'').find('.edit').hide();
+
+        $('#view'+id+'').find('.view').fadeIn(200);
+
+        });
+
+
+        //
+
+
+
+
+
+
+
+
+
+
+
+        /* End Debit Section */
+
+
+
+
+
+
+
+
 
 
 
@@ -398,12 +1611,6 @@
 
          function initializeDataTable() {
 
-            /*
-            if ($.fn.DataTable.isDataTable("#accountTable")) {
-                $('#accountTable').DataTable().clear().destroy();
-            }
-            */
-
             datatable = $('#datatable').DataTable({
                 'stateSave': true,
                 'processing': true,
@@ -432,7 +1639,7 @@
                     { data: 'pcv_id' },
                     { data: 'pcv_date'},
                     { data: 'pcv_voucher_no' },
-                    { data : 'pcv_credit_account'},
+                    { data :'pcv_credit_account'},
                     { data: 'action' },
                 ]
                 
@@ -442,11 +1649,15 @@
             $(document).ready(function () {
             initializeDataTable();
             });
+
             /*###*/
 
 
 
 
+                /* Fetch Invoices */
+
+     
 
 
 
@@ -454,6 +1665,124 @@
 
 
 
-    });
+      /* Sales Order  */
+
+      $("body").on('click', '.lpo_add_more', function(){
+
+var cc = $('.lpo_row').length;
+
+if(cc < 30){ 
+
+cc++;
+
+var $clone =  $('.lpo_row:first').clone();
+
+$clone.find("input").val("");
+
+$clone.find("select").val("");
+
+$clone.find(".lpo_slno").html(cc);
+
+$clone.find(".lpo_del_elem").show();
+
+$clone.insertAfter('.lpo_row:last');
+
+}
+
+});
+
+
+$(document).on("click", ".lpo_del_elem", function() 
+{
+$(this).closest('.lpo_row').remove();
+cc--;
+//totalCalcutate();                                                                           
+//grossCalculate();
+});
+
+/**/
+
+function lpo_slno(){
+
+var pp =1;
+
+$('body .lpo_row').each(function() {
+
+$(this).find('.lpo_slno').html('<td class="si_no">' + pp + '</td>');
+
+pp++;
+
+});
+
+}
+
+
+/* ### */
+
+
+
+
+
+
+
+
+
+
+
+
+$('#sales_order_add').submit(function(e){
+
+e.preventDefault();
+
+alertify.success('Saved!').delay(3).dismissOthers();   
+
+$('#SalesOrderModal').modal('hide');
+
+$('#AddModal').modal('show');
+
+    
+});
+
+
+
+
+
+
+
+});
+
+
+
+
+        function totalCalcutate()
+        {
+
+            var total= 0;
+
+            $('body .pcv_amount').each(function()
+            {
+            var sub_tot = parseFloat($(this).val());
+            total += parseFloat(sub_tot.toFixed(2))||0;
+               //total = Number(total).toFixed(2)
+            });
+
+           total = total.toFixed(2);
+
+           $('#total_amount_inp').val(total);
+
+           $('#total_amount_disp').html(total);
+           
+           var resultQuotation = numberToWords.toWords(total);
+
+            $(".sales_quotation_amount_in_word").text(resultQuotation);
+
+            $(".sales_quotation_amount_in_word_val").val(resultQuotation);
+           
+
+        }
+
+
+
+
 </script>
 

@@ -24,6 +24,7 @@ class Auth extends BaseController
 	
 	public function Check()
 	{   
+        
        
 		if($this->request->getMethod() === 'post')
         {

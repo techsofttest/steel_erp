@@ -46,8 +46,8 @@ class PettyCashVoucher extends BaseController
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
-                'table' => 'accounts_charts_of_accounts',
-                'pk' => 'ca_id',
+                'table' => 'crm_customer_creation',
+                'pk' => 'cc_id',
                 'fk' => 'pcv_credit_account',
                 ),
         );
@@ -59,13 +59,13 @@ class PettyCashVoucher extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color view_btn" data-id="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "pcv_id"=>$i,
               "pcv_voucher_no"=>$record->pcv_voucher_no,
               "pcv_date"=>date('d-m-Y',strtotime($record->pcv_date)),
-              "pcv_credit_account"=>$record->ca_name,
+              "pcv_credit_account"=>$record->cc_customer_name,
               "action" =>$action,
            );
            $i++; 
@@ -112,10 +112,14 @@ class PettyCashVoucher extends BaseController
     {  
 
         $data = array();
+
+        $data['r_methods'] = $this->common_model->FetchAllOrder('master_receipt_method','rm_name','asc');
        
         $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
         $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
         $data['content'] = view('accounts/petty-cash-voucher',$data);
 
@@ -136,6 +140,8 @@ class PettyCashVoucher extends BaseController
         $insert_data['pcv_credit_account'] = $this->request->getPost('pcv_credit_account');
 
         $insert_data['pcv_total'] = $this->request->getPost('total_amount'); 
+
+        $insert_data['pcv_pay_method'] = $this->request->getPost('pcv_pay_method');
 
         $insert_data['pcv_added_by'] = 0; 
 
@@ -173,13 +179,27 @@ class PettyCashVoucher extends BaseController
 
             $insert_invoice['pci_voucher_id'] = $id;
 
-            $this->common_model->InsertData('accounts_petty_cash_invoices',$insert_invoice);
+            $this->common_model->InsertData('accounts_petty_cash_debits',$insert_invoice);
 
         }
 
     
        
     }
+
+
+
+
+    public function FetchReference()
+    {
+
+    $uid = $this->common_model->FetchNextId('accounts_petty_cash_vouchers',"PCV");
+
+    echo $uid;
+
+    }
+
+
 
 
     //view
@@ -227,59 +247,124 @@ class PettyCashVoucher extends BaseController
     public function Edit()
     {
         
-        $cond = array('jv_id' => $this->request->getPost('ID'));
-
-        
+        $cond = array('pcv_id' => $this->request->getPost('id'));
 
         $joins = array(
-            array(
-                'table' => 'accounts_account_type',
-                'pk' => 'at_id',
-                'fk' => 'jv_account',
-                ),
-            array(
-                'table' => 'crm_sales_order',
-                'pk' => 'so_id',
-                'fk' => 'jv_sales_order_id',
-            ),
+
         );
 
-        $fetch_data = $this->common_model->SingleRowJoin('accounts_journal_voucher',$cond,$joins);
+        $data['pcv'] = $this->common_model->SingleRowJoin('accounts_petty_cash_voucher',$cond,$joins);
 
-        $sales_order = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
 
-        $accounts_type = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
+        $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
-        $data['jv_voucher_no']     = $fetch_data->jv_voucher_no;
 
-        $data['jv_voucher_date']   = $fetch_data->jv_voucher_date;
+        $debit_cond = array('pci_voucher_id' => $data['pcv']->pcv_id);
+    
+        $debit_joins = array(
+            array(
+            'table' => 'crm_customer_creation',
+            'pk' => 'cc_id',
+            'fk' => 'pci_debit_account',
+            ),
+        );    
 
-        $data['jv_debit']          = $fetch_data->jv_debit;
+        $debits = $this->common_model->FetchWhereJoin('accounts_petty_cash_debits',$debit_cond,$debit_joins);
 
-        $data['jv_credit']         = $fetch_data->jv_credit;
+        $data['debit'] = "";
 
-        $data['jv_narration']      = $fetch_data->jv_narration;
-         
-        $data['order'] ="";
+         $dd='';
 
-        foreach($sales_order as $order)
-        {
-            $data['order'] .='<option value='.$order->so_id.'';
-            if($order->so_id == $fetch_data->jv_sales_order_id){
-            $data['order'] .=    " selected ";}
-            $data['order'] .='>' .$order->so_order_no. '</option>'; 
+        foreach($customers as $cus) { 
+
+        $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+
         }
+
+
+    foreach($debits as $debit)
+    {
+
+        $data['debit'] .='
+        <tr class="view_debit" id="view'.$debit->pci_id.'">
+        <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pci_id.'">
+
+
+        <td>
+
+        <p class="view">'.$debit->cc_customer_name.'</p>
+
+        <select style="display:none;" class="edit form-control" name="c_name">
+
+        <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+
+        '.$dd.'
         
-        $data['account']="";
+        </select>
+       
+        </td>
+
+
+
+        <td>
+
+        <p class="view">'.$debit->cc_customer_name.'</p>
+
+        <select style="display:none;" class="edit form-control" name="c_name">
+
+        <option value="'.$debit->cc_id.'" selected>'.$debit->cc_customer_name.'</option>
+
+        '.$dd.'
         
-        foreach($accounts_type as $type)
-        {
-            $data['account'] .='<option value='.$type->at_id.'';
-            if($type->at_id == $fetch_data->jv_account){
-            $data['account'] .= " selected ";}
-            $data['account'] .= '>'.$type->at_name.'</option>';
-            
-        }
+        </select>
+       
+        </td>
+
+
+
+        <td>
+        
+        <p class="view">'.$debit->pci_amount.'</p>
+
+        <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$debit->pci_amount.'">
+        
+        </td>
+
+
+        <td>
+
+         <p class="view">'.$debit->pci_narration.'</p>
+
+         <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$debit->pci_narration.'">
+        
+        </td>
+
+
+        <td>
+        
+        <div class="view">
+        <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pci_id.'">Edit</a>
+        
+        <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pci_id.'">Linked</a>
+        </div>
+
+        <div class="edit" style="display:none;">
+        
+        <button class="btn btn-success update_invoice_btn" type="button">Update</button>
+
+        <button class="btn btn-danger cancel_invoice_btn" data-id="'.$debit->pci_id.'" type="button">Cancel</button>
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        ';
+
+    }
+
+
 
         echo json_encode($data);
     }
@@ -289,25 +374,204 @@ class PettyCashVoucher extends BaseController
    // update 
     public function Update()
     {    
-        $cond = array('jv_id' => $this->request->getPost('jv_id'));
+
+        $cond = array('pcv_id' => $this->request->getPost('pcv_id'));
         
-        $update_data = $this->request->getPost(); 
+        $update_data['pcv_date'] = date('Y-m-d',strtotime($this->request->getPost('pcv_date'))); 
 
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('jv_id', $update_data)) 
-        {
-             unset($update_data['jv_id']);
-        }       
+        $update_data['pcv_pay_method'] = $this->request->getPost('pcv_pay_method');
 
-        $update_data['jv_added_by'] = 0; 
+        $update_data['pcv_credit_account'] = $this->request->getPost('pcv_credit_account');
 
-        $update_data['jv_modify_date'] = date('Y-m-d'); 
+        $update_data['pcv_modify_date'] = date('Y-m-d'); 
 
-
-
-        $this->common_model->EditData($update_data,$cond,'accounts_journal_voucher');
+        $this->common_model->EditData($update_data,$cond,'accounts_petty_cash_voucher');
        
     }
+
+
+
+
+    public function UpdateDebitDetails()
+    {
+
+        if($_POST)
+        {
+
+        $id = $this->request->getPost('d_id');
+
+        $cond = array('pci_id' => $id);
+
+        $debit_account = $this->request->getPost('d_account');
+
+        $amount = $this->request->getPost('d_amount');
+
+        $narration = $this->request->getPost('d_narration');
+
+
+        $update_data['pci_debit_account'] = $debit_account;
+
+        $update_data['pci_amount'] = $amount;
+
+        $update_data['pci_narration'] = $narration;
+    
+        $this->common_model->EditData($update_data,$cond,'accounts_petty_cash_debits');
+
+        $this->FetchDebitData($id);
+
+        }
+
+    }
+
+
+
+
+
+    public function FetchDebitData($id)
+    {
+
+
+    $invoice_cond = array('pci_id' => $id);
+
+    $data['inv_id'] =  $id;
+
+    $invoice_joins = array(
+        array(
+            'table' => 'crm_customer_creation',
+            'pk' => 'cc_id',
+            'fk' => 'pci_debit_account',
+            ),
+    );    
+
+    $debit = $this->common_model->SingleRowJoin('accounts_petty_cash_debits',$invoice_cond,$invoice_joins);
+
+    //Recalculate Total
+
+    $pcv_id = $debit->pci_voucher_id;
+
+    $all_debits = $this->common_model->FetchWhere('accounts_petty_cash_debits',array('pci_voucher_id' => $pcv_id));
+
+    $total = 0;
+
+    foreach($all_debits as $deb_tot)
+    {
+
+    $total = $total+=$deb_tot->pci_amount;
+
+    }
+
+    $payment_data['pcv_total'] = $total;
+
+    $payment_cond['pcv_id'] = $pcv_id;
+
+    $this->common_model->EditData($payment_data,$payment_cond,'accounts_petty_cash_voucher');
+
+    $data['total'] = $total;
+
+    //
+
+    $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+
+    $dd='';
+
+    foreach($customers as $cus) { 
+
+       $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+
+    }
+
+
+    $data['debit'] ="";
+
+    $data['debit'] .='
+    
+    <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pci_id.'">
+
+
+    <td>
+
+    <p class="view">'.$debit->cc_customer_name.'</p>
+
+    <select style="display:none;" class="edit form-control" name="c_name">
+
+    <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+
+    '.$dd.'
+    
+    </select>
+   
+    </td>
+
+
+
+    <td>
+
+    <p class="view">'.$debit->cc_customer_name.'</p>
+
+    <select style="display:none;" class="edit form-control" name="c_name">
+
+    <option value="'.$debit->cc_id.'" selected>'.$debit->cc_customer_name.'</option>
+
+    '.$dd.'
+    
+    </select>
+   
+    </td>
+
+
+
+    <td>
+    
+    <p class="view">'.$debit->pci_amount.'</p>
+
+    <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$debit->pci_amount.'">
+    
+    </td>
+
+
+    <td>
+
+     <p class="view">'.$debit->pci_narration.'</p>
+
+     <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$debit->pci_narration.'">
+    
+    </td>
+
+
+    <td>
+    
+    <div class="view">
+    <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pci_id.'">Edit</a>
+    
+    <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pci_id.'">Linked</a>
+    </div>
+
+    <div class="edit" style="display:none;">
+    
+    <button class="btn btn-success update_invoice_btn" type="button">Update</button>
+
+    <button class="btn btn-danger cancel_invoice_btn" data-id="'.$debit->pci_id.'" type="button">Cancel</button>
+
+    </div>
+
+    </td>
+
+    ';
+
+
+    echo json_encode($data);
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,6 +596,323 @@ class PettyCashVoucher extends BaseController
         echo json_encode($data);
         
     }
+
+
+
+
+    
+    public function FetchInvoices()
+    {
+
+    if($_POST)
+    {
+
+    $ac_id = $this->request->getPost('id');
+
+
+    $joins = array(
+           
+    );
+
+    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
+
+    $cond = array('pf_customer' => $customer->cc_id);
+
+    $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+   
+    $data['status']=0;
+
+    $data['invoices']="";
+
+    $sl =0;
+    foreach($invoices as $inv)
+    {
+    $sl++;
+    $data['invoices'].='<tr id="'.$inv->pf_id.'">
+    <input type="hidden" name="credit_account_invoice[]" value="'.$ac_id.'">
+    <th>'.$sl.'</th>
+    <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
+    <th>'.$inv->pf_reffer_no.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->pf_lpo_ref.'" required></th>
+    <th>'.$inv->pf_total_amount.'</th>
+    <th><input class="form-control" name="inv_receipt_amount[]" type="number"></th>
+    <th><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    </tr>';
+
+    $data['status']=1;
+
+    }
+
+    echo json_encode($data);
+
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public function Print(){
+
+        $id = 1;
+    
+        $cond = array('pcv_id' => $id);
+    
+         ##Joins if any //Pass Joins as Multi dim array
+    
+         $joins = array(
+    
+        );
+    
+        $pcv = $this->common_model->SingleRowJoin('accounts_petty_cash_voucher',$cond,$joins);
+    
+        $total_amount = NumberToWords::transformNumber('en',$pcv->pcv_total); // outputs "fifty dollars ninety nine cents"
+    
+    
+        $joins_inv = array(
+    
+            array(
+                'table' => 'crm_sales_orders',
+                'pk' => 'so_id',
+                'fk' => 'pci_sales_order',
+               ),
+    
+    
+               array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk' => 'ca_id',
+                'fk' => 'pci_debit_account',
+                ),
+    
+    
+        );
+    
+        $orders = $this->common_model->FetchWhereJoin('accounts_petty_cash_debits',array('pci_voucher_id'=>$id),$joins_inv);
+    
+    
+        $orders_sec ="";
+    
+        foreach($orders as $order)
+        {
+    
+        $sales_order ="None";
+    
+        if($order->ji_sales_order_id!=0)
+        {
+        $sales_order = $order->so_order_no;
+        }
+    
+        if($order->ji_debit>0)
+        {
+        $debit =$order->ji_debit;
+        }
+    
+        if($order->ji_credit>0)
+        {
+        $credit = $order->ji_credit;
+        }
+    
+        $orders_sec .='<tr>
+        
+        <td>'.$sales_order.'</td>
+    
+        <td>'.$order->ca_account_id.'</td>
+        
+        <td>'.$order->ji_narration.'</td>
+    
+        <td>'.$debit.'</td>
+    
+        <td>'.$credit.'</td>
+    
+        </tr>';
+    
+    
+        }
+    
+    
+    
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter',
+                'default_font_size' => 9, 
+                'margin_left' => 5, 
+                'margin_right' => 5, 
+            ]);
+        
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+              }
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            
+            <td align="right"><h3>Journal Voucher</h3></td>
+        
+            </tr>
+        
+            </table>
+        
+        
+            <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+        
+            <tr>
+            
+            <td width="50%">
+            
+            Reference : '.$jv->jv_voucher_no.'
+            
+            </td>
+            
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td width="50%">
+            
+            Date : '.date('d-m-Y',strtotime($jv->jv_date)).'
+            
+            </td>
+            
+         
+            </tr>
+        
+        
+            <tr>
+            
+            <td width="50%">
+            
+            Division : Al Fuzail Engineering Services
+            
+            </td>
+            
+            
+            </tr>
+        
+        
+        
+            
+            </table>
+        
+        
+        
+        
+            <table  width="100%" style="margin-top:2px;">
+            
+        
+            <tr  style="border-bottom:3px solid;">
+            
+            <th align="left">Sales Order No</th>
+        
+            <th align="left">Account No</th>
+        
+            <th align="left">Account Description</th>
+        
+            <th align="left">Debit</th>
+        
+            <th align="left">Credit</th>
+        
+            </tr>
+        
+        
+        
+    
+            '.$orders_sec.'
+            
+    
+            
+            </table>
+        
+            ';
+        
+           
+           
+            $footer = '
+    
+            <table width="100%">
+            
+            <tr>
+            
+            <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+        
+            <td colspan="1" align="left" style="text-align:right;"><b>'.$jv->jv_total.'</b></td>
+        
+            </tr>
+        
+            </table>
+        
+        
+            <table>
+            
+            <tr>
+        
+            <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+        
+            <th width="25%" style="padding-right:60px;">Received by:</th>
+        
+            <th width="25%" style="padding-right:60px;">Finance Manager</th>
+        
+            <th width="25%" style="padding-right:60px;">CEO</th>
+        
+            </tr>
+        
+            </table>
+    
+            ';
+    
+        
+            
+            $mpdf->WriteHTML($html);
+            $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output();
+        
+            }
+    
+
+
+
+
+
+
+
 
 
 

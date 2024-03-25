@@ -14,6 +14,7 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "kwn/number-to-words": "^2.8",
         "laminas/laminas-escaper": "^2.9",
         "mpdf/mpdf": "^8.2",
         "psr/log": "^1.1"

@@ -75,7 +75,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_account_id" class="form-control account_id" required>
+                                                <input type="text" name="cc_account_id" class="form-control account_id" readonly required>
                                             </div>
 
                                         </div> 

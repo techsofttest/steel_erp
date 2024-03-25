@@ -12,13 +12,14 @@
         display:none;
     }
 
+
 </style>
 
 
 
 
 
-<!-- View Modal -->
+<!-- View Modal Start-->
 
 
 <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,71 +36,98 @@
     <div class="row">
 
 
-<div class="col-lg-12">
+    <div class="col-lg-12">
     <div class="card">
        
         <div class="card-body">
             <div class="live-preview">
             
-                    <div class="row align-items-end">
+                    <div class="row align-items-start justify-content-start">
 
+                    <div class="col-lg-6">
 
+                    <div class="row align-items-center mb-2">
+                            
 
+                            <div class="col-col-md-3 col-lg-3">
 
-                        <div class="col-col-md-4 col-lg-4">
-                            <div>
-                                <label for="basiInput" class="form-label">Voucher Number</label>
-                                <input type="text"  id="p_ref_view" class="form-control" value="" disabled>
+                                <label for="basiInput" class="form-label">Reference</label>
+
                             </div>
+
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="uid_view"  class="form-control" readonly>
+
+                            </div>
+
                         </div>
 
 
-                        <div class="col-col-md-4 col-lg-4">
-                            <div>
+                        <div class="row align-items-center mb-2">
+                            
+                            <div class="col-col-md-3 col-lg-3">
+
                                 <label for="basiInput" class="form-label">Date</label>
-                                <input type="text"  id="p_date_view" class="form-control" value="" disabled>
+
                             </div>
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="date_view" class="form-control"  readonly>
+
+                            </div>
+
                         </div>
 
+                        
+                        </div>
 
-                        <h3 class="my-2 text-center">Invoices</h3>
-
+                          
                         <div class="col-col-md-12 col-lg-12">
+
 
                         <table class="table table-bordered" style="overflow-y:scroll;">
 
                                     <thead>
-                                        <tr>
+                                        <tr>    
                                         <th>Sl No</th>
                                         <th>Sales Order No</th>
-                                        <th>Account</th>
+                                        <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Narration</th>
                                         </tr>
                                     </thead>
 
-                                    <tbody id="jv_invoices_view" >
+                                    <tbody id="jv_invoices_view">
 
                                     </tbody>
 
                                     <tr>
 
                                     <td colspan="4" align="right">Total</td>
+                                   
+                                    <th id="total_debit_view">0</th>
 
-                                    <td id="total_amount_view" style="font-size: 17px;font-weight: 600;"></td>
-
+                                    <th  id="total_credit_view">0</th>
+                                  
+                                    
                                     </tr>
+
 
 
                         </table>
 
-
-
+                        
                         </div>
 
 
-                       
+                        <div>
+                        
+
+                        </div>
+
 
                         
                         
@@ -111,6 +139,7 @@
         </div>
     </div>
 </div>
+
 
 <!--end col-->
 </div>
@@ -124,7 +153,8 @@
     </div>
 </div>
 
-<!-- ######### -->
+
+<!-- View Modal End -->
 
 
 
@@ -141,7 +171,7 @@
             <form  class="Dashboard-form class" id="add_form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Journal Voucher</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Journal Voucher</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -156,19 +186,47 @@
         <div class="card-body">
             <div class="live-preview">
             
-                    <div class="row align-items-end">
+                    <div class="row align-items-start justify-content-start">
 
+                    <div class="col-lg-6">
 
-                        <div class="col-col-md-4 col-lg-4 text-center mx-auto">
-                            <div>
-                                <label for="basiInput" class="form-label">Date</label>
-                                <input type="date"  name="jv_date" class="form-control" required>
+                    <div class="row align-items-center mb-2">
+                            
+
+                            <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Reference</label>
+
                             </div>
+
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="uid"  class="form-control" readonly>
+
+                            </div>
+
                         </div>
 
 
+                        <div class="row align-items-center mb-2">
+                            
+                            <div class="col-col-md-3 col-lg-3">
 
-                        <input type="hidden" name="jv_total" class="form-control" value="1000">
+                                <label for="basiInput" class="form-label">Date</label>
+
+                            </div>
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text"  name="jv_date" class="form-control datepicker" value="<?= date('d-F-Y') ?>" required>
+
+                            </div>
+
+                        </div>
+
+                        
+                        </div>
 
                           
                         <div class="col-col-md-12 col-lg-12">
@@ -181,9 +239,9 @@
                                         <th>Sl No</th>
                                         <th>Sales Order No</th>
                                         <th>Account</th>
+                                        <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Narration</th>
                                         </tr>
                                     </thead>
 
@@ -202,7 +260,7 @@
 
                                         <?php foreach($sales_orders as $sorder){ ?>
 
-                                        <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_order_no; ?></option>
+                                        <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_reffer_no; ?></option>
 
                                         <?php } ?>
 
@@ -211,7 +269,9 @@
                                         </th>
 
 
-                                        <th> <select name="jv_account[]" class="form-control">
+                                        <th> 
+                                            
+                                        <select name="jv_account[]" class="form-control">
 
                                         <option value="">Select Account</option>
 
@@ -224,14 +284,15 @@
                                         </select>
 
                                         </th>
+
                                         
+                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+
                                         <th><input name="jv_debit[]" type="number" class="form-control debit_amount" ></th>
 
                                         <th><input name="jv_credit[]" type="number" class="form-control credit_amount" ></th>
 
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                        <th> <a href="javascript:void(0);" class="del_elem"><i class='ri-close-line'></i></a></th>
+                                        <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
 
                                     </tr>
 
@@ -240,10 +301,24 @@
 
                                     <tr>
 
-                                    <td colspan="3">Total</td>
-                                   
+                                    <td colspan="6">
 
-                                    <td id="total_amount_debit_disp">0</td>
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                      <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                                
+                                    </div>
+                                    
+                                    </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                    <td colspan="4" align="right">Total</td>
+                                   
+                                    <th id="total_amount_debit_disp">0</th>
 
                                     <th  id="total_amount_credit_disp">0</th>
                                     
@@ -253,22 +328,33 @@
 
                                     <input type="hidden" id="total_amount_credit" name="total_credit">
                                     
-
                                     </tr>
+
 
 
                         </table>
 
-
-
+                        
                         </div>
 
 
-                        <div class="col-lg-12 text-center">
-                                                            
-                            <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                        <div>
+
+                        <div style="float: right;">
+                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                        <tr>
+                                                            <td><button>Print</button></td>
+                                                            <td><button>Email</button></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><button type="submit">Save</button></td>
+                                                            <td><button>PDF</button></td>
+                                                        </tr>
+                                                    </table>
+                         </div>
 
                         </div>
+
 
                         
                         
@@ -278,6 +364,9 @@
             </div>
             
         </div>
+
+
+
     </div>
 </div>
 
@@ -285,9 +374,9 @@
 </div>
 
 </div>
-            <div class="modal-footer justify-content-center">
+            <!-- <div class="modal-footer justify-content-center">
                 <button  class="btn btn btn-success">Save</button>
-            </div>
+            </div> -->
 
         </div>
         </form>
@@ -312,7 +401,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Journal Vouchers</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="add_model_btn btn btn-primary py-1">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -351,11 +440,11 @@
 
 <!--Edit Modal section start-->
 <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="#" id="edit_form" class="Dashboard-form">
+    <div class="modal-dialog modal-xl">
+        <form id="edit_form" class="Dashboard-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Charts Of Account</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Journal Voucher</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -364,58 +453,170 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 
-                                <div class="card-body">
-                                    <div class="live-preview">
-                                        
-                                            <div class="row align-items-end">
-                                                <div class="col-col-md-6 col-lg-12">
-
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account ID</label>
-                                                        <input type="text" id="edit_account_id" value="" name="ca_account_id" class="form-control">
-                                                    </div>
-
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account Name</label>
-                                                        <input type="text" id="edit_account_name" value="" name="ca_name" class="form-control">
-                                                    </div>
-
-                                                    <div>
-                                                        <label for="basiInput" class="form-label">Account Type</label>
-                                                        
-                                                        <select id="edit_account_type" class="form-control account_type_select_edit" name="ca_account_type">
-
-                                                      
-
-                                                        </select>
-
-                                                    </div>
 
 
+                            <div class="card-body">
+            <div class="live-preview">
+            
+                    <div class="row align-items-start justify-content-start">
 
-                                                </div>
+                    <div class="col-lg-6">
 
-                                                <!--end col-->
+                    <div class="row align-items-center mb-2">
+                            
 
-                                                <input type="hidden" name="id" id="ca_id" value="">
-                                                
-                                                
-                                            </div>
-                                            <!--end row-->
-                                        
+                            <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Reference</label>
+
+                            </div>
+
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="uid_edit"  class="form-control" readonly>
+
+                            <input type="hidden" id="id_edit" name="jv_id" value="">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+                            
+                            <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Date</label>
+
+                            </div>
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="jv_date_edit"  name="jv_date" class="form-control datepicker" value="" required>
+
+                            </div>
+
+                        </div>
+
+                        
+                        </div>
+
+                          
+                        <div class="col-col-md-12 col-lg-12">
+
+
+                        <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                    <thead>
+                                        <tr>    
+                                        <th>Sl No</th>
+                                        <th>Sales Order No</th>
+                                        <th>Narration</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="jv_invoices_edit">
+                                   
+
+
+                                    </tbody>
+
+
+
+
+                                    <!--
+
+                                    <tr>
+
+                                    <td colspan="6">
+
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                      <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                                
                                     </div>
-                                        
-                                </div>
+                                    
+                                    </td>
+
+                                    </tr>
+
+                                    -->
+
+
+
+
+                                    <tr>
+
+                                    <td colspan="3" align="right">Total</td>
+                                   
+                                    <th id="total_amount_debit_disp_edit">0</th>
+
+                                    <th  id="total_amount_credit_disp_edit">0</th>
+                                    
+                                    <input type="hidden" id="total_amount_debit_edit" name="total_debit">
+
+                                    <input type="hidden" id="total_amount_credit_edit" name="total_credit">
+                                    
+                                    </tr>
+
+
+
+                        </table>
+
+                        
+                        </div>
+
+
+                        <div>
+
+                        <div class="action_btns" style="float: right;">
+                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                        <!--
+                                                        <tr>
+                                                            <td><button>Print</button></td>
+                                                            <td><button>Email</button></td>
+                                                        </tr>
+                                                        -->
+                                                        <tr>
+                                                            <td><button type="submit">Update</button></td>
+                                                            <!--<td><button>PDF</button></td>-->
+                                                        </tr>
+
+                                                    </table>
+                         </div>
+
+                        </div>
+
+
+                        
+                        
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+
+
+
+
+                                
+
+
+
                             </div>
                         </div>
                         <!--end col-->
                     </div>
                 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="submit" class="btn btn btn-success">Submit</button>
-            </div>
+
+
+           
         </div>
         </form>
 
@@ -433,8 +634,6 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
-
-
 
 
         /*cost calculation add more*/
@@ -500,6 +699,16 @@
                     var debit = parseInt($('#total_amount_debit').val())||0;
 
                     var credit = parseInt($('#total_amount_credit').val())||0;
+
+                    if(debit==0 || credit==0)
+                    {
+
+                    alertify.error('Must be greater than 0!').delay(3).dismissOthers();
+
+                    return false;
+
+                    }
+
                     if(debit != credit)
                     {
 
@@ -531,34 +740,56 @@
 
 
 
-        /*account head modal start*/
-        /*
+        /*Edit View*/
+        
         $("body").on('click', '.edit_btn', function(){ 
+
             var id = $(this).data('id');
+
+            $("#EditModal :input").prop("disabled", false);
+
+            $('#EditModal .action_btns').show();
+
+            $('#EditModal .submit_btn').show();
+
+            $('#EditModal .edit_invoice').show();
+
+            $('#EditModal .view_linked').show();
+
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Edit",
+                url : "<?php echo base_url(); ?>Accounts/JournalVouchers/Edit",
 
                 method : "POST",
 
-                data: {id: id},
+                data: {jv_id: id},
 
                 success:function(data)
-                {   
+                {  
                     if(data)
                     {
+
                     var data = JSON.parse(data);
 
-                    $("#edit_account_id").val(data.ca_account_id);
+                    $('#id_edit').val(data.jv.jv_id);
 
-                    $("#edit_account_name").val(data.ca_name);
+                    $('#uid_edit').val(data.jv.jv_voucher_no);
 
-                    $('#edit_account_type').val(data.ca_account_type);
+                    $('#jv_date_edit').val(FormatDate(data.jv.jv_date));
+
+                    $('#jv_invoices_edit').html(data.invoices);
+
+                    $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
+
+                    $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
+
+                    $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
+
+                    $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
 
                     $('#EditModal').modal('show');
-                    
-                    $("#ca_id").val(id);
+                  
                     }
                     else
                     {
@@ -572,8 +803,71 @@
             
             
         });
-        */
+       
         /*####*/
+
+
+
+
+
+$("body").on('keyup', '.debit_amount_edit', function(){ 
+
+totalCalcutateEdit();    
+
+});
+
+
+$("body").on('keyup', '.credit_amount_edit', function(){ 
+
+totalCalcutateEdit();    
+
+});
+
+
+function totalCalcutateEdit()
+{
+
+var d_total = 0; 
+
+var c_total = 0;
+
+$('body .debit_amount_edit').each(function()
+{
+
+var sub_tot = $(this).val();
+
+d_total += parseInt(sub_tot)||0;
+
+});
+
+
+$('body .credit_amount_edit').each(function()
+{
+
+var sub_tot = $(this).val();
+
+c_total += parseInt(sub_tot)||0;
+
+});
+
+
+$('#total_amount_debit_disp_edit').html(d_total);
+
+$('#total_amount_credit_edit').val(c_total);
+
+$('#total_amount_debit_edit').val(d_total);
+
+$('#total_amount_credit_disp_edit').html(c_total);
+
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -581,7 +875,7 @@
 
         $("body").on('keyup', '.debit_amount', function(){ 
 
-            totalCalcutate();    
+        totalCalcutate();    
 
         });
 
@@ -644,17 +938,84 @@
 
 
            /*account head modal start*/ 
-           $("body").on('click', '.view_btn', function(){ 
+           $("body").on('click', '.jv_view', function(){ 
             
-            var id = $(this).data('id');
+            var id = $(this).data('jvview');
+
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/Payments/View",
+url : "<?php echo base_url(); ?>Accounts/JournalVouchers/Edit",
+
+method : "POST",
+
+data: {jv_id: id},
+
+success:function(data)
+{  
+    if(data)
+    {
+
+    var data = JSON.parse(data);
+
+    $('#id_edit').val(data.jv.jv_id);
+
+    $('#uid_edit').val(data.jv.jv_voucher_no);
+
+    $('#jv_date_edit').val(data.jv.jv_date);
+
+    $('#jv_invoices_edit').html(data.invoices);
+
+    $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
+
+    $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
+
+    $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
+
+    $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
+
+
+    $("#EditModal :input").prop("disabled", true);
+
+    $('#EditModal .btn-close').prop("disabled",false);
+
+    $('#EditModal .action_btns').hide();
+
+    $('#EditModal .submit_btn').hide();
+
+    $('#EditModal .edit_invoice').hide();
+
+    $('#EditModal .view_linked').hide();
+
+
+    $('#EditModal').modal('show');
+  
+    }
+    else
+    {
+    alertify.error('Something went wrong!').delay(8).dismissOthers();  
+    }
+    
+    }
+
+
+    });
+
+
+
+
+            //id=20;
+
+
+            /*
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/JournalVouchers/View",
 
                 method : "POST",
 
-                data: {id: id},
+                data: {jv_id: id},
 
                 success:function(data)
                 {   
@@ -662,19 +1023,15 @@
                     {
                     var data = JSON.parse(data);
 
-                    $('#p_ref_view').val(data.pay_ref_no);
+                    $('#uid_view').val(data.jv.jv_voucher_no);
 
-                    $('#p_date_view').val(data.pay_date);
+                    $('#date_view').val(data.jv.jv_date);
+                    
+                    $('#jv_invoices_view').html(data.invoices);
 
-                    $('#p_credit_acc_view').val('Customer Name');
+                    $('#total_debit_view').html(data.jv.jv_debit_total);
 
-                    $('#p_pay_method_view').val(data.rm_name);
-
-                    $('#p_bank_view').val(data.bank_name);
-
-                    $('#p_debit_acc_view').val(data.ca_account_id);
-
-                    $('#total_amount_view').html(data.pay_total);
+                    $('#total_credit_view').html(data.jv.jv_credit_total);
 
                     $('#ViewModal').modal('show');
                   
@@ -688,6 +1045,8 @@
 
 
             });
+
+            */
             
             
         });
@@ -709,7 +1068,7 @@
                 
                 $.ajax({
 
-                    url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Update",
+                    url : "<?php echo base_url(); ?>Accounts/JournalVouchers/Update",
 
                     method : "POST",
 
@@ -741,7 +1100,7 @@
             var id = $(this).data('id');
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/Payments/Delete",
+                url : "<?php echo base_url(); ?>Accounts/JournalVouchers/Delete",
 
                 method : "POST",
 
@@ -749,13 +1108,13 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                    alertify.error('Data Deleted Successfully').delay(8).dismissOthers();
 
                     datatable.ajax.reload( null, false )
                 }
 
 
-            });
+            }); 
 
         });
         /*###*/
@@ -798,7 +1157,7 @@
                     }
                 },
                 'columns': [
-                    { data: 'pcv_id' },
+                    { data: 'jv_id' },
                     { data: 'jv_voucher_date'},
                     { data: 'jv_voucher_no' },
                     { data: 'action' },
@@ -931,6 +1290,33 @@ $('#InvoicesModal').modal('hide');
 
 
 });
+
+
+
+
+
+
+
+$('.add_model_btn').click(function(){
+
+
+$.ajax({
+
+url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+
+method : "GET",
+
+success:function(data)
+{
+
+$('#uid').val(data);
+
+}
+
+});
+
+});
+
 
 
 

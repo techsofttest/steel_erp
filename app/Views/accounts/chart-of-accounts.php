@@ -11,7 +11,7 @@
             <form  class="Dashboard-form class" id="add_form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Chart Of Account</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Charts Of Account</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -27,46 +27,68 @@
             <div class="live-preview">
                
             
-                    <div class="row align-items-end">
 
+                         <div class="row align-items-center mb-2">
 
                         <div class="col-col-md-3 col-lg-3">
-                            <div>
-                                <label for="basiInput" class="form-label">Account Id</label>
-                                <input type="text"   name="ca_account_id" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <div class="col-col-md-4 col-lg-4">
-                            <div>
                                 <label for="basiInput" class="form-label">Account Name</label>
-                                <input type="text"  name="ca_name" class="form-control" required>
+                                
                             </div>
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text"  name="ca_name" class="form-control" required>
+
+                            </div>
+
                         </div>
 
 
-                        <div class="col-col-md-5 col-lg-5">
-                            <div>
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
                                 <label for="basiInput" class="form-label">Account Head</label>
                                 
-                                <select name="ca_account_type" class="account_type_select_add form-control" required>
+                            </div>
 
-                                <option value="">Select Account Head</option>
 
-                                <?php foreach($account_heads as $ah){ ?>
 
-                                <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
+                            <div class="col-col-md-9 col-lg-9">
 
-                                <?php } ?>
+                            <select name="ca_account_type" class="account_type_select_add form-control" required>
 
-                                </select>
+                            <option value="">Select Account Head</option>
+
+                            <?php foreach($account_heads as $ah){ ?>
+
+                            <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
+
+                            <?php } ?>
+
+                            </select>
 
                             </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+                          <label for="basiInput" class="form-label">Account Id</label>
+                        </div>
+
+
+                        <div class="col-col-md-9 col-lg-9">
+                        <input type="number"  name="ca_account_id" class="form-control" readonly required>
+                        </div>
+                
                         </div>
                         
-                        
-                        
-                    </div>
+
+
                     <!--end row-->
                 
             </div>
@@ -165,19 +187,25 @@
 
                                                 
 
-                                                    <div class="col-col-md-3 col-lg-3">
-                                                        <label for="basiInput" class="form-label">Account ID</label>
-                                                        <input type="text" id="edit_account_id" value="" name="ca_account_id" class="form-control">
-                                                    </div>
-
+                                                    
+                                                <div class="row">
                                                     <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Account Name</label>
+                                                    </div>
+                                                    <div class="col-col-md-9 col-lg-9">   
                                                         <input type="text" id="edit_account_name" value="" name="ca_name" class="form-control">
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-col-md-4 col-lg-4">
+
+
+                                                <div class="row">
+
+                                                    <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Account Head</label>
-                                                        
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
                                                         <select id="edit_account_type" class="form-control account_type_select_edit" name="ca_account_type">
 
                                                         <?php foreach($account_heads as $ah){ ?>
@@ -187,6 +215,20 @@
                                                         <?php } ?>
 
                                                         </select>
+                                                    </div>
+
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+                                                        <label for="basiInput" class="form-label">Account ID</label>
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+                                                    <input type="text" id="edit_account_id" value="" name="ca_account_id" class="form-control" readonly disabled>
+                                                    </div>
 
                                                     </div>
 
@@ -248,6 +290,15 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            if(data.status==0)
+                            {
+                            alertify.error(data.message).delay(2).dismissOthers();
+                            return false;
+                            }
+                            
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
@@ -357,7 +408,7 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                    alertify.error('Data Deleted Successfully').delay(8).dismissOthers();
 
                     datatable.ajax.reload( null, false )
                 }
@@ -420,6 +471,39 @@
             initializeDataTable();
         });
         /*###*/
+
+
+
+        $('select[name=ca_account_type]').change(function(){
+
+        var selected = $(this).val();
+
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/NextId",
+
+        method : "POST",
+
+        data: {id: selected},
+
+        success:function(data)
+        {
+            $('input[name="ca_account_id"]').val(data);
+        }
+
+        });
+
+
+        /*
+        var id = parseInt(selected)||0;
+
+        var head = ++id;
+        */
+
+        });
+
+
      
 
     });

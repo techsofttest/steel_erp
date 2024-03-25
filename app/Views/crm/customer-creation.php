@@ -568,7 +568,10 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select edit_account_head_select account_head_clz edit_account_head" name="cc_account_head"  required></select>
+                                                                        <select class="form-select edit_account_head_select account_head_clz edit_account_head" name="cc_account_head"  required>
+
+
+                                                                        </select>
                                                                        
                                                                     </div>
 
@@ -1528,7 +1531,7 @@
 
         /*edit droup drown*/
         
-        $(".edit_account_head_select").select2({
+        $(".edit_account_head_select1").select2({
         //placeholder: "Select Account Name",
         theme : "default form-control-",
         dropdownParent: $('#EditCustomerCreation'),

@@ -4,6 +4,8 @@ namespace App\Controllers\Accounts;
 
 use App\Controllers\BaseController;
 
+use NumberToWords\NumberToWords;
+
 
 class JournalVouchers extends BaseController
 {
@@ -38,7 +40,7 @@ class JournalVouchers extends BaseController
         $totalRecords = $this->common_model->GetTotalRecords('accounts_journal_vouchers','jv_id','DESC');
  
         ## Total number of records with filtering
-         $searchColumns = array('jv_voucher_no');
+        $searchColumns = array('jv_voucher_no');
 
         
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_vouchers','jv_id',$searchValue,$searchColumns);
@@ -140,6 +142,17 @@ class JournalVouchers extends BaseController
 
 
 
+    public function FetchReference()
+    {
+
+    $uid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV");
+
+    echo $uid;
+
+    }
+
+
+
 
     // add
     Public function Add()
@@ -151,7 +164,9 @@ class JournalVouchers extends BaseController
 
         $insert_data['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
-        $insert_data['jv_total'] = $this->request->getPost('jv_total');
+        $insert_data['jv_credit_total'] = $this->request->getPost('total_credit');
+
+        $insert_data['jv_debit_total'] = $this->request->getPost('total_debit'); 
 
         $id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_data);
 
@@ -205,33 +220,99 @@ class JournalVouchers extends BaseController
         $cond = array('jv_id' => $this->request->getPost('jv_id'));
 
         $joins = array(
-            array(
-                'table' => 'accounts_account_type',
-                'pk' => 'at_id',
-                'fk' => 'jv_account',
-                ),
-            array(
-                'table' => 'crm_sales_order',
-                'pk' => 'so_id',
-                'fk' => 'jv_sales_order_id',
-            ),
+        
         );
 
-        $journal_voucher = $this->common_model->SingleRowJoin('accounts_journal_voucher',$cond,$joins);
+        $data['jv'] = $this->common_model->SingleRowJoin('accounts_journal_vouchers',$cond,$joins);
 
-        $data['jv_voucher_no']      = $journal_voucher->jv_voucher_no;
+        $invoice_cond = array('ji_voucher_id' => $data['jv']->jv_id);
 
-        $data['jv_voucher_date']    = date('d-m-Y',strtotime($journal_voucher->jv_voucher_date));
+        $invoice_joins=array(
 
-        $data['jv_sales_order_id']  = $journal_voucher->so_order_no;
+            array(
 
-        $data['jv_account']         = $journal_voucher->at_name;
 
-        $data['jv_debit']           = $journal_voucher->jv_debit;
+                'table' => 'crm_sales_orders',
+                'pk' => 'so_id',
+                'fk' => 'ji_sales_order_id',
+                ),
 
-        $data['jv_credit']          = $journal_voucher->jv_credit;
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk' => 'ca_id',
+                'fk' => 'ji_account',
 
-        $data['jv_narration']       = $journal_voucher->jv_narration;
+            ),
+
+        );
+
+        $invoices = $this->common_model->FetchWhereJoin('accounts_journal_invoices',$invoice_cond,$invoice_joins);
+
+        $data['invoices'] = "";
+
+        $i=0;
+
+        foreach($invoices as $invoice)
+        {
+        $i++;
+
+        if($invoice->ji_sales_order_id==0)
+        {
+        $sales_order = "None";
+        }
+        else
+        {
+        $sales_order = $invoice->so_reffer_no;
+        }
+
+        if(empty($invoice->ji_debit) || $invoice->ji_debit==0)
+        {
+        
+        $debit_amount = "-";
+
+        }
+
+        else
+        {
+
+        $debit_amount = $invoice->ji_debit;
+
+        }
+
+
+
+        if(empty($invoice->ji_credit) || $invoice->ji_credit==0)
+        {
+        
+        $credit_amount = "-";
+
+        }
+
+        else
+        {
+
+        $credit_amount = $invoice->ji_credit;
+
+        }
+
+
+
+
+        $data['invoices'] .= "<tr>
+            
+        <td>".$i."</td>
+        <td>".$sales_order."</td>
+        <td>".$invoice->ca_name."</td>
+        <td>".$invoice->ji_narration."</td>
+        <td>".$debit_amount."</td>
+        <td>".$credit_amount."</td>
+      
+        </tr>";
+
+
+        }
+
+
 
         echo json_encode($data);
     }
@@ -243,85 +324,189 @@ class JournalVouchers extends BaseController
     public function Edit()
     {
         
-        $cond = array('jv_id' => $this->request->getPost('ID'));
+        $sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
-        
+        $cond = array('jv_id' => $this->request->getPost('jv_id'));
 
         $joins = array(
-            array(
-                'table' => 'accounts_account_type',
-                'pk' => 'at_id',
-                'fk' => 'jv_account',
-                ),
-            array(
-                'table' => 'crm_sales_order',
-                'pk' => 'so_id',
-                'fk' => 'jv_sales_order_id',
-            ),
+        
         );
 
-        $fetch_data = $this->common_model->SingleRowJoin('accounts_journal_voucher',$cond,$joins);
+        $data['jv'] = $this->common_model->SingleRowJoin('accounts_journal_vouchers',$cond,$joins);
 
-        $sales_order = $this->common_model->FetchAllOrder('crm_sales_order','so_id','desc');
+       
 
-        $accounts_type = $this->common_model->FetchAllOrder('accounts_account_type','at_id','desc');
+        $invoice_cond = array('ji_voucher_id' => $data['jv']->jv_id);
 
-        $data['jv_voucher_no']     = $fetch_data->jv_voucher_no;
+        $invoice_joins=array(
 
-        $data['jv_voucher_date']   = $fetch_data->jv_voucher_date;
+            array(
+                'table' => 'crm_sales_orders',
+                'pk' => 'so_id',
+                'fk' => 'ji_sales_order_id',
+                ),
 
-        $data['jv_debit']          = $fetch_data->jv_debit;
+        );
 
-        $data['jv_credit']         = $fetch_data->jv_credit;
+        $invoices = $this->common_model->FetchWhereJoin('accounts_journal_invoices',$invoice_cond,$invoice_joins);
 
-        $data['jv_narration']      = $fetch_data->jv_narration;
-         
-        $data['order'] ="";
+        $data['invoices'] = "";
 
-        foreach($sales_order as $order)
+        $i=0;
+
+        foreach($invoices as $invoice)
         {
-            $data['order'] .='<option value='.$order->so_id.'';
-            if($order->so_id == $fetch_data->jv_sales_order_id){
-            $data['order'] .=    " selected ";}
-            $data['order'] .='>' .$order->so_order_no. '</option>'; 
+        $i++;
+
+        if($invoice->ji_sales_order_id==0)
+        {
+        $sales_order = "None";
         }
-        
-        $data['account']="";
-        
-        foreach($accounts_type as $type)
+        else
         {
-            $data['account'] .='<option value='.$type->at_id.'';
-            if($type->at_id == $fetch_data->jv_account){
-            $data['account'] .= " selected ";}
-            $data['account'] .= '>'.$type->at_name.'</option>';
-            
+        $sales_order = $invoice->so_reffer_no;
+        }
+
+        if(empty($invoice->ji_debit) || $invoice->ji_debit==0)
+        {
+        
+        $debit_amount = 0;
+
+        }
+
+        else
+        {
+
+        $debit_amount = $invoice->ji_debit;
+
+        }
+
+
+
+        if(empty($invoice->ji_credit) || $invoice->ji_credit==0)
+        {
+        
+        $credit_amount = 0;
+
+        }
+
+        else
+        {
+
+        $credit_amount = $invoice->ji_credit;
+
+        }
+
+
+        $no_so="selected";
+
+        $options = "";
+
+        foreach($sales_orders as $so)
+        {
+
+        if($so->so_id == $invoice->ji_sales_order_id)
+        {
+        $selected = "selected";
+        $no_so= "";
+        }
+        else
+        {
+        $selected = "";
+        }
+
+        $options .='
+        
+        <option value="'.$so->so_id.'" '.$selected.'>'.$so->so_reffer_no.'</option>
+
+        ';
+
+        }
+
+
+        $data['invoices'] .= "<tr class=\"so_row\">
+
+        <td>".$i."
+        <input type=\"hidden\" name=\"jv_invoice_id[]\" value=\"".$invoice->ji_id."\">
+        </td>
+
+        <td><select name=\"jv_sale_invoice[]\" class=\"form-control\">
+        
+        <option value=\"0\" ".$no_so.">None</option>
+
+        ".$options."
+        
+        </select></td>
+        
+        <td><input name=\"jv_remarks[]\" type=\"text\" class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
+        <td><input name=\"jv_debit[]\" type=\"number\" class=\"form-control debit_amount_edit\" value=\"".$debit_amount."\"></td>
+        <td><input name=\"jv_credit[]\" type=\"number\" class=\"form-control credit_amount_edit\" value=\"".$credit_amount."\" ></td>
+      
+        </tr>";
+
+
         }
 
         echo json_encode($data);
+
+    
     }
 
 
 
-   // update 
+    // update 
     public function Update()
     {    
-        $cond = array('jv_id' => $this->request->getPost('jv_id'));
+     
+        $id = $this->request->getPost('jv_id');
+
+        $update_data['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
+
+        $update_data['jv_credit_total'] = $this->request->getPost('total_credit');
+
+        $update_data['jv_debit_total'] = $this->request->getPost('total_debit');
         
-        $update_data = $this->request->getPost(); 
 
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('jv_id', $update_data)) 
+        $this->common_model->EditData($update_data,array('jv_id' => $id),'accounts_journal_vouchers');
+
+
+        for($i=0;$i<count($this->request->getPost('jv_sale_invoice'));$i++)
         {
-             unset($update_data['jv_id']);
-        }       
 
-        $update_data['jv_added_by'] = 0; 
+            $invoice_id = $_POST['jv_invoice_id'][$i];
 
-        $update_data['jv_modify_date'] = date('Y-m-d'); 
+            $sales_invoice = $_POST['jv_sale_invoice'][$i];
+
+           // $account = $_POST['jv_account'][$i];
+
+            $debit = $_POST['jv_debit'][$i];
+
+            $credit = $_POST['jv_credit'][$i];
+
+            $remarks = $_POST['jv_remarks'][$i];
+
+            $update_invoice['ji_sales_order_id'] =  $sales_invoice;
+
+            //$update_invoice['ji_account'] = $account;
+
+            $update_invoice['ji_debit'] = $debit;
+
+            $update_invoice['ji_credit'] = $credit;
+
+            $update_invoice['ji_narration'] = $remarks;
+
+            $update_invoice['ji_voucher_id'] = $id;
+
+            $this->common_model->EditData($update_invoice,array('ji_id' => $invoice_id),'accounts_journal_invoices');
+
+
+        }
 
 
 
-        $this->common_model->EditData($update_data,$cond,'accounts_journal_voucher');
+
+
+
        
     }
 
@@ -331,9 +516,13 @@ class JournalVouchers extends BaseController
     //delete 
     public function Delete()
     {
-        $cond = array('jv_id' => $this->request->getPost('ID'));
+        $cond = array('jv_id' => $this->request->getPost('id'));
 
-        $this->common_model->DeleteData('accounts_journal_voucher',$cond);
+        $this->common_model->DeleteData('accounts_journal_vouchers',$cond);
+
+        $cond_invoices = array('ji_voucher_id' => $this->request->getPost('id'));
+
+        $this->common_model->DeleteData('accounts_journal_invoices',$cond_invoices);
 
         
     }
@@ -344,10 +533,268 @@ class JournalVouchers extends BaseController
         $cond = array('so_id' => $this->request->getPost('ID'));
         $fetch_data = $this->common_model->SingleRow('crm_sales_order',$cond);
         $data['order_no'] = $fetch_data->so_order_no;
-
         echo json_encode($data);
         
     }
+
+
+
+
+
+
+    public function Print(){
+
+    $id = 1;
+
+    $cond = array('jv_id' => $id);
+
+     ##Joins if any //Pass Joins as Multi dim array
+
+     $joins = array(
+
+    );
+
+    $jv = $this->common_model->SingleRowJoin('accounts_journal_vouchers',$cond,$joins);
+
+    $total_amount = NumberToWords::transformNumber('en',$jv->jv_total); // outputs "fifty dollars ninety nine cents"
+
+
+    $joins_inv = array(
+
+        array(
+            'table' => 'crm_sales_orders',
+            'pk' => 'so_id',
+            'fk' => 'ji_sales_order_id',
+           ),
+
+
+           array(
+            'table' => 'accounts_charts_of_accounts',
+            'pk' => 'ca_id',
+            'fk' => 'ji_account',
+            ),
+
+
+    );
+
+    $orders = $this->common_model->FetchWhereJoin('accounts_journal_invoices',array('ji_voucher_id'=>$id),$joins_inv);
+
+
+    $orders_sec ="";
+
+    foreach($orders as $order)
+    {
+
+    $debit="";
+
+    $credit="";
+
+    $sales_order ="None";
+
+    if($order->ji_sales_order_id!=0)
+    {
+    $sales_order = $order->so_order_no;
+    }
+
+    if($order->ji_debit>0)
+    {
+    $debit =$order->ji_debit;
+    }
+
+    if($order->ji_credit>0)
+    {
+    $credit = $order->ji_credit;
+    }
+
+    $orders_sec .='<tr>
+    
+    <td>'.$sales_order.'</td>
+
+    <td>'.$order->ca_account_id.'</td>
+    
+    <td>'.$order->ji_narration.'</td>
+
+    <td>'.$debit.'</td>
+
+    <td>'.$credit.'</td>
+
+    </tr>';
+
+
+    }
+
+
+
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter',
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5, 
+        ]);
+    
+        $html ='
+    
+        <style>
+        th, td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        </style>
+    
+        <table>
+        
+        <tr>
+        
+        <td>
+    
+        <h3>Al Fuzail Engineering Services WLL</h3>
+        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+        
+        
+        </td>
+        
+        </tr>
+    
+        </table>
+    
+    
+    
+        <table width="100%" style="margin-top:10px;">
+        
+    
+        <tr width="100%">
+        
+        <td align="right"><h3>Journal Voucher</h3></td>
+    
+        </tr>
+    
+        </table>
+    
+    
+        <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Reference : '.$jv->jv_voucher_no.'
+        
+        </td>
+        
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Date : '.date('d-m-Y',strtotime($jv->jv_date)).'
+        
+        </td>
+        
+     
+        </tr>
+    
+    
+        <tr>
+        
+        <td width="50%">
+        
+        Division : Al Fuzail Engineering Services
+        
+        </td>
+        
+        
+        </tr>
+    
+    
+    
+        
+        </table>
+    
+    
+    
+    
+        <table  width="100%" style="margin-top:2px;">
+        
+    
+        <tr  style="border-bottom:3px solid;">
+        
+        <th align="left">Sales Order No</th>
+    
+        <th align="left">Account No</th>
+    
+        <th align="left">Account Description</th>
+    
+        <th align="left">Debit</th>
+    
+        <th align="left">Credit</th>
+    
+        </tr>
+    
+    
+    
+
+        '.$orders_sec.'
+        
+
+        
+        </table>
+    
+        ';
+    
+       
+       
+        $footer = '
+
+        <table width="100%">
+        
+        <tr>
+        
+        <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+    
+        <td colspan="1" align="left" style="text-align:right;"><b>'.$jv->jv_total.'</b></td>
+    
+        </tr>
+    
+        </table>
+    
+    
+        <table>
+        
+        <tr>
+    
+        <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+    
+        <th width="25%" style="padding-right:60px;">Received by:</th>
+    
+        <th width="25%" style="padding-right:60px;">Finance Manager</th>
+    
+        <th width="25%" style="padding-right:60px;">CEO</th>
+    
+        </tr>
+    
+        </table>
+
+        ';
+
+    
+        
+        $mpdf->WriteHTML($html);
+        $mpdf->SetFooter($footer);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output();
+    
+        }
+
+
+
+
+
 
 
 

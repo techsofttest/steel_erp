@@ -6,7 +6,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
-                    Web Desined By Techsoft
+                    Web Designed By Techsoft
                 </div>
             </div>
         </div>
@@ -113,6 +113,18 @@
                
                
             });
+
+            $('body').on('focus',".datepicker", function(){
+
+            $(this).datepicker({ dateFormat: "dd-MM-yy" });
+
+            $(this).attr("autocomplete", "off");
+
+            });
+
+            
+
+
         });
 
 

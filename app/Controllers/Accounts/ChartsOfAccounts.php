@@ -52,7 +52,7 @@ class ChartsOfAccounts extends BaseController
             'fk' => 'ca_account_type',
             ),
             */
-
+            
             
             array(
                 'table' => 'accounts_account_heads',
@@ -68,8 +68,18 @@ class ChartsOfAccounts extends BaseController
 
         $i=1;
         foreach($records as $record ){
+
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ca_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ca_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
+            if(!empty($record->ca_customer_id))
+            {
+            $customer = $record->cc_customer_name;
+            }
+            else
+            {
+            $customer="---";
+            }
+
            $data[] = array( 
               "ca_id"=>$i,
               'at_name' => $record->ah_account_name,
@@ -135,15 +145,97 @@ class ChartsOfAccounts extends BaseController
     }
 
 
+
+
+
     // add account head
     Public function Add()
     {   
+
+        $ca_id = $this->request->getPost('ca_account_id');
+
+        $ca_name = $this->request->getPost('ca_name');
+
+        $id_check = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_account_id' => $ca_id));
+
+        $name_check = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_name' => $ca_name));
+
+
+        if(!empty($id_check))
+        {
+
+        $data['message']="Duplicate Id";
+        $data['status']=0;
+        
+        }
+
+        else if(!empty($name_check))
+        {
+
+        $data['message']="Duplicate Name";
+        $data['status']=0;
+
+        }
+
+        else{
+        
+        $data['status']=1;
 
         $insert_data = $_POST;
 
         $id = $this->common_model->InsertData('accounts_charts_of_accounts',$insert_data);
 
+        }
+
+        echo json_encode($data);
+
     }
+
+
+
+
+    public function NextId()
+    {
+
+        if($_POST)
+        {
+
+            $head_id = $this->request->getPost('id');
+
+            $next_id = $this->common_model->FetchNextHeadId($head_id);
+
+            /*
+
+            $head_row = $this->common_model->SingleRow('accounts_account_heads',array('ah_id' => $head_id));
+
+            $next_id = $head_row->ah_head_id;
+
+            $next_id++;
+
+            $id_check = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_account_id' => $next_id));
+
+            while(!empty($id_check))
+            {
+
+            $next_id++; 
+
+            $id_check = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_account_id' => $next_id));
+
+            }
+
+            */
+            
+            echo $next_id;
+
+        }
+    
+
+    }
+
+
+
+
+
 
     //refresh table with ajax
  

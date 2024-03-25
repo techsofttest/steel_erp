@@ -103,6 +103,35 @@ class AccountHead extends BaseController
     // add account head
     Public function Add()
     {   
+
+        $a_id = $this->request->getPost('ah_head_id');
+
+        $a_name = $this->request->getPost('ah_account_name');
+
+
+        $id_check = $this->common_model->SingleRow('accounts_account_heads',array('ah_head_id' => $a_id));
+
+        $name_check = $this->common_model->SingleRow('accounts_account_heads',array('ah_account_name' => $a_name));
+
+
+        if(!empty($id_check))
+        {
+
+        $data['message'] = "Duplicate Id";
+        $data['status']=0;
+        
+        }
+        else if(!empty($name_check))
+        {
+
+        $data['message'] = "Duplicate Name";
+        $data['status']=0;
+
+        }
+
+        else{
+        
+        $data['status']=1;
         
         $insert_data = $this->request->getPost();
 
@@ -111,6 +140,10 @@ class AccountHead extends BaseController
         $insert_data['ah_added_date'] = date('Y-m-d'); 
 
         $id = $this->common_model->InsertData('accounts_account_heads',$insert_data);
+
+        }
+
+        echo json_encode($data);
 
     }
 
