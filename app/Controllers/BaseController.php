@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+
 /**
  * Class BaseController
  *
@@ -54,19 +55,24 @@ abstract class BaseController extends Controller
     /* Common Model */
     public $common_model;
 
+    public $report_model;
+
     public $session;
 
     public $data;
-
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
+        
+
 
 
         // Preload any models, libraries, etc, here.
+
+        $this->report_model = new \App\Models\ReportModel();
 
         $this->common_model = new \App\Models\CommonModel();
 

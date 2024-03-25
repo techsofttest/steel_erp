@@ -135,11 +135,6 @@ class CommonModel extends Model
 
 
 
-
-
-
-
-
     public function CountWhere($table,$cond)
     {
         $query = $this->db->table($table)
@@ -161,6 +156,100 @@ class CommonModel extends Model
         return $query->getResult();
 
     }
+
+
+    //Fetch Sum Of Coloumn Where
+
+
+    public function FetchSum($table,$column,$cond="")
+    {
+        $query = $this->db->table($table);
+
+        $query->selectSum($column);
+
+        if($cond !="")
+        {
+        $query->where($cond);
+        }
+
+        $result = $query->get()->getRow();
+
+        return $result->$column;
+        
+    }
+
+
+
+    public function FetchMax($table,$column,$cond="")
+    {
+
+        $query = $this->db->table($table);
+
+        $query->selectMax($column);
+
+        if($cond !="")
+        {
+        $query->where($cond);
+        }
+
+        $result = $query->get()->getRow();
+
+        return $result->$column;
+
+    }
+
+
+
+    //Account Head Id Increment
+
+    public function FetchNextHeadId($id)
+    {
+
+        $ah_query = $this->db->table('accounts_account_heads');
+
+        $ah_query->select('ah_head_id');
+
+        $ah_query->where('ah_id',$id);
+
+        $ah_result = $ah_query->get()->getRow();
+
+
+        $ca_query = $this->db->table('accounts_charts_of_accounts');
+
+        $ca_query->selectMax('ca_account_id');
+
+        $ca_query->where('ca_account_type',$id);
+       
+        $ca_result = $ca_query->get()->getRow();
+
+
+        if(!empty($ca_result->ca_account_id))
+
+        {
+
+        $head_id = $ca_result->ca_account_id;
+
+        }
+
+        else
+        {
+
+        $head_id = $ah_result->ah_head_id;
+
+        }
+
+        $head_id++;
+
+        return $head_id;
+
+    }
+
+
+
+
+
+
+
 
     //Fetch where Join
     public function FetchWhereJoin($table,$cond,$joins)
