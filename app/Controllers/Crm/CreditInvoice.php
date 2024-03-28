@@ -90,8 +90,7 @@ class CreditInvoice extends BaseController
 
     //view page
     public function index()
-    {   
-        
+    {     
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
@@ -104,7 +103,7 @@ class CreditInvoice extends BaseController
         
         $data['status_invoice'] = $this->common_model->FetchAllOrder('master_status_invoice','msi_id','desc');
 
-        $data['credit_invoice_id'] = $this->common_model->FetchNextId('crm_credit_invoice','CINV'); 
+        $data['credit_invoice_id'] = $this->common_model->FetchNextId('crm_credit_invoice','CRN'); 
 
         $data['content'] = view('crm/credit-invoice',$data);
 
@@ -169,7 +168,7 @@ class CreditInvoice extends BaseController
 
                 'cci_reffer_no'      => $this->request->getPost('cci_reffer_no'),
     
-                'cci_date'           => $this->request->getPost('cci_date'),
+                'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
     
                 'cci_customer'       => $this->request->getPost('cci_customer'),
     
@@ -201,7 +200,7 @@ class CreditInvoice extends BaseController
 
                 'cci_reffer_no'      => $this->request->getPost('cci_reffer_no'),
     
-                'cci_date'           => $this->request->getPost('cci_date'),
+                'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
     
                 'cci_customer'       => $this->request->getPost('cci_customer'),
     
@@ -283,7 +282,7 @@ class CreditInvoice extends BaseController
 
                     $cond3 =  array('dpd_invoice_flag' => 1);
 
-                    $delivery_note_prod1 =  $this->common_model->CheckTwiceCond1('crm_delivery_product_details',$cond2,$cond3);
+                    $delivery_note_prod1 =  $this->common_model->CheckTwiceCond1('crm_delivery_product_details',$cond,$cond3);
                     
                     if(count($delivery_note_prod)  == count($delivery_note_prod1))
                     {  
@@ -683,8 +682,8 @@ class CreditInvoice extends BaseController
                     $data['contact_person'] .= ' selected';
                 }
                 $data['contact_person'] .= '>' . $con_det->contact_person . '</option>';
-
                 
+ 
             }
 
 
@@ -1035,6 +1034,18 @@ class CreditInvoice extends BaseController
             // Output JSON encoded data
             echo json_encode($data);
         }
+
+
+
+        public function FetchReference()
+        {
+    
+            $uid = $this->common_model->FetchNextId('crm_sales_return',"CRN");
+        
+            echo $uid;
+    
+        }
+        
 
         
 

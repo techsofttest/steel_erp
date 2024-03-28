@@ -776,7 +776,7 @@ class CommonModel extends Model
 
     //check date
     
-    public function CheckDate($from_date,$from_date_col,$to_date,$to_date_col,$customer,$customer_col,$sales_executive,$sales_executive_col,$product,$prod_col,$sales_order,$sales_order_col,$table,$joins)
+    public function CheckDate($from_date,$from_date_col,$to_date,$to_date_col,$customer,$customer_col,$sales_executive,$sales_executive_col,$product,$prod_col,$sales_order,$sales_order_col,$table,$joins,$group_by_col)
     {
         $query = $this->db->table($table)
             ->select('*');
@@ -826,11 +826,13 @@ class CommonModel extends Model
         
         if(!empty($join))
         {
-            $query->groupBy($join['table'] . '.' . $prod_col);
+            $query->groupBy($table. '.' . $group_by_col);
 
         }
        
         $result = $query->get()->getResult();
+
+        //echo $this->db->getLastQuery(); exit();
 
         return $result;
 
@@ -999,8 +1001,8 @@ class CommonModel extends Model
         $query = $this->db->table('crm_credit_invoice_prod_det')
                         ->select('*')
                         ->where('ipd_credit_invoice', $pid)
-                        ->join('crm_products', 'crm_products.product_id = Crm_credit_invoice_prod_det.ipd_prod_detl', 'left')
-                        ->groupBy('Crm_credit_invoice_prod_det.ipd_prod_detl') 
+                        ->join('crm_products', 'crm_products.product_id = crm_credit_invoice_prod_det.ipd_prod_detl', 'left')
+                        ->groupBy('crm_credit_invoice_prod_det.ipd_prod_detl') 
                         ->get();
                         return $query->getResult();
     }
