@@ -397,7 +397,9 @@
         $("body").on('click', '.delete_btn', function(){ 
             
             if (!confirm('Are you absolutely sure you want to delete?')) return;
+
             var id = $(this).data('id');
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/Delete",
@@ -408,9 +410,26 @@
 
                 success:function(data)
                 {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status==0)
+                    {
+
+                    alertify.error('Account is in use.').delay(8).dismissOthers();   
+
+                    return false
+
+                    }
+
+                    else{
+
                     alertify.error('Data Deleted Successfully').delay(8).dismissOthers();
 
                     datatable.ajax.reload( null, false )
+
+                    }
+
                 }
 
 

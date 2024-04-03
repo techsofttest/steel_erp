@@ -140,7 +140,7 @@ class CustomerCreation extends BaseController
 
         $coa_data['ca_account_type'] = $this->request->getPost('cc_account_head');
 
-        $coa_data['ca_account_id'] = $this->request->getPost('cc_account_id');
+        $coa_data['ca_customer'] = $this->request->getPost('cc_account_id');
 
         $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
@@ -596,6 +596,9 @@ class CustomerCreation extends BaseController
     //delete account head
     public function Delete()
     {
+
+        $customer_id = $this->request->getPost('ID');
+
         $cond = array('cc_id' => $this->request->getPost('ID'));
 
         $cus_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
@@ -631,6 +634,11 @@ class CustomerCreation extends BaseController
 
         }
 
+        //Delete Charts Of Accounts
+
+        $coa_cond = array('ca_customer' => $customer_id);
+
+        $this->common_model->DeleteData('ca_customer',$coa_cond);
 
 
     }

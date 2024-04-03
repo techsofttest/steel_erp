@@ -284,14 +284,74 @@ class ChartsOfAccounts extends BaseController
     }
 
     //delete account head
-    public function Delete()
+    public function Delete($coa_id="")
     {
+        //Check 
+        if($coa_id=="")
+        {
+        $coa_id = $this->request->getPost('id');
+        }
+
+        $receipts = $this->common_model->CountWhere('accounts_receipts',array('r_debit_account' => $coa_id));
+
+        $payments = $this->common_model->CountWhere('accounts_payments',array('pay_credit_account' => $coa_id));
+
+        $return['status'] = 0;
+
+        if($receipts ==0 && $payments==0)
+
+        {
+
         $cond = array('ca_id' => $this->request->getPost('id'));
 
         $this->common_model->DeleteData('accounts_charts_of_accounts',$cond);
 
+        $return['status'] = 1;
+
+        }
+
+        else
+        {
+
+        $return['status'] = 0;
+
+        }
+
+
+        echo json_encode($return);
+
       
     }
+
+
+
+
+
+
+    //Common For Select 2 Dropdown
+
+    public function FetchAccounts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+
+
+
 
 
 
