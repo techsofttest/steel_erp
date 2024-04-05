@@ -189,7 +189,7 @@ class CommonModel extends Model
 
         if($cond !="")
         {
-        $query->where($cond);
+            $query->where($cond);
         }
 
         $result = $query->get()->getRow();
@@ -531,6 +531,7 @@ class CommonModel extends Model
     public function FetchCustomerCreation($table,$joins)
     {
         $query= $this->db->table($table);
+
         if(!empty($joins))
         {
             foreach($joins as $join)
@@ -539,12 +540,13 @@ class CommonModel extends Model
             }
         }
         $query->groupBy('cc_id');
+        
         $result = $query->get()->getResult();
 
         return $result;
     }
-    
 
+   
     //For Next Autoincrement
 
     public function FetchNextId($table,$prefix)
@@ -1170,13 +1172,18 @@ class CommonModel extends Model
     }
 
 
-    public function FetchDataByGroup($table,$groupBy,$cond,$joins)
+   /* public function FetchDataByGroup($table,$groupBy,$cond,$cond2,$joins)
     {
         $query = $this->db->table($table)
         
         ->select('*')
 
-        ->where($cond)
+        ->where($cond);
+
+        if(!empty($cond2))
+        {
+            ->where($cond2)
+        }
 
         ->groupBy($groupBy);
 
@@ -1191,7 +1198,32 @@ class CommonModel extends Model
        //echo $this->db->getLastQuery(); exit();
 
         return $result;
+    }*/
+
+
+    public function FetchDataByGroup($table, $groupBy, $cond, $cond2, $joins)
+    {
+        $query = $this->db->table($table)
+            ->select('*')
+            ->where($cond);
+
+        if (!empty($cond2)) {
+            $query->where($cond2);
+        }
+
+        $query->groupBy($groupBy);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $query->join($join['table'], '' . $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        $result = $query->get()->getResult();
+      
+        return $result;
     }
+
 
 
     public function FetchCreditProd($table,$cond,$cond2,$joins)
