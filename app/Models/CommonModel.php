@@ -73,6 +73,16 @@ class CommonModel extends Model
 
     //Fetch Single 
 
+    public function SingleRowCol($table,$col,$cond)
+    {
+        return $this->db
+        ->table($table)
+        ->select($col)
+        ->where($cond)
+        ->get()
+        ->getRow();
+    }
+
     public function SingleRow($table,$cond)
     {
         return $this->db

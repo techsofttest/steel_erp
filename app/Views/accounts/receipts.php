@@ -179,7 +179,7 @@
 
                                     <thead>
                                         <tr>
-                                        <th>Date</th>
+                                        <th>SL No</th>
                                         <th>Credit Account</th>
                                         <th>Remarks</th>
                                         <th>Amount</th>
@@ -903,17 +903,9 @@
                         </div>
 
 
-                        <div class="col-col-md-9 col-lg-9">
+                        <div class="col-col-md-9 col-lg-9 select2_parent">
 
-                        <select class="form-control" name="r_debit_account">
-
-                        <option value="">Select Account</option>
-
-                        <?php foreach($accounts as $a_ac){ ?>
-
-                         <option value="<?php echo $a_ac->ca_id; ?>"><?php echo $a_ac->ca_name; ?></option>
-
-                        <?php } ?>
+                        <select class="form-control debit_account_select2" name="r_debit_account">
 
                         </select>
 
@@ -982,38 +974,7 @@
 
 
 
-                      <!--
-
-                    <div class="row align-items-center mb-2">
-                        
-                        <div class="col-col-md-3 col-lg-3">
-                                
-                            <label for="basiInput" class="form-label">Credit Account</label>
-                                
-                        </div>
-
-
-                      
-                        <div class="col-col-md-9 col-lg-9">
-
-                            <select name="r_credit_account" class="form-control" required>
-
-                            <option value="">Select Credit Account</option>
-
-                            <?php foreach($customers as $cus) { ?>
-
-                            <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                            <?php } ?>
-
-                            </select>
-
-                        </div>
-                        
-
-                    </div>
-
-                    -->
+                    
 
 
 
@@ -1086,7 +1047,7 @@
 
                                     <thead>
                                         <tr>
-                                        <th>Date</th>
+                                        <th>Sl No</th>
                                         <th>Credit Account</th>
                                         <th>Amount</th>
                                         <th>Link</th>
@@ -1103,24 +1064,18 @@
                                     <td>
 
 
-                                    <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
+                                    <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
 
-                                    <input class="form-control credit_date datepicker" type="text" name="inv_date[]">
-                                
+
+                                    
                                     </td>
 
 
-                                    <td> 
+                                    <td class="select2_parent"> 
 
-                                       <select class="form-control credit_account" name="r_credit_account[]">
+                                       <select class="form-control credit_account credit_account_select2" name="r_credit_account[]">
 
-                                       <option value="">Select Credit Account</option>
-
-                                       <?php foreach($customers as $cus) { ?>
-
-                                        <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                        <?php } ?>
+                                    
 
                                        </select> 
                                     </td>
@@ -1175,7 +1130,7 @@
 
                                     <td colspan="1"></td>
 
-                                    <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+                                    <td colspan="3" align="left" class="amount_in_words_add"></td>
 
                                     <td align="right" colspan="3">Total</td>
 
@@ -1439,13 +1394,7 @@
 
                         <select id="r_debit_account_edit" class="form-control" name="r_debit_account">
 
-                        <option value="">Select Account</option>
-
-                        <?php foreach($accounts as $a_ac){ ?>
-
-                         <option value="<?php echo $a_ac->ca_id; ?>"><?php echo $a_ac->ca_name; ?></option>
-
-                        <?php } ?>
+                    
 
                         </select>
 
@@ -1531,12 +1480,6 @@
                             <select name="r_credit_account" class="form-control" required>
 
                             <option value="">Select Credit Account</option>
-
-                            <?php foreach($customers as $cus) { ?>
-
-                            <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                            <?php } ?>
 
                             </select>
 
@@ -1736,7 +1679,7 @@
 
             <thead>
                 <tr>
-                <th>Date</th>
+                <th>Sl No</th>
                 <th>Credit Account</th>
                 <th>Amount</th>
                 <th>Narration</th>
@@ -1758,13 +1701,10 @@
 
                     <tr class="edit_add_credit">
 
-                    <td>
-
+                                    <td>
 
                                     <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
 
-                                    <input class="form-control credit_date datepicker" type="text" readonly name="inv_date[]">
-                                
                                     </td>
 
 
@@ -1772,14 +1712,7 @@
 
                                        <select class="form-control credit_account" name="r_credit_account[]">
 
-                                       <option value="">Select Credit Account</option>
-
-                                       <?php foreach($customers as $cus) { ?>
-
-                                        <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                        <?php } ?>
-
+                                     
                                        </select> 
                                     </td>
 
@@ -1814,7 +1747,7 @@
 
             <td colspan="1"></td>
 
-            <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+            <td colspan="3" align="left" class="amount_in_words_edit"></td>
 
             <td align="right" colspan="3">Total</td>
 
@@ -1890,7 +1823,6 @@
                 },
                 messages: {
                     required: 'This field is required',
-                    
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
@@ -2183,32 +2115,40 @@
 
         var max_fieldcost = 30;
 
+        var cc = $('.invoice_row').length;
+
         $("body").on('click', '.add_more', function(){
 
-
-         
             var cc = $('.invoice_row').length;
 
 			if(cc < max_fieldcost){ 
 
-            cc++;
             //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
           
             var $clone =  $('.invoice_row:first').clone();
 
             $clone.find("input").val("");
 
-            $clone.find("select").val("");
+            $clone.find(".credit_account_select2").val('');
 
-            $clone.find(".sl_no").html(cc);
+            $clone.find(".credit_account_select2").removeAttr('data-select2-id');
+
+            $clone.find('.select2').remove();
+
+
+            //$clone.find(".sl_no").html(cc);
 
             $clone.find(".del_elem").show();
 
-            $clone.find('.credit_sl_no').val('2');
+            //$clone.find('.credit_sl_no').val(cc);
 
             $clone.insertAfter('.invoice_row:last');
 
+            slno();
+
 			}
+
+            InitAccountsSelect2('.credit_account_select2','.invoice_row');
 
 	    });
 
@@ -2220,9 +2160,25 @@
             cc--;
             //totalCalcutate();                                                                           
             //grossCalculate();
+            slno();
         });
 
         /**/
+
+
+        function slno(){
+
+        var pp =1;
+
+        $('body .invoice_row').each(function() {
+
+        $(this).find('.credit_sl_no').val(pp);
+
+        pp++;
+
+        });
+
+        }
 
 
 
@@ -2717,6 +2673,32 @@
 
 
 
+        $("body").on('change','.invoice_add_check',function(){
+
+        parent = $(this).closest('tr');
+
+        if($(this).prop('checked')==true)
+
+        {
+
+        var total_amount = parent.find('.invoice_total_amount').val();
+
+        parent.find('.invoice_receipt_amount').val(total_amount);
+        
+        }
+
+        else
+        {
+
+        parent.find('.invoice_receipt_amount').val(0);   
+
+        }
+
+
+        });
+
+
+
 
 
 
@@ -2878,6 +2860,8 @@
             $('#added_id').val('');
 
             $('#add_form')[0].reset();
+
+            $('.invoice_row').not(':first').remove();
 
             $.ajax({
 
@@ -3244,6 +3228,77 @@
 
         });
 
+
+
+
+        
+        $('body').on('change','.so_row',function(){
+
+var so_parent = $(this).closest('.so_row');
+
+var so_id = $(this).val();
+
+$.ajax({
+
+url : "<?php echo base_url(); ?>Receipts/FetchSoDetails",
+
+
+});
+
+});
+
+
+
+
+
+
+/* Accounts Init Select 2 */
+
+                function InitAccountsSelect2(classname,parent){
+                    $('body '+classname+':last').select2({
+                        placeholder: "Select Account",
+                        theme : "default form-control-",
+                        dropdownParent: $($(''+classname+':last').closest(''+parent+'')),
+                        ajax: {
+                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                            dataType: 'json',
+                            delay: 250,
+                            cache: false,
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    page: params.page || 1,
+                                };
+                            },
+                            processResults: function(data, params) {
+                            
+                                var page = params.page || 1;
+                                return {
+                                    results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                                    pagination: {
+                                        more: (page * 10) <= data.total_count
+                                    }
+                                };
+                            },              
+                        }
+                    })
+                }
+
+                InitAccountsSelect2('.debit_account_select2','.select2_parent');
+
+                InitAccountsSelect2('.credit_account_select2','.invoice_row');
+
+                /* ### */
+
+
+
+
+
+
+
+
      
     });
 
@@ -3271,32 +3326,15 @@
 
            var resultQuotation = numberToWords.toWords(total);
 
-            $(".sales_quotation_amount_in_word").text(resultQuotation);
+            $(".amount_in_words_add .amount_in_words_edit").text(resultQuotation);
 
-            $(".sales_quotation_amount_in_word_val").val(resultQuotation);
+            $(".amount_in_words_val").val(resultQuotation);
            
 
         }
 
 
-
-        $('body').on('change','.so_row',function(){
-
-        var so_parent = $(this).closest('.so_row');
-
-        var so_id = $(this).val();
-
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Receipts/FetchSoDetails",
-
-
-        });
-
-
-        });
-
-
+      
 
 
 </script>
