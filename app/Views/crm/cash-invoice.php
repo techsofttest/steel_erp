@@ -288,6 +288,14 @@
                                                         </thead>
                                                         
                                                         <tbody  class="travelerinfo product-more2"></tbody>
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5"></td>
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="ci_total_amount" class="amount_total form-control" readonly></td>
+                                                            </tr>
+                                                        </tbody>
                                                         
                                                     </table>
                                                 </div>
@@ -541,16 +549,16 @@
                                                            
                                 </thead>
                                                         
-                                <tbody  class="travelerinfo">
+                                <tbody  class="travelerinfo adjustment_table">
                                     
-                                    <tr>
+                                    <!--<tr>
                                         <td>1</td>
                                         <td><input type="date" name="" value="30-01-2024" class="form-control" required></td>
                                         <td><input type="text" name="" value="RF567" class="form-control" required></td>
                                         <td><input type="text" name="" value="420" class="form-control" required></td>
                                         <td><input type="text" name="" value="2" class="form-control" required></td>
                                         <td><input type="checkbox" name="" value="" class="" required></td>
-                                    </tr>
+                                    </tr>--->
                                     
                                 </tbody>
 
@@ -565,6 +573,17 @@
                                             
                                             
                 </div>
+
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="" name="" value="">                                
+                    <span class="btn btn btn-success adjustment_close">Save</span>
+
+                </div>
+
+
+
 
 
                                         
@@ -1296,7 +1315,9 @@
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
                         success: function(data) {
-                     
+                            
+                            var data = JSON.parse(data);
+
                             $('#add_form1')[0].reset();
 
                             //$('select').empty();
@@ -1308,6 +1329,10 @@
                             $('#CashInvoice').modal('hide');
 
                             $('#SaveModal').modal('show');
+
+                            $('.adjustment_table').html(data.adjustment_data);
+
+                            $('.customer_id').val('').trigger('change');
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
@@ -1377,9 +1402,7 @@
         $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
-
-           alert(id)
-            
+   
             //Fetch Contact Person
             $.ajax({
 
@@ -1399,7 +1422,6 @@
 
                     $(".payment_terms").val(data.credit_term);
 
-   
                 }
 
 
@@ -1443,6 +1465,8 @@
                     $(".cont_person").html(data.contact_detail);
 
                     $(".contactProduct3").html(data.select_table);
+
+                   // $(".contactProduct3").val(data.total_amount);
                     
                     slno();
                    
@@ -1761,17 +1785,65 @@
 
            TotalAmount();
 
-       });
+        });
+
+
+        /**/
+
+        $("body").on('keyup', '.qtn_clz_id', function(){ 
+            
+          
+            var $cashSelect = $(this);
+
+            var sales_prod_id = parseInt($cashSelect.closest('.prod_row').find('.selected_sales_prod').val())||0;
+
+            var currentSelectElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
+
+           var qty = parseInt($cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id').val())||0;
+           
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CashInvoice/qtyCheck",
+
+                method : "POST",
+
+                data: {selectProdId:sales_prod_id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+                    if(qty > data.delivery_qty)
+                    {
+                        alertify.error('Quantity cannot be greater than ' + data.delivery_qty + '').delay(3).dismissOthers();
+                       
+                        var qtyNull = currentSelectElement.val("");
+
+                        var $qtyElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
+
+                        $currencyNullElement.val(qtyNull);
+
+                      
+                        
+                    }
+                }
+
+
+            });
+
+        });
+
+        /**/
+
 
        
-     
 
-      
 
        /*total amount calculation start*/
 
-       /*function TotalAmount()
-       {
+        function TotalAmount()
+        {
 
            var total= 0;
 
@@ -1787,14 +1859,14 @@
 
           $('.amount_total').val(total);
 
-          var resultSalesOrder= numberToWords.toWords(total);
+          /*var resultSalesOrder= numberToWords.toWords(total);
 
            $(".performa_amount_in_word").text(resultSalesOrder);
 
-           $(".performa_amount_in_word_val").val(resultSalesOrder);
+           $(".performa_amount_in_word_val").val(resultSalesOrder);*/
            
-           currentClaim()
-       }*/
+           //currentClaim()
+        }
 
        /*total amount calculation end*/
 
@@ -1815,7 +1887,6 @@
 
                 success:function(data)
                 {
-                
                     var data = JSON.parse(data);
                                     
                     $('.product-more2').html(data.product_detail);
@@ -1825,6 +1896,8 @@
                     $('#CashInvoice').modal("show");
 
                     $('.selected_table').show();
+
+                    $('.amount_total').val(data.total_amount);
                 }
 
             });
@@ -2245,6 +2318,18 @@
     /*edit section end*/
 
 
+    $('.adjustment_close').click(function(){ 
+           
+           $('#SaveModal').modal('hide');
+   
+           alertify.success('Data added Successfully').delay(2).dismissOthers();
+   
+           datatable.ajax.reload(null,false);
+   
+       });
+   
+
+
     
 
 
@@ -2298,6 +2383,8 @@
 
     /*checkbox section end*/
 
+
+    
 
 
 </script>

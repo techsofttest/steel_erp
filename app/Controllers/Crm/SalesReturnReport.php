@@ -17,7 +17,7 @@ class SalesReturnReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_executive'] = $this->common_model->FetchAllOrder('`executives_sales_executive`','se_id','desc');
         
         $data['content'] = view('crm/sales_return_report',$data);
 
@@ -122,10 +122,10 @@ class SalesReturnReport extends BaseController
                     }
                 }
             } 
-            else 
+            /*else 
             {
                 $data['credit_prod'] .= '<option value="">No Product Details Available</option>';
-            }
+            }*/
         }
 
 
@@ -160,7 +160,7 @@ class SalesReturnReport extends BaseController
         );
 
       
-        $invoice_report = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer','','',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins);
+        $invoice_report = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer','','',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins,'cci_id');
         
        
 

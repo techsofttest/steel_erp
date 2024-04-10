@@ -81,7 +81,7 @@ class BackLog extends BaseController
         );
 
       
-        $backlogs = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','','','','crm_sales_orders',$joins);
+        $backlogs = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','','','','crm_sales_orders',$joins,'so_reffer_no');
         
         $data['product_data'] =""; 
 

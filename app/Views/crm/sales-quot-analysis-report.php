@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -62,7 +62,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -71,7 +71,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" name="sales_executive" ><option value="" selected disabled>select executive</option></select></td>
+                                                                                <td><select class="form-select executive_clz" name="sales_executive" ><option value="" selected disabled>Select Executive</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -115,7 +115,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success" type="submit">Search</button>
                                         </div>
                                         
                                     </div>

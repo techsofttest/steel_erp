@@ -1388,9 +1388,9 @@ class SalesQuotation extends BaseController
 
        $data = array('qd_percentage' => $percentage);
 
-        $cond2 = array('qd_id' => $quot_id);
+       $cond2 = array('qd_id' => $quot_id);
 
-        $this->common_model->EditData($data,$cond2,'crm_quotation_details');
+       $this->common_model->EditData($data,$cond2,'crm_quotation_details');
 
 
     }
@@ -1399,8 +1399,20 @@ class SalesQuotation extends BaseController
      public function DeleteProdDet()
      {
         $cond = array('qpd_id' => $this->request->getPost('ID'));
+
+        /*$quot_prod_det = $this->common_model->SingleRow('crm_quotation_product_details',$cond);
+
+        $quot_prod_det->qpd_quotation_details;
+
+        $produt_details = $this->common_model->FetchWhere('crm_quotation_product_details',$quot_prod_det->qpd_quotation_details);
  
+        foreach($produt_details as $prod_det)
+        {
+              
+        }*/
+        
         $this->common_model->DeleteData('crm_quotation_product_details',$cond);
+
      }
 
 
@@ -1651,7 +1663,7 @@ class SalesQuotation extends BaseController
         
         <td style="border-bottom:2px solid">'.$quotation->qd_date.'</td>
     
-        <td style="border-bottom:2px solid">'.$quotation->qd_quotation_number.'</td>
+        <td style="border-bottom:2px solid">'.$quotation->qd_reffer_no.'</td>
     
         <td style="border-bottom:2px solid">'.$quotation->cc_customer_name.'</td>
     
@@ -1707,7 +1719,7 @@ class SalesQuotation extends BaseController
         $this->response->setHeader('Content-Type', 'application/pdf');
         $mpdf->Output();
     
-        }
+    }
 
 
 

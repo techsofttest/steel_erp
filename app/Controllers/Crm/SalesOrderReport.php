@@ -193,7 +193,7 @@ class SalesOrderReport extends BaseController
         );
 
       
-        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'	so_customer',$sales_executive,'so_sales_executive',$product,'spd_product_details',$sales_order,'so_reffer_no','crm_sales_orders',$joins);
+        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'	so_customer',$sales_executive,'so_sales_executive',$product,'spd_product_details',$sales_order,'so_reffer_no','crm_sales_orders',$joins,'so_reffer_no');
         
        
 

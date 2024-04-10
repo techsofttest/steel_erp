@@ -105,7 +105,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -178,7 +178,6 @@
 
 
 
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
@@ -230,9 +229,7 @@
 
         $("body").on('change', '.customer_clz', function(){ 
 
-
             var id = $(this).val();
-
 
             $.ajax({
 
@@ -258,9 +255,10 @@
 
                 }
 
-
             });
+
         });
+
         
         /*####*/
 
@@ -278,7 +276,6 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
 
-                 
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesReturnReport/GetData",
@@ -294,12 +291,11 @@
                          
                             $('.tbody_data').html(responseData.product_data);
 
-                            $("#InvoiceReport").modal('hide');
+                            $("#SalesReturnReport").modal('hide');
 
-                            $('#invoice_report_form')[0].reset();
+                            $('#sales_return_form')[0].reset();
 
                             $('.customer_clz').val('').trigger('change');
-
 
                             $('.product_clz').val('').trigger('change');
 

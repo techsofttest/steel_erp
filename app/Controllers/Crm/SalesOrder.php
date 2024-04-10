@@ -566,42 +566,48 @@ class SalesOrder extends BaseController
     public function Delete()
     {
         $cond = array('so_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_sales_orders',$cond);
 
-        $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_sales_product_details',$cond1);
-
-
-        //pro-forma invoice
+        $delivery_note = $this->common_model->SingleRow('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
         
-        $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
-
-        foreach($proforma_data as $proforma)
-        {
-            $cond2 = array('pp_proforma' => $proforma->pf_id);
-
-            $this->common_model->DeleteData('crm_proforma_product',$cond2);
-        }
-
-
-        $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
-
-        //delivery note
-
-        $delivery_notes = $this->common_model->FetchWhere('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
+        $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_sales_order' => $this->request->getPost('ID')));
         
-        foreach($delivery_notes as $delivery_note)
+        //$credit_invoice = $this->common_model->SingleRow('crm_credit_invoice',array('cci_sales_order' => $this->request->getPost('ID')));
+        
+       // print_r($delivery_note); exit();
+
+        if((empty($delivery_note)) && (empty($cash_invoice)))
         {
-            $cond3 = array('dpd_delivery_id' => $delivery_note->dn_id);
+ 
+            $this->common_model->DeleteData('crm_sales_orders',$cond);
 
-            $this->common_model->DeleteData('crm_delivery_product_details',$cond3);
+            $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
+    
+            $this->common_model->DeleteData('crm_sales_product_details',$cond1);
+
+            $data['status'] = "true";
+
         }
+        else
+        { 
 
-        $this->common_model->DeleteData('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
+            //pro-forma invoice
+            
+            $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+
+            foreach($proforma_data as $proforma)
+            {
+                $cond2 = array('pp_proforma' => $proforma->pf_id);
+
+                $this->common_model->DeleteData('crm_proforma_product',$cond2);
+            }
 
 
+            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+            
+            $data['status'] = "false";
+        }
+       
+        echo json_encode($data);
 
          
     }
@@ -1199,7 +1205,6 @@ class SalesOrder extends BaseController
 
         $sales_prod_det = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $this->request->getPost('prodID')));
         
-        
 
         if(!empty($delivery_prod))
         {
@@ -1214,13 +1219,32 @@ class SalesOrder extends BaseController
             $data['status'] = "false";
  
         }
+        
        
-
         echo json_encode($data);
     
     }
+    
+    /*public function CheckPrice()
+    {
+        $product_data = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',$cond);
+        
+        foreach($product_data as $prod_data)
+        {
+            $prod_data->spd_quantity;
+        }
 
+       
+    }*/
+    
+    public function CheckPrice()
+    {
+        $cond = array('spd_id' => $this->request->getPost('prodID'));
 
+        $sales_prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+        
+        
+    }
 
     public function Print($id){
 

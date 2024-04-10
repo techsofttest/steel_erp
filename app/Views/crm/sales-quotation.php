@@ -2319,6 +2319,8 @@
                             $('#AddSalesQuotation').modal('hide');
 
                             $('#CostCalculation').modal('show');
+
+                            $('.prod_row').remove();
                         
                         }
                     });

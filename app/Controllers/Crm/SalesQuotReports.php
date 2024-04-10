@@ -158,7 +158,7 @@ class SalesQuotReports extends BaseController
         );
 
        
-        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description','','','crm_quotation_details',$joins);
+        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qd_reffer_no','','','crm_quotation_details',$joins);
         $data['product_data'] =""; 
 
        if(!empty($single_quots)){

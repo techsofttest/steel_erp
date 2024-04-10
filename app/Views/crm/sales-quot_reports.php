@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option>select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -62,7 +62,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" name="sales_executive"><option>select executive</option></select></td>
+                                                                                <td><select class="form-select executive_clz" name="sales_executive"><option>Select Executive</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -71,7 +71,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product"><option>select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product"><option>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>

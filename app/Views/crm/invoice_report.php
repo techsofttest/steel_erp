@@ -112,7 +112,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success" type="submit">Search</button>
                                         </div>
                                         
                                     </div>

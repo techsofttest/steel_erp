@@ -245,16 +245,16 @@ class InvoiceReport extends BaseController
 
         $joins = array(
             array(
-                'table' => 'crm_cash_invoice_prod_det',
-                'pk'    => 'cipd_cash_invoice',
-                'fk'    => 'ci_id',
+                'table' => 'crm_sales_return_prod_det',
+                'pk'    => 'srp_sales_return',
+                'fk'    => 'sr_id',
             ),
            
 
         );
 
 
-        $invoice_report = $this->common_model->CheckDate($from_date,'ci_date',$to_date,'',$customer,'ci_customer','','',$product,'cipd_prod_det',$sales_order,'ci_reffer_no','crm_cash_invoice',$joins);
+        $invoice_report = $this->common_model->CheckDate($from_date,'sr_date',$to_date,'',$customer,'sr_customer','','',$product,'srp_prod_det',$sales_order,'sr_reffer_no','crm_sales_return',$joins,'sr_reffer_no');
         
        
 
@@ -272,8 +272,8 @@ class InvoiceReport extends BaseController
                 
                 $data['product_data'] .='<tr>
                 <td>'.$i.'</td>
-                <td>'.$invoice->ci_reffer_no.'</td>
-                <td>'.$invoice->ci_date.'</td>
+                <td>'.$invoice->sr_reffer_no.'</td>
+                <td>'.$invoice->sr_date.'</td>
                 <td>
                     <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
                     <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>

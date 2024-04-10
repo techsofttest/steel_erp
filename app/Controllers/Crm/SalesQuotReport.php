@@ -149,7 +149,7 @@ class SalesQuotReport extends BaseController
         );
 
        
-        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description','','','crm_quotation_details',$joins);
+        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');
         
         $data['product_data'] =""; 
 
@@ -183,6 +183,12 @@ class SalesQuotReport extends BaseController
         echo json_encode($data);
        
       
+    }
+
+
+    public function pdf()
+    {
+
     }
 
 

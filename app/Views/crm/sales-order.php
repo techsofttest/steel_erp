@@ -1435,6 +1435,8 @@
 
                             $('.contact_person_clz option').remove();
 
+                            $('.prod_row2').remove();
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
@@ -1904,9 +1906,22 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
+                    if(data.status === "false")
+                    {
+
+                        alertify.error('Sales Order Cannot Be Deleted').delay(2).dismissOthers();
+
+                       
+
+                    }
+                    else
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+                    }
                 }
 
 
@@ -2411,6 +2426,36 @@
         /*####*/
 
 
+        /*#####*/
+
+        $("body").on('keyup', '.edit_prod_rate', function(){ 
+          
+            var prod_id = $('.edit_prod_id').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/CheckPrice",
+
+                method : "POST",
+
+                data:{prodID: prod_id},
+
+                success:function(data)
+                {   
+                    /*var data = JSON.parse(data);
+
+                    $(".edit_product_table").html(data.prod_details);*/
+
+                }
+
+            });
+            
+
+        });
+
+        /*#####*/
+
+
         /*update product*/
         
         $(function() {
@@ -2436,7 +2481,6 @@
 
                             var salesId = responseData.sales_order_id
                             
-
                             $('#EditProduct').modal('hide');
 
                             $('#EditSalesOrder').modal('show');
@@ -2603,8 +2647,6 @@
 
                     $(".view_image_table").html(data.image_table);
 
-                    
-
                     console.log(data.image_table);
 
                     $('#ViewSalesOrder').modal('show');
@@ -2615,8 +2657,7 @@
 
             });
 
-            
-
+          
         });
 
         /*view section end*/

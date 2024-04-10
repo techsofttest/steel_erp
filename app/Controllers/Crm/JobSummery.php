@@ -179,7 +179,6 @@ class JobSummery extends BaseController
 
         $sales_order     = trim($this->request->getPost('sales_order'));
 
-       
         $joins = array(
             /*array(
                 'table' => 'crm_sales_product_details',
@@ -190,8 +189,7 @@ class JobSummery extends BaseController
 
         );
 
-      
-        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','',$sales_order,'so_reffer_no','crm_sales_orders',$joins);
+        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','',$sales_order,'so_reffer_no','crm_sales_orders',$joins,'so_reffer_no');
         
        
 

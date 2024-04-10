@@ -126,10 +126,10 @@ class DnToCreditInvoice extends BaseController
                     }
                 }
             } 
-            else 
+            /*else 
             {
                 $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
-            }
+            }*/
         }
 
 
@@ -157,35 +157,35 @@ class DnToCreditInvoice extends BaseController
        
         $joins = array(
             array(
-                'table' => 'crm_delivery_product_details',
-                'pk'    => 'dpd_delivery_id',
-                'fk'    => 'dn_id',
+                'table' => 'crm_credit_invoice_prod_det',
+                'pk'    => 'ipd_prod_detl',
+                'fk'    => 'cci_id',
             ),
            
 
         );
 
       
-        $delivery_note = $this->common_model->CheckDate($from_date,'dn_date',$to_date,'',$customer,'dn_customer',$delivery_note,'dn_id ',$product,'dpd_prod_det',$sales_order,'dn_sales_order_num','crm_delivery_note',$joins);
+        $credit_invoice = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer',$delivery_note,'cci_id',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins,'cci_reffer_no');
         
        
 
         $data['product_data'] =""; 
 
-       if(!empty($delivery_note)){
+       if(!empty($credit_invoice)){
 
             $data['status'] ="true";
 
             
             
             $i=1;
-            foreach($delivery_note as $del_not)
+            foreach($credit_invoice as $cred_inv)
             {   
                 
                 $data['product_data'] .='<tr>
                 <td>'.$i.'</td>
-                <td>'.$del_not->dn_reffer_no.'</td>
-                <td>'.$del_not->dn_date.'</td>
+                <td>'.$cred_inv->cci_reffer_no.'</td>
+                <td>'.$cred_inv->cci_date.'</td>
                 <td>
                     <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
                     <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>

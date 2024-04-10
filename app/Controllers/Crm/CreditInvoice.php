@@ -266,38 +266,55 @@ class CreditInvoice extends BaseController
 
                     $this->common_model->EditData($update_data1,$cond,'crm_delivery_product_details');
 
-                    $cond2 = array('dn_sales_order_num' => $_POST['sales_order'][$j]);
+                  
+                    $pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]));
                     
-                    $joins = array(
-            
-                        array(
-                            'table' => 'crm_delivery_note',
-                            'pk'    => 'dn_id',
-                            'fk'    => 'dpd_delivery_id',
-                        ),
-        
-                    );
-
-                    $delivery_note_prod = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond2,$joins);
-
-                    $cond3 =  array('dpd_invoice_flag' => 1);
-
-                    $delivery_note_prod1 =  $this->common_model->CheckTwiceCond1('crm_delivery_product_details',$cond,$cond3);
-                    
-                    if(count($delivery_note_prod)  == count($delivery_note_prod1))
-                    {  
-                        $update_data2 = array('dn_invoice_flag' => 1);
+                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]),array('spd_deliver_flag' => 1));
                         
-                        $this->common_model->EditData($update_data2,array('dn_id' => $credit_invoice_id),'crm_delivery_note');
-                       
-                    }
-                    else
-                    {
-                      
-                    }
 
+                   
+                    if(count($pod_data1) == count($pod_data2))
+                    {
+                        $update_data3 = array('so_credit_status' => 1);
+
+                        $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order'][$j]),'crm_sales_orders');
+                    }
+                    
+                    
+  
                 } 
             }
+
+            //
+            $credit_inv_data = $this->common_model->SingleRow('crm_credit_invoice',array('cci_id' => $credit_invoice_id));
+            
+           
+
+            $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $credit_inv_data->cci_customer));
+            
+            
+
+            $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
+            
+            
+
+            $data['adjustment_data'] = "";
+
+            foreach($receipts as $receipt)
+            {
+                $data['adjustment_data'] .= "
+                <tr>
+                    <td>1</td>
+                    <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='' class='form-control' required></td>
+                    <td><input type='checkbox' name='' value='' class='' required></td>
+                </tr>
+                ";
+            }
+
+
 		}
 
 
@@ -524,9 +541,10 @@ class CreditInvoice extends BaseController
 
     public function SalesOrder()
     {
-        $cond = array('dn_customer' => $this->request->getPost('ID'));
+        /*$cond = array('dn_customer' => $this->request->getPost('ID'));
         
-        //$sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        $cond3 = array('dn_invoice_flag'=>0);
+
 
         $joins = array(
             
@@ -537,8 +555,16 @@ class CreditInvoice extends BaseController
             ),
         );
 
-        $sales_orders = $this->common_model->FetchDataByGroup('crm_delivery_note','dn_sales_order_num',$cond,$joins);
+        $sales_orders = $this->common_model->FetchDataByGroup('crm_delivery_note','dn_sales_order_num',$cond,$cond3,$joins);
         
+        */
+
+        $cond = array('so_customer' => $this->request->getPost('ID'));
+
+        $cond3 = array('so_credit_status'=>0);
+
+        $sales_orders = $this->common_model->FetchProdData('crm_sales_orders',$cond,$cond3);
+
         $data['sales_order'] ="";
 
         $data['sales_order'] ='<option value="" selected disabled>Select Sales Order Number</option>';
@@ -549,7 +575,6 @@ class CreditInvoice extends BaseController
            
             $data['sales_order'] .='>' .$sales_order->so_reffer_no. '</option>'; 
         }
-
 
         $cond1 = array('dn_customer' => $this->request->getPost('ID'));
 
@@ -587,9 +612,6 @@ class CreditInvoice extends BaseController
 
 
         /*#####*/
-
-
-        
 
 
         echo json_encode($data);
@@ -762,27 +784,43 @@ class CreditInvoice extends BaseController
             $i = 1; 
             
             $data['product_detail'] ="";
+                
+                if(!empty($delivery_notes)){
 
-            foreach($delivery_notes as $del_note){
-                $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'">
-                                                <td class="si_no">'.$i.'</td>
-                                                <td>
-                                                    <select class="form-select ipd_prod_detl" required>';
-                                                                
-                                                    foreach($products as $prod){
-                                                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                        if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
-                                                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                        }
-                                                    $data['product_detail'] .= '</select>
-                                                </td>
-                                                    <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control" required></td>
-                                                    <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
-                                                   
-                                                    
-                                                </tr>';
-                                                $i++;
-            }
+                    foreach($delivery_notes as $del_note){
+                        $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'">
+                                                        <td class="si_no">'.$i.'</td>
+                                                        <td>
+                                                            <select class="form-select ipd_prod_detl" required>';
+                                                                        
+                                                            foreach($products as $prod){
+                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                                                                if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
+                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                                                                }
+                                                            $data['product_detail'] .= '</select>
+                                                        </td>
+                                                            <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control" required></td>
+                                                            <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                        
+                                                            
+                                                        </tr>';
+                                                        $i++;
+                    }
+
+                    $data["prod_status"] = "true" ;
+
+                }
+                else
+                {
+                    $cond3 = array('cci_id' => $this->request->getPost('CreditInvoiceID'));
+ 
+                    $this->common_model->DeleteData('crm_credit_invoice',$cond3);
+
+                    $data["prod_status"] = "false" ;
+                }
+
+            
 
             echo json_encode($data);
                       
@@ -1008,6 +1046,15 @@ class CreditInvoice extends BaseController
                 $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
                 foreach($sales_order_details as $sales_det){
+
+                    $multipleValue = $sales_det->spd_rate * $sales_det->dpd_current_qty;
+
+                    $perAmount = ($sales_det->spd_discount/100) * $multipleValue;
+
+                    $orginalPrice = $multipleValue - $perAmount;
+
+                    $amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
+
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                     <td class="si_no">'.$sales_det->dn_reffer_no.'</td>
                                                     <td>
@@ -1020,12 +1067,14 @@ class CreditInvoice extends BaseController
                                                         $data['product_detail'] .= '</select>
                                                     </td>
                                                     <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                    <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
+                                                    <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->dpd_current_qty.'"  class="form-control order_qty" readonly></td>
                                                     <td><input type="number" name="ipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control delivery_qty" readonly ></td>
                                                     <td><input type="number" name="ipd_discount[]"  value="'.$sales_det->spd_discount.'" class="form-control current_delivery" readonly></td>
-                                                    <td><input type="number" name="ipd_amount[]"  value="'.$sales_det->spd_amount.'" class="form-control amount_clz_id" readonly></td>
+                                                    <td><input type="number" name="ipd_amount[]"  value="'.$amount.'" class="form-control amount_clz_id" readonly></td>
                                                     <input type ="hidden" name="delivery_prod_id[]" value="'.$sales_det->dpd_id.'">
+                                                    <input type ="hidden" name="delivery_id[]" value="'.$sales_det->dpd_delivery_id.'">
                                                     <input type ="hidden" name="sales_order[]" value="'.$sales_det->dn_sales_order_num.'">
+                                                    <input type ="hidden" name="sales_order_product[]" value="'.$sales_det->spd_id.'">
                                                 </tr>';
                                                     
                                                     } $i++;

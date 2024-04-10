@@ -1174,7 +1174,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Customer Creation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddCustomerCreation" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddCustomerCreation" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1998,6 +1998,26 @@
         });
 
         /*###*/
+
+
+        /*####*/
+
+        $('.add_model_btn').click(function(){
+
+            $('#add_cust_creation')[0].reset();
+
+            $('#add_cond_detail')[0].reset();
+
+            $('#add_office_doc')[0].reset();
+
+            $('.account_head_clz').val('').trigger('change');
+
+           
+
+        });
+
+
+        /*####*/
 
         
 

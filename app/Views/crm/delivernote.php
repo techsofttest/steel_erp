@@ -1382,10 +1382,20 @@
                 data: {ID: id},
 
                 success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                {   
+                    var data = JSON.parse(data);
+                    
+                    if(data.status === "false")
+                    {
+                        alertify.error('Delivery Note Cannot Be Deleted').delay(2).dismissOthers();
+                    }
+                    else
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
 
-                    datatable.ajax.reload(null,false);
+                        datatable.ajax.reload(null,false);
+                    }
+                   
                 }
 
 
@@ -1797,8 +1807,7 @@
 
         var id = $(this).data('id');
 
-       
-        $('#EditDeliveryNote').modal("show");
+        
 
         $.ajax({
 
@@ -1815,35 +1824,45 @@
                                 
                 //console.log(data.customer);
 
-                $('.edit_reff').val(data.reffer_no);
+                if(data.status === "false")
+                {
+                    alertify.error('Delivery Note Cant Be Edit').delay(3).dismissOthers();
+                
+                }
+                else
+                {
+                    
+                    $('.edit_reff').val(data.reffer_no);
 
-                $('.edit_date').val(data.date);
+                    $('.edit_date').val(data.date);
 
-                $('.edit_customer').html(data.customer);
+                    $('.edit_customer').html(data.customer);
 
-                $('.edit_sales_order').val(data.sales_order);
+                    $('.edit_sales_order').val(data.sales_order);
 
-                $('.edit_lpo_ref').val(data.lpo_reff);
+                    $('.edit_lpo_ref').val(data.lpo_reff);
 
-                $('.edit_contact_person').html(data.contact_person);
+                    $('.edit_contact_person').html(data.contact_person);
 
-                $('.edit_payment_term').val(data.payment_term);
+                    $('.edit_payment_term').val(data.payment_term);
 
-                $('.edit_project').val(data.project);
+                    $('.edit_project').val(data.project);
 
-                $('.edit_delivery_id').val(data.dn_id);
+                    $('.edit_delivery_id').val(data.dn_id);
 
-                $('.edit_product_table').html(data.product_detail);
+                    $('.edit_product_table').html(data.product_detail);
 
-                $('.edit_image_table').html(data.image_table);
+                    $('.edit_image_table').html(data.image_table);
 
-                $('.add_more_class').html(data.add_more);
+                    $('.add_more_class').html(data.add_more);
 
-                $('.edit_sales_order_id').val(data.sales_order_id);
+                    $('.edit_sales_order_id').val(data.sales_order_id);
 
-                //console.log(data.product_detail);
+                    $('#EditDeliveryNote').modal("show");
 
-               /*$('.view_image_table').html(data.image_table);*/
+                }
+
+                
             }
 
         });

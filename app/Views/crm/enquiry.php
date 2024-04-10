@@ -1363,6 +1363,10 @@
         /*reset reff no*/
 
         $('.add_model_btn').click(function(){
+           
+            $('#add_enquiry_form')[0].reset();
+
+            $('.ser_customer').val('').trigger('change');
 
             $.ajax({
 
@@ -1371,10 +1375,9 @@
                 method : "GET",
 
                 success:function(data)
-                {
-
+                {  
                     $('#enqid').val(data);
-
+                
                 }
 
             });
@@ -2062,7 +2065,9 @@
         $("body").on('click', '.delete_btn', function(){ 
             
             if (!confirm('Are you absolutely sure you want to delete?')) return false;
+
             var id = $(this).data('id');
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/Enquiry/Delete",

@@ -382,17 +382,22 @@ class Enquiry extends BaseController
 
         $quotation_detail = $this->common_model->SingleRow('crm_quotation_details',$cond3);
 
-        $quot_id = $quotation_detail->qd_id;
+        if(!empty($quotation_detail))
+        {
 
-        $cond4 = array('qpd_quotation_details' => $quot_id);
+            $quot_id = $quotation_detail->qd_id;
 
-        $this->common_model->DeleteData('crm_quotation_product_details',$cond4);
+            $cond4 = array('qpd_quotation_details' => $quot_id);
 
-        $cond5 = array('qc_quotation_id' => $quot_id);
+            $this->common_model->DeleteData('crm_quotation_product_details',$cond4);
 
-        $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond5);
+            $cond5 = array('qc_quotation_id' => $quot_id);
 
-        $this->common_model->DeleteData('crm_quotation_details',$cond3);
+            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond5);
+
+            $this->common_model->DeleteData('crm_quotation_details',$cond3);
+
+        }
 
 
     }

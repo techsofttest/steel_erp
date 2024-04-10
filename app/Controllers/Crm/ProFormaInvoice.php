@@ -278,13 +278,11 @@ class ProFormaInvoice extends BaseController
                     );
 
                     $this->common_model->InsertData('crm_proforma_product',$insert_data);
-                    
-                    
+                   
             
                 } 
             }
-
-                
+      
         }
 
     }
@@ -531,6 +529,26 @@ class ProFormaInvoice extends BaseController
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
+            
+            $proforma_invoice = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+            
+            
+            /*if(!empty($proforma_invoice))
+            {   
+                $currentClaim = 0;
+
+                foreach($proforma_invoice as $proforma)
+                {
+                    $currentClaim  = $currentClaim + $proforma->pf_current_cliam;
+                }
+            }
+
+           
+            $currentClaim = 100 - $currentClaim;
+
+            
+            $data['current_claim'] = $currentClaim;*/
+
 
             $data['so_delivery_term'] = $sales_order->so_delivery_term;
 
@@ -578,6 +596,11 @@ class ProFormaInvoice extends BaseController
             $data['sales_order_contact'] ='';
         
             foreach($sales_prod_det as $prod_det){
+
+                /*foreach($sales_prod_det1 as $sal_prod_det1)
+                {
+                   
+                }*/
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove" id="'.$prod_det->spd_id.'">
                                             <td class="si_no">'.$i.'</td>
@@ -982,7 +1005,35 @@ class ProFormaInvoice extends BaseController
     
         }
        
+        public function Claim()
+        {
+            $cond = array('pf_sales_order' => $this->request->getPost('salesOrder'));
 
+            $single_product_det = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+
+            if(!empty($single_product_det))
+            {   
+                $currentClaim = 0;
+
+                foreach($single_product_det as $single_prod_det)
+                {
+                    $currentClaim  = $currentClaim + $single_prod_det->pf_current_cliam;
+                }
+
+                $currentClaim  =  100 - $currentClaim;
+
+                $data['remaining_claim'] = $currentClaim;
+            }
+            else
+            {
+                $data['remaining_claim'] = "";
+            }
+
+           
+            echo json_encode($data); 
+
+
+        }
 
 
         public function Print($id){

@@ -309,9 +309,14 @@ class DeliverNote extends BaseController
 
                     $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
 
-                    $update_data =  array('spd_delivered_qty' => $new_deli_qty);
-                    
                     $cond = array('spd_id' => $_POST['sales_prod_id'][$j]); 
+
+                    $sales_prod1 = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+                    $delivery_note_qty = $sales_prod1->spd_delivery_note + $current_qty;
+
+                    $update_data =  array('spd_delivered_qty' => $new_deli_qty,'spd_delivery_note' =>$delivery_note_qty);
+                    
 
                     $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
 
@@ -623,64 +628,82 @@ class DeliverNote extends BaseController
         $this->common_model->EditData($update_data, array('dn_id' => $this->request->getPost('dn_id')), 'crm_delivery_note');
     }
 
-     //delete account head
-     public function Delete()
-     {  
+    //delete account head
+    public function Delete()
+    {  
         
         $cond = array('dn_id' => $this->request->getPost('ID'));
 
         $delivery_note = $this->common_model->SingleRow('crm_delivery_note',$cond);
-
-
-        $update_data = ['so_deliver_flag' => 0];
+         
+        $credit_invoice = $this->common_model->FetchWhere('crm_credit_invoice',array('cci_sales_order'=> $delivery_note->dn_sales_order_num	));
         
-        $this->common_model->EditData($update_data, array('so_id' => $delivery_note->dn_sales_order_num),'crm_sales_orders');
-        
-        $delivery_id = $delivery_note->dn_id;
-
-        $cond2 = array('dpd_delivery_id' => $delivery_id);
-
         $joins = array(
+            
             array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_id',
-                'fk'    => 'dpd_so_id',
+                'table' => 'crm_cash_invoice',
+                'pk'    => 'ci_id',
+                'fk'    => 'sr_cash_invoice',
             ),
 
         );
 
-        $delivery_prod_det = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond2,$joins);
+        $sales_return = $this->common_model->FetchWhereJoin('crm_sales_return',array('ci_sales_order'=> $delivery_note->dn_sales_order_num),$joins);
         
        
 
-        /*$update_data1 = [
+        if((empty($credit_invoice)) && (empty($sales_return))){
 
-            'spd_delivered_qty' => 0,
+            $update_data = ['so_deliver_flag' => 0];
+            
+            $this->common_model->EditData($update_data, array('so_id' => $delivery_note->dn_sales_order_num),'crm_sales_orders');
+            
+            $delivery_id = $delivery_note->dn_id;
 
-            'spd_deliver_flag' => 0,
-        ];*/
+            $cond2 = array('dpd_delivery_id' => $delivery_id);
 
-        foreach($delivery_prod_det as $del_prod_det)
-        {
-            $update_data1 = [
+            $joins = array(
+                array(
+                    'table' => 'crm_sales_product_details',
+                    'pk'    => 'spd_id',
+                    'fk'    => 'dpd_so_id',
+                ),
 
-                'spd_delivered_qty' => $del_prod_det->spd_delivered_qty - $del_prod_det->dpd_current_qty,
+            );
+
+            $delivery_prod_det = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond2,$joins);
+            
+        
+            foreach($delivery_prod_det as $del_prod_det)
+            {
+                $update_data1 = [
+
+                    'spd_delivered_qty' => $del_prod_det->spd_delivered_qty - $del_prod_det->dpd_current_qty,
+        
+                    'spd_deliver_flag' => 0,
+                ];
+
+                $this->common_model->EditData($update_data1,array('spd_id' => $del_prod_det->dpd_so_id),'crm_sales_product_details');
+            }
+
+
+            $this->common_model->DeleteData('crm_delivery_note',$cond);
+
+            $cond1 = array('dpd_delivery_id' => $this->request->getPost('ID'));
     
-                'spd_deliver_flag' => 0,
-            ];
+            $this->common_model->DeleteData('crm_delivery_product_details',$cond1);
 
-            $this->common_model->EditData($update_data1,array('spd_id' => $del_prod_det->dpd_so_id),'crm_sales_product_details');
+            $data['status'] = "true";
+
         }
-
-
-        $this->common_model->DeleteData('crm_delivery_note',$cond);
-
-        $cond1 = array('dpd_delivery_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_delivery_product_details',$cond1);
-
+        else
+        {
+            $data['status'] = "false";
+        }
+        
+        echo json_encode($data);
     
-     }
+    }
 
 
         public function FetchSalesData()
@@ -934,188 +957,214 @@ class DeliverNote extends BaseController
         {
             $cond = array('dn_id' => $this->request->getPost('ID'));
 
-            $joins = array(
-            
+            $delivery_note = $this->common_model->SingleRow('crm_delivery_note',$cond);
+         
+            $credit_invoice = $this->common_model->FetchWhere('crm_credit_invoice',array('cci_sales_order'=> $delivery_note->dn_sales_order_num	));
+        
+            $joins5 = array(
+                
                 array(
-                    'table' => 'crm_customer_creation',
-                    'pk'    => 'cc_id',
-                    'fk'    => 'dn_customer',
-                ),
-
-                array(
-                    'table' => 'crm_sales_orders',
-                    'pk'    => 'so_id',
-                    'fk'    => 'dn_sales_order_num',
-                ),
-                array(
-                    'table' => 'crm_contact_details',
-                    'pk'    => 'contact_id',
-                    'fk'    => 'dn_conact_person',
+                    'table' => 'crm_cash_invoice',
+                    'pk'    => 'ci_id',
+                    'fk'    => 'sr_cash_invoice',
                 ),
 
             );
 
-            $delivery_note = $this->common_model->SingleRowJoin('crm_delivery_note',$cond,$joins);
-
-            $data['reffer_no']       = $delivery_note->dn_reffer_no;
-
-            $data['date']            = date('d-M-Y',strtotime($delivery_note->dn_date));
-
-            $data['lpo_reff']        = $delivery_note->dn_lpo_reference;
-
-            $data['sales_order']     = $delivery_note->so_reffer_no;
-
-            $data['sales_order_id']     = $delivery_note->so_id;
-
-            $data['payment_term']    = $delivery_note->dn_payment_terms;
-
-            $data['project']         = $delivery_note->dn_project;
-
-            $data['dn_id']           = $delivery_note->dn_id;
-
-
-            // customer craetion
-            $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
-
-            $data['customer'] ="";
-            foreach($customer_creation as $cus_creation)
+            $sales_return = $this->common_model->FetchWhereJoin('crm_sales_return',array('ci_sales_order'=> $delivery_note->dn_sales_order_num),$joins5);
+        
+            if((empty($credit_invoice)) && (empty($sales_return)))
             {
-                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-            
-                // Check if the current product head is selected
-                if ($cus_creation->cc_id  == $delivery_note->dn_customer)
+
+                $joins = array(
+                
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'dn_customer',
+                    ),
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'dn_sales_order_num',
+                    ),
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'dn_conact_person',
+                    ),
+
+                );
+
+                $delivery_note = $this->common_model->SingleRowJoin('crm_delivery_note',$cond,$joins);
+
+                $data['reffer_no']       = $delivery_note->dn_reffer_no;
+
+                $data['date']            = date('d-M-Y',strtotime($delivery_note->dn_date));
+
+                $data['lpo_reff']        = $delivery_note->dn_lpo_reference;
+
+                $data['sales_order']     = $delivery_note->so_reffer_no;
+
+                $data['sales_order_id']     = $delivery_note->so_id;
+
+                $data['payment_term']    = $delivery_note->dn_payment_terms;
+
+                $data['project']         = $delivery_note->dn_project;
+
+                $data['dn_id']           = $delivery_note->dn_id;
+
+
+                // customer craetion
+                $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+                $data['customer'] ="";
+                foreach($customer_creation as $cus_creation)
                 {
-                    $data['customer'] .= ' selected'; 
+                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+                
+                    // Check if the current product head is selected
+                    if ($cus_creation->cc_id  == $delivery_note->dn_customer)
+                    {
+                        $data['customer'] .= ' selected'; 
+                    }
+                
+                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
                 }
+
+
+                //sales orders
+                //$sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
             
-                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+                
 
-            }
+                //contact person
 
+                $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
 
-             //sales orders
-            //$sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+                $data['contact_person'] ="";
 
-           
-             
-
-            //contact person
-
-            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
-
-            $data['contact_person'] ="";
-
-            foreach($contact_data as $cont_data)
-            {
-                $data['contact_person'] .= '<option value="' .$cont_data->contact_id .'"'; 
-            
-                // Check if the current product head is selected
-                if ($cont_data->contact_id   == $delivery_note->so_contact_person)
+                foreach($contact_data as $cont_data)
                 {
-                    $data['contact_person'] .= ' selected'; 
+                    $data['contact_person'] .= '<option value="' .$cont_data->contact_id .'"'; 
+                
+                    // Check if the current product head is selected
+                    if ($cont_data->contact_id   == $delivery_note->so_contact_person)
+                    {
+                        $data['contact_person'] .= ' selected'; 
+                    }
+                
+                    $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
                 }
-            
-                $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
-            }
 
-            $joins1 = array(
-                array(
-                    'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'dpd_prod_det',
-                ),
-    
-            );
+                $joins1 = array(
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'dpd_prod_det',
+                    ),
+        
+                );
 
-            $delivery_prod_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details', array('dpd_delivery_id' => $this->request->getPost('ID')),$joins1);
-            
-           // $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
-
-            $i=1;
-
-            $data['product_detail'] ="";
-            foreach($delivery_prod_details as $delivery_prod){
-                $data['product_detail'] .='<tr class="prod_row delivery_note_remove delete_delivery_data" id="'.$delivery_prod->dpd_id.'">
-                                                <td class="si_no">'.$i.'</td>
-                                                <td>'.$delivery_prod->product_details.'</td>
-                                                <td>'.$delivery_prod->dpd_unit.'</td>
-                                                <td>'.$delivery_prod->dpd_order_qty.'</td>
-                                                <td>'.$delivery_prod->dpd_current_qty.'</td>
-                                                <td><div class="remainpass del_prod_remove"><i class="ri-close-line"></i>Remove</div></td>                                                 
-                                                <input type="hidden" value="'.$delivery_prod->dpd_id.'"  class="hidden_del_prod_id">  
-                                            </tr>';
-                                                    $i++;
-
-                                                    }
-
-            /*display add more*/
-
-
-                /*$crm_sales_product_details = $this->common_model->SingleRow('crm_delivery_note',array('spd_sales_order'=>$delivery_note->dn_sales_order_num));
-
-                if(count($crm_sales_product_details) != $delivery_prod_details)
-                {
-
-                }  */
-
-                $crm_sales_product_details = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$delivery_note->dn_sales_order_num));
+                $delivery_prod_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details', array('dpd_delivery_id' => $this->request->getPost('ID')),$joins1);
                 
-                
-                if(count($crm_sales_product_details)!=count($delivery_prod_details))
-                {
-                   $data['add_more'] ="";
+            // $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-                   $data['add_more'] .='<tr>
-                                    <td colspan="8" align="center" class="tecs">
-                                        <span class="add_icon add_more_product"><i class="ri-add-circle-line"></i>Add </span>
-                                    <td>
-                                </tr>';
+                $i=1;
+
+                $data['product_detail'] ="";
+                foreach($delivery_prod_details as $delivery_prod){
+                    $data['product_detail'] .='<tr class="prod_row delivery_note_remove delete_delivery_data" id="'.$delivery_prod->dpd_id.'">
+                                                    <td class="si_no">'.$i.'</td>
+                                                    <td>'.$delivery_prod->product_details.'</td>
+                                                    <td>'.$delivery_prod->dpd_unit.'</td>
+                                                    <td>'.$delivery_prod->dpd_order_qty.'</td>
+                                                    <td>'.$delivery_prod->dpd_current_qty.'</td>
+                                                    <td><div class="remainpass del_prod_remove"><i class="ri-close-line"></i>Remove</div></td>                                                 
+                                                    <input type="hidden" value="'.$delivery_prod->dpd_id.'"  class="hidden_del_prod_id">  
+                                                </tr>';
+                                                        $i++;
+
+                                                        }
+
+                /*display add more*/
+
+
+                    /*$crm_sales_product_details = $this->common_model->SingleRow('crm_delivery_note',array('spd_sales_order'=>$delivery_note->dn_sales_order_num));
+
+                    if(count($crm_sales_product_details) != $delivery_prod_details)
+                    {
+
+                    }  */
+
+                    $crm_sales_product_details = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$delivery_note->dn_sales_order_num));
+                    
+                    
+                    if(count($crm_sales_product_details)!=count($delivery_prod_details))
+                    {
+                    $data['add_more'] ="";
+
+                    $data['add_more'] .='<tr>
+                                        <td colspan="8" align="center" class="tecs">
+                                            <span class="add_icon add_more_product"><i class="ri-add-circle-line"></i>Add </span>
+                                        <td>
+                                    </tr>';
+                    }
+                    
+                    
+
+
+                /*****/
+
+
+                //image section start
+                
+                $data['image_table']="";
+
+                if(!empty($delivery_note->dn_file))
+                {
+                
+                    $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                                        <thead>
+                                            <tr>
+                                                <th class="cust_img_rgt_border">File Name</th>
+                                                <th class="cust_img_rgt_border">Download</th>
+                                                <th class="cust_img_rgt_border">Update</th>
+                                            </tr>
+                                        <thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="cust_img_rgt_border" >'.$delivery_note->dn_file.'</td>
+                                                <td class="cust_img_rgt_border"><a href="'.base_url('uploads/DeliveryNote/' .$delivery_note->dn_file).'" target="_blank">View</a></td>
+                                                <td class="cust_img_rgt_border" ><input type="file" name="dn_file"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>';
+
                 }
-                
-                
+                else
+                {
+                    $data['image_table']='<div class="row row_align mb-4">
+                                                <div class="col-lg-3">
+                                                    <label for="basicInput" class="form-label">Attach</label>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <input type="file" name="dn_file" class="form-control">
+                                                </div>
+                                            </div>
+                    ';
+                }
 
-
-            /*****/
-
-
-            //image section start
-            
-            $data['image_table']="";
-
-            if(!empty($delivery_note->dn_file))
-            {
-            
-                $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
-                                    <thead>
-                                        <tr>
-                                            <th class="cust_img_rgt_border">File Name</th>
-                                            <th class="cust_img_rgt_border">Download</th>
-                                            <th class="cust_img_rgt_border">Update</th>
-                                        </tr>
-                                    <thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="cust_img_rgt_border" >'.$delivery_note->dn_file.'</td>
-                                            <td class="cust_img_rgt_border"><a href="'.base_url('uploads/DeliveryNote/' .$delivery_note->dn_file).'" target="_blank">View</a></td>
-                                            <td class="cust_img_rgt_border" ><input type="file" name="dn_file"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>';
+                $data['status'] = "true";
 
             }
             else
             {
-                $data['image_table']='<div class="row row_align mb-4">
-                                            <div class="col-lg-3">
-                                                <label for="basicInput" class="form-label">Attach</label>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <input type="file" name="dn_file" class="form-control">
-                                            </div>
-                                        </div>
-                ';
+                $data['status'] = "false";
             }
-
             echo json_encode($data);
 
         }

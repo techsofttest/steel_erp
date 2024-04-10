@@ -111,10 +111,10 @@ class DeliveryNoteReport extends BaseController
                     }
                 }
             } 
-            else 
+            /*else 
             {
                 $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
-            }
+            }*/
         }
 
 
@@ -151,7 +151,7 @@ class DeliveryNoteReport extends BaseController
         );
 
       
-        $delivery_note = $this->common_model->CheckDate($from_date,'dn_date',$to_date,'',$customer,'dn_customer','','',$product,'dpd_prod_det',$sales_order,'dn_sales_order_num','crm_delivery_note',$joins);
+        $delivery_note = $this->common_model->CheckDate($from_date,'dn_date',$to_date,'',$customer,'dn_customer','','',$product,'dpd_prod_det',$sales_order,'dn_sales_order_num','crm_delivery_note',$joins,'dn_reffer_no');
         
        
 

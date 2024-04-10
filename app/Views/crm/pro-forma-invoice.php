@@ -1498,6 +1498,28 @@
 
                     $(".sales_excutive_clz").html(data.sales_executive);
 
+                    //$(".current_cliam_clz").val(data.currentClaim);
+
+                    //$(".current_cliam_clz").attr('maxlength',data.currentClaim);
+
+                   // var current_claim = data.current_claim
+
+                   // $(".current_cliam_clz").attr('max',current_claim)
+
+                    //console.log(current_claim);
+
+                    //var max = parseInt(this.max, 10);
+
+                   // $(".current_cliam_clz")[0].maxLength = current_claim;
+
+                   //$(".current_cliam_clz")[0].max = current_claim;
+
+                    //$(".current_cliam_clz").prop('maxlength',data.currentClaim);
+
+                    //$('.current_cliam_clz').prop('maxLength', 10);
+
+                    //console.log(data.currentClaim);
+
                     $(".lpo_reff").val(data.so_lpo);
 
                     $(".product-more2").append(data.sales_order_contact);
@@ -1902,7 +1924,95 @@
     /* ### */
 
 
-    
+    /*check discount section start*/
+
+    $("body").on('keyup', '.discount_clz_id', function(){ 
+
+
+        var dataSelect = $(this);
+
+        var prod_id = $(this).data('id');
+
+        var discountSelectElement = dataSelect.closest('.performa_remove').find('.discount_clz_id');
+
+        var discount = parseFloat(discountSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
+        if(discount > 100)
+        {   
+            var discountNull = discountSelectElement.val("");
+
+            var discountNullElement = dataSelect.closest('.performa_remove').find('.discount_clz_id');
+
+            discountNullElement.val(discountNull);
+
+            alertify.error('Discount Should Not Greater Than 100').delay(3).dismissOthers();
+          
+        }
+      
+
+    });
+
+
+    /*check discount section end*/
+
+
+    /*claim section start*/
+
+
+    $("body").on('keyup', '.current_cliam_clz', function(){ 
+
+        var current_claim = $('.current_cliam_clz').val();
+
+
+        if(current_claim > 100)
+        {   
+            $('.current_cliam_clz').val("")
+
+            alertify.error('Discount Should Not Greater Than 100').delay(3).dismissOthers();
+          
+        }
+
+        var sales_order = $('.sales_order_add_clz').val();
+
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/Claim",
+
+            method : "POST",
+
+            data: {salesOrder: sales_order},
+
+            success:function(data)
+            {
+                var data = JSON.parse(data);
+
+                var remain_claim = data.remaining_claim;
+
+
+                if(remain_claim !=="" ){
+
+                    if(remain_claim < current_claim )
+                    {
+                            $('.current_cliam_clz').val("")
+
+                            alertify.error('Maximun Current Claim Is '+remain_claim+'').delay(3).dismissOthers();
+                    }
+
+                }
+
+                
+            }
+        });
+
+       
+       
+
+    });
+
+
+    /*claim section end*/
+
 
 
     /*add section end*/
@@ -2536,9 +2646,12 @@
 
     function currentClaim()
     {  
-        var current_claim = $('.current_cliam_clz').val();
 
-        var amountTotal = $('.amount_total').val();
+       var current_claim_lenght = $(".current_cliam_clz").length 
+ 
+       var current_claim = $('.current_cliam_clz').val();
+
+       var amountTotal = $('.amount_total').val();
 
         var discountAmount = (current_claim/100)*amountTotal
 
@@ -2548,7 +2661,6 @@
 
         $('.claim_qar').val(discountAmount);
 
-        //console.log(qar);
     } 
 
     /*current claim section end*/

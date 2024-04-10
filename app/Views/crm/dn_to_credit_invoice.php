@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer" required><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -63,7 +63,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order" required><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -72,7 +72,7 @@
 
                                                                             <tr>
                                                                                 <td>Delivery Note Ref</td>
-                                                                                <td><select class="form-select  deliver_note_ref" name="delivery_note" required><option>Delivery Note Ref</option></select></td>
+                                                                                <td><select class="form-select  deliver_note_ref" name="delivery_note" ><option>Delivery Note Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -82,7 +82,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product" required><option value="" selected disabled>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -113,7 +113,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success" type="submit">Search</button>
                                         </div>
                                         
                                     </div>

@@ -71,7 +71,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_reffer_no" id="" value="<?php echo $credit_invoice_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -412,7 +412,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Credit Invoice</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CreditInvoice" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CreditInvoice" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1183,6 +1183,88 @@
 <!--view section end-->
 
 
+<!--adjustment modal section start-->
+
+
+<div class="modal fade" id="SaveModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Date</td>
+                                        <td>Recipt Ref</td>
+                                        <td>Amount</td>
+                                        <td>Adjust</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo adjustment_table">
+                                    
+                                    <!--<tr>
+                                        <td>1</td>
+                                        <td><input type="date" name="" value="30-01-2024" class="form-control" required></td>
+                                        <td><input type="text" name="" value="RF567" class="form-control" required></td>
+                                        <td><input type="text" name="" value="420" class="form-control" required></td>
+                                        <td><input type="text" name="" value="2" class="form-control" required></td>
+                                        <td><input type="checkbox" name="" value="" class="" required></td>
+                                    </tr>--->
+                                    
+                                </tbody>
+
+                                
+
+                            </table>
+                            
+                        </div>
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="" name="" value="">                                
+                    <span class="btn btn btn-success adjustment_close">Save</span>
+
+                </div>
+
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+
+<!--adjustment modal section end-->
+
+
 
 
 <script>
@@ -1209,17 +1291,32 @@
                         data: $(currentForm).serialize(),
                         success: function(data) {
 
-                            TotalAmount();
+                            var data = JSON.parse(data);
 
                             $('#add_form1')[0].reset();
                            
                             $('#CreditInvoice').modal('hide');
+
+                            $('.delivery_note_remove').remove();
+
+                            $('.hidden_credit_invoice_id').val("");
+
+                            $('.customer_id').val('').trigger('change');
+
+                            $('#SaveModal').modal('show');
+
+                            console.log(data.adjustment_data);
+
+                            $('.adjustment_table').html(data.adjustment_data);
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
 
                             checkedIds.length = 0;
+
+
+                            TotalAmount();
                            
                            
                         }
@@ -1773,7 +1870,7 @@
 
                             var id = data.sales_order;
 
-                            //var delivery_id = data.delivery_id;
+                            var credit_invoice_id = data.credit_invoice_id;
 
 
                            $('.hidden_credit_invoice_id').val(data.credit_invoice_id);
@@ -1782,22 +1879,32 @@
 
                             $('#CreditInvoice').modal('hide');
 
+                            
+
                             $.ajax({
 
                                 url : "<?php echo base_url(); ?>Crm/CreditInvoice/AddProduct",
 
                                 method : "POST",
 
-                                data: {ID: id},
+                                data: {ID: id,CreditInvoiceID :credit_invoice_id},
                                 
                                 success:function(data)
                                 {   
                                     var data = JSON.parse(data);
                                     
                                     $(".select_prod_add").html(data.product_detail);
+                                    
+                                    if(data.prod_status === "false")
+                                    {   
+                                        $('#SelectProduct').modal('hide');
 
-                                   // console.log(data.product_detail);
+                                        alertify.error('Please Create Delivery Note').delay(4).dismissOthers();
 
+                                        return false;
+                                    }
+
+                                    
                                 }   
 
                             });
@@ -2032,6 +2139,50 @@
         /*view section end*/
 
 
+        /*reset reffer id*/
+
+        $('.add_model_btn').click(function(){
+
+            $('#add_form1')[0].reset();
+                                
+            $('#CreditInvoice').modal('hide');
+
+            $('.delivery_note_remove').remove();
+
+            $('.hidden_credit_invoice_id').val("");
+
+            $('.customer_id').val('').trigger('change');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/FetchReference",
+
+                method : "GET",
+
+                success:function(data)
+                {
+
+                $('#srid').val(data);
+
+                }
+
+            });
+        });
+
+        /*######*/
+
+
+        $('.adjustment_close').click(function(){ 
+           
+           $('#SaveModal').modal('hide');
+   
+           alertify.success('Data added Successfully').delay(2).dismissOthers();
+   
+           datatable.ajax.reload(null,false);
+   
+       });
+
+
        
 
 
@@ -2083,6 +2234,10 @@ function handleCheckboxChange(checkbox)
 
 
 /*checkbox section end*/
+
+
+
+
 
 
 

@@ -220,6 +220,8 @@ class CashInvoice extends BaseController
 
                 'ci_added_date'      => date('Y-m-d'),
 
+                'ci_paid_status'     => 0,
+
             ];
 
             if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
@@ -261,6 +263,8 @@ class CashInvoice extends BaseController
                 'ci_project'         => $this->request->getPost('ci_project'),
 
                 'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
+
+                'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
 
             ];
 
@@ -310,6 +314,7 @@ class CashInvoice extends BaseController
                         'cipd_amount'        =>  $_POST['cipd_amount'][$j],
                         'cipd_sales_prod'    =>  $_POST['cipd_sales_prod'][$j],
                         'cipd_cash_invoice'  =>  $cash_invoice_id,
+                       
                         
                     );
 
@@ -318,15 +323,16 @@ class CashInvoice extends BaseController
 
                     //$update_data =  array('spd_delivered_qty' => $_POST['cipd_qtn'][$j]);
 
-                   
                     
                     $cond = array('spd_id' => $_POST['cipd_sales_prod'][$j]); 
                     
                     $sales_prod_old = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+                    $cash_invoice = $sales_prod_old->spd_cash_invoice + $_POST['cipd_qtn'][$j];
                     
                     $new_delivery_qty = $sales_prod_old->spd_delivered_qty + $_POST['cipd_qtn'][$j];
 
-                    $update_data =  array('spd_delivered_qty' => $new_delivery_qty);
+                    $update_data =  array('spd_delivered_qty' => $new_delivery_qty,'spd_cash_invoice' => $cash_invoice);
 
                     $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
 
@@ -356,18 +362,47 @@ class CashInvoice extends BaseController
                         $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
                     }
 
-                    //$update_data4 = array('so_deliver_flag'=>1);
-
-                    //$this->common_model->EditData($update_data4,array('so_id' =>$cash_invoice->ci_sales_order),'crm_sales_orders');
+                    $pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]));
                     
+                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]),array('spd_deliver_flag' => 1));
+                    
+                    if(count($pod_data1) == count($pod_data2))
+                    {
+                        $update_data3 = array('so_credit_status' => 1);
+
+                        $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order_id'][$j]),'crm_sales_orders');
+                    }
+  
                 } 
             }
+            
+            $cash_inv_data = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
 
+            $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $cash_inv_data->ci_customer));
+            
+            
 
+            $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
+            
+            
 
+            $data['adjustment_data'] = "";
 
+            foreach($receipts as $receipt)
+            {
+                $data['adjustment_data'] .= "
+                <tr>
+                    <td>1</td>
+                    <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                    <td><input type='text' name='' value='' class='form-control' required></td>
+                    <td><input type='checkbox' name='' value='' class='' required></td>
+                </tr>
+                ";
+            }
 
-                   
+       
 		}
 
 
@@ -745,6 +780,9 @@ class CashInvoice extends BaseController
             $sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
 
 
+            //$total_amount =  $this->common_model->FetchSum('crm_sales_product_details','spd_amount',$cond1);
+
+
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
             $data['so_lpo'] = $sales_order->so_lpo;
@@ -771,14 +809,18 @@ class CashInvoice extends BaseController
 
             $i = 1;
 
+            $total_amount = 0;
+
             foreach($sales_order_details as $sales_det){
                   
               $qty =   $sales_det->spd_quantity;
               $current_qty = $sales_det->spd_delivered_qty;
 
               $remaining_qty = $qty - $current_qty;
-              
+
              
+
+               
 
                 $data['product_detail'] .='<tr class="prod_row cash_invoice_remove"  id="'.$sales_det->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
@@ -806,6 +848,8 @@ class CashInvoice extends BaseController
                 
 
             }
+
+            
 
             /*#####*/
 
@@ -943,6 +987,8 @@ class CashInvoice extends BaseController
 
             $data['product_detail'] = "";
 
+            $total_amount = 0;
+
             // Fetch details for each selected product ID
             $i = 1;  
             foreach ($idsArray as $number) 
@@ -955,7 +1001,7 @@ class CashInvoice extends BaseController
                         'pk'    => 'product_id',
                         'fk'    => 'spd_product_details',
                     ),
-        
+                     
                 );
 
                 //$sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details', $cond);
@@ -965,7 +1011,8 @@ class CashInvoice extends BaseController
 
                 $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-                
+               
+
                 foreach($sales_order_details as $sales_det){
 
                     $current_qty = $sales_det->spd_quantity - $sales_det->spd_delivered_qty;
@@ -977,25 +1024,30 @@ class CashInvoice extends BaseController
                     $orginalPrice = $multipleValue - $perAmount;
 
                     $amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
+                    
+                    $total_amount = $amount + $total_amount;
 
+                    
 
                     $data['product_detail'] .='<tr class="prod_row cash_invoice_remove" id="'.$sales_det->spd_id.'">
-                                                    <td class="si_no">'.$i.'</td>
-                                                   
+                                                        <td class="si_no">'.$i.'</td>
                                                         <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
-                                                        
                                                         <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id" readonly></td>
+                                                        <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id" ></td>
                                                         <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id"  readonly></td>
                                                         <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id" readonly></td>
                                                         <td><input type="number" name="cipd_amount[]" value="'.$amount.'" class="form-control amount_clz_id" required readonly></td>
                                                         <input type="hidden" name="cipd_prod_det[]" value="'.$sales_det->product_id.'">
-                                                        <input type="hidden" name="cipd_sales_prod[]" value="'.$sales_det->spd_id.'">
-                                                        
-                                                    </tr>';
+                                                        <input type="hidden" class="selected_sales_prod" name="cipd_sales_prod[]" value="'.$sales_det->spd_id.'">
+                                                        <input type="hidden" name="sales_order_id[]" value="'.$sales_det->spd_sales_order.'">
+                                                </tr>';
                                                     
                                                     } $i++;
             }
+
+            $total_amount = number_format((float)$total_amount, 2, '.', '');  // Outputs -> 105.00
+            
+            $data['total_amount'] = $total_amount;
 
             // Output JSON encoded data
             echo json_encode($data);
@@ -1515,7 +1567,22 @@ class CashInvoice extends BaseController
 
 
         }
-    
+        
+        public function qtyCheck()
+        {
+           $qty = $this->request->getPost('QTY');
+
+           //$product_id = $this->request->getPost('selectProdId');
+
+           $sales_prod_data = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $this->request->getPost('selectProdId')));
+           
+           
+
+           $data['delivery_qty'] = $sales_prod_data->spd_quantity  - $sales_prod_data->spd_delivered_qty ;
+
+           echo json_encode($data);
+
+        }
 
 
      
