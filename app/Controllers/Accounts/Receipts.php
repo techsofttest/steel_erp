@@ -503,6 +503,46 @@ class Receipts extends BaseController
 
 
 
+    public function AddAdvanceSalesOrder()
+    {
+
+
+        if($_POST)
+        {
+
+
+            for($i=0;$i<=count($this->request->getPost('so_select'));$i++)
+            {
+
+                if(!empty($this->request->getPost('so_select')[$i]))
+                {
+
+                    $so_id = $this->request->getPost('so_select')[$i];
+
+                    $so_receipt = $this->request->getPost('so_reciept')[$i];
+                    
+                    $update_cond['so_id'] = $so_id;
+
+                    $update_data['so_advance_paid'] = $so_receipt;
+
+                    $this->common_model->EditData($update_data,$update_cond,'crm_sales_orders');
+
+                }
+
+
+            }
+            
+
+        
+
+
+        }
+
+
+    }
+
+
+
 
 
 
@@ -924,6 +964,8 @@ class Receipts extends BaseController
     $data['status']=0;
 
     $data['invoices']="";
+
+    $data['invoices'] .='<input type="hidden" id="total_amount" value="'.$insert_data['ri_amount'].'">';
 
     $sl =0; 
     foreach($invoices as $inv)

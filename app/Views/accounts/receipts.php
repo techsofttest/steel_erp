@@ -336,7 +336,7 @@
                         
                         <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
 
-                        <button class="w-100">FIFO</button>
+                        <button class="w-100" id="fifo_add" type="button">FIFO</button>
 
                         <button class="w-100" type="submit">Save</button>
 
@@ -745,8 +745,8 @@
 
                                         <td><input  type="text" name="so_name[]" class="form-control so_name_input" readonly></td>
                                         <td><input type="number" class="form-control so_amount_input" readonly></td>
-                                        <td><input class="form-control" type="number" name="so_reciept[]"></td>
-                                        <td><input type="checkbox" name="so_selected[]"></td>
+                                        <td><input class="form-control so_receipt_input" type="number" name="so_reciept[]" value="0"></td>
+                                        <td><input class="tick_check" type="checkbox" name="so_selected[]"></td>
 
                                         <th> <a href="javascript:void(0);" class="so_del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
 
@@ -798,6 +798,7 @@
    <div class="modal-footer justify-content-center">
     
                 <button type="submit" class="btn btn btn-success">Save</button>
+
     </div>
            
 
@@ -2070,6 +2071,8 @@
 
             $clone.find(".so_del_elem").show();
 
+            $clone.find('.tick_check').prop('checked',false);
+
             $clone.insertAfter('.so_row:last');
 
 			}
@@ -2662,6 +2665,8 @@
 
                     $('#AddModal').modal('hide');
 
+                    $('#fifo_add').attr('data-total',credit_amount);
+
                     $('#InvoicesModal').modal('show');
 
                 }
@@ -2795,6 +2800,36 @@
 
 
         });
+
+
+
+
+        $('#sales_order_advance').submit(function(e){
+
+        e.preventDefault();
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/Receipts/AddAdvanceSalesOrder",
+
+        method : "POST",
+
+        data: $(this).serialize(),
+
+        success:function(data)
+        {
+
+        alertify.success('Saved!').delay(3).dismissOthers();   
+
+        }
+
+        });
+
+        });
+
+
+
+
 
 
 
@@ -3232,20 +3267,71 @@
 
 
         
+        /*
         $('body').on('change','.so_row',function(){
 
-var so_parent = $(this).closest('.so_row');
+        var so_parent = $(this).closest('.so_row');
 
-var so_id = $(this).val();
+            var so_id = $(this).val();
 
-$.ajax({
+            $.ajax({
 
-url : "<?php echo base_url(); ?>Receipts/FetchSoDetails",
+            url : "<?php echo base_url(); ?>Receipts/FetchSoDetails",
 
 
-});
+            });
 
-});
+            });
+
+        */
+
+
+        $('body').on('click','.tick_check',function(){
+
+            parent = $(this).closest('.so_row');
+
+            if($(this).prop('checked')==true)
+
+            {
+            total = parent.find('.so_amount_input').val();
+
+            parent.find('.so_receipt_input').val(total);
+            }
+
+            else
+            {
+            
+            parent.find('.so_receipt_input').val('0.00');
+
+            }
+
+        });
+
+
+
+
+        $('body').on('click','#fifo_add',function(){
+
+            var total = $(this).data('total');
+
+            $('.invoice_receipt_amount').each(function(){
+
+               parent =  $(this).closest('tr');
+
+               invoice_total = parent.find('.invoice_total_amount').val();
+
+               var fill_amount = Math.min(total,invoice_total);
+
+               parent.find('.invoice_receipt_amount').val(fill_amount);
+
+               total -= fill_amount;
+
+            });
+
+
+        });
+
+
 
 
 
