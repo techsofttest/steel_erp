@@ -142,6 +142,8 @@ class CustomerCreation extends BaseController
 
         $coa_data['ca_customer'] = $id;
 
+        $coa_data['ca_account_id'] = $this->request->getPost('cc_account_id');
+
         $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
         echo json_encode($data);
@@ -747,7 +749,33 @@ class CustomerCreation extends BaseController
 
         $qsales_order = $this->common_model->FetchWhere('crm_sales_orders',$cond4);
 
-        if(empty($enquiry) && empty($quotation) && empty($qsales_order)){
+
+        $coa_cond = array('ca_customer' => $customer_id);
+
+        $charts_of_account = $this->common_model->SingleRow('accounts_charts_of_accounts',$coa_cond);
+
+        if(!empty($charts_of_account))
+
+        {
+
+        $receipt_cond = array('r_debit_account' => $charts_of_account->ca_id);
+
+        $receipts = $this->common_model->FetchWhere('accounts_receipts',$receipt_cond);
+
+        $payment_cond = array('pay_credit_account' => $charts_of_account->ca_id);
+
+        $payments = $this->common_model->FetchWhere('accounts_payments',$payment_cond);
+
+
+        $petty_cond = array('pcv_credit_account' => $charts_of_account->ca_id);
+
+        $pcv = $this->common_model->FetchWhere('accounts_petty_cash_voucher',$petty_cond);
+
+        }
+
+
+
+        if(empty($enquiry) && empty($quotation) && empty($qsales_order) && empty($receipts) && empty($payments) && empty($pcv)){
 
             @unlink('uploads/CustomerCreation/'.$cus_creation->cc_attach_cr);
 
@@ -761,7 +789,6 @@ class CustomerCreation extends BaseController
 
             //Delete Charts Of Accounts
 
-            $coa_cond = array('ca_customer' => $customer_id);
 
             $this->common_model->DeleteData('accounts_charts_of_accounts',$coa_cond);
 
