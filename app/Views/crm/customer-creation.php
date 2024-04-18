@@ -1296,8 +1296,7 @@
                     $('.view_qid_num_att').html(data.cc_qid_attach);
 
                     $('#ViewCustomerCreation').modal('show');
-
-                   
+ 
                  
                 }
 
@@ -1937,10 +1936,17 @@
 
             success:function(data)
             {   
-                
-                alertify.success('Data Delete Successfully').delay(3).dismissOthers();
-                datatable.ajax.reload(null, false);
-                
+                var data = JSON.parse(data);
+
+                if(data.status=='true'){
+
+                    alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    datatable.ajax.reload(null, false);
+                }
+                else{
+
+                    alertify.error("Customer In Use Cant't Delete").delay(3).dismissOthers();
+                }
             }
 
 

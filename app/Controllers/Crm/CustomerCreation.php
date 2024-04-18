@@ -195,14 +195,31 @@ class CustomerCreation extends BaseController
             unset($update_data['customer_creation']);
         }
 
-        // Remove unnecessary unset statements for date fields
-       
-        $update_data['cc_cr_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_cr_expiry")));
-
+        if(!empty($this->request->getPost("cc_cr_expiry")))
+        {
+            $update_data['cc_cr_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_cr_expiry")));
+        }
+        else
+        {
+            $update_data['cc_cr_expiry'] =""; 
+        }
+        if(!empty($this->request->getPost("cc_est_id_expery")))
+        {
+            $update_data['cc_est_id_expery'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_expery")));
+        }
+        else
+        {
+            $update_data['cc_est_id_expery'] ="";
+        }
+        if(!empty($this->request->getPost("cc_qid_expiry"))){
         
-        $update_data['cc_est_id_expery'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_expery")));
-        $update_data['cc_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_expiry")));
+            $update_data['cc_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_expiry")));
 
+        }
+        else
+        {
+            $update_data['cc_qid_expiry'] = "";
+        }
         // Handle file upload
         if ($_FILES['cc_attach_cr']['name'] !== '') {
             $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');
@@ -419,28 +436,85 @@ class CustomerCreation extends BaseController
         $data['credit_period']      = $cus_creation->cc_credit_period;
 
         $data['credit_limit']       = $cus_creation->cc_credit_limit;
-
-        $data['cr_num']             = $cus_creation->cc_cr_number;
-
-        $data['cr_expiry']          = date('d-M-Y',strtotime($cus_creation->cc_cr_expiry));
-
-        $data['est_id']             = $cus_creation->cc_est_id;
-
-        $data['est_id_expery']      = date('d-M-Y',strtotime($cus_creation->cc_est_id_expery));
-
+       
         $data['signatory_name']     = $cus_creation->cc_signatory_name;
 
-        $data['qid_number']         = $cus_creation->cc_qid_number;
+        
 
-        $data['qid_expiry']         = date('d-M-Y',strtotime($cus_creation->cc_qid_expiry));
+        if($cus_creation->cc_qid_expiry == "0000-00-00")
+        {
+            $cus_creation->cc_qid_expiry ="";
+        }
+        else
+        {
+            $data['qid_expiry'] = date('d-M-Y',strtotime($cus_creation->cc_qid_expiry));
+        }
+        if(!empty($cus_creation->cc_qid_number))
+        {
+            $data['qid_number']  = $cus_creation->cc_qid_number;
+        }
+        else
+        {
+            $data['qid_number'] ="";
+        }
+        if($cus_creation->cc_est_id_expery == "0000-00-00")
+        {
+            $data['est_id_expery'] ="";
+        }
+        else
+        {
+            $data['est_id_expery']  = date('d-M-Y',strtotime($cus_creation->cc_est_id_expery));
+        }
+        if(!empty($cus_creation->cc_est_id))
+        {
+            $data['est_id'] = $cus_creation->cc_est_id;
+        }
+        else
+        {
+            $data['est_id'] ="";
+        }
+        if($cus_creation->cc_cr_expiry == "0000-00-00")
+        {
+            $data['cr_expiry'] ="";
+        }
+        else
+        {
+            $data['cr_expiry']  = date('d-M-Y',strtotime($cus_creation->cc_cr_expiry));
+        }
 
-      
-        $data['cc_attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
-
-        $data['cc_est_id_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_est_id_attach) . '" target="_blank">View</a>';  
-         
-        $data['cc_qid_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_qid_attach) . '" target="_blank">View</a>';  
-         
+        if(!empty($cus_creation->cc_cr_number))
+        {
+            $data['cr_num'] = $cus_creation->cc_cr_number;
+        }
+        else
+        {
+            $data['cr_num']  ="";
+        }
+        
+        if(!empty($cus_creation->cc_attach_cr))
+        {
+            $data['cc_attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['cc_attach_cr'] = "";
+        }
+        if(!empty($cus_creation->cc_est_id_attach))
+        {
+            $data['cc_est_id_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_est_id_attach) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['cc_est_id_attach'] = "";
+        }
+        if($cus_creation->cc_qid_attach)
+        {
+            $data['cc_qid_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $cus_creation->cc_qid_attach) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['cc_qid_attach'] = "";
+        }
          
          
         $i=1;
@@ -505,29 +579,85 @@ class CustomerCreation extends BaseController
 
         $data['cust_id']          = $customer_creation->cc_id;
 
-        $data['cr_no']            = $customer_creation->cc_cr_number;
-
-        $data['cr_expiry']        = date('d-M-Y',strtotime($customer_creation->cc_cr_expiry));
-
-        $data['est_id']           = $customer_creation->cc_est_id;
-
-        $data['est_id_expery']    = date('d-M-Y',strtotime($customer_creation->cc_est_id_expery));
-        
         $data['signatory_name']   = $customer_creation->cc_signatory_name;
-
-        $data['qid_number']       = $customer_creation->cc_qid_number;
-
-        $data['qid_expiry']       = date('d-M-Y',strtotime($customer_creation->cc_qid_expiry));
-
         
+        if(!empty($customer_creation->cc_qid_number))
+        {
+            $data['qid_number'] = $customer_creation->cc_qid_number;
+        }
+        else
+        {
+            $data['qid_number'] ="";
+        }
+        if(!empty($customer_creation->cc_est_id))
+        {
+            $data['est_id'] = $customer_creation->cc_est_id;
+        }
+        else
+        {
+            $data['est_id'] ="";
+        }
+        if(!empty($customer_creation->cc_cr_number))
+        {
+            $data['cr_no']  = $customer_creation->cc_cr_number;
+        }
+        else
+        {
+            $data['cr_no'] ="";
+        }
+        if($customer_creation->cc_cr_expiry == "0000-00-00")
+        {
+            $data['cr_expiry']  = "";
+        }
+        else
+        {
+            $data['cr_expiry']  = date('d-M-Y',strtotime($customer_creation->cc_cr_expiry));
+        }
+        if($customer_creation->cc_est_id_expery == "0000-00-00")
+        {
+            $data['est_id_expery'] ="";
+        }
+        else
+        {
+            $data['est_id_expery'] = date('d-M-Y',strtotime($customer_creation->cc_est_id_expery));
+        }
+        if($customer_creation->cc_qid_expiry == "0000-00-00")
+        {
+            $data['qid_expiry'] ="";
+        }
+        else
+        {
+            $data['qid_expiry']  = date('d-M-Y',strtotime($customer_creation->cc_qid_expiry));
+        }
         /*image section start*/
 
-        $data['cc_attach_cr'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_attach_cr) . '" target="_blank">View</a>';  
+       
+        $data['cc_attach_cr'] = "<a href='" . base_url('uploads/CustomerCreation/' . $customer_creation->cc_attach_cr) . "' target='_blank'>";
+        if (!empty($customer_creation->cc_attach_cr)) {
+            $data['cc_attach_cr'] .= 'view';
+        }
         
-        $data['cc_est_id_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_est_id_attach) . '" target="_blank">View</a>';  
+        $data['cc_attach_cr'] .= "</a>";
+        
+
+       
+        $data['cc_est_id_attach'] = "<a href='" . base_url('uploads/CustomerCreation/' . $customer_creation->cc_est_id_attach) . "' target='_blank'>";
+        if(!empty($customer_creation->cc_est_id_attach)){
+
+            $data['cc_est_id_attach'] .= 'view';
+        }
+        $data['cc_est_id_attach'] .="</a>";  
 	 
-	    $data['cc_qid_attach'] = '<a href="' . base_url('uploads/CustomerCreation/' . $customer_creation->cc_qid_attach) . '" target="_blank">View</a>';  
+
+	    
+        $data['cc_qid_attach'] = "<a href='" . base_url('uploads/CustomerCreation/' . $customer_creation->cc_qid_attach) . "' target='_blank'>";
+        if(!empty($customer_creation->cc_qid_attach)){
+
+            $data['cc_qid_attach'] .='view';
+        }
+        $data['cc_qid_attach'] .="</a>";  
 	 
+
         /*image section end*/
        
 
@@ -607,21 +737,47 @@ class CustomerCreation extends BaseController
 
         $cond2 = array('enquiry_customer' => $this->request->getPost('ID'));
 
-        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_attach_cr);
+        $enquiry = $this->common_model->FetchWhere('crm_enquiry',$cond2);
 
-        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_est_attach_card);
+        $cond3  = array('qd_customer' => $this->request->getPost('ID'));
 
-        @unlink('uploads/CustomerCreation/'.$cus_creation->cc_id_card);
- 
-        $this->common_model->DeleteData('crm_customer_creation',$cond);
- 
-        $this->common_model->DeleteData('crm_contact_details',$cond1);
+        $quotation = $this->common_model->FetchWhere('crm_quotation_details',$cond3);
+
+        $cond4 = array('so_customer' => $this->request->getPost('ID'));
+
+        $qsales_order = $this->common_model->FetchWhere('crm_sales_orders',$cond4);
+
+        if(empty($enquiry) && empty($quotation) && empty($qsales_order)){
+
+            @unlink('uploads/CustomerCreation/'.$cus_creation->cc_attach_cr);
+
+            @unlink('uploads/CustomerCreation/'.$cus_creation->cc_est_attach_card);
+
+            @unlink('uploads/CustomerCreation/'.$cus_creation->cc_id_card);
+    
+            $this->common_model->DeleteData('crm_customer_creation',$cond);
+    
+            $this->common_model->DeleteData('crm_contact_details',$cond1);
+
+            //Delete Charts Of Accounts
+
+            $coa_cond = array('ca_customer' => $customer_id);
+
+            $this->common_model->DeleteData('accounts_charts_of_accounts',$coa_cond);
+
+            $data['status'] = "true"; 
+        
+        }
+        else
+        {
+            $data['status'] = "false"; 
+        }
 
         //delete enquiry
+        
+        //$enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
 
-        $enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
-
-        if(!empty($enquiry))
+        /*if(!empty($enquiry))
         {
            
             $enquiry_id = $enquiry->enquiry_id;
@@ -632,14 +788,9 @@ class CustomerCreation extends BaseController
 
             $this->common_model->DeleteData('crm_product_detail',$cond3);
 
-        }
+        }*/
 
-        //Delete Charts Of Accounts
-
-        $coa_cond = array('ca_customer' => $customer_id);
-
-        $this->common_model->DeleteData('ca_customer',$coa_cond);
-
+        echo json_encode($data);
 
     }
 
@@ -722,10 +873,10 @@ class CustomerCreation extends BaseController
         
         $data['single_contact'] .='<tr>
                                     <td>1</td>
-                                    <td><input type=text"  name="contact_person" class="form-control" value="'.$single_contact->contact_person.'"></td>
-                                    <td><input type="text" name="contact_designation" class="form-control" value="'.$single_contact->contact_designation.'"></td>
-                                    <td><input type="text" name="contact_mobile" class="form-control cond_telephone" value="'.$single_contact->contact_mobile.'"></td>
-                                    <td><input type="text" name="contact_email" class="form-control" value='.$single_contact->contact_email.'></td>
+                                    <td><input type=text"  name="contact_person" class="form-control" value="'.$single_contact->contact_person.'" required></td>
+                                    <td><input type="text" name="contact_designation" class="form-control" value="'.$single_contact->contact_designation.'" required></td>
+                                    <td><input type="text" name="contact_mobile" class="form-control cond_telephone" value="'.$single_contact->contact_mobile.'" required></td>
+                                    <td><input type="text" name="contact_email" class="form-control" value="'.$single_contact->contact_email.'" required></td>
 	                                <input type="hidden"   name="contact_id" value='.$single_contact->contact_id.'>
                                 </tr>';
   
