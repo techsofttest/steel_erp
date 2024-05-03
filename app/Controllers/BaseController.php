@@ -78,8 +78,7 @@ abstract class BaseController extends Controller
         $this->request = \Config\Services::request();
 
         $this->session = \Config\Services::session();
-
-        $this->admin_name = "sup";
+        
 
     }
 
