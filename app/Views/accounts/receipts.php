@@ -1837,14 +1837,15 @@
                         data:formData,
                         processData: false, 
                         contentType: false,
-                        success: function(data) {
-                        //$('#add_form')[0].reset();
-                        //$('#AddModal').modal('hide');
-                        alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                        $('#add_form').attr('data-submit','true');
-                        $('#add_form').attr('data-rcid',data);
-                        $('#added_id').val(data);
-                        datatable.ajax.reload( null, false)
+                        success: function(data) 
+                        {
+                       
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            $('#add_form').attr('data-submit','true');
+                            $('#add_form').attr('data-rcid',data);
+                            $('#added_id').val(data);
+                            datatable.ajax.reload( null, false)
+
                         }
                        
                     });

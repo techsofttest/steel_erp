@@ -57,6 +57,8 @@ abstract class BaseController extends Controller
 
     public $report_model;
 
+    public $crm_modal;
+
     public $session;
 
     public $data;
@@ -72,6 +74,8 @@ abstract class BaseController extends Controller
         $this->report_model = new \App\Models\ReportModel();
 
         $this->common_model = new \App\Models\CommonModel();
+
+        $this->crm_modal = new \App\Models\CrmReportModel();
 
         $this->validation = \Config\Services::validation();
 

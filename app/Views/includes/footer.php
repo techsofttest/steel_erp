@@ -107,7 +107,7 @@
         }
        
 
-        $(document).ready(function(){
+        /*$(document).ready(function(){
             $('.datepicker').datepicker({
                 dateFormat: "dd-MM-yy" // Specify the date format as "dd-MM-yy"
                
@@ -120,11 +120,27 @@
 
             $(this).attr("autocomplete", "off");
 
-            });
+            }).on('change', function() {
+                    $(this).valid();  // triggers the validation test
+                    // '$(this)' refers to '$("#datepicker")'
+        
+                });
 
-            
+
+        });*/
 
 
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+                dateFormat: "dd-MM-yy" // Specify the date format as "dd-MM-yy"
+            }).on('change', function() {
+                    $(this).valid();  // triggers the validation test
+                    // '$(this)' refers to '$("#datepicker")'
+                });
+            $('body').on('focus',".datepicker", function(){
+            $(this).datepicker({ dateFormat: "dd-MM-yy" });
+            $(this).attr("autocomplete", "off");
+            })
         });
 
 

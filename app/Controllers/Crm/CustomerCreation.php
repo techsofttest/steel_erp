@@ -153,7 +153,8 @@ class CustomerCreation extends BaseController
 
     public function AddTab2()
     {
-       
+        
+
         if($_POST)
         {
 	        if(!empty($_POST['contact_person']))

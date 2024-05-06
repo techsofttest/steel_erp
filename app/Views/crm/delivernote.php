@@ -46,7 +46,7 @@
 
                         <div class="modal fade" id="DeliverNote" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" id="add_form1" data-salesorder="false">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Deliver Note</h5>
@@ -94,7 +94,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_date" class="form-control datepicker" required>
+                                                                        <input type="text" name="dn_date" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -1189,6 +1189,8 @@
         /*add section*/    
         $(function() {
             var form = $('#add_form1');
+
+            
             
             form.validate({
                 rules: {
@@ -1201,36 +1203,49 @@
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
                     var formData = new FormData(currentForm);
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                       // data: $(currentForm).serialize(),
-                        success: function(data) {
-                          
-                            $('#add_form1')[0].reset();
+                    if($('#add_form1').attr('data-salesorder')=="true")
+                    {
 
-                           // $('.delivery_note_remove').remove();
-                            $('body').find('.delivery_note_remove').remove();
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
+                            method: "POST",
+                            data: formData,
+                            processData: false, // Don't process the data
+                            contentType: false, // Don't set content type
+                        // data: $(currentForm).serialize(),
+                            success: function(data) {
+                            
+                                $('#add_form1')[0].reset();
 
-                            $('.prod_checkmark').prop('checked', false); // Unchecks it
+                            // $('.delivery_note_remove').remove();
+                                $('body').find('.delivery_note_remove').remove();
 
-                            $('.sales_order_add_clz').val('').trigger('change');
+                                $('.prod_checkmark').prop('checked', false); // Unchecks it
 
-                            $('.cont_person').val('').trigger('change');
+                                $('.sales_order_add_clz').val('').trigger('change');
 
-                            $('.customer_id').val('').trigger('change');
+                                $('.cont_person').val('').trigger('change');
 
-                            $('.hidden_delivery_id').val("");
-                           
-                            $('#DeliverNote').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);
-                       
-                        }
-                    });
+                                $('.customer_id').val('').trigger('change');
+
+                                $('.hidden_delivery_id').val("");
+                            
+                                $('#DeliverNote').modal('hide');
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload(null, false);
+                        
+                            }
+                        });
+
+
+                    }
+                    else
+                    {
+                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                    }
+
+
+
                 }
             });
         });
@@ -1309,6 +1324,8 @@
                     $(".cont_person").html(data.contact_person);
 
                     $(".payment_term_clz").val(data.payment_term);
+
+                    $(".payment_term_clz").removeClass("error")
                    
                 }
 
@@ -1319,7 +1336,11 @@
 
         });
 
-
+        /* Select 2 Remove Validation On Change */
+        $("select[name=dn_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
         /**/
         $("body").on('change', '.sales_order_add_clz', function(){ 
@@ -1353,8 +1374,21 @@
 
                     $(".project_clz").val(data.so_project);
 
-                   
-                    //$(".product-more2").append(data.product_detail);
+                     
+                    if(data.so_lpo!=null)
+                    {
+                        $('.lpo_ref').removeClass("error");
+                    }
+                    
+                    if(data.contact_person!=null)
+                    {
+                        $('.cont_person').removeClass("error");
+                    }
+                    
+                    if(data.so_project!=null)
+                    {
+                        $('.project_clz').removeClass("error");
+                    }
 
                     slno();
                   
@@ -1643,6 +1677,8 @@
 
                             $('#DeliverNote').modal('hide');
 
+                            $('#add_form1').attr('data-salesorder','true');
+
                             $.ajax({
 
                                 url : "<?php echo base_url(); ?>Crm/DeliverNote/AddProduct",
@@ -1684,7 +1720,14 @@
 
             var selectId = $('#select_prod_id').val();
 
-         
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                alert("You must check at least one checkbox.");
+                return false;
+            }
+
+           
 
             $.ajax({
 
@@ -1726,6 +1769,16 @@
 
     $('.add_model_btn').click(function(){
 
+        $('#add_form1')[0].reset();
+
+        $('.customer_id').val('').trigger('change');
+
+        $('.sales_order_add_clz  option').remove();
+
+        $('.cont_person  option').remove();
+
+        $('#add_form1').attr('data-salesorder','false')
+
         $.ajax({
 
             url : "<?php echo base_url(); ?>Crm/DeliverNote/FetchReference",
@@ -1756,7 +1809,7 @@
 
         $('#DeliverNote').modal("hide");
 
-        $('#ViewDeliverNote').modal("show");
+        
 
         $.ajax({
 
@@ -1792,6 +1845,8 @@
                 $('.view_prod_data').html(data.product_detail);
 
                 $('.view_image_table').html(data.image_table);
+
+                $('#ViewDeliverNote').modal("show");
             }
 
         });
@@ -2229,6 +2284,8 @@
         // Log the current state of checked IDs
         //console.log('Checked IDs: ', checkedIds);
         document.getElementById('select_prod_id').value = checkedIds.join(',');
+
+       
     }
 
     // Update modal form function

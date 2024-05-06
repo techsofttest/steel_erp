@@ -391,6 +391,8 @@ class ProFormaInvoice extends BaseController
             <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control " readonly></td>
             <td> <input type="text" value="'.$prod_det->pp_amount.'" class="form-control " readonly></td>
             </tr>'; 
+
+            $i++;
              
         }
         
@@ -532,23 +534,7 @@ class ProFormaInvoice extends BaseController
             
             $proforma_invoice = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
             
-            
-            /*if(!empty($proforma_invoice))
-            {   
-                $currentClaim = 0;
-
-                foreach($proforma_invoice as $proforma)
-                {
-                    $currentClaim  = $currentClaim + $proforma->pf_current_cliam;
-                }
-            }
-
            
-            $currentClaim = 100 - $currentClaim;
-
-            
-            $data['current_claim'] = $currentClaim;*/
-
 
             $data['so_delivery_term'] = $sales_order->so_delivery_term;
 
@@ -592,20 +578,17 @@ class ProFormaInvoice extends BaseController
             //table section start
 
             $i=1;
-
+            $j=0; 
             $data['sales_order_contact'] ='';
         
             foreach($sales_prod_det as $prod_det){
 
-                /*foreach($sales_prod_det1 as $sal_prod_det1)
-                {
-                   
-                }*/
+              
 
-            $data['sales_order_contact'] .= '<tr class="prod_row performa_remove" id="'.$prod_det->spd_id.'">
+            $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no">'.$i.'</td>
                                             <td style="width:20%">
-                                                <select class="form-select" name="pp_product_det[]" required>';
+                                                <select class="form-select" name="pp_product_det['.$j.']" required>';
                                                 
                                                 foreach($products as $prod){
 
@@ -616,14 +599,15 @@ class ProFormaInvoice extends BaseController
 
                    $data['sales_order_contact'] .=  '</select>
                                             </td>
-                                            <td><input type="text"   name="pp_unit[]" value="'.$prod_det->spd_unit.'" class="form-control" required></td>
-                                            <td><input type="number" name="pp_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id" required></td>
-                                            <td><input type="number" name="pp_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" required></td>
-                                            <td><input type="number" name="pp_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
-                                            <td><input type="number" name="pp_amount[]" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" required></td>
+                                            <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id" required></td>
+                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id" required></td>
+                                            <td><input type="number" name="pp_rate['.$j.']" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" required></td>
+                                            <td><input type="number" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
+                                            <td><input type="number" name="pp_amount['.$j.']" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" readonly></td>
                                             <td class="row_remove remove-btnpp" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i>Remove</td>
                                         </tr>';
                                         $i++;
+                                        $j++;
                                     }
           
            
@@ -698,15 +682,19 @@ class ProFormaInvoice extends BaseController
             $data['customer'] ="";
             foreach($customer_creation as $cus_creation)
             {
-                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-            
-                // Check if the current product head is selected
+                
                 if ($cus_creation->cc_id  == $proforma->pf_customer)
                 {
-                    $data['customer'] .= ' selected'; 
+                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+                
+                    // Check if the current product head is selected
+                
+                        $data['customer'] .= ' selected'; 
+                    
+                
+                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
                 }
-            
-                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
 
             }
 
@@ -752,8 +740,10 @@ class ProFormaInvoice extends BaseController
             
             //contact person
 
-            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+            //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
 
+            $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$proforma->pf_customer));
+      
             $data['contact_person'] ="";
 
             foreach($contact_data as $cont_data)
@@ -1033,6 +1023,37 @@ class ProFormaInvoice extends BaseController
             echo json_encode($data); 
 
 
+        }
+
+
+        public function EditClaim()
+        {
+            $cond = array('pf_sales_order' => $this->request->getPost('salesOrder'));
+
+            $single_product_det = $this->common_model->FetchPerformaClaim($cond,'pf_reffer_no',$this->request->getPost('performaReff'));
+
+            
+            if(!empty($single_product_det))
+            {   
+                $currentClaim = 0;
+
+                foreach($single_product_det as $single_prod_det)
+                {
+                    $currentClaim  = $currentClaim + $single_prod_det->pf_current_cliam;
+                }
+
+                $currentClaim  =  100 - $currentClaim;
+                
+                $data['remaining_claim'] = $currentClaim;
+                
+            }
+            else
+            {
+                $data['remaining_claim'] = "";
+            }
+
+           
+            echo json_encode($data); 
         }
 
 

@@ -151,6 +151,7 @@ class SalesOrder extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
+        
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
      
@@ -230,6 +231,14 @@ class SalesOrder extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {   
+                    if(!empty($_POST['quot_prod_id'][$j]))
+                    {
+                       $quot_prod_id = $_POST['quot_prod_id'][$j];
+                    }
+                    else
+                    {
+                        $quot_prod_id = 0;
+                    }
                     $prod_data  	= array(  
                         
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
@@ -238,11 +247,34 @@ class SalesOrder extends BaseController
                         'spd_rate'              =>  $_POST['spd_rate'][$j],
                         'spd_discount'          =>  $_POST['spd_discount'][$j],
                         'spd_amount'            =>  $_POST['spd_amount'][$j],
+                        'spd_quot_prod_id'      =>  $quot_prod_id,
                         'spd_sales_order'       =>  $sales_order_id,
     
                     );
                 
                     $id = $this->common_model->InsertData('crm_sales_product_details',$prod_data);
+
+                    if(!empty($_POST['quot_prod_id'][$j]))
+                    {
+                    
+                        $updated_data = array('qpd_status'=>1);
+                        
+                        $this->common_model->EditData($updated_data,array('qpd_id' => $_POST['quot_prod_id'][$j]),'crm_quotation_product_details');
+                        
+                        $product_detail = $this->common_model->FetchWhere('crm_quotation_product_details',array('qpd_quotation_details' => $_POST['quotation_id'][$j]));
+                        
+                        $product_details = $this->common_model->CheckTwiceCond1('crm_quotation_product_details',array('qpd_quotation_details' => $_POST['quotation_id'][$j]),array('qpd_status'=>1));
+                        
+
+                        if(count($product_detail) == count($product_details))
+                        {
+                            $updated_data2 = array('qd_status'=>1);
+
+                            $this->common_model->EditData($updated_data2,array('qd_id' => $_POST['quotation_id'][$j]),'crm_quotation_details');
+                        
+                        }
+
+                    }
             
                 } 
             }
@@ -278,8 +310,10 @@ class SalesOrder extends BaseController
 
         $cond1 = array('qd_customer' => $this->request->getPost('ID'));
 
-        $quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
+        //$quotation_details = $this->common_model->FetcQuotInSales($this->request->getPost('ID'));
 
+        $quotation_details = $this->common_model->CheckTwiceCond1('crm_quotation_details',array('qd_customer' => $this->request->getPost('ID')),array('qd_status'=>0));
+        
         $data['quotation_det'] ="";
         
         $data['quotation_det'] ='<option value="" selected disabled>Select Quotation Ref</option>';
@@ -329,7 +363,7 @@ class SalesOrder extends BaseController
         $contact_person = $this->common_model->FetchWhere('crm_contact_details',$cond2);
 
         
-        $joins1 = array(
+        /*$joins1 = array(
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
@@ -339,21 +373,24 @@ class SalesOrder extends BaseController
 
         );
 
-        $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);
-        
+        $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);*/
+
+        $product_details_data = $this->common_model->CheckTwiceCond1('crm_quotation_product_details',$cond1,array('qpd_status'=>0));
+
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
          
         $data['prod_details'] ='';
         $i =1; 
+        $si=0;
         foreach($product_details_data as $prod_det)
         {   
             $prod_det->qpd_amount;
 
-            $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->qpd_id.'">
+            $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
             <td class="si_no2">'.$i.'</td>
             <td style="width:20%">
-                <select class="form-select droup_product add_prod" name="spd_product_details[]" required>';
+                <select class="form-select droup_product add_prod" name="spd_product_details['.$si.']" required>';
                     
                     foreach($products as $prod){
                         $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
@@ -362,14 +399,17 @@ class SalesOrder extends BaseController
                     }
             $data['prod_details'] .='</select>
             </td>
-            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->qpd_unit.'" class="form-control " required></td>
-            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->qpd_quantity.'" class="form-control qtn_clz_id"  required></td>
-            <td> <input type="text" name="spd_rate[]"  class="form-control rate_clz_id" required></td>
-            <td> <input type="text" name="spd_discount[]"  class="form-control discount_clz_id" required></td>
-            <td> <input type="text" name="spd_amount[]"  class="form-control amount_clz_id" required></td>
+            <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id" required></td>
+            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" class="form-control qtn_clz_id"  required></td>
+            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id" required></td>
+            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  class="form-control discount_clz_id" required></td>
+            <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id" readonly></td>
+            <input type="hidden" name="quot_prod_id['.$si.']" value="'.$prod_det->qpd_id.'">
+            <input type="hidden" name="quotation_id['.$si.']" value="'.$prod_det->qpd_quotation_details.'">
             <td class="row_remove remove-btnpp" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>'; 
-            $i++; 
+            $i++;
+            $si++; 
         }
        
         /**/
@@ -571,13 +611,49 @@ class SalesOrder extends BaseController
         
         $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_sales_order' => $this->request->getPost('ID')));
         
-        //$credit_invoice = $this->common_model->SingleRow('crm_credit_invoice',array('cci_sales_order' => $this->request->getPost('ID')));
         
-       // print_r($delivery_note); exit();
 
         if((empty($delivery_note)) && (empty($cash_invoice)))
         {
- 
+            //change status in quotation and product table
+           
+            $sales_order = $this->common_model->SingleRow('crm_sales_orders',array('so_id' => $this->request->getPost('ID')));
+            
+            $quotation_id = $sales_order->so_quotation_ref;
+
+            $sales_order_id = $sales_order->so_id;
+
+            $updated_data = array('qd_status'=>0);
+
+            $this->common_model->EditData($updated_data,array('qd_id' => $quotation_id),'crm_quotation_details');
+            
+            $sales_products = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $sales_order_id));
+            
+            foreach($sales_products as $sale_prod)
+            {
+                
+                $prod_update = array('qpd_status'=>0);
+
+                $this->common_model->EditData($prod_update,array('qpd_id' => $sale_prod->spd_quot_prod_id),'crm_quotation_product_details');
+
+            }
+            
+
+            //pro-forma invoice
+            
+            $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+
+            foreach($proforma_data as $proforma)
+            {
+                $cond2 = array('pp_proforma' => $proforma->pf_id);
+
+                $this->common_model->DeleteData('crm_proforma_product',$cond2);
+            }
+  
+            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+              
+            //delete sales order
+
             $this->common_model->DeleteData('crm_sales_orders',$cond);
 
             $cond1 = array('spd_sales_order' => $this->request->getPost('ID'));
@@ -590,19 +666,7 @@ class SalesOrder extends BaseController
         else
         { 
 
-            //pro-forma invoice
-            
-            $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
-
-            foreach($proforma_data as $proforma)
-            {
-                $cond2 = array('pp_proforma' => $proforma->pf_id);
-
-                $this->common_model->DeleteData('crm_proforma_product',$cond2);
-            }
-
-
-            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+          
             
             $data['status'] = "false";
         }
@@ -689,15 +753,15 @@ class SalesOrder extends BaseController
         // customer craetion
         foreach($customer_creation as $cus_creation)
         {
-            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-        
-            // Check if the current product head is selected
+            
             if ($cus_creation->cc_id  == $sales_order->so_customer)
             {
+                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
                 $data['customer_creation'] .= ' selected'; 
+                $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
             }
         
-            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+           
         }
 
         //quotation_details
@@ -706,15 +770,15 @@ class SalesOrder extends BaseController
 
         $data['quotation'] .='<option value="'.$sales_order->qd_id.'">'.$sales_order->qd_reffer_no.'</option>';
 
-
+        
         //sales executive
-       
+        $data['sales_executive'] ="";
         foreach($sales_executive as $sales_exec)
         {
-            $data['sales_executive'] = '<option value="' .$sales_exec->se_id.'"'; 
+            $data['sales_executive'] .= '<option value="' .$sales_exec->se_id.'"'; 
         
             // Check if the current product head is selected
-            if ($sales_exec->se_id  == $sales_order->qd_sales_executive)
+            if ($sales_exec->se_id  == $sales_order->so_sales_executive)
             {
                 $data['sales_executive'] .= ' selected'; 
             }
@@ -724,11 +788,17 @@ class SalesOrder extends BaseController
 
         //contact person
 
-        $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+        //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+        //$cond3 = array('contact_customer_creation'=>$quotation_details->qd_customer);
+
+        $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$sales_order->so_customer));
+      
+        $data['contact_person'] ="";
 
         foreach($contact_data as $cont_data)
         {
-            $data['contact_person'] = '<option value="' .$cont_data->contact_id .'"'; 
+            $data['contact_person'] .= '<option value="' .$cont_data->contact_id .'"'; 
         
             // Check if the current product head is selected
             if ($cont_data->contact_id   == $sales_order->so_contact_person)
@@ -1099,7 +1169,7 @@ class SalesOrder extends BaseController
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control " required></td>
             <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty" required></td>
             <td> <input type="text" name="spd_rate" value="'.$prod_det->spd_rate.'" class="form-control edit_prod_rate" required></td>
-            <td> <input type="text" name="spd_discount" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount" required></td>
+            <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount" required></td>
             <td> <input type="text" name="spd_amount" value="'.$prod_det->spd_amount.'" class="form-control edit_prod_amount" readonly></td>
            <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
            </tr>'; 
@@ -1169,13 +1239,13 @@ class SalesOrder extends BaseController
     public function DeleteProdDet()
     {
         $cond = array('spd_id' => $this->request->getPost('ID'));
- 
+
         $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+        $this->common_model->DeleteData('crm_sales_product_details',$cond);
 
         $product_cond = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$prod_det->spd_sales_order));
         
-        $this->common_model->DeleteData('crm_sales_product_details',$cond);
-
         $this->TotalCalculation($product_cond,array('so_id' => $prod_det->spd_sales_order));
     }
 
@@ -1244,6 +1314,30 @@ class SalesOrder extends BaseController
         $sales_prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
         
         
+    }
+
+    public function GetProdRate()
+    {
+        $cash_invoice  = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_sales_prod' => $this->request->getPost('prodID')));
+        
+        $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_prod_id' => $this->request->getPost('prodID')));
+        
+        $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $this->request->getPost('prodID')));
+
+        if(empty($cash_invoice) && empty($credit_invoice))
+        {
+            $data['product_status'] = "true";
+
+            
+        }
+        else
+        {
+            $data['product_status'] = "false";
+        }
+
+        $data['prod_rate']  = $sales_prod->spd_rate;
+
+        echo json_encode($data);
     }
 
     public function Print($id){

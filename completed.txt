@@ -1,17 +1,3 @@
-date:26-02-2024
-day :monday
-
-product detail and product completed
-
-date: 27-02-2024
-day:tuesday
-
-customer creation  checked
-pending
-*remove red border while enter data
-*required in add in second tab(contact details)
-
-
 enquiry checked
 pending
 *remove red border while eneter data
@@ -40,12 +26,16 @@ performa in voice- delete pending
 
 rest reffer num - sales quoat,performa invoice,sales order(other pending)
 
-
+-----------------------------------------------------------------------------
 common problem 
 
 without refresh ref no same
 
 check all customer come 
+
+click add rest form
+
+discount = less than 100
 
 
 
@@ -54,3 +44,21 @@ check all customer come
 pending - sales quotation - edit calculation
 
 pending - sales order - edit calculation
+
+
+-------------------------------------------------------------------------------------------
+
+new(12-04-2024)
+
+*customer creation
+
+*Enquiry 
+
+*sales quotation 
+
+sales order
+
+
+remove validation while enter data (autofill)
+
+add more product - required is missing

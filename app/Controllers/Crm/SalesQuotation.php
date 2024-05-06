@@ -156,8 +156,6 @@ class SalesQuotation extends BaseController
 
         $data['delivery_term'] = $this->common_model->FetchAllOrder('master_delivery_term','dt_id','desc');
 
-        //$data['delivery_term'] = $this->common_model->FetchAllOrder('crm_products','product_details','desc');
-        
         $data['product_head'] = $this->common_model->FetchAllOrder('crm_product_heads','ph_id','desc');
 
         $data['sales_quotation_id'] = $this->common_model->FetchNextId('crm_quotation_details','SQ');
@@ -212,7 +210,14 @@ class SalesQuotation extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {
-                        
+                    if(!empty($_POST['qpd_prod_id'][$j]))
+                    {
+                        $enq_prod_id = $_POST['qpd_prod_id'][$j];
+                    }
+                    else
+                    {
+                        $enq_prod_id ="";
+                    }
                     $insert_data  	= array(  
                         
                         'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
@@ -221,13 +226,35 @@ class SalesQuotation extends BaseController
                         'qpd_rate'                 =>  $_POST['qpd_rate'][$j],
                         'qpd_discount'             =>  $_POST['qpd_discount'][$j],
                         'qpd_amount'               =>  $_POST['qpd_amount'][$j],
+                        'qpd_enq_prod_id'          =>  $enq_prod_id,
                         'qpd_quotation_details'    =>  $data['quotation_id'],
     
                     );
                 
                     
                     $id = $this->common_model->InsertData('crm_quotation_product_details',$insert_data);
-            
+                    
+                    if(!empty($_POST['qpd_prod_id'][$j]))
+                    {
+                        
+                        $updated_data = array('pd_status'=>1);
+                        
+                        $this->common_model->EditData($updated_data,array('pd_id' => $_POST['qpd_prod_id'][$j]),'crm_product_detail');
+                        
+                        $product_detail = $this->common_model->FetchWhere('crm_product_detail',array('pd_enquiry_id' => $_POST['enquiry_id'][$j]));
+                        
+                        $product_details = $this->common_model->CheckTwiceCond1('crm_product_detail',array('pd_enquiry_id' => $_POST['enquiry_id'][$j]),array('pd_status'=>1));
+                        
+                        if(count($product_detail) == count($product_details))
+                        {
+                            $updated_data2 = array('enquiry_status'=>1);
+
+                            $this->common_model->EditData($updated_data2,array('enquiry_id' => $_POST['enquiry_id'][$j]),'crm_enquiry');
+                        
+                        }
+
+                    }   
+
                 } 
             }
         }
@@ -491,6 +518,7 @@ class SalesQuotation extends BaseController
                 'pk'    => 'product_id',
                 'fk'    => 'qc_material',
             ),
+           
         );
 
         $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
@@ -515,7 +543,7 @@ class SalesQuotation extends BaseController
 
         $data['payment_term']      = $quotation_details->qd_payment_term;
 
-        $data['delivery_term']     = $quotation_details->qd_delivery_term;
+        $data['delivery_term']     = $quotation_details->dt_name;
 
         $data['project']           = $quotation_details->qd_project;
 
@@ -532,11 +560,11 @@ class SalesQuotation extends BaseController
         {
             $data['cost_details'] .='<tr>
             <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control" readonly></td>
             </tr>'; 
 
             $i++;
@@ -551,12 +579,12 @@ class SalesQuotation extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td><input type="text"  value="'.$j.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_amount.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_amount.'" class="form-control" readonly></td>
             </tr>'; 
             
             $j++;
@@ -605,7 +633,9 @@ class SalesQuotation extends BaseController
         }
 
 
-        $enquiry_customer = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
+        //$enquiry_customer = $this->common_model->FetchEnquiryInQuot($this->request->getPost('ID'));
+
+        $enquiry_customer = $this->common_model->CheckTwiceCond1('crm_enquiry',array('enquiry_customer' => $this->request->getPost('ID')),array('enquiry_status'=>0));
 
         $data['enquiry_customer'] = "";
         $data['enquiry_customer'] ='<option value="" selected disabled>Selected Enquiry</option>';  
@@ -689,32 +719,55 @@ class SalesQuotation extends BaseController
 
     public function Delete()
     {
-        $cond = array('qd_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_quotation_details',$cond);
-
-        $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
-
-        $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond2);
-
-        //delete sales order
-
-        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_quotation_ref' => $this->request->getPost('ID')));
         
-        foreach($sales_orders as $sales_order)
+        $sales_order = $this->common_model->SingleRow('crm_sales_orders',array('so_quotation_ref' => $this->request->getPost('ID')));
+        
+        if(empty($sales_order))
+        {   
+            $quotation = $this->common_model->SingleRow('crm_quotation_details',array('qd_id' => $this->request->getPost('ID')));
+            
+            $enquiry_id = $quotation->qd_enq_ref;
+
+            $quotation_id = $quotation->qd_id;
+
+            $updated_data = array('enquiry_status'=>0);
+
+            $this->common_model->EditData($updated_data,array('enquiry_id' => $enquiry_id),'crm_enquiry');
+            
+            $quotation_product = $this->common_model->FetchWhere('crm_quotation_product_details',array('qpd_quotation_details' => $quotation_id));
+            
+            foreach($quotation_product as $quot_prod)
+            {
+                
+                $prod_update = array('pd_status'=>0);
+
+                $this->common_model->EditData($prod_update,array('pd_id' => $quot_prod->qpd_enq_prod_id),'crm_product_detail');
+
+            }
+            
+            $cond = array('qd_id' => $this->request->getPost('ID'));
+ 
+            $this->common_model->DeleteData('crm_quotation_details',$cond);
+    
+            $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
+    
+            $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond2);
+
+
+
+            $data['status'] = "true";
+    
+        }
+        else
         {
-            $this->common_model->DeleteData('crm_sales_product_details',array('spd_sales_order'=>$sales_order->so_id));
+            $data['status'] = "false";
         }
 
-        @unlink('uploads/SalesOrder/'.$sales_orders->so_file);
-
-	    $this->common_model->DeleteData('crm_sales_orders',array('so_quotation_ref' => $this->request->getPost('ID')));
-
-
+        echo json_encode($data);
     }
 
 
@@ -748,7 +801,7 @@ class SalesQuotation extends BaseController
 
         $cond1 = array('pd_enquiry_id' => $this->request->getPost('ID'));
 
-        $product_details = $this->common_model->FetchWhere('crm_product_detail',$cond1);
+        $product_details = $this->common_model->CheckTwiceCond1('crm_product_detail',$cond1,array('pd_status'=>0));
 
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
@@ -777,13 +830,14 @@ class SalesQuotation extends BaseController
        
             
             $i=1;
+            $k=0;
             foreach($product_details as $prod_det)
             {
 
-            $data['product_detail'] .=  '<tr class="prod_row enq_remove" id="'.$prod_det->pd_id.'">
+            $data['product_detail'] .=  '<tr class="prod_row enq_remove quot_row_leng" id="'.$prod_det->pd_id.'">
                 <td style="width: 10%;" class="si_no">'.$i.'</td>
                 <td style="width:20%">
-                    <select class="form-select droup_product add_prod" name="qpd_product_description[]" required>';
+                    <select class="form-select droup_product add_prod" name="qpd_product_description['.$k.']" required>';
                     
                         foreach($products as $prod){
                             $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
@@ -792,14 +846,17 @@ class SalesQuotation extends BaseController
                         }
                     $data['product_detail'] .='</select>
                 </td>
-                <td><input type="text" name="qpd_unit[]" value="'.$prod_det->pd_unit.'" class="form-control" required></td>
-                <td><input type="number" name="qpd_quantity[]" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
-                <td><input type="number" name="qpd_rate[]"  class="form-control rate_clz_id" required></td>
-                <td><input type="number" name="qpd_discount[]"  class="form-control discount_clz_id" required></td>
-                <td><input type="number" name="qpd_amount[]" class="form-control amount_clz_id" readonly></td>
+                <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id" required></td>
+                <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
+                <td><input type="number" name="qpd_rate['.$k.']"  class="form-control rate_clz_id" required></td>
+                <td><input type="number" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id" required></td>
+                <td><input type="number" name="qpd_amount['.$k.']" class="form-control amount_clz_id" readonly></td>
+                <input type="hidden" name="qpd_prod_id['.$k.']" class="rename_prod_id" value="'.$prod_det->pd_id.'">
+                <input type="hidden" name="enquiry_id['.$k.']" class="rename_enq_id" value="'.$prod_det->pd_enquiry_id.'">
                 <td class="remove-btnpp row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>';
             $i++;
+            $k++;
         }
 
 
@@ -857,17 +914,28 @@ class SalesQuotation extends BaseController
         
         $data['customer_creation'] ="";
 
-        foreach($customer_creation as $cus_creation)
+        /*foreach($customer_creation as $cus_creation)
         {
             $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"'; 
         
-            // Check if the current product head is selected
+            
             if ($cus_creation->cc_id  == $quotation_details->qd_customer)
             {
                 $data['customer_creation'] .= ' selected'; 
             }
         
             $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+        }*/
+
+
+        foreach($customer_creation as $cus_creation)
+        {
+            if ($cus_creation->cc_id  == $quotation_details->qd_customer)
+            {   
+                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"';
+                $data['customer_creation'] .= ' selected'; 
+                $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+            }
         }
 
 
@@ -968,12 +1036,12 @@ class SalesQuotation extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr class="edit_add_prod_row">
-            <td class="edit_add_prod_si_no"><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control " readonly></td>
+            <td class="edit_add_prod_si_no"><input type="text"  value="'.$i.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_amount.'" class="form-control edit_prod_total_amount" readonly></td>
             <td style="width:15%">
                 <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
@@ -1180,8 +1248,6 @@ class SalesQuotation extends BaseController
             $old_amount =  $old_amount + $cost_cal->qc_amount;
         }
 
-        
-        
         $quotation_update = array('qd_cost_amount' => $old_amount);
 
         $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
@@ -1243,8 +1309,32 @@ class SalesQuotation extends BaseController
     public function DeleteCostCal()
     {
         $cond = array('qc_id' => $this->request->getPost('ID'));
+
+        $single_cost_cal = $this->common_model->SingleRow('crm_quotation_cost_calculation',$cond);
  
         $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond);
+
+        $cond2 = array('qc_quotation_id'=>$single_cost_cal->qc_quotation_id);
+
+        $cost_calculation = $this->common_model->FetchWhere('crm_quotation_cost_calculation',$cond2);
+
+        $old_amount = 0;
+
+        foreach($cost_calculation as $cost_cal)
+        {
+            $old_amount =  $old_amount + $cost_cal->qc_amount;
+        }
+       
+        $quotation_update = array('qd_cost_amount' => $old_amount);
+
+        $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
+
+        $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
+
+        $data['quot_id']  =  $single_cost_cal->qc_quotation_id;
+       
+        $this->UpdatePercentage($single_cost_cal->qc_quotation_id);
+
     }
 
 
@@ -1274,10 +1364,10 @@ class SalesQuotation extends BaseController
             $data['prod_details'] .='</select></td>
 
             <td><input type="text" name="qpd_unit"  value="'.$prod_det->qpd_unit.'" class="form-control " required></td>
-            <td> <input type="text" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty" required></td>
-            <td> <input type="text" name="qpd_rate" value="'.$prod_det->qpd_rate.'" class="form-control edit_prod_rate" required></td>
-            <td> <input type="text" name="qpd_discount" value="'.$prod_det->qpd_discount.'" class="form-control edit_prod_dis" required></td>
-            <td> <input type="text" name="qpd_amount" value="'.$prod_det->qpd_amount.'" class="form-control edit_prod_amount" readonly></td>
+            <td><input type="text" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty" required></td>
+            <td><input type="text" name="qpd_rate" value="'.$prod_det->qpd_rate.'" class="form-control edit_prod_rate" required></td>
+            <td><input type="text" name="qpd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->qpd_discount.'" class="form-control edit_prod_dis" required></td>
+            <td><input type="text" name="qpd_amount" value="'.$prod_det->qpd_amount.'" class="form-control edit_prod_amount" readonly></td>
            <input type="hidden" name="qpd_id" value="'.$prod_det->qpd_id.'">
             </tr>'; 
 
@@ -1396,24 +1486,39 @@ class SalesQuotation extends BaseController
     }
 
 
-     public function DeleteProdDet()
-     {
+    public function DeleteProdDet()
+    {
         $cond = array('qpd_id' => $this->request->getPost('ID'));
 
-        /*$quot_prod_det = $this->common_model->SingleRow('crm_quotation_product_details',$cond);
+        $single_prod  = $this->common_model->SingleRow('crm_quotation_product_details',$cond);
 
-        $quot_prod_det->qpd_quotation_details;
-
-        $produt_details = $this->common_model->FetchWhere('crm_quotation_product_details',$quot_prod_det->qpd_quotation_details);
- 
-        foreach($produt_details as $prod_det)
-        {
-              
-        }*/
-        
         $this->common_model->DeleteData('crm_quotation_product_details',$cond);
 
-     }
+        $cond3 = array('qpd_quotation_details' => $single_prod->qpd_quotation_details);
+
+        $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond3);
+
+        $old_amount = 0;
+
+        foreach($product_details as $prod_det)
+        {
+            $old_amount =  $old_amount + $prod_det->qpd_amount;
+        }
+       
+        
+        $quotation_update = array('qd_sales_amount' => $old_amount);
+
+        $cond4 = array('qd_id'=>$single_prod->qpd_quotation_details);
+
+        $this->common_model->EditData($quotation_update,$cond4,'crm_quotation_details');
+
+        $data['quotation_id']  =  $single_prod->qpd_quotation_details;
+
+        $this->UpdatePercentage($single_prod->qpd_quotation_details);
+
+       
+
+    }
 
 
     /*public function UpdateTab()

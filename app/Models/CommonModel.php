@@ -1268,6 +1268,89 @@ class CommonModel extends Model
 
     }
 
+    public function FetchCreditSales($table,$cond,$cond2)
+    {
+        $query = $this->db->table('crm_sales_orders')
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->where($cond2)
+
+        ->where('crm_sales_orders.so_id IN (SELECT dn_sales_order_num FROM '.$this->db->getPrefix().'crm_delivery_note)')
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+    public function FetchPerformaClaim($cond,$id_coloum,$id)
+    {
+        $query = $this->db->table('crm_proforma_invoices')
+        
+        ->select('*')
+
+        ->whereNotIn($id_coloum,(array)$id)
+
+        ->where($cond)
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+
+    /**/
+    public  function FetchSalesReturns($table,$cond,$cond2,$cond3)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond)
+
+        ->where($cond2)
+
+        ->where($cond3)
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+    /**/
+
+
+    public function FetchReturnJoin($table,$cond,$cond2,$joins)
+    {
+        $query = $this->db->table($table);
+
+
+        if(!empty($joins))
+
+        foreach($joins as $join)
+        {
+            $table2 = $table;
+            if(!empty($join['table2']))
+            {
+            $table2 = $join['table2'];
+            }
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+        }
+
+        $query->where($cond);
+
+        $query->where($cond2);
+       
+        $result = $query->get()->getResult();
+        //echo $this->db->getLastQuery(); exit();
+
+        return $result;
+
+    }
+    
+   
 
 
 

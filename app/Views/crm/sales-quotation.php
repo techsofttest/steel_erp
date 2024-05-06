@@ -107,7 +107,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date"  class="form-control datepicker" required>
+                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -461,19 +461,19 @@
                                                             <tr class="cost_cal_row">
                                                                 <td style="width: 10%;" class="cost_ci_no">1</td>
                                                                 <td>
-                                                                    <select class="form-select cost_service_clz cost_product_det" name="qc_material[]" required>
-                                                                        <option selected>Select Product Description</option>
+                                                                    <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
+                                                                        <option value="" selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
                                                                             <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
                                                                         <?php } ?>-
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="qc_unit[]"  class="form-control cost_unit_clz" required></td>
-                                                                <td><input type="number" name="qc_qty[]" class="form-control cost_qty_clz" required></td>
+                                                                <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz" required></td>
+                                                                <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz" required></td>
                                                                 <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CostClick">Click</a></td>
-                                                                <td><input type="number" name="qc_rate[]"  class="form-control cost_rate_clz" required></td>
+                                                                <td><input type="number" name="qc_rate[0]"  class="form-control cost_rate_clz" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount[]" class="form-control cost_amount_clz" readonly></td>
+                                                                <td><input type="number" name="qc_amount[0]" class="form-control cost_amount_clz" readonly></td>
                                                                 <td><div class="tecs"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                                                 <input type="hidden" name="qc_quotation_id" class="quotation_hidden_id">
                                                             </tr>
@@ -694,7 +694,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date"  class="form-control datepicker edit_date" required>
+                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker edit_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -1162,7 +1162,7 @@
                                                                 <td style="width: 10%;" class="">1</td>
                                                                 <td>
                                                                     <select class="form-select cost_service_clz edit_add_prod_desc" name="qc_material" required>
-                                                                        <option selected>Select Product Description</option>
+                                                                        <option value=""  selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
                                                                             <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
                                                                         <?php } ?>-
@@ -1321,14 +1321,14 @@
                                                                 <td style="width: 10%;" class="">1</td>
                                                                 <td>
                                                                     <select class="form-select  edit_add_quot_prod" name="qpd_product_description" required>
-                                                                        <option selected>Select Product Description</option>
+                                                                        <option value="" selected disabled>Select Product Description</option>
                                                                        
                                                                     </select>
                                                                 </td>
                                                                 <td><input type="text" name="qpd_unit"  class="form-control " required></td>
                                                                 <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty" required></td>
                                                                 <td><input type="number" name="qpd_rate" class="form-control edit_add_prod_rate" required></td>
-                                                                <td><input type="number" name="qpd_discount"  class="form-control edit_add_prod_dis" required></td>
+                                                                <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis" required></td>
                                                                 
                                                                 <td><input type="number" name="qpd_amount" class="form-control edit_add_prod_amount" readonly></td>
                                                                
@@ -2205,9 +2205,6 @@
 <!--SalesQuotatuion view section end-->
 
 
-
-
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
@@ -2226,9 +2223,17 @@
  
 
         });
-
-
         
+        
+        /*customer  Remove Validation On Change */
+	
+        $("select[name=qd_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+		
+        /*###*/
+
+
 
 
         //trigger when form is submitted
@@ -2535,6 +2540,11 @@
                     $("#qd_payment_term_id").val(data.cc_credit_term);
 
                     $(".qd_enquiry_reference_clz").html(data.enquiry_customer);
+
+                    if(data.cc_credit_term!==null)
+                    {
+                        $('#qd_payment_term_id').removeClass("error");    
+                    }
                  
                 }
 
@@ -2544,6 +2554,18 @@
         /*reset refference number*/
 
         $('.add_model_btn').click(function(){
+            
+            $('#add_form1')[0].reset();
+            
+            $('.droup_customer_id').val('').trigger('change');
+
+            $('.qd_enquiry_reference_clz').val('').trigger('change');
+            
+            $('.contact_person_clz').val('').trigger('change');
+
+            $('.delivery_term_clz').val('').trigger('change');
+
+            $('.enq_remove').remove();
 
             $.ajax({
 
@@ -2580,12 +2602,14 @@
         $("body").on('click', '.add_product2', function(){
             
             var pp = $('.prod_row').length
-            
+
+            var qj  = $('.quot_row_leng').length
+ 
 			if(pp < max_fieldspp){ 
-            
+              
             pp++; 
-            
-            $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit[]' class='form-control ' required=''></td><td><input type='number' name='qpd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+
+            $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 			}
             
@@ -2598,19 +2622,73 @@
 
         $(document).on("click", ".remove-btnpp", function() 
         {
-	 
+            
             $(this).parent().remove();
-               
 
+            /*var jj = 0;
+
+            $('body .quot_row_leng').each(function() {
+                  
+                var  rate =  $(this).closest('.quot_row_leng').find('.rate_clz_id').val();
+
+                $(this).closest('.quot_row_leng').find('.add_prod').attr('name', 'qpd_product_description['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.unit_clz_id').attr('name', 'qpd_unit['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.qtn_clz_id').attr('name', 'qpd_quantity['+jj+']');
+                      
+                $(this).closest('.quot_row_leng').find('.rate_clz_id').attr('name', 'qpd_rate['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.discount_clz_id').attr('name', 'qpd_discount['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.amount_clz_id').attr('name', 'qpd_amount['+jj+']');
+
+                jj++;
+
+            });*/
+            reName();
+            
             slno();
 
             
         });
+        
+        
+
+        function reName(){
+            
+            var jj = 0;
+
+            $('body .quot_row_leng').each(function() {
+                
+                var  rate =  $(this).closest('.quot_row_leng').find('.rate_clz_id').val();
+
+                $(this).closest('.quot_row_leng').find('.add_prod').attr('name', 'qpd_product_description['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.unit_clz_id').attr('name', 'qpd_unit['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.qtn_clz_id').attr('name', 'qpd_quantity['+jj+']');
+                    
+                $(this).closest('.quot_row_leng').find('.rate_clz_id').attr('name', 'qpd_rate['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.discount_clz_id').attr('name', 'qpd_discount['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.amount_clz_id').attr('name', 'qpd_amount['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.rename_prod_id').attr('name', 'qpd_prod_id['+jj+']');
+
+                $(this).closest('.quot_row_leng').find('.rename_enq_id').attr('name', 'enquiry_id['+jj+']');
+
+                jj++;
+
+            });
+        }
+       
 
 
         /*serial no correction section start*/
         function slno(){
-
+          
             var pp =1;
 
             $('body .prod_row').each(function() {
@@ -2618,7 +2696,12 @@
                 $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
 
                 pp++;
+
+              
+
             });
+
+             
 
         }
 
@@ -2640,7 +2723,7 @@
             
             cc++;    
 
-                $(".product-more3").append("<tr class='cost_cal_row'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit[]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty[]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' data-bs-toggle='modal' data-bs-target='#CostClick'>Click</a></td><td><input type='number' name='qc_rate[]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount[]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material[1]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit[1]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty[1]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' data-bs-toggle='modal' data-bs-target='#CostClick'>Click</a></td><td><input type='number' name='qc_rate[]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount[1]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 InitSelect2();
             }
         });
@@ -2781,10 +2864,21 @@
                     $(".product-more2").append(data.product_detail);
 
                     $(".contact_person_clz").html(data.customer_person);
+                    
+                    if(data.enquiry_project!== null)
+                    {
+                        $('.project_clz').removeClass("error"); 
+                    }
+                   
 
-                   //InitProductSelect2();
-
+                    if(data.customer_person!== null)
+                    {
+                        $('.contact_person_clz').removeClass("error"); 
+                    }
+                    
                     slno();
+                    
+                    reName();
 
                 }
 
@@ -2847,6 +2941,7 @@
         });
 
 
+
         /**/
 
        
@@ -2899,7 +2994,7 @@
 
 
         /* customer droup drown */
-         $(".droup_customer_id").select2({
+        $(".droup_customer_id").select2({
             placeholder: "Select Customer",
             theme : "default form-control- customer_width",
             dropdownParent: $('#AddSalesQuotation'),
@@ -2920,7 +3015,7 @@
                 processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        results: $.map(data.result, function (item) {return {id: item.cc_id, text: item.cc_customer_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
@@ -3005,9 +3100,18 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    var data = JSON.parse(data);
+                    if(data.status == "true")
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
 
-                    datatable.ajax.reload(null,false);
+                        datatable.ajax.reload(null,false);
+                    }
+                    else
+                    {
+                        alertify.error("Sales Quotation In Use Cant't Delete").delay(2).dismissOthers();
+                    }
+                   
                 }
 
             });
@@ -3106,11 +3210,11 @@
                     var data = JSON.parse(data);
 
                 
-                    $(".edit_contact_person").html(data.contact_person);
+                   // $(".edit_contact_person").html(data.contact_person);
 
-                    $(".edit_enquiry").html(data.enquiry_ref);
+                    //$(".edit_enquiry").html(data.enquiry_ref);
 
-                    $(".edit_payment").val(data.credit_term);
+                    //$(".edit_payment").val(data.credit_term);
 
                   
 

@@ -78,7 +78,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" class="form-control datepicker" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -842,7 +842,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" class="form-control edit_date datepicker" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control edit_date datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -1106,7 +1106,7 @@
                                                                 <td colspan="3"></td>
                                                                 
                                                                 <td>Current Claim %</td>
-                                                                <td><input type="number" name="pf_current_cliam" class="form-control edit_current_claim" readonly></td>
+                                                                <td><input type="number" name="pf_current_cliam" class="form-control edit_current_claim" required></td>
                                                             </tr>
 
 
@@ -1213,7 +1213,7 @@
                                                                 <td>
                                                                     <select class="form-select  edit_product_det" name="pp_product_det" required>
                                                                         
-                                                                        <option selected>Select Product Description</option>
+                                                                        <option value="" selected disabled>Select Product Description</option>
                                                                        
                                                                     </select>
                                                                 </td>
@@ -1221,8 +1221,8 @@
                                                                 <td><input type="text"   name="pp_unit" class="form-control" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control edit_add_qty" required></td>
                                                                 <td><input type="number" name="pp_rate" class="form-control edit_add_rate" required></td>
-                                                                <td><input type="number" name="pp_discount" class="form-control edit_add_discount" required></td>
-                                                                <td><input type="number" name="pp_amount" class="form-control edit_add_amount" required></td>
+                                                                <td><input type="number" name="pp_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount" required></td>
+                                                                <td><input type="number" name="pp_amount" class="form-control edit_add_amount" readonly></td>
                                                                 
                                                                 <input type="hidden" name="pp_proforma" class="edit_hidden_performa_id">
 
@@ -1302,8 +1302,8 @@
                                                                 </td>
                                                                 <td><input type="text" name="pp_unit"  class="form-control forma_edit_unit" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control forma_edit_qty" required></td>
-                                                                <td><input type="text" name="pp_rate" class="form-control forma_edit_rate"></td>
-                                                                <td><input type="number" name="pp_discount"  class="form-control forma_edit_discount" required></td>
+                                                                <td><input type="number" name="pp_rate" class="form-control forma_edit_rate" required></td>
+                                                                <td><input type="number" name="pp_discount"  min="0" max="100"  onkeyup="MinMax(this)" class="form-control forma_edit_discount" required></td>
                                                                 
                                                                 <td><input type="number" name="pp_amount" class="form-control forma_edit_amount" readonly></td>
                                                                
@@ -1498,33 +1498,23 @@
 
                     $(".sales_excutive_clz").html(data.sales_executive);
 
-                    //$(".current_cliam_clz").val(data.currentClaim);
-
-                    //$(".current_cliam_clz").attr('maxlength',data.currentClaim);
-
-                   // var current_claim = data.current_claim
-
-                   // $(".current_cliam_clz").attr('max',current_claim)
-
-                    //console.log(current_claim);
-
-                    //var max = parseInt(this.max, 10);
-
-                   // $(".current_cliam_clz")[0].maxLength = current_claim;
-
-                   //$(".current_cliam_clz")[0].max = current_claim;
-
-                    //$(".current_cliam_clz").prop('maxlength',data.currentClaim);
-
-                    //$('.current_cliam_clz').prop('maxLength', 10);
-
-                    //console.log(data.currentClaim);
-
                     $(".lpo_reff").val(data.so_lpo);
 
                     $(".product-more2").append(data.sales_order_contact);
 
+                    $(".delivery_term").removeClass("error");
+
+                    $(".project_clz").removeClass("error");
+
+                    $(".lpo_reff").removeClass("error");
+
+                    $(".sales_excutive_clz").removeClass("error");
+
+                    $(".contact_person_clz").removeClass("error");
+
                     slno();
+
+                    reName();
 
                     TotalAmount();
 
@@ -1541,6 +1531,11 @@
 
 
 
+       /* Select 2 Remove Validation On Change */
+       $("select[name=pf_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
 
         /*data table start*/ 
@@ -1685,6 +1680,8 @@
 
                 $('.payment_term_clz').val(data.payment_terms);
 
+                $('.payment_term_clz').removeClass("error"); 
+
             }
 
 
@@ -1818,14 +1815,16 @@
 
     $("body").on('click', '.add_product2', function(){
     
-        var pp = $('.prod_row').length
+        var pp = $('.prod_row').length;
+
+        var prl = $('.performa_row_lenght').length
 
         if(pp < max_fieldspp)
         { 
     
             pp++;
             
-            $(".product-more2").append("<tr class='prod_row'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='pp_product_det[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit[]' class='form-control ' required=''></td><td><input type='number' name='pp_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='pp_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='pp_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
         }
 
@@ -1840,9 +1839,37 @@
 
         $(this).parent().remove();
         slno();
+        reName();
     });
 
     /**/
+
+    /*rename product start*/
+         
+    function reName(){
+            
+        var jj = 0;
+
+        $('body .performa_row_lenght').each(function() {
+            
+            $(this).closest('.performa_row_lenght').find('.add_prod').attr('name', 'pp_product_det['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.unit_clz_id').attr('name', 'pp_unit['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.qtn_clz_id').attr('name', 'pp_quantity['+jj+']');
+                    
+            $(this).closest('.performa_row_lenght').find('.rate_clz_id').attr('name', 'pp_rate['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.discount_clz_id').attr('name', 'pp_discount['+jj+']');
+
+            $(this).closest('.performa_row_lenght').find('.amount_clz_id').attr('name', 'pp_amount['+jj+']');
+
+            jj++;
+
+        });
+    }
+
+    /*rename product end*/
 
     /*serial no correction section start*/
 
@@ -2139,6 +2166,13 @@
         $('#EditPerformaInvoice').modal('show');
 
     });
+
+
+    /* Select 2 Remove Validation On Change */
+    $("select[name=pp_product_det]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+    });
+    /*###*/
 
 
 
@@ -2542,7 +2576,73 @@
        
        }
 
+       
+        $(".edit_close_sub_modal").on('click', function(){ 
+            
+          $('#EditProduct').modal('hide');
 
+          $('#EditAddProduct').modal('hide');
+
+          $('#EditPerformaInvoice').modal('show');
+   
+       });
+
+
+        /*current claim check start*/
+
+        $("body").on('keyup', '.edit_current_claim', function(){ 
+
+        var current_claim = $('.edit_current_claim').val();
+        
+        var preforma_reffer = $('.edit_reff').val();
+
+        if(current_claim > 100)
+        {   
+            $('.edit_current_claim').val("")
+
+            alertify.error('Discount Should Not Greater Than 100').delay(3).dismissOthers();
+          
+        }
+
+        var sales_order = $('.edit_sales_order').val();
+
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/EditClaim",
+
+            method : "POST",
+
+            data: {salesOrder: sales_order,performaReff: preforma_reffer},
+
+            success:function(data)
+            {
+                var data = JSON.parse(data);
+
+                var remain_claim = data.remaining_claim;
+
+
+                if(remain_claim !=="" ){
+
+                    if(remain_claim < current_claim )
+                    {
+                            $('.edit_current_claim').val("")
+
+                            alertify.error('Maximun Current Claim Is '+remain_claim+'').delay(3).dismissOthers();
+                    }
+
+                }
+
+                
+            }
+        });
+
+       
+       
+
+    });
+
+        /*####*/
 
        
 
@@ -2558,8 +2658,6 @@
              
             
         var prod_id = $(this).data('id');
-
-        alert(prod_id);
 
         var rowToDelete = $(this).closest('tr');
 

@@ -41,7 +41,7 @@
                         
                         <div class="modal fade" id="SalesReturn" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" data-product="false" id="add_form1">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Return</h5>
@@ -89,7 +89,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="sr_date" class="form-control datepicker" required>
+                                                                        <input type="text" name="sr_date" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -301,7 +301,7 @@
                                                         <div class="row row_align mb-4">
                                                             
                                                             <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                                                <label for="basicInput" class="form-label">Debit Account</label>
                                                             </div>
 
                                                             <div class="col-lg-4">
@@ -341,23 +341,7 @@
                                                         <button class="btn btn btn-success" type="submit">Save</button>
                                                     </div>
                                                     </div>
-                                                    <!--<div class="col-lg-6">
-                                                        <div style="float: right;">
-                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                <tr>
-                                                                    <td><button>Print</button></td>
-                                                                    <td><button>Email</button></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td><button type="submit">Save</button></td>
-                                                                    <td><button>PDF</button></td>
-                                                                </tr>
-
-                                                            </table>
-                                                        </div>
-
-                                                    </div>--->
+                                                    
 
                                                 </div>
                                                 
@@ -687,7 +671,7 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Sales Order</label>
+                                                <label for="basicInput" class="form-label">Invoice No</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
@@ -936,7 +920,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ci_date" class="form-control datepicker edit_date" required>
+                                                <input type="text" autocomplete="off" name="ci_date" class="form-control datepicker edit_date" required>
                                             </div>
                                         </div> 
                                     </div>    
@@ -973,19 +957,13 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Sales Order</label>
+                                                <label for="basicInput" class="form-label">Invoice No</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                
-
-                                                <select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" required>
-
-                                                    <option value="" selected disabled>Select Sales Order</option>
-                                        
-                                                </select>
-                                                
+                                                <!--<select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" required></select>-->
+                                                <input type="text" name="ci_sales_order" id="sales_order_add" class="form-control edit_sales_order" required>
                                             </div>
 
                                         </div> 
@@ -1109,7 +1087,7 @@
                                         <td>Rate</td>
                                         <td>Discount</td>
                                         <td>Amount</td>
-                                        <!--<td>Action</td>-->
+                                        <td>Action</td>
                                         
                                     </tr>
                                     
@@ -1129,32 +1107,25 @@
                                 <div class="row row_align mb-4">
                                                             
                                     <div class="col-lg-3">
-                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                        <label for="basicInput" class="form-label">Debit Account</label>
                                     </div>
 
                                     <div class="col-lg-4">
                                         
-                                        <select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
+                                        <!---<select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
                                             
                                             
 
-                                        </select>
+                                        </select>--->
+
+                                        <input type="text" name="ci_credit_account"  class="form-control edit_charts_account" required>
                                                 
                                     </div>
 
                                 </div>
 
                                 
-                                <!--<div class="row row_align mb-4">
-                                    <div class="col-lg-3">
-                                        <label for="basicInput" class="form-label">Attach</label>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <input type="file" name="ci_file"  class="form-control image_file">
-                                    </div>
-
-                                </div>--->
+                               
 
                                 <div class="card-body edit_image_table" style="float: inline-start";></div>
 
@@ -1257,7 +1228,7 @@
 
                 <div class="modal-footer justify-content-center">
                     
-                    <!--<input type="hidden" id="edit_select_prod_id" name="edit_select_prod_id" value="">--->                                
+                                               
                     <button class="btn btn btn-success">Save</button>
 
                 </div>
@@ -1272,6 +1243,67 @@
 	</div>
 
 </div>
+
+<!--edit product section start-->
+
+<div class="modal fade" id="EditProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_product_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+                    <button type="button" class="btn-close edit_close_sub_modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                        
+                                    </tr>
+
+                                </thead>
+
+                                <tbody class="edit_product_table"></tbody>
+                                
+                                
+                            </table>
+                        </div>
+
+
+                        <div class="modal-footer justify-content-center">
+                            
+                            <button class="btn btn btn-success">Save</button>
+
+                        </div>
+
+                        <!--table section end-->
+                    </div>  
+                                            
+                </div>
+
+                                        
+			</div>
+		</form>
+
+	</div>
+</div>
+
+<!--edit product section end-->
+
 
 <!--edit select  modal section end-->
 
@@ -1302,48 +1334,59 @@
                 submitHandler: function(currentForm) {
                     var formData = new FormData(currentForm);
                     // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesReturn/Add",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
+                    if($('#add_form1').attr('data-product')=="true")
+                    {
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Crm/SalesReturn/Add",
+                            method: "POST",
+                            data: formData,
+                            processData: false, // Don't process the data
+                            contentType: false, // Don't set content type
+                            success: function(data) {
+                                
+                                var data = JSON.parse(data);
+
+
+                                $('#add_form1')[0].reset();
+
+                                //$('select').empty();
+
+                                $('.sales_return_remove').remove();
+
+                                $('.customer_id').val('').trigger('change');
+
+                                $('.cont_person').val('').trigger('change');
+
+                                $('#SalesReturn').modal('hide');
+
+                                
+
+                                $('.adjustment_table').html(data.adjustment_data);
+
+                                $('.hidden_sales_return').val("");
+
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                                checkedIds.length = 0;
+
+                                datatable.ajax.reload(null, false);
+
+                                if(data.advance_status ==="true")
+                                {
+                                    $('#SaveModal').modal('show');
+                                }
                             
-                            var data = JSON.parse(data);
-
-
-                            $('#add_form1')[0].reset();
-
-                            //$('select').empty();
-
-                            $('.sales_return_remove').remove();
-
-                            $('.customer_id').val('').trigger('change');
-
-                            $('.cont_person').val('').trigger('change');
-
-                            $('#SalesReturn').modal('hide');
-
-                            
-
-                            $('.adjustment_table').html(data.adjustment_data);
-
-                            $('.hidden_sales_return').val("");
-
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-
-                            checkedIds.length = 0;
-
-                            datatable.ajax.reload(null, false);
-
-                            if(data.advance_status ==="true")
-                            {
-                                $('#SaveModal').modal('show');
                             }
-                           
-                        }
-                    });
+                        });
+
+                    }
+                    else
+                    {
+                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                    }
+
+
+
                 }
             });
         });
@@ -1429,8 +1472,6 @@
 
         });
 
-
-
         /**/
         $("body").on('change', '.sales_order_add_clz', function(){ 
 
@@ -1468,6 +1509,16 @@
 
                     $(".sales_order_hidden").val(data.sales_order);
 
+                    $(".lpo_ref").removeClass("error");
+
+                    $(".project_clz").removeClass("error");
+
+                    $(".payment_terms").removeClass("error");
+
+                    $(".cont_person").removeClass("error");
+
+                    $(".credit_account").removeClass("error");
+
                     slno();
                    
                 }
@@ -1479,7 +1530,216 @@
         
         /**/
 
+        
 
+
+        /*product edit start*/
+
+        $("body").on('click', '.product_edit', function(){ 
+
+            $("#EditSalesReturn").modal("hide");
+
+            $("#EditProduct").modal("show");
+
+            var id = $(this).data('id');
+
+            var invoice_no = $('.edit_sales_order').val();
+
+            //console.log(id);
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesReturn/EditProduct",
+
+                method : "POST",
+
+                data:{ID: id,invoiceNo: invoice_no},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+                    $(".edit_product_table").html(data.prod_details);
+
+                
+                }
+
+
+            });
+
+        });
+
+
+        /*#####*/
+
+
+        /***/
+
+        $("body").on('keyup', '.edit_prod_qty', function(){ 
+
+            var qty = $(this).val()
+
+            var prod_id =$('.edit_prod_id').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesReturn/CheckQty",
+
+                method : "POST",
+
+                data:{qty: qty,prodId: prod_id},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+
+                   if(qty > data.srp_quantity)
+                   {
+                        alertify.error('Quanity should be less than '+data.srp_quantity+'').delay(3).dismissOthers();
+
+                        $('.edit_prod_qty').val("");
+                   }
+
+                
+                }
+
+
+            });
+
+        });
+
+        /*####*/
+
+
+        /* Select 2 Remove Validation On Change */
+        $("select[name=sr_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
+
+
+        /*update product*/
+        
+        $(function() {
+            var form = $('#edit_product_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/SalesReturn/UpdateProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+
+                            var returnId = responseData.srp_sales_return
+                            
+                            $('#EditProduct').modal('hide');
+
+                            $('#EditSalesReturn').modal('show');
+
+                            $('.edit_btn[data-id="'+returnId+'"]').trigger('click');
+
+                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null,false)
+                            
+                        }
+                    });
+                }
+            });
+        });
+
+        /*#####*/
+
+
+        /*edit calculation section start*/
+
+        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function()
+        { 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+            var $amountElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+
+        });
+
+
+        /*####*/
+
+
+        /*delete section start*/
+         
+        $("body").on('click', '.product_delete', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesReturn/DeleteProdDet",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                {   
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        deleteSlno();
+                        EditProdTotal()
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    }); 
+
+                
+                }
+
+
+            });
+        });
+
+        /*delete section end*/
+
+       
 
        
 
@@ -1504,10 +1764,10 @@
                     };
                 },
                 processResults: function(data, params) {
-                    //console.log(data);
+                   
                     //  NO NEED TO PARSE DATA `processResults` automatically parse it
                     //var c = JSON.parse(data);
-                    //console.log(data);
+                   
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -1537,7 +1797,7 @@
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/Delete",
+                url : "<?php echo base_url(); ?>Crm/SalesReturn/Delete",
 
                 method : "POST",
 
@@ -1739,6 +1999,8 @@
 
                             $('#SalesReturn').modal('hide');
 
+                            $('#add_form1').attr('data-product','true');
+
                             $.ajax({
 
                                 url : "<?php echo base_url(); ?>Crm/SalesReturn/AddProduct",
@@ -1753,8 +2015,7 @@
                                     
                                     $(".select_prod_add").html(data.product_detail);
                                     
-                                    //console.log(data.product_detail);
-
+                                    
                                 }   
 
                             });
@@ -1846,6 +2107,13 @@
        $("body").on('click', '.prod_modal_submit', function(){ 
 
             var selectId = $('#select_prod_id').val();
+
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                alert("You must check at least one checkbox.");
+                return false;
+            }
 
             $.ajax({
 
@@ -1944,7 +2212,7 @@
 
                 $('.view_image_table').html(data.image_table);
                 
-                //console.log(data.prod_details);
+               
 
             
             }
@@ -1985,12 +2253,13 @@
     
                     $('.edit_customer').html(data.customer);
     
-                    $('.edit_sales_order').html(data.sales_order);
-    
+                    $('.edit_sales_order').val(data.invoice_no);
+
                     $('.edit_lpo_reff').val(data.lpo_reff);
     
                     $('.edit_contact_person').html(data.contact_person);
-    
+
+                   
                     $('.edit_payment_terms').val(data.payment_term);
     
                     $('.edit_project').val(data.project);
@@ -2006,12 +2275,14 @@
 
                     $('.edit_cash_invoice_id').val(data.cash_invoice_id);
 
-                    $('.edit_charts_account').html(data.charts_of_account);
+                    $('.edit_charts_account').val(data.credit_account);
+
+                    //console.log(data.credit_account);
+
+                   // $('.edit_charts_account').html(data.charts_of_account);
 
                     $('.add_more_class').html(data.add_more);
                     
-                    //console.log(data.prod_details);
-    
                 
                 }
     
@@ -2056,17 +2327,6 @@
     
                     $('.edit_project').val(data.project);
 
-                    //$('.edit_project').val(data.project);
-    
-                    /*$('.view_credit_account').val(data.credit_account);
-    
-                    $('.view_product').html(data.prod_details);
-    
-                    $('.view_image_table').html(data.image_table)*/;
-                    
-                    //console.log(data.sales_orders);
-    
-                
                 }
     
             });
@@ -2321,7 +2581,7 @@
         }
 
         // Log the current state of checked IDs
-        //console.log('Checked IDs: ', checkedIds);
+       
         document.getElementById('select_prod_id').value = checkedIds.join(',');
     }
 
@@ -2333,7 +2593,7 @@
 
 
         // Log the checked IDs in the modal form
-        //console.log('Checked IDs in modal: ', checkedIds);
+       
     }*/
 
 

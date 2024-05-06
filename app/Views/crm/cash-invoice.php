@@ -41,7 +41,7 @@
                         
                         <div class="modal fade" id="CashInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" id="add_form1" data-product="false">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Cash Invoice</h5>
@@ -89,7 +89,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_date" class="form-control datepicker" required>
+                                                                        <input type="text" name="ci_date" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -942,7 +942,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ci_date" class="form-control datepicker edit_date" required>
+                                                <input type="text" name="ci_date" autocomplete="off" class="form-control datepicker edit_date" required>
                                             </div>
                                         </div> 
                                     </div>    
@@ -986,7 +986,7 @@
                                                 
                                                 
 
-                                                <select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" style="width:80%;" required>
+                                                <select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" required>
 
                                                     <option value="" selected disabled>Select Sales Order</option>
                                         
@@ -1308,40 +1308,50 @@
                 submitHandler: function(currentForm) {
                     var formData = new FormData(currentForm);
                     // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
+                    if($('#add_form1').attr('data-product')=="true")
+                    {
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
+                            method: "POST",
+                            data: formData,
+                            processData: false, // Don't process the data
+                            contentType: false, // Don't set content type
+                            success: function(data) {
+                                
+                                var data = JSON.parse(data);
+
+                                $('#add_form1')[0].reset();
+
+                                //$('select').empty();
+
+                                $('.cash_invoice_remove').remove();
+
+                                //$('.cash_invoice_remove').val('').trigger('change');
+
+                                $('#CashInvoice').modal('hide');
+
+                                $('.adjustment_table').html(data.adjustment_data);
+
+                                $('.customer_id').val('').trigger('change');
+
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                                checkedIds.length = 0;
+
+                                datatable.ajax.reload(null, false);
+
+                                if(data.advance_status === "true")
+                                {
+                                    $('#SaveModal').modal('show');
+                                }
                             
-                            var data = JSON.parse(data);
+                            }
+                        });
 
-                            $('#add_form1')[0].reset();
-
-                            //$('select').empty();
-
-                            $('.cash_invoice_remove').remove();
-
-                            //$('.cash_invoice_remove').val('').trigger('change');
-
-                            $('#CashInvoice').modal('hide');
-
-                            $('#SaveModal').modal('show');
-
-                            $('.adjustment_table').html(data.adjustment_data);
-
-                            $('.customer_id').val('').trigger('change');
-
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-
-                            checkedIds.length = 0;
-
-                            datatable.ajax.reload(null, false);
-                           
-                        }
-                    });
+                    }else
+                    {
+                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                    }
                 }
             });
         });
@@ -1422,6 +1432,8 @@
 
                     $(".payment_terms").val(data.credit_term);
 
+                    $(".payment_terms").removeClass("error");
+
                 }
 
 
@@ -1455,18 +1467,19 @@
                 {   
                     var data = JSON.parse(data);
 
-                
                     $(".lpo_ref").val(data.so_lpo);
 
                     $(".project_clz").val(data.so_project);
-
-                    //$(".product-more2").append(data.product_detail);
 
                     $(".cont_person").html(data.contact_detail);
 
                     $(".contactProduct3").html(data.select_table);
 
-                   // $(".contactProduct3").val(data.total_amount);
+                    $(".lpo_ref").removeClass("error");
+
+                    $(".project_clz").removeClass("error");
+
+                    $(".cont_person").removeClass("error");
                     
                     slno();
                    
@@ -1479,9 +1492,6 @@
         
         /**/
 
-
-
-       
 
 
        
@@ -1542,10 +1552,19 @@
                 data: {ID: id},
 
                 success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                {   
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
+                    if(data.status ==="true")
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                        datatable.ajax.reload(null,false);
+                    }
+                    else
+                    {
+                        alertify.error("Cash Invoice In Use Cant't Delete").delay(2).dismissOthers();
+                    }
+                    
                 }
 
 
@@ -1700,7 +1719,8 @@
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
 
-            $.ajax({
+            
+                $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
                         method: "POST",
                         data: formData,
@@ -1719,6 +1739,8 @@
                             $('#SelectProduct').modal('show');
 
                             $('#CashInvoice').modal('hide');
+
+                            $('#add_form1').attr('data-product','true');
 
                             $.ajax({
 
@@ -1743,12 +1765,20 @@
                            
                             
                         }
-                    });
+                });
+
+            
 
         });
 
 
          /*###*/
+
+        /* Select 2 Remove Validation On Change */
+        $("select[name=ci_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
 
          /*product detail calculation*/
@@ -1816,16 +1846,14 @@
 
                     if(qty > data.delivery_qty)
                     {
-                        alertify.error('Quantity cannot be greater than ' + data.delivery_qty + '').delay(3).dismissOthers();
+                        alertify.error('Quantity cannot be greater than' + data.delivery_qty + '').delay(3).dismissOthers();
                        
                         var qtyNull = currentSelectElement.val("");
 
                         var $qtyElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
 
                         $currencyNullElement.val(qtyNull);
-
-                      
-                        
+  
                     }
                 }
 
@@ -1877,6 +1905,13 @@
 
             var selectId = $('#select_prod_id').val();
 
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                alert("You must check at least one checkbox.");
+                return false;
+            }
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/CashInvoice/SelectedProduct",
@@ -1910,6 +1945,20 @@
 
     /*reset reffer no*/ 
     $('.add_model_btn').click(function(){
+       
+        $('#add_form1')[0].reset();
+
+        $('.hidden_cash_invoice').val("");
+
+        $('.customer_id').val('').trigger('change');
+
+        $('.sales_order_add_clz  option').remove();
+
+        $('.cont_person   option').remove();
+
+        $('.cont_person   option').remove();
+
+        $('#add_form1').attr('data-product','false');
 
         $.ajax({
 
@@ -2124,32 +2173,27 @@
                 submitHandler: function(currentForm) {
                     var formData = new FormData(currentForm);
                     // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CashInvoice/Update",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-                     
-                            /*$('#add_form1')[0].reset();
+                   
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Crm/CashInvoice/Update",
+                            method: "POST",
+                            data: formData,
+                            processData: false, // Don't process the data
+                            contentType: false, // Don't set content type
+                            success: function(data) {
+                        
+                                $('#EditCashInvoice').modal('hide');
 
-                            $('select').empty();
+                                alertify.success('Data update Successfully').delay(3).dismissOthers();
 
-                            $('.cash_invoice_remove').remove();
+                                datatable.ajax.reload(null, false);
+                            
+                            }
+                        });
+                    
+                   
+                   
 
-                            $('#CashInvoice').modal('hide');
-
-                            $('#SaveModal').modal('show');*/
-
-                            $('#EditCashInvoice').modal('hide');
-
-                            alertify.success('Data update Successfully').delay(3).dismissOthers();
-
-                            datatable.ajax.reload(null, false);
-                           
-                        }
-                    });
                 }
             });
         });

@@ -342,12 +342,14 @@ class DeliverNote extends BaseController
                     {
                         $cond4 = array('so_id' => $sales_prod->spd_sales_order);
 
-                        $update_data4 = array('so_deliver_flag'=>1);
+                        $update_data4 = array('so_deliver_flag'=>1,);
 
                         $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
                     }
                     
-                  
+                    $update_data5 = array('so_credit_status'=>0,);
+
+                    $this->common_model->EditData($update_data5,array('so_id' => $sales_prod->spd_sales_order),'crm_sales_orders');
                     
                 } 
             }
@@ -631,7 +633,6 @@ class DeliverNote extends BaseController
     //delete account head
     public function Delete()
     {  
-        
         $cond = array('dn_id' => $this->request->getPost('ID'));
 
         $delivery_note = $this->common_model->SingleRow('crm_delivery_note',$cond);
@@ -643,7 +644,7 @@ class DeliverNote extends BaseController
             array(
                 'table' => 'crm_cash_invoice',
                 'pk'    => 'ci_id',
-                'fk'    => 'sr_cash_invoice',
+                'fk'    => 'sr_invoice',
             ),
 
         );
@@ -814,7 +815,7 @@ class DeliverNote extends BaseController
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control"  readonly></td>
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
                                                     
                                                     
                                                     
@@ -966,7 +967,7 @@ class DeliverNote extends BaseController
                 array(
                     'table' => 'crm_cash_invoice',
                     'pk'    => 'ci_id',
-                    'fk'    => 'sr_cash_invoice',
+                    'fk'    => 'sr_invoice',
                 ),
 
             );
@@ -1022,28 +1023,26 @@ class DeliverNote extends BaseController
                 $data['customer'] ="";
                 foreach($customer_creation as $cus_creation)
                 {
-                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-                
-                    // Check if the current product head is selected
                     if ($cus_creation->cc_id  == $delivery_note->dn_customer)
                     {
-                        $data['customer'] .= ' selected'; 
-                    }
+                        $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
                 
-                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+                        // Check if the current product head is selected
+                   
+                        $data['customer'] .= ' selected'; 
+                    
+                        $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+                    }
 
                 }
 
 
-                //sales orders
-                //$sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
-
-            
-                
 
                 //contact person
 
-                $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+                //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+                $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$delivery_note->dn_customer));
 
                 $data['contact_person'] ="";
 

@@ -98,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" class="form-control enquiry_date datepicker" required>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control enquiry_date datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -219,7 +219,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_time_frame" class="form-control time_frame_date" value="" required>
+                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control time_frame_date" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -277,13 +277,13 @@
                                                                 <td style="width: 10%;"class="si_no">1</td>
                                                                 <td style="width:28%">
                                                                 <span class="add_more_icon prod_add_more">New</span>
-                                                                    <select class="form-select ser_product_det" name="pd_product_detail[]" required>
-                                                                        <option selected>Select Product Description</option>
+                                                                    <select class="form-select ser_product_det" name="pd_product_detail[0]" required>
+                                                                        <option value=""  selected disabled>Select Product Description</option>
                                                                         
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="pd_unit[]" class="form-control" required></td>
-                                                                <td><input type="number" name="pd_quantity[]" class="form-control" required></td>
+                                                                <td><input type="text" name="pd_unit[0]" class="form-control" required></td>
+                                                                <td><input type="number" name="pd_quantity[0]" class="form-control" required></td>
                                                                 <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                                             </tr>
                                                         </tbody>
@@ -662,7 +662,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" class="form-control edit_date datepicker" required>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control edit_date datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -780,7 +780,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_time_frame" class="form-control edit_time_frame" required>
+                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control edit_time_frame" required>
                                                                     </div>
 
                                                                 </div> 
@@ -980,7 +980,7 @@
                                                                 </select>
                                                             </td>
                                                             <td><input type="text" name="pd_unit" class="form-control" required></td>
-                                                            <td><input type="text" name="pd_quantity" class="form-control" required></td>
+                                                            <td><input type="number" name="pd_quantity" class="form-control" required></td>
                                                             <input type="hidden" name="pd_enquiry_id" class="edit_add_prod_id">
                                                         </tr>
                                                         
@@ -1163,10 +1163,19 @@
 
 
         /* Select 2 Remove Validation On Change */
-         $("select[name=enquiry_customer]").on("change",function(e) {
+        $("select[name=enquiry_customer]").on("change",function(e) {
             $(this).parent().find(".error").removeClass("error");         
         });
+
+        
+        $("body").on('change', '.ser_product_det', function(e){ 
+            $(this).parent().find(".error").removeClass("error");         
+        });
+
+
         /*###*/
+
+
 
 
 
@@ -1205,14 +1214,16 @@
 
         var max_fieldspp  = 30;
         var pp = 1;
+        var j =0
         $("#add_product").click(function(){
 
 			if(pp < max_fieldspp){ 
 			    pp++;
+                j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no[]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit[]' class='form-control' required=''></td><td><input type='number' name='pd_quantity[]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit["+j+"]' class='form-control' required=''></td><td><input type='number' name='pd_quantity["+j+"]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
-                slno();
+                slno_add();
                 /*customer droup drown search*/
                  InitSelect2();
 			}
@@ -1222,7 +1233,7 @@
         {
 	        $(this).parent().remove();
 
-	        slno();
+	        slno_add();
         });
 
 
@@ -1327,10 +1338,11 @@
 
          
          $("body").on('change', '.enquiry_date', function(){ 
-	        
+           
+            //var  $this = $('.time_frame_date').val();
+
             var date = $(this).val();
  
-            
  
             $.ajax({
  
@@ -1342,10 +1354,11 @@
  
                  success:function(data)
                  {   
-                     var data = JSON.parse(data);
+                    var data = JSON.parse(data);
                  
-                       $('.time_frame_date').val(data.increment_date_date)
-                 
+                    $('.time_frame_date').val(data.increment_date_date)
+
+                    $('.time_frame_date').removeClass("error"); 
                      
                  }
  
@@ -1386,6 +1399,12 @@
 
         /*####*/
 
+
+        /* Select 2 Remove Validation On Change */
+        $("select[name=enquiry_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
 
         /*add enquiry section end*/
@@ -1499,7 +1518,7 @@
         })
 
         /*customer droup drown search*/
-         $(".ser_customer_edit").select2({
+         /*$(".ser_customer_edit").select2({
             placeholder: "Select Customer",
             theme : "default form-control- ",
             dropdownParent: $('#EditEnquiry'),
@@ -1517,22 +1536,20 @@
                     };
                 },
                 processResults: function(data, params) {
-                    //console.log(data);
-                    //NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
+                    
                     console.log(data);
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
                         pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
+                          
+                        more: (page * 10) <= data.total_count
                         }
                     };
                 },              
             }
          
-        })
+        })*/
         /*###*/
 
 
@@ -2017,18 +2034,20 @@
 
         /*serial no correction section start*/
 
-        function slno(){
+        function slno_add(){
 
-
+          
             var pp =1;
             
             $('body .prod_row').each(function() {
-
+                  
                 $(this).find('.si_no').html(pp);
                   
                 
                 
                 pp++;
+
+               
 
             });
 
@@ -2078,9 +2097,20 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    var data = JSON.parse(data);
+                     
+                    if(data.status === "true")
+                    {
 
-                    datatable.ajax.reload(null,false);
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+                    }
+                    else
+                    {
+                        alertify.error("Enquiry In Use Cant't Delete").delay(3).dismissOthers();
+   
+                    }
                 }
 
 

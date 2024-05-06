@@ -17,6 +17,7 @@
         "kwn/number-to-words": "^2.8",
         "laminas/laminas-escaper": "^2.9",
         "mpdf/mpdf": "^8.2",
+        "phpoffice/phpspreadsheet": "^2.0",
         "psr/log": "^1.1"
     },
     "require-dev": {

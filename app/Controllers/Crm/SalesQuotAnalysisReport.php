@@ -117,11 +117,6 @@ class SalesQuotAnalysisReport extends BaseController
 
 
 
-
-
-        
-        
-
         echo json_encode($data);
 
 
@@ -131,7 +126,7 @@ class SalesQuotAnalysisReport extends BaseController
     //fetch data
     public function GetData()
     {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
+        /*$from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
 
         $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
 
@@ -139,55 +134,329 @@ class SalesQuotAnalysisReport extends BaseController
 
         $sales_executive = trim($this->request->getPost('sales_executive'));
 
-        $product         = trim($this->request->getPost('product'));
+        $product         = trim($this->request->getPost('product'));*/
+
+        //Filter 
+
+        if(!empty($_GET['form_date']))
+        {
+            $from_date = $_GET['form_date'];
+        }
+        else
+        {
+            $from_date = "";
+        }
+
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
+
+        if(!empty($_GET['customer']))
+        {
+            $data1 = $_GET['customer'];
+        }
+        else
+        {
+            $data1 = "";
+        }
+
+        if(!empty($_GET['sales_executive']))
+        {
+            $data2 = $_GET['sales_executive'];
+        }
+        else
+        {
+            $data2 = "";
+        }
+
+        if(!empty($_GET['product']))
+        {
+            $data3 = $_GET['product'];
+        }
+        else
+        {
+            $data3 = "";
+        }
 
        
 
         $joins = array(
+            
             array(
                 'table' => 'crm_quotation_product_details',
                 'pk'    => 'qpd_quotation_details',
                 'fk'    => 'qd_id ',
             ),
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'qd_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'qd_sales_executive',
+            ),
            
 
         );
 
-        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description	','','','crm_quotation_details',$joins,'qd_reffer_no');
+        $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');  
         
-        $data['product_data'] =""; 
-
-       if(!empty($single_quots)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($single_quots as $single_quot)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$single_quot->qd_reffer_no.'</td>
-                <td>'.$single_quot->qd_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
-            }
-        }
-        else
+        if(!empty($_POST['pdf']))
         {
-            $data['status'] ="False";
+            $this->Pdf($data['quotation_data']);
         }
+        
 
-        echo json_encode($data);
+        $data['content'] = view('crm/sales-quot-analysis-report',$data);
+
+        return view('crm/report-module',$data);
+
        
       
+    }
+
+
+
+    public function Pdf($quotation_data)
+    {   
+        if(!empty($quotation_data))
+        {   
+            $pdf_data = "";
+
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'qpd_product_description',
+                ),
+               
+                
+            );
+
+            
+            $total_amount = 0;
+            foreach($quotation_data as $quot_data)
+            {   
+                $q=1;
+                $border="border-top: 2px solid";
+                $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
+                
+                $total_amount = $total_amount + $quot_data->qd_sales_amount;
+
+                $new_date = date('d-m-Y',strtotime($quot_data->qd_date));
+
+                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
+                
+                
+                if($q!=1){
+                     
+                    $pdf_data .="</tr>";
+                }
+                foreach($product_details as $prod_del)
+                {
+                    if($q!=1){
+
+                        $pdf_data .="<tr>";
+
+                        $pdf_data .= "<tr><td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+                        
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+                    }
+
+                    
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
+
+                    
+                    if($q!=1)
+                    {
+                        $pdf_data .="</tr>";
+                    }
+
+                    $q++;
+
+                }
+                
+                if($q==1)
+                {
+                    $pdf_data .="</tr>";
+                }
+
+               // $pdf_data .="</tr>";
+                 
+                
+               
+                
+            }
+            $mpdf = new \Mpdf\Mpdf();
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
+            <td align="right"><h3>Sales Quotation Report</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+            <th align="left">Date</th>
+        
+            <th align="left">Quotation Ref.</th>
+        
+            <th align="left">Customer</th>
+        
+            <th align="left">Sales Executive</th>
+        
+            <th align="left">Amount</th>
+
+            <th align="left">Product</th>
+
+            <th align="left">Quantity</th>
+
+            <th align="left">Rate</th>
+
+            <th align="left">Amount</th>
+        
+            
+            </tr>
+
+             
+            '.$pdf_data.'
+
+            <tr>
+                <td style="border-top: 2px solid;">Total</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+            </tr>    
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+        
+            
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output();
+        
+        }
+
+       
     }
 
 

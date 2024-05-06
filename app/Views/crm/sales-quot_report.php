@@ -1,4 +1,5 @@
 
+
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -16,7 +17,8 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="sales_quot_report_form">
+                                <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
+                                <form method="GET" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData"  class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Quotation Report</h5>
@@ -114,7 +116,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button  class="btn btn btn-success" type="submit">Search</button>
                                         </div>
 
                                         
@@ -137,6 +139,15 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation Reports</h4>
+                                        <form method="POST" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+                                        <form method="POST" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        </form>
+                                        <button class="email_button report_button">Email</button>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -146,12 +157,33 @@
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
-                                                    
+                                                    <th>Customer Name</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                                <?php
+                                                if(!empty($quotation_data))
+                                                {
+                                                    $i=1;
+                                                    foreach($quotation_data as $quot_data){?> 
+                                                    <tr>
+                                                        <td><?php echo $i;?></td>
+                                                        <td><?php echo $quot_data->qd_reffer_no;?></td>
+                                                        <td><?php echo $quot_data->qd_date;?></td>
+                                                        <td><?php echo $quot_data->cc_customer_name;?></td>
+                                                        <td><?php echo $quot_data->qd_sales_amount;?></td>
+                                                        <!--<td>
+                                                            <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
+                                                            <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
+                                                            <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
+                                                        </td>-->
+                                                    </tr>
+                                                
+                                                <?php $i++; }  } ?>
+
+                                            </tbody>
 
                                         </table>
                 
@@ -190,20 +222,20 @@
 
 
 
+
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
-
+        
         /*modal open start*/
+        <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
 
-       
-        
-        
-        
+        <?php endif; ?>
+      
         /*modal open end*/
 
 
@@ -274,7 +306,7 @@
         /*####*/
 
         /*quot report form submit*/
-        $(function() {
+        /*$(function() {
             var form = $('#sales_quot_report_form');
             
             form.validate({
@@ -288,7 +320,7 @@
                 submitHandler: function(currentForm) {
 
                  
-                    // Submit the form for the current tab
+                    
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesQuotReport/GetData",
                         method: "POST",
@@ -313,14 +345,14 @@
 
                             $('.product_clz').val('').trigger('change');
 
-                            //datatable.ajax.reload(null, false);
+                           
 
                         
                         }
                     });
                 }
             });
-        });
+        });*/
 
         /*####*/
 

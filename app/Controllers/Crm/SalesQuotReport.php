@@ -5,6 +5,8 @@ namespace App\Controllers\Crm;
 use App\Controllers\BaseController;
 
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class SalesQuotReport extends BaseController
 {
     
@@ -48,7 +50,7 @@ class SalesQuotReport extends BaseController
       
         $data['result'] = $this->common_model->ReportFetchLimit('crm_quotation_details','qd_customer','asc',$term,$start,$end,$joins,'qd_customer');
     
-        $data['total_count'] =count($data['result']);
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
@@ -121,16 +123,54 @@ class SalesQuotReport extends BaseController
     //fetch data
     public function GetData()
     {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
+       
+        //Filter 
 
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
+        if(!empty($_GET['form_date']))
+        {
+            $from_date = $_GET['form_date'];
+        }
+        else
+        {
+            $from_date = "";
+        }
 
-        $customer        = trim($this->request->getPost('customer'));
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
 
-        $sales_executive = trim($this->request->getPost('sales_executive'));
+        if(!empty($_GET['customer']))
+        {
+            $data1 = $_GET['customer'];
+        }
+        else
+        {
+            $data1 = "";
+        }
 
-        $product         = trim($this->request->getPost('product'));
+        if(!empty($_GET['sales_executive']))
+        {
+            $data2 = $_GET['sales_executive'];
+        }
+        else
+        {
+            $data2 = "";
+        }
 
+        if(!empty($_GET['product']))
+        {
+            $data3 = $_GET['product'];
+        }
+        else
+        {
+            $data3 = "";
+        }
+        
 
         $joins = array(
             
@@ -139,61 +179,433 @@ class SalesQuotReport extends BaseController
                 'pk'    => 'qpd_quotation_details',
                 'fk'    => 'qd_id ',
             ),
-           /* array(
+            array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
                 'fk'    => 'qd_customer',
-            ),*/
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'qd_sales_executive',
+            ),
            
 
         );
 
-       
-        $single_quots = $this->common_model->CheckDate($from_date,'qd_date',$to_date,'',$customer,'qd_customer',$sales_executive,'qd_sales_executive',$product,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');
+        $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');  
         
-        $data['product_data'] =""; 
-
-        if(!empty($single_quots))
+        if(!empty($_POST['pdf']))
         {
+            $this->Pdf($data['quotation_data']);
+        }
 
-            $data['status'] ="true";
+        if(!empty($_POST['excel']))
+        {
+            $this->Excel($data['quotation_data']);
+        }
 
-            $i=1;
-            foreach($single_quots as $single_quot)
-            {   
+        $data['content'] = view('crm/sales-quot_report',$data);
+
+        return view('crm/report-module',$data);
+        
+    }
+
+
+    public function Pdf($quotation_data)
+    {   
+        if(!empty($quotation_data))
+        {   
+            $pdf_data = "";
+
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'qpd_product_description',
+                ),
+               
                 
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$single_quot->qd_reffer_no.'</td>
-                <td>'.$single_quot->qd_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
+            );
+
+            
+            $total_amount = 0;
+            foreach($quotation_data as $quot_data)
+            {   
+                $q=1;
+                $border="border-top: 2px solid";
+                $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
+                
+                $total_amount = $total_amount + $quot_data->qd_sales_amount;
+
+                $new_date = date('d-m-Y',strtotime($quot_data->qd_date));
+
+                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
+                
+                
+                if($q!=1){
+                     
+                    $pdf_data .="</tr>";
+                }
+                foreach($product_details as $prod_del)
+                {
+                    if($q!=1){
+
+                        $pdf_data .="<tr>";
+
+                        $pdf_data .= "<tr><td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+                        
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+                    }
+
+                    
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
+
+                    
+                    if($q!=1)
+                    {
+                        $pdf_data .="</tr>";
+                    }
+
+                    $q++;
+
+                }
+                
+                if($q==1)
+                {
+                    $pdf_data .="</tr>";
+                }
+
+               // $pdf_data .="</tr>";
+                 
+                
+               
+                
             }
-        }
-        else
-        {
-            $data['status'] ="False";
+            $mpdf = new \Mpdf\Mpdf();
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
+            <td align="right"><h3>Sales Quotation Report</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+            <th align="left">Date</th>
+        
+            <th align="left">Quotation Ref.</th>
+        
+            <th align="left">Customer</th>
+        
+            <th align="left">Sales Executive</th>
+        
+            <th align="left">Amount</th>
+
+            <th align="left">Product</th>
+
+            <th align="left">Quantity</th>
+
+            <th align="left">Rate</th>
+
+            <th align="left">Amount</th>
+        
+            
+            </tr>
+
+             
+            '.$pdf_data.'
+
+            <tr>
+                <td style="border-top: 2px solid;">Total</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+            </tr>    
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+        
+            
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output();
+        
         }
 
-        echo json_encode($data);
        
-      
     }
 
-
-    public function pdf()
+   
+    public function Excel($quotation_data)
     {
+        // Create a new PhpSpreadsheet object
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        
+        // Set table columns
+        $table_columns = array(
+            "Date",
+            "Quotation Ref",
+            "Customer",
+            "Sales Executive",
+            "Amount",
+            "Product",
+            "Quantity",
+            //"Rate",
+            //"Amount"
+        );
+
+        $column = 'A'; // Start from column A
+        $excel_row = 1;
+
+        // Set the company information
+        $sheet->setCellValue($column . $excel_row, 'Al Fuzail Enginnering Service WLL');
+        // Get cell style
+        $style = $sheet->getStyle($column . $excel_row);
+
+        // Modify font size
+        $style->getFont()->setSize(20); // Change the size to your desired value
+
+        // Or modify boldness
+        $style->getFont()->setBold(true); // Set bold
+        $excel_row++;
+
+        $sheet->setCellValue($column . $excel_row, 'Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com');
+        $excel_row++;
+        $sheet->setCellValue($column . $excel_row, 'Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar');
+        $excel_row++;
+
+        // Set the cell value
+        $cellValue = 'Period : 01 Sep 2020 to 03 Sep 2020       Sales Quotation Report';
+
+        // Create a rich text object
+        $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+
+        // Set the first part of the text with one style
+        $textRun1 = $richText->createTextRun('Period : 01 Sep 2020 to 03 Sep 2020');
+        $textRun1->getFont()->setSize(12); // Change the size to your desired value for the period
+
+        // Add space between the two parts of the text
+        $richText->createText('        ');
+
+        // Set the second part of the text with another style
+        $textRun2 = $richText->createTextRun('Sales Quotation Report');
+        $textRun2->getFont()->setBold(true); // Set bold for the second part
+
+        // Set the rich text object as the cell value
+        $sheet->setCellValue($column . $excel_row, $richText);
+
+        $excel_row++;
+
+
+        // Set padding and alignment for table columns
+        $cellRange = 'A' . $excel_row . ':' . $column . ($excel_row + count($table_columns) - 1);
+        $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true); // Enable text wrapping
+        $sheet->getStyle($cellRange)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Center vertically
+        $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Center horizontally
+        $sheet->getStyle($cellRange)->getAlignment()->setIndent(1); // Increase the indentation
+        $sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
+
+
+        // Loop to display table columns
+        foreach ($table_columns as $field) {
+            $sheet->setCellValue($column . $excel_row, $field);
+            $column++; // Move to the next column for each field
+        }
+
+        $excel_row++; // Move to the next row for quotation data
+
+        // Reset column index for data population
+        $column = 'A';
+
+        // Set padding and alignment for quotation data
+        $cellRange = 'A' . $excel_row . ':' . $column . ($excel_row + count($quotation_data) - 1);
+        $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true); // Enable text wrapping
+        $sheet->getStyle($cellRange)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Center vertically
+        $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Center horizontally
+        $sheet->getStyle($cellRange)->getAlignment()->setIndent(1); // Increase the indentation
+
+    
+        $joins1 = array(
+        
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+            
+            
+        );
+
+        // Populate quotation data
+        foreach ($quotation_data as $quot_data) {
+
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
+            
+            $sheet->setCellValue($column . $excel_row, $quot_data->qd_date);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_reffer_no);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->cc_customer_name);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->se_name);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_sales_amount);
+            $j=1;
+            $k =1; 
+            foreach($product_details as $prod_del)
+            {   
+                 
+                if($j == 1){ $col1 =  ++$column; $excel1 = $excel_row;}
+                else{$col1 = $column; $excel1 = ++$excel_row;}
+               
+                $sheet->setCellValue($col1 . $excel1, $prod_del->product_details);
+
+                if($k == 1){ $col2 =  ++$column; $excel2 = $excel_row;}
+                else{$col2 = $column; $excel2 = ++$excel_row;}
+               
+                $sheet->setCellValue($col2 . $excel2, $prod_del->qpd_unit);
+                
+
+                $j++;
+                
+            }
+
+
+            // Increase row height to add vertical space
+            $sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
+            
+            //$sheet->getColumnDimension($column)->setWidth(20); // Change 20 to your desired width
+            
+            // Reset column index for the next row
+            $column = 'A';
+            $excel_row++; // Move to the next row
+        }
+
+        // Instantiate the Xlsx writer
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        // Set HTTP headers to indicate Excel download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Excel.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        // Clear output buffer
+        ob_end_clean();
+
+        // Save the Excel file to output
+        $writer->save('php://output');
 
     }
-
-
-
-
 
 
 

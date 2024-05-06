@@ -45,9 +45,14 @@ class Autoload extends AutoloadConfig
      * @phpstan-var array<string, string|list<string>>
      */
     public $psr4 = [
-        APP_NAMESPACE => APPPATH, // For custom app namespace
-        'Config'      => APPPATH . 'Config',
-        'Helpers'     => APPPATH . 'Helpers',
+        //APP_NAMESPACE => APPPATH, // For custom app namespace
+        'Config'       => APPPATH . 'Config',
+        'Helpers'      => APPPATH . 'Helpers',
+        //'App'          => APPPATH, // This is already included by default
+        //APP_NAMESPACE  => APPPATH, // This is already included by default
+        
+        // Add this line to autoload PhpSpreadsheet
+        //'PhpOffice\PhpSpreadsheet' => APPPATH . 'ThirdParty/PhpSpreadsheet-master/src',
     ];
 
     /**

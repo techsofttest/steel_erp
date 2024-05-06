@@ -69,7 +69,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#" >
+                                <a class="nav-link menu-link" href="<?php echo base_url();?>Procurement/Vendor" >
                                     <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
                                 </a>
                                 

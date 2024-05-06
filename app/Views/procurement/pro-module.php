@@ -39,7 +39,7 @@
 
             <!--sub header section start-->
 
-            <?php echo view('crm/sub_header');?>
+            <?php echo view('procurement/sub_header');?>
 
             <!--sub header section end-->
 
@@ -50,7 +50,7 @@
 
 					<!--crm sub header start--->
                                     
-                    <?php echo view('crm/pro_sub_header');?>
+                    <?php echo view('procurement/pro_sub_header');?>
 
                     <!--crm sub header end-->
 									

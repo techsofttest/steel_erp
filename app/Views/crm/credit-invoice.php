@@ -43,7 +43,7 @@
 
                         <div class="modal fade" id="CreditInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
-		                        <form  class="Dashboard-form class" id="add_form1">
+		                        <form  class="Dashboard-form class" data-product="false" id="add_form1">
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Credit Invoice</h5>
@@ -91,7 +91,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_date" class="form-control datepicker" required>
+                                                                        <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -331,7 +331,7 @@
                                                             <div class="col-lg-4">
                                                                
                                                                 <select class="form-select" name="ci_credit_account" id="" required>
-                                                                    <option>Select Credit Account</option>
+                                                                    <option value="" selected disabled>Select Credit Account</option>
                                                                     <?php foreach($charts_of_accounts as $chart_account){?> 
                                                                          <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
                                                                     <?php } ?>
@@ -485,7 +485,8 @@
                                     <tr>
                                         <td>Serial No.</td>
                                         <td>Product Description</td>
-                                        <td>Unit</td>
+                                        <td>Delivery Note</td>
+                                        <td>Quantity</td>
                                         <td>Tick</td>
                                     </tr>
                                                             
@@ -579,7 +580,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cci_date" class="form-control datepicker edit_data" required>
+                                                <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker edit_data" required>
                                             </div>
 
                                         </div> 
@@ -761,30 +762,14 @@
                                     <td>Discount</td>
                                     <td>Amount</td>
                                     
+                                    
 
                                 </tr>
                                 
                             </thead>
                             
                             <tbody  class="travelerinfo edit_product_table"></tbody>
-                            <!--<tbody>
-                                <tr>
-                                    <td colspan="8" align="center" class="tecs">
-                                        <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
-                                    </td>
-                                </tr>
-                            </tbody>--->
-                            <!--<tbody>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="3" class="performa_amount_in_word_val"></td>
-                                    <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                    <td>Total</td>
-                                    <td><input type="text" name="cci_total_amount" class="amount_total form-control" readonly></td>
-                                </tr>
-                                
-                                
-                            </tbody>--->
+                           
                             
                         </table>
                     </div>
@@ -826,21 +811,7 @@
                                             <button class="btn btn btn-success" type="submit">Save</button>
                        </div>
                         </div>
-                        <!--<div class="col-lg-6">
-                            <div style="float: right;">
-                                <table class="table table-bordered table-striped enq_tab_submit menu">
-                                    <tr>
-                                        <td><button>Print</button></td>
-                                        <td><button>Email</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="submit">Save</button></td>
-                                        <td><button>PDF</button></td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                        </div>--->
+                       
                     </div>
                                                 
                     <!--table section end-->
@@ -853,6 +824,69 @@
 
 	</div>
 </div>
+
+
+<!--edit product section start-->
+
+<div class="modal fade" id="EditProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_product_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+                    <button type="button" class="btn-close edit_close_sub_modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                                                
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                        
+                                    </tr>
+
+                                </thead>
+
+                                <tbody class="edit_product_table"></tbody>
+                                
+                                
+                            </table>
+                        </div>
+
+
+                        <div class="modal-footer justify-content-center">
+                            
+                            <button class="btn btn btn-success">Save</button>
+
+                        </div>
+
+                        <!--table section end-->
+                    </div>  
+                                            
+                </div>
+
+                                        
+			</div>
+	    </form>
+
+	</div>
+</div>
+
+<!--edit product section end-->
+
 
 
 <!--edit setion end-->
@@ -1285,42 +1319,54 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CreditInvoice/Add",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
 
-                            var data = JSON.parse(data);
+                    if($('#add_form1').attr('data-product')=="true")
+                    {
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Crm/CreditInvoice/Add",
+                            method: "POST",
+                            data: $(currentForm).serialize(),
+                            success: function(data) {
 
-                            $('#add_form1')[0].reset();
-                           
-                            $('#CreditInvoice').modal('hide');
+                                var data = JSON.parse(data);
 
-                            $('.delivery_note_remove').remove();
+                                $('#add_form1')[0].reset();
+                            
+                                $('#CreditInvoice').modal('hide');
 
-                            $('.hidden_credit_invoice_id').val("");
+                                $('.delivery_note_remove').remove();
 
-                            $('.customer_id').val('').trigger('change');
+                                $('.hidden_credit_invoice_id').val("");
 
-                            $('#SaveModal').modal('show');
+                                $('.customer_id').val('').trigger('change');
 
-                            console.log(data.adjustment_data);
+                                $('.adjustment_table').html(data.adjustment_data);
 
-                            $('.adjustment_table').html(data.adjustment_data);
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload(null, false);
 
-                            datatable.ajax.reload(null, false);
+                                checkedIds.length = 0;
 
-                            checkedIds.length = 0;
+                                if(data.advance_status ==="true")
+                                {
+                                    $('#SaveModal').modal('show');
+                                }
 
 
-                            TotalAmount();
-                           
-                           
-                        }
-                    });
+                                TotalAmount();
+                            
+                            
+                            }
+                        });
+
+                    }
+                    else
+                    {
+                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                    }
+
+
                 }
             });
         });
@@ -1428,9 +1474,7 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-
-                   
-                    
+  
                     $(".sales_order_add_clz").html(data.sales_order);
 
                     $(".cont_person").html(data.contact_person);
@@ -1470,8 +1514,6 @@
                 {   
                     var data = JSON.parse(data);
 
-                    console.log(data.product_more2);
-                    
                     $(".lpo_ref").val(data.so_lpo);
 
                     $(".project_clz").val(data.so_project);
@@ -1479,6 +1521,14 @@
                     $(".payment_term_clz").val(data.so_payment_term);
 
                     $(".cont_person").html(data.contact_person);
+
+                    $(".lpo_ref").removeClass("error")
+
+                    $(".cont_person").removeClass("error")
+
+                    $(".payment_term_clz").removeClass("error")
+
+                    $(".project_clz").removeClass("error")
 
                     //$(".product_more2").append(data.product_detail);
 
@@ -1556,9 +1606,18 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
+                    if(data.status === "true")
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                        datatable.ajax.reload(null,false);
+                    }
+                    else
+                    {
+                        alertify.error("Credit Invoice In Use Cant't Delete").delay(2).dismissOthers();
+                    }
+                    
                 }
 
 
@@ -1644,6 +1703,40 @@
         });*/
 
         /**/
+
+
+        /*product edit start*/
+
+        $("body").on('click', '.product_edit', function(){ 
+
+            $("#EditCreditInvoice").modal("hide");
+
+            $("#EditProduct").modal("show");
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/EditProduct",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+                    $(".edit_product_table").html(data.prod_details);
+
+                
+                }
+            });
+        });
+
+
+/*#####*/
 
 
 
@@ -1879,7 +1972,7 @@
 
                             $('#CreditInvoice').modal('hide');
 
-                            
+                            $('#add_form1').attr('data-product','true');
 
                             $.ajax({
 
@@ -1927,6 +2020,14 @@
 
             var selectId = $('#select_prod_id').val();
 
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                alert("You must check at least one checkbox.");
+                return false;
+            }
+
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/CreditInvoice/SelectedProduct",
@@ -1956,6 +2057,13 @@
         });
 
 
+        /* Select 2 Remove Validation On Change */
+        $("select[name=cci_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
+
+
         /*prod modal submit end*/
 
 
@@ -1983,7 +2091,7 @@
 
                     var data = JSON.parse(data);
                                     
-                    console.log(data.customer);
+                    
 
                     $('.edit_reff').val(data.reffer_no);
 
@@ -2007,7 +2115,7 @@
 
                     $('.edit_charts_account').html(data.charts_account);
 
-                    console.log(data.charts_account);
+                   
 
                    // $('.edit_image_table').html(data.image_table);
 
@@ -2120,7 +2228,7 @@
 
                     $('.view_prod_table').html(data.product_detail);
 
-                     console.log(data.product_detail)
+                     
                     
                     
                     /*$('.edit_credit_invoice_id').val(data.credit_invoice_id);
@@ -2153,6 +2261,12 @@
 
             $('.customer_id').val('').trigger('change');
 
+            $('.sales_order_add_clz   option').remove();
+
+            $('.cont_person  option').remove();
+
+            $('#add_form1').attr('data-product','false');
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/CreditInvoice/FetchReference",
@@ -2162,7 +2276,7 @@
                 success:function(data)
                 {
 
-                $('#srid').val(data);
+                    $('#srid').val(data);
 
                 }
 
@@ -2181,6 +2295,88 @@
            datatable.ajax.reload(null,false);
    
        });
+
+
+       /*update product*/
+        
+        $(function() {
+            var form = $('#edit_product_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} ,
+                submitHandler: function(currentForm) {
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/CreditInvoice/UpdateProduct",
+                        method: "POST",
+                        data: $(currentForm).serialize(),
+                        success: function(data) {
+
+                            var responseData = JSON.parse(data);
+
+                            var salesId = responseData.credit_invoice
+                            
+                            $('#EditProduct').modal('hide');
+
+                            $('#EditCreditInvoice').modal('show');
+
+                            $('.edit_btn[data-id="'+salesId+'"]').trigger('click');
+
+                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null,false)
+                            
+                        }
+                    });
+                }
+            });
+        });
+
+        /*#####*/
+
+
+        /*edit calculation section start*/
+
+        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+            var $amountElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+
+        });
+
+
+        /*####*/
 
 
        

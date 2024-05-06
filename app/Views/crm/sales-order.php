@@ -98,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" class="form-control datepicker" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker" required>
                                                                     </div>
 
                                                                 </div> 
@@ -203,14 +203,16 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
+                                                                       
                                                                         <select class="form-select enqinput sales_executive_clz" name="so_sales_executive"  required>
-                                                                            <option value="" selected disabled>Sales Executive</option>
+                                                                           <option value="" selected disabled>Sales Executive</option>
                                                                             <?php foreach($sales_executive as $sale_exc){?> 
                                                                                 <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
                                                                             <?php } ?>
                                                                             
                                                                 
                                                                         </select>
+                                                                       
                                                                        
                                                                     </div>
 
@@ -489,7 +491,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" class="form-control datepicker edit_date" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker edit_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -674,7 +676,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
                                                                        
-                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker edit_delivery_date" required>
+                                                                        <input type="text" name="so_delivery_term" id="" class="form-control datepicker edit_delivery_date" required>
                                                             
                                                                         
                                                                     </div>
@@ -857,16 +859,15 @@
                                                                 <td>
                                                                     <select class="form-select  edit_product_det" name="spd_product_details" required>
                                                                         
-                                                                        <option selected>Select Product Description</option>
+                                                                        <option value="" selected disabled>Select Product Description</option>
                                                                        
                                                                     </select>
                                                                 </td>
-
                                                                 <td><input type="text"   name="spd_unit" class="form-control" required></td>
                                                                 <td><input type="number" name="spd_quantity" class="form-control edit_add_qty" required></td>
                                                                 <td><input type="number" name="spd_rate" class="form-control edit_add_rate" required></td>
-                                                                <td><input type="number" name="spd_discount" class="form-control edit_add_discount" required></td>
-                                                                <td><input type="number" name="spd_amount" class="form-control edit_add_amount" required></td>
+                                                                <td><input type="number" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount" required></td>
+                                                                <td><input type="number" name="spd_amount" class="form-control edit_add_amount" ></td>
                                                                 
                                                                 <input type="hidden" name="spd_sales_order" class="edit_hidden_sales_id">
 
@@ -1150,7 +1151,7 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label edit_contact_person">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label ">Contact Person</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
@@ -1437,9 +1438,13 @@
 
                             $('.prod_row2').remove();
 
+                           
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
+
+                            
                            
                             
                         }
@@ -1447,6 +1452,17 @@
                 }
             });
         });
+
+
+        /*customer  Remove Validation On Change */
+	
+         $("select[name=so_customer]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+		
+        /*###*/
+
+
 
 
 
@@ -1698,6 +1714,11 @@
                     $(".quotation_ref").html(data.quotation_det);
 
                     $(".payment_term").val(data.credit_term);
+
+                    if(data.credit_term!==null)
+                    {
+                        $('.payment_term').removeClass("error")
+                    }
                    
                 }
 
@@ -1741,6 +1762,25 @@
 
                     $(".product-more2").append(data.prod_details);
 
+                    if(data.qd_project!=null)
+                    {
+                        $('.project').removeClass("error")
+                    }
+
+                    if(data.contact_person!=null)
+                    {
+                        $('.contact_person_clz').removeClass("error")
+                    }
+
+                    if(data.qd_sales_executive!=null)
+                    {
+                        $('.sales_executive_clz').removeClass("error")
+                    }
+
+                    slno2();
+
+                    reName();
+
                 }
 
 
@@ -1757,13 +1797,15 @@
         $("body").on('click', '.add_product2', function(){
             
             var pp = $('.prod_row2').length
+
+            var so  = $('.sales_row_leng').length
             
             
 			if(pp < max_fieldspp){ 
                 
                 pp++;
                 
-                $(".product-more2").append("<tr class='prod_row2'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details[]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit[]' class='form-control ' required=''></td><td><input type='number' name='spd_quantity[]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate[]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount[]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount[]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:20%'><select class='form-select add_prod' name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
 			}
 
@@ -1777,10 +1819,63 @@
         {
 	 
             $(this).parent().remove();
+            
+           /* var jj = 0;
+
+            $('body .sales_row_leng').each(function() {
+                
+                $(this).closest('.sales_row_leng').find('.add_prod').attr('name', 'spd_product_details['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.unit_clz_id').attr('name', 'spd_unit['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.qtn_clz_id').attr('name', 'spd_quantity['+jj+']');
+                        
+                $(this).closest('.sales_row_leng').find('.rate_clz_id').attr('name', 'spd_rate['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.discount_clz_id').attr('name', 'spd_discount['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.amount_clz_id').attr('name', 'spd_amount['+jj+']');
+  
+                jj++;
+  
+            });*/
+            
+            reName();
+
             slno2();
         });
 
         /**/
+
+
+        /*rename product start*/
+         
+        function reName(){
+            
+            var jj = 0;
+
+            $('body .sales_row_leng').each(function() {
+                
+                $(this).closest('.sales_row_leng').find('.add_prod').attr('name', 'spd_product_details['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.unit_clz_id').attr('name', 'spd_unit['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.qtn_clz_id').attr('name', 'spd_quantity['+jj+']');
+                        
+                $(this).closest('.sales_row_leng').find('.rate_clz_id').attr('name', 'spd_rate['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.discount_clz_id').attr('name', 'spd_discount['+jj+']');
+  
+                $(this).closest('.sales_row_leng').find('.amount_clz_id').attr('name', 'spd_amount['+jj+']');
+  
+                jj++;
+  
+            });
+        }
+
+        /*rename product end*/
+
+
 
         /*serial no correction section start*/
 
@@ -1804,9 +1899,15 @@
             $('body .prod_row2').each(function() {
 
                 $(this).find('.si_no2').html('<td class="si_no2">' + pp + '</td>');
+                
+                //var lenght = $('.si_no2').val().length;
 
+                //console.log(lenght);
+                
                 pp++;
             });
+
+            
 
         }
 
@@ -1933,6 +2034,22 @@
         /*reset reffer number*/
 
         $('.add_model_btn').click(function(){
+
+            $('#add_sales_order_form')[0].reset();
+
+            $('#customer_id').val('').trigger('change');
+
+            $('.quotation_ref').val('').trigger('change');
+
+            $('.sales_executive_clz').val('').trigger('change');
+
+            $('.contact_person_clz').val('').trigger('change');
+
+            $('.quotation_ref option').remove();
+
+            $('.contact_person_clz option').remove();
+
+           // $('.sales_executive_clz option').remove();
 
             $.ajax({
 
@@ -2071,7 +2188,12 @@
 
         InitProductSelect2();
 
-
+        
+        /* Select 2 Remove Validation On Change */
+        $("select[name=spd_product_details]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
 
         //fetch quotation by customer
@@ -2502,12 +2624,13 @@
 
         /*edit product detail (qty keyup)*/
 
+
         $("body").on('keyup', '.edit_prod_qty', function(){ 
 
             var qty = $(this).val();
 
             var prod_id = $('.edit_prod_id').val();
-            
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesOrder/GetProd",
@@ -2523,26 +2646,67 @@
 
                     console.log(data.status);
 
-                     if(data.status==="true")
-                     {
+                    if(data.status==="true")
+                    {
                         if(data.old_qty > qty)
                         {
+                            $('.edit_prod_qty').val("");
+
                             alertify.error('Quantity cannont be decrease').delay(3).dismissOthers();
                 
                         }
-                     }
+                    }
 
-                     
+                    
 
                 
                 }
             });
-           
-
 
         });
 
         /*#####*/
+
+
+        /*edit product detail(rate keyup)*/
+
+        $("body").on('keyup', '.edit_prod_rate', function(){ 
+
+            var prod_rate = $(this).val();
+
+            var prod_id = $('.edit_prod_id').val();
+
+            //alert(prod_id);
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/GetProdRate",
+
+                method : "POST",
+
+                data:{prodID: prod_id},
+
+                success:function(data)
+                {   
+                    
+                    var data = JSON.parse(data);
+
+                    if(data.product_status==="false")
+                    {
+                        $('.edit_prod_rate').val(data.prod_rate);
+
+                        alertify.error('Price Cannnot Be Edit').delay(3).dismissOthers();
+                
+                    }
+ 
+                }
+
+            });
+
+        });
+
+
+        /*######*/
 
 
 

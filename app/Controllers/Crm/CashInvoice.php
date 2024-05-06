@@ -68,7 +68,7 @@ class CashInvoice extends BaseController
            $data[] = array( 
               'ci_id'          => $i,
               'ci_reffer_no'   => $record->ci_reffer_no,
-              'ci_date'        => date('Y-M-d',strtotime($record->ci_date)),
+              'ci_date'        => date('d-M-Y',strtotime($record->ci_date)),
               'ci_customer'    => $record->cc_customer_name,
               'ci_sales_order' => $record->so_reffer_no,
               'action'         => $action,
@@ -380,28 +380,34 @@ class CashInvoice extends BaseController
 
             $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $cash_inv_data->ci_customer));
             
-            
-
             $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
             
             
 
             $data['adjustment_data'] = "";
-
-            foreach($receipts as $receipt)
+            
+            if(!empty($receipts))
             {
-                $data['adjustment_data'] .= "
-                <tr>
-                    <td>1</td>
-                    <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='' class='form-control' required></td>
-                    <td><input type='checkbox' name='' value='' class='' required></td>
-                </tr>
-                ";
-            }
+                foreach($receipts as $receipt)
+                {
+                    $data['adjustment_data'] .= "
+                    <tr>
+                        <td>1</td>
+                        <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='' class='form-control' required></td>
+                        <td><input type='checkbox' name='' value='' class='' required></td>
+                    </tr>
+                    ";
+                }
 
+                $data['advance_status'] ="true"; 
+            }
+            else
+            {
+                $data['advance_status'] ="false"; 
+            }
        
 		}
 
@@ -451,7 +457,7 @@ class CashInvoice extends BaseController
         
         $data['reffer_no']      = $cash_invoice->ci_reffer_no;
 
-        $data['date']           = date('Y-M-d',strtotime($cash_invoice->ci_date));
+        $data['date']           = date('d-M-Y',strtotime($cash_invoice->ci_date));
 
         $data['customer']       = $cash_invoice->cc_customer_name;
 
@@ -494,12 +500,12 @@ class CashInvoice extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->cipd_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->cipd_amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_discount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_amount.'" class="form-control " readonly></td>
             </tr>'; 
              $i++;
         }
@@ -653,65 +659,67 @@ class CashInvoice extends BaseController
      //delete account head
      public function Delete()
      {
-        /*$cond = array('ci_id' => $this->request->getPost('ID'));
-
-        $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $this->request->getPost('ID')));
         
-        $update_data1 = array('so_deliver_flag'=>0);
-
-        $this->common_model->EditData($update_data1,array('so_id'=>$cash_invoice->ci_sales_order),'crm_sales_orders');
-
-        $this->common_model->DeleteData('crm_cash_invoice',$cond);
-
-        $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);*/
-
-
         $cond = array('ci_id' => $this->request->getPost('ID'));
 
         $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',$cond);
 
-        $update_data = ['so_deliver_flag' => 0];
-
-        $this->common_model->EditData($update_data, array('so_id' => $cash_invoice->ci_sales_order),'crm_sales_orders');
+        $sales_return = $this->common_model->fetchWhere('crm_sales_return',array('sr_invoice'=>$cash_invoice->ci_reffer_no));
         
-        $cash_invoice_id = $cash_invoice->ci_id;
+        if(empty($sales_return))
+        {
+            $update_data = ['so_deliver_flag' => 0];
 
-        $cond2 = array('cipd_cash_invoice' => $cash_invoice_id);
+            $this->common_model->EditData($update_data, array('so_id' => $cash_invoice->ci_sales_order),'crm_sales_orders');
+            
+            $cash_invoice_id = $cash_invoice->ci_id;
 
-        $joins = array(
-            array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_id',
-                'fk'    => 'cipd_sales_prod',
-            ),
+            $cond2 = array('cipd_cash_invoice' => $cash_invoice_id);
 
-        );
+            $joins = array(
+                array(
+                    'table' => 'crm_sales_product_details',
+                    'pk'    => 'spd_id',
+                    'fk'    => 'cipd_sales_prod',
+                ),
 
-        $cash_product_det = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond2,$joins);
+            );
 
-        
-        foreach($cash_product_det as $cash_prod_det)
-        {   
-            $sales_order_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $cash_prod_det->cipd_sales_prod));
+            $cash_product_det = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond2,$joins);
 
-            $update_data1 = [
+            
+            foreach($cash_product_det as $cash_prod_det)
+            {   
+                $sales_order_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $cash_prod_det->cipd_sales_prod));
 
-                'spd_delivered_qty' => $sales_order_prod->spd_quantity - $cash_prod_det->cipd_qtn,
+                $update_data1 = [
+
+                    'spd_deliver_flag' => 0,
+
+                    'spd_delivered_qty' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
+
+                    'spd_cash_invoice' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
+
+
+                ];
+
+                $this->common_model->EditData($update_data1,array('spd_id' => $cash_prod_det->cipd_sales_prod),'crm_sales_product_details');
+            }
+
+            $this->common_model->DeleteData('crm_cash_invoice',$cond);
+
+            $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
     
-                'spd_deliver_flag' => 0,
-            ];
+            $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);
 
-            $this->common_model->EditData($update_data1,array('spd_id' => $cash_prod_det->cipd_sales_prod),'crm_sales_product_details');
+            $data['status'] = "true"; 
+        }
+        else
+        {
+           $data["status"] = "false";
         }
 
-        $this->common_model->DeleteData('crm_cash_invoice',$cond);
-
-        $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);
-       
+        echo json_encode($data);
  
          
      }
@@ -1114,7 +1122,7 @@ class CashInvoice extends BaseController
             
             $data['reffer_no']       = $cash_invoice->ci_reffer_no;
     
-            $data['date']            = date('Y-M-d',strtotime($cash_invoice->ci_date));
+            $data['date']            = date('d-M-Y',strtotime($cash_invoice->ci_date));
     
             $data['lpo_reff']        = $cash_invoice->ci_lpo_reff;
     
@@ -1135,15 +1143,14 @@ class CashInvoice extends BaseController
 
             foreach($customer_creation as $cus_creation)
             {
-                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-            
-                // Check if the current product head is selected
                 if ($cus_creation->cc_id  == $cash_invoice->ci_customer)
                 {
+                
+                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
                     $data['customer'] .= ' selected'; 
+                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
                 }
-            
-                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
 
             }
 
@@ -1170,7 +1177,9 @@ class CashInvoice extends BaseController
 
             //contact person
 
-            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+            //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+            $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$cash_invoice->ci_customer));
 
             $data['contact_person'] ="";
 

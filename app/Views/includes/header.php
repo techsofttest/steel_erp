@@ -313,10 +313,14 @@ margin: 0;
     background: #d3d3d347;
     color: #405189;
     border-radius: 5px;
-    border-top: 3px solid #405189 !important;
     border: unset;
     
 }
+.border_top{
+    border-top: 3px solid #405189 !important;  
+}
+
+
 .enq_tab_submit button
 {
     border: unset;

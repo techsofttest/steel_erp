@@ -983,7 +983,7 @@
                                                                 <label for="basicInput" class="form-label">	CR Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" name="cc_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_cr_expiry" >
+                                                                <input type="text" name="cc_cr_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker edit_cr_expiry" >
                                                             </div>
                                                         </div>
                                                       
@@ -1022,7 +1022,7 @@
                                                                 <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" name="cc_est_id_expery" placeholder="dd-mm-yy" class="form-control datepicker edit_est_id_expery">
+                                                                <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker edit_est_id_expery">
                                                             </div>
                                                         </div>
                                                       
@@ -1080,7 +1080,7 @@
                                                                 <label for="basicInput" class="form-label">QID Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" name="cc_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_qid_expiry" >
+                                                                <input type="text" name="cc_qid_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker edit_qid_expiry" >
                                                             </div>
                                                         </div>
                                                       
@@ -1733,11 +1733,6 @@
         /*####*/
 
 
-
-        
-
-
-
         /*show contact modal*/
 
         $('.edit_contact_detail_modal').on('click', function() {
@@ -1751,8 +1746,6 @@
         
         /*####*/
 
-
-       
 
 
         /*serial no correction section start*/
@@ -1799,8 +1792,6 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-
-                  
 
                     $(".single_contact_edit").html(data.single_contact);
                 
@@ -1907,10 +1898,6 @@
            
 
         });
-
-
-       
-
 
 
         /*edit cutsomer creation end*/

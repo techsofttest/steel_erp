@@ -34,30 +34,31 @@ class Vendor extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('crm_product_heads','ph_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('pro_vendor','ven_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('ph_code','ph_product_head');
+        $searchColumns = array('ven_name','ven_email');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_product_heads','ph_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_vendor','ven_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array();
         ## Fetch records
-        $records = $this->common_model->GetRecord('crm_product_heads','ph_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
-    
+        $records = $this->common_model->GetRecord('pro_vendor','ven_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        
         $data = array();
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ph_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ph_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ven_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ven_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
-              "ph_id"=>$i,
-              'ph_code' => $record->ph_code,
-              'ph_product_head' => $record->ph_product_head,
-              "action" =>$action,
+              "ven_id"        =>$i,
+              'ven_name'      =>$record->ven_name,
+              'ven_post_box'  =>$record->ven_post_box,
+              'ven_telephone' =>$record->ven_telephone,
+              "action"        =>$action,
            );
            $i++; 
         }
@@ -84,9 +85,9 @@ class Vendor extends BaseController
     public function index()
     {   
        
-        //$data['content'] = view('crm/product_heads');
+        $data['content'] = view('procurement/vendor');
 
-        return view('crm/pro-module',$data);
+        return view('procurement/pro-module',$data);
 
     }
 
@@ -96,99 +97,156 @@ class Vendor extends BaseController
     {   
         
         $insert_data = $this->request->getPost();
-        
-        $ph_code = $this->common_model->CheckData('crm_product_heads','ph_code',trim($insert_data['ph_code']));
-        
-        $ph_product_head = $this->common_model->CheckData('crm_product_heads','ph_product_head',trim($insert_data['ph_product_head']));
-        
-        if(empty($ph_code) && empty($ph_product_head))
-        {
-            $insert_data['ph_added_by'] = 0; 
 
-            $insert_data['ph_added_date'] = date('Y-m-d'); 
+        $insert_data['ven_added_by'] = 0; 
 
-            $id = $this->common_model->InsertData('crm_product_heads',$insert_data);
-            
-            $data['status'] ="true";
-        }
-        else
-        {
-           $data['status'] = "false";
-        }
+        $insert_data['ven_added_date'] = date('Y-m-d'); 
 
-       echo json_encode($data);
+        $id = $this->common_model->InsertData('pro_vendor',$insert_data);
 
-    }
+        $data['vendor_id'] = $id;
 
+        /*$coa_data['ca_name'] = $this->request->getPost('cc_customer_name');
 
-    //account head modal 
-    public function Edit()
-    {
-        
-        $cond = array('ph_id' => $this->request->getPost('ID'));
+        $coa_data['ca_account_type'] = $this->request->getPost('cc_account_head');
 
-        $product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
+        $coa_data['ca_customer'] = $id;
 
-        $data['product_code'] = $product_head->ph_code;
-
-        $data['ph_product_head'] = $product_head->ph_product_head;
+        $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);*/
 
         echo json_encode($data);
+ 
+
     }
 
-
-    // update account head 
-    public function Update()
-    {    
-        $cond = array('ph_id' => $this->request->getPost('ph_id'));
-        
-        $update_data = $this->request->getPost(); 
-
-        $ph_code = $this->common_model->CheckDataWhere('crm_product_heads','ph_code',trim($update_data['ph_code']),trim($this->request->getPost('ph_id')),'ph_id');
-        
-        $ph_product_head = $this->common_model->CheckDataWhere('crm_product_heads','ph_product_head',trim($update_data['ph_product_head']),trim($this->request->getPost('ph_id')),'ph_id');
-        
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('ph_id', $update_data)) 
-        {
-            unset($update_data['ph_id']);
-        }  
-        
+    public function AddTab2()
+    {
        
-        if(empty($ph_code) && empty($ph_product_head))
+        if($_POST)
         {
-            $update_data['ph_modified_date'] = date('Y-m-d'); 
+	        if(!empty($_POST['pro_con_person']))
+			{
+			    $count =  count($_POST['pro_con_person']);
+					
+				if($count!=0)
+			    {  
+					for($j=0;$j<=$count-1;$j++)
+					{
+							
+					    $insert_data  	= array(  
+							
+                            'pro_con_person'       =>  $_POST['pro_con_person'][$j],
+							'pro_con_designation'  =>  $_POST['pro_con_designation'][$j],
+							'pro_con_mobile'       =>  $_POST['pro_con_mobile'][$j],
+						    'pro_con_email'        =>  $_POST['pro_con_email'][$j],
+                            'pro_con_vendor'       =>  $_POST['pro_con_vendor'],
+	  
+					    );
 
-            $this->common_model->EditData($update_data,$cond,'crm_product_heads');
-            
-            $data['status'] ="true";
+				        $id = $this->common_model->InsertData('pro_contact',$insert_data);
+				
+				    } 
+				}
+			}
+			
+			
         }
-        else
+      
+    }
+
+
+    public function AddTab3()
+    {
+        $cond = array('ven_id' => $this->request->getPost('ven_id'));
+
+        $update_data = $this->request->getPost();
+
+        /*if (array_key_exists('customer_creation', $update_data)) {
+            unset($update_data['customer_creation']);
+        }*/
+
+        // Remove unnecessary unset statements for date fields
+       
+        $update_data['ven_cr_expiry']  = date('Y-m-d', strtotime($this->request->getPost("ven_cr_expiry")));
+
+        $update_data['ven_est_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_est_expiry")));
+
+        $update_data['ven_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_qid_expiry")));
+
+        // Handle file upload
+        if ($_FILES['ven_cr_attach']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('ven_cr_attach','uploads/Vendor');
+            $update_data['ven_cr_attach'] = $ccAttachCrFileName;
+        }
+
+        if ($_FILES['ven_est_attach']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('ven_est_attach','uploads/Vendor');
+            $update_data['ven_est_attach'] = $ccAttachCrFileName;
+        }
+
+        if ($_FILES['ven_qid_attach']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('ven_qid_attach','uploads/Vendor');
+            $update_data['ven_qid_attach'] = $ccAttachCrFileName;
+        }
+
+
+        $this->common_model->EditData($update_data, $cond, 'steel_pro_vendor');
+    }
+
+
+
+    // Function to handle file upload
+    public function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
+
+        if ($file->isValid() && !$file->hasMoved()) 
         {
-           $data['status'] = "false";
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
         }
 
+        return null;
+    }
+
+
+   
+
+    
+
+
+    //search droup drown (accountid)
+    public function FetchTypes()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+    public function Code()
+    {
+        
+        $cond2 = array('cc_account_head' => $this->request->getPost('ID'));
+
+        $id = $this->request->getPost('ID');
+
+        $data['account_id'] = $this->common_model->FetchNextHeadId($id);
 
         echo json_encode($data);
 
     }
 
-
-
-    //delete account head
-    public function Delete()
-    {
-        $cond = array('ph_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_product_heads',$cond);
-
-        //delete product
-
-        $cond2 = array('product_product_head' => $this->request->getPost('ID'));
-        
-        $this->common_model->DeleteData('crm_products',$cond2);
- 
-    }
 
 
 }

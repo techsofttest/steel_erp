@@ -11,9 +11,9 @@
 				<div class="modal-body">
 
                     <div class="sub_heading">
-                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn customer_detail_modal">Customer Details</a>
-                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn contact_detail_modal">Contact Details</a>
-                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn offical_document_modal">Official Documents</a>
+                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn customer_detail_modal border_top">Customer Details</a>
+                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn contact_detail_modal border_top">Contact Details</a>
+                        <a href="javascript:void(0)" class="sub_heading_text sub_heading_btn offical_document_modal border_top">Official Documents</a>
                     </div>   
                         
                                             
@@ -266,10 +266,10 @@
                                 </tr>
                                 <tr class="prod_row">
                                     <td class=" si_no">1</td>
-                                    <td><input type="text" name="contact_person[]" class="form-control " required></td>
-                                    <td><input type="text" name="contact_designation[]" class="form-control " required></td>
-                                    <td><input type="text" name="contact_mobile[]"  class="form-control contact_mobile_clz" required></td>
-                                    <td> <input type="email" name="contact_email[]" class="form-control " required></td>
+                                    <td><input type="text" name="contact_person[0]" class="form-control " required></td>
+                                    <td><input type="text" name="contact_designation[0]" class="form-control " required></td>
+                                    <td><input type="text" name="contact_mobile[0]"  class="form-control contact_mobile_clz" required></td>
+                                    <td> <input type="email" name="contact_email[0]" class="form-control " required></td>
                                     <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                 </tr>
                             </tbody>
@@ -359,7 +359,7 @@
                                         <label for="basicInput" class="form-label">	CR Expiry</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_cr_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
                                     </div>
                                 </div>
                                 
@@ -413,7 +413,7 @@
                                         <label for="basicInput" class="form-label">Est.ID Expery</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_est_id_expery" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
                                     </div>
                                 </div>
                                 
@@ -461,7 +461,8 @@
 
                             <!--Single Row Start-->
                             
-                                <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                
                                 <div class="row align-items-center mb-2">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">QID Attach</label>
@@ -486,7 +487,7 @@
                                         <label for="basicInput" class="form-label">QID Expiry</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_qid_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
                                     </div>
                                 </div>
                                 
@@ -658,25 +659,25 @@
 
             var id = $(this).val();
  
-             $.ajax({
+            $.ajax({
  
-                 url : "<?php echo base_url(); ?>Crm/CustomerCreation/Code",
+                url : "<?php echo base_url(); ?>Crm/CustomerCreation/Code",
  
-                 method : "POST",
+                method : "POST",
  
-                 data: {ID: id},
+                data: {ID: id},
  
-                 success:function(data)
-                 {   
-                     var data = JSON.parse(data);
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
                     
                     $(".account_id").val(data.account_id);
                     
                      
-                 }
+                }
  
  
-             });
+            });
            
              
         });
@@ -702,11 +703,13 @@
 
         /*show contact detail modal*/ 
          
-        $('.contact_detail_modal').on('click', function() {
+        $('.contact_detail_modal').on('click', function(){
           
            $('#AddCustomerCreation').modal('hide');
 
            $('#AddContactDeatils').modal('show');
+
+           //$('.contact_detail_modal').addClass('border_top');
            
            
         });
@@ -734,13 +737,14 @@
 
         var max_fieldss      = 30;
         var y = 1;
-
+        var i =0;
        
         $("body").on('click', '.add_person', function(){
            
 			if(y < max_fieldss){ //max input box allowed
 				y++;
-	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person[]' class='form-control ' required></td><td><input type='text' name='contact_designation[]' class='form-control ' required></td><td><input type='text' name='contact_mobile[]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email[]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+                i++;
+	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control ' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
                 slno();
 			}
 	    });
@@ -774,55 +778,6 @@
 
 
         /*#####*/
-
-
-
-       
-        /*data table start*/ 
-
-        /*function initializeDataTable() {
-
-            datatable = $('#DataTable').DataTable({
-            'stateSave': true,
-            'processing': true,
-            'serverSide': true,
-            'serverMethod': 'post',
-            'ajax': 
-            {
-                'url': "<?php echo base_url(); ?>Crm/CustomerCreation/FetchData",
-                'data': function (data) {
-                  
-                    var csrfName = $('.txt_csrfname').attr('name'); 
-                    var csrfHash = $('.txt_csrfname').val(); 
-                    return {
-                        data: data,
-                        [csrfName]: csrfHash, 
-                    };
-                },
-                dataSrc: function (data) {
-                   
-                    $('.txt_csrfname').val(data.token);
-                    
-                    return data.aaData;
-                }
-            },
-            'columns': [
-                { data: 'cc_id' },
-                { data: 'cc_customer_name' },
-                { data: 'cc_post_box'},
-                { data: 'cc_telephone'},
-                { data: 'action'},
-                
-               ]
-    
-            });
-        }
-
-        $(document).ready(function () {
-            initializeDataTable();
-        });*/
-
-        /*###*/
 
 
 
@@ -882,7 +837,19 @@
             
        });
 
+       
+        /* Select 2 Remove Validation On Change */
+        $("select[name=cc_account_head]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
+
+        /* Select 2 Remove Validation On Change */
+        $("select[name=cc_account_head]").on("change",function(e) {
+            $(this).parent().find(".error").removeClass("error");         
+        });
+        /*###*/
 
        
         /*add customer section end*/ 

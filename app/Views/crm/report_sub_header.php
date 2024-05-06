@@ -1,3 +1,30 @@
+<style>
+
+.report_button
+{
+    margin-right: 14px;
+    color: white;
+    padding: 3px 11px;
+    border-radius: 4px;
+}
+.pdf_button
+{
+    background: red;
+    border: red;
+}
+.excel_button
+{
+    background: green;
+    border: green;
+}
+.email_button
+{
+    background: dodgerblue;
+    border: dodgerblue;
+}
+
+</style>
+
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 <div class="row">
   <div class="col-lg-12">

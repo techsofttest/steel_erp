@@ -176,7 +176,7 @@ class Enquiry extends BaseController
     // add account head
     Public function Add()
     {   
-        
+        //print_r($_POST); exit();
         $insert_data = [
                 
             'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
@@ -202,6 +202,7 @@ class Enquiry extends BaseController
         ];
 
         $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
+        
         
         if(!empty($_POST['pd_product_detail']))
 		{
@@ -368,37 +369,26 @@ class Enquiry extends BaseController
     //delete account head
     public function Delete()
     {
-        $cond = array('enquiry_id' => $this->request->getPost('ID'));
-
-        $this->common_model->DeleteData('crm_enquiry',$cond);
-
-        $cond = array('pd_enquiry_id' => $this->request->getPost('ID'));
-
-        $this->common_model->DeleteData('crm_product_detail',$cond);
-
-        //delete quotation
-
-        $cond3 = array('qd_enq_ref' => $this->request->getPost('ID'));
-
-        $quotation_detail = $this->common_model->SingleRow('crm_quotation_details',$cond3);
-
-        if(!empty($quotation_detail))
+        $quotation_reff = $this->common_model->SingleRow('crm_quotation_details',array('qd_enq_ref' => $this->request->getPost('ID')));
+        
+        if(empty($quotation_reff))
         {
+            $cond = array('enquiry_id' => $this->request->getPost('ID'));
 
-            $quot_id = $quotation_detail->qd_id;
+            $this->common_model->DeleteData('crm_enquiry',$cond);
+    
+            $cond = array('pd_enquiry_id' => $this->request->getPost('ID'));
+    
+            $this->common_model->DeleteData('crm_product_detail',$cond);
 
-            $cond4 = array('qpd_quotation_details' => $quot_id);
-
-            $this->common_model->DeleteData('crm_quotation_product_details',$cond4);
-
-            $cond5 = array('qc_quotation_id' => $quot_id);
-
-            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond5);
-
-            $this->common_model->DeleteData('crm_quotation_details',$cond3);
-
+            $data['status'] = "true";
+        }
+        else
+        {
+            $data['status'] = "false"; 
         }
 
+        echo json_encode($data);
 
     }
 
@@ -450,16 +440,19 @@ class Enquiry extends BaseController
         $data['customer_creation'] ="";
 
         foreach($customer_creation as $cus_creation)
-        {
-            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"'; 
-        
-            // Check if the current product head is selected
+        {   
             if ($cus_creation->cc_id  == $enquiry->enquiry_customer)
             {
-                $data['customer_creation'] .= ' selected'; 
+                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"'; 
+            
+                // Check if the current product head is selected
+                
+                    $data['customer_creation'] .= ' selected'; 
+                
+            
+                $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+
             }
-        
-            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
         }
 
 
@@ -663,15 +656,19 @@ class Enquiry extends BaseController
         $cond = array('contact_customer_creation' => $this->request->getPost('custID'));
         
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+
+       
         
         $data['contact_person'] ="<option value='' selected disabled>Select Contact Person</option>";
 
         foreach($contact_details as $cont_det)
-        {
-            $data['contact_person'] .= '<option value="' .$cont_det->contact_id . '"'; 
-        
-        
-            $data['contact_person'] .= '>' . $cont_det->contact_person. '</option>';
+        {   
+          
+                $data['contact_person'] .= '<option value="' .$cont_det->contact_id . '"'; 
+            
+            
+                $data['contact_person'] .= '>' . $cont_det->contact_person. '</option>';
+            
         }
 
         echo json_encode($data);

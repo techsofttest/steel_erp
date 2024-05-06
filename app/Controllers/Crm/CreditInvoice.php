@@ -162,6 +162,7 @@ class CreditInvoice extends BaseController
     // add account head
     Public function Add()
     {   
+       
         if(empty($this->request->getPost('cci_id')))
         {
             $insert_data = [
@@ -247,13 +248,15 @@ class CreditInvoice extends BaseController
                         
                     $contact_detail  	= array(  
 
-                        'ipd_prod_detl'      =>  $_POST['ipd_prod_detl'][$j],
-                        'ipd_unit'           =>  $_POST['ipd_unit'][$j],
-                        'ipd_quantity'       =>  $_POST['ipd_quantity'][$j],
-                        'ipd_rate'           =>  $_POST['ipd_rate'][$j],
-                        'ipd_discount'       =>  $_POST['ipd_discount'][$j],
-                        'ipd_amount'         =>  $_POST['ipd_amount'][$j],
-                        'ipd_credit_invoice' =>  $credit_invoice_id,
+                        'ipd_prod_detl'        =>  $_POST['ipd_prod_detl'][$j],
+                        'ipd_unit'             =>  $_POST['ipd_unit'][$j],
+                        'ipd_quantity'         =>  $_POST['ipd_quantity'][$j],
+                        'ipd_rate'             =>  $_POST['ipd_rate'][$j],
+                        'ipd_discount'         =>  $_POST['ipd_discount'][$j],
+                        'ipd_amount'           =>  $_POST['ipd_amount'][$j],
+                        'ipd_prod_id'          =>  $_POST['sales_order_product'][$j],
+                        'ipd_delivery_prod_id' =>  $_POST['delivery_prod_id'][$j],
+                        'ipd_credit_invoice'   =>  $credit_invoice_id,
     
                     );
                 
@@ -267,11 +270,15 @@ class CreditInvoice extends BaseController
                     $this->common_model->EditData($update_data1,$cond,'crm_delivery_product_details');
 
                   
-                    $pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]));
+                    //$pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]));
                     
-                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]),array('spd_deliver_flag' => 1));
+                    //$pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]),array('spd_deliver_flag' => 1));
                         
-
+                    $delivery_data = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' => $_POST['delivery_prod_id'][$j]));
+                   
+                    $pod_data1 = $this->common_model->FetchWhere('crm_delivery_product_details',array('dpd_so_id' => $delivery_data->dpd_so_id));
+                    
+                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_delivery_product_details',array('dpd_so_id' => $delivery_data->dpd_so_id),array('dpd_invoice_flag' => 1));
                    
                     if(count($pod_data1) == count($pod_data2))
                     {
@@ -279,6 +286,8 @@ class CreditInvoice extends BaseController
 
                         $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order'][$j]),'crm_sales_orders');
                     }
+
+                    
                     
                     
   
@@ -300,20 +309,29 @@ class CreditInvoice extends BaseController
 
             $data['adjustment_data'] = "";
 
-            foreach($receipts as $receipt)
+            if(!empty($receipts))
             {
-                $data['adjustment_data'] .= "
-                <tr>
-                    <td>1</td>
-                    <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
-                    <td><input type='text' name='' value='' class='form-control' required></td>
-                    <td><input type='checkbox' name='' value='' class='' required></td>
-                </tr>
-                ";
-            }
 
+                foreach($receipts as $receipt)
+                {
+                    $data['adjustment_data'] .= "
+                    <tr>
+                        <td>1</td>
+                        <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='' class='form-control' required></td>
+                        <td><input type='checkbox' name='' value='' class='' required></td>
+                    </tr>
+                    ";
+                }
+
+                $data['advance_status'] = "true";
+            }
+            else
+            {
+                $data['advance_status'] = "false";
+            }
 
 		}
 
@@ -458,8 +476,6 @@ class CreditInvoice extends BaseController
 
             $data['charts_account']    = $credit_invoice->ca_name;
 
-            $data['sales_order']       = $credit_invoice->cci_sales_order;
-
             $data['contact_person']    = $credit_invoice->contact_person;
 
             //product section 
@@ -541,29 +557,11 @@ class CreditInvoice extends BaseController
 
     public function SalesOrder()
     {
-        /*$cond = array('dn_customer' => $this->request->getPost('ID'));
-        
-        $cond3 = array('dn_invoice_flag'=>0);
-
-
-        $joins = array(
-            
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'dn_sales_order_num',
-            ),
-        );
-
-        $sales_orders = $this->common_model->FetchDataByGroup('crm_delivery_note','dn_sales_order_num',$cond,$cond3,$joins);
-        
-        */
-
         $cond = array('so_customer' => $this->request->getPost('ID'));
 
         $cond3 = array('so_credit_status'=>0);
 
-        $sales_orders = $this->common_model->FetchProdData('crm_sales_orders',$cond,$cond3);
+        $sales_orders = $this->common_model->FetchCreditSales('crm_sales_orders',$cond,$cond3);
 
         $data['sales_order'] ="";
 
@@ -629,10 +627,9 @@ class CreditInvoice extends BaseController
 
         $update_data = [
 
-            'cci_date'           => $this->request->getPost('cci_date'),
+            'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
 
             'cci_customer'       => $this->request->getPost('cci_customer'),
-
 
             'cci_lpo_reff'       => $this->request->getPost('cci_lpo_reff'),
 
@@ -656,20 +653,49 @@ class CreditInvoice extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {
+    //delete account head
+    public function Delete()
+    {  
+        
+        
         $cond = array('cci_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_credit_invoice',$cond);
+
+        $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice', $cond);
+
+        $sales_return = $this->common_model->fetchWhere('crm_sales_return',array('sr_invoice' => $credit_invoice->cci_reffer_no));
+        
+        if(empty($sales_return))
+        {  
+            
+            $credit_invoice_prod = $this->common_model->FetchWhere('crm_credit_invoice_prod_det',array('ipd_credit_invoice' => $credit_invoice->cci_id));
+             
+            foreach($credit_invoice_prod as $credit_inv_prod)
+            {
+                $this->common_model->EditData(array('dpd_invoice_flag' => 0),array('dpd_id'=>$credit_inv_prod->ipd_delivery_prod_id),'crm_delivery_product_details');
+            }
+            
+            $this->common_model->EditData(array('so_credit_status' => 0),array('so_id' => $credit_invoice->cci_sales_order),'crm_sales_orders');
+            
+            $this->common_model->DeleteData('crm_credit_invoice',$cond);
+            
+            $cond1 = array('ipd_credit_invoice' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_credit_invoice_prod_det',$cond1);
 
 
-        $cond1 = array('ipd_credit_invoice' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_credit_invoice_prod_det',$cond1);
+
+            $data['status'] = "true";
+        }
+        else
+        {
+            $data['status'] = "fales";
+        }
+
+        echo json_encode($data);
+        
  
          
-     }
+    }
 
 
 
@@ -777,8 +803,7 @@ class CreditInvoice extends BaseController
 
 
             $delivery_notes = $this->common_model->FetchCreditProd('crm_delivery_note',$cond1,$cond2,$joins);
-
-
+            
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
             $i = 1; 
@@ -801,6 +826,7 @@ class CreditInvoice extends BaseController
                                                             $data['product_detail'] .= '</select>
                                                         </td>
                                                             <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control" required></td>
+                                                            <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control" required></td>
                                                             <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                         
                                                             
@@ -876,15 +902,14 @@ class CreditInvoice extends BaseController
             $data['customer'] ="";
             foreach($customer_creation as $cus_creation)
             {
-                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-            
-                // Check if the current product head is selected
                 if ($cus_creation->cc_id  == $credit_invoice->cci_customer)
                 {
+                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+                    // Check if the current product head is selected
                     $data['customer'] .= ' selected'; 
+                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
                 }
-            
-                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
 
             }
 
@@ -916,7 +941,10 @@ class CreditInvoice extends BaseController
 
             //contact person
 
-            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+            //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+
+            $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$credit_invoice->cci_customer));
+
 
             $data['contact_person'] ="";
 
@@ -958,7 +986,7 @@ class CreditInvoice extends BaseController
                                                 <td>'.$delivery_prod->ipd_rate.'</td>
                                                 <td>'.$delivery_prod->ipd_discount.'</td>
                                                 <td>'.$delivery_prod->ipd_amount.'</td>
-                                              
+                                                
                                             </tr>';
                                                     $i++;
 
@@ -1089,18 +1117,71 @@ class CreditInvoice extends BaseController
         public function FetchReference()
         {
     
-            $uid = $this->common_model->FetchNextId('crm_sales_return',"CRN");
+            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
         
             echo $uid;
     
         }
+
+
+        public function EditProduct()
+        {
+            $cond = array('ipd_id' => $this->request->getPost('ID'));
+
+            $prod_det = $this->common_model->SingleRow('crm_credit_invoice_prod_det',$cond);
+
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+            $data['prod_details'] ="";
+            
+                $data['prod_details'] .='<tr class="edit_prod_row">
+                <td>1</td>
+            
+                <td><select class="form-select droup_product" name="ipd_prod_detl" required>';
+                        
+                    foreach($products as $prod){
+                        $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                        if($prod->product_id == $prod_det->ipd_prod_detl){ $data['prod_details'] .= "selected"; }
+                        $data['prod_details'] .='>'.$prod->product_details.'</option>';
+                    }
+						
+            $data['prod_details'] .='</select></td>
+
+            <td><input type="text" name="ipd_unit"  value="'.$prod_det->ipd_unit.'" class="form-control " required></td>
+            <td> <input type="text" name="ipd_quantity" value="'.$prod_det->ipd_quantity.'" class="form-control edit_prod_qty" required></td>
+            <td> <input type="text" name="ipd_rate" value="'.$prod_det->ipd_rate.'" class="form-control edit_prod_rate" required></td>
+            <td> <input type="text" name="ipd_discount" value="'.$prod_det->ipd_discount.'" class="form-control edit_prod_discount" required></td>
+            <td> <input type="text" name="ipd_amount" value="'.$prod_det->ipd_amount.'" class="form-control edit_prod_amount" readonly></td>
+           <input type="hidden" name="ipd_id" class="edit_prod_id" value="'.$prod_det->ipd_id.'">
+           </tr>'; 
+
+            echo json_encode($data); 
+        }
+
+
+        public function UpdateProduct()
+        {   
+            $cond = array('ipd_id' => $this->request->getPost('ipd_id'));
+    
+            $update_data = $this->request->getPost();
+    
+            if (array_key_exists('ipd_id', $update_data)) 
+            {
+                unset($update_data['ipd_id']);
+            }    
+            
+            $this->common_model->EditData($update_data,$cond,'crm_credit_invoice_prod_det');
+    
+            $prod_det = $this->common_model->SingleRow('crm_credit_invoice_prod_det',$cond);
+            
+            $data['credit_invoice'] = $prod_det->ipd_credit_invoice;
+    
+    
+            echo json_encode($data);
+           
+        }
         
 
-        
-
-
-      
-     
     
 
 

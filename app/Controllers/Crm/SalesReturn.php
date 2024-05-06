@@ -68,7 +68,7 @@ class SalesReturn extends BaseController
             $data[] = array( 
               'sr_id'           => $i,
               'sr_reffer_no'    => $record->sr_reffer_no,
-              'sr_date'         => date('Y-M-d',strtotime($record->sr_date)),
+              'sr_date'         => date('d-M-Y',strtotime($record->sr_date)),
               'sr_customer'     => $record->cc_customer_name,
               'action'          => $action,
             );
@@ -301,7 +301,41 @@ class SalesReturn extends BaseController
                         
                     );
 
-                    $this->common_model->InsertData('crm_sales_return_prod_det',$product_data);
+                    $prod_insert_id = $this->common_model->InsertData('crm_sales_return_prod_det',$product_data);
+
+                    if(!empty($_POST['cash_id'][$j]))
+                    {
+                        $this->common_model->EditData(array('cipd_status'=>1),array('cipd_id'=>$_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
+                        
+                        $cash_data = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$_POST['cash_main_table'][$j]));
+                        
+                        $cash_datas = $this->common_model->CheckTwiceCond1('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$_POST['cash_main_table'][$j]),array('cipd_status' => 1));
+                         
+                        if(count($cash_data) == count($cash_datas))
+                        {
+                            $this->common_model->EditData(array('ci_status'=>1),array('ci_id'=>$_POST['cash_main_table'][$j]),'crm_cash_invoice');
+                        }
+
+                       
+                       
+                    }
+
+                    if(!empty($_POST['credit_id'][$j]))
+                    {
+                        $this->common_model->EditData(array('ipd_status'=>1),array('ipd_id'=>$_POST['credit_id'][$j]),'crm_credit_invoice_prod_det');
+                        
+                        $credit_invoice = $this->common_model->FetchWhere('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$_POST['credit_main_table'][$j]));
+                        
+                        $credit_invoices = $this->common_model->CheckTwiceCond1('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$_POST['credit_main_table'][$j]),array('ipd_status' => 1));
+                         
+                        if(count($credit_invoice) == count($credit_invoices))
+                        {
+                            $this->common_model->EditData(array('cci_status'=>1),array('cci_id'=>$_POST['credit_main_table'][$j]),'crm_credit_invoice');
+                        }
+
+                       
+                    }
+
                 
                     
                 } 
@@ -309,7 +343,6 @@ class SalesReturn extends BaseController
 
             $cash_invoices = $this->common_model->FetchWhere('crm_cash_invoice',array('ci_customer' => $this->request->getPost('sr_customer')));
             
-
             $credit_invoices = $this->common_model->FetchWhere('crm_credit_invoice',array('cci_customer' => $this->request->getPost('sr_customer')));
             
             $sales_order_data = $this->common_model->SingleRow('crm_sales_orders',array('so_id' => $this->request->getPost('sales_order')));
@@ -413,23 +446,21 @@ class SalesReturn extends BaseController
         
         $data['reffer_no']      = $cash_invoice->sr_reffer_no;
 
-        $data['date']           = date('Y-M-d',strtotime($cash_invoice->sr_date));
+        $data['date']           = date('d-M-Y',strtotime($cash_invoice->sr_date));
 
         $data['customer']       = $cash_invoice->cc_customer_name;
 
-        $data['sales_order']    = $cash_invoice->sr_reffer_no;
+        $data['sales_order']    = $cash_invoice->sr_invoice;
 
         $data['lpo_reff']       = $cash_invoice->sr_lpo_reff;
 
-        $data['contact_person'] = $cash_invoice->sr_contact_person;
+        $data['contact_person'] = $cash_invoice->contact_person;
 
         $data['payment_term']   = $cash_invoice->sr_payment_term;
 
         $data['project']        = $cash_invoice->sr_project;
 
         $data['credit_account'] = $cash_invoice->ca_name;
-
-       
 
 
         //product table
@@ -456,12 +487,12 @@ class SalesReturn extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->srp_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
             </tr>'; 
              $i++;
         }
@@ -528,13 +559,14 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
-        $cash_invoices = $this->common_model->FetchSalesOrder('crm_cash_invoice',$cond,array('ci_paid_status'=>0));
+        
+        $cash_invoices = $this->common_model->FetchSalesReturns('crm_cash_invoice',$cond,array('ci_paid_status'=>0),array('ci_status'=>0));
 
-        $credit_invoices = $this->common_model->FetchSalesOrder('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0));
+        $credit_invoices = $this->common_model->FetchSalesReturns('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
+        
+        
+        $data['invoice_no'] ='<option value="" selected disabled>Select Unpaid Invoices</option>';
 
-        //$data['sales_order'] ="";
-
-        $data['invoice_no'] ='<option value="" selected disabled>Select Cash Invoice</option>';
 
         foreach($cash_invoices as $cash_invoice)
         {
@@ -549,8 +581,7 @@ class SalesReturn extends BaseController
            
             $data['invoice_no'] .='>' .$credit_invoice->cci_reffer_no. '</option>';
         }
-        
-        
+       
         
         $cond2 = array('contact_customer_creation' => $this->request->getPost('ID'));
 
@@ -641,7 +672,7 @@ class SalesReturn extends BaseController
         $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);*/
 
 
-        $cond = array('ci_id' => $this->request->getPost('ID'));
+        /*$cond = array('ci_id' => $this->request->getPost('ID'));
 
         $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',$cond);
 
@@ -683,7 +714,11 @@ class SalesReturn extends BaseController
 
         $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
  
-        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);
+        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);*/
+
+        $cond = array('sr_id' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('crm_sales_return',$cond);
        
  
          
@@ -730,11 +765,11 @@ class SalesReturn extends BaseController
                                             <td><input type="number" name="pp_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
                                             <td><input type="number" name="pp_amount[]" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" required></td>
                                             <td><input type="text" name="pp_current_claim[]" class="form-control" required></td>
-                                            <td class="row_remove" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i>Remove</td>
+                                            <td class="row_remove" data-id="'.$prod_det->spd_id.'"><i class="ri-close-line"></i>Remove</td>
                                         </tr>';
                                         $i++;
-                                    }
-           $data['saleorder_output'] .= '</tbody><tbody id="product-more" class="travelerinfo"></tbody><tr><td colspan="9" style="text-align: center;"><span id="total_cost_id"></span></td></tr></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';
+        }
+            $data['saleorder_output'] .= '</tbody><tbody id="product-more" class="travelerinfo"></tbody><tr><td colspan="9" style="text-align: center;"><span id="total_cost_id"></span></td></tr></table><div class="edit_add_more_div"><span class="edit_add_more add_product"><i class="ri-add-circle-line"></i>Add More</span></div>';
         
         
             echo json_encode($data);
@@ -746,7 +781,19 @@ class SalesReturn extends BaseController
         {
             $cond = array('ci_reffer_no' => $this->request->getPost('ID'));
 
-            $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',$cond);
+            $joins = array(
+           
+                array(
+                    'table' => 'accounts_charts_of_accounts',
+                    'pk'    => 'ca_id',
+                    'fk'    => 'ci_credit_account',
+                )
+    
+            );
+
+            $cash_invoice = $this->common_model->SingleRowJoin('crm_cash_invoice',$cond,$joins);
+            
+           
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
@@ -765,18 +812,31 @@ class SalesReturn extends BaseController
 
                 $data['sales_order'] = $cash_invoice->ci_sales_order;
 
-                $data['contact_detail'] = ""; 
+                //$data['contact_detail'] = ""; 
 
-                foreach($contact_details as $cont_det)
+                $data['debit_account'] = $cash_invoice->ca_name;
+
+                /*foreach($contact_details as $cont_det)
                 {
                     $data['contact_detail'] .='<option value='.$cont_det->contact_id.'';
                     if($cont_det->contact_id == $cash_invoice->ci_contact_person){ $data['contact_detail'] .=' selected';}
                     $data['contact_detail'] .='>'.$cont_det->contact_person.'</option>';
-                }
+                }*/
 
             }
 
-            $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $this->request->getPost('ID')));
+            $joins2 = array(
+           
+                array(
+                    'table' => 'accounts_charts_of_accounts',
+                    'pk'    => 'ca_id',
+                    'fk'    => 'cci_credit_account',
+                )
+    
+            );
+
+            $credit_invoice = $this->common_model->SingleRowjoin('crm_credit_invoice',array('cci_reffer_no' => $this->request->getPost('ID')),$joins2);
+            
             
             if(!empty($credit_invoice))
             {
@@ -788,6 +848,8 @@ class SalesReturn extends BaseController
 
                 $data['sales_order'] = $credit_invoice->cci_sales_order;
 
+                $data['debit_account'] = $credit_invoice->ca_name;
+
                 foreach($contact_details as $cont_det)
                 {   
                     $data['contact_detail'] = ""; 
@@ -798,18 +860,6 @@ class SalesReturn extends BaseController
                 }
             }
 
-
-           
-
-
-           
-            
-            //$customer_id = $this->request->getPost('custID');
-
-            $debit_account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $this->request->getPost('custID')));
-            
-            
-            $data['debit_account'] = $debit_account->ca_name;
 
             echo json_encode($data);
 
@@ -885,7 +935,8 @@ class SalesReturn extends BaseController
                     'table' => 'crm_cash_invoice',
                     'pk'    => 'ci_id',
                     'fk'    => 'cipd_cash_invoice',
-                )
+                ),
+               
     
             );
 
@@ -899,13 +950,17 @@ class SalesReturn extends BaseController
                     'table' => 'crm_credit_invoice',
                     'pk'    => 'cci_id',
                     'fk'    => 'ipd_credit_invoice',
-                )
+                ),
+               
+
     
             );
 
-            $cash_invoice_product = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond1,$joins);
+            //$cash_invoice_product = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond1,$joins);
+
+            $cash_invoice_product = $this->common_model->FetchReturnJoin('crm_cash_invoice_prod_det',$cond1,array('cipd_status'=>0),$joins);
             
-            $credit_invoice_product = $this->common_model->FetchWhereJoin('crm_credit_invoice_prod_det',$cond2,$joins2);
+            $credit_invoice_product = $this->common_model->FetchReturnJoin('crm_credit_invoice_prod_det',$cond2,array('ipd_status'=>0),$joins2);
 
              
             $i = 1; 
@@ -919,10 +974,11 @@ class SalesReturn extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$cash_invoice_prod->cipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
+                                                
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$cash_invoice_prod->product_details.'" class="form-control"  readonly></td>
                                             
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$cash_invoice_prod->cipd_qtn.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_id .'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -937,10 +993,11 @@ class SalesReturn extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$credit_invoice_prod->ipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
+                                                
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$credit_invoice_prod->product_details.'" class="form-control"  readonly></td>
                                             
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$credit_invoice_prod->ipd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_id .'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -1004,13 +1061,15 @@ class SalesReturn extends BaseController
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sales_det->cipd_id.'">
                                                         <td class="si_no">'.$i.'</td>
-                                                        <td><input type="text"    value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td><input type="text"   value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control" readonly></td>
                                                         <td><input type="number" name="srp_quantity[]" value="'.$sales_det->cipd_qtn.'"  class="form-control qtn_clz_id" readonly></td>
                                                         <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id" required readonly></td>
-                                                        <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'"> 
+                                                        <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'">
+                                                        <input type="hidden" name="cash_id[]" value="'.$sales_det->cipd_id.'"> 
+                                                        <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'"> 
                                                         
                                                     </tr>';
                                                         
@@ -1030,7 +1089,9 @@ class SalesReturn extends BaseController
                                                         <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id" required readonly></td>
-                                                        <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'"> 
+                                                        <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'">
+                                                        <input type="hidden" name="credit_id[]" value="'.$sale_det->ipd_id.'"> 
+                                                        <input type="hidden" name="credit_main_table[]" value="'.$sale_det->ipd_credit_invoice.'">  
                                                         
                                                     </tr>';
                                                         
@@ -1106,7 +1167,7 @@ class SalesReturn extends BaseController
             
             $data['reffer_no']       = $cash_invoice->sr_reffer_no;
     
-            $data['date']            = date('Y-M-d',strtotime($cash_invoice->sr_date));
+            $data['date']            = date('d-M-Y',strtotime($cash_invoice->sr_date));
     
             $data['lpo_reff']        = $cash_invoice->sr_lpo_reff;
     
@@ -1116,9 +1177,11 @@ class SalesReturn extends BaseController
     
             $data['project']         = $cash_invoice->sr_project;
     
-            $data['credit_account']  = $cash_invoice->ca_name;
+            $data['credit_account']  = $cash_invoice->sr_credit_account;
 
             $data['cash_invoice_id'] = $cash_invoice->sr_id;
+
+            $data['invoice_no'] = $cash_invoice->sr_invoice;
 
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
@@ -1127,77 +1190,45 @@ class SalesReturn extends BaseController
 
             foreach($customer_creation as $cus_creation)
             {
-                $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
-            
-                // Check if the current product head is selected
                 if ($cus_creation->cc_id  == $cash_invoice->sr_customer)
                 {
+                    $data['customer'] .= '<option value="' .$cus_creation->cc_id.'"'; 
                     $data['customer'] .= ' selected'; 
+                    $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
                 }
-            
-                $data['customer'] .= '>' . $cus_creation->cc_customer_name .'</option>';
 
             }
 
               
 
-            //sales orders
-            
-            /*$sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_id'=> $cash_invoice->sr_sales_order));
-
-            $data['sales_order'] ="";
-            foreach($sales_orders as $sales_order)
-            {
-                $data['sales_order'] .= '<option value="' .$sales_order->so_id.'"'; 
-            
-                // Check if the current product head is selected
-                if ($sales_order->so_id   == $cash_invoice->sr_sales_order)
-                {
-                    $data['sales_order'] .= ' selected'; 
-                }
-            
-                $data['sales_order'] .= '>' . $sales_order->so_reffer_no.'</option>';
-
-            }*/
-
             //contact person
-
-            $contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
+            $contact_data = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation'=>$cash_invoice->sr_customer));
+          
+            //$contact_data   = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
 
             $data['contact_person'] ="";
 
             foreach($contact_data as $cont_data)
             {
+                
                 $data['contact_person'] .= '<option value="' .$cont_data->contact_id .'"'; 
-            
-                // Check if the current product head is selected
+
                 if ($cont_data->contact_id   == $cash_invoice->sr_contact_person)
                 {
+            
                     $data['contact_person'] .= ' selected'; 
+
                 }
-            
-                $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
+                
+                    $data['contact_person'] .= '>' . $cont_data->contact_person.'</option>';
+
+                
             }
-
-
-            //credit account
-
-            $charts_of_account   = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
-
-            $data['charts_of_account'] ="";
-
-            foreach($charts_of_account as $charts_account)
-            {
-                $data['charts_of_account'] .= '<option value="' .$charts_account->ca_id .'"'; 
             
-                // Check if the current product head is selected
-                if ($charts_account->ca_id   == $cash_invoice->sr_credit_account)
-                {
-                    $data['charts_of_account'] .= ' selected'; 
-                }
-            
-                $data['charts_of_account'] .= '>' . $charts_account->ca_name.'</option>';
-            }
+           
+
+
 
     
     
@@ -1230,68 +1261,16 @@ class SalesReturn extends BaseController
                 <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
-                
+                <td style="width: 15%;">
+                    <a href="javascript:void(0)" class="edit edit-color product_edit" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+                    <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-id="349" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+                </td>
                 </tr>'; 
                  $i++;
             }
     
     
-        //image section start
-
-        /*$data['image_table']="";
-
-        if(!empty($cash_invoice->ci_file))
-        {
         
-            $data['image_table'] ='<table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
-                                <thead>
-                                    <tr>
-                                        <th class="cust_img_rgt_border">File Name</th>
-                                        <th class="cust_img_rgt_border">Download</th>
-                                        
-                                    </tr>
-                                <thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="cust_img_rgt_border view_file_name" >'. $cash_invoice->ci_file.'</td>
-                                        <td class="cust_img_rgt_border view_file_attach"><a href="'.base_url('uploads/CashInvoice/' .$cash_invoice->ci_file).'" target="_blank">View</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>';
-
-        }
-        else
-        {
-            $data['image_table']='<div class="row row_align mb-4">
-                                        <div class="col-lg-3">
-                                            <label for="basicInput" class="form-label">Attach</label>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <input type="file" name="" class="form-control">
-                                        </div>
-                                    </div>
-            ';
-        }*/
-
-
-        //add more
-
-
-        
-        /*$crm_sales_product_details = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$cash_invoice->ci_sales_order));
-                
-                
-        if(count($crm_sales_product_details)!=count($product_details_data))
-        {
-           $data['add_more'] ="";
-
-           $data['add_more'] .='<tr>
-                            <td colspan="8" align="center" class="tecs">
-                                <span class="add_icon add_more_product"><i class="ri-add-circle-line"></i>Add </span>
-                            <td>
-                        </tr>';
-        }*/
-
 
 
             echo json_encode($data);
@@ -1306,6 +1285,7 @@ class SalesReturn extends BaseController
             $cash_product = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice' => $this->request->getPost('cashInvoiceId')));
             
             $cash_prod_array = [];
+
             foreach($cash_product as $cash_prod)
             {
                 $cash_prod_array[] = $cash_prod->cipd_sales_prod;
@@ -1322,7 +1302,8 @@ class SalesReturn extends BaseController
                     'pk'    => 'product_id',
                     'fk'    => 'spd_product_details',
                 ),
-                
+               
+               
     
             );
 
@@ -1336,7 +1317,8 @@ class SalesReturn extends BaseController
             
             $data['product_detail'] ="";
 
-            foreach($cash_product_details as $cash_prod){
+            foreach($cash_product_details as $cash_prod)
+            {
 
                 $new_qty = $cash_prod->spd_quantity - $cash_prod->spd_delivered_qty;
                 
@@ -1345,10 +1327,7 @@ class SalesReturn extends BaseController
                                                 <td><input type="text"  value="'.$cash_prod->product_details.'" class="form-control"  readonly></td>
                                                 <td><input type="text" name="cipd_unit[]" value="'.$cash_prod->spd_unit.'" class="form-control" readonly></td>
                                                 <td><input type="number" name="cipd_qtn[]" value="'.$new_qty.'"  class="form-control edit_order_qty" readonly></td>
-                                               
-                                               
                                                 <td><input type="checkbox" name="sales_prod_id['.$cash_prod->spd_id.']" value="'.$cash_prod->spd_id.'"></td>
-                                                
                                                 <input type="hidden" name="sales_prod_id2[]" value="'.$cash_prod->spd_id.'">
                                                 <input type="hidden" name="cipd_prod_det[]" value="'.$cash_prod->product_id.'">
                                                 <input type="hidden" name="cipd_rate[]" value="'.$cash_prod->spd_rate.'">
@@ -1370,7 +1349,7 @@ class SalesReturn extends BaseController
         {
           
             if(!empty($_POST['cipd_qtn']))
-		   {    
+		    {    
                 $count =  count($_POST['cipd_qtn']);
                
           
@@ -1380,19 +1359,7 @@ class SalesReturn extends BaseController
 
                    if(!empty($_POST['sales_prod_id'][$_POST['sales_prod_id2'][$j]]))
                    {
-                   
-                        //$delivery_qty = $_POST['dpd_delivery_qty'][$j]; 
-
-                        //$current_qty = $_POST['dpd_current_qty'][$j];
-
-                        
-                        //$delivery_qty = intval($delivery_qty);
-
-                        //$current_qty = intval($current_qty);
-
-                        
-                       // $new_deli_qty = $delivery_qty + $current_qty;
-                       
+                     
                        $multipleValue = $_POST['cipd_rate'][$j] * $_POST['cipd_qtn'][$j];
                        
                        $perAmount = ($_POST['cipd_discount'][$j]/100) * $multipleValue;
@@ -1402,7 +1369,6 @@ class SalesReturn extends BaseController
                        $amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
 
                     
-                        
                         $insert_data  	= array(  
                             
                             'cipd_prod_det'     =>  $_POST['cipd_prod_det'][$j],
@@ -1411,13 +1377,11 @@ class SalesReturn extends BaseController
                             'cipd_sales_prod'   =>  $_POST['sales_prod_id2'][$j],
                             'cipd_rate'         =>  $_POST['cipd_rate'][$j],
                             'cipd_discount'     =>  $_POST['cipd_discount'][$j],
-                            'cipd_cash_invoice'  =>  $_POST['cash_invoice_id'],
-                            'cipd_amount'        =>  $amount,
+                            'cipd_cash_invoice' =>  $_POST['cash_invoice_id'],
+                            'cipd_amount'       =>  $amount,
                             
                         );
 
-
-                        
 
                         $this->common_model->InsertData('crm_cash_invoice_prod_det',$insert_data);
 
@@ -1460,9 +1424,9 @@ class SalesReturn extends BaseController
                         }
                         
                         $cash_prod_array = [];
+
                         foreach($prod_detail as $prod_det)
                         {
-                            
                             $cash_prod_array[] = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_sales_prod'=>$prod_det->spd_id));
                         }
 
@@ -1557,7 +1521,91 @@ class SalesReturn extends BaseController
 
 
         }
+        
 
+        public function EditProduct()
+        {
+            $cond = array('srp_id' => $this->request->getPost('ID'));
+
+            $invoice_no = $this->request->getPost('invoiceNo');
+ 
+            $prod_det = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
+
+            $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+            $data['prod_details'] ="";
+            
+                $data['prod_details'] .='<tr class="edit_prod_row">
+                <td>1</td>
+            
+                <td><select class="form-select droup_product" name="srp_prod_det" required>';
+                        
+                    foreach($products as $prod){
+                        $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                        if($prod->product_id == $prod_det->srp_prod_det){ $data['prod_details'] .= "selected"; }
+                        $data['prod_details'] .='>'.$prod->product_details.'</option>';
+                    }
+                            
+                $data['prod_details'] .='</select></td>
+
+                <td><input type="text" name="srp_unit"  value="'.$prod_det->srp_unit.'" class="form-control " required></td>
+                <td> <input type="text" name="srp_quantity" value="'.$prod_det->srp_quantity.'" class="form-control edit_prod_qty" required></td>
+                <td> <input type="text" name="srp_rate" value="'.$prod_det->srp_rate.'" class="form-control edit_prod_rate" required></td>
+                <td> <input type="text" name="srp_discount" value="'.$prod_det->srp_discount.'" class="form-control edit_prod_discount" required></td>
+                <td> <input type="text" name="srp_amount" value="'.$prod_det->srp_amount.'" class="form-control edit_prod_amount" readonly></td>
+                <input type="hidden" name="srp_id" class="edit_prod_id" value="'.$prod_det->srp_id.'">
+                
+            </tr>'; 
+
+            echo json_encode($data); 
+        }
+
+
+        public function UpdateProduct()
+        {   
+            $cond = array('srp_id' => $this->request->getPost('srp_id'));
+            
+            $update_data = $this->request->getPost();
+
+            if (array_key_exists('srp_id', $update_data)) 
+            {
+                unset($update_data['srp_id']);
+            }
+            
+            $this->common_model->EditData($update_data,$cond,'crm_sales_return_prod_det');
+             
+            $prod_det = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
+
+            $data['srp_sales_return'] = $prod_det->srp_sales_return;
+
+          
+
+
+            echo json_encode($data);
+       
+        }
+
+        public function DeleteProdDet()
+        {
+            $cond = array('srp_id' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_sales_return_prod_det',$cond);
+    
+            
+        }
+
+
+        public function CheckQty()
+        {
+            $cond = array('srp_id' => $this->request->getPost('prodId'));
+            
+            $sales_prod_data = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
+
+            $data['srp_quantity'] = $sales_prod_data->srp_quantity;
+            
+            echo json_encode($data);
+
+        }
 
        
     
