@@ -116,7 +116,7 @@ class MaterialRequisition extends BaseController
 
         $data['material_requisition'] = $this->common_model->FetchNextId('pro_material_requisition','MR');
 
-        $cond = array('so_deliver_flag' => 0);
+        $cond = array('so_deliver_flag' => 1);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
         
