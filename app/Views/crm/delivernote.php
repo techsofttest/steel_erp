@@ -1,11 +1,11 @@
 <style>
 .cust_more_modal {
+    
     position: absolute;
-    left: 470px;
-    padding: 1px 27px;
-    z-index: 999;
-    border: 1px solid black;
-    border: 1px solid #0000003b;
+    right: 32px;
+    top: -16px;
+    font-size: 25px;
+    color: #ff0000b5;
 }
 .left_input .row
 {
@@ -18,8 +18,18 @@
     align-items: center;
     justify-content: unset !important;
 }
-
-
+.input_length
+{
+    width: 95% !important;
+}
+.select2.select2-container{
+    width: 95% !important;
+}
+.disabled-span{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 </style>
 
 
@@ -44,8 +54,8 @@
                         <!--deliver note  modal content start-->
 
 
-                        <div class="modal fade" id="DeliverNote" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog modal-xl">
+                        <div class="modal fade" id="DeliverNote"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog  modal-xl">
 		                        <form  class="Dashboard-form class" id="add_form1" data-salesorder="false">
 			                        <div class="modal-content">
                                         <div class="modal-header">
@@ -53,7 +63,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
-				                        <div class="modal-body">
+				                        <div class="modal-body" style=" overflow-y: auto;">
 
                                             <div class="live-preview">
                                                 
@@ -74,7 +84,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -94,7 +104,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_date" autocomplete="off" class="form-control datepicker" required>
+                                                                        <input type="text" name="dn_date" autocomplete="off" class="form-control datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -108,7 +118,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 select_data">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
@@ -138,17 +148,23 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon cust_more_modal">Select</span></label>
+                                                                        <label for="basicInput" class="form-label">Sales Order</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-8 col-lg-8">
                                                                       
-                                                                        <select class="form-select sales_order_add_clz" name="dn_sales_order_num" id="sales_order_add" style="width:80%;" required>
+                                                                        <select class="form-select sales_order_add_clz" name="dn_sales_order_num" id="sales_order_add" required>
 
                                                                             <option value="" selected disabled>Select Sales Order</option>
 
                                                                         </select>
                                                                         
+                                                                    </div>
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
+
                                                                     </div>
 
                                                                 </div> 
@@ -184,7 +200,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="dn_lpo_reference" class="form-control lpo_ref" required>
+                                                                        <input type="text" name="dn_lpo_reference" class="form-control lpo_ref " required>
                                                                     
                                                                     </div>
 
@@ -339,17 +355,15 @@
 
                                             </div>  
                                             
-                                            
-                                             
-
-
+                                           
 					                           
 						                    
 				                        </div>
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                            <span class="print_btn_clz once_form_submit" style="display:none"><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
 
@@ -1190,8 +1204,6 @@
         $(function() {
             var form = $('#add_form1');
 
-            
-            
             form.validate({
                 rules: {
                     required: 'required',
@@ -1201,11 +1213,12 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
+
                     // Submit the form for the current tab
                     var formData = new FormData(currentForm);
                     if($('#add_form1').attr('data-salesorder')=="true")
                     {
-
+                      
                         $.ajax({
                             url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
                             method: "POST",
@@ -1214,10 +1227,13 @@
                             contentType: false, // Don't set content type
                         // data: $(currentForm).serialize(),
                             success: function(data) {
-                            
+                                
+                                var data = JSON.parse(data);
+
                                 $('#add_form1')[0].reset();
 
                             // $('.delivery_note_remove').remove();
+                            
                                 $('body').find('.delivery_note_remove').remove();
 
                                 $('.prod_checkmark').prop('checked', false); // Unchecks it
@@ -1231,8 +1247,19 @@
                                 $('.hidden_delivery_id').val("");
                             
                                 $('#DeliverNote').modal('hide');
+
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
                                 datatable.ajax.reload(null, false);
+
+                                $('.modal-backdrop').remove();
+
+                                //console.log(data.print);
+
+                                if(data.print!="")
+                                {
+                                    window.open(data.print, '_blank');
+                                }
                         
                             }
                         });
@@ -1241,9 +1268,27 @@
                     }
                     else
                     {
-                        alertify.error('Please Add Select').delay(3).dismissOthers();
-                    }
+                        alertify.error('Please Select Products').delay(3).dismissOthers();
 
+                        
+                        $('#blink').each(function() {
+                            var elem = $(this);
+                            refreshIntervalId = setInterval(function() {
+                                if (elem.css('visibility') == 'hidden') {
+                                    elem.css('visibility', 'visible');
+                                } else {
+                                    elem.css('visibility', 'hidden');
+                                }    
+                            }, 200);
+                        });
+
+                        setTimeout(function(){
+                            clearInterval(refreshIntervalId);
+                            
+                        }, 1000)
+   
+
+                    }
 
 
                 }
@@ -1442,8 +1487,8 @@
         /*customer droup drown search*/
         $(".customer_sel").select2({
             placeholder: "Select Customer",
-            theme : "default form-control-",
-            dropdownParent: $('#DeliverNote'),
+            theme : "default form-control- input_length",
+            dropdownParent: $('.select_data'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/DeliverNote/FetchCustomers",
                 dataType: 'json',
@@ -1550,11 +1595,29 @@
 
             var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
 
+            /**/
+
+            var ratetSelectElement = dataSelect.closest('.prod_row').find('.rate_clz_id');
+
+            var rate = parseFloat(ratetSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+                 
+            var orginalPrice = current *  rate;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            
+            var $amountElement = dataSelect.closest('.prod_row').find('.del_product_total');
+
+            $amountElement.val(orginalPrice);
+
+            /**/
+
             var total = delivery + current;
 
             var orderSelectElement = dataSelect.closest('.prod_row').find('.order_qty');
 
             var order = orderSelectElement.val();
+
+
            
 
             if(total > order)
@@ -1571,13 +1634,41 @@
                 
 
             }
-
+            
+            TotalAmount();
            
 
         });
 
 
         /*limit quantity end*/
+
+
+        /*total amount calculation start*/
+
+        function TotalAmount()
+        {
+
+            var total= 0;
+
+            $('body .del_product_total').each(function()
+            {
+                var sub_tot = parseFloat($(this).val());
+
+                total += parseFloat(sub_tot.toFixed(2))||0;
+               
+            });
+
+           total = total.toFixed(2);
+
+           $('.total_prod_amount').val(total);
+
+           
+            
+
+        }
+
+        /*total amount calculation end*/
 
 
 
@@ -1646,8 +1737,8 @@
 
                 if(!$("#add_form1").valid())
                 {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
+                    alertify.error('Fill required fields!').delay(3).dismissOthers();
+                    return false;
                 }
 
             }
@@ -1655,6 +1746,8 @@
             var formData = new FormData($('#add_form1')[0]);
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
+
+            $(".cust_more_modal").addClass("disabled-span");
 
             $.ajax({
                         url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
@@ -1693,9 +1786,6 @@
                                     
                                     $(".select_prod_add").html(data.product_detail);
 
-                                    //('.select_prod_remove').remove();
-                                    
-                                    //console.log(data.product_detail)
                                 }   
 
                             });
@@ -1750,7 +1840,15 @@
 
                     $('#DeliverNote').modal("show");
 
+                    var modal = new bootstrap.Modal(document.getElementById('DeliverNote'));
+                    
+                    modal.show();
+
+                    modal.handleUpdate();
+
                     $('.selected_table').show();
+
+                    $('.print_btn_clz').css('display', 'block');
                       
                     checkedIds.length = 0; 
                     //console.log(data.product_detail);
@@ -1771,13 +1869,21 @@
 
         $('#add_form1')[0].reset();
 
+        $('.print_btn_clz').css('display', 'none');
+
         $('.customer_id').val('').trigger('change');
 
         $('.sales_order_add_clz  option').remove();
 
         $('.cont_person  option').remove();
 
+        $('.delivery_note_remove').remove();
+
+        $('.once_form_submit').attr('disabled', false); // Disable this input.
+
         $('#add_form1').attr('data-salesorder','false')
+
+        $(".cust_more_modal").removeClass("disabled-span");
 
         $.ajax({
 
@@ -1788,14 +1894,13 @@
             success:function(data)
             {
 
-            $('#dnid').val(data);
+                $('#dnid').val(data);
 
             }
 
         });
 
     });
-
 
 
     /*######*/
@@ -1824,8 +1929,6 @@
             
                 var data = JSON.parse(data);
                                 
-                //console.log(data.product_detail);
-
                 $('.view_ref').val(data.reffer_no);
 
                 $('.view_date').val(data.date);
@@ -1847,6 +1950,7 @@
                 $('.view_image_table').html(data.image_table);
 
                 $('#ViewDeliverNote').modal("show");
+                
             }
 
         });
@@ -2204,9 +2308,27 @@
 
             var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
 
+            /**/
+
+            var ratetSelectElement = dataSelect.closest('.edit_select_div').find('.edit_prod_rate');
+
+            var rate = parseFloat(ratetSelectElement.val()) || 0;
+
+            var orginalPrice = current *  rate;
+
+            
+
+            var orginalPrice = orginalPrice.toFixed(2); 
+
+            var $amountElement = dataSelect.closest('.edit_select_div').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+                 
+            /**/
+
             var total = delivery + current;
 
-            var orderSelectElement = dataSelect.closest('.edit_select_div').find('.edit_order_qty');
+            var orderSelectElement = dataSelect.closest('.edit_select_div').find('.edit_prod_amount');
 
             var order = orderSelectElement.val();
 
@@ -2226,17 +2348,50 @@
 
             }
 
+            EditTotalAmount();
+
         });
 
 
         /*edit limit quantity end*/
 
 
+        /*total amount calculation start*/
+
+        function EditTotalAmount()
+        {
+
+            var total= 0;
+
+            $('body .edit_prod_amount').each(function()
+            {
+                var sub_tot = parseFloat($(this).val());
+
+                total += parseFloat(sub_tot.toFixed(2))||0;
+               
+            });
+
+           total = total.toFixed(2);
+
+           $('.edit_total_prod_amount').val(total);
+
+           
+            
+
+        }
+
+        /*total amount calculation end*/
+
+       
+
     /*edit section end*/
 
+        
+        $('.modal').on('hidden.bs.modal', function () {
 
-
-
+            $('body').addClass('modal-open');
+            
+        })
 
     
 
@@ -2317,6 +2472,10 @@
     }
 
     /*checkbox section end*/
+
+
+
+
 
 
 

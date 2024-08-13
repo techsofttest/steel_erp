@@ -1,6 +1,6 @@
-<?php
+<?php 
 
-namespace App\Controllers\Accounts;
+namespace App\Controllers\Accounts;  
 
 use App\Controllers\BaseController;
 
@@ -13,10 +13,19 @@ class Reports extends BaseController
     public function Ledger()
     {   
 
+        $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
+
+        $data['account_heads_filter'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_head_id','asc');
+ 
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+ 
+        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+ 
+        $data['banks'] = $this->common_model->FetchAllOrder('master_banks','bank_name','asc'); 
+
+
         if(!empty($_GET))
         {
-
-        
 
         $start_date = "";
         $end_date ="";
@@ -68,9 +77,29 @@ class Reports extends BaseController
 
         }
 
+        $range_from="";
+
+        $range_to="";
 
 
+        if(!empty($this->request->getGet('range_from')))
+        {
+            $range_from=$this->request->getGet('range_from'); 
+        }
 
+        if(!empty($this->request->getGet('range_to')))
+        {
+            $range_to = $this->request->getGet('range_to'); 
+        }
+
+        if(!empty($range_from) || !empty($range_to))
+        {
+            $data['open_balance'] =$this->report_model->FetchGlOpenBalance($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
+        }
+        else
+        {
+            $data['open_balance'] =0;
+        }
         
         //$start_date = date('Y-m-d',strtotime('01-01-2024'));
 
@@ -78,40 +107,44 @@ class Reports extends BaseController
         //$end_date = date('Y-m-d',strtotime('04-02-2024'));
 
 
-        $data['payments'] = $this->report_model->FetchGLPayments($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
+        //$data['payments'] = $this->report_model->FetchGLPayments($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
 
 
-        $data['receipts'] = $this->report_model->FetchGLReceipts($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
-        
+        //$data['receipts'] = $this->report_model->FetchGLReceipts($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
+
+        //$data['open_balance'] =$this->report_model->FetchGlOpenBalance($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
+
+        $data['vouchers']=$this->report_model->FetchGLTransactions($start_date,$end_date,$account_head,$account_type,$account,$time_frame,$range_from,$range_to);
+
+        return view('accounts/ledger_report',$data);
+
         }
         else
         {
+        // $data['payments'] = array();
 
-        $data['payments'] = array();
+        // $data['receipts'] = array();
 
-        $data['receipts'] = array();
+        $data['vouchers'] = array();
+
+        $data['content'] = view('accounts/ledger_report_search',$data);
+
+        return view('accounts/accounts-module',$data);
+
 
         }
 
-       $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
-
-       $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
-
-       $data['accounts'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
-
-       $data['banks'] = $this->common_model->FetchAllOrder('master_banks','bank_name','asc'); 
-
-       $data['content'] = view('accounts/ledger_report',$data);
-
-       return view('accounts/accounts-module',$data);
+      
 
     }
 
 
-
+ 
 
     public function StatementOfAccounts()
     {   
+
+        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
         if(!empty($_GET))
         {
@@ -119,7 +152,7 @@ class Reports extends BaseController
         $start_date = "";
         $end_date ="";
 
-
+ 
         if(!empty($this->request->getGet('start_date')))
         {
         $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
@@ -141,29 +174,42 @@ class Reports extends BaseController
         }
 
 
-       
+        $data['vouchers'] = $this->report_model->SOAVouchers($start_date,$end_date,$account);
 
-        $data['payments'] = $this->report_model->SOAPayments($start_date,$end_date,$account);
+        $data['post_dated_cheques'] = $this->report_model->SOAPostDatedCheques($start_date,$end_date,$account);
 
-        $data['receipts'] = $this->report_model->SOAReceipts($start_date,$end_date,$account);
+        //$data['payments'] = $this->report_model->SOAPayments($start_date,$end_date,$account);
+
+        //$data['receipts'] = $this->report_model->SOAReceipts($start_date,$end_date,$account);
+
+
+        $data['content'] = view('accounts/statement_of_accounts',$data);
+
+        return view('accounts/report-module',$data);
 
         
         }
         else
         {
 
-        $data['payments'] = array();
+        $data['vouchers'] = array();
 
-        $data['receipts'] = array();
+        $data['post_dated_cheques'] = array();
 
-        }
+        // $data['payments'] = array();
 
+        // $data['receipts'] = array();
 
-        $data['accounts'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+        
 
         $data['content'] = view('accounts/statement_of_accounts',$data);
 
         return view('accounts/accounts-module',$data);
+
+        }
+
+
+     
 
     }
 
@@ -173,8 +219,16 @@ class Reports extends BaseController
 
 
 
+
     public function AgedRP()
     {   
+
+
+        $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
+
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+ 
+        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
         if(!empty($_GET))
         {
@@ -217,31 +271,45 @@ class Reports extends BaseController
 
         }
 
+        //$data['payments'] = $this->report_model->ARPPayments($start_date,$account_head,$account_type,$account);
 
-        $data['payments'] = $this->report_model->ARPPayments($start_date,$account_head,$account_type,$account);
+        //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
 
-        $data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
+        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account);
 
-        
+        $data['post_dated_cheques'] = $this->report_model->ARPReceiptPDC($start_date,$account_head,$account_type,$account);
+
+        $data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
+
+        //echo $data['c_balance']; exit;
+
+        $data['content'] = view('accounts/aged_rp_reports',$data);
+
+        return view('accounts/report-module',$data);
+
         }
         else
         {
 
-        $data['payments'] = array();
+        //$data['payments'] = array();
 
-        $data['receipts'] = array();
+        //$data['receipts'] = array();
 
-        }
+        $data['transactions'] = array();
 
-        $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
+        $data['post_dated_cheques'] = array();
 
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
- 
-        $data['accounts'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+        $data['c_balance'] = array();
 
+        
         $data['content'] = view('accounts/aged_rp_reports',$data);
 
         return view('accounts/accounts-module',$data);
+
+        }
+
+
+
 
     }
 
@@ -254,20 +322,65 @@ class Reports extends BaseController
     public function TrialBalance()
     {   
 
+        
+
         if(!empty($_GET))
         {
 
         $start_date = "";
+
         $end_date ="";
 
+
         if(!empty($this->request->getGet('start_date')))
-        {
+        {   
         $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
         }
 
-        $filter_type = $this->request->getGet('filter_type');
+        if(!empty($this->request->getGet('end_date')))
+        {
+        $end_date = date('Y-m-d',strtotime($this->request->getGet('end_date')));
+        }
 
-        $data['c_accounts'] =  $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+        $time_frame = $this->request->getGet('filter_timeframe');
+
+        $data['c_accounts'] =  $this->report_model->TrialBalance($time_frame,$start_date,$end_date);
+
+        $date_from = $start_date;
+
+        $date_to = $end_date;
+
+        $today = date('Y-m-d');
+
+            if($time_frame=="Month")
+            {
+
+                $date_from = date("Y-m-01", strtotime($today));
+
+                $date_to = date("Y-m-t", strtotime($today));
+
+            }
+
+            if($time_frame=="Year")
+            {
+
+                $date_from = date("Y-01-01", strtotime($today));
+
+                $date_to = date("Y-12-t", strtotime($today));
+
+            }
+
+           
+
+        $data['final_credit'] = $this->report_model->FetchSum('master_transactions','tran_credit',array('tran_datetime>=' => $date_from,'tran_datetime<=' =>$date_to));
+
+        $data['final_debit'] =  $this->report_model->FetchSum('master_transactions','tran_debit',array('tran_datetime>=' => $date_from,'tran_datetime<=' =>$date_to));
+       
+        
+        $data['content'] = view('accounts/trail_balance_report',$data);
+
+        return view('accounts/report-module',$data);
+
 
         }
         else
@@ -275,11 +388,19 @@ class Reports extends BaseController
 
         $data['c_accounts'] = array();
 
-        }
+        $data['final_credit'] = 0;
+
+        $data['final_debit'] = 0;
+
 
         $data['content'] = view('accounts/trail_balance_report',$data);
 
         return view('accounts/accounts-module',$data);
+
+
+        }
+
+     
 
     }
 
@@ -322,36 +443,84 @@ class Reports extends BaseController
         if(!empty($_GET))
         {
 
-        $start_date = "";
-        $end_date ="";
+         $start_date = "";
 
-        if(!empty($this->request->getGet('start_date')))
-        {
-        $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
-        }
+          $end_date ="";
+    
+    
+            if(!empty($this->request->getGet('start_date')))
+            {   
+            $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
+            }
+    
+            if(!empty($this->request->getGet('end_date')))
+            {
+            $end_date = date('Y-m-d',strtotime($this->request->getGet('end_date')));
+            }
+    
+        $time_frame = $this->request->getGet('filter_timeframe');
+
+
+        $date_from = $start_date;
+
+        $date_to = $end_date;
+
+        $today = date('Y-m-d');
+
+            if($time_frame=="Month")
+            {
+
+                $date_from = date("Y-m-01", strtotime($today));
+
+                $date_to = date("Y-m-t", strtotime($today));
+
+            }
+
+            if($time_frame=="Year")
+            {
+
+                $date_from = date("Y-01-01", strtotime($today));
+
+                //$date_to = date("Y-12-t", strtotime($today));
+
+                $date_to = date("Y-m-d");
+
+            }
+
 
         $filter_type = $this->request->getGet('filter_type');
 
-        $data['account_heads'] = $this->report_model->FetchPLAccount();
+        $data['month_year'] = date('M Y',strtotime($date_to));
+
+        $data['account_heads'] = $this->report_model->FetchPLAccount($date_from,$date_to);
+
+
+        $data['content'] = view('accounts/pl_account_report',$data);
+
+
+        return view('accounts/report-module',$data);
+
 
         }
         else
         {
 
-        $data['account_heads'] = array();
+        $data['month_year'] = "";
 
-        }
-        
+        $data['account_heads'] = array();
 
         $data['content'] = view('accounts/pl_account_report',$data);
 
 
         return view('accounts/accounts-module',$data);
 
+        }
+        
+
+     
+
 
     }
-
-
 
 
 
@@ -359,37 +528,45 @@ class Reports extends BaseController
     public function RPSummery()
     { 
  
+    
+    $data['accounts'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_account_name','asc');
+
+
     if($_GET)
 
     {
 
     $start_date = "";
-    $end_date ="";
 
     if(!empty($this->request->getGet('start_date')))
     {
     $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
     }
 
-    $filter_type = $this->request->getGet('filter_type');
+    $filter_account = $this->request->getGet('filter_account');
 
-    $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+    $data['all_accounts'] = $this->report_model->RPSummery($filter_account,$start_date);
+
+    
+    $data['content'] = view('accounts/receivables_payable_summary_report',$data);
+
+    return view('accounts/report-module',$data);
 
     }
 
     else
     {
 
-    $data['customers'] = array();
+    $data['all_accounts'] = array();
+
+    
+    $data['content'] = view('accounts/receivables_payable_summary_report',$data);
+
+    return view('accounts/accounts-module',$data);
 
     }
 
 
-    $data['accounts'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
-
-    $data['content'] = view('accounts/receivables_payable_summary_report',$data);
-
-    return view('accounts/accounts-module',$data);
 
     }
 
@@ -406,7 +583,7 @@ class Reports extends BaseController
 
 
         if(!empty($_GET))
-    {
+        {
 
         $start_date = "";
         $end_date ="";
@@ -417,7 +594,6 @@ class Reports extends BaseController
 
         if(!empty($this->request->getGet('start_date')))
         {
-         
         $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
         }
 
@@ -428,43 +604,44 @@ class Reports extends BaseController
 
         }
 
+        else
+        {
+
+        
+        
+        $start_date="";
+
+        $end_date="";
+        
+
+        }
+
+        $data['account_heads'] = $this->report_model->BalanceSheet($time_frame,$start_date,$end_date);
+
+        $data['content'] = view('accounts/balance_sheet_report',$data);
+
+        return view('accounts/report-module',$data);
+
+    }
+
+    else
+        {
+
+        $data['account_heads'] = array();
+
+        $data['content'] = view('accounts/balance_sheet_report',$data);
+
+        return view('accounts/accounts-module',$data);
+            
+        }
+
+        
+
+
+
     }
 
 
-    $data = array();
-
-    $data['content'] = view('accounts/balance_sheet_report',$data);
-
-    return view('accounts/accounts-module',$data);
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
 
     public function Print(){

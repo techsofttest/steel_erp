@@ -1062,9 +1062,32 @@ success:function(data)
 
         /*account head update*/
         $(document).ready(function(){
+            
             $('#edit_form').submit(function(e){
 
                 e.preventDefault();
+
+                var debit = parseInt($('#total_amount_debit_edit').val())||0;
+
+                    var credit = parseInt($('#total_amount_credit_edit').val())||0;
+
+                    if(debit==0 || credit==0)
+                    {
+
+                    alertify.error('Must be greater than 0!').delay(3).dismissOthers();
+
+                    return false;
+
+                    }
+
+                    if(debit != credit)
+                    {
+
+                    alertify.error('Debit And Credit Must Be Same!').delay(3).dismissOthers();
+
+                    return false;
+
+                    }
                 
                 $.ajax({
 

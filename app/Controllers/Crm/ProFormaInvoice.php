@@ -63,17 +63,21 @@ class ProFormaInvoice extends BaseController
         $i=1;
         foreach($records as $record ){
             
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'CRM/ProFormaInvoice/Print/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a href="'.base_url().'Crm/ProFormaInvoice/Pdf/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+
+            ';
            
-           $data[] = array( 
+            $data[] = array( 
               'pf_id'           => $i,
               'pf_reffer_no'    => $record->pf_reffer_no,
-              'pf_date'         => date('d-m-Y',strtotime($record->pf_date)),
+              'pf_date'         => date('d-M-Y',strtotime($record->pf_date)),
               'pf_customer'     => $record->cc_customer_name,
               'pf_sales_order'  => $record->so_reffer_no,
               'action'          => $action,
            );
            $i++; 
+
         }
  
         ## Response
@@ -210,6 +214,9 @@ class ProFormaInvoice extends BaseController
     // add account head
     Public function Add()
     {   
+
+        $return['print'] = "";
+        
         $insert_data = [
 
             'pf_reffer_no'              => $this->request->getPost('pf_reffer_no'),
@@ -278,12 +285,20 @@ class ProFormaInvoice extends BaseController
                     );
 
                     $this->common_model->InsertData('crm_proforma_product',$insert_data);
-                   
+
+                    if(!empty($_POST['print_btn']))
+                    {
+                        $return['print'] =  base_url() . 'Crm/ProFormaInvoice/Pdf/' . urlencode($sales_order_id);
+                    }
+                    
+                  
             
                 } 
             }
       
         }
+
+        echo json_encode($return);
 
     }
 
@@ -398,8 +413,6 @@ class ProFormaInvoice extends BaseController
         
         //image section start
 
-
-        
 
         if(!empty($proforma->pf_file)){
 
@@ -587,7 +600,7 @@ class ProFormaInvoice extends BaseController
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no">'.$i.'</td>
-                                            <td style="width:20%">
+                                            <td style="width:34%">
                                                 <select class="form-select" name="pp_product_det['.$j.']" required>';
                                                 
                                                 foreach($products as $prod){
@@ -786,7 +799,7 @@ class ProFormaInvoice extends BaseController
 
                 $data['prod_details'] .='<tr class="prod_row2 performa_remove" id="'.$prod_det->pp_id.'">
                 <td class="si_no2">'.$i.'</td>
-                <td style="width:20%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+                <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
                 <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control" readonly></td>
                 <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control"  readonly></td>
                 <td> <input type="text" value="'.$prod_det->pp_rate.'"  class="form-control" readonly></td>
@@ -982,7 +995,44 @@ class ProFormaInvoice extends BaseController
         {
             $cond = array('pp_id' => $this->request->getPost('ID'));
 
+            $performa_prod = $this->common_model->SingleRow('crm_proforma_product',$cond);
+
             $this->common_model->DeleteData('crm_proforma_product',$cond);
+
+            $performa_product_amount = $this->common_model->FetchWhere('crm_proforma_product',array('pp_proforma' => $performa_prod->pp_proforma));
+            
+            $total_amount = 0;
+
+            foreach($performa_product_amount as $performa_prod_amount)
+            {
+                $total_amount = $performa_prod_amount->	pp_amount + $total_amount;
+            }
+
+            
+             
+            $performa = $this->common_model->SingleRow('crm_proforma_invoices',array('pf_id' => $performa_prod->pp_proforma));
+
+            $current_claim = $performa->pf_current_cliam;
+
+            $current_claim_value = ($current_claim/100)*$total_amount;
+
+            $update_data = array(
+                
+                'pf_total_amount'        => $total_amount,
+
+                'pf_current_claim_value' => $current_claim_value
+
+            );
+
+
+
+            $this->common_model->EditData($update_data,array('pf_id' => $performa_prod->pp_proforma),'crm_proforma_invoices');
+
+            //print_r($real_value); exit();
+
+            //(current_claim/100)*amountTotal
+
+
         }
 
 
@@ -1055,304 +1105,336 @@ class ProFormaInvoice extends BaseController
            
             echo json_encode($data); 
         }
+        
 
-
-        public function Print($id){
-
-            $cond = array('pf_id' => $id);
-
-            $joins = array(
+        public function Pdf($id)
+        {   
+            if(!empty($id))
+            {   
+              
+                $joins1 = array(
                 
-                array(
-                    'table' => 'crm_customer_creation',
-                    'pk'    => 'cc_id',
-                    'fk'    => 'pf_customer',
-                )
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'pp_product_det',
+                    ),
+                   
+                );
+
+                $product_details = $this->common_model->FetchWhereJoin('crm_proforma_product',array('pp_proforma'=>$id),$joins1);
+                   
+                $pdf_data = "";
+
+                foreach($product_details as $prod_det)
+                {
+                    
+                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->pp_quantity.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->pp_unit.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->pp_rate.'</td>';
+
+                    $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->pp_discount.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->pp_amount.'</td>';
+
+                }
+
+                $join =  array(
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'pf_customer',
+                    ),
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'pf_sales_order',
+                    ),
+                );
+                
+
+                $proforma_invoice = $this->common_model->SingleRowJoin('crm_proforma_invoices',array('pf_id'=>$id),$join);
+
+                $date = date('d-M-Y',strtotime($proforma_invoice->pf_date));
+
+                $title = 'PINV - '.$proforma_invoice->pf_reffer_no;
+
+                $mpdf = new \Mpdf\Mpdf();
+
+                $mpdf->SetTitle($title); // Set the title
     
-            );
-             
-            $proforma = $this->common_model->SingleRowJoin('crm_proforma_invoices',$cond,$joins);
-
-            $cond1 = array('pp_proforma' => $proforma->pf_id);
-
-            $joins1 = array(
-                
-                
-    
-            );
-
-          
-
-            $product_detail ="";
-
-            $proforma_products = $this->common_model->FetchWhereJoin('crm_proforma_product',$cond1,$joins1);
+                $html ='
             
-            $i =1;
-            foreach($proforma_products as $proforma_prod)
-            {
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
                
-                $product_detail .= '<tr>
-        
-                <td>'.$proforma->pf_uid.'</td>
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+               
+                <table><tr><td></td></tr></table>
             
-                <td>'.$proforma_prod->pp_product_det.'</td>
             
-                <td>'.$proforma_prod->pp_quantity.'</td>
-            
-                <td>'.$proforma_prod->pp_unit.'</td>
-            
-                <td>'.$proforma_prod->pp_rate.'</td>
-            
-                <td class="disc_color">'.$proforma_prod->pp_discount.'</td>
-    
-                <td>'.$proforma_prod->pp_amount.'</td>
-                
-                </tr>';
-
-                $i++;
-            }
-
-
-
-            $mpdf = new \Mpdf\Mpdf();
-        
-            $html ='
-        
-            <style>
-            th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size:12px;
-              }
-            .disc_color
-            {
-                color:red;
-            }
-            </style>
-        
-            <table>
-            
-            <tr>
-            
-            <td>
-        
-            
-            </td>
-            
-            </tr>
-        
-            </table>
-        
-        
-        
-            <table width="100%" style="margin-top:10px;">
-            
-        
-            <tr width="100%">
-
-            <td align="left">Date:'.$proforma->pf_date.'</td>
-
-            <td align="right">Invoice No:'.$proforma->pf_uid.'</td>
-            
-            <td align="right"><h3>Pro-forma Invoice</h3></td>
-        
-            </tr>
-        
-            </table>
-        
-        
-            <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
-        
-            <tr>
-            
-                <td></td>
-                
-                <td>'.$proforma->cc_customer_name.'</td>
-            
-            </tr>
-
-
-            <tr>
-                 
-                <td>Customer</td>
-
-                <td>Tel : '.$proforma->cc_telephone.', Fax : '.$proforma->cc_fax.', Email : '.$proforma->cc_email.' <br> Post Box : -, '.$proforma->cc_post_box.'</td>
-            
-            </tr>
-
-
-            <tr>
-            
-                <td>Attention</td>
-
-                <td>Mr. Johnson - Manager, Mobile: -, Email: -</td>
-            
-            </tr>
-
-            
-            </table>
-        
-        
-        
-        
-            <table  width="100%" style="margin-top:2px;">
-            
-        
-            <tr  style="border-bottom:3px solid;">
-            
-            <th align="left">Item No.</th>
-        
-            <th align="left">Description</th>
-        
-            <th align="left">Qty</th>
-        
-            <th align="left">Unit</th>
-        
-            <th align="left">Rate</th>
-        
-            <th align="left">Disc %</th>
-
-            <th align="left">Amount</th>
-        
-            </tr>
-        
-        
-        
-            '.$product_detail.'
-        
-        
-            
-            </table>
-        
-            ';
-        
-            $footer = '
-        
-            <table style="border-collapse: collapse; border-spacing: 0;" width="100%">
-            
-            <tr>
-
-            <td></td>
-            
-            <td>IBAN : QA97CBQA000000004570407137001</td>
-        
-            <td>Gross Total</td>
-
-            <td>2,445.00</td>
-        
-            </tr>
-
-
-            <tr>
-            
-               <td>Bank Details</td>
-
-               <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar<br>SWIFT : CBQAQAQA</td>
-
-               <td>Less. Special Discount<br>Net Order Value </td>
-
-               <td>122.25<br>2,322.75</td>
-
-            </tr>
-
-
-            <tr>
-            
-                <td >Amount in <br> words</td>
-
-                <td >Qatar Riyals One thousand one hundred sixty one & thirty eight Dirhams only</td>
-
-                <td >Current Claim - 50%</td>
-
-                <td >1,161.38</td>
-            
-            </tr>
-
-
-            <tr>
-            
-                <td style="border-top:1px solid;"></td>
-
-                <td style="border-top:1px solid;">LPO Ref.</td>
-
-                <td style="border-top:1px solid;">Waiting for PO </td>
-
-                <td style="border-top:1px solid;">Payment:</td>
-
-                <td style="border-top:1px solid;">Cash on delivery</td>
+                <table width="100%" style="margin-top:10px;">
                 
             
-            </tr>
-
-
-            <tr>
+                <tr width="100%">
+                <td>Date : '.$date.'</td>
+                <td>Invoice No : '.$proforma_invoice->pf_reffer_no.'</td>
+                <td align="right"><h2>Pro-forma Invoice</h2></td>
             
-                <td>Invoice Terms</td>
-
-                <td>Project:</td>
-
-                <td></td>
-
-                <td>Delivery:</td>
-
-                <td>Ex- Factory</td>
-            
-            </tr>
-
-
-            <tr>
-            
-                <td style="border-bottom:1px solid;"></td>
-
-                <td style="border-bottom:1px solid;">Sales Order:</td>
-
-                <td style="border-bottom:1px solid;">03455</td>
-
-                <td style="border-bottom:1px solid;"></td>
-
-                <td style="border-bottom:1px solid;"></td>
-            
-            </tr>
-
-
-        
-            </table>
-
-
-            <table style="border-bottom:1px solid" width="100%">
-            
-                <tr>
-                    <td>Received by:</td>
-
-                    <td>Prepared by: </td>
-
-                    <td>Finance Dept:</td>
-
-                    <td>Workshop Manager</td>
-
                 </tr>
             
+                </table>
+
+            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        
+                <tr>
+                
+                    <td > </td>
+                    
+                    <td >'.$proforma_invoice->cc_customer_name.'</td>
+                
+                </tr>
+        
+        
+            <tr>
+            
+            <td>Customer</td>
+            
+                
+            <td >Tel : '.$proforma_invoice->cc_telephone.', Fax : '.$proforma_invoice->cc_fax.', Email : '.$proforma_invoice->cc_email.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+            <td >Post Box : -, Doha - '.$proforma_invoice->cc_post_box.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+            
+            </tr>
+        
+        
             </table>
-        
-        
+    
+               
             
-        
-        
-            ';
-        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
             
-            $mpdf->WriteHTML($html);
-            $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output();
+                <tr>
+                
+                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Unit</th>
         
+                    <th align="left" style="border-bottom:2px solid;">Rate</th>
+
+                    <th align="left" style="border-bottom:2px solid;">Disc%</th>
+
+                    <th align="left" style="border-bottom:2px solid;">Amount</th>
+        
+                 
+                
+                </tr>
+
+
+                '.$pdf_data.'
+    
+                 
+                
+            </table>';
+            
+            $footer = '
+        
+                <table style="border-bottom:2px solid">
+                
+                    <tr>
+                        <td></td>
+
+                        <td>IBAN : QA97CBQA000000004570407137001</td>
+                    
+                        <td>Gross Total</td>
+            
+                        <td>'.$proforma_invoice->pf_total_amount.'</td>
+                
+                    </tr>
+    
+                    <tr>
+        
+                        <td>Bank Details</td>
+                    
+                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                       
+                        <td>Less. Special Discount</td>
+            
+                        <td>-------</td>
+                    
+                    </tr>
+
+
+                    <tr>
+        
+                        <td></td>
+                    
+                        <td>SWIFT : CBQAQAQA</td>
+                       
+                        <td>Net Order Value:</td>
+            
+                        <td>------</td>
+                    
+                    </tr>
+    
+    
+                    <tr>
+        
+                        <td>Amount in words</td>
+                    
+                        <td>----------------------------------</td>
+            
+                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
+            
+                        <td>-----</td>
+                    
+                    </tr>
+    
+                </table>
+    
+    
+                <table>
+                
+                <tr>
+                    <td style="width:20%">Invoice Terms</td>
+    
+                    <td style="width:20%">LPO Ref:</td>
+    
+                    <td style="width:20%">Waiting for PO</td>
+    
+                    <td style="width:20%">Payment:</td>
+    
+                    <td style="width:20%">Cash on delivery</td>
+                    
+                </tr>
+
+
+                <tr>
+                    <td style="width:20%"></td>
+    
+                    <td style="width:20%">Project:</td>
+    
+                    <td style="width:20%">-</td>
+    
+                    <td style="width:20%">Delivery: </td>
+    
+                    <td style="width:20%">: Ex- Factory</td>
+                    
+                </tr>
+    
+                <tr>
+                    <td style="width:20%"></td>
+    
+                    <td style="width:20%">Sales Order:</td>
+    
+                    <td style="width:20%">'.$proforma_invoice->so_reffer_no.'</td>
+    
+                    <td style="width:20%"></td>
+    
+                    <td style="width:20%"></td>
+    
+                </tr>
+                
+                </table>
+    
+    
+                <table style="border-top:2px solid;">
+    
+                <tr>
+                
+                    <td>Received by: </td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Prepared by:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Finance Dept:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Workshop Manager</td>
+    
+                  
+    
+                </tr>
+    
+    
+                
+                
+                
+                </table>
+            
+            
+            
+                ';
+            
+                
+                $mpdf->WriteHTML($html);
+                $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+            
+            }
+    
+           
         }
 
-
-     
-    
 
 
 }

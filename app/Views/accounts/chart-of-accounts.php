@@ -8,7 +8,7 @@
 
     <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-            <form  class="Dashboard-form class" id="add_form">
+            <form  class="Dashboard-form class" id="add_form" data-plus-as-tab="true">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Charts Of Account</h5>
@@ -102,7 +102,7 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button  class="btn btn btn-success">Save</button>
+                <button type="submit" data-plus-as-tab="false" class="btn btn btn-success">Save</button>
             </div>
         </div>
         </form>
@@ -296,6 +296,7 @@
                             if(data.status==0)
                             {
                             alertify.error(data.message).delay(2).dismissOthers();
+                            $('input[name=ca_name]').focus();
                             return false;
                             }
                             

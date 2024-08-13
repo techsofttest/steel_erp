@@ -10,6 +10,7 @@
  <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
             <form  class="Dashboard-form class" id="add_form">
+             <input id="added_id" type="hidden" name="pcv_id" value="" autocomplete="off">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
@@ -35,6 +36,23 @@
                                 <div class="col-lg-6">
 
 
+                                <div class="row align-items-center mb-2">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Reference</label>
+
+                                </div>
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                <input type="text" id="pcvid"  class="form-control" readonly required>
+
+                                </div>
+
+                                </div>
+
+
 
                                 <div class="row align-items-center mb-2">
 
@@ -43,7 +61,7 @@
                                     </div>
                                         
                                 <div class="col-col-md-9 col-lg-9">
-                                        <input type="date" onclick="this.showPicker()"  name="pcv_date" class="form-control " required>
+                                        <input type="text"  name="pcv_date" class="form-control datepicker" required readonly>
                                     </div>
                                 </div>
 
@@ -58,18 +76,13 @@
                                 </div>
 
 
-                                <div class="col-col-md-9 col-lg-9">
-                                        <select class="form-select " name="pcv_credit_account" required>
+                                <div class="col-col-md-9 col-lg-9 select2_parent">
+
+                                        <select class="form-select add_credit_account_select2" name="pcv_credit_account" required>
                                            
-                                            <option value="">Select Credit Account</option>
-
-                                            <?php foreach($customers as $cus) { ?>
-
-                                            <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                            <?php } ?>
 
                                         </select>
+
                                     </div>
                                 </div>
 
@@ -166,7 +179,7 @@
 
                                     <div class="col-col-md-9 col-lg-9">
 
-                                    <input type="date"  name="p_cheque_date" class="form-control" required>
+                                    <input type="text"  name="p_cheque_date" class="form-control datepicker" required readonly>
 
                                     </div>
 
@@ -234,16 +247,10 @@
                 </th>
 
 
-                <th> <select name="pcv_account[]" class="form-control inv_account">
-
-                <option value="">Select Account</option>
-
-                <?php foreach($customers as $cus) { ?>
-
-                <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                <?php } ?>
+                <th> 
                 
+                <select name="pcv_account[]" class="form-control inv_account debit_account_select2_add">
+
                 </select>
 
                 </th>
@@ -285,6 +292,8 @@
             <td align="right" colspan="3">Total</td>
 
             <th  id="total_amount_disp">0</th>
+
+            <input type="hidden" id="total_amount_add" name="total_amount" value="">
 
             </tr>
 
@@ -409,19 +418,14 @@
                                 </div>
 
 
-                                <div class="col-col-md-9 col-lg-9">
+                                <div class="col-col-md-9 col-lg-9 select2_parent">
 
-                                        <select id="pcv_credit_edit" class="form-select " name="pcv_credit_account" required>
-                                           
-                                            <option value="">Select Credit Account</option>
-
-                                            <?php foreach($customers as $cus) { ?>
-
-                                            <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                            <?php } ?>
-
+                                        <!--
+                                        <select id="pcv_credit_edit" class="form-select debit_account_select2" name="pcv_credit_account" required>
                                         </select>
+                                        -->
+
+                                        <input class="form-control" id="pcv_credit_edit" value="" readonly>
 
                                     </div>
                                 </div>
@@ -560,6 +564,7 @@
 
             <thead>
                 <tr>
+                    
                 <th>Sales Order No</th>
                 <th>Debit Account</th>
                 <th>Amount</th>
@@ -965,7 +970,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Petty Cash Vouchers</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <table id="datatable" class="table table-bordered table-striped delTable">
@@ -1000,6 +1005,40 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event){
+
+
+
+        
+        $('.add_model_btn').click(function(){
+
+
+        $('#added_id').val('');
+
+        $('#add_form')[0].reset();
+
+        $('.so_row').not(':first').remove();
+
+        InitAccountsSelect2('.debit_account_select2_add','.so_row');
+
+        $.ajax({
+
+        url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchReference",
+
+        method : "GET",
+
+        success:function(data)
+        {
+
+        $('#pcvid').val(data);
+
+        }
+
+        });
+
+        });
+
+
+
 
        
 
@@ -1057,7 +1096,13 @@
 
             $clone.find("input").val("");
 
-            $clone.find("select").val("");
+            //$clone.find("select").val("");
+
+            $clone.find(".debit_account_select2_add").val('');
+
+            $clone.find(".debit_account_select2_add").removeAttr('data-select2-id');
+
+            $clone.find('.select2').remove();
 
             $clone.find(".sl_no").html(cc);
 
@@ -1065,11 +1110,43 @@
 
             $clone.insertAfter('.so_row:last');
 
+            InitAccountsSelect2('.debit_account_select2_add','.so_row');
+
             }
 
             });
 
             // ####
+
+
+
+
+
+              /*account head delete*/ 
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return;
+            var id = $(this).data('id');
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Delete",
+
+                method : "POST",
+
+                data: {id: id},
+
+                success:function(data)
+                {
+                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+
+                    datatable.ajax.reload( null, false )
+                }
+
+
+            });
+
+        });
+        /*###*/
 
 
 
@@ -1204,7 +1281,7 @@
 
         $('#pcv_date_edit').val(data.pcv.pcv_date);
 
-        $('#pcv_credit_edit').val(data.pcv.pcv_credit_account);
+        $('#pcv_credit_edit').val(data.pcv.ca_name);
 
         $('#pcv_pay_method').val(data.pcv.pcv_pay_method);
 
@@ -1340,8 +1417,13 @@ success:function(data)
 
 
 
+    $("body").on('click', '.add_invoices', function(e){ 
 
+    alertify.error('No invoices found!').delay(8).dismissOthers();
 
+    });
+
+    
 
 
 
@@ -1741,11 +1823,63 @@ $('#SalesOrderModal').modal('hide');
 $('#AddModal').modal('show');
 
     
+
 });
 
 
 
 
+/* Accounts Init Select 2 */
+
+function InitAccountsSelect2(classname,parent){
+                    $('body '+classname+':last').select2({
+                        placeholder: "Select Account",
+                        theme : "default form-control-",
+                        dropdownParent: $($(''+classname+':last').closest(''+parent+'')),
+                        ajax: {
+                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                            dataType: 'json',
+                            delay: 250,
+                            cache: false,
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    page: params.page || 1,
+                                };
+                            },
+                            processResults: function(data, params) {
+                            
+                                var page = params.page || 1;
+                                return {
+                                    results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                                    pagination: {
+                                        more: (page * 10) <= data.total_count
+                                    }
+                                };
+                            },              
+                        }
+                    })
+                }
+
+                
+                InitAccountsSelect2('.add_credit_account_select2','.select2_parent');
+
+                InitAccountsSelect2('.edit_credit_account_select2','.select2_parent');
+
+                InitAccountsSelect2('.debit_account_select2','.so_row');
+
+                /* ### */
+                
+            //
+
+
+             /* Select 2 Remove Validation On Change */
+             $(".add_credit_account_select2").on("change",function(e) {
+                    $(this).parent().find(".error").removeClass("error");         
+                });
+                /*###*/
 
 
 
@@ -1769,6 +1903,8 @@ $('#AddModal').modal('show');
            total = total.toFixed(2);
 
            $('#total_amount_inp').val(total);
+
+           $('#total_amount_add').val(total);
 
            $('#total_amount_disp').html(total);
            

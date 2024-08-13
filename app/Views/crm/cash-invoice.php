@@ -1,11 +1,10 @@
 <style>
 .cust_more_modal {
-    position: absolute;
-    left: 470px;
-    padding: 1px 27px;
-    z-index: 999;
-    border: 1px solid black;
-    border: 1px solid #0000003b;
+        position: absolute;
+        right: 32px;
+        top: -16px;
+        font-size: 25px;
+        color: #ff0000b5;
 }
 .left_input .row
 {
@@ -18,7 +17,18 @@
     align-items: center;
     justify-content: unset !important;
 }
-
+.input_length
+{
+        width: 95%;
+}
+.select2.select2-container{
+    width: 95% !important;
+}
+.disabled-span{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 </style>
 
 
@@ -69,7 +79,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="ci_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -89,7 +99,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_date" autocomplete="off" class="form-control datepicker" required>
+                                                                        <input type="text" name="ci_date" autocomplete="off" class="form-control datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -106,13 +116,14 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
+
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
+
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-
-                                                                        <select class="form-select customer_sel customer_id" name="ci_customer" required></select>
+                                                                        <select class="form-select customer_sel customer_id input_length" name="ci_customer" required></select>
 
                                                                     </div>
 
@@ -122,29 +133,69 @@
 
                                                             <!-- ### --> 
 
-                                                            
 
-                                                            <!-- Single Row Start -->
-                                                            
-                                                            
+                                                            <!---Single Row Start--->
+
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon cust_more_modal">Select</span></label>
+
+                                                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                                                    
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
+                                                                        <select class="form-select input_length" name="ci_credit_account" id="" required>
                                                                         
+                                                                            <option value="" selected disabled>Select Credit Account</option>
 
-                                                                        <select class="form-select sales_order_add_clz" name="ci_sales_order" id="sales_order_add" style="width:80%;" required>
+                                                                            <?php foreach($charts_of_accounts as $chart_account){?> 
+
+                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
+
+                                                                            <?php } ?>
+
+                                                                        </select>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div> 
+
+                                                            <!--#####-->
+
+                                                            
+
+                                                            <!-- Single Row Start -->
+                                                            
+                                                            
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                                        <label for="basicInput" class="form-label">Sales Order</label>
+                                                                    
+                                                                    </div>
+
+                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                      
+                                                                        <select class="form-select sales_order_add_clz" name="ci_sales_order" id="sales_order_add"  required>
 
                                                                             <option value="" selected disabled>Select Sales Order</option>
                                                                 
                                                                         </select>
                                                                         
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -155,6 +206,7 @@
                                                             <!-- ### --> 
 
 
+                                                            
 
                                                             
 
@@ -180,9 +232,9 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                    <input type="text" name="ci_lpo_reff" class="form-control lpo_ref" required>
+                                                                        <input type="text" name="ci_lpo_reff" class="form-control lpo_ref" required>
                                                                     
-                                                                </div>
+                                                                    </div>
 
                                                                 </div> 
 
@@ -193,6 +245,7 @@
 
 
                                                             <!-- Single Row Start -->
+
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2">
@@ -217,6 +270,7 @@
 
 
                                                             <!-- Single Row Start -->
+
                                                             <div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2">
@@ -260,8 +314,6 @@
                                                             <input type="hidden" class="hidden_cash_invoice" name="ci_id">
                                                              
 
-
-
                                                         </div>
 
                                                     </div>
@@ -273,8 +325,11 @@
                                                 <!--table section start-->
                                                 <div class="mt-4">
                                                     <table class="table table-bordered table-striped delTable selected_table" style="display:none;">
+                                                        
                                                         <thead class="travelerinfo contact_tbody">
+                                                            
                                                             <tr>
+                                                                
                                                                 <td>Serial No.</td>
                                                                 <td>Product Description</td>
                                                                 <td>Unit</td>
@@ -290,21 +345,36 @@
                                                         <tbody  class="travelerinfo product-more2"></tbody>
 
                                                         <tbody>
+
                                                             <tr>
                                                                 <td colspan="5"></td>
                                                                 <td>Total</td>
                                                                 <td><input type="text" name="ci_total_amount" class="amount_total form-control" readonly></td>
                                                             </tr>
+
                                                         </tbody>
                                                         
                                                     </table>
+
                                                 </div>
 
                                                 
                                                 <div class="row">
+
                                                     <div class="col-lg-6">
+
+                                                        <!--<div class="row row_align mb-4">
+                                                            <div class="col-lg-3">
+                                                                <label for="basicInput" class="form-label">Customer Details</label>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <input type="text" name="customer_details"  class="form-control image_file">
+                                                            </div>
+
+                                                        </div>--->
                                                         
-                                                        <div class="row row_align mb-4">
+                                                        <!--<div class="row row_align mb-4">
                                                             
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Credit Account</label>
@@ -316,17 +386,20 @@
                                                                     
                                                                     <option value="" selected disabled>Select Credit Account</option>
 
-                                                                    <?php foreach($charts_of_accounts as $chart_account){?> 
-                                                                         <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
-                                                                    <?php } ?>
+                                                                    <?php //foreach($charts_of_accounts as $chart_account){?> 
+
+                                                                        <option value="<?php //echo $chart_account->ca_id; ?>"><?php //echo $chart_account->ca_name;?></option>
+
+                                                                    <?php //} ?>
 
                                                                 </select>
                                                                      
                                                             </div>
 
-                                                        </div>
+                                                        </div>--->
 
                                                         <div class="row row_align mb-4">
+
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Attach</label>
                                                             </div>
@@ -340,28 +413,16 @@
 
                                                         
                                                     </div>
+
+
                                                     <div class="col-lg-6">
-                                                    <div class="modal-footer justify-content-center">
-                                                        <button class="btn btn btn-success" type="submit">Save</button>
-                                                    </div>
-                                                    </div>
-                                                    <!--<div class="col-lg-6">
-                                                        <div style="float: right;">
-                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                <tr>
-                                                                    <td><button>Print</button></td>
-                                                                    <td><button>Email</button></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td><button type="submit">Save</button></td>
-                                                                    <td><button>PDF</button></td>
-                                                                </tr>
-
-                                                            </table>
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                                            <span class="print_btn_clz once_form_submit" style="display:none"><button class="btn btn btn-success" name="print_btn" type="submit" value="1">Print</button></span>
                                                         </div>
+                                                    </div>
 
-                                                    </div>--->
+                                                   
 
                                                 </div>
                                                 
@@ -712,6 +773,29 @@
                                     
                                     <!-- ### --> 
 
+
+                                    <!--single row start-->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" class="form-control view_credit_account" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>  
+
+                                    <!--#####-->
+
                                 </div>
 
                             </div>
@@ -839,6 +923,8 @@
                                 </thead>
                                 
                                 <tbody  class="travelerinfo view_product"></tbody>
+
+                                <tbody class="view_total_amount"></tbody>
                           
                             </table>
                         </div>
@@ -847,23 +933,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 
-                                <div class="row row_align mb-4">
-                                    
-                                    <div class="col-lg-3">
-                                        <label for="basicInput" class="form-label">Credit Account</label>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        
-                                        
-                                        <input type="text" class="form-control view_credit_account" readonly>
-
-                                        </select>
-                                                
-                                    </div>
-
-                                </div>
-
+                                
                                 <!--<div class="row row_align mb-4">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">Attach</label>
@@ -952,6 +1022,7 @@
 
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
+                                        
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
@@ -960,7 +1031,6 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-
                                                 <select class="form-select edit_customer" name="ci_customer" required></select>
 
                                             </div>
@@ -969,6 +1039,29 @@
 
                                     </div>    
                                     <!-- ### --> 
+
+
+                                    <!--single row start-->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <select class="form-select edit_charts_account" name="ci_credit_account" id="" required></select>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div> 
+
+                                    <!--####-->
 
                                                             
 
@@ -1000,6 +1093,9 @@
                                                           
                                     <!-- ### --> 
 
+
+                                   
+
                                 </div>
 
                             </div>
@@ -1020,9 +1116,9 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                            <input type="text" name="ci_lpo_reff" class="form-control edit_lpo_reff" required>
+                                                <input type="text" name="ci_lpo_reff" class="form-control edit_lpo_reff" required>
                                             
-                                        </div>
+                                            </div>
 
                                         </div> 
 
@@ -1123,6 +1219,8 @@
                                 
                                 <tbody  class="travelerinfo edit_product"></tbody>
 
+                                <tbody class="edit_total_amount"></tbody>
+
                                 <tbody class="add_more_class"></tbody>   
                                 
                             </table>
@@ -1130,25 +1228,7 @@
 
                                                 
                         <div class="row">
-                            <div class="col-lg-6">
-                                                        
-                                <div class="row row_align mb-4">
-                                                            
-                                    <div class="col-lg-3">
-                                        <label for="basicInput" class="form-label">Credit Account</label>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        
-                                        <select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
-                                            
-                                            
-
-                                        </select>
-                                                
-                                    </div>
-
-                                </div>
+                            
 
                                 
                                 <!--<div class="row row_align mb-4">
@@ -1166,7 +1246,7 @@
 
                             </div>
                             
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
 
                                 <div class="modal-footer justify-content-center">
                                     <button class="btn btn btn-success" type="submit">Save</button>
@@ -1309,7 +1389,9 @@
                     var formData = new FormData(currentForm);
                     // Submit the form for the current tab
                     if($('#add_form1').attr('data-product')=="true")
-                    {
+                    {   
+                        $('.once_form_submit').attr('disabled', true); // Disable this input.
+
                         $.ajax({
                             url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
                             method: "POST",
@@ -1340,6 +1422,11 @@
 
                                 datatable.ajax.reload(null, false);
 
+                                if(data.print!="")
+                                {
+                                    window.open(data.print, '_blank');
+                                }
+
                                 if(data.advance_status === "true")
                                 {
                                     $('#SaveModal').modal('show');
@@ -1350,7 +1437,24 @@
 
                     }else
                     {
-                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                        alertify.error('Please Select Products ').delay(3).dismissOthers();
+
+                        $('#blink').each(function() {
+                            var elem = $(this);
+                            refreshIntervalId = setInterval(function() {
+                                if (elem.css('visibility') == 'hidden') {
+                                    elem.css('visibility', 'visible');
+                                } else {
+                                    elem.css('visibility', 'hidden');
+                                }    
+                            }, 200);
+                        });
+
+                        setTimeout(function(){
+                            clearInterval(refreshIntervalId);
+                            
+                        }, 1000)
+   
                     }
                 }
             });
@@ -1407,6 +1511,8 @@
             initializeDataTable();
         });
         /*###*/
+
+
 
 
         $("body").on('change', '.customer_id', function(){ 
@@ -1588,6 +1694,9 @@
         /*close select modal end*/
 
 
+      
+
+
 
 
 
@@ -1718,7 +1827,8 @@
             var formData = new FormData($('#add_form1')[0]);
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
-
+               
+                $(".cust_more_modal").addClass("disabled-span");
             
                 $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
@@ -1903,6 +2013,8 @@
 
        $("body").on('click', '.prod_modal_submit', function(){ 
 
+            $('.print_btn_clz').css('display', 'block');
+
             var selectId = $('#select_prod_id').val();
 
             checked = $("input[type=checkbox]:checked").length;
@@ -1933,6 +2045,8 @@
                     $('.selected_table').show();
 
                     $('.amount_total').val(data.total_amount);
+
+                    checkedIds.length = 0;
                 }
 
             });
@@ -1945,7 +2059,9 @@
 
     /*reset reffer no*/ 
     $('.add_model_btn').click(function(){
-       
+        
+        $('.print_btn_clz').css('display', 'none');
+
         $('#add_form1')[0].reset();
 
         $('.hidden_cash_invoice').val("");
@@ -1956,9 +2072,13 @@
 
         $('.cont_person   option').remove();
 
-        $('.cont_person   option').remove();
-
         $('#add_form1').attr('data-product','false');
+
+        $('.cash_invoice_remove').remove();
+
+        $('.once_form_submit').attr('disabled', false); // Disable this input.
+        
+        $(".cust_more_modal").removeClass("disabled-span");
 
         $.ajax({
 
@@ -2021,6 +2141,7 @@
 
                 $('.view_product').html(data.prod_details);
                 
+                $('.view_total_amount').html(data.total_amount);
 
                 $('.view_image_table').html(data.image_table);
                 
@@ -2089,6 +2210,8 @@
                     $('.edit_charts_account').html(data.charts_of_account);
 
                     $('.add_more_class').html(data.add_more);
+
+                    $('.edit_total_amount').html(data.total_amount);
                     
                     //console.log(data.prod_details);
     
@@ -2285,6 +2408,8 @@
 
                             $('.add_more_class').html(data.add_more);
 
+                            $('.edit_total_amount').html(data.total_amount);
+
                            
                        
                         }
@@ -2333,6 +2458,8 @@
                     var deliverID = data.delivery_id;
 
                     $('.add_more_class').html(data.add_more);
+
+                    $('.edit_total_amount').html(data.total_amount);
 
                     //$('.edit_btn[data-id="'+deliveryID+'"]').trigger('click');
 
@@ -2384,6 +2511,8 @@
 
     var checkedIds = [];
 
+    checkedIds.length = 0;
+
     // Check All function
 
     function checkAll(checkbox) 
@@ -2402,6 +2531,7 @@
        
         if (checkbox.checked) {
             // Add the ID to the array if checked
+          
             checkedIds.push(checkbox.id);
         } else {
             // Remove the ID from the array if unchecked

@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesOrderToDn" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="sales_order_to_dn">
+                                <form  method="GET" action="<?php echo base_url();?>Crm/SalesOrderToDn/GetData" target="_blank" id="add_form" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Order To Dn</h5>
@@ -40,9 +40,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control" ></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();"  class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -63,7 +63,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order_ref"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -114,7 +114,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -135,22 +135,175 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Order To Dn</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrderToDn" class="btn btn-primary py-1">Search</button>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Order To Dn <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        
+                                        <form method="POST"  target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="email_button report_button" type="submit">Email</button>
+                                        </form>
+                                        
+                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderToDn" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
-                                                    
+                                                    <th>Sales Order Ref</th>
+                                                    <th>Customer Name</th>
+                                                    <th>LPO Ref</th>
+                                                    <th>Sales Executive</th>
+                                                    <th>Amount</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Quantity</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th width="100px">Delivery Note/ Cash Invoice</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Quantity</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th width="100px">Difference</th>
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                            <?php
+                                                
+                                                if(!empty($sales_orders))
+                                                {
+                                                    $i=1;
+                                                    foreach($sales_orders as $sales_order){
+                                                         
+                                                    ?> 
+                                                   
+                                                    <tr>
+
+                                                        <td><?php echo $i;?></td>
+                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
+                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <td><?php echo $sales_order->so_amount_total;?></td>
+                                                        
+                                                        <td colspan="4" align="left" class="p-0">
+                                                            <table>
+                                                                <?php foreach($sales_order->sales_products as $sales_prod){?>
+                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                        <td  width="100px"><?php echo $sales_prod->product_details;?></td>
+                                                                        <td  width="100px"><?php echo $sales_prod->spd_quantity;?></td>
+                                                                        <td  width="100px"><?php echo $sales_prod->spd_rate;?></td>
+                                                                        <td  width="100px"><?php echo $sales_prod->spd_amount;?></td>
+                                                                    </tr>
+                                                                <?php } ?>
+                                                            </table>
+                                                        </td>
+
+                                                        
+                                                        
+                                                        <td colspan="5" align="left" class="p-0">
+
+                                                            <!--***delivery note section start**-->
+
+                                                            <?php if(!empty($sales_order->sales_deliverys)){?>
+                                                                <table>
+                                                                    <?php  foreach($sales_order->sales_deliverys as $sales_del){
+                                                                        $j=1;  foreach($sales_del->sales_delivery_prod as $del_prod){
+                                                                    ?> 
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+                                                                            <?php if($j==1){?> 
+                                                                                <td width="100px"><?php echo $sales_del->dn_reffer_no;?></td>
+                                                                            <?php } else{?>
+                                                                                <td width="100px"></td>  
+                                                                            <?php } ?>
+                                                                            <td width="100px"><?php echo $del_prod->product_details;?></td>
+                                                                            <td width="100px"><?php echo $del_prod->dpd_current_qty;?></td>
+                                                                            <td width="100px"><?php echo $del_prod->dpd_prod_rate;?></td>
+                                                                            <td width="100px"><?php echo $del_prod->dpd_total_amount;?></td>
+                                                                        </tr>
+                                                                    <?php $j++; }  }?>
+                                                                </table>
+                                                            <?php } ?> 
+
+                                                            <!--*****-->
+                                                            
+
+                                                            <!--**cash invoice start**-->
+
+                                                            <?php if(!empty($sales_order->sales_cash_invoice)){?>
+                                                                <table>
+			                                                        <?php foreach($sales_order->sales_cash_invoice as $sales_cash){
+				                                                        $k=1; foreach($sales_cash->cash_product as $cash_prod){    
+			                                                        ?>
+                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                        <?php if($k==1){?> 
+                                                                            <td width="100px"><?php echo $sales_cash->ci_reffer_no;?></td>
+                                                                        <?php } else{?> 
+                                                                            <td width="100px"></td>
+                                                                        <?php } ?> 
+                                                                        <td width="100px"><?php echo $cash_prod->product_details;?></td>
+                                                                        <td width="100px"><?php echo $cash_prod->cipd_qtn;?></td>
+                                                                        <td width="100px"><?php echo $cash_prod->cipd_rate;?></td>
+                                                                        <td width="100px"><?php echo $cash_prod->cipd_amount;?></td>
+                                                                    </tr>
+			                                                         <?php  $k++; }  } ?>
+		                                                        </table>
+                                                            <?php } ?> 
+
+                                                            <!--****-->
+
+                                                            
+
+                                                        </td>
+
+
+                                                        <td>
+                                                            <?php if(empty($sales_order->sales_deliverys) && empty($sales_order->sales_cash_invoice)){?> 
+                                                                <table>
+                                                                    <?php foreach($sales_order->sales_products as $sales_prod){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+                                                                            
+                                                                        <td  width="100px"><?php echo $sales_prod->spd_amount;?></td>
+                                                                            
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </table>
+                                                            <?php } else{?> 
+                                                                <table>
+                                                                    <tr style="background: unset;border-bottom: hidden !important;">
+                                                                        <td>----</td>
+                                                                    </tr>
+                                                                </table>
+                                                            <?php } ?>
+                                                        </td>
+
+
+
+                                                        
+                                                    </tr>
+                                                        
+                                                    <?php  $i++; }?> 
+
+                                                    
+                                                <?php   } ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -194,12 +347,13 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
 
         /*modal open start*/
+        <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
             $('#SalesOrderToDn').modal('show');
         });
         
-        
+        <?php endif; ?>
         /*modal open end*/
 
 
@@ -270,60 +424,27 @@
         
         /*####*/
 
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_order_to_dn');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
 
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesOrderToDn/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
+        /*form submit start*/
 
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
+        /*$(".submit_btn").on('click', function(){ 
 
-                            $("#SalesOrderToDn").modal('hide');
+            $('#SalesOrderToDn').modal("hide");
 
-                            $('#sales_order_to_dn')[0].reset();
+            $('#add_form')[0].reset();
 
-                            $('.customer_clz').val('').trigger('change');
+            $('.customer_clz option').remove();
 
-                            $('.executive_clz').val('').trigger('change');
+            $('.sales_order option').remove();
 
-                            $('.product_clz').val('').trigger('change');
+            $('.executive_clz option').remove();
 
-                            datatable.ajax.reload(null, false);
+            $('.product_clz option').remove();
 
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
+        });*/
 
-        /*####*/
-
-
-
+        /*#####*/
+      
 
     });
 

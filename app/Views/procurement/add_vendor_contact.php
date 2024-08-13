@@ -73,7 +73,7 @@
 			if(co < contact_max_fieldss){ //max input box allowed
 				co++;
 				i++;
-				$(".contact-more_data").append("<tr class='contact_more_row'><td class='cont_si_no'>"+co+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-contact-btn' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+				$(".contact-more_data").append("<tr class='contact_more_row add_prod'><td class='cont_si_no'>"+co+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-contact-btn' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
 				contactSlno();
 			}
 		});
@@ -82,11 +82,39 @@
 		$(document).on("click", ".remove-contact-btn", function() {
 	 
 			$(this).parent().remove();
+            reName();
 			//y--;
 			contactSlno();
 		});
 
 		/*####*/
+
+
+
+        /*rename section start*/
+
+        function reName(){
+
+            alert("sucess");
+            
+            var jj = 0;
+
+            $('body .contact_more_row').each(function() {
+                
+                $(this).closest('.contact_more_row').find('.add_prod').attr('name', 'pro_con_person['+jj+']');
+
+                $(this).closest('.contact_more_row').find('.add_prod').attr('name', 'pro_con_designation['+jj+']');
+
+                $(this).closest('.contact_more_row').find('.add_prod').attr('name', 'pro_con_mobile[1]['+jj+']');
+
+                $(this).closest('.contact_more_row').find('.add_prod').attr('name', 'pro_con_email[1]['+jj+']');
+  
+                jj++;
+  
+            });
+        }
+
+        /*rename section end*/
 
 
         /*serial no correction section start*/
@@ -127,20 +155,10 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-
-                            var responseData = JSON.parse(data);
                             
-                           /* $("#contact_person_id").html(responseData.contact_person);
-                            
-                            $('#ContactDeatils2').modal('hide');
-                            
-                            $('#add_cus_form4')[0].reset();*/
-
                             $('#AddNewContact').modal('hide');
                             
                             $('#new_form_cont')[0].reset();
-
-
 
                         }
                     });

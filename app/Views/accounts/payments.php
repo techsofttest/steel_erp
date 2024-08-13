@@ -260,7 +260,7 @@
                                         <th>Invoice No</th>
                                         <th>LPO Ref</th>
                                         <th>Amount</th>
-                                        <th>Receipt</th>
+                                        <th>Payment</th>
                                         <th>Tick</th>
                                         </tr>
                                     </thead>
@@ -303,7 +303,7 @@
                         
                         <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
 
-                        <button class="w-100">FIFO</button>
+                        <button id="fifo_add" class="w-100" type="button">FIFO</button>
 
                         <button class="w-100" type="submit">Save</button>
 
@@ -446,18 +446,10 @@
                             </div>
 
 
-                            <div class="col-col-md-9 col-lg-9">
+                            <div class="col-col-md-9 col-lg-9 select2_parent">
 
 
-                            <select class="form-control" name="p_credit_account">
-
-                            <option value="">Select Credit Account</option>
-
-                            <?php foreach($customers as $cus) { ?>
-
-                            <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                            <?php } ?>
+                            <select class="form-control add_credit_account_select2" name="p_credit_account" required>
 
 
                             </select>
@@ -513,7 +505,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                                <select name="p_method" class="form-control" required>
+                                <select name="p_method" class="form-control" id="" required>
 
                                 <option value="">Select Payment Method</option>
 
@@ -570,7 +562,7 @@
 
 
 
-<div class="row align-items-center mb-2">
+<div class="row align-items-center mb-2" id="bank_sec_add">
 
 <div class="col-col-md-3 col-lg-3">
 
@@ -609,14 +601,14 @@
 
                                     <thead>
                                         <tr>
-                                        <th>Date</th>
+                                        <th>Sl No</th>
                                         <th>Debit Account</th>
                                         <th>Amount</th>
                                         <th>Link</th>
                                         <th>Narration</th>
                                         </tr>
                                     </thead>
-
+                                
 
                                     <tbody id="sel_invoices">
 
@@ -625,24 +617,18 @@
 
                                     <td>
 
-                                    <input class="credit_sl_no" type="hidden" name="credit_sl_no[]" value="1">
+                                    <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
 
-                                    <input class="form-control credit_date datepicker" type="text" name="inv_date[]" readonly>
-                                
+
+
                                     </td>
 
 
                                     <td> 
 
-                                       <select class="form-control debit_account" name="p_debit_account[]">
+                                       <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
-                                       <option value="">Select Debit Account</option>
-
-                                       <?php foreach($customers as $cus) { ?>
-
-                                        <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                        <?php } ?>
+                                    
 
                                        </select> 
                                        
@@ -698,7 +684,7 @@
 
                                     <td colspan="1"></td>
 
-                                    <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+                                    <td colspan="3" align="left" class="sales_quotation_amount_in_word1"></td>
 
                                     <td align="right" colspan="3">Total</td>
 
@@ -728,7 +714,7 @@
                                                             <td><button>Email</button></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><button type="submit">Save</button></td>
+                                                            <td><button type="submit" name="main_submit">Save</button></td>
                                                             <td><button>PDF</button></td>
                                                         </tr>
                                                     </table>
@@ -773,7 +759,7 @@
 <!-- View Modal -->
 
 
-<div class="modal fade" id="SalesOrderModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SalesOrderModal"  aria-hidden="true">
 
     <div class="modal-dialog modal-xl">
 
@@ -809,7 +795,7 @@
                                         <th>Vendor</th>
                                         <th>LPO Ref</th>
                                         <th>Amount</th>
-                                        <th>Receipt</th>
+                                        <th>Payments</th>
                                         <th>Tick</th>
                                         <th></th>
                                         </tr>
@@ -828,14 +814,17 @@
 
                                         <option value="">Select Vendor</option>
 
+                                        <option value="">Vendor 1</option>
 
+                                        <option value="<?php #pay_credit_account; ?>"></option>
 
+                                       
                                         </select>
                                         
                                         </td>
 
-                                        <td>LPO12345</td>
-                                        <td>10000</td>
+                                        <td></td>
+                                        <td></td>
                                         <td><input class="form-control" type="number" name="lpo_reciept[]"></td>
                                         <td><input type="checkbox" name="lpo_selected[]"></td>
 
@@ -1041,21 +1030,17 @@
                             </div>
 
 
-                            <div class="col-col-md-9 col-lg-9">
+                            <div class="col-col-md-9 col-lg-9 select2_parent">
 
-
-                            <select class="form-control" id="p_credit_account_edit" name="p_credit_account">
+                            <!--
+                            <select class="form-control edit_credit_account_select2" id="p_credit_account_edit" name="p_credit_account">
 
                             <option value="">Select Credit Account</option>
 
-                            <?php foreach($customers as $cus) { ?>
-
-                            <option value="<?= $cus->cc_account_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                            <?php } ?>
-
-
                             </select>
+                            -->
+
+                            <input class="form-control" id="p_credit_account_edit" readonly>
 
 
                             </div>
@@ -1065,13 +1050,29 @@
 
 
 
+                        <div class="row align-items-center mb-2 cheque_file_sec cheque_sec d-none">
+
+                        <div class="col-col-md-3 col-lg-3">
+                                
+                            <label for="basiInput" class="form-label">Cheque File</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <a class="" target="_blank" id="cheque_file_view" href="javascript:void(0);">View</a>
+
+                        </div>
+
+                        </div>
 
 
-                        <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                        <div class="row align-items-center mb-2 cheque_sec cheque_file_edit_sec d-none">
 
                         <div class="col-col-md-3 col-lg-3">
 
-                            <label for="basiInput" class="form-label">Cheque Copy</label>
+                            <label for="basiInput" class="form-label">Update Cheque Copy</label>
 
                         </div>
 
@@ -1161,7 +1162,7 @@
 
 
 
-<div class="row align-items-center mb-2">
+<div class="row align-items-center mb-2" id="bank_sec_edit">
 
 
                     <div class="col-col-md-3 col-lg-3">
@@ -1218,7 +1219,6 @@
 
                                     <thead>
                                         <tr>
-                                        <th>Date</th>
                                         <th>Debit Account</th>
                                         <th>Amount</th>
                                         <th>Narration</th>
@@ -1239,26 +1239,14 @@
                                     <tbody>
 
 
-                                    <tr class="edit_add_debit">
-                                        
-                                        <td>
-
-                                        <input class="form-control debit_date datepicker" type="text" name="inv_date[]" readonly>
-
-                                        </td>
-
+                                    <tr class="edit_add_debit invoice_row" >
+                                       
 
                                         <td> 
 
-                                        <select class="form-control debit_account" name="p_debit_account[]">
+                                        <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
                                         <option value="">Select Debit Account</option>
-
-                                        <?php foreach($customers as $cus) { ?>
-
-                                            <option value="<?= $cus->cc_id; ?>"><?= $cus->cc_customer_name; ?></option>
-
-                                            <?php } ?>
 
                                         </select> 
                                         
@@ -1466,12 +1454,14 @@
 
 
 
-<script src="<?php echo base_url(); ?>public/assets/js/jquery.num2words.js"></script>
+<!-- <script src="<?php echo base_url(); ?>public/assets/js/jquery.num2words.js"></script> -->
             
 
 <script>
 
+
     document.addEventListener("DOMContentLoaded", function(event) { 
+
     
         /*account head add section*/    
    
@@ -1486,27 +1476,40 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
-                    /*
-                    form.preventdefault();
+                    
+                    var submitButtonName =  $(this.submitButton).attr("name");
 
-                    var file_data = $('input[name=p_cheque_copy]').prop('files')[0];
+                    var formData = new FormData(form);
 
-                    var form_data = new FormData(form);
-
-                    form_data.append('file',file_data);
-                    */
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/Payments/Add",
                         method: "POST",
-                       // contentType: false,
-                       // processData: false,
-                        data: $(form).serialize(),
+                        data:formData,
+                        processData: false, 
+                        contentType: false,
                         success: function(data) {
                             //$('#add_form')[0].reset();
                             //$('#AddModal').modal('hide');
-                            $('#added_id').val(data);
+
+                            var data = JSON.parse(data);
+                            //console.log(data.status);
+                            if(data.status==0)
+                            {
+                            alertify.error(data.error).delay(3).dismissOthers();
+                            return false;
+                            }
+
+                            $('#added_id').val(data.id);
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload( null, false )
+
+                             if(submitButtonName=="main_submit")
+                            {
+                            $('#AddModal').modal('hide');
+                            }
+                            
+                            //datatable.ajax.reload( null, false )
+
+                            datatable.ajax.reload(null,false);
                         }
                        
                     });
@@ -1539,6 +1542,10 @@
 
             $('#EditModal .edit_add_debit').show();
 
+            $('#EditModal input[name=p_cheque_copy]').val('');
+
+            $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
+
 
             $.ajax({
 
@@ -1554,11 +1561,13 @@
                    {
                    var data = JSON.parse(data);
 
+                   InitAccountsSelect2('.debit_account_select2','.invoice_row');
+
                    $('#uid_edit').val(data.pay.pay_ref_no);
 
                    $('#p_id_edit').val(data.pay.pay_id);
 
-                   $('#p_credit_account_edit').val(data.pay.pay_credit_account);
+                   $('#p_credit_account_edit').val(data.pay.ca_name);
 
                    $('#p_method_edit').val(data.pay.pay_method);
 
@@ -1570,6 +1579,38 @@
                    {
                    $('#EditModal .cheque_sec').addClass("d-none");
                    }
+
+                   if(data.pay.pay_method=="1")
+                    {
+                   
+                    $('.cheque_sec').removeClass("d-none");
+
+                    $('.cheque_file_sec').removeClass("d-none");
+           
+                    $('#EditModal input[name=p_cheque_no]').val(data.pay.pay_cheque_no);
+
+                    $('#EditModal input[name=p_cheque_date]').val(FormatDate(data.pay.pay_cheque_date));
+
+                    if(data.pay.pay_cheque_copy != null)
+                    {
+                    $('#EditModal #cheque_file_view').attr('href','<?= base_url();?>uploads/Payments/'+data.pay.pay_cheque_copy+'');
+                    }
+                    else
+                    {
+                    $('.cheque_file_sec').addClass("d-none");   
+                    }
+
+                    }
+                    else
+                    {
+
+                    $('.cheque_sec').addClass("d-none");
+
+                    $('.cheque_file_sec').addClass("d-none");
+
+                    }
+
+
 
                    $('#p_date_edit').val(FormatDate(data.pay.pay_date));
 
@@ -1608,9 +1649,6 @@
            $("body").on('click', '.view_btn', function(){ 
             var id = $(this).data('id');
 
-
-
-
             $.ajax({
 
             url : "<?php echo base_url(); ?>Accounts/Payments/Edit",
@@ -1621,15 +1659,17 @@
 
             success:function(data)
             {   
-                if(data)
-                {
+
+            if(data)
+            {
+
             var data = JSON.parse(data);
 
             $('#uid_edit').val(data.pay.pay_ref_no);
 
             $('#p_id_edit').val(data.pay.pay_id);
 
-            $('#p_credit_account_edit').val(data.pay.pay_credit_account);
+            $('#p_credit_account_edit').val(data.pay.ca_name);
 
             $('#p_method_edit').val(data.pay.pay_method);
 
@@ -1641,10 +1681,11 @@
 
             $('#sel_invoices_edit').html(data.debit);
 
-
             $("#EditModal :input").prop("disabled", true);
 
             $('#EditModal .btn-close').prop("disabled",false);
+
+            $('#EditModal .cheque_file_edit_sec').addClass("d-none");
 
             $('#EditModal .submit_btn').hide();
 
@@ -1666,60 +1707,11 @@
             }
 
 
-
-
-
-
-
-            /*
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Accounts/Payments/View",
-
-                method : "POST",
-
-                data: {id: id},
-
-                success:function(data)
-                {   
-                    if(data)
-                    {
-                    var data = JSON.parse(data);
-
-                    $('#p_ref_view').val(data.payment.pay_ref_no);
-
-                    $('#p_date_view').val(data.payment.pay_date);
-
-                    $('#p_credit_acc_view').val('Customer Name');
-
-                    $('#p_pay_method_view').val(data.payment.rm_name);
-
-                    $('#p_bank_view').val(data.payment.bank_name);
-
-                    $('#p_debit_acc_view').val(data.payment.ca_account_id);
-
-                    $('#total_amount_view').html(data.payment.pay_total);
-
-                    $('#ViewModal').modal('show');
-
-                    $('#invoice_sec_view').html(data.invoices);
-                  
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
-                    
-                }
-
-            */
-
-
             });
             
             
         });
+
         /*####*/
 
 
@@ -1729,7 +1721,36 @@
  
         $("body").on('click', '.add_invoices', function(){ 
 
-        
+        var parent = $(this).closest('tr');
+
+        var c_account = parent.find('.debit_account');
+
+        var c_amount = parent.find('.credit_amount');
+
+        if( c_account.val() =="")
+        {
+
+        alertify.error('Select Debit Account!').delay(3).dismissOthers();   
+
+        return false;
+
+        }
+
+
+        if( c_amount.val() =="")
+        {
+
+        alertify.error('Enter Amount!').delay(3).dismissOthers();   
+
+        c_amount.focus();
+
+        return false;
+
+        }
+
+        //var id=1;
+
+
         if(!$("#add_form").valid())
         {
             alertify.error('Fill required fields!').delay(3).dismissOthers();
@@ -1749,21 +1770,8 @@
 
         }
 
-        var parent = $(this).closest('tr');
 
-        var c_account = parent.find('.debit_account');
-
-        if( c_account.val() =="")
-        {
-
-        alertify.error('Select Debit Account!').delay(3).dismissOthers();   
-
-        return false;
-
-        }
-        //var id=1;
-
-        var receipt = $('#added_id').val();
+        var pid = $('#added_id').val();
 
         var id = c_account.val(); //Customer_ID
 
@@ -1780,7 +1788,7 @@
 
             method : "POST",
 
-            data: {id: id,cdate:credit_date,camount:credit_amount,cnarration:credit_narration,rid:receipt},
+            data: {id: id,cdate:credit_date,camount:credit_amount,cnarration:credit_narration,pid:pid},
 
             dataType: "json",
 
@@ -1790,7 +1798,9 @@
                 
                 if(data.status==0)
                 {
-                alertify.error('No Invoices Found!').delay(3).dismissOthers();   
+                alertify.error('No Invoices Found!').delay(3).dismissOthers();  
+
+                $('#AddModal').modal('show'); 
 
                 return false;
                 }
@@ -1798,6 +1808,8 @@
                 $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
 
                 $('#AddModal').modal('hide');
+
+                $('#fifo_add').attr('data-total',credit_amount);
 
                 $('#InvoicesModal').modal('show');
 
@@ -1810,6 +1822,29 @@
     });
 
     /*##*/
+
+
+
+    $('body').on('click','#fifo_add',function(){
+
+    var total = $(this).attr('data-total');
+
+    $('.invoice_receipt_amount').each(function(){
+
+    parent =  $(this).closest('tr');
+
+    invoice_total = parent.find('.invoice_total_amount').val();
+
+    var fill_amount = Math.min(total,invoice_total);
+
+    parent.find('.invoice_receipt_amount').val(fill_amount);
+
+    total -= fill_amount;
+
+    });
+
+
+    });
 
 
 
@@ -1989,36 +2024,7 @@
 
         $('#ri_id_edit').val(id);
 
-        /*
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/Receipts/EditInvoice",
-
-        method : "POST",
-
-        data: {inv_id: id},
-
-        success:function(data)
-        {   
-            var data = JSON.parse(data);
-
-            $('#ri_date_edit').val(data.ri.ri_date);
-
-            $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
-
-            $('#ri_amount_edit').val(data.ri.ri_amount);
-
-            $('#ri_remarks_edit').val(data.ri.ri_remarks);
-
-        }
-
-        });
-
-        */
-
-        //$('#EditModal').modal('hide');
-
-        //$('#InvoiceEditModal').modal('show');
+       
 
         });
 
@@ -2095,9 +2101,10 @@
 
     var max_fieldcost = 30;
 
+    var cc = $('.invoice_row').length;
+
     $("body").on('click', '.add_more', function(){
 
- 
     var cc = $('.invoice_row').length;
 
     if(cc < max_fieldcost){ 
@@ -2111,13 +2118,24 @@
 
     $clone.find("select").val("");
 
+    $clone.find(".debit_account_select2").val('');
+
+    $clone.find(".debit_account_select2").removeAttr('data-select2-id');
+
+    $clone.find('.select2').remove();
+
     $clone.find(".sl_no").html(cc);
 
     $clone.find(".del_elem").show();
 
-    $clone.find('.credit_sl_no').val('2');
+    //$clone.find('.credit_sl_no').val('2');
 
     $clone.insertAfter('.invoice_row:last');
+
+    slno();
+
+    InitAccountsSelect2('.debit_account_select2','.invoice_row');
+
 
     }
 
@@ -2131,9 +2149,25 @@ $(document).on("click", ".del_elem", function()
     cc--;
     //totalCalcutate();                                                                           
     //grossCalculate();
+    slno();
 });
 
 /**/
+
+
+function slno(){
+
+var pp =1;
+
+$('body .invoice_row').each(function() {
+
+$(this).find('.credit_sl_no').val(pp);
+
+pp++;
+
+});
+
+}
 
 
 
@@ -2158,7 +2192,13 @@ $(document).on("click", ".del_elem", function()
 
                     method : "POST",
 
-                    data : $('#edit_form').serialize(),
+                    //data : $('#edit_form').serialize(),
+
+                    data : new FormData(document.getElementById("edit_form")),
+
+                    processData: false,
+
+                    contentType: false,
 
                     success:function(data)
                     {
@@ -2212,11 +2252,7 @@ $(document).on("click", ".del_elem", function()
 
         function initializeDataTable() {
 
-            /*
-            if ($.fn.DataTable.isDataTable("#accountTable")) {
-                $('#accountTable').DataTable().clear().destroy();
-            }
-            */
+          
 
             datatable = $('#accountTable').DataTable({
                 'stateSave': true,
@@ -2276,7 +2312,21 @@ $(document).on("click", ".del_elem", function()
             $('.cheque_sec').addClass("d-none");
             }
 
+            if($(this).children(':selected').text()=="Cash")
+            {
+            $('#bank_sec_add').addClass("d-none");
+            
+            }
+            else
+            {
+            $('#bank_sec_add').removeClass("d-none");    
+            }
+
         });
+
+
+
+   
 
 
         /* ### */
@@ -2382,6 +2432,27 @@ $("body").on('submit', '#invoices_add', function(e){
 
     e.preventDefault();
 
+    var total = parseInt($('#fifo_add').data('total'))||0;
+
+var invoice_total = 0;
+
+$('.invoice_receipt_amount').each(function(){
+
+parent =  $(this).closest('tr');
+
+invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
+
+})
+
+if(invoice_total>total)
+{
+
+alertify.error('Amount should not be greater than credit amount!').delay(3).dismissOthers();      
+
+return false;
+
+}
+
 $('#invoices_add').serialize();
 
 $.ajax({
@@ -2414,6 +2485,18 @@ $('#AddModal').modal('show');
 
 $('.add_model_btn').click(function(){
 
+$('#added_id').val('');
+
+$('#total_amount').html('0.00');
+
+$('#total_amount_val').val('0.00');
+
+$('#add_form')[0].reset();
+
+$('.invoice_row').not(':first').remove();
+
+InitAccountsSelect2('.debit_account_select2','.invoice_row');
+
 
 $.ajax({
 
@@ -2432,14 +2515,47 @@ $('#uid').val(data);
 
 });
 
+
+
+
+
+$("body").on('change','.invoice_add_check',function(){
+
+parent = $(this).closest('tr');
+
+var total = $('#fifo_add').data('total');
+
+if($(this).prop('checked')==true)
+
+{
+
+var total_amount = parent.find('.invoice_total_amount').val();
+
+var fill_amount = Math.min(total,total_amount);
+
+parent.find('.invoice_receipt_amount').val(fill_amount);
+
+}
+
+else
+{
+
+parent.find('.invoice_receipt_amount').val(0);   
+
+}
+
+
+});
+
+
+
+
+
         $("body").on('keyup', '.credit_amount', function(){ 
 
         TotalAmount();
 
         });
-
-
-
 
 
 
@@ -2571,6 +2687,7 @@ $('#uid').val(data);
 
         var account = parent.find('.debit_account').val();
 
+
         var amount = parent.find('.debit_amount').val();
 
         var narration = parent.find('.debit_narration').val();
@@ -2608,6 +2725,7 @@ $('#uid').val(data);
 
 
 
+
         });
 
 
@@ -2615,24 +2733,67 @@ $('#uid').val(data);
 
 
 
+        
+/* Accounts Init Select 2 */
 
+function InitAccountsSelect2(classname,parent){
+                    $('body '+classname+':last').select2({
+                        placeholder: "Select Account",
+                        theme : "default form-control-",
+                        dropdownParent: $($(''+classname+':last').closest(''+parent+'')),
+                        ajax: {
+                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                            dataType: 'json',
+                            delay: 250,
+                            cache: false,
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    page: params.page || 1,
+                                };
+                            },
+                            processResults: function(data, params) {
+                            
+                                var page = params.page || 1;
+                                return {
+                                    results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                                    pagination: {
+                                        more: (page * 10) <= data.total_count
+                                    }
+                                };
+                            },              
+                        }
+                    })
+                }
 
+                
+                InitAccountsSelect2('.add_credit_account_select2','.select2_parent');
+
+                InitAccountsSelect2('.edit_credit_account_select2','.select2_parent');
+
+                InitAccountsSelect2('.debit_account_select2','.invoice_row');
+
+                /* ### */
+                
             //
 
 
 
-
-
-
-
-
-
-
-
+              /* Select 2 Remove Validation On Change */
+              $(".add_credit_account_select2").on("change",function(e) {
+                    $(this).parent().find(".error").removeClass("error");         
+                });
+                /*###*/
 
 
 
     });
+
+
+
+        
 
 
     function TotalAmount()
@@ -2670,6 +2831,11 @@ $('#uid').val(data);
 
 
 
+
+
+
+
+    
 
 
 

@@ -134,8 +134,6 @@ class CustomerCreation extends BaseController
 
         $data['customer_creation_id'] = $id;
 
-        //$coa_cond=array('ca_account_type' => $insert_data['cc_account_head']);
-
         $coa_data['ca_name'] = $this->request->getPost('cc_customer_name');
 
         $coa_data['ca_account_type'] = $this->request->getPost('cc_account_head');
@@ -206,6 +204,8 @@ class CustomerCreation extends BaseController
         {
             $update_data['cc_cr_expiry'] =""; 
         }
+
+
         if(!empty($this->request->getPost("cc_est_id_expery")))
         {
             $update_data['cc_est_id_expery'] = date('Y-m-d', strtotime($this->request->getPost("cc_est_id_expery")));
@@ -214,15 +214,17 @@ class CustomerCreation extends BaseController
         {
             $update_data['cc_est_id_expery'] ="";
         }
+
         if(!empty($this->request->getPost("cc_qid_expiry"))){
         
             $update_data['cc_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("cc_qid_expiry")));
-
         }
         else
         {
             $update_data['cc_qid_expiry'] = "";
         }
+
+
         // Handle file upload
         if ($_FILES['cc_attach_cr']['name'] !== '') {
             $ccAttachCrFileName = $this->uploadFile('cc_attach_cr','uploads/CustomerCreation');

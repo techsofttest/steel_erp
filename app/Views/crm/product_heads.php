@@ -72,7 +72,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer justify-content-center">
-                                            <button  class="btn btn btn-success">Save</button>
+                                            <button  class="btn btn btn-success ">Save</button>
+                                            
                                         </div>
                                     </div>
                                 </form>
@@ -90,7 +91,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Product Head</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddProductHead" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddProductHead" class="btn btn-primary py-1  add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -226,6 +227,7 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
+                   
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/ProductHead/Add",
                         method: "POST",
@@ -427,6 +429,9 @@
         })
         
         /*####*/
+
+
+        
      
 
     });

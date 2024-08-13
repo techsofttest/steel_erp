@@ -46,8 +46,8 @@ class PettyCashVoucher extends BaseController
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
-                'table' => 'crm_customer_creation',
-                'pk' => 'cc_id',
+                'table' => 'accounts_charts_of_accounts',
+                'pk' => 'ca_id',
                 'fk' => 'pcv_credit_account',
                 ),
         );
@@ -65,7 +65,7 @@ class PettyCashVoucher extends BaseController
               "pcv_id"=>$i,
               "pcv_voucher_no"=>$record->pcv_voucher_no,
               "pcv_date"=>date('d-m-Y',strtotime($record->pcv_date)),
-              "pcv_credit_account"=>$record->cc_customer_name,
+              "pcv_credit_account"=>$record->ca_name,
               "action" =>$action,
            );
            $i++; 
@@ -119,7 +119,7 @@ class PettyCashVoucher extends BaseController
 
         $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
-        $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+        //$data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
         $data['content'] = view('accounts/petty-cash-voucher',$data);
 
@@ -147,7 +147,25 @@ class PettyCashVoucher extends BaseController
 
         $insert_data['pcv_added_date'] = date('Y-m-d'); 
 
+
+        if(empty($this->request->getPost('pcv_id')))
+
+        {
+
         $id = $this->common_model->InsertData('accounts_petty_cash_voucher',$insert_data);
+
+        }
+
+        else
+        {
+        
+        $id = $this->request->getPost('pcv_id');
+
+        $pcv_cond = array('pcv_id' => $id);
+
+        $this->common_model->EditData($insert_data,$pcv_cond,'accounts_petty_cash_voucher');
+
+        }
 
         $pcv_no = 'PCV'.str_pad($id, 7, '0', STR_PAD_LEFT);
         
@@ -159,6 +177,9 @@ class PettyCashVoucher extends BaseController
         
         for($i=0;$i<count($this->request->getPost('pcv_sale_invoice'));$i++)
         {
+
+            $check_credit = $this->common_model->SingleRow('accounts_petty_cash_debits',array('pci_voucher_id' => $id,'pci_debit_account' => $_POST['pcv_debit'][$i]));
+
 
             $sales_invoice = $_POST['pcv_sale_invoice'][$i];
 
@@ -179,7 +200,17 @@ class PettyCashVoucher extends BaseController
 
             $insert_invoice['pci_voucher_id'] = $id;
 
+
+            if(empty($check_credit))
+            {
             $this->common_model->InsertData('accounts_petty_cash_debits',$insert_invoice);
+            }
+            else
+            {
+            $this->common_model->EditData($insert_invoice,array('pci_id' => $check_credit->pci_id),'accounts_petty_cash_debits');
+            }
+
+           
 
         }
 
@@ -193,7 +224,7 @@ class PettyCashVoucher extends BaseController
     public function FetchReference()
     {
 
-    $uid = $this->common_model->FetchNextId('accounts_petty_cash_vouchers',"PCV");
+    $uid = $this->common_model->FetchNextId('accounts_petty_cash_voucher',"PCV");
 
     echo $uid;
 
@@ -251,21 +282,32 @@ class PettyCashVoucher extends BaseController
 
         $joins = array(
 
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk' => 'ca_id',
+                'fk' => 'pcv_credit_account',
+                ),
+
         );
 
         $data['pcv'] = $this->common_model->SingleRowJoin('accounts_petty_cash_voucher',$cond,$joins);
 
 
-        $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+        $customers = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
 
         $debit_cond = array('pci_voucher_id' => $data['pcv']->pcv_id);
     
         $debit_joins = array(
             array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
+            'table' => 'accounts_charts_of_accounts',
+            'pk' => 'ca_id',
             'fk' => 'pci_debit_account',
+            ),
+            array(
+             'table' => 'crm_sales_orders',
+             'pk' => 'so_id',
+             'fk' => 'pci_sales_order'
             ),
         );    
 
@@ -273,11 +315,11 @@ class PettyCashVoucher extends BaseController
 
         $data['debit'] = "";
 
-         $dd='';
+        $dd='';
 
         foreach($customers as $cus) { 
 
-        $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+        $dd.='<option value="'.$cus->ca_id.'">'.$cus->ca_name.'</option>';
 
         }
 
@@ -292,11 +334,11 @@ class PettyCashVoucher extends BaseController
 
         <td>
 
-        <p class="view">'.$debit->cc_customer_name.'</p>
+        <p class="view">'.$debit->so_reffer_no.'</p>
 
         <select style="display:none;" class="edit form-control" name="c_name">
 
-        <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+        <option value="'.$debit->ca_id.'" selected hidden>'.$debit->ca_name.'</option>
 
         '.$dd.'
         
@@ -308,11 +350,11 @@ class PettyCashVoucher extends BaseController
 
         <td>
 
-        <p class="view">'.$debit->cc_customer_name.'</p>
+        <p class="view">'.$debit->ca_name.'</p>
 
         <select style="display:none;" class="edit form-control" name="c_name">
 
-        <option value="'.$debit->cc_id.'" selected>'.$debit->cc_customer_name.'</option>
+        <option value="'.$debit->ca_id.'" selected>'.$debit->ca_name.'</option>
 
         '.$dd.'
         
@@ -579,11 +621,12 @@ class PettyCashVoucher extends BaseController
     //delete 
     public function Delete()
     {
-        $cond = array('jv_id' => $this->request->getPost('ID'));
+        $cond = array('pcv_id' => $this->request->getPost('id'));
 
-        $this->common_model->DeleteData('accounts_journal_voucher',$cond);
+        $this->common_model->DeleteData('accounts_petty_cash_debits',array('pci_voucher_id' => $this->request->getPost('ID')));
 
-        
+        $this->common_model->DeleteData('accounts_petty_cash_voucher',$cond);
+
     }
 
     //fetch order
@@ -650,6 +693,13 @@ class PettyCashVoucher extends BaseController
 
     }
 
+
+
+
+
+
+
+ 
 
 
 
@@ -905,6 +955,14 @@ class PettyCashVoucher extends BaseController
             $mpdf->Output();
         
             }
+
+
+
+
+
+
+
+
     
 
 

@@ -1,6 +1,11 @@
  <!--header section start-->
 
- <?php echo view('accounts/reports_sub_header');?>
+ <?php 
+ if(empty($_GET))
+ {
+ echo view('accounts/reports_sub_header');
+ }
+ ?>
 
 <!--header section end-->
 
@@ -23,7 +28,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Profit And Loss Account</h5>
@@ -102,6 +107,23 @@
                                                                     
                                                                     
                                                                      </table>
+
+
+
+                                                                     <div class="row my-2">
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Monthwise <input type="checkbox" name="month" value="1">
+                                                                    </div>
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Zero Balance <input type="checkbox" name="zero" value="1">
+                                                                    </div>                                                  
+
+                                                                    </div>
+
+
+
                                                                 </div>
 
                                                                 <!--table section end-->
@@ -164,8 +186,7 @@
                                                 <tr>
 
                                                     <th>Description</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th><?= $month_year ?></th>
                                                     <th>%</th>
                                                     <th>Year To Date</th>
                                                     <th>%</th>
@@ -181,13 +202,36 @@
 
                                             $total_credit=0;
 
+                                            $grand_total_ytd = 0;
+
                                             foreach($account_heads as $ah)
-                                            { ?>
+                                            { 
+                                            $total_ytd = number_format(0,2); 
+                                            $total_first_month = number_format(0,2); 
+                                            foreach($ah->Charts as $ca)
+                                            {
+                                            $total_ytd = $total_ytd+$ca->ytd_total;
+                                            $grand_total_ytd = $grand_total_ytd + $ca->ytd_total;
+
+                                            $total_first_month = $total_first_month + $ca->tran_total;
+
+                                            }
+                                            ?>
                                             
+                                         
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                            </tr>
+
                                             <tr>
 
-                                            <th><b style="font-size:20px;"><?= $ah->ah_account_name; ?></b></th>
-                                            <td></td>
+                                            <th><b style="font-size:18px;"><?= $ah->ah_account_name; ?></b></th>
+                                           
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -196,19 +240,61 @@
                                             </tr>
 
                                             <?php
+                                            $total_perc = 0;
+                                            $total_fm_perc=0;
                                             foreach($ah->Charts as $ca)
                                             {
+
+                                            if($ca->ytd_total>0)
+                                            {
+                                            $perc = number_format(($ca->ytd_total/$total_ytd)*100,2);
+                                            } else
+                                            {
+                                            $perc=0;
+                                            }
+
+                                            if($ca->tran_total>0)
+                                            {
+                                            $fm_perc= number_format(($ca->tran_total/$total_first_month)*100,2);
+                                            }
+                                            else
+                                            {
+                                            $fm_perc=0;
+                                            }
                                             ?>
+                                            <tr>
 
                                             <td><?= $ca->ca_name; ?></td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
+                                            
+                                            <td><?php echo isset($ca->tran_total) ? $ca->tran_total : 0 ; ?></td>
+                                            
+                                            <td><?= $fm_perc ?> %</td>
+
+                                            <td><?= $ca->ytd_total; ?></td>
+                                            <td><?= $perc ?> %</td>
+
+                                            </tr>
 
                                             
-                                            <?php } ?>
+                                            <?php 
+                                            $total_perc = $total_perc+$perc;
+                                            $total_fm_perc=$total_fm_perc+$fm_perc;
+                                            } 
+                                            ?>
+
+
+                                            <tr>
+
+                                            <th><b style="font-size:13px;">Total <?= $ah->ah_account_name; ?></b></th>
+                                           
+                                            <td><?= $total_first_month; ?></td>
+                                            <td><?=$total_fm_perc?> %</td>
+                                            <td><?= $total_ytd; ?></td>
+                                            <td><?=$total_perc ?> %</td>
+                                            
+                                            </tr>
+
+
 
                                             <?php 
                                             
@@ -221,20 +307,23 @@
 
 
 
+                                            <?php /*
                                             <tfoot>
 
                                             <tr class="no-sort">
 
-                                            <td><b style="font-size:17px">Total Expenses</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
+                                            <td><b style="font-size:17px">Net Profit</b></td>
+                                            
+                                            <td><b></b></td>
+                                            <td><b></b></td>
+                                            <td><b><?= $grand_total_ytd; ?></b></td>
+                                            <td><b></b></td>
                                           
                                             </tr>
 
                                             </tfoot>
+                                            */
+                                            ?>
 
 
 
@@ -313,11 +402,11 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php }  */?>
 
 
 

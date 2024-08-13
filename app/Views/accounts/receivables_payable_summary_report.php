@@ -1,3 +1,15 @@
+<!--header section start-->
+
+  <?php 
+ if(empty($_GET))
+ {
+ echo view('accounts/reports_sub_header');
+ }
+ ?>
+
+<!--header section end-->
+
+
  <!--header section start-->
 
  <?php echo view('accounts/reports_sub_header');?>
@@ -22,7 +34,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>"  class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Receivable / Payable Summary</h5>
@@ -65,17 +77,17 @@
 
                                                                             <tr>
 
-                                                                            <td>GL Account</td>
+                                                                            <td>GL Account Head</td>
 
                                                                             <td>
 
                                                                             <select class="form-control" name="filter_account">
 
-                                                                            <option value="">Select Account</option>
+                                                                            <option value="">Select Account Head</option>
                                                                             
-                                                                            <?php foreach($accounts as $account){ ?>
+                                                                            <?php foreach($accounts as $account_head){ ?>
 
-                                                                            <option value="<?= $account->cc_id; ?>"><?= $account->cc_customer_name; ?></option>
+                                                                            <option value="<?= $account_head->ah_id; ?>"><?= $account_head->ah_account_name; ?></option>
 
                                                                             <?php } ?>
                                                                             
@@ -91,9 +103,23 @@
                                                                         
                                                                         </thead>
                                                                      
-                                                                    
-                                                                    
+
                                                                      </table>
+
+
+                                                                     <div class="row my-2">
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Receivable <input type="checkbox" name="receivable" value="1">
+                                                                    </div>
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Payable <input type="checkbox" name="payable" value="1">
+                                                                    </div>                                                  
+
+                                                                    </div>
+
+
                                                                 </div>
 
                                                                 <!--table section end-->
@@ -168,19 +194,54 @@
                                             <tbody class="tbody_data">
 
 
-                                            <?php foreach($customers as $customer) {?>
+                                            <?php 
+
+                                            $total_rec    = number_format(0,2);
+
+                                            $total_thirty = number_format(0,2);
+
+                                            $total_sixty  = number_format(0,2);
+                                            
+                                            $total_ninety = number_format(0,2);
+
+                                            $total_above = number_format(0,2);
+
+                                            foreach($all_accounts as $ac) {
+                                                
+                                            $grand_total = 0;
+
+                                            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
+
+                                            ?>
 
                                            <tr> 
-                                                    <td><?= $customer->cc_customer_name ?></td>
-                                                    <td>0.00</td>
-                                                    <td>0.00</td>
-                                                    <td>0.00</td>
-                                                    <td>0.00</td>
-                                                    <td>0.00</td>
+
+                                                <td><?= $ac->cc_customer_name; ?></td>
+                                                <td><?php echo $grand_total; ?></td>
+                                                <td><?php echo empty($ac->ThirtyDays) ? "---" : $ac->ThirtyDays; ?></td>
+                                                <td><?php echo empty($ac->SixtyDays) ? "---" : $ac->SixtyDays; ?></td>
+                                                <td><?php echo empty($ac->NinetyDays) ? "---" : $ac->NinetyDays; ?></td>
+                                                <td><?php echo empty($ac->AboveNinetyDays) ? "---" : $ac->AboveNinetyDays; ?></td>
 
                                             </tr>
 
-                                            <?php } ?>
+                                            <?php 
+                                        
+                                            if($grand_total>0)
+                                            {
+                                            $total_rec = $total_rec+$grand_total;
+                                            }
+
+                                            $total_thirty = $total_thirty+$ac->ThirtyDays;
+                                           
+                                            $total_sixty  =  $total_sixty+$ac->SixtyDays;
+                                            
+                                            $total_ninety = $total_ninety+$ac->NinetyDays;
+
+                                            $total_above = $total_above+$ac->AboveNinetyDays;
+
+
+                                        } ?>
 
                                              
 
@@ -193,11 +254,11 @@
                                             <tr class="no-sort">
                                            
                                             <td><b style="font-size:20px;">Total</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
+                                            <td><b><?= $total_rec ?></b></td>
+                                            <td><b><?= $total_thirty ?></b></td>
+                                            <td><b><?= $total_sixty ?></b></td>
+                                            <td><b><?= $total_ninety ?></b></td>
+                                            <td><b><?= $total_above ?></b></td>
 
                                             </tfoot>
 
@@ -281,11 +342,11 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php } */ ?>
 
 
 

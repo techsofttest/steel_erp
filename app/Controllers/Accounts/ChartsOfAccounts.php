@@ -285,6 +285,8 @@ class ChartsOfAccounts extends BaseController
 
     //delete account head
     public function Delete($coa_id="")
+
+
     {
         //Check 
         if($coa_id=="")
@@ -305,6 +307,10 @@ class ChartsOfAccounts extends BaseController
         $cond = array('ca_id' => $this->request->getPost('id'));
 
         $this->common_model->DeleteData('accounts_charts_of_accounts',$cond);
+
+        $tran_cond = array('tran_account' => $this->request->getPost('id'));
+
+        $this->common_model->DeleteData('master_transactions',$tran_cond);
 
         $return['status'] = 1;
 

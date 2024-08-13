@@ -168,65 +168,93 @@ class JobProfitability extends BaseController
 
     //fetch data
     public function GetData()
-    {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_executive = trim($this->request->getPost('sales_executive'));
-
-        $sales_order     = trim($this->request->getPost('sales_order'));
-
-       
-        $joins = array(
-            /*array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_sales_order',
-                'fk'    => 'so_id',
-            ),*/
-           
-
-        );
-
-      
-        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','',$sales_order,'so_reffer_no','crm_sales_orders',$joins,'so_reffer_no');
-        
-       
-
-        $data['product_data'] =""; 
-
-       if(!empty($sales_order)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($sales_order as $sales)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$sales->so_reffer_no.'</td>
-                <td>'.$sales->so_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
-            }
+    {    
+        if(!empty($_GET["form_date"]))
+        {
+            $from_date = $_GET["form_date"];
         }
         else
         {
-            $data['status'] ="False";
+            $from_date = "";
         }
 
-        echo json_encode($data);
+        if(!empty($_GET["to_date"]))
+        {
+            $to_date = $_GET["to_date"];
+        }
+        else
+        {
+            $to_date = "";
+        }
+
+        if(!empty($_GET["customer"]))
+        {
+            $data1 = $_GET["customer"];
+        }
+        else
+        {
+            $data1 = "";
+        }
+
+        if(!empty($_GET["sales_order"]))
+        {
+            $data2 = $_GET["sales_order"];
+        }
+        else
+        {
+            $data2 = "";
+        }
+
+
+        if(!empty($_GET["sales_executive"]))
+        {
+            $data3 = $_GET["sales_executive"];
+        }
+        else
+        {
+            $data3 = "";
+        }
+
+
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+        );
+
+      
        
+        $data['sales_orders'] = $this->crm_modal->job_profitability($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive','','','crm_sales_orders',$joins,'so_reffer_no');  
+        
+        if(!empty($from_date))
+        {
+            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        }
+        else
+        {
+            $data['from_dates'] ="";
+        } 
+        
+
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
+        }
+        
+        $data['content'] = view('crm/job_profitability',$data);
+ 
+        return view('crm/report-module-search',$data);
       
     }
 

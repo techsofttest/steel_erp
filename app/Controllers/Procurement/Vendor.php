@@ -51,9 +51,9 @@ class Vendor extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ven_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ven_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
-           
-           $data[] = array( 
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ven_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ven_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a href="javascript:void(0)" data-id="'.$record->ven_id.'" class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            
+            $data[] = array( 
               "ven_id"        =>$i,
               'ven_name'      =>$record->ven_name,
               'ven_post_box'  =>$record->ven_post_box,
@@ -132,8 +132,7 @@ class Vendor extends BaseController
 			    {  
 					for($j=0;$j<=$count-1;$j++)
 					{
-							
-					    $insert_data  	= array(  
+				        $insert_data  	= array(  
 							
                             'pro_con_person'       =>  $_POST['pro_con_person'][$j],
 							'pro_con_designation'  =>  $_POST['pro_con_designation'][$j],
@@ -154,6 +153,7 @@ class Vendor extends BaseController
       
     }
 
+   
 
     public function AddTab3()
     {
@@ -161,18 +161,37 @@ class Vendor extends BaseController
 
         $update_data = $this->request->getPost();
 
-        /*if (array_key_exists('customer_creation', $update_data)) {
-            unset($update_data['customer_creation']);
-        }*/
+        if(!empty($this->request->getPost("ven_cr_expiry")))
+        {
+            $update_data['ven_cr_expiry']  = date('Y-m-d', strtotime($this->request->getPost("ven_cr_expiry")));
+        }
+        else
+        {
+            $update_data['ven_cr_expiry']  = "";
+        }
 
-        // Remove unnecessary unset statements for date fields
-       
-        $update_data['ven_cr_expiry']  = date('Y-m-d', strtotime($this->request->getPost("ven_cr_expiry")));
 
-        $update_data['ven_est_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_est_expiry")));
+        if(!empty($this->request->getPost("ven_est_expiry")))
+        {
+            $update_data['ven_est_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_est_expiry")));
+        }
+        else
+        {
+            $update_data['ven_est_expiry']  = "";
+        }
 
-        $update_data['ven_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_qid_expiry")));
 
+        if(!empty($this->request->getPost("ven_qid_expiry")))
+        {
+            $update_data['ven_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_qid_expiry")));
+        }
+        else
+        {
+            $update_data['ven_qid_expiry'] = "";
+        }
+        
+  
+        
         // Handle file upload
         if ($_FILES['ven_cr_attach']['name'] !== '') {
             $ccAttachCrFileName = $this->uploadFile('ven_cr_attach','uploads/Vendor');
@@ -195,25 +214,6 @@ class Vendor extends BaseController
 
 
 
-    // Function to handle file upload
-    public function uploadFile($fieldName, $uploadPath)
-    {
-        $file = $this->request->getFile($fieldName);
-
-        if ($file->isValid() && !$file->hasMoved()) 
-        {
-            $newName = $file->getRandomName();
-            $file->move($uploadPath, $newName);
-            return $newName;
-        }
-
-        return null;
-    }
-
-
-   
-
-    
 
 
     //search droup drown (accountid)
@@ -246,6 +246,579 @@ class Vendor extends BaseController
         echo json_encode($data);
 
     }
+
+
+    public function Edit()
+    {
+        $join =  array(
+                    
+            array(
+                'table' => 'accounts_account_heads',
+                'pk'    => 'ah_id',
+                'fk'    => 'ven_account_head',
+            ),
+
+
+        );
+
+        $vendor = $this->common_model->SingleRowJoin('pro_vendor', array('ven_id' => $this->request->getPost('ID')),$join);
+
+        $data['vendor_name']   = $vendor->ven_name;
+
+        $data['account_name']  = $vendor->ah_account_name;
+
+        $data['account_id']    = $vendor->ven_account_id;
+
+        $data['post_box']      = $vendor->ven_post_box;
+
+        $data['telephone']     = $vendor->ven_telephone;
+
+        $data['fax']           = $vendor->ven_fax;
+
+        $data['email']         = $vendor->ven_email;
+
+        $data['credit_term']   = $vendor->ven_credit_term;
+
+        $data['credit_period'] = $vendor->ven_credit_period;
+
+        $data['credit_limit']  = $vendor->ven_credit_limit;
+
+        $data['vendor_id']  = $vendor->ven_id;
+
+        //office document 
+
+        $data['cr_no']  = $vendor->ven_cr_no;
+
+        if($vendor->ven_cr_expiry == "0000-00-00")
+        {
+            $data['cr_expiry'] =""; 
+        }
+        else
+        {
+            $data['cr_expiry']  = date('d-M-Y',strtotime($vendor->ven_cr_expiry));
+        }
+        
+
+        $data['est_id']  = $vendor->ven_est_id;
+
+        if($vendor->ven_est_expiry == "0000-00-00")
+        {
+            $data['est_id_expiry'] = "";
+        }
+        else
+        {
+            $data['est_id_expiry']  = date('d-M-Y',strtotime($vendor->ven_est_expiry));
+        }
+        
+
+        $data['signature_name']  = $vendor->ven_signature_name;
+
+        $data['qid_no']  = $vendor->ven_qid_no;
+
+        if($vendor->ven_qid_expiry == "0000-00-00")
+        {
+            $data['qid_expiry'] = "";
+        }
+        else
+        {
+            $data['qid_expiry']  = date('d-M-Y',strtotime($vendor->ven_qid_expiry));
+        }
+        
+
+
+        //image section start
+
+        if(!empty($vendor->ven_cr_attach))
+        {
+            $data['ven_cr_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_cr_attach) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['ven_cr_attach'] = "";
+        }
+
+        if(!empty($vendor->ven_est_attach))
+        {
+            $data['ven_est_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_est_attach) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['ven_est_attach'] = "";
+        }
+
+
+
+        if(!empty($vendor->	ven_qid_attach))
+        {
+            $data['ven_qid_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_qid_attach) . '" target="_blank">View</a>';  
+        }
+        else
+        {
+            $data['ven_qid_attach'] = "";
+        }
+
+         
+        $contact_data = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
+        
+       
+        $i = 1;
+
+        $data['contact'] = "";
+        foreach($contact_data as $contact){
+
+            $data['contact'] .='<tr class="prod_row_edit" id="'.$contact->pro_con_id.'">
+            <td class="si_no_edit">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$contact->pro_con_person.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$contact->pro_con_designation.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$contact->pro_con_mobile.'" class="form-control" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$contact->pro_con_email.'" class="form-control" readonly></td>
+            <td class="row_remove delete_contact" data-id="'.$contact->pro_con_id.'"><i class="ri-close-line"></i>Remove</td>
+            <td class="row_contact_edit row_edit" data-id="'.$contact->pro_con_id.'"><i class="ri-pencil-fill"></i>Edit</td>
+           
+            </tr>
+            <input type="hidden" class="edit_con_ven_id" value="'.$contact->pro_con_vendor.'">
+            
+            '; 
+            $i++;  
+
+            
+        }
+
+
+        echo json_encode($data);
+
+
+       
+    
+    }
+
+
+    public function View()
+    {
+        $join =  array(
+                    
+            array(
+                'table' => 'accounts_account_heads',
+                'pk'    => 'ah_id',
+                'fk'    => 'ven_account_head',
+            ),
+
+
+        );
+
+        $vendor = $this->common_model->SingleRowJoin('pro_vendor', array('ven_id' => $this->request->getPost('ID')),$join);
+
+        $data['vendor_name']   = $vendor->ven_name;
+
+        $data['account_name']  = $vendor->ah_account_name;
+
+        $data['account_id']    = $vendor->ven_account_id;
+
+        $data['post_box']      = $vendor->ven_post_box;
+
+        $data['telephone']     = $vendor->ven_telephone;
+
+        $data['fax']           = $vendor->ven_fax;
+
+        $data['email']         = $vendor->ven_email;
+
+        $data['credit_term']   = $vendor->ven_credit_term;
+
+        $data['credit_period'] = $vendor->ven_credit_period;
+
+        $data['credit_limit']  = $vendor->ven_credit_limit;
+
+        //office document 
+
+        $data['cr_no']  = $vendor->ven_cr_no;
+
+        $data['est_id']  = $vendor->ven_est_id;
+
+        $data['signature_name']  = $vendor->ven_signature_name;
+
+        $data['qid_no']  = $vendor->ven_qid_no;
+
+        
+
+         
+        $contact_data = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
+        
+       
+        $i = 1;
+
+        $data['contact'] = "";
+        foreach($contact_data as $contact){
+
+
+            $data['contact'] .='<tr class="edit_prod_row" id="'.$contact->pro_con_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$contact->pro_con_person.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$contact->pro_con_designation.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$contact->pro_con_mobile.'" class="form-control" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$contact->pro_con_email.'" class="form-control" readonly></td>
+           
+            </tr>
+            <input type="hidden" class="contact_cust" value="">
+            '; 
+            $i++; 
+            
+            
+            //date section start
+
+            if($vendor->ven_cr_expiry == "0000-00-00")
+            {
+                $data['cr_expiry'] ="";
+            }
+            else
+            {
+                $data['cr_expiry']  = date('d-M-Y',strtotime($vendor->ven_cr_expiry));
+            }
+
+
+            if($vendor->ven_est_expiry == "0000-00-00")
+            {
+                $data['est_id_expiry'] ="";
+            }
+            else
+            {
+                $data['est_id_expiry']  = date('d-M-Y',strtotime($vendor->ven_est_expiry));
+            }
+
+
+            if($vendor->ven_qid_expiry == "0000-00-00")
+            {
+                $data['qid_expiry'] ="";
+            }
+            else
+            {
+                $data['qid_expiry']  = date('d-M-Y',strtotime($vendor->ven_qid_expiry));
+            }
+            
+
+
+
+            //image section start
+
+            if(!empty($vendor->ven_cr_attach))
+            {
+                $data['ven_cr_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_cr_attach) . '" target="_blank">View</a>';  
+            }
+            else
+            {
+                $data['ven_cr_attach'] = "";
+            }
+
+
+
+            if(!empty($vendor->ven_est_attach))
+            {
+                $data['ven_est_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_est_attach) . '" target="_blank">View</a>';  
+            }
+            else
+            {
+                $data['ven_est_attach'] = "";
+            }
+
+
+
+            if(!empty($vendor->	ven_qid_attach))
+            {
+                $data['ven_qid_attach'] = '<a href="' . base_url('uploads/Vendor/' . $vendor->ven_qid_attach) . '" target="_blank">View</a>';  
+            }
+            else
+            {
+                $data['ven_qid_attach'] = "";
+            }
+
+
+
+
+        }
+
+        echo json_encode($data);
+    }
+    
+    public function ContactEdit()
+    {
+        $contact_edit = $this->common_model->SingleRow('pro_contact',array('pro_con_id' => $this->request->getPost('ID')));
+        
+        $data['contact'] ='<tr class="edit_prod_row" id="'.$contact_edit->pro_con_id.'">
+            <td><input type="text" name="pro_con_person"  value="'.$contact_edit->pro_con_person.'" class="form-control" required></td>
+            <td><input type="text" name="pro_con_designation"  value="'.$contact_edit->pro_con_designation.'" class="form-control" required></td>
+            <td><input type="text" name="pro_con_mobile"  value="'.$contact_edit->pro_con_mobile.'" class="form-control edit_contact" required></td>
+            <td> <input type="email" name="pro_con_email" value="'.$contact_edit->pro_con_email.'" class="form-control" required></td>
+            </tr>
+            <input type="hidden" class="contact_cust" name="pro_con_id" value="'.$contact_edit->pro_con_id.'">
+            '; 
+
+        echo json_encode($data);
+
+    }
+
+
+    public function UpdateContact()
+    {
+        $cond = array('pro_con_id' => $this->request->getPost('pro_con_id'));
+        
+        $update_data = $this->request->getPost();
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('pro_con_id', $update_data)) 
+        {
+            unset($update_data['pro_con_id']);
+        } 
+        if (array_key_exists('pro_con_vendor', $update_data)) 
+        {
+            unset($update_data['pro_con_vendor']);
+        }   
+        
+	    $this->common_model->EditData($update_data,$cond,'pro_contact');
+
+
+    }
+
+
+    public function DeleteContact()
+    {
+        $cond = array('pro_con_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('pro_contact',$cond);
+
+    }
+
+
+    public function Update()
+    {
+        $cond = array('ven_id' => $this->request->getPost('ven_id'));
+        
+        $update_data = $this->request->getPost();
+
+        
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('ven_id', $update_data)) 
+        {
+            unset($update_data['ven_id']);
+        } 
+
+        if (array_key_exists('ven_account_head', $update_data)) 
+        {
+            unset($update_data['ven_account_head']);
+        } 
+
+        if (array_key_exists('ven_account_id', $update_data)) 
+        {
+            unset($update_data['ven_account_id']);
+        } 
+       
+	    $this->common_model->EditData($update_data,$cond,'pro_vendor');
+
+        
+    }
+
+
+    public function EditAddContact()
+    {
+        $insert_data = $this->request->getPost();
+        
+        $id = $this->common_model->InsertData('pro_contact',$insert_data);
+
+    }
+
+    public function EditTab3()
+    {
+        $cond = array('ven_id' => $this->request->getPost('ven_id'));
+        
+        $official_doc = $this->common_model->SingleRow('pro_vendor',$cond);
+        
+        $update_data = $this->request->getPost();
+
+        if(!empty($this->request->getPost("ven_cr_expiry")))
+        {
+            $update_data['ven_cr_expiry']  = date('Y-m-d', strtotime($this->request->getPost("ven_cr_expiry")));
+        }
+        else
+        {
+            $update_data['ven_cr_expiry']  = "";
+        }
+
+
+        if(!empty($this->request->getPost("ven_est_expiry")))
+        {
+            $update_data['ven_est_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_est_expiry")));
+        }
+        else
+        {
+            $update_data['ven_est_expiry']  = "";
+        }
+
+
+        if(!empty($this->request->getPost("ven_qid_expiry")))
+        {
+            $update_data['ven_qid_expiry'] = date('Y-m-d', strtotime($this->request->getPost("ven_qid_expiry")));
+        }
+        else
+        {
+            $update_data['ven_qid_expiry'] = "";
+        }
+
+
+        // Handle file upload
+        if (isset($_FILES['ven_cr_attach']) && $_FILES['ven_cr_attach']['name'] !== '') {
+            
+               
+            if($this->request->getFile('ven_cr_attach') != '' ){ 
+               
+                if(!empty($official_doc->ven_cr_attach))
+                {
+                    $previousImagePath = 'uploads/Vendor/' .$official_doc->ven_cr_attach;
+                
+                    if (file_exists($previousImagePath)) {
+                        unlink($previousImagePath);
+                    }
+                }
+            }
+            
+            // Upload the new image
+            $ccAttachCrFileName = $this->uploadFile('ven_cr_attach', 'uploads/Vendor');
+        
+            // Update the data with the new image filename
+            $update_data['ven_cr_attach'] = $ccAttachCrFileName;
+        }
+
+
+
+        if (isset($_FILES['ven_est_attach']) && $_FILES['ven_est_attach']['name'] !== '') {
+            
+               
+            if($this->request->getFile('ven_est_attach') != '' ){ 
+                
+                if(!empty($official_doc->ven_est_attach))
+                {
+                    $previousImagePath1 = 'uploads/Vendor/' .$official_doc->ven_est_attach;
+                
+                    if (file_exists($previousImagePath1)) {
+                        unlink($previousImagePath1);
+                    }
+                }
+            }
+            
+            // Upload the new image
+            $ccEstIdFileName = $this->uploadFile('ven_est_attach', 'uploads/Vendor');
+        
+            // Update the data with the new image filename
+            $update_data['ven_est_attach'] = $ccEstIdFileName;
+        }
+
+
+
+        if (isset($_FILES['ven_qid_attach']) && $_FILES['ven_qid_attach']['name'] !== '') {
+            
+               
+            if($this->request->getFile('ven_qid_attach') != '' ){ 
+               
+                if(!empty($official_doc->ven_qid_attach))
+                {
+                    $previousImagePath2 = 'uploads/Vendor/' .$official_doc->ven_qid_attach;
+                
+                    if (file_exists($previousImagePath2)) {
+                        unlink($previousImagePath2);
+                    }
+                }    
+            }
+            
+            // Upload the new image
+            $qidAttachFileName = $this->uploadFile('ven_qid_attach', 'uploads/Vendor');
+        
+            // Update the data with the new image filename
+            $update_data['ven_qid_attach'] = $qidAttachFileName;
+        }
+
+
+
+        
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('ven_id', $update_data)) 
+        {
+            unset($update_data['ven_id']);
+        } 
+
+       
+	    $this->common_model->EditData($update_data,$cond,'pro_vendor');
+    }
+
+
+
+    // Function to handle file upload
+    public function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
+
+        if($file === null){
+
+            // Debugging output
+            echo('No file uploaded or incorrect field name');
+           
+        }
+ 
+        if ($file->isValid() && !$file->hasMoved()) 
+        {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
+ 
+        return null;
+
+    }
+
+
+    public function Delete()
+    {
+        $official_doc = $this->common_model->SingleRow('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+        
+        if(!empty($official_doc->ven_cr_attach)){
+            
+            $previousImagePath = 'uploads/Vendor/' .$official_doc->ven_cr_attach;
+
+            if (file_exists($previousImagePath)) {
+                unlink($previousImagePath);
+            }
+
+        }
+
+
+        if(!empty($official_doc->ven_est_attach))
+        {
+            $previousImagePath2 = 'uploads/Vendor/' .$official_doc->ven_est_attach;
+
+            if (file_exists($previousImagePath2)) {
+                unlink($previousImagePath2);
+            }
+        }
+
+
+
+        if(!empty($official_doc->ven_qid_attach))
+        {
+            $previousImagePath3 = 'uploads/Vendor/' .$official_doc->ven_qid_attach;
+
+            if (file_exists($previousImagePath3)) {
+                unlink($previousImagePath3);
+            }
+        }
+
+        $this->common_model->DeleteData('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+
+        $this->common_model->DeleteData('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
+        
+        $data['status'] = "true"; 
+
+        echo json_encode($data);
+        
+    }
+ 
 
 
 

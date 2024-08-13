@@ -1,6 +1,11 @@
  <!--header section start-->
 
- <?php echo view('accounts/reports_sub_header');?>
+ <?php 
+ if(empty($_GET))
+ {
+ echo view('accounts/reports_sub_header');
+ }
+ ?>
 
 <!--header section end-->
 
@@ -22,7 +27,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Balance Sheet</h5>
@@ -59,7 +64,7 @@
 
                                                                                         <option value="Range">Range</option>
 
-                                                                                        <option value="LastYear">Current Month</option>
+                                                                                        <option value="LastYear">Last Year</option>
 
                                                                                         <option value="CurrentYear">Current Year</option>
                                                                                        
@@ -100,6 +105,19 @@
                                                                     
                                                                     
                                                                      </table>
+
+
+
+                                                                     <div class="row my-2">
+                                                                        
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Zero Balance <input type="checkbox" name="zero" value="1">
+                                                                    </div>                                                  
+
+                                                                    </div>
+
+
+
                                                                 </div>
 
                                                                 <!--table section end-->
@@ -174,9 +192,12 @@
                                             
                                             <tbody class="tbody_data">
 
+
+                                            <?php foreach($account_heads as $ah){ ?>
+
                                             <tr>
 
-                                            <td><b>Current Assets</b></td>
+                                            <td align=""><b><?php echo $ah->ah_account_name; ?></b></td>
 
                                             <td> </td>
 
@@ -184,6 +205,76 @@
 
                                             
                                             </tr>
+
+
+                                            <?php 
+                                            $total_bal = number_format(0,2);
+                                            foreach($ah->Charts as $ca){ 
+                                            $total_bal = $ca->balance + $total_bal;
+                                            }
+                                            ?>
+
+
+                                                <?php 
+                                                $total_perc = 0;
+                                                foreach($ah->Charts as $ca){ 
+                                                
+                                                if($ca->balance>0)
+                                                {
+                                                $perc = ($ca->balance/$total_bal)*100;
+                                                } else
+                                                {
+                                                $perc=0;
+                                                }
+                                                $total_perc= $total_perc+$perc;
+                                                ?>
+
+
+                                                    <tr>
+
+                                                    <td><?= $ca->ca_name; ?></td>
+
+                                                    <td><?= $ca->balance; ?></td>
+
+                                                    <td><?= number_format($perc,2); ?>%</td>
+
+
+                                                    </tr>
+
+                                                    
+
+                                                <?php
+                                            
+                                                
+                                                    
+                                               } ?>
+
+
+                                                <tr>
+
+                                                <td align="center">Total <?php echo $ah->ah_account_name; ?></td>
+
+                                                <td><?= number_format($total_bal,2); ?></td>
+
+                                                <td><?= $total_perc ?>%</td>
+
+
+                                                </tr>
+
+
+
+                                                <tr>
+
+                                                <td></td>
+
+                                                <td></td>
+
+                                                <td></td>
+
+                                                </tr>
+
+
+                                            <?php } ?>
                                            
                                             </tbody>
 
@@ -277,11 +368,11 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php }  */?>
 
 
 
@@ -365,6 +456,8 @@
                     $('.executive_clz').html(data.quot_det);
                     
                     $('.product_clz').html(data.quot_prod);
+
+                    //
 
                 }
 

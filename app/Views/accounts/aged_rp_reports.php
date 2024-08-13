@@ -1,6 +1,10 @@
- <!--header section start-->
 
- <?php echo view('accounts/reports_sub_header');?>
+<?php 
+ if(empty($_GET))
+ {
+ echo view('accounts/reports_sub_header');
+ }
+ ?>
 
 <!--header section end-->
 
@@ -23,7 +27,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Aged Receivables/Payments Report</h5>
@@ -58,9 +62,9 @@
 
                                                                                     <select class="form-control" name="filter_type" id="filter_type">
                                                                                         
-                                                                                        <option>Select Account</option>
+                                                                                        <option>Select</option>
 
-                                                                                        <option value="Account">Account</option>
+                                                                                        <!--<option value="Account">Account</option>-->
                                                                                        
                                                                                         <option value="Account_Head">Account Head</option>
 
@@ -87,7 +91,7 @@
                                                                             
                                                                             <?php foreach($accounts as $account){ ?>
 
-                                                                            <option value="<?= $account->cc_id; ?>"><?= $account->cc_customer_name; ?></option>
+                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
 
                                                                             <?php } ?>
 
@@ -187,7 +191,7 @@
                                                                             
                                                                             <?php foreach($accounts as $account){ ?>
 
-                                                                            <option value="<?= $account->cc_id; ?>"><?= $account->cc_customer_name; ?></option>
+                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
 
                                                                             <?php } ?>
 
@@ -198,15 +202,57 @@
 
                                                                             </tr>
 
-
-                                                                            
-                                                                            
                                                                         
                                                                         </thead>
                                                                      
                                                                     
                                                                     
                                                                      </table>
+
+
+
+                                                                    <div class="row my-2">
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Receivable <input type="checkbox" name="" value="">
+                                                                    </div>
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Adjusted <input type="checkbox" name="" value="">
+                                                                    </div>                                         
+
+                                                                    </div>
+
+                                                                    <div class="row my-2">
+
+                                                                   
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Payable <input type="checkbox" name="" value="">
+                                                                    </div>  
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Semi Adjusted <input type="checkbox" name="" value="">
+                                                                    </div>
+
+                                                                    </div>
+
+
+
+                                                                    <div class="row my-2">
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Both <input type="checkbox" name="" value="">
+                                                                    </div>
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Un-Adjusted <input type="checkbox" name="" value="">
+                                                                    </div>
+
+                                                                    </div>
+
+
+
                                                                 </div>
 
                                                                 <!--table section end-->
@@ -282,53 +328,91 @@
                                             <tbody class="tbody_data">
 
 
-
-
-                                              <?php 
-                                            $total_credit=number_format(0,2);
-                                            foreach($payments as $pay){ ?>
-
-                                            <tr>
-                                            <td><?= $pay->pay_ref_no; ?></td>
-                                            <td><?php echo date('d-m-Y',strtotime($pay->pay_date)); ?></td>
-                                            <td></td>
-                                            <td>---</td>
-                                            <td><?= $pay->pay_total; ?></td>
-                                            <td></td>
-                                            <td>Balance</td>
-                                            </tr>
-
                                             <?php 
-                                            $total_credit = $total_credit+number_format($pay->pay_total,2);;
-                                            } 
+                                            $total_credit=number_format(0,2);
+                                            $pdc_total = number_format(0,2);
+                                            if(empty($c_balance))
+                                            {
+                                            $c_balance = 0 ;
+                                            }
+                                           
                                             ?>
-
 
                                             <?php 
 
                                             $total_debit=number_format(0,2);
 
-                                            foreach($receipts as $rec){ ?>
+                                            foreach($transactions as $trn){ ?>
 
                                             <tr>
-                                            <td><?= $rec->r_ref_no; ?></td>
-                                            <td><?php echo date('d-m-Y',strtotime($rec->r_date)); ?></td>
+
+                                            <td><?= $trn->reference; ?></td>
+
+                                            <td><?php echo date('d-m-Y',strtotime($trn->transaction_date)); ?></td>
+
                                             <td></td>
-                                            <td><?= $rec->r_amount; ?></td>
-                                            <td>---</td>
-                                            <td></td>
-                                            <td>Balance</td>
+
+                                            <td align="right"> 
+
+                                            <?php if($trn->debit_amount !="") { 
+                                            echo  $trn->debit_amount;
+                                            $total_debit = $total_debit-$trn->debit_amount;
+                                            $c_balance = $c_balance - $trn->debit_amount;
+                                            } else {?>
+                                                ---
+                                            <?php } ?>
+                                        
+                                            </td>
+
+                                            <td align="right">
+
+                                            <?php if($trn->credit_amount !="") { 
+                                            echo  $trn->credit_amount; 
+                                            $total_credit=$total_credit+$trn->credit_amount;
+                                            $c_balance = $c_balance + $trn->credit_amount;
+                                            } else {?>
+                                            ---
+                                            <?php } ?>
+
+                                            </td>
+
+                                            <td align="right">
+
+                                            <?php 
+                                            if($trn->cheque==1)
+                                            {
+
+                                                if($trn->credit_amount !="") { 
+                                                    echo  $trn->credit_amount; 
+                                                    $pdc_total = $pdc_total + $trn->credit_amount;
+                                                }
+                                                else if($trn->debit_amount !="")
+                                                {
+                                                    echo  $trn->debit_amount;
+                                                    $pdc_total = $pdc_total + $trn->debit_amount;
+                                                }
+                                                else
+                                                {
+                                                    echo "---";
+                                                }
+
+                                            }
+
+                                            ?>
+
+
+                                            </td>
+
+                                            <td><?= $c_balance; ?></td>
+
                                             </tr>
 
                                             <?php 
-
-                                            $total_debit = $total_debit+number_format($rec->r_amount,2);
 
                                             } ?>
 
 
                                             </tbody>
-
 
 
                                             <tfoot>
@@ -338,10 +422,10 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><b><?= $total_debit; ?></b></td>
-                                            <td><b><?= $total_credit; ?></b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
+                                            <td align="right"><b style="text-align:right"><?= $total_debit; ?></b></td>
+                                            <td align="right"><b style="text-align:right"><?= $total_credit; ?></b></td>
+                                            <td align="right"><b style="text-align:right"><?= $pdc_total; ?></b></td>
+                                            <td align="right"><b style="text-align:right"><?= $c_balance; ?></b></td>
                                             </tr>
 
                                             </tfoot>
@@ -353,54 +437,56 @@
 
 
 
-
                                         <table class="table table-bordered">
 
 
                                         <thead>
 
-                                        <tr>
+                                            <tr>
 
-                                            <th>Receipt No</th>
+                                                <th>Receipt No</th>
 
-                                            <th>Receipt Date</th>
+                                                <th>Receipt Date</th>
 
-                                            <th>Cheque No</th>
+                                                <th>Cheque No</th>
 
-                                            <th>Cheque Date</th>
+                                                <th>Cheque Date</th>
 
-                                            <th>Bank</th>
+                                                <th>Bank</th>
 
-                                            <th>Amount</th>
+                                                <th>Amount</th>
 
-                                        </tr>
+                                            </tr>
 
-                                        </thead>
-
+                                            </thead>
 
 
                                         <tbody>
 
-                                        <tr>
 
-                                            <td>RV-2020-00015</td>
+                                    <?php foreach($post_dated_cheques as $pdc){?>
 
-                                            <td>25-Aug-2020</td>
+                                    <tr>
 
-                                            <td>01000286</td>
+                                        <td><?= $pdc->r_ref_no; ?></td>
 
-                                            <td>20-Oct-2020</td>
+                                        <td><?= date('d-m-Y',strtotime($pdc->r_date)); ?></td>
 
-                                            <td>Doha Bank</td>
+                                        <td><?= $pdc->r_cheque_no; ?></td>
 
-                                            <td>4,500.00</td>
+                                        <td><?= date('d-m-Y',strtotime($pdc->r_cheque_date)); ?></td>
 
-                                        </tr>
+                                        <td><?= $pdc->bank_name ?></td>
 
-                                        </tbody>
+                                        <td><?= $pdc->r_amount ?></td>
 
+                                    </tr>
 
-                                        </table>
+                                    <?php } ?>
+
+                                    </tbody>
+
+                                    </table>
 
 
 
@@ -478,11 +564,11 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php } */ ?>
 
 
 

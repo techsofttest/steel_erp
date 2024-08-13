@@ -1,26 +1,33 @@
 <style>
     .cust_more_modal{
         
+        /*position: absolute;
+        left: 532px;*/
         position: absolute;
-        left: 470px;
-        padding: 1px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+        right: 32px;
+        top: -16px;
+        font-size: 25px;
+        color: #ff0000b5;
 
     }
-    span.select2.customer_width {
+    /*span.select2.customer_width {
 
         width: 80% !important;
-    } 
+    }*/ 
     .contact_more_modal
     {
-        position: absolute;
+        /*position: absolute;
         left: 471px;
         padding: 2px 27px;
         z-index: 999;
         border: 1px solid black;
-        border: 1px solid #0000003b;
+        border: 1px solid #0000003b;*/
+
+        position: absolute;
+        right: 32px;
+        top: -16px;
+        font-size: 25px;
+        color: #ff0000b5;
     }
     .selectize-input
     {
@@ -39,8 +46,18 @@
         background-image: unset;
         background-repeat: unset;
     }
-    
-
+    .zero_padding
+    {
+        padding: 0px 0px;
+    }
+    .input_length
+    {
+        width: 95%;
+    }
+    .input_length2 
+    {
+        width: 93%;
+    }
    
 </style>
 
@@ -87,7 +104,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_reffer_no" id="sqid"  value="<?php echo $sales_quotation_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="qd_reffer_no" id="sqid"  value="<?php echo $sales_quotation_id; ?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -107,7 +124,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker" required>
+                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -124,13 +141,17 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer Name<span class="add_more_icon cust_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select droup_customer_id" name="qd_customer" id="customer_id" style="width:80%;" required>
+                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                        <select class="form-select droup_customer_id" name="qd_customer" id="customer_id"  required>
                                                                            
                                                                         </select>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
+                                                                            <span class="add_more_icon cust_more_modal ri-add-box-fill"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -154,7 +175,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select name="qd_enq_ref"  id="" class="form-select qd_enquiry_reference_clz"></select>
+                                                                        <select name="qd_enq_ref"  id="" class="form-select qd_enquiry_reference_clz input_length"></select>
                                                                     </div>
 
                                                                 </div> 
@@ -174,7 +195,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_validity" id="qd_validity_id" class="form-control enqinput" required>
+                                                                        <input type="text" name="qd_validity" id="qd_validity_id" class="form-control enqinput input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -207,7 +228,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select enqinput" name="qd_sales_executive" id="qd_sales_executive_id" required>
+                                                                        <select class="form-select enqinput input_length2" name="qd_sales_executive" id="qd_sales_executive_id" required>
                                                                             <option value="" selected disabled>Sales Executive</option>
                                                                             <?php foreach($sales_executive as $sale_exc){?> 
                                                                                 <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
@@ -229,15 +250,19 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Contact Person<!--<span class="add_more_icon contact_more_modal">New</span>--></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select contact_person_clz" name="qd_contact_person" style="width: 80%;" id="" required>
+                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                        <select class="form-select contact_person_clz " name="qd_contact_person" id="" required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                             
                                                                 
                                                                         </select>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+                                                                        <span class="add_more_icon contact_more_modal ri-add-box-fill"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -259,7 +284,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_payment_term" id="qd_payment_term_id" class="form-control" required>
+                                                                        <input type="text" name="qd_payment_term" id="qd_payment_term_id" class="form-control input_length2" required>
                                                                     </div>
 
                                                                 </div> 
@@ -280,7 +305,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select id="qd_delivery_term_id" name="qd_delivery_term" class="delivery_term_clz" required>
+                                                                        <select id="qd_delivery_term_id" name="qd_delivery_term" class="delivery_term_clz input_length2" required>
                                                                             <option>Selected Disabled</option>
                                                                             <?php foreach($delivery_term as $delv_term){?> 
                                                                                 <option value="<?php echo $delv_term->dt_id;?>"><?php echo $delv_term->dt_name;?></option> 
@@ -307,7 +332,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_project" id="" class="form-control enqinput project_clz" required>
+                                                                        <input type="text" name="qd_project" id="" class="form-control enqinput project_clz input_length2" required>
                                                                     </div>
 
                                                                 </div> 
@@ -407,7 +432,7 @@
 				                        </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
                                         </div>
 
 
@@ -458,9 +483,9 @@
                                                                 <td>Amount</td>
                                                                 <td>Action</td>
                                                             </tr>
-                                                            <tr class="cost_cal_row">
+                                                            <tr class="cost_cal_row cost_cal_row2">
                                                                 <td style="width: 10%;" class="cost_ci_no">1</td>
-                                                                <td>
+                                                                <td style="width:40%">
                                                                     <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
@@ -482,11 +507,16 @@
                                                         <tbody  class="travelerinfo product-more3"></tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2">Amount in words</td>
+                                                                <!--<td colspan="2">Amount in words</td>
                                                                 <td colspan="3" class="cost_cal_amount_in_words"></td>
-                                                                <input type="hidden" name="qd_cost_amount_in_words" value="" class="cost_cal_amount_in_words_val">
+                                                                <input type="hidden" name="qd_cost_amount_in_words" value="" class="cost_cal_amount_in_words_val">--->
+
+
+                                                                <td colspan="2"></td>
+                                                                <td colspan="3" class="cost_cal_amount_in_words"></td>
+                                                                                                   
                                                                 
-                                                                <td>Total</td>
+                                                                <td style="text-align: center;">Total</td>
                                                                 <td><input type="text" name="qd_cost_amount" class="total_cost_cal form-control" readonly></td>
                                                                 <input type="hidden" name="qd_percentage" value="" class="total_percent">
                                                             </tr>
@@ -497,18 +527,7 @@
                                                 </div>
 
 
-                                                <!--<div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button type="submit">Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>--->
+                                               
 
                                                 <!--table section end-->
 
@@ -525,7 +544,8 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit2" type="submit">Save</button>
+                                            
                                         </div>
 
 
@@ -908,6 +928,40 @@
                                                 </div>
 
 
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Product Detail</h5>
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                           
+                                                        </thead>
+
+                                                        
+                                                        <tbody  class="travelerinfo edit_product-more"></tbody>
+                                                        <!--<tbody>-->
+                                                            <tr>
+                                                                <td colspan="8" align="center" class="tecs">
+                                                                    <span class="add_icon edit_add_prod_det"><i class="ri-add-circle-line"></i>Add </span>
+                                                                </td>
+                                                            </tr>
+                                                        <!--</tbody>--->
+                                                        
+                                                    </table>
+                                                </div>
+
+                                                <!--table section end-->
+
+
                                                 <!--cost calculation table start-->
 
 
@@ -938,47 +992,13 @@
                                                                 </td>
                                                             </tr>
                                                         <!--</tbody>--->
-                                                        
-                                                    </table>
-                                                </div>
 
-
-                                                <!--const calculation table end-->
-
-
-                                                <!--table section start-->
-                                                <div class="mt-4">
-                                                <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Product Detail</h5>
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <thead class="travelerinfo contact_tbody">
-                                                            <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
-                                                                <td>Action</td>
-                                                            </tr>
-                                                           
-                                                        </thead>
-
-                                                        
-                                                        <tbody  class="travelerinfo edit_product-more"></tbody>
-                                                        <!--<tbody>-->
-                                                            <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon edit_add_prod_det"><i class="ri-add-circle-line"></i>Add </span>
-                                                                </td>
-                                                            </tr>
-                                                        <!--</tbody>--->
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 <!--<input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">-->
-                                                                <td>Total</td>
+                                                                <td>Product</td>
                                                                 <td><input type="text" name="" class="edit_total_prod form-control" readonly></td>
                                                             </tr>
                                                             <tr>
@@ -994,24 +1014,18 @@
                                                                 <td class="edit_total_percent"><input type="text" class="form-control edit_total_percent" readonly></td>
                                                             </tr>
                                                         </tbody>
+                                                        
                                                     </table>
                                                 </div>
 
 
-                                                <!--<div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button type="submit">Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>--->
+                                                <!--const calculation table end-->
 
-                                                <!--table section end-->
+
+                                                
+
+
+                                                
 
 
                                             </div>  
@@ -1072,7 +1086,7 @@
                                                             </tr>
                                                             <tr class="edit_cost_cal_row">
                                                                 <td style="width: 10%;" class="">1</td>
-                                                                <td>
+                                                                <td style="width:34%">
                                                                     <select class="form-select  edit_cost_product_det edit_cost_prod" name="qc_material" required>
                                                                         <option selected>Select Product Description</option>
                                                                        
@@ -1160,7 +1174,7 @@
                                                             </tr>
                                                             <tr class="edit_add_cost_cal_row">
                                                                 <td style="width: 10%;" class="">1</td>
-                                                                <td>
+                                                                <td style="width: 23%">
                                                                     <select class="form-select cost_service_clz edit_add_prod_desc" name="qc_material" required>
                                                                         <option value=""  selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
@@ -1319,7 +1333,7 @@
                                                             </tr>
                                                             <tr class="edit_add_prod_det_row">
                                                                 <td style="width: 10%;" class="">1</td>
-                                                                <td>
+                                                                <td style="width:40%">
                                                                     <select class="form-select  edit_add_quot_prod" name="qpd_product_description" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                        
@@ -1642,37 +1656,6 @@
                                                 </div>
 
 
-                                                <!--cost calculation table start-->
-
-
-                                                <div class="mt-4">
-                                                    
-                                                    <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5>
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <thead class="travelerinfo contact_tbody">
-                                                            <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Cost Of Materials / Services</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Amount</td>
-                                                                
-                                                            </tr>
-                                                           
-                                                        </thead>
-
-                                                        
-                                                        <tbody  class="travelerinfo view_cost_cal"></tbody>
-                                                       
-                                                        
-                                                    </table>
-                                                </div>
-
-
-                                                <!--const calculation table end-->
-
-
                                                 <!--table section start-->
                                                 <div class="mt-4">
                                                 <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Product Detail</h5>
@@ -1694,12 +1677,43 @@
                                                         
                                                         <tbody  class="travelerinfo view_prod_det"></tbody>
                                                       
+                                                        
+
+                                                    </table>
+                                                </div>
+
+                                                <!---table section end-->
+
+
+                                                <!--cost calculation table start-->
+
+
+                                                <div class="mt-4">
+                                                    
+                                                    <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5>
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td colspan="2">Cost Of Materials / Services</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+                                                                <td>Amount</td>
+                                                                
+                                                            </tr>
+                                                           
+                                                        </thead>
+
+                                                        
+                                                        <tbody  class="travelerinfo view_cost_cal"></tbody>
+                                                        
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 
-                                                                <td>Total</td>
+                                                                <td>Product</td>
                                                                 <td><input type="text" name="" class="view_btn_total_prod form-control" readonly></td>
                                                             </tr>
                                                             <tr>
@@ -1715,25 +1729,18 @@
                                                                 <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent" readonly></td>
                                                             </tr>
                                                         </tbody>
-
+                                                        
                                                     </table>
                                                 </div>
 
 
-                                                <!--<div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button type="submit">Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>--->
+                                                <!--const calculation table end-->
 
-                                                <!--table section end-->
+
+                                                
+
+
+                                               
 
 
                                             </div>  
@@ -2134,11 +2141,16 @@
 
 
                         <!--table section start-->
+                         
                         <div class="mt-4">
+
+                            <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Product Description</h5>
+
                             <table class="table table-bordered table-striped delTable">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         <td>Serial No.</td>
+                                        <td>Product Description</td>
                                         <td>Unit</td>
                                         <td>Qty</td>
                                         <td>Rate</td>
@@ -2151,8 +2163,39 @@
                                 </thead>
                                 
                                 <tbody  class="travelerinfo product-more4"></tbody>
-                                <!--<tbody>-->
+
+
+                                <!--<tbody  class="travelerinfo cost_data"></tbody>--->
+
+
+                               
+                            </table>
+                        </div>
+
+
+
+                        <div class="mt-4">
+                                                    
+                            <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5>
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
                                     <tr>
+                                        <td>Serial No.</td>
+                                        <td colspan="2">Cost Of Materials / Services</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Amount</td>
+                                        
+                                    </tr>
+                                    
+                                </thead>
+
+                                
+                                <tbody  class="travelerinfo cost_data"></tbody>
+
+                                 <!--<tbody>-->
+                                 <tr>
                                         <td colspan="8" align="center" class="tecs">
                                             <span class="add_icon add_product4"><i class="ri-add-circle-line"></i>Add </span>
                                         </td>
@@ -2163,7 +2206,7 @@
                                         <td colspan="2">Amount in words</td>
                                         <td colspan="3" class="sales_quotation_amount_in_word"></td>
                                         <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                        <td>Total</td>
+                                        <td>Product</td>
                                         <td><input type="text" name="qd_sales_amount" class="amount_total form-control" readonly></td>
                                     </tr>
                                     <tr>
@@ -2179,6 +2222,9 @@
                                         <td><input type="text" class="form-control total_percent" readonly></td>
                                     </tr>
                                 </tbody>
+                                
+                               
+                                
                             </table>
                         </div>
 
@@ -2189,10 +2235,12 @@
                     </div>  
                                             
                 </div>
-
+                
+                <input type ="hidden" class="view_quot_id">
 
                 <div class="modal-footer justify-content-center">
                     <a href="javascript:void(0)" class="btn btn btn-success   quotation_close_modal" data-bs-dismiss="modal">Finish</a>
+                    <span class="print_pdf_btn"><a href="" class="btn btn btn-success " >Print</a></span>
                 </div>
 
 
@@ -2310,7 +2358,7 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
 
-                 
+                    $('.once_form_submit').attr('disabled', true); // Disable this input.
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesQuotation/Add",
@@ -2346,6 +2394,7 @@
                 },
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
+                    $('.once_form_submit2').attr('disabled', true); // Disable this input.
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesQuotation/AddTab2",
@@ -2375,7 +2424,13 @@
 
                             $('.view_project').val(responseData.project);
 
+                            $('.print_pdf_btn').html(responseData.print_pdf_btn);
+
+                            console.log(responseData.print_pdf_btn);
+
                             $('.product-more4').html(responseData.view_product);
+
+                            $('.cost_data').html(responseData.cost_details);
 
                             $('#SalesQuotView').modal('show');
 
@@ -2404,8 +2459,6 @@
         });
 
 
-
-        
 
         /*product modal submit start*/
 
@@ -2497,9 +2550,28 @@
                 { data: 'qd_enquiry'},
                 { data: 'action'},
                 
-               ]
+               ],
+
+                "initComplete": function () {
+
+                    var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
+  
+                    $('#DataTable').dataTable().fnFilter(dataId);
+
+                },
+
+                "drawCallback": function() {
+                  
+                    $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+
+                }
+ 
     
             });
+
+
+
+
         }
 
         $(document).ready(function () {
@@ -2567,6 +2639,14 @@
 
             $('.enq_remove').remove();
 
+            $('.once_form_submit').attr('disabled', false); // Disable this input.
+
+            $('.once_form_submit2').attr('disabled', false); // Disable this input.
+
+            $('.cost_cal_row2_remove').remove();
+
+            
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchReference",
@@ -2586,6 +2666,7 @@
 
 
         /*####*/
+
 
 
         /*enquiry droup drown change (change table row)*/
@@ -2627,7 +2708,7 @@
 
             /*var jj = 0;
 
-            $('body .quot_row_leng').each(function() {
+            $('body .quot_row_leng').each(function(){
                   
                 var  rate =  $(this).closest('.quot_row_leng').find('.rate_clz_id').val();
 
@@ -2646,8 +2727,11 @@
                 jj++;
 
             });*/
+
             reName();
             
+            
+
             slno();
 
             
@@ -2718,12 +2802,14 @@
         // var pp = $('.prod_row').length
 
         var cc = $('.cost_cal_row').length
-           
+
+        var sq  = $('.cost_cal_row2').length
+
             if(cc < max_fieldspp){ 
             
             cc++;    
 
-                $(".product-more3").append("<tr class='cost_cal_row'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material[1]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit[1]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty[1]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' data-bs-toggle='modal' data-bs-target='#CostClick'>Click</a></td><td><input type='number' name='qc_rate[]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount[1]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' data-bs-toggle='modal' data-bs-target='#CostClick'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 InitSelect2();
             }
         });
@@ -2736,14 +2822,30 @@
 
             var cc =1;
 
+            var cp = 0;
+
             $('body .cost_cal_row').each(function() {
 
                 $(this).find('.cost_ci_no').html('<td class="cost_ci_no">' + cc + '</td>');
 
-                //console.log('Updated content for cost_ci_no:', $(this).find('.cost_ci_no').html());
+                $(this).find('.cost_product_det').attr("name", "qc_material["+cp+"]");
 
+                $(this).find('.cost_unit_clz').attr("name", "qc_unit["+cp+"]");
+
+                $(this).find('.cost_qty_clz').attr("name", "qc_qty["+cp+"]");
+
+                $(this).find('.cost_rate_clz').attr("name", "qc_rate["+cp+"]");
+
+                $(this).find('.cost_amount_clz').attr("name", "qc_amount["+cp+"]");
+
+                
                 cc++;
+
+                cp++;
             });
+
+
+            totalCalcutate();
 
                 
         });
@@ -3529,13 +3631,29 @@
 
                 success:function(data)
                 {
-                  
-                    rowToDelete.fadeOut(500, function() {
-                        $(this).remove();
-                        slno1();
-                        EditCalTotal();
-                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
-                    }); 
+                    var data = JSON.parse(data);
+
+                    console.log(data)
+                        
+                        if(data.status == "false")
+                        {   
+                            alertify.error("Data Can't Be Delete").delay(3).dismissOthers();
+
+                            
+                        }   
+                        else
+                        {
+                            rowToDelete.fadeOut(500, function(){
+                                $(this).remove();
+                                slno1();
+                                EditCalTotal();
+                                alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                            }); 
+                        }
+                        
+                    
+                    
+                   
 
                 }
 
@@ -3875,14 +3993,23 @@
 
                 success:function(data)
                 {
-                   
+                    var responseData = JSON.parse(data);
 
-                    rowToDelete.fadeOut(500, function() {
-                        $(this).remove();
-                        slno2();
-                        EditProdTotal()
-                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
-                    }); 
+                    console.log(responseData.status)
+
+                    if(responseData.status =="true")
+                    {
+                        rowToDelete.fadeOut(500, function() {
+                            $(this).remove();
+                            slno2();
+                            EditProdTotal()
+                            alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                        }); 
+                    }
+                    else
+                    {
+                        alertify.error("Data Can't Be Delete").delay(3).dismissOthers();
+                    }
 
                 }
 
@@ -4141,9 +4268,77 @@
         /*edit section end*/
 
 
+        /*print section start*/
+
+        $("body").on('click', '.print_quotation', function(){ 
+            
+            var id = $('.view_quot_id').val();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/Print",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                   // var responseData = JSON.parse(data);
+
+
+                }
+
+            });
+
+            
+        });
+
+        /*#####*/
+
+        window.addEventListener("message", function(event) {
+           
+
+            // Check the action type and handle accordingly
+            if (event.data.action === 'triggerClick') {
+
+                const quotId = event.data.quot_id;
+                console.log('Received quotId:', quotId);
+
+                // Check if the button exists in the DOM
+                setTimeout(() => {
+                    const $button = $('body .view_btn[data-id="' + quotId + '"]');
+                    if ($button.length) {
+                        $button.trigger('click');
+                        console.log('Button clicked');
+                    } else {
+                        console.log('Button with data-id="' + quotId + '" not found');
+                    }
+                }, 100); // Adjust the timeout as needed
+            }
+
+        });
+
+
+
+        $('#ViewSalesQuotation').on('hidden.bs.modal', function (e) {
+             
+            window.location.replace("<?php echo base_url();?>Crm/SalesQuotation");
+
+        })
+
+
+       
+
+     
+
+       
+
 
     });
-
+      
+    
+  
 
       /*total amount calculation section start*/
 
@@ -4224,13 +4419,16 @@
             
             var result = numberToWords.toWords(total);
 
-            $(".cost_cal_amount_in_words").text(result);
+            //$(".cost_cal_amount_in_words").text(result);
 
-            $(".cost_cal_amount_in_words_val").val(result);
+           // $(".cost_cal_amount_in_words_val").val(result);
 
             Percentage()
          
         }
+
+
+      
         
          
 

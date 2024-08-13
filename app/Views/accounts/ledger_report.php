@@ -1,8 +1,66 @@
- <!--header section start-->
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
- <?php echo view('accounts/reports_sub_header');?>
 
-<!--header section end-->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title><?php echo site_title//Defined in app/constants ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    
+    <!--header section start-->
+
+    <?php echo view('includes/header');?>
+
+    <!--header section end-->
+
+
+
+    <style>
+        #page-topbar{
+            width: 100%;
+            left: unset;
+        }
+        .main-content{
+            margin-left: unset;
+        }
+        .footer{
+            left: unset;
+            width: 100%;
+        }
+        .pdf_button {
+            background: red;
+            border: red;
+        }
+        .report_button {
+            margin-right: 14px;
+            color: white;
+            padding: 3px 11px;
+            border-radius: 4px;
+        }
+        .excel_button {
+            background: green;
+            border: green;
+        }
+    </style>
+
+
+   
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+
+            
+
+
+
+
 
 
 
@@ -23,7 +81,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">General Ledger</h5>
@@ -55,7 +113,7 @@
 
                                                                                     <select class="form-control" name="filter_type" id="filter_type">
                                                                                         
-                                                                                        <option>Select Account</option>
+                                                                                        <option value="">Select Account</option>
 
                                                                                         <option value="Account">Account</option>
                                                                                        
@@ -84,7 +142,7 @@
                                                                             
                                                                             <?php foreach($accounts as $account){ ?>
 
-                                                                            <option value="<?= $account->cc_id; ?>"><?= $account->cc_customer_name; ?></option>
+                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
 
                                                                             <?php } ?>
 
@@ -202,6 +260,49 @@
 
 
                                                                             </tr>
+
+
+
+                                                                            <tr>
+
+                                                                            <td>Range From</td>
+
+                                                                            <td>
+                                                                            
+                                                                            <select class="form-control" name="range_from">
+
+                                                                            <option value="">Select Range From</option>
+
+                                                                            <?php foreach($account_heads_filter as $ahf){ ?>
+
+                                                                            <option value="<?php echo $ahf->ah_head_id; ?>"><?php echo $ahf->ah_head_id; ?></option>
+
+                                                                            <?php } ?>
+
+                                                                            </select>
+
+                                                                            </td>
+
+                                                                            <td>Range To</td>
+
+                                                                            <td>
+                                                                            
+                                                                            <select class="form-control" name="range_to">
+
+                                                                            <option value="">Select Range To</option>
+
+                                                                            <?php foreach($account_heads_filter as $ahf){ ?>
+
+                                                                            <option value="<?php echo $ahf->ah_head_id; ?>"><?php echo $ahf->ah_head_id; ?></option>
+
+                                                                            <?php } ?>
+
+                                                                            </select>
+
+                                                                            </td>
+
+                                                                            </tr>
+
                                                                             
                                                                         
                                                                         </thead>
@@ -280,8 +381,36 @@
                                             
                                             <tbody class="tbody_data">
 
+                                            <?php
+                                            
+                                            if(!empty($open_balance))
+                                            {
+                                            $balance=$open_balance;
+                                            }
+                                            else
+                                            {
+                                            $balance=0;
+                                            }
+
+                                            ?>
+
+
+                                            <tr>
+                                          
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>Opening Balance</b></td>
+                                            <td><?= $balance; ?></td>
+
+                                            </tr>
+
 
                                             <?php 
+
+                                            /*
 
                                             $total_credit=0;
 
@@ -295,7 +424,7 @@
                                             <td><?= $pay->cc_customer_name; ?></td>
                                             <td>---</td>
                                             <td><?= $pay->pay_amount; ?></td>
-                                            <td>Balance</td>
+                                            <td><?= $balance = $balance+$pay->pay_amount; ?></td>
 
                                             </tr>
 
@@ -318,14 +447,92 @@
                                             <td><?= $rec->cc_customer_name; ?></td>
                                             <td><?= $rec->r_amount; ?></td>
                                             <td>---</td>
-                                            <td>Balance</td>
+                                            <td><?= $balance = $balance-$rec->r_amount; ?></td>
 
 
                                             </tr>
 
                                             <?php 
                                             $total_debit = $total_debit+$rec->r_amount;
-                                            } ?>
+                                            } */ ?>
+
+
+
+                                            <?php 
+                                            $total_credit=0;
+                                            $total_debit=0;
+                                            foreach($vouchers as $vc){ ?>
+
+
+                                            <tr>
+                                           
+                                            <td><?php echo date('d-m-Y',strtotime($vc->transaction_date)); ?></td>
+
+                                            <td><?= $vc->reference; ?></td>
+
+                                            <td>
+
+                                            <?php /* if($vc->debit_amount !="") { 
+                                                echo  "Receipt";
+                                               } else {
+                                                echo "Payment";
+                                               } */ ?>
+
+                                               <?= $vc->voucher_type; ?>
+
+
+                                            </td>
+
+                                            <td><?= $vc->account_name; ?></td>
+
+                                            <td>
+
+                                               <?php if($vc->debit_amount !="") { 
+                                                echo  round($vc->debit_amount,2);
+                                                $total_debit = $total_debit-$vc->debit_amount;
+
+                                               } else {?>
+                                                ---
+                                               <?php } ?>
+                                            
+                                            </td>
+
+                                            <td> 
+                                                
+                                               <?php if($vc->credit_amount !="") { 
+                                                echo  round($vc->credit_amount,2); 
+                                                $total_credit=$total_credit+$vc->credit_amount;
+                                                
+                                               } else {?>
+                                                ---
+                                               <?php } ?></td>
+
+                                            <td>
+                                            
+                                              <?php
+                                                
+                                                if(!empty($vc->debit_amount))
+                                                {
+                                                $balance = $balance-$vc->debit_amount; 
+                                                }
+                                                else
+                                                {
+                                                $balance = $balance+$vc->credit_amount; 
+                                                }
+
+                                                echo round($balance,2);
+
+                                              ?>
+                                              
+                                            
+                                            </td>
+
+
+                                           </tr>
+
+
+                                            <?php } ?>
+
 
 
                                             </tbody>
@@ -339,9 +546,9 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><b><?= $total_debit; ?></b></td>
-                                            <td><b><?= $total_credit; ?></b></td>
-                                            <td></td>
+                                            <td><b></b></td>
+                                            <td><b><?= round($total_credit,2); ?></b></td>
+                                            <td><b><?= round($balance,2); ?></b></td>
                                             </tr>
 
                                             </tfoot>
@@ -379,6 +586,36 @@
     
                         
 </div>
+
+
+
+</div>
+<!-- End Page-content -->
+
+
+
+
+
+
+
+
+
+
+
+<!--footer section start-->
+
+<?php echo view('includes/footer'); ?>
+
+<!--footer section end-->
+
+
+
+
+</body>
+
+
+
+</html>
 
 
 
@@ -423,15 +660,15 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php } */ ?>
 
 
 
-
+        /*
         $('#filter_range').change(function(){
 
         var val = $(this).val();
@@ -439,6 +676,25 @@
         if(val !="Range")
         {
         $('.datepicker').attr('disabled',true);
+
+            if(val=="Month")
+            {
+                var date = new Date();
+                var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+                $('input[name=start_date]').val(firstDay);
+                $('input[name=end_date]').val(firstDay);
+
+            }
+
+            if(val=="Year")
+            {
+
+            
+
+            }
+
         }
         else
         {
@@ -446,6 +702,8 @@
         }
 
         });
+
+        */
 
        
         

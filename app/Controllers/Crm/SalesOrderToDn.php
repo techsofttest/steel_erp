@@ -169,129 +169,423 @@ class SalesOrderToDn extends BaseController
     //fetch data
     public function GetData()
     {
-        /*$from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_order     = trim($this->request->getPost('sales_order'));
-
-        $sales_executive = trim($this->request->getPost('sales_executive'));
-
-        $product         = trim($this->request->getPost('product'));
-
-       
-        $joins = array(
-            array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_sales_order',
-                'fk'    => 'dn_id',
-            ),
-           
-
-        );
-
-      
-        $sales_order = $this->common_model->CheckDate($from_date,'dn_id',$to_date,'',$customer,'dn_customer',$sales_executive,'so_sales_executive',$product,'spd_product_details',$sales_order,'so_reffer_no','crm_sales_orders',$joins);
         
-       
-
-        $data['product_data'] =""; 
-
-        if(!empty($sales_order))
+        if(!empty($_GET['form_date']))
         {
-
-            $data['status'] ="true";
-
-            $i=1;
-            foreach($sales_order as $sales)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$sales->so_reffer_no.'</td>
-                <td>'.$sales->so_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                                
-                </td>
-                </tr>';
-                $i++; 
-
-            }
+            $from_date = $_GET['form_date'];
         }
         else
         {
-            $data['status'] ="False";
+            $from_date = "";
+        }
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
+        if(!empty($_GET['customer']))
+        {
+            $data1 = $_GET['customer'];
+        }
+        else
+        {
+            $data1 ="";
+        }
+        if(!empty($_GET['sales_order_ref']))
+        {
+            $data2 = $_GET['sales_order_ref'];
+        }
+        else
+        {
+            $data2 ="";
+        }
+        if(!empty($_GET['sales_executive']))
+        {
+            $data3 =  $_GET['sales_executive'];
+        }
+        else
+        {
+            $data3 ="";
+        }
+        if(!empty($_GET['product']))
+        {
+            $data4 =$_GET['product'];
+        }
+        else
+        {
+            $data4 = "";
         }
 
-        echo json_encode($data);*/
 
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_executive = trim($this->request->getPost('sales_executive'));
-
-        $product         = trim($this->request->getPost('product'));
-
-        $sales_order     = trim($this->request->getPost('sales_order'));
-
-       
         $joins = array(
+            
             array(
                 'table' => 'crm_sales_product_details',
                 'pk'    => 'spd_sales_order',
                 'fk'    => 'so_id',
             ),
-           
 
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+            array(
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
+            ),
+            array(
+                'table' => 'crm_delivery_note',
+                'pk'    => 'dn_sales_order_num',
+                'fk'    => 'so_id',
+            ),
+         
         );
 
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details',
+            ),
+        );
       
-        $sales_order = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'	so_customer',$sales_executive,'so_sales_executive',$product,'spd_product_details',$sales_order,'so_reffer_no','crm_sales_orders',$joins,'so_reffer_no');
-        
+       $data['sales_orders'] = $this->crm_modal->SalesOrderToDeliveryNote($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive',$data4,'spd_product_details','crm_sales_orders',$joins,'so_reffer_no',$joins1,'spd_sales_order','crm_sales_product_details');  
+       
+       if(!empty($from_date))
+       {
+           $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+       }
+       else
+       {
+           $data['from_dates'] ="";
+       } 
        
 
-        $data['product_data'] =""; 
+       if(!empty($to_date))
+       {
+           $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+       }
+       else
+       {
+           $data['to_dates'] = "";
+       }
 
-       if(!empty($sales_order)){
 
-            $data['status'] ="true";
+        if(!empty($_POST['pdf']))
+       {   
+           $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
+       }
+       
+       $data['content'] = view('crm/sales-order_to_dn',$data);
 
-            
-            
-            $i=1;
-            foreach($sales_order as $sales)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$sales->so_reffer_no.'</td>
-                <td>'.$sales->so_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
-            }
-        }
-        else
-        {
-            $data['status'] ="False";
-        }
+       return view('crm/report-module-search',$data);
 
-        echo json_encode($data);
-      
+    
     }
 
+
+    public function Pdf($sales_orders,$from_date,$to_date)
+    {   
+        
+        if(!empty($sales_orders))
+        {   
+            $pdf_data = "";
+            
+            $i=1;
+            $sales_product = 0;   
+            $product_price = 0;
+            $product_diff  = 0;
+            foreach($sales_orders as $sales_order){
+                $new_date = date('d-m-Y', strtotime($sales_order->so_date));
+                $pdf_data .= "<tr>
+                                <td style='border-top: 2px solid'>{$new_date}</td>
+                                <td style='border-top: 2px solid'>{$sales_order->so_reffer_no}</td>
+                                <td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>
+                                <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
+                                <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
+                                <td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>
+                                <td colspan='4' align='left' class='p-0' style='border-top: 2px solid'>
+                                    <table>";
+                                        foreach($sales_order->sales_products as $sales_prod){
+                                            $pdf_data .= "<tr>
+                                                            <td width='100px'>{$sales_prod->product_details}</td>
+                                                            <td  width='100px'>{$sales_prod->spd_quantity}</td>
+                                                            <td  width='100px'>{$sales_prod->spd_rate}</td>
+                                                            <td  width='100px'>{$sales_prod->spd_amount}</td>
+                                                            
+                                            </tr>";
+                                            $sales_product = $sales_prod->spd_amount + $sales_product;
+                                        } 
+                                    $pdf_data .= "</table>
+                                </td>
+                                <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>";
+                                   if(!empty($sales_order->sales_deliverys)){
+                                    $pdf_data .="<table>"; 
+                                    foreach($sales_order->sales_deliverys as $sales_del){
+                                        $j=1;
+                                        foreach($sales_del->sales_delivery_prod as $del_prod){
+                                            $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
+                                                if($j==1){
+                                                    $pdf_data .="<td width='100px'>{$sales_del->dn_reffer_no}</td>";
+                                                }
+                                                else{
+                                                    $pdf_data .="<td width='100px'></td>";  
+                                                }
+                                                    
+                                            $pdf_data .="<td width='100px'>{$del_prod->product_details}</td>
+                                                         <td width='100px'>{$del_prod->dpd_current_qty}</td>
+                                                         <td width='100px'>{$del_prod->dpd_prod_rate}</td>
+                                                         <td width='100px'>{$del_prod->dpd_total_amount}</td>
+                                            
+                                            </tr>"; 
+
+                                            $j++;
+
+                                            $product_price = $del_prod->dpd_total_amount + $product_price;
+                                        }
+                                    }
+                                    $pdf_data .="</table>";
+                                   }
+
+                                    if(!empty($sales_order->sales_cash_invoice)){
+                                        $pdf_data .="<table>";
+                                            foreach($sales_order->sales_cash_invoice as $sales_cash){
+                                                $k=1;
+                                                foreach($sales_cash->cash_product as $cash_prod){ 
+                                                $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
+                                                    if($k==1){
+                                                        $pdf_data .="<td width='100px'>{$sales_cash->ci_reffer_no}</td>";
+                                                    }else{
+                                                        $pdf_data .="<td width='100px'></td>";
+                                                    }
+                                                    $pdf_data .="<td width='100px'>{$cash_prod->product_details}</td>
+                                                                <td width='100px'>{$cash_prod->cipd_qtn}</td>
+                                                                <td width='100px'>{$cash_prod->cipd_rate}</td>
+                                                                <td width='100px'>{$cash_prod->cipd_amount}</td>
+
+                                                            </tr>";
+                                                    
+                                               
+                                            $k ++;
+                                            
+                                            $product_price = $cash_prod->cipd_amount + $product_price;
+                                        } }
+                                        $pdf_data .="</table>";
+                                    }
+
+                                $pdf_data .="</td>
+
+                                <td style='border-top: 2px solid'>";
+                                    if(empty($sales_order->sales_deliverys) && empty($sales_order->sales_cash_invoice)){
+                                        $pdf_data .="<table>";
+                                            foreach($sales_order->sales_products as $sales_prod){
+                                                $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
+                                                    <td  width='100px'>{$sales_prod->spd_amount}</td>
+                                                </tr>";
+
+                                                $product_diff =  $sales_prod->spd_amount + $product_diff;
+                                            }
+                                        $pdf_data .="</table>";
+                                    }else{
+                                        $pdf_data .="<table>
+                                                        <tr style='background: unset;border-bottom: hidden !important;'>
+                                                            <td></td>
+                                                        </tr>
+                                        </table>";
+                                    }
+                                $pdf_data .="</td>
+
+
+
+                            </tr>";
+                                
+               
+
+            $i++; }
+
+
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+            $title = "SQR";
+
+           // $mpdf = new \Mpdf\Mpdf();
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => [300, 400], // Custom page size in millimeters
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+            ]);
+
+
+            $mpdf->SetTitle('Sales Order - Delivery / Cash Invoice Analysis'); // Set the title
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : '.$dates.'</td>
+            <td align="right"><h3>Sales Order - Delivery / Cash Invoice Analysis</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+            <th align="left">Date</th>
+        
+            <th align="left">Sales Order</th>
+        
+            <th align="left">Customer</th>
+
+            <th align="left">LPO Ref</th>
+        
+            <th align="left">Sales Executive</th>
+        
+            <th align="left">Amount</th>
+
+            <th align="left" width="100px">Product</th>
+
+            <th align="left" width="100px">Quantity</th>
+
+            <th align="left" width="100px">Rate</th>
+
+            <th align="left" width="100px">Amount</th>
+
+            <th align="left" width="100px">Delivery Note / Cash Invoice</th>
+
+            <th align="left" width="100px">Product</th>
+
+            <th align="left" width="100px">Quantity</th>
+
+            <th align="left" width="100px">Rate</th>
+
+            <th align="left" width="100px">Amount</th>
+
+            <th align="left" width="100px">Difference</th>
+
+          
+            
+            </tr>
+
+             
+            '.$pdf_data.'
+
+
+            <tr>
+            
+                <td style="border-top: 2px solid;">Total</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$sales_product.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$sales_product.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$product_price.'</td>
+                <td style="border-top: 2px solid;">'.$product_diff.'</td>
+            
+            </tr> 
+
+           
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+        
+          
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
+        }
+
+       
+    }
+
+
+    
+
+  
 
 
 

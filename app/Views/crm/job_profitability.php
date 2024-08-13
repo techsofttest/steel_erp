@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="JobProfitability" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="job_profitablity_form">
+                                <form  class="Dashboard-form class" method="GET" target="_blank" action="<?php echo base_url();?>Crm/JobProfitability/GetData" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Job profitability</h5>
@@ -37,12 +37,13 @@
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
+                                                                            
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -63,7 +64,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -106,7 +107,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -127,7 +128,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Job Profitability</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Job Profitability <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -135,14 +136,69 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
+                                                    <th>Sales Order Ref</th>
+                                                    <th>Customer/Vendor</th>
+                                                    <th>LPO</th>
+                                                    <th>Sales Executive</th>
+                                                    <th>Revenue</th>
                                                     
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                            <?php
+                                                
+                                                if(!empty($sales_orders))
+                                                {
+                                                    $i=1;
+                                                    foreach($sales_orders as $sales_order){
+                                                         
+                                                    ?> 
+                                                   
+                                                    <tr>
+
+                                                        <td><?php echo $i;?></td>
+                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
+                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        
+                                                        <?php 
+
+                                                        $cash_total = 0;
+                                                        $credit_total = 0;
+                                                        $sales_return = 0;
+                                                        foreach($sales_order->cash_invoices as $cash_invoice){
+                                                        
+                                                            $cash_total = $cash_invoice->ci_total_amount + $cash_total;
+                                                             
+                                                        } 
+                                                        
+                                                        foreach($sales_order->credit_invoiced as $credit_inv){
+                                                             
+                                                            $credit_total = $credit_inv->cci_total_amount + $credit_total;
+                                                        }
+
+
+                                                           
+                                                        
+                                                        ?>
+
+                                                        <td><?php echo $cash_total + $credit_total; ?></td>
+
+
+                                                        
+     
+                                                        
+                                                    </tr>
+                                                        
+                                                    <?php  $i++; }?> 
+
+                                                    
+                                                <?php   } ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -186,10 +242,13 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
 
         /*modal open start*/
+        <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
             $('#JobProfitability').modal('show');
         });
+
+        <?php endif; ?>
         
         
         /*modal open end*/
@@ -261,54 +320,25 @@
         
         /*####*/
 
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#job_profitablity_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
 
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/JobProfitability/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
+        /*form submit start*/
 
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
+        /*$(".submit_btn").on('click', function(){ 
 
-                            $("#JobProfitability").modal('hide');
+            $('#JobProfitability').modal("hide");
 
-                            $('#job_profitablity_form')[0].reset();
+            $('#add_form')[0].reset();
 
-                            $('.customer_clz').val('').trigger('change');
+            $('.customer_clz option').remove();
 
-                            $('.executive_clz').val('').trigger('change');
+            $('.sales_order option').remove();
 
-                            datatable.ajax.reload(null, false);
+            $('.executive_clz option').remove();
+        
+        });*/
 
-                        }
-                    });
-                }
-            });
-        });
 
-        /*####*/
-
+/*#####*/
 
         
 

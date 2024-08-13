@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="InvoiceReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="invoice_report">
+                                <form  class="Dashboard-form class" method="GET" target="_blank" action="<?php echo base_url();?>Crm/InvoiceReport/GetData" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Invoice Report</h5>
@@ -40,9 +40,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -63,20 +63,13 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                             </tr>
 
-
-                                                                            <!--<tr>
-                                                                                <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                            </tr>--->
+                                             
 
 
                                                                             <tr>
@@ -112,7 +105,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -133,22 +126,108 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Invoice Report</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrderToDn" class="btn btn-primary py-1">Search</button>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Invoice Report <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        
+                                        <form method="POST"  target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="email_button report_button" type="submit">Email</button>
+                                        </form>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
-                                                    
+                                                    <th>Invoice Ref.</th>
+                                                    <th>Customer</th>
+                                                    <th>Delivery Note Ref.</th>
+                                                    <th>Sales Order Ref.</th>
+                                                    <th>Lpo Ref.</th>
+                                                    <th>Amount</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Qty Ordered</th>
+                                                    <th width="100px">Qty Delivered</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                               
+                                            <?php 
+                                               
+                                                if(!empty($delivery_data))
+                                                {   
+                                                   
+                                                    $i =1;
+
+                                                    foreach($delivery_data as $del_note){?> 
+                                                    <tr>
+                                                        <td class="height_class"><?php echo $i;?></td>
+                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($del_note->dn_date));?></td>
+                                                        
+                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
+                                                           
+                                                            <?php if(!empty($del_note->credit_invoice) || !empty($del_note->performa_invoice)){ ?> 
+                                                               <table>
+                                                                    <?php foreach($del_note->credit_invoice as $cred_inv){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><?php echo $cred_inv->cci_reffer_no;?></td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    <?php foreach($del_note->performa_invoice as $per_inv){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><?php echo $per_inv->pf_reffer_no;?></td>
+                                                                        </tr> 
+                                                                    <?php } ?>
+                                                               </table>  
+                                                            <?php } ?>
+                                                          
+                                                        </td>
+
+                                                        <td class="height_class"><?php echo $del_note->cc_customer_name;?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->so_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->so_lpo;?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_total_amount;?></td>
+                                                        <td colspan="5" align="left" class="p-0">
+                                                            <table>
+                                                                <?php foreach($del_note->delivery_products as $del_prod){?>
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                        <td  width="100px"><?php echo $del_prod->product_details;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_order_qty;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_current_qty;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_prod_rate;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_total_amount;?></td>
+                                                                    </tr> 
+                                                                <?php } ?>
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+        
+                                                    
+                                                <?php  $i++; }  }  ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -193,9 +272,13 @@
 
         /*modal open start*/
 
+        <?php if(empty($_GET)): ?>
+
         $(window).on('load', function() {
             $('#InvoiceReport').modal('show');
         });
+
+        <?php endif; ?>
         
         
         /*modal open end*/
@@ -268,58 +351,26 @@
         
         /*####*/
 
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#invoice_report');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
 
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/InvoiceReport/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
+        /*form submit start*/
 
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
+        /*$(".submit_btn").on('click', function(){ 
 
-                            $("#InvoiceReport").modal('hide');
+            $('#InvoiceReport').modal("hide");
 
-                            $('#invoice_report')[0].reset();
+            $('#add_form')[0].reset();
 
-                            $('.customer_clz').val('').trigger('change');
+            $('.customer_clz option').remove();
 
-                            $('.executive_clz').val('').trigger('change');
+            $('.customer_clz option').remove();
 
-                            $('.product_clz').val('').trigger('change');
+            $('.executive_clz option').remove();
 
-                            datatable.ajax.reload(null, false);
+            $('.product_clz option').remove();
 
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
+        });*/
 
-        /*####*/
-
+        /*#####*/
 
 
 

@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesSummery" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="sales_summmery_form">
+                                <form  class="Dashboard-form class" method="GET" target="_blank" action="<?php echo base_url();?>Crm/SalesSummery/GetData" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Summery Report</h5>
@@ -40,9 +40,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -54,7 +54,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer" required><option>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -64,8 +64,8 @@
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
                                                                                 <td>
-                                                                                    <select class="form-select sales_order_ref sales_order" name="sales_executive" required>
-                                                                                        <option>Select Sales Executive</option>
+                                                                                    <select class="form-select sales_order_ref sales_order" name="sales_executive">
+                                                                                        <option value="" selected disabled>Select Sales Executive</option>
                                                                                         <?php 
                                                                                            foreach($sales_executive as $sales_exec)
                                                                                            { ?>
@@ -107,7 +107,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -128,22 +128,68 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Summery Report</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Summery Report <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesSummery" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Refference Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
-                                                    
+                                                    <th>Invoice Ref.</th>
+                                                    <th>Customer</th>
+                                                    <th>Delivery Note Ref.</th>
+                                                    <th>Sales Order Ref.</th>
+                                                    <th>LPO Ref.</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                               
+                                            <?php 
+                                               
+                                                if(!empty($delivery_data))
+                                                {   
+                                                   
+                                                    $i =1;
+
+                                                    foreach($delivery_data as $del_note){?> 
+                                                    <tr>
+                                                        <td class="height_class"><?php echo $i;?></td>
+                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($del_note->dn_date));?></td>
+                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
+                                                           
+                                                            <?php if(!empty($del_note->credit_invoice) || !empty($del_note->performa_invoice)){ ?> 
+                                                               <table>
+                                                                    <?php foreach($del_note->credit_invoice as $cred_inv){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><?php echo $cred_inv->cci_reffer_no;?></td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    <?php foreach($del_note->performa_invoice as $per_inv){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><?php echo $per_inv->pf_reffer_no;?></td>
+                                                                        </tr> 
+                                                                    <?php } ?>
+                                                               </table>  
+                                                            <?php } ?>
+                                                          
+                                                        </td>
+                                                        <td class="height_class"><?php echo $del_note->cc_customer_name;?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->so_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->so_lpo;?></td>
+                                                       
+                                                        <td class="height_class"><?php echo $del_note->dn_total_amount;?></td>
+                                                        
+
+                                                    </tr>
+        
+                                                    
+                                                <?php  $i++; }  }  ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -187,12 +233,14 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
 
         /*modal open start*/
+        <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
             $('#SalesSummery').modal('show');
         });
         
-        
+         <?php endif; ?>
+
         /*modal open end*/
 
 
@@ -229,60 +277,32 @@
         })
         /**/
 
+
+        /*form submit start*/
+
+        /*$(".submit_btn").on('click', function(){ 
+
+            $('#SalesSummery').modal("hide");
+
+            $('#add_form')[0].reset();
+
+            $('.customer_clz option').remove();
+
+            $('.sales_order option').remove();
+        });*/
+
+    /*#####*/
+
+
+
+
        
-
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_summmery_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesSummery/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                                $('.tbody_data').html(responseData.product_data);
-
-                                $("#SalesSummery").modal('hide');
-
-                                $('#sales_summmery_form')[0].reset();
-
-                                $('.customer_clz').val('').trigger('change');
-
-                                $('.sales_order').val('').trigger('change');
-
-                                datatable.ajax.reload(null, false);
-
-                        }
-                    });
-                }
-            });
-        });
-
-        /*####*/
-
-
 
 
     });
+
+
+   
 
 
 

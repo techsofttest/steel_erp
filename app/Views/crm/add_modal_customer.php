@@ -544,6 +544,7 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
+                   
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CustomerCreation/Add",
                         method: "POST",
@@ -744,7 +745,7 @@
 			if(y < max_fieldss){ //max input box allowed
 				y++;
                 i++;
-	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control ' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control contact_per_clz' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control cont_desig_clz' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control contact_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
                 slno();
 			}
 	    });
@@ -754,7 +755,12 @@
 	 
 	        $(this).parent().remove();
 	        //y--;
+
+
             slno();
+
+
+
         });
 
         /*####*/
@@ -766,11 +772,24 @@
         function slno(){
             
             var pp =1;
+
+            
+            var rp = 0;
+            
             
             $('body .prod_row').each(function() {
 
                 $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
 
+                $(this).find('.contact_per_clz').attr("name", "contact_person["+rp+"]");
+
+                $(this).find('.cont_desig_clz').attr("name", "contact_designation["+rp+"]");
+
+                $(this).find('.contact_mobile_clz').attr("name", "contact_mobile["+rp+"]");
+
+                $(this).find('.contact_email_clz').attr("name", "contact_email["+rp+"]");
+
+                rp++;
                 pp++;
 
             });
@@ -834,6 +853,8 @@
         $("body").on('keyup', '.contact_mobile_clz', function(){
            
             $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+
+           
             
        });
 

@@ -19,6 +19,11 @@
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link <?php if($uri->getSegment(3)=="PettyCashVoucher") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/PettyCashVoucher" >Petty Cash voucher</a>
     </li>
+
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(3)=="BankRec") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/BankRec" >Bank Reconciliation</a>
+    </li>
+
     <li class="nav-item waves-effect waves-light">
     <a class="nav-link <?php if($uri->getSegment(3)=="Reports") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/Reports/Ledger" >Reports</a>
     </li>

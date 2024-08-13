@@ -126,18 +126,9 @@ class SalesQuotAnalysisReport extends BaseController
     //fetch data
     public function GetData()
     {
-        /*$from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_executive = trim($this->request->getPost('sales_executive'));
-
-        $product         = trim($this->request->getPost('product'));*/
-
+       
         //Filter 
-
+         
         if(!empty($_GET['form_date']))
         {
             $from_date = $_GET['form_date'];
@@ -182,8 +173,7 @@ class SalesQuotAnalysisReport extends BaseController
         {
             $data3 = "";
         }
-
-       
+        
 
         $joins = array(
             
@@ -203,140 +193,179 @@ class SalesQuotAnalysisReport extends BaseController
                 'fk'    => 'qd_sales_executive',
             ),
            
+           
 
         );
 
-        $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');  
+
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+
+           
+        );
+
+        $data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
         
+        if(!empty($from_date))
+        {
+            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        }
+        else
+        {
+            $data['from_dates'] ="";
+        } 
+        
+
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
+        }
+
         if(!empty($_POST['pdf']))
         {
-            $this->Pdf($data['quotation_data']);
+            $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
         }
-        
-
-        $data['content'] = view('crm/sales-quot-analysis-report',$data);
-
-        return view('crm/report-module',$data);
 
        
-      
+        $data['content'] = view('crm/sales-quot-analysis-report',$data);
+
+        return view('crm/report-module-search',$data);
+        
     }
 
 
 
-    public function Pdf($quotation_data)
+    public function Pdf($quotation_data,$from_date,$to_date)
     {   
+       
         if(!empty($quotation_data))
         {   
             $pdf_data = "";
+            $total_quot_amount = 0;
+            $sales_amount = 0;
+            $sales_diff_amount = 0;
+            foreach($quotation_data as $quot_data){
 
-            $joins1 = array(
+                $new_date = date('d-m-Y', strtotime($quot_data->qd_date));
             
-                array(
-                    'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'qpd_product_description',
-                ),
-               
-                
-            );
-
-            
-            $total_amount = 0;
-            foreach($quotation_data as $quot_data)
-            {   
-                $q=1;
-                $border="border-top: 2px solid";
-                $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
-                
-                $total_amount = $total_amount + $quot_data->qd_sales_amount;
-
-                $new_date = date('d-m-Y',strtotime($quot_data->qd_date));
-
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
-
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
-                
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
-
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
-                
-                
-                if($q!=1){
-                     
-                    $pdf_data .="</tr>";
-                }
-                foreach($product_details as $prod_del)
-                {
-                    if($q!=1){
+                $pdf_data .= "<td colspan='4' align='left' class='p-0' style='border-top: 2px solid'><table>";
 
-                        $pdf_data .="<tr>";
-
-                        $pdf_data .= "<tr><td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                        
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                    }
-
-                    
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
-
-                    
-                    if($q!=1)
-                    {
-                        $pdf_data .="</tr>";
-                    }
-
-                    $q++;
-
-                }
-                
-                if($q==1)
-                {
-                    $pdf_data .="</tr>";
-                }
-
-               // $pdf_data .="</tr>";
-                 
-                
                
-                
+
+                foreach($quot_data->quotation_product as $quot_prod){
+                    $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
+                    $pdf_data .= "<td width='100px'>{$quot_prod->product_details}</td>";
+                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_quantity}</td>";
+                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_rate}</td>";
+                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_amount}</td>";
+                    $pdf_data .= "</tr>";
+                    
+                    $total_quot_amount = $quot_prod->qpd_amount + $total_quot_amount;
+
+                }
+            
+                $pdf_data .= "</table></td>";
+            
+                if(!empty($quot_data->sales_orders)){
+                    $pdf_data .= "<td colspan='5' align='left' class='p-0' style='border-top: 2px solid'><table>";
+            
+                    foreach($quot_data->sales_orders as $sal_ord){
+                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
+                        $pdf_data .= "<td width='100px'>{$sal_ord->so_reffer_no}</td>";
+            
+                        $so_pro_count = 1;
+                        if(!empty($sal_ord->sales_product)){
+                            foreach($sal_ord->sales_product as $sales_prod){
+                                if($so_pro_count == 1){
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->product_details}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_quantity}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_rate}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_amount}</td>";
+                                    
+                                    $sales_amount = $sales_prod->spd_amount + $sales_amount;
+
+                                    $pdf_data .= "</tr>";
+                                } else {
+                                    $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
+                                    $pdf_data .= "<td width='100px'></td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->product_details}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_quantity}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_rate}</td>";
+                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_amount}</td>";
+                                    $pdf_data .= "</tr>";
+
+                                    $sales_amount = $sales_prod->spd_amount + $sales_amount;
+                                }
+                                $so_pro_count++;
+                            }
+                        } else {
+                            $pdf_data .= "</tr>";
+                        }
+                    }
+            
+                    $pdf_data .= "</table></td>";
+                } else {
+                    $pdf_data .= "<td style='border-top: 2px solid'></td>
+                                  <td style='border-top: 2px solid'></td>
+                                  <td style='border-top: 2px solid'></td>
+                                  <td style='border-top: 2px solid'></td>
+                                  <td style='border-top: 2px solid'></td>
+                    ";
+                }
+
+                if(!empty($quot_data->sales_orders)){
+                    $pdf_data .= "<td style='border-top: 2px solid'>---</td>";  
+                }else{
+                    $pdf_data .="<td style='border-top: 2px solid'>{$quot_data->qpd_amount}</td>";
+
+                    $sales_diff_amount = $quot_data->qpd_amount + $sales_diff_amount;
+                }
+            
+                $pdf_data .= "</tr>";
             }
-            $mpdf = new \Mpdf\Mpdf();
+            
+            if(empty($from_date) && empty($to_dat))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+            $title = "SQR";
+
+           // $mpdf = new \Mpdf\Mpdf();
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => [300, 400], // Custom page size in millimeters
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+
+        ]);
+        
+
+            
+
+            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
+
+          
 
             $html ='
         
@@ -389,7 +418,7 @@ class SalesQuotAnalysisReport extends BaseController
             
         
             <tr width="100%">
-            <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
+            <td>Period : '.$dates.'</td>
             <td align="right"><h3>Sales Quotation Report</h3></td>
         
             </tr>
@@ -413,31 +442,53 @@ class SalesQuotAnalysisReport extends BaseController
         
             <th align="left">Amount</th>
 
-            <th align="left">Product</th>
+            <th align="left" width="100px">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="left" width="100px">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="left" width="100px">Rate</th>
 
-            <th align="left">Amount</th>
-        
+            <th align="left" width="100px">Amount</th>
+
+            <th align="left" width="100px">Sales Order</th>
+
+            <th align="left" width="100px">Product</th>
+
+            <th align="left" width="100px">Quantity</th>
+
+            <th align="left" width="100px">Rate</th>
+
+            <th align="left" width="100px">Amount</th>
+
+            <th align="left">Difference</th>
+
             
+
+         
             </tr>
 
              
             '.$pdf_data.'
 
             <tr>
+
                 <td style="border-top: 2px solid;">Total</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;">'.$total_quot_amount.'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
-            </tr>    
+                <td style="border-top: 2px solid;">'.$total_quot_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$sales_amount.'</td>
+                <td style="border-top: 2px solid;">'.$sales_diff_amount.'</td>
+            
+            </tr>   
            
             
             </table>
@@ -447,8 +498,11 @@ class SalesQuotAnalysisReport extends BaseController
             ';
         
             //$footer = '';
+
+
+            //echo $html; exit;
         
-            
+           
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
@@ -458,9 +512,6 @@ class SalesQuotAnalysisReport extends BaseController
 
        
     }
-
-
-
 
 
 

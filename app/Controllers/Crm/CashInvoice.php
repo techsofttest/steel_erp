@@ -63,7 +63,9 @@ class CashInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a href="'.base_url().'Crm/CashInvoice/Pdf/'.$record->ci_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+            ';
            
            $data[] = array( 
               'ci_id'          => $i,
@@ -191,7 +193,7 @@ class CashInvoice extends BaseController
 
         //$this->request->getPost('spd_sales_order');
 
-
+        $data['print'] = "";
        
         if(empty($this->request->getPost('ci_id')))
         {
@@ -281,6 +283,20 @@ class CashInvoice extends BaseController
             
             $cash_invoice_id = $this->request->getPost('ci_id');
 
+            $cash_invoicess = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+
+            //Add To Transactions
+    
+            $credit_trans_data['tran_reference'] = $cash_invoicess->ci_reffer_no;
+
+            $credit_trans_data['tran_account'] = $cash_invoicess->ci_credit_account;
+
+            $credit_trans_data['tran_credit'] = $cash_invoicess->ci_total_amount;
+
+            $credit_trans_data['tran_type'] = "Cash Invoice";
+
+            $this->common_model->InsertData('master_transactions',$credit_trans_data);
+
         }
 
         $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
@@ -288,6 +304,9 @@ class CashInvoice extends BaseController
         $data['sales_order'] = $cash_invoice->ci_sales_order;
 
         $data["cash_invoice"] = $cash_invoice_id ;
+
+        
+        
       
 
        // print_r($cash_invoice_id); exit();
@@ -314,12 +333,17 @@ class CashInvoice extends BaseController
                         'cipd_amount'        =>  $_POST['cipd_amount'][$j],
                         'cipd_sales_prod'    =>  $_POST['cipd_sales_prod'][$j],
                         'cipd_cash_invoice'  =>  $cash_invoice_id,
+                        
                        
                         
                     );
 
-                    $this->common_model->InsertData('crm_cash_invoice_prod_det',$product_data);
+                    $product_insert = $this->common_model->InsertData('crm_cash_invoice_prod_det',$product_data);
 
+                   
+
+                    $this->common_model->EditData(array('cipd_reffer_no'=>"CINP00".$product_insert),array('cipd_id' => $product_insert),'crm_cash_invoice_prod_det');
+ 
 
                     //$update_data =  array('spd_delivered_qty' => $_POST['cipd_qtn'][$j]);
 
@@ -382,7 +406,14 @@ class CashInvoice extends BaseController
             
             $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
             
-            
+            if(!empty($_POST['print_btn']))
+            {
+                
+                $data['print'] =  base_url() . 'Crm/CashInvoice/Pdf/' . urlencode($cash_invoice_id);
+
+            }
+
+           
 
             $data['adjustment_data'] = "";
             
@@ -473,8 +504,16 @@ class CashInvoice extends BaseController
 
         $data['credit_account'] = $cash_invoice->ca_name;
 
-       
-
+        $data['total_amount'] = '<tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td><input type="text" value="'.$cash_invoice->ci_total_amount.'" class="form-control " readonly></td>
+            
+        </tr> ';
 
         //product table
 
@@ -491,8 +530,7 @@ class CashInvoice extends BaseController
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond1,$joins1);
          
-        
-        
+
         $i=1;  
 
         $data['prod_details']= "";
@@ -500,7 +538,7 @@ class CashInvoice extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
@@ -707,6 +745,8 @@ class CashInvoice extends BaseController
             }
 
             $this->common_model->DeleteData('crm_cash_invoice',$cond);
+
+            $this->common_model->DeleteData('master_transactions',array('tran_reference' => $cash_invoice->ci_reffer_no));
 
             $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
     
@@ -968,7 +1008,7 @@ class CashInvoice extends BaseController
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
                                                
-                                                <td><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                <td style="width:40%"><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$new_qty.'"  class="form-control order_qty" readonly></td>
                                                 <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
@@ -1039,7 +1079,7 @@ class CashInvoice extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row cash_invoice_remove" id="'.$sales_det->spd_id.'">
                                                         <td class="si_no">'.$i.'</td>
-                                                        <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td style="width:40%"><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                         <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
                                                         <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id" ></td>
                                                         <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id"  readonly></td>
@@ -1136,6 +1176,19 @@ class CashInvoice extends BaseController
 
             $data['cash_invoice_id'] = $cash_invoice->ci_id;
 
+
+            $data['total_amount'] = '<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td class=""><input type="text" value="'.$cash_invoice->ci_total_amount.'" class="form-control " readonly></td>
+                
+            </tr> ';
+
+
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
@@ -1161,6 +1214,7 @@ class CashInvoice extends BaseController
             $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',array('so_id'=> $cash_invoice->ci_sales_order));
 
             $data['sales_order'] ="";
+            
             foreach($sales_orders as $sales_order)
             {
                 $data['sales_order'] .= '<option value="' .$sales_order->so_id.'"'; 
@@ -1241,7 +1295,7 @@ class CashInvoice extends BaseController
             {
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
                 <td>'.$i.'</td>
-                <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+                <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
                 <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
@@ -1400,17 +1454,7 @@ class CashInvoice extends BaseController
                    if(!empty($_POST['sales_prod_id'][$_POST['sales_prod_id2'][$j]]))
                    {
                    
-                        //$delivery_qty = $_POST['dpd_delivery_qty'][$j]; 
-
-                        //$current_qty = $_POST['dpd_current_qty'][$j];
-
                         
-                        //$delivery_qty = intval($delivery_qty);
-
-                        //$current_qty = intval($current_qty);
-
-                        
-                       // $new_deli_qty = $delivery_qty + $current_qty;
                        
                        $multipleValue = $_POST['cipd_rate'][$j] * $_POST['cipd_qtn'][$j];
                        
@@ -1430,8 +1474,8 @@ class CashInvoice extends BaseController
                             'cipd_sales_prod'   =>  $_POST['sales_prod_id2'][$j],
                             'cipd_rate'         =>  $_POST['cipd_rate'][$j],
                             'cipd_discount'     =>  $_POST['cipd_discount'][$j],
-                            'cipd_cash_invoice'  =>  $_POST['cash_invoice_id'],
-                            'cipd_amount'        =>  $amount,
+                            'cipd_cash_invoice' => $_POST['cash_invoice_id'],
+                            'cipd_amount'       =>  $amount,
                             
                         );
 
@@ -1504,7 +1548,29 @@ class CashInvoice extends BaseController
 
                         $data['cash_invoice_id'] = $_POST['cash_invoice_id'];
 
+                        $cash_invoice_prod_det = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice' => $_POST['cash_invoice_id']));
                         
+                        $total_amount = 0; 
+
+                        foreach($cash_invoice_prod_det as $cash_inv_prod_det)
+                        {
+                            $total_amount = $cash_inv_prod_det->cipd_amount + $total_amount ;
+                        }
+                         
+                        $this->common_model->EditData(array('ci_total_amount'=> $total_amount),array('ci_id' =>$_POST['cash_invoice_id']),'crm_cash_invoice');
+                        
+                       
+
+                        $data['total_amount'] = '<tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total</td>
+                            <td class=""><input type="text" value="'.$total_amount.'" class="form-control " readonly></td>
+                            
+                        </tr> ';
 
                     }
 
@@ -1526,6 +1592,8 @@ class CashInvoice extends BaseController
             $cash_invoice_prod = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_id' => $this->request->getPost('ProdID')));
           
             $qty = $cash_invoice_prod->cipd_qtn;
+
+            $cash_invoice_id = $cash_invoice_prod->cipd_cash_invoice;
            
             $sales_prod_id   = $cash_invoice_prod->cipd_sales_prod;
             
@@ -1569,7 +1637,32 @@ class CashInvoice extends BaseController
                 $this->common_model->DeleteData('crm_cash_invoice',array('ci_id' => $cash_invoice_prod->cipd_cash_invoice));
                 $data['status'] = "True";
             }
+            
+           
 
+           $cash_invoice_prod_where = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice' => $cash_invoice_id));
+           
+
+           $total_amount = 0;
+
+           foreach($cash_invoice_prod_where as $cash_invoice)
+           {
+                $total_amount = $cash_invoice->cipd_amount + $total_amount;
+           }
+
+         
+           $this->common_model->EditData(array('ci_total_amount' => $total_amount),array('ci_id' => $cash_invoice_id), 'crm_cash_invoice');
+            
+           $data['total_amount'] = '<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td class=""><input type="text" value="'. $total_amount.'" class="form-control " readonly></td>
+                
+            </tr> ';
 
             echo json_encode($data);
 
@@ -1591,6 +1684,319 @@ class CashInvoice extends BaseController
 
            echo json_encode($data);
 
+        }
+
+        public function Pdf($id)
+        {   
+            if(!empty($id))
+            {   
+                
+    
+                $joins1 = array(
+                
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'cipd_prod_det',
+                    ),
+                   
+                    
+                );
+
+                $product_details = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$id),$joins1);
+                    
+                
+                $pdf_data = "";
+
+                foreach($product_details as $prod_det)
+                {
+                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->cipd_qtn.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->cipd_unit.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->cipd_rate.'</td>';
+
+                    $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->cipd_discount.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->cipd_amount.'</td></tr>';
+                }
+
+                $join =  array(
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'ci_customer',
+                    ),
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'ci_sales_order',
+                    ),
+                );
+                
+
+                $cash_invoice = $this->common_model->SingleRowJoin('crm_cash_invoice',array('ci_id'=>$id),$join);
+
+                // Set the title of the PDF
+                $title = 'CIN - '.$cash_invoice->ci_reffer_no;
+               
+                $mpdf = new \Mpdf\Mpdf();
+
+                $mpdf->SetTitle($title); // Set the title
+    
+                $html ='
+            
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+               
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+               
+                <table><tr><td></td></tr></table>
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+            
+                <tr width="100%">
+                <td>Date : '.$cash_invoice->ci_date.'</td>
+                <td>Invoice No : '.$cash_invoice->ci_reffer_no.'</td>
+                <td align="right"><h2>Cash Invoice</h2></td>
+            
+                </tr>
+            
+                </table>
+
+            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        
+                <tr>
+                
+                    <td > </td>
+                    
+                    <td >'.$cash_invoice->cc_customer_name.'</td>
+                
+                </tr>
+        
+        
+            <tr>
+            
+            <td>Customer</td>
+            
+                
+            <td >Tel : '.$cash_invoice->cc_telephone.', Fax : '.$cash_invoice->cc_fax.', Email : '.$cash_invoice->cc_email.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+            <td >Post Box : -, Doha - '.$cash_invoice->cc_post_box.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+            
+            </tr>
+        
+        
+            </table>
+    
+               
+            
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Rate</th>
+        
+                    <th align="left" style="border-bottom:2px solid;">Disc%</th>
+        
+                    <th align="left" style="border-bottom:2px solid;">Amount</th>
+        
+                
+                </tr>
+
+
+                '.$pdf_data.'
+    
+                 
+                
+            </table>';
+            
+            $footer = '
+        
+                <table style="border-bottom:2px solid">
+                
+                    <tr>
+                        <td></td>
+
+                        <td>IBAN : QA97CBQA000000004570407137001</td>
+                    
+                        <td>Gross Total</td>
+            
+                        <td>'.$cash_invoice->ci_total_amount.'</td>
+                
+                    </tr>
+    
+                    <tr>
+        
+                        <td>Bank Details</td>
+                    
+                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                       
+                        <td>Less. Special Discount</td>
+            
+                        <td>-------</td>
+                    
+                    </tr>
+
+
+                    <tr>
+        
+                        <td></td>
+                    
+                        <td>SWIFT : CBQAQAQA</td>
+                       
+                        <td></td>
+            
+                        <td></td>
+                    
+                    </tr>
+    
+    
+                    <tr>
+        
+                        <td>Amount in words</td>
+                    
+                        <td>----------------------------------</td>
+            
+                        <td style="font-weight: bold;">Net Invoice Value</td>
+            
+                        <td>-----</td>
+                    
+                    </tr>
+    
+                </table>
+    
+    
+                <table>
+                
+                <tr>
+                    <td style="width:20%">Order Terms</td>
+    
+                    <td style="width:20%">Project:</td>
+    
+                    <td style="width:20%">-</td>
+    
+                    <td style="width:20%">Payment:</td>
+    
+                    <td style="width:20%">Cash on delivery</td>
+                    
+                </tr>
+    
+                <tr>
+                    <td style="width:20%"></td>
+    
+                    <td style="width:20%">Sales Order:</td>
+    
+                    <td style="width:20%">'.$cash_invoice->so_reffer_no.'</td>
+    
+                    <td style="width:20%">Delivery</td>
+    
+                    <td style="width:20%">Ex-works</td>
+    
+                </tr>
+                
+                </table>
+    
+    
+                <table style="border-top:2px solid;">
+    
+                <tr>
+                
+                    <td>Received by: </td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Prepared by:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Finance Dept:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Workshop Manager</td>
+    
+                  
+    
+                </tr>
+    
+    
+                
+                
+                
+                </table>
+            
+            
+            
+                ';
+            
+                
+                $mpdf->WriteHTML($html);
+                $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+            
+            }
+    
+           
         }
 
 

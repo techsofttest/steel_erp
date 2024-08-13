@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="DnToCreditInvoice" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="dn_to_credit_invoice_form">
+                                <form  class="Dashboard-form class" method="GET" target="_blank" action="<?php echo base_url();?>Crm/DnToCreditInvoice/GetData" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Dn To Credit Invoice Report</h5>
@@ -31,18 +31,78 @@
                                                         <div class="card-body">
                                                             <div class="live-preview">
 
-                                                              <!--table section start-->
+                                                                <!--table section start-->
+                                                                <?php 
+
+                                                                if(!empty($_GET['form_date']))
+                                                                {
+                                                                    $from_date = $_GET['form_date'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $from_date = "";
+                                                                }
+        
+                                                                if(!empty($_GET['to_date']))
+                                                                {
+                                                                    $to_date = $_GET['to_date'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $to_date = "";
+                                                                }
+
+                                                                if(!empty($_GET['customer']))
+                                                                {
+                                                                    $customer = $_GET['customer'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $customer = "";
+                                                                }
 
 
+                                                                if(!empty($_GET['sales_order']))
+                                                                {
+                                                                    $sales_order = $_GET['sales_order'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $sales_order = "";
+                                                                }
+
+
+                                                                if(!empty($_GET['delivery_note']))
+                                                                {
+                                                                    $delivery_note = $_GET['delivery_note'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $delivery_note = "";
+                                                                }
+
+
+                                                                if(!empty($_GET['product']))
+                                                                {
+                                                                    $product = $_GET['product'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    $product = "";
+                                                                }
+                                                                
+                                                                ?>  
+                                                                
+                                                                
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date" id="" value="<?php echo $from_date; ?>" onclick="this.showPicker();"  class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" id="" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -54,7 +114,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" value="<?php echo $customer;?>" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -63,7 +123,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order;?>" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -72,7 +132,7 @@
 
                                                                             <tr>
                                                                                 <td>Delivery Note Ref</td>
-                                                                                <td><select class="form-select  deliver_note_ref" name="delivery_note" ><option>Delivery Note Ref</option></select></td>
+                                                                                <td><select class="form-select  deliver_note_ref" value="<?php echo $delivery_note;?>" name="delivery_note" ><option value="" selected disabled>Select Delivery Note Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -82,7 +142,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz" value="<?php echo $product; ?>" name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -113,7 +173,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -134,7 +194,28 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Dn To Credit Invoice Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Dn To Credit Invoice Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        
+                                        <form method="POST"  target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="email_button report_button" type="submit">Email</button>
+                                        </form>
+                                        
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#DnToCreditInvoice" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -142,14 +223,121 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
+                                                    <th>Delivery Note Number</th>
+                                                    <th>Customer</th>
+                                                    <th>Sales Order Ref</th>
+                                                    <th>LPO Ref</th>
+                                                    <th>Amount</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Quantity</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th width="100px">Invoice Ref</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Quantity</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th width="100px">Difference</th>
                                                     
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                               
+                                            <?php 
+                                               
+                                                if(!empty($delivery_data))
+                                                {   
+                                                   
+                                                    $i =1;
+
+                                                    foreach($delivery_data as $del_note){?> 
+                                                    <tr>
+                                                        <td class="height_class"><?php echo $i;?></td>
+                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($del_note->dn_date));?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->cc_customer_name;?></td>
+                                                        <td class="height_class"><?php echo $del_note->so_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_lpo_reference;?></td>
+                                                        <td class="height_class"><?php echo $del_note->dn_total_amount;?></td>
+
+                                                        
+
+                                                        <td  colspan="4" align="left" class="p-0 ">
+                                                            <table>
+                                                                <?php foreach($del_note->delivery_products as $del_prod){?>
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                        <td  width="100px"><?php echo $del_prod->product_details;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_current_qty;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_prod_rate;?></td>
+                                                                        <td  width="100px"><?php echo $del_prod->dpd_total_amount;?></td>
+                                                                    </tr> 
+                                                                <?php } ?>
+                                                            </table>
+                                                        </td>
+                                                        
+                                                        
+                                                        <td colspan="6" align="left" class="p-0" style="height:100%">
+                                                            <?php if(!empty($del_note->credit_invoices)){?>
+                                                            
+                                                            <table>
+
+                                                                <?php foreach($del_note->credit_invoices as $credit_inv){
+                                                                $j=1; foreach($credit_inv->invoices_product as $inv_prod){   
+                                                                ?> 
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                        <?php if($j==1){?> 
+                                                                            <td width="100px"><?php echo $credit_inv->cci_reffer_no;?></td>
+                                                                        <?php } else{?> 
+                                                                            <td width="100px"></td>
+                                                                        <?php } ?>
+                                                                        <td width="100px"><?php echo $inv_prod->product_details;?></td>
+                                                                        <td width="100px"><?php echo $inv_prod->ipd_quantity;?></td>
+                                                                        <td width="100px"><?php echo $inv_prod->ipd_rate;?></td>
+                                                                        <td width="100px"><?php echo $inv_prod->ipd_amount;?></td>
+
+                                                                        <?php if(!empty($credit_inv->invoices_product)){  ?> 
+                                                                                
+                                                                            <td width="100px">----</td>
+                                                                        
+                                                                        <?php  } ?> 
+
+                                                                            
+
+                                                                    </tr>
+                                                                <?php  $j++; } } ?>
+
+                                                                
+                                                            </table>
+
+                                                            <?php }  else{?>
+                                                                <table>
+                                                                <?php foreach($del_note->delivery_products as $del_prod){?>
+                                                                    <tr class="invoice-row" style="background: unset;border-bottom: hidden !important;">
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td valign="" width="100px"><?php echo $del_prod->dpd_total_amount;?></td>
+                                                                    </tr>
+                                                                    <?php } ?>
+                                                                </table>    
+                                                            <?php } ?>
+                                                        </td>
+
+                                                        
+
+
+                                                      
+
+
+                                                    </tr>
+        
+                                                    
+                                                <?php  $i++; }  }  ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -192,13 +380,38 @@
 
     document.addEventListener("DOMContentLoaded", function(event) { 
 
+        var maxh = 0;
+
+        $('.product-row').each(function(){
+
+            if($(this).height()>maxh)
+            {
+            maxh = $(this).height();
+            }
+            
+            //$(this).closest('.invoice-row').height(maxh);
+
+            //$('.invoice-row').height(maxh);
+
+        })
+
+            $('.invoice-row').height(maxh);
+            $('.product-row').height(maxh);
+
+        
+
+
+
         /*modal open start*/
+
+        <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
             $('#DnToCreditInvoice').modal('show');
         });
         
-        
+        <?php endif; ?>
+
         /*modal open end*/
 
 
@@ -272,57 +485,32 @@
         
         /*####*/
 
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#dn_to_credit_invoice_form');
+
+        /*form submit start*/
+
+        /*$(".submit_btn").on('click', function(){ 
+
+            $('#DnToCreditInvoice').modal("hide");
+
+            $('#add_form')[0].reset();
+
+            $('.customer_clz option').remove();
+
+            $('.sales_order option').remove();
+
+            $('.deliver_note_ref option').remove();
+
+            $('.product_clz option').remove();
+
             
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
 
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/DnToCreditInvoice/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
-
-                            $("#DnToCreditInvoice").modal('hide');
-
-                            $('#dn_to_credit_invoice_form')[0].reset();
-
-                            $('.customer_clz').val('').trigger('change');
+            
+        });*/
 
 
-                            $('.product_clz').val('').trigger('change');
+    /*#####*/
 
-                            datatable.ajax.reload(null, false);
-
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-        /*####*/
-
+       
 
 
 

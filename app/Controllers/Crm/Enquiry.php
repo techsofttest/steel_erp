@@ -62,7 +62,7 @@ class Enquiry extends BaseController
            $data[] = array( 
               "enquiry_id"         =>$i,
               'enquiry_reff'       => $record->enquiry_reff,
-              'enquiry_date'       => date('d-m-Y',strtotime($record->enquiry_date)),
+              'enquiry_date'       => date('d-M-Y',strtotime($record->enquiry_date)),
               'enquiry_customer'   => $record->cc_customer_name,
               "action"             => $action,
            );
@@ -177,63 +177,64 @@ class Enquiry extends BaseController
     Public function Add()
     {   
         //print_r($_POST); exit();
-        $insert_data = [
-                
-            'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
+            
+            $insert_data = [
+                    
+                'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
 
-            'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
+                'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
 
-            'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
+                'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
 
-            'enquiry_contact_person' => $this->request->getPost('enquiry_contact_person'),
+                'enquiry_contact_person' => $this->request->getPost('enquiry_contact_person'),
 
-            'enquiry_assign_to'      => $this->request->getPost('enquiry_assign_to'),
+                'enquiry_assign_to'      => $this->request->getPost('enquiry_assign_to'),
 
-            'enquiry_source'         => $this->request->getPost('enquiry_source'),
+                'enquiry_source'         => $this->request->getPost('enquiry_source'),
 
-            'enquiry_time_frame'     => date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame'))),
+                'enquiry_time_frame'     => date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame'))),
 
-            'enquiry_project'        => $this->request->getPost('enquiry_project'),
+                'enquiry_project'        => $this->request->getPost('enquiry_project'),
 
-            'enquiry_added_by'       => 0,
+                'enquiry_added_by'       => 0,
 
-            'enquiry_added_date'     => date("Y-m-d"),
+                'enquiry_added_date'     => date("Y-m-d"),
 
-        ];
+            ];
 
-        $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
+            $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
         
         
-        if(!empty($_POST['pd_product_detail']))
-		{
-			$count =  count($_POST['pd_product_detail']);
-					
-			if($count!=0)
-			{  
-				for($j=0;$j<=$count-1;$j++)
-				{
-							
-                    $insert_data  	= array(  
+            if(!empty($_POST['pd_product_detail']))
+            {
+                $count =  count($_POST['pd_product_detail']);
                         
-                        'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
-                        'pd_unit'                 =>  $_POST['pd_unit'][$j],
-                        'pd_quantity'             =>  $_POST['pd_quantity'][$j],
-                        'pd_enquiry_id'           =>  $enquiry_id,
-    
-                    );
-                
-                    $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
-				
-				} 
-			}
-		} 
+                if($count!=0)
+                {  
+                    for($j=0;$j<=$count-1;$j++)
+                    {
+                                
+                        $insert_data  	= array(  
+                            
+                            'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
+                            'pd_unit'                 =>  $_POST['pd_unit'][$j],
+                            'pd_quantity'             =>  $_POST['pd_quantity'][$j],
+                            'pd_enquiry_id'           =>  $enquiry_id,
+        
+                        );
+                    
+                        $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
+                    
+                    } 
+                }
+            } 
+
+
+
 
     }
 
  
-
-
-
     //account head modal 
     public function View()
     {
@@ -300,10 +301,10 @@ class Enquiry extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"   value="'.$i.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control " readonly></td>
-            <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control " readonly></td>
+            <td><input type="text"   value="'.$i.'" class="form-control" readonly></td>
+            <td><input type="text"   value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control" readonly></td>
+            <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control" readonly></td>
             </tr>'; 
 
             $i++;  
@@ -323,7 +324,7 @@ class Enquiry extends BaseController
         
         $data['customer_name'] ="";
 
-        $data['customer_name'] ='<option value="" selected disabled>Select  Contact Person</option>';
+        $data['customer_name'] ='<option value="" selected disabled>Select Contact Person</option>';
 
         foreach($contact_details as $con_det)
         {

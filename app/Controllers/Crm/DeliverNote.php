@@ -58,12 +58,14 @@ class DeliverNote extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a href="'.base_url().'Crm/DeliverNote/Pdf/'.$record->dn_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+            ';
            
            $data[] = array( 
               'dn_id'         => $i,
               'dn_reffer_no'  => $record->dn_reffer_no,
-              'dn_date'       => date('d-m-Y',strtotime($record->dn_date)),
+              'dn_date'       => date('d-M-Y',strtotime($record->dn_date)),
               'dn_customer'   => $record->cc_customer_name,
               'action'        => $action,
            );
@@ -180,14 +182,15 @@ class DeliverNote extends BaseController
     // add account head
     Public function Add()
     {   
-     
+        $data['print'] = "";
+
         if(empty($this->request->getPost('dn_id')))
         {
-            
+            $uid = $this->common_model->FetchNextId('crm_delivery_note',"DN");
 
             $insert_data = [
 
-                'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
+                'dn_reffer_no'        => $uid,
 
                 'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
 
@@ -265,17 +268,14 @@ class DeliverNote extends BaseController
             
         }
        
-
-
         $delivery = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' => $delivery_id));
 
-        
         
         $data['sales_order'] = $delivery->dn_sales_order_num;
 
         $data['delivery_id'] = $delivery_id;
-
-
+        
+       
         if(!empty($_POST['dpd_prod_det']))
 		{    
             $count =  count($_POST['dpd_prod_det']);
@@ -298,20 +298,35 @@ class DeliverNote extends BaseController
                         'dpd_unit'         =>  $_POST['dpd_unit'][$j],
                         'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
                         'dpd_so_id'        =>  $_POST['sales_prod_id'][$j],
+                        'dpd_total_amount' =>  $_POST['product_total'][$j],
+                        'dpd_prod_rate'    =>  $_POST['dpd_rate_qty'][$j],
                         'dpd_delivery_qty' =>  $new_deli_qty,
                         'dpd_current_qty'  =>  $current_qty,
                         'dpd_delivery_id'  =>  $delivery_id,
                         
                     );
 
-
+                   
                     
 
                     $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
 
+                   
+
                     $cond = array('spd_id' => $_POST['sales_prod_id'][$j]); 
 
                     $sales_prod1 = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+
+                    /**/
+                   
+                    $total_amount_update = array('dn_total_amount' => $_POST['total_prod_amount']);
+
+                    $this->common_model->EditData($total_amount_update,array('dn_id' => $delivery_id),'crm_delivery_note');
+                     
+                    /**/
+
+                    
 
                     $delivery_note_qty = $sales_prod1->spd_delivery_note + $current_qty;
 
@@ -351,6 +366,13 @@ class DeliverNote extends BaseController
 
                     $this->common_model->EditData($update_data5,array('so_id' => $sales_prod->spd_sales_order),'crm_sales_orders');
                     
+                    if(!empty($_POST['print_btn']))
+                    {
+                       
+                        $data['print'] =  base_url() . 'Crm/DeliverNote/Pdf/' . urlencode($delivery_id);
+
+                    }
+                  
                 } 
             }
 
@@ -488,7 +510,7 @@ class DeliverNote extends BaseController
        foreach($product_details as $prod_det){
         $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$prod_det->dpd_id.'">
                                         <td class="si_no">'.$i.'</td>
-                                        <td><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+                                        <td style="width:40%"><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
                                         <td><input type="text" name="dpd_unit[]" value="'.$prod_det->dpd_unit.'" class="form-control" readonly></td>
                                         <td><input type="number" name="dpd_order_qty[]" value="'.$prod_det->dpd_order_qty.'"  class="form-control " readonly></td>
                                         <td><input type="number" name="dpd_delivery_qty[]" value="'.$prod_det->dpd_current_qty.'"  class="form-control " readonly ></td>
@@ -812,7 +834,7 @@ class DeliverNote extends BaseController
 
                 $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
-                                                <td><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control"  readonly></td>
+                                                <td style="width:40%"><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control"  readonly></td>
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
                                                 <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
@@ -933,16 +955,19 @@ class DeliverNote extends BaseController
                 foreach($sales_order_details as $sales_det){
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
-                                                <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                <td style="width:40%"><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                 <input type="hidden" name="dpd_prod_det[]" value="'.$sales_det->product_id.'">
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
                                                 <td><input type="number" name="dpd_delivery_qty[]" value="'.$sales_det->spd_delivered_qty.'"  class="form-control delivery_qty" readonly ></td>
                                                 <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery" required></td>
                                                 <input type="hidden" name="sales_prod_id[]" value="'.$sales_det->spd_id.'" class="form-control" required>
+                                                <input type="hidden" name="dpd_rate_qty[]" value="'.$sales_det->spd_rate.'" class="form-control rate_clz_id" required>
+                                                <input type="hidden" name="product_total[]" value="" class="form-control del_product_total" required>        
                                                         
-                                                        
-                                                    </tr>';
+                                                </tr>
+                                                <input type="hidden" name="total_prod_amount" value="" class="total_prod_amount">
+                                                    ';
                                                     
                                                     } $i++;
 
@@ -1198,7 +1223,9 @@ class DeliverNote extends BaseController
         public function DeleteProduct()
         {
             $delivery_note = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' => $this->request->getPost('ProdID')));
-          
+            
+           
+            
             $qty = $delivery_note->dpd_current_qty;
            
             $sales_prod_id   = $delivery_note->dpd_so_id;
@@ -1228,7 +1255,20 @@ class DeliverNote extends BaseController
 
             $delivery_prod_data = $this->common_model->FetchWhere('crm_delivery_product_details',array('dpd_delivery_id' => $delivery_note->dpd_delivery_id));
             
-           
+            /**/
+
+            //$prod_delivery_id = $this->common_model->FetchWhere('crm_delivery_product_details', array('dpd_delivery_id' => $delivery_note->dpd_delivery_id));
+            
+            $delivery_total = [];
+            
+            foreach($delivery_prod_data as $prod_del)
+            {
+                $delivery_total[] = $prod_del->dpd_total_amount;
+                
+            }
+            $this->common_model->EditData(array('dn_total_amount' => array_sum($delivery_total)),array('dn_id' => $delivery_note->dpd_delivery_id), 'crm_delivery_note');
+            
+            /**/
            
             $data["add_more"] = "";
 
@@ -1306,10 +1346,12 @@ class DeliverNote extends BaseController
                                                 
                                                 <input type="hidden" name="sales_prod_id2[]" value="'.$sales_det->spd_id.'">
                                                 <input type="hidden" name="dpd_prod_det[]" value="'.$sales_det->product_id.'">
-                                                    
+                                                <input type="hidden" name="dpd_prod_rate[]" value="'.$sales_det->spd_rate.'" class="edit_prod_rate">
+                                                <input type="hidden" name="edit_prod_amount" value="" class="edit_prod_amount">   
                                             </tr>
-                                           <input type="hidden" name="delivery_id" value="'.$delivery_id.'">
-                                         
+                                            <input type="hidden" name="delivery_id" value="'.$delivery_id.'">
+                                            <input type="hidden" name="edit_total_prod_amount" value="" class="edit_total_prod_amount">
+                                           
                                             ';
                                                 $i++;
             }
@@ -1322,7 +1364,7 @@ class DeliverNote extends BaseController
 
         public function UpdatedProduct()
         {
-          
+            
             if(!empty($_POST['dpd_order_qty']))
 		   {    
                 $count =  count($_POST['dpd_order_qty']);
@@ -1355,9 +1397,11 @@ class DeliverNote extends BaseController
                             'dpd_unit'         =>  $_POST['dpd_unit'][$j],
                             'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
                             'dpd_so_id'        =>  $_POST['sales_prod_id2'][$j],
+                            'dpd_total_amount' =>  $_POST['edit_prod_amount'][$j],
                             'dpd_delivery_qty' =>  $new_deli_qty,
                             'dpd_current_qty'  =>  $current_qty,
                             'dpd_delivery_id'  =>  $_POST['delivery_id'],
+                           
                             
                         );
 
@@ -1366,6 +1410,15 @@ class DeliverNote extends BaseController
 
                         $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
 
+                        /**/
+
+                        $total_amount_update = array('dn_total_amount' => $_POST['edit_total_prod_amount']);
+
+                        $this->common_model->EditData($total_amount_update,array('dn_id' => $_POST['delivery_id']),'crm_delivery_note');
+                      
+                        /**/
+
+                      
                         $update_data =  array('spd_delivered_qty' => $new_deli_qty);
                         
                         $cond = array('spd_id' => $_POST['sales_prod_id2'][$j]); 
@@ -1440,7 +1493,266 @@ class DeliverNote extends BaseController
 
           
 		}
+        
 
+        public function Pdf($id)
+        {   
+            if(!empty($id))
+            {   
+              
+                $joins1 = array(
+                
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'dpd_prod_det',
+                    ),
+                   
+                );
+
+                $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',array('dpd_delivery_id'=>$id),$joins1);
+                   
+                $pdf_data = "";
+
+                foreach($product_details as $prod_det)
+                {
+                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->dpd_unit.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->dpd_order_qty.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->dpd_current_qty.'</td>';
+
+                }
+
+                $join =  array(
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'dn_customer',
+                    ),
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'dn_sales_order_num',
+                    ),
+                );
+                
+
+                $delivery_note = $this->common_model->SingleRowJoin('crm_delivery_note',array('dn_id'=>$id),$join);
+
+                $date = date('d-M-Y',strtotime($delivery_note->dn_date));
+
+                $title = 'DN-'.$delivery_note->dn_reffer_no;
+                
+                $mpdf = new \Mpdf\Mpdf();
+
+                $mpdf->SetTitle($title); // Set the title
+    
+                $html ='
+            
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+               
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+               
+                <table><tr><td></td></tr></table>
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+            
+                <tr width="100%">
+                <td>Date : '.$date.'</td>
+                <td>Delivery Note No : '.$delivery_note->dn_reffer_no.'</td>
+                <td align="right"><h2>Delivery Note</h2></td>
+            
+                </tr>
+            
+                </table>
+
+            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        
+                <tr>
+                
+                    <td > </td>
+                    
+                    <td >'.$delivery_note->cc_customer_name.'</td>
+                
+                </tr>
+        
+        
+            <tr>
+            
+            <td>Customer</td>
+            
+                
+            <td >Tel : '.$delivery_note->cc_telephone.', Fax : '.$delivery_note->cc_fax.', Email : '.$delivery_note->cc_email.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+            <td >Post Box : -, Doha - '.$delivery_note->cc_post_box.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+            
+            </tr>
+        
+        
+            </table>
+    
+               
+            
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Qty Ordered</th>
+        
+                    <th align="left" style="border-bottom:2px solid;">Delivery</th>
+        
+                 
+                
+                </tr>
+
+
+                '.$pdf_data.'
+    
+                 
+                
+            </table>';
+            
+            $footer = '
+        
+                
+    
+    
+                <table>
+                
+                <tr>
+                    <td style="width:20%">Order Terms</td>
+    
+                    <td style="width:20%">LPO Ref:</td>
+    
+                    <td style="width:20%">Waiting for PO</td>
+
+                    <td style="width:8%"></td>
+    
+                    <td style="width:12%">Payment:</td>
+    
+                    <td style="width:20%">Cash on delivery</td>
+                    
+                </tr>
+    
+                <tr>
+                    <td style="width:20%"></td>
+    
+                    <td style="width:20%">Project:</td>
+    
+                    <td style="width:20%">-</td>
+
+                    <td style="width:8%"></td>
+    
+                    <td style="width:12%">Sales Order</td>
+    
+                    <td style="width:20%">'.$delivery_note->so_reffer_no.'</td>
+    
+                </tr>
+                
+                </table>
+    
+    
+                <table style="border-top:2px solid;">
+    
+                <tr>
+                
+                    <td>Received by: </td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                   
+
+                   
+    
+                    <td>Driver:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+    
+                    <td>Store Keeper</td>
+    
+                  
+    
+                </tr>
+    
+    
+                
+                
+                
+                </table>
+            
+            
+            
+                ';
+            
+                
+                $mpdf->WriteHTML($html);
+                $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+            
+            }
+    
+           
+        }
 
         
 

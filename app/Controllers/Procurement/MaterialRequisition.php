@@ -57,9 +57,9 @@ class MaterialRequisition extends BaseController
            
            $data[] = array( 
               "mr_id"         => $i,
-              'mr_reffer_no'   => $record->mr_reffer_no,
-              'mr_date'        => date('d-m-Y',strtotime($record->mr_date)),
-               "action"        => $action,
+              'mr_reffer_no'  => $record->mr_reffer_no,
+              'mr_date'       => date('d-M-Y',strtotime($record->mr_date)),
+              "action"        => $action,
            );
            $i++; 
         }
@@ -86,7 +86,7 @@ class MaterialRequisition extends BaseController
 
 
     // search droup drown (product description)
-    public function FetchProdDes()
+    /*public function FetchProdDes()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -101,8 +101,8 @@ class MaterialRequisition extends BaseController
 
         return json_encode($data);
 
-    }
-
+    }*/
+      
     
 
 
@@ -120,7 +120,7 @@ class MaterialRequisition extends BaseController
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
         
-        $data['content'] = view('Procurement/material-requisition',$data);
+        $data['content'] = view('procurement/material-requisition',$data);
 
         return view('procurement/pro-module',$data);
 
@@ -128,12 +128,13 @@ class MaterialRequisition extends BaseController
 
 
     // add account head
-    Public function Add()
+    public function Add()
     {   
+        $uid = $this->common_model->FetchNextId('pro_material_requisition',"MR");
         
         $insert_data = [
                 
-            'mr_reffer_no'     => $this->request->getPost('mr_reffer_no'),
+            'mr_reffer_no'     => $uid,
 
             'mr_date'           => date('Y-m-d',strtotime($this->request->getPost('mr_date'))),
 
@@ -197,7 +198,355 @@ class MaterialRequisition extends BaseController
         echo $uid;
     
     }
- 
+
+    public function FetchProdDes(){
+
+        $sales_id = $this->request->getPost('salesOrder');
+
+        $joins = array(
+            
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details',
+            ),
+           
+        );
+
+        $sales_order_details = $this->pro_modal->FetchWhereJoinGp('crm_sales_product_details',array('spd_sales_order' => $sales_id),$joins,'spd_product_details');
+       
+        $data['product'] = "<option value='' selected disabled>Select Product Description</option>";
+
+        foreach($sales_order_details as $sales_order){
+             
+            $data['product'] .="<option value='".$sales_order->spd_product_details."'>".$sales_order->product_details."</option>";
+        }
+
+        echo json_encode($data);
+    }
+
+
+    public function View()
+    {
+        $join =  array(
+                    
+            array(
+                'table' => 'employees',
+                'pk'    => 'employees_id',
+                'fk'    => 'mr_assigned_to',
+            ),
+
+
+        );
+
+        $material_requisition = $this->common_model->SingleRowJoin('pro_material_requisition', array('mr_id' => $this->request->getPost('ID')),$join);
+        
+        $data['reffer_no']       = $material_requisition->mr_reffer_no;
+
+        $data['mr_date']         = date('d-M-Y',strtotime($material_requisition->mr_date));
+
+        $data['mr_time_frame']   = date('d-M-Y',strtotime($material_requisition->mr_time_frame));
+
+        $data['mr_assigned_to']  = $material_requisition->employees_name;
+
+
+        $joins = array(
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'mrp_sales_order',
+            ),
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'mrp_product_desc',
+            ),
+
+        );
+
+
+        $material_requisition = $this->common_model->FetchWhereJoin('pro_material_requisition_prod',array('mrp_mr_id' => $this->request->getPost('ID')),$joins);
+       
+        $i = 1; 
+
+        $data['sales_order'] = "";
+
+
+        foreach($material_requisition as $mat_req)
+        {
+            $data['sales_order'] .= '<tr class="" id="'.$mat_req->mrp_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
+            </tr>
+            ';
+            $i++; 
+        }
+
+
+        echo json_encode($data);
+
+    }
+
+
+    public function Edit()
+    {
+        $join =  array(
+                    
+            array(
+                'table' => 'employees',
+                'pk'    => 'employees_id',
+                'fk'    => 'mr_assigned_to',
+            ),
+
+        );
+
+        $employess = $this->common_model->FetchAllOrder('steel_employees','employees_id','desc');
+
+        $material_requisition = $this->common_model->SingleRowJoin('pro_material_requisition', array('mr_id' => $this->request->getPost('ID')),$join);
+        
+        $data['reffer_no']               = $material_requisition->mr_reffer_no;
+
+        $data['mr_date']                 = date('d-M-Y',strtotime($material_requisition->mr_date));
+
+        $data['mr_time_frame']           = date('d-M-Y',strtotime($material_requisition->mr_time_frame));
+
+        $data['material_requisition_id'] = $material_requisition->mr_id;
+
+        $data['mr_assigned_to']  = '<option value="" selected disabled>Select Assigned To</option>';
+
+        foreach($employess as $employ)
+        {  
+            
+                $data['mr_assigned_to'] .= '<option value="' .$employ->employees_id.'"'; 
+
+                if($material_requisition->mr_assigned_to == $employ->employees_id)
+                {
+                    $data['mr_assigned_to'] .= ' selected'; 
+                }
+
+                $data['mr_assigned_to'] .= '>' . $employ->employees_name .'</option>';
+            
+
+            
+        }
+
+        $joins = array(
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'mrp_sales_order',
+            ),
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'mrp_product_desc',
+            ),
+
+        );
+
+
+        $material_requisition = $this->common_model->FetchWhereJoin('pro_material_requisition_prod',array('mrp_mr_id' => $this->request->getPost('ID')),$joins);
+       
+        $i = 1; 
+
+        $data['sales_order'] = "";
+
+
+        foreach($material_requisition as $mat_req)
+        {
+            $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$mat_req->mrp_id.'">
+            <td class="si_no_edit">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
+            <td style="width:15%">
+                <a href="javascript:void(0)" class="edit edit-color edit_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+	            <a href="javascript:void(0)" class="delete delete-color delete_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            </td>
+            
+            </tr>
+            ';
+            $i++; 
+        }
+
+       
+
+
+        echo json_encode($data);
+
+    }
+
+    public function EditSalesOrder()
+    {
+       
+        $join =  array(
+                    
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'mrp_sales_order',
+            ),
+
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'mrp_product_desc',
+            ),
+
+
+        );
+
+        $cond = array('so_deliver_flag' => 0);
+
+        $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+
+        $material_requisition = $this->common_model->SingleRowJoin('pro_material_requisition_prod', array('mrp_id' => $this->request->getPost('ID')),$join);
+        
+        $joins = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details',
+            ),
+         
+        );
+
+        $products = $this->common_model->FetchWherejoin('crm_sales_product_details',array('spd_sales_order' => $material_requisition->mrp_sales_order),$joins);
+
+        //$products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['sales_order'] ='<tr class="" id="'.$material_requisition->mrp_id.'">
+
+        <td>
+        
+            <select class="form-select edit_sales_order" name="mrp_sales_order" required>';
+                            
+                    foreach($sales_orders as $sales){
+                        $data['sales_order'] .='<option value="'.$sales->so_id.'" '; 
+                        if($sales->so_id == $material_requisition->mrp_sales_order){ $data['sales_order'] .= "selected"; }
+                        $data['sales_order'] .='>'.$sales->so_reffer_no.'</option>';
+                    }
+                $data['sales_order'] .='</select>
+        
+        </td>
+        
+        <td>
+              <select class="form-select edit_prod_desc" name="mrp_product_desc" required>';
+                            
+                    foreach($products as $prod){
+                        $data['sales_order'] .='<option value="'.$prod->product_id.'" '; 
+                        if($prod->product_id == $material_requisition->mrp_product_desc){ $data['sales_order'] .= "selected"; }
+                        $data['sales_order'] .='>'.$prod->product_details.'</option>';
+                    }
+                $data['sales_order'] .='</select>
+            
+        </td>
+
+        <td><input type="text" name="mrp_unit"  value="'.$material_requisition->mrp_unit.'" class="form-control edit_contact" required></td>
+        <td> <input type="number" name="mrp_qty" value="'.$material_requisition->mrp_qty.'" class="form-control" required></td>
+        </tr>
+        <input type="hidden" class="contact_cust" name="mrp_id" value="'.$material_requisition->mrp_id.'">
+        '; 
+
+        
+
+        echo json_encode($data);
+        
+    }
+
+    public function UpdateSalesOrder()
+    {   
+        $cond = array('mrp_id' => $this->request->getPost('mrp_id'));
+        
+        $update_data = $this->request->getPost();
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('mrp_id', $update_data)) 
+        {
+            unset($update_data['mrp_id']);
+        }    
+        
+        $this->common_model->EditData($update_data,$cond,'pro_material_requisition_prod');
+
+        $material_req_prod = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_id' => $this->request->getPost('mrp_id')));
+        
+        $data['material_requisition_id'] = $material_req_prod->mrp_mr_id;
+
+        echo json_encode($data);
+
+    }
+
+    public function DeleteSalesOrder()
+    {
+        $cond = array('mrp_id' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('pro_material_requisition_prod',$cond);
+    }
+
+    
+
+    public function InsertSalesOrder()
+    {
+        $insert_data = $this->request->getPost();
+
+        $id = $this->common_model->InsertData('pro_material_requisition_prod',$insert_data);
+
+        $mat_req_prod = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_id' => $id));
+        
+        $data['mat_req_id'] = $mat_req_prod->mrp_mr_id;
+
+        echo json_encode($data);
+    }
+
+    public function Delete()
+    {
+        $cond = array('mr_id' => $this->request->getPost('ID'));
+
+        $purchase_order = $this->common_model->FetchWhere('pro_purchase_order',array('po_mrn_reff' => $this->request->getPost('ID')));
+        
+        if(empty($purchase_order))
+        {
+            $this->common_model->DeleteData('pro_material_requisition',$cond);
+
+            $this->common_model->DeleteData('pro_material_requisition_prod',array('mrp_mr_id' => $this->request->getPost('ID')));
+            
+            $data['status'] ="true";
+        }
+        else
+        {
+            $data['status'] ="false";
+        }
+
+        echo json_encode($data);
+
+       
+    }
+
+
+    public function Update()
+    {
+        $update_data = [
+
+            'mr_reffer_no'    => $this->request->getPost('mr_reffer_no'),
+            
+            'mr_date'         => date('Y-m-d',strtotime($this->request->getPost('mr_date'))),
+
+            'mr_time_frame'   => date('Y-m-d',strtotime($this->request->getPost('mr_time_frame'))),
+
+            'mr_assigned_to'  => $this->request->getPost('mr_assigned_to'),
+
+        ];
+
+        $this->common_model->EditData($update_data, array('mr_id' => $this->request->getPost('mr_id')), 'pro_material_requisition');
+        
+
+        
+    }
+
 
 
 }

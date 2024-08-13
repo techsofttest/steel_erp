@@ -84,7 +84,7 @@ class Payments extends BaseController
               'date' => date('d-m-Y',strtotime($record->pay_date)),
               "pay_ref_no" => $record->pay_ref_no,
               'pay_method' => $record->rm_name,
-              "bank"=> $record->bank_name,
+              "bank"=> $record->bank_name ?? "--",
               "action" =>$action,
            );
            $i++; 
@@ -134,6 +134,21 @@ class Payments extends BaseController
         Public function Add()
         {   
 
+        
+        if(empty($this->request->getPost('p_debit_account')))
+         {
+    
+            $return['status'] = 0;
+    
+            $return['error'] ="Enter debit details!";
+    
+            }
+    
+            else{
+    
+            $return['status'] = 1;
+
+        
         $insert_data['pay_date'] = date('Y-m-d',strtotime($this->request->getPost('p_date')));
 
         $insert_data['pay_credit_account'] = $this->request->getPost('p_credit_account');
@@ -151,10 +166,13 @@ class Payments extends BaseController
 
         }
 
+        if($this->request->getPost('p_method')!="2")
+        {
         $insert_data['pay_bank'] = $this->request->getPost('p_bank');
+        }
      
 
-        $insert_data['pay_total'] = $this->request->getPost('p_amount');
+        //$insert_data['pay_total'] = $this->request->getPost('p_amount');
 
 
         if(empty($this->request->getPost('p_id')))
@@ -165,14 +183,35 @@ class Payments extends BaseController
 
         $insert_data['pay_added_date'] = date('Y-m-d');
 
-        /*
-        if ($_FILES['file']['name'] !== '') {
-            $ccAttachCrFileName = $this->uploadFile('file','uploads/Payments');
-            $update_data['file'] = $ccAttachCrFileName;
+        
+        if ($_FILES['p_cheque_copy']['name'] !== '') {
+            $ccAttachCrFileName = $this->uploadFile('p_cheque_copy','uploads/Payments');
+            $update_data['pay_cheque_copy'] = $ccAttachCrFileName;
         }
-        */
+        
 
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
+
+        $p_ref_no = 'PAY'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        
+        $cond = array('pay_id' => $id);
+
+        $update_data['pay_ref_no'] = $p_ref_no;
+
+        $this->common_model->EditData($update_data,$cond,'accounts_payments');
+
+        //Add To Transactions
+
+        $trans_data['tran_reference'] = $p_ref_no;
+
+        $trans_data['tran_account'] = $insert_data['pay_credit_account'];
+   
+        $trans_data['tran_credit'] = $insert_data['pay_amount'];
+
+        $trans_data['tran_type'] = "Payment";
+   
+        $this->common_model->InsertData('master_transactions',$trans_data);
+
 
         }
 
@@ -188,7 +227,61 @@ class Payments extends BaseController
         }
 
 
+        $return['id']=$id;
+
+
+        
+
+
+        if(!empty($this->request->getPost('p_debit_account')))
+        {
+
+            for($i=0;$i<count($this->request->getPost('p_debit_account'));$i++)
+
+            {
+
+                $check_debit = $this->common_model->SingleRow('accounts_payment_debit',array('pd_payment' => $id,'pd_debit_account' => $_POST['p_debit_account'][$i]));
+
+                $insert_inv_data['pd_payment'] = $id;
+
+                $insert_inv_data['pd_debit_account'] = $_POST['p_debit_account'][$i];
+                
+                $insert_inv_data['pd_payment_amount'] = $_POST['inv_amount'][$i];
+
+                $insert_inv_data['pd_remarks'] = $_POST['narration'][$i];
+
+
+                //Add To Transactions
+
+                $debit_trans_data['tran_reference'] = $p_ref_no;
+
+                $debit_trans_data['tran_account'] = $_POST['p_debit_account'][$i];
+   
+                $debit_trans_data['tran_debit'] = $insert_inv_data['pd_payment_amount'];
+   
+                $debit_trans_data['tran_type'] = "Payment";
+   
+                $this->common_model->InsertData('master_transactions',$debit_trans_data);
+
+                if(empty($check_debit))
+                {
+                $this->common_model->InsertData('accounts_payment_debit',$insert_inv_data);
+                }
+                else
+                {
+                $this->common_model->EditData($insert_inv_data,array('pd_id' => $check_debit->pd_id),'accounts_payment_debit');
+                }
+
+
+
+            }
+
+        }
+
+
+
         //Add invoices
+        /*
         if(!empty($this->request->getPost('pf_id')))
         {
         for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
@@ -209,16 +302,12 @@ class Payments extends BaseController
         }
 
         }
+        */
 
-        $p_ref_no = 'PAY'.str_pad($id, 7, '0', STR_PAD_LEFT);
-        
-        $cond = array('pay_id' => $id);
+        }
 
-        $update_data['pay_ref_no'] = $p_ref_no;
-
-        $this->common_model->EditData($update_data,$cond,'accounts_payments');
-
-        echo $id;
+      
+        echo json_encode($return);
 
     }
 
@@ -237,20 +326,24 @@ class Payments extends BaseController
     $cond = array('pay_id' => $this->request->getPost('id'));
     
     $joins = array(
-        
+        array(
+            'table' => 'accounts_charts_of_accounts',
+            'pk' => 'ca_id',
+            'fk' => 'pay_credit_account',
+            ),
     );
 
     $data['pay'] = $this->common_model->SingleRowJoin('accounts_payments',$cond,$joins);
 
-    $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+    $customers = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
 
     $debit_cond = array('pd_payment' => $data['pay']->pay_id);
 
     $debit_joins = array(
         array(
-        'table' => 'crm_customer_creation',
-        'pk' => 'cc_id',
+        'table' => 'accounts_charts_of_accounts',
+        'pk' => 'ca_id',
         'fk' => 'pd_debit_account',
         ),
     );    
@@ -263,7 +356,7 @@ class Payments extends BaseController
 
     foreach($customers as $cus) { 
 
-       $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+       $dd.='<option value="'.$cus->ca_id.'">'.$cus->ca_name.'</option>';
 
     }
 
@@ -275,22 +368,16 @@ class Payments extends BaseController
         <tr class="view_debit" id="view'.$debit->pd_id.'">
         <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pd_id.'">
 
-        <td>
-
-        <p class="view">'.date('d-F-Y',strtotime($debit->pd_date)).'</p>
-
-        <input style="display:none;" class="edit form-control datepicker" readonly type="text" name="date" value="'.date('d-F-Y',strtotime($debit->pd_date)).'">
-
-        </td>
+       
 
 
         <td>
 
-        <p class="view">'.$debit->cc_customer_name.'</p>
+        <p class="view">'.$debit->ca_name.'</p>
 
         <select style="display:none;" class="edit form-control" name="c_name">
 
-        <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+        <option value="'.$debit->ca_id.'" selected hidden>'.$debit->ca_name.'</option>
 
         '.$dd.'
         
@@ -320,9 +407,10 @@ class Payments extends BaseController
         <td>
         
         <div class="view">
-        <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>
 
-        <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pd_id.'">Linked</a>
+        <!--<a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>-->
+
+        <!--<a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pd_id.'">Linked</a>-->
 
         <a href="javascript:void(0);" class="del_debit btn btn-danger" data-id="'.$debit->pd_id.'">Delete</a>
 
@@ -357,7 +445,7 @@ class Payments extends BaseController
 
         $update_data['pay_date'] = date('Y-m-d',strtotime($this->request->getPost('p_date')));
 
-        $update_data['pay_credit_account'] = $this->request->getPost('p_credit_account');
+        //$update_data['pay_credit_account'] = $this->request->getPost('p_credit_account');
 
         $update_data['pay_method'] = $this->request->getPost('p_method');
 
@@ -367,6 +455,13 @@ class Payments extends BaseController
         $update_data['pay_cheque_no'] = $this->request->getPost('p_cheque_no');
 
         $update_data['pay_cheque_date'] = date('Y-m-d',strtotime($this->request->getpost('p_cheque_date')));
+
+        if ($_FILES['p_cheque_copy']['name'] !== '') {
+            
+            $ccAttachCrFileName = $this->uploadFile('p_cheque_copy','uploads/Payments');
+            $update_data['pay_cheque_copy'] = $ccAttachCrFileName;
+        }
+
 
         }
         else
@@ -408,14 +503,13 @@ class Payments extends BaseController
 
         $narration = $this->request->getPost('d_narration');
 
-
         $update_data['pd_debit_account'] = $debit_account;
 
         $update_data['pd_payment_amount'] = $amount;
 
         $update_data['pd_remarks'] = $narration;
         
-        $update_data['pd_date'] = $date;
+        //$update_data['pd_date'] = $date;
 
         $this->common_model->EditData($update_data,$cond,'accounts_payment_debit');
 
@@ -436,8 +530,8 @@ class Payments extends BaseController
 
     $invoice_joins = array(
         array(
-        'table' => 'crm_customer_creation',
-        'pk' => 'cc_id',
+        'table' => 'accounts_charts_of_accounts',
+        'pk' => 'ca_id',
         'fk' => 'pd_debit_account',
         ),
     );    
@@ -469,13 +563,13 @@ class Payments extends BaseController
 
     //
 
-    $customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+    $customers = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
     $dd='';
 
     foreach($customers as $cus) { 
 
-       $dd.='<option value="'.$cus->cc_id.'">'.$cus->cc_customer_name.'</option>';
+       $dd.='<option value="'.$cus->ca_id.'">'.$cus->ca_name.'</option>';
 
     }
 
@@ -495,22 +589,14 @@ class Payments extends BaseController
    
     <input type="hidden" id="debit_id_edit" name="debit_id" value="'.$debit->pd_id.'">
 
-    <td>
-
-    <p class="view">'.date('d-F-Y',strtotime($debit->pd_date)).'</p>
-
-    <input style="display:none;" class="edit form-control datepicker" type="text" readonly name="date" value="'.date('Y-m-d',strtotime($debit->pd_date)).'">
-
-    </td>
-
 
     <td>
 
-    <p class="view">'.$debit->cc_customer_name.'</p>
+    <p class="view">'.$debit->ca_name.'</p>
 
     <select style="display:none;" class="edit form-control" name="c_name">
 
-    <option value="'.$debit->cc_id.'" selected hidden>'.$debit->cc_customer_name.'</option>
+    <option value="'.$debit->ca_id.'" selected hidden>'.$debit->ca_name.'</option>
 
     '.$dd.'
     
@@ -540,7 +626,7 @@ class Payments extends BaseController
     <td>
     
     <div class="view">
-    <a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>
+    <!--<a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$debit->pd_id.'">Edit</a>-->
     
     <a href="javascript:void(0);" class="view_linked btn btn-warning" data-id="'.$debit->pd_id.'">Linked</a>
 
@@ -934,8 +1020,13 @@ class Payments extends BaseController
     {
         $cond = array('pay_id' => $this->request->getPost('id'));
 
+        $payment = $this->common_model->SingleRow('accounts_payments',$cond);
+
         $this->common_model->DeleteData('accounts_payments',$cond);
 
+        $cond_tran = array('tran_reference' => $payment->pay_ref_no);
+
+        $this->common_model->DeleteData('master_transactions',$cond_tran);
       
     }
 
@@ -1028,33 +1119,83 @@ class Payments extends BaseController
     $ac_id = $this->request->getPost('id');
 
 
+    $insert_data['pd_payment'] = $this->request->getPost('pid');
+
+    $insert_data['pd_debit_account'] = $ac_id;
+
+    $insert_data['pd_payment_amount'] = $this->request->getPost('camount');
+
+    $insert_data['pd_remarks'] = $this->request->getPost('cnarration');
+
+    //$insert_data['ri_date'] = date('Y-m-d',strtotime($this->request->getPost('cdate')));
+
+    $check_invoice = $this->common_model->SingleRow('accounts_payment_debit',array('pd_payment' => $insert_data['pd_payment'],'pd_debit_account' => $insert_data['pd_debit_account']));
+
+    if(empty($check_invoice))
+    {
+    $pd_id = $this->common_model->InsertData('accounts_payment_debit',$insert_data);
+    }
+
+    else
+    {
+
+    $update_cond = array('pd_id' => $check_invoice->pd_id);
+
+    $pd_id = $check_invoice->pd_id;
+
+    $this->common_model->EditData($insert_data,$update_cond,'accounts_payment_debit');
+
+    }
+
+
     $joins = array(
-           
+        array(
+            'table' => 'crm_customer_creation',
+            'pk' => 'cc_id',
+            'fk' => 'ca_customer',
+            ),
     );
 
-    $customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
+    //$customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
 
-    $cond = array('pf_customer' => $customer->cc_id);
+    $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $ac_id),$joins);
 
-    $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
-   
+    //$cond = array('pf_customer' => $customer->cc_id);
+
+    //$invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
+
+    $cond = array('ci_customer' => $customer->cc_id,'ci_paid_status' => 0);
+    
+    $invoices = $this->common_model->FetchWhere('crm_cash_invoice',$cond);
+
     $data['status']=0;
 
     $data['invoices']="";
 
     $sl =0;
+
     foreach($invoices as $inv)
     {
+
     $sl++;
-    $data['invoices'].='<tr id="'.$inv->pf_id.'">
-    <input type="hidden" name="credit_account_invoice[]" value="'.$ac_id.'">
+
+    $balance_amount = $inv->ci_total_amount - $inv->ci_paid_amount;
+
+    $data['invoices'].='<tr id="'.$inv->ci_id.'">
+    <input type="hidden" name="pay_debit_id[]" value="'.$pd_id.'">
+    <input type="hidden" name="debit_account_invoice[]" value="'.$ac_id.'">
     <th>'.$sl.'</th>
-    <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
-    <th>'.$inv->pf_reffer_no.'</th>
-    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->pf_lpo_ref.'" required></th>
-    <th>'.$inv->pf_total_amount.'</th>
-    <th><input class="form-control" name="inv_receipt_amount[]" type="number"></th>
-    <th><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
+    <th>'.date('d-m-Y',strtotime($inv->ci_date)).'</th>
+    <th>'.$inv->ci_reffer_no.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_reffer_no.'" required></th>
+    
+    <th>'.$balance_amount.'
+    <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$balance_amount.'">
+    </th>
+
+    <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" type="number"></th>
+    
+    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'"></th>
     </tr>';
 
     $data['status']=1;
@@ -1095,40 +1236,35 @@ class Payments extends BaseController
             for($i=0;$i<count($this->request->getPost('inv_receipt_amount'));$i++)
             {
 
-            if(isset($this->request->getPost('invoice_selected')[$i]))
+            // if(isset($this->request->getPost('invoice_selected')[$i]))
 
-            {
+            // {
 
-            $insert_data['rid_receipt_invoice'] = $this->request->getPost('receipt_id')[$i];
+            $insert_data['pdi_debit_id'] = $this->request->getPost('pay_debit_id')[$i];
 
-            $insert_data['rid_invoice'] = $this->request->getPost('credit_account_invoice')[$i];
+            $insert_data['pdi_invoice'] = $this->request->getPost('debit_account_invoice')[$i];
 
-            $insert_data['rid_lpo_ref'] = $this->request->getPost('inv_lpo_ref')[$i];
+            $insert_data['pdi_lpo_ref'] = $this->request->getPost('inv_lpo_ref')[$i];
 
-            $insert_data['rid_receipt'] = $this->request->getPost('inv_receipt_amount')[$i];
+            $insert_data['pdi_payment_amount'] = $this->request->getPost('inv_receipt_amount')[$i];
 
-        
-            $check_invoice = $this->common_model->SingleRow('accounts_receipt_invoice_data',array('rid_receipt_invoice' => $insert_data['rid_receipt_invoice'],'rid_invoice' => $insert_data['rid_invoice']));
+            $check_invoice = $this->common_model->SingleRow('accounts_payment_debit_invoices',array('pdi_invoice' => $insert_data['pdi_invoice'],'pdi_debit_id' => $insert_data['pdi_debit_id']));
 
             if(empty($check_invoice))
             {
-            $rid = $this->common_model->InsertData('accounts_receipt_invoice_data',$insert_data);
+            $pdi_id = $this->common_model->InsertData('accounts_payment_debit_invoices',$insert_data);
             }
 
             else
             {
 
-            $update_cond = array('rid_id' => $check_invoice->rid_id);
+            $update_cond = array('pdi_id' => $check_invoice->pdi_id);
 
-            $rid =$this->common_model->EditData($insert_data,$update_cond,'accounts_receipt_invoice_data');
-
-            }
-
-
+            $pdi_id =$this->common_model->EditData($insert_data,$update_cond,'accounts_payment_debit_invoices');
 
             }
 
-            
+            //}
 
 
             }
@@ -1184,7 +1320,7 @@ class Payments extends BaseController
 
         $insert_data['pd_payment'] = $this->request->getPost('pid');
 
-        $insert_data['pd_date'] = date('Y-m-d',strtotime($this->request->getPost('date')));
+        //$insert_data['pd_date'] = date('Y-m-d',strtotime($this->request->getPost('date')));
 
         $insert_data['pd_debit_account'] = $this->request->getPost('account');
         

@@ -407,7 +407,8 @@
 				                        </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                            <span><button class="btn btn btn-success once_form_submit" name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
 
@@ -1210,7 +1211,7 @@
 
                                                             <tr class="edit_add_prod_row">
                                                                
-                                                                <td>
+                                                                <td style="width:34%">
                                                                     <select class="form-select  edit_product_det" name="pp_product_det" required>
                                                                         
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -1294,7 +1295,7 @@
                                                             </tr>
                                                             <tr class="edit_product_row">
                                                                 <td style="width: 10%;" class="">1</td>
-                                                                <td>
+                                                                <td style="width: 25%">
                                                                     <select class="form-select  edit_cost_product_det forma_edit_prod" name="pp_product_det" required>
                                                                         <option selected>Select Product Description</option>
                                                                        
@@ -1429,6 +1430,8 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     var formData = new FormData(currentForm);
+
+                    $('.once_form_submit').attr('disabled', true); // Disable this input.
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/ProFormaInvoice/Add",
@@ -1437,9 +1440,11 @@
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
                         success: function(data) {
- 
+                            
+                            var data = JSON.parse(data);
+
                             $('#add_form1')[0].reset();
-                           
+
                             $('#PerformaInvoice').modal('hide');
 
                             $('.customer_clz_id').val('').trigger('change');
@@ -1453,6 +1458,13 @@
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
+                            
+                           
+
+                            if(data.print!="")
+                            {
+                                window.open(data.print, '_blank');
+                            }
                             
                         }
                     });
@@ -1840,6 +1852,7 @@
         $(this).parent().remove();
         slno();
         reName();
+        TotalAmount();
     });
 
     /**/
@@ -1929,6 +1942,20 @@
 
 
     $('.add_model_btn').click(function(){
+
+        $('.once_form_submit').attr('disabled',false); // Disable this input.
+
+        $('#add_form1')[0].reset();
+
+        $('.sales_excutive_clz option').remove();
+
+        $('.contact_person_clz option').remove();
+
+        $('.customer_clz_id').val('').trigger('change');
+
+        $('.customer_clz_id').val('').trigger('change');
+
+        $('body').find('.performa_remove').remove();
 
         $.ajax({
 
@@ -2372,6 +2399,12 @@
                             $('.edit_btn[data-id="'+PerformaID+'"]').trigger('click');
 
                             $('#EditAddProduct').modal('hide');
+
+                            $('#edit_add_prod_form')[0].reset();
+
+                            $('.edit_product_det ').val('').trigger('change');
+
+
                             
                         }
                     });
@@ -2655,8 +2688,6 @@
     
     $("body").on('click', '.delete_prod_btn', function()
     { 
-             
-            
         var prod_id = $(this).data('id');
 
         var rowToDelete = $(this).closest('tr');
@@ -2725,7 +2756,11 @@
                     $(this).remove();
                  
                     alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
                 }); 
+
+
             }
 
         });

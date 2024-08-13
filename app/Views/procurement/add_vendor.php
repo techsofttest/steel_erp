@@ -52,7 +52,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select account_head_select account_head_clz" name="ven_account_head"  required></select>
+                                                <select class="form-select account_head_select account_head_clz"  name="ven_account_head"  required></select>
                                                 
                                             </div>
 
@@ -93,7 +93,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="number" name="ven_post_box" class="form-control" required>
+                                                <input type="text" name="ven_post_box" id="postbox" class="form-control" required>
                                             </div>
 
                                         </div>
@@ -714,6 +714,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
        
        $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
     });
+    
+
+    $('#postbox').on('input', function() {
+       
+       $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+    });
 
 
  
@@ -745,11 +751,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
      
     $('.modal_close').on('click', function() {
       
-      $('#AddVendor').modal('show');
+        $('#AddVendor').modal('show');
 
-      $('#AddContact').modal('hide');
+        $('#AddContact').modal('hide');
 
-      $('#AddOfficalDocument').modal('hide');
+        $('#AddOfficalDocument').modal('hide');
      
     });
 
@@ -766,8 +772,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(y < max_fieldss){ //max input box allowed
             y++;
             i++;
-            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+
+            //$(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+            
+            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+            
             slno();
+
+            removeSlno();
         }
     });
 
@@ -777,6 +789,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $(this).parent().remove();
         //y--;
         slno();
+
+        removeSlno();
+
     });
 
     /*####*/
@@ -799,6 +814,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     /*#####*/
 
+
+    /*rearrange no section start*/
+
+    function removeSlno(){
+
+        var rp = 0;
+            
+        $('body .prod_row').each(function() {
+
+            $(this).find('.pro_con_per_clz').attr("name", "pro_con_person["+rp+"]");
+
+            $(this).find('.pro_con_des_clz').attr("name", "pro_con_designation["+rp+"]");
+
+            $(this).find('.contact_mobile_clz').attr("name", "pro_con_mobile["+rp+"]");
+
+            $(this).find('.pro_con_email_clz').attr("name", "pro_con_email["+rp+"]");
+
+            rp++;
+           
+
+        });
+
+    }
+
+
+    /*rearrange no section end*/
+
     /*show official documnet modal*/ 
      
     $('.offical_document_modal').on('click', function() {
@@ -812,6 +854,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
    /*####*/
+
+    /* Select 2 Remove Validation On Change */
+	
+    $("select[name=ven_account_head]").on("change",function(e) {
+
+        $(this).parent().find(".error").removeClass("error"); 
+
+    });
+
+    /*####*/
 
    
 

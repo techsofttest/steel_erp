@@ -155,7 +155,7 @@ class CommonModel extends Model
     }
 
 
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     //Fetch Where
 
     public function FetchWhere($table,$cond)
@@ -1302,6 +1302,7 @@ class CommonModel extends Model
 
 
     /**/
+    
     public  function FetchSalesReturns($table,$cond,$cond2,$cond3)
     {
         $query = $this->db->table($table)
@@ -1350,6 +1351,113 @@ class CommonModel extends Model
 
     }
     
+
+
+
+    /* Bank */
+
+
+    //Fetch Common Account Balance By Date
+
+    public function AccountBalance($account,$date_from,$date_to)
+    {
+
+     $query = $this->db->query('SELECT SUM(tran_credit) - SUM(tran_debit) AS total_balance FROM '.$this->db->getPrefix().'master_transactions WHERE (tran_datetime>= CONVERT( \''.date("Y-m-d",strtotime($date_from)).'\' , DATETIME)) && (tran_datetime<= CONVERT( \''.date("Y-m-d",strtotime($date_to)).'\' , DATETIME)) && (tran_account = '.$account.')');
+
+     // Fetch the result
+     $result = $query->getRow();
+
+     // Return the total balance
+     return $result->account_balance;
+
+    }
+
+    public function FetchBRAccount($id,$date)
+    {
+
+    //Account
+    $query = $this->db->table('accounts_charts_of_accounts');
+
+    $query->where('ca_id',$id);
+
+    $result['account'] = $query->get()->getRow()->ca_name;
+
+
+    //Balance
+    $balance_query = $this->db->query('SELECT SUM(tran_credit) - SUM(tran_debit) AS total_balance FROM '.$this->db->getPrefix().'master_transactions WHERE (tran_datetime<= CONVERT( \''.date("Y-m-d",strtotime($date)).'\' , DATETIME)) && (tran_account = '.$id.') && (tran_bank_status = 0)');
+
+    $result['balance'] = $balance_query->getRow()->total_balance;
+
+
+    //Total Credit
+
+    $credit_query = $this->db->query('SELECT SUM(tran_credit) AS total_credit FROM '.$this->db->getPrefix().'master_transactions WHERE (tran_datetime<= CONVERT( \''.date("Y-m-d",strtotime($date)).'\' , DATETIME)) && (tran_account = '.$id.') && (tran_bank_status = 0)');
+
+    $result['total_credit'] = $credit_query->getRow()->total_credit;
+
+
+    //Total Debit
+
+    $debit_query = $this->db->query('SELECT SUM(tran_debit) AS total_debit FROM '.$this->db->getPrefix().'master_transactions WHERE (tran_datetime<= CONVERT( \''.date("Y-m-d",strtotime($date)).'\' , DATETIME)) && (tran_account = '.$id.') && (tran_bank_status = 0)');
+
+    $result['total_debit'] = $debit_query->getRow()->total_debit;
+
+
+   
+    //Transactions
+    $transaction_query = $this->db->table('master_transactions');
+
+    $transaction_query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_id=master_transactions.tran_account','left');
+
+    $transaction_query->where('tran_account',$id);
+
+    $transaction_query->where('tran_bank_status',0);
+
+    $transaction_query->orderBy('tran_datetime','asc');
+
+    $result['transactions'] = $transaction_query->get()->getResult();
+
+
+    return $result;
+
+    }
+
+
+
+
+    public function FetchBRC($id)
+    {
+
+    //Account
+    $query = $this->db->table('accounts_bank_rec_cleared');
+
+    $query->join('master_transactions','master_transactions.tran_id=accounts_bank_rec_cleared.brc_tran_id','left');
+
+    $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_id=master_transactions.tran_account','left');
+
+    $query->where('brc_rec_id',$id);
+
+    $result = $query->get()->getResult();
+
+    return $result;
+
+    }
+
+
+    public function FetchUnpaidInvoices($table,$cond,$field)
+    {
+    $where_or = ''.$field.' = 0 || 1';
+    $query = $this->db->table($table)->where($cond);
+    $query->where($cond);
+    $query->groupStart();
+    $query->where($where_or);
+    $query->groupEnd();
+    return $query->get()->getResult();
+    }
+
+
+
+
    
 
 

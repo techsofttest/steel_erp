@@ -297,6 +297,7 @@ class SalesReturn extends BaseController
                         'srp_rate'           =>  $_POST['srp_rate'][$j],
                         'srp_discount'       =>  $_POST['srp_discount'][$j],
                         'srp_amount'         =>  $_POST['srp_amount'][$j],
+                        'srp_prod_reff_name' =>  $_POST['reffer_id'][$j],
                         'srp_sales_return'   =>  $sales_return_id->sr_id
                         
                     );
@@ -305,25 +306,64 @@ class SalesReturn extends BaseController
 
                     if(!empty($_POST['cash_id'][$j]))
                     {
-                        $this->common_model->EditData(array('cipd_status'=>1),array('cipd_id'=>$_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
                         
+                        $cash_prod_single = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_id' => $_POST['cash_id'][$j]));
+                        
+                        $this->common_model->EditData(array('cipd_delivered_qty'=> $cash_prod_single->cipd_delivered_qty + $_POST['srp_quantity'][$j]),array('cipd_id'=>  $_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
+                        
+                        $cash_product = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_id' => $_POST['cash_id'][$j]));
+                        
+                        $total_qty = $cash_product->cipd_qtn;
+                        
+                        $current_qty = $cash_product->cipd_delivered_qty;
+
+                        if($total_qty  == $current_qty)
+                        {
+                            $this->common_model->EditData(array('cipd_status'=>1),array('cipd_id'=>$_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
+
+                        }
+                                                
                         $cash_data = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$_POST['cash_main_table'][$j]));
+                        
                         
                         $cash_datas = $this->common_model->CheckTwiceCond1('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$_POST['cash_main_table'][$j]),array('cipd_status' => 1));
                          
+                       
+
                         if(count($cash_data) == count($cash_datas))
                         {
                             $this->common_model->EditData(array('ci_status'=>1),array('ci_id'=>$_POST['cash_main_table'][$j]),'crm_cash_invoice');
                         }
 
+
+                       
                        
                        
                     }
 
                     if(!empty($_POST['credit_id'][$j]))
                     {
-                        $this->common_model->EditData(array('ipd_status'=>1),array('ipd_id'=>$_POST['credit_id'][$j]),'crm_credit_invoice_prod_det');
+                        $credit_prod_single = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_id' => $_POST['credit_id'][$j]));
                         
+                        $this->common_model->EditData(array('ipd_delivered_qty'=> $credit_prod_single->ipd_delivered_qty + $_POST['srp_quantity'][$j]),array('ipd_id'=>  $_POST['credit_id'][$j]),'crm_credit_invoice_prod_det');
+		                
+                        $credit_product = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_id' => $_POST['credit_id'][$j]));
+		
+                        $total_qty = $credit_product->ipd_quantity;
+                        
+                        $current_qty = $credit_product->ipd_delivered_qty;
+
+                        if($total_qty  == $current_qty)
+                        {
+                            //$this->common_model->EditData(array('cipd_status'=>1),array('cipd_id'=>$_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
+                            
+                            $this->common_model->EditData(array('ipd_status'=>1),array('ipd_id'=>$_POST['credit_id'][$j]),'crm_credit_invoice_prod_det');
+                        
+                        }
+                        
+                        
+                        
+                       
                         $credit_invoice = $this->common_model->FetchWhere('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$_POST['credit_main_table'][$j]));
                         
                         $credit_invoices = $this->common_model->CheckTwiceCond1('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$_POST['credit_main_table'][$j]),array('ipd_status' => 1));
@@ -460,7 +500,10 @@ class SalesReturn extends BaseController
 
         $data['project']        = $cash_invoice->sr_project;
 
-        $data['credit_account'] = $cash_invoice->ca_name;
+        $data['credit_account'] = $cash_invoice->sr_credit_account;
+
+
+       
 
 
         //product table
@@ -559,7 +602,6 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
-        
         $cash_invoices = $this->common_model->FetchSalesReturns('crm_cash_invoice',$cond,array('ci_paid_status'=>0),array('ci_status'=>0));
 
         $credit_invoices = $this->common_model->FetchSalesReturns('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
@@ -657,70 +699,58 @@ class SalesReturn extends BaseController
      //delete account head
      public function Delete()
      {
-        /*$cond = array('ci_id' => $this->request->getPost('ID'));
-
-        $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $this->request->getPost('ID')));
         
-        $update_data1 = array('so_deliver_flag'=>0);
-
-        $this->common_model->EditData($update_data1,array('so_id'=>$cash_invoice->ci_sales_order),'crm_sales_orders');
-
-        $this->common_model->DeleteData('crm_cash_invoice',$cond);
-
-        $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);*/
-
-
-        /*$cond = array('ci_id' => $this->request->getPost('ID'));
-
-        $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',$cond);
-
-        $update_data = ['so_deliver_flag' => 0];
-
-        $this->common_model->EditData($update_data, array('so_id' => $cash_invoice->ci_sales_order),'crm_sales_orders');
-        
-        $cash_invoice_id = $cash_invoice->ci_id;
-
-        $cond2 = array('cipd_cash_invoice' => $cash_invoice_id);
-
-        $joins = array(
-            array(
-                'table' => 'crm_sales_product_details',
-                'pk'    => 'spd_id',
-                'fk'    => 'cipd_sales_prod',
-            ),
-
-        );
-
-        $cash_product_det = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond2,$joins);
-
-        
-        foreach($cash_product_det as $cash_prod_det)
-        {   
-            $sales_order_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $cash_prod_det->cipd_sales_prod));
-
-            $update_data1 = [
-
-                'spd_delivered_qty' => $sales_order_prod->spd_quantity - $cash_prod_det->cipd_qtn,
-    
-                'spd_deliver_flag' => 0,
-            ];
-
-            $this->common_model->EditData($update_data1,array('spd_id' => $cash_prod_det->cipd_sales_prod),'crm_sales_product_details');
-        }
-
-        $this->common_model->DeleteData('crm_cash_invoice',$cond);
-
-        $cond1 = array('cipd_cash_invoice' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_cash_invoice_prod_det',$cond1);*/
-
         $cond = array('sr_id' => $this->request->getPost('ID'));
+        
+        $sales_return = $this->common_model->SingleRow('crm_sales_return',$cond);
+        
+        $sales_return_prod = $this->common_model->SingleRow('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
+        
+        $sales_return_prod_all = $this->common_model->FetchWhere('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
+        
+        
+        foreach($sales_return_prod_all as $sales_ret_prod)
+        {   
+           
+            $cash_invoice_product = $this->common_model->FetchWhere('crm_cash_invoice_prod_det',array('cipd_reffer_no' => $sales_ret_prod->srp_prod_reff_name));
+            
+            $credit_invoice_product = $this->common_model->FetchWhere('crm_credit_invoice_prod_det',array('ipd_reffer_no' => $sales_ret_prod->srp_prod_reff_name));
+            
+            if(!empty($credit_invoice_product))
+            {
+                foreach($credit_invoice_product as $credit_inv_prod)
+                {
+                    $current_qty = $credit_inv_prod->ipd_delivered_qty - $sales_ret_prod->srp_quantity;
+                
+                    $this->common_model->EditData(array('ipd_delivered_qty' => $current_qty,'ipd_status' => 0), array('ipd_reffer_no' => $sales_ret_prod->srp_prod_reff_name), 'crm_credit_invoice_prod_det');
+                
+                    $this->common_model->EditData(array('cci_status' => 0), array('cci_id' =>$credit_inv_prod->ipd_credit_invoice), 'crm_credit_invoice');
+                    
+                }
+            }
+
+            if(!empty($cash_invoice_product))
+            {
+                foreach($cash_invoice_product as $cash_inv_prod)
+                {
+                    $current_qty = $cash_inv_prod->cipd_delivered_qty - $sales_ret_prod->srp_quantity;
+                
+                    $this->common_model->EditData(array('cipd_delivered_qty' => $current_qty,'cipd_status' => 0), array('cipd_reffer_no' => $sales_ret_prod->srp_prod_reff_name), 'crm_cash_invoice_prod_det');
+                
+                    $this->common_model->EditData(array('ci_status' => 0), array('ci_id' =>$cash_inv_prod->cipd_cash_invoice), 'crm_cash_invoice');
+                    
+                }
+            }
+            
+           
+            
+        }
+       
+       
+        $this->common_model->DeleteData('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
 
         $this->common_model->DeleteData('crm_sales_return',$cond);
-       
- 
+      
          
      }
 
@@ -978,7 +1008,7 @@ class SalesReturn extends BaseController
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$cash_invoice_prod->product_details.'" class="form-control"  readonly></td>
                                             
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$cash_invoice_prod->cipd_qtn.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -997,7 +1027,7 @@ class SalesReturn extends BaseController
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$credit_invoice_prod->product_details.'" class="form-control"  readonly></td>
                                             
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$credit_invoice_prod->ipd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -1015,6 +1045,8 @@ class SalesReturn extends BaseController
             // Clean up received ID parameter
             $select_id = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $this->request->getPost('ID'));
 
+           
+
             // Split cleaned ID parameter into an array of individual IDs
             $idsArray = explode(',', $select_id);
 
@@ -1024,9 +1056,9 @@ class SalesReturn extends BaseController
             $i = 1;  
             foreach ($idsArray as $number) 
             {
-                $cond = array('cipd_id' => $number);
+                $cond = array('cipd_reffer_no' => $number);
                 
-                $cond2 = array('ipd_id' => $number);
+                $cond2 = array('ipd_reffer_no' => $number);
 
                 $joins = array(
                     array(
@@ -1057,19 +1089,21 @@ class SalesReturn extends BaseController
                 if(!empty($sales_order_details))
                 {
                     foreach($sales_order_details as $sales_det)
-                    {
+                    {   
+                        $qty = $sales_det->cipd_qtn - $sales_det->cipd_delivered_qty;
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sales_det->cipd_id.'">
                                                         <td class="si_no">'.$i.'</td>
-                                                        <td><input type="text"   value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td style="width:40%"><input type="text"   value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$sales_det->cipd_qtn.'"  class="form-control qtn_clz_id" readonly></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id" ></td>
                                                         <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" name="cash_id[]" value="'.$sales_det->cipd_id.'"> 
-                                                        <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'"> 
+                                                        <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'">
+                                                        <input type="hidden" name="reffer_id[]" value="'.$sales_det->cipd_reffer_no.'" class="ret_cash_inv_reff"> 
                                                         
                                                     </tr>';
                                                         
@@ -1080,19 +1114,20 @@ class SalesReturn extends BaseController
                 {
                     foreach($sales_order_details2 as $sale_det)
                     {
+                        $new_qty = $sale_det->ipd_quantity - $sale_det->ipd_delivered_qty;
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sale_det->ipd_id.'">
                                                         <td class="si_no">'.$i.'</td>
-                                                        <td><input type="text"    value="'.$sale_det->product_details.'" class="form-control" readonly></td>
+                                                        <td style="width:40%"><input type="text"    value="'.$sale_det->product_details.'" class="form-control" readonly></td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$sale_det->ipd_quantity.'"  class="form-control qtn_clz_id" readonly></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id"></td>
                                                         <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'">
                                                         <input type="hidden" name="credit_id[]" value="'.$sale_det->ipd_id.'"> 
                                                         <input type="hidden" name="credit_main_table[]" value="'.$sale_det->ipd_credit_invoice.'">  
-                                                        
+                                                        <input type="hidden" name="reffer_id[]" value="'.$sale_det->ipd_reffer_no.'" class="ret_cash_inv_reff"> 
                                                     </tr>';
                                                         
                     }
@@ -1325,7 +1360,7 @@ class SalesReturn extends BaseController
                 $data['product_detail'] .='<tr class="prod_row select_prod_remove edit_select_div" id="'.$cash_prod->spd_id.'">
                                                 <td class="si_no">'.$i.'</td>
                                                 <td><input type="text"  value="'.$cash_prod->product_details.'" class="form-control"  readonly></td>
-                                                <td><input type="text" name="cipd_unit[]" value="'.$cash_prod->spd_unit.'" class="form-control" readonly></td>
+                                                <td><input type="text" name="cipd_unit[]" value="'.$cash_prod->spd_unit.'"  class="form-control" readonly></td>
                                                 <td><input type="number" name="cipd_qtn[]" value="'.$new_qty.'"  class="form-control edit_order_qty" readonly></td>
                                                 <td><input type="checkbox" name="sales_prod_id['.$cash_prod->spd_id.']" value="'.$cash_prod->spd_id.'"></td>
                                                 <input type="hidden" name="sales_prod_id2[]" value="'.$cash_prod->spd_id.'">
@@ -1575,11 +1610,25 @@ class SalesReturn extends BaseController
             $this->common_model->EditData($update_data,$cond,'crm_sales_return_prod_det');
              
             $prod_det = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
+            
+            
 
             $data['srp_sales_return'] = $prod_det->srp_sales_return;
+            
+            //$this->common_model->SingleRow('crm_sales_return_prod_det',array('srp_prod_reff_name' => $prod_det->srp_prod_reff_name));
 
-          
+            $single_cash = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_reffer_no' => $prod_det->srp_prod_reff_name));
+            
+            if(!empty($single_cash))
+            {
+                //$delivered_qty = $single_cash->cipd_delivered_qty + $prod_det->srp_unit;
+                
+                $delivered_qty = intval($single_cash->cipd_delivered_qty) + intval($prod_det->srp_unit);
 
+
+                $this->common_model->EditData(array('cipd_delivered_qty' => $delivered_qty),array('cipd_reffer_no' => $prod_det->srp_prod_reff_name),'crm_cash_invoice_prod_det');
+                 
+            }
 
             echo json_encode($data);
        
@@ -1588,9 +1637,61 @@ class SalesReturn extends BaseController
         public function DeleteProdDet()
         {
             $cond = array('srp_id' => $this->request->getPost('ID'));
-     
+
+            
+            $sales_return_product = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
+            
             $this->common_model->DeleteData('crm_sales_return_prod_det',$cond);
-    
+            
+            $cash_invoice_prod = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_reffer_no' => $sales_return_product->srp_prod_reff_name));
+            
+            $credit_invoice_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_reffer_no' => $sales_return_product->srp_prod_reff_name));
+            
+
+            $count_sales_ret = $this->common_model->FetchWhere('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return_product->srp_sales_return));
+            
+            if(count($count_sales_ret) == 0 )
+                {
+                    $this->common_model->DeleteData('crm_sales_return',array('sr_id' => $sales_return_product->srp_sales_return));
+                    
+                    $data['return_status'] = "true";
+                }
+                else
+                {
+                    $data['return_status'] = "false";
+                }
+            
+            
+            if(!empty($cash_invoice_prod))
+            {   
+                
+                
+                $this->common_model->EditData(array('ci_status' => 0),array('ci_id' => $cash_invoice_prod->cipd_cash_invoice),'crm_cash_invoice');
+               
+                $current_qty = $cash_invoice_prod->cipd_delivered_qty	- $sales_return_product->srp_quantity;
+                
+                $this->common_model->EditData(array('cipd_delivered_qty' => $current_qty,'cipd_status' => 0),array('cipd_reffer_no' => $sales_return_product->srp_prod_reff_name),'crm_cash_invoice_prod_det');
+             
+            }
+
+            if(!empty($credit_invoice_prod))
+            {   
+                
+
+                $this->common_model->EditData(array('cci_status' => 0),array('cci_id ' => $credit_invoice_prod->ipd_credit_invoice),'crm_credit_invoice');
+                
+                $current_qty = $credit_invoice_prod->ipd_delivered_qty	- $sales_return_product->srp_quantity;
+               
+
+                $this->common_model->EditData(array('ipd_delivered_qty' => $current_qty,'ipd_status' => 0),array('ipd_reffer_no' => $sales_return_product->srp_prod_reff_name),'crm_credit_invoice_prod_det');
+                
+                
+            }
+
+
+            echo json_encode($data);
+
+            
             
         }
 
@@ -1600,11 +1701,68 @@ class SalesReturn extends BaseController
             $cond = array('srp_id' => $this->request->getPost('prodId'));
             
             $sales_prod_data = $this->common_model->SingleRow('crm_sales_return_prod_det',$cond);
-
-            $data['srp_quantity'] = $sales_prod_data->srp_quantity;
             
+            $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_reffer_no' =>  $sales_prod_data->srp_prod_reff_name));
+
+            $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_reffer_no' =>  $sales_prod_data->srp_prod_reff_name));
+            
+            $sales_return = $this->common_model->FetchWhere('crm_sales_return_prod_det',array('srp_prod_reff_name' => $sales_prod_data->srp_prod_reff_name));
+               
+            $total_qty = 0; 
+
+            foreach($sales_return as $sales_ret)
+            {
+               $total_qty = $sales_ret->srp_quantity + $total_qty;
+
+            }
+
+            $new_qty = $total_qty -  $sales_prod_data->srp_quantity;
+           
+
+            if(!empty($credit_invoice))
+            {   
+               
+                $data['srp_quantity'] = $credit_invoice->ipd_quantity - $new_qty;
+            }
+
+            if(!empty($cash_invoice))
+            {
+               
+                $data['srp_quantity'] = $cash_invoice->cipd_qtn - $new_qty;
+            }
+
+           
             echo json_encode($data);
 
+        }
+
+
+
+        public function ProdQty()
+        {  
+            $data['total_qty'] = "";
+
+            $cond = array('cipd_reffer_no' => $this->request->getPost('refferID'));
+             
+            $cash_invoice_prod = $this->common_model->SingleRow('crm_cash_invoice_prod_det',$cond);
+
+            $cond1 = array('ipd_reffer_no' => $this->request->getPost('refferID'));
+             
+            $credit_invoice_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det',$cond1);
+
+            
+
+            if(!empty($cash_invoice_prod))
+            {
+                $data['total_qty'] = $cash_invoice_prod->cipd_qtn - $cash_invoice_prod->cipd_delivered_qty;
+            }
+
+            if(!empty($credit_invoice_prod))
+            {
+                $data['total_qty'] = $credit_invoice_prod->ipd_quantity - $credit_invoice_prod->ipd_delivered_qty;
+            }
+            
+            echo json_encode($data);
         }
 
        

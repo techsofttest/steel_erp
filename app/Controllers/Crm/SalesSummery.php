@@ -57,70 +57,92 @@ class SalesSummery extends BaseController
 
 
 
-    
-
-
-
-
-    
 
     //fetch data
     public function GetData()
-    {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer'));
-
-        $sales_executive    = trim($this->request->getPost('sales_executive'));
-
-        $joins = array(
-          
-
-        );
-
-      
-        $backlogs = $this->common_model->CheckDate($from_date,'so_date',$to_date,'',$customer,'so_customer',$sales_executive,'so_sales_executive','','','','','crm_sales_orders',$joins,'so_reffer_no');
+    {   
         
-        $data['product_data'] =""; 
-
-       if(!empty($backlogs)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($backlogs as $backlog)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$backlog->so_reffer_no.'</td>
-                <td>'.$backlog->so_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
-            }
+        if(!empty($_GET['form_date']))
+        {
+            $from_date = $_GET['form_date'];
         }
         else
         {
-            $data['status'] ="False";
+            $from_date = "";
         }
 
-        echo json_encode($data);
-       
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
+
+        if(!empty($_GET['customer']))
+        {
+            $data1 = $_GET['customer'];
+        }
+        else
+        {
+            $data1 = "";
+        }
+
+
+        /*if(!empty($_GET['sales_executive']))
+        {
+            $data2 = $_GET['sales_executive'];
+        }
+        else
+        {
+            $data2 = "";
+        }*/
+
+        $joins = array(
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'dn_customer',
+            ),
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'dn_sales_order_num',
+            ),
+
+        );
+
+        
+        $data['delivery_data'] = $this->crm_modal->sales_summery($from_date,'dn_date',$to_date,'',$data1,'dn_customer','','','','','','','crm_delivery_note',$joins,'dn_reffer_no');
+        
+        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        
+        if(!empty($from_date))
+        {
+            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        }
+        else
+        {
+            $data['from_dates'] ="";
+        } 
+        
+
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
+        }
+        
+        $data['content'] = view('crm/sales-summery',$data);
+        
+        return view('crm/report-module-search',$data);
+      
       
     }
-
-
-
-
 
 
 

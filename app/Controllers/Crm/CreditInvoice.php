@@ -58,12 +58,15 @@ class CreditInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a href="'.base_url().'Crm/CreditInvoice/Pdf/'.$record->cci_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+
+            ';
            
            $data[] = array( 
               'cci_id'         => $i,
               'cci_reffer_no'  => $record->cci_reffer_no,
-              'cci_date'       => date('d-m-Y',strtotime($record->cci_date)),
+              'cci_date'       => date('d-M-Y',strtotime($record->cci_date)),
               'cci_customer'   => $record->cc_customer_name,
               'action'         => $action,
            );
@@ -162,7 +165,8 @@ class CreditInvoice extends BaseController
     // add account head
     Public function Add()
     {   
-       
+        $data['print'] = "";
+         
         if(empty($this->request->getPost('cci_id')))
         {
             $insert_data = [
@@ -228,6 +232,21 @@ class CreditInvoice extends BaseController
             $this->common_model->EditData($update_data, array('cci_id' => $this->request->getPost('cci_id')), 'crm_credit_invoice');
             
             $credit_invoice_id = $this->request->getPost('cci_id');
+
+            
+            $credit_invoice_data = $this->common_model->SingleRow('crm_credit_invoice',array('cci_id' => $credit_invoice_id));
+
+            //Add To Transactions
+    
+            $credit_trans_data['tran_reference'] = $credit_invoice_data->cci_reffer_no;
+
+            $credit_trans_data['tran_account'] = $credit_invoice_data->cci_credit_account;
+
+            $credit_trans_data['tran_credit'] = $credit_invoice_data->cci_total_amount;
+
+            $credit_trans_data['tran_type'] = "Credit Invoice";
+
+            $this->common_model->InsertData('master_transactions',$credit_trans_data);
         }
         
 
@@ -263,6 +282,12 @@ class CreditInvoice extends BaseController
                     
                     $id = $this->common_model->InsertData('crm_credit_invoice_prod_det',$contact_detail);
 
+                    $this->common_model->EditData(array('ipd_reffer_no'=> "CRNP00".$id),array('ipd_id'=> $id),'crm_credit_invoice_prod_det');
+
+                    
+                    $this->common_model->EditData(array('cci_delivery_id'=>$_POST['delivery_id'][$j]),array('cci_id'=>$credit_invoice_id),'crm_credit_invoice');
+                   
+                    
                     $cond = array('dpd_id' => $_POST['delivery_prod_id'][$j]);
 
                     $update_data1 = array('dpd_invoice_flag' => 1);
@@ -286,10 +311,7 @@ class CreditInvoice extends BaseController
 
                         $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order'][$j]),'crm_sales_orders');
                     }
-
-                    
-                    
-                    
+ 
   
                 } 
             }
@@ -305,7 +327,12 @@ class CreditInvoice extends BaseController
 
             $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
             
-            
+            if(!empty($_POST['print_btn']))
+            {
+                
+                $data['print'] =  base_url() . 'Crm/CreditInvoice/Pdf/' . urlencode($credit_invoice_id);
+
+            }
 
             $data['adjustment_data'] = "";
 
@@ -477,6 +504,17 @@ class CreditInvoice extends BaseController
             $data['charts_account']    = $credit_invoice->ca_name;
 
             $data['contact_person']    = $credit_invoice->contact_person;
+
+            $data['total_amount'] = '<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
+                
+            </tr> ';
 
             //product section 
             
@@ -657,7 +695,6 @@ class CreditInvoice extends BaseController
     public function Delete()
     {  
         
-        
         $cond = array('cci_id' => $this->request->getPost('ID'));
 
         $credit_invoice = $this->common_model->SingleRow('crm_credit_invoice', $cond);
@@ -677,12 +714,12 @@ class CreditInvoice extends BaseController
             $this->common_model->EditData(array('so_credit_status' => 0),array('so_id' => $credit_invoice->cci_sales_order),'crm_sales_orders');
             
             $this->common_model->DeleteData('crm_credit_invoice',$cond);
+
+            $this->common_model->DeleteData('master_transactions',array('tran_reference'=> $credit_invoice->cci_reffer_no));
             
-            $cond1 = array('ipd_credit_invoice' => $this->request->getPost('ID'));
+            $cond1 = array('ipd_credit_invoice' => $credit_invoice->cci_id);
      
             $this->common_model->DeleteData('crm_credit_invoice_prod_det',$cond1);
-
-
 
             $data['status'] = "true";
         }
@@ -895,6 +932,18 @@ class CreditInvoice extends BaseController
 
             $data['credit_invoice_id'] = $credit_invoice->cci_id;
 
+            $data['total_amount'] = '<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
+                
+            </tr> ';
+        
+
 
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
@@ -935,8 +984,8 @@ class CreditInvoice extends BaseController
             /**/
 
 
-             //sales orders
-             $sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+            //sales orders
+            $sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
              
 
             //contact person
@@ -972,7 +1021,7 @@ class CreditInvoice extends BaseController
 
             $delivery_prod_details = $this->common_model->FetchWhereJoin('crm_credit_invoice_prod_det', array('ipd_credit_invoice' => $this->request->getPost('ID')),$joins1);
             
-           // $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
+            // $products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
             $i=1;
 
@@ -1085,7 +1134,7 @@ class CreditInvoice extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                     <td class="si_no">'.$sales_det->dn_reffer_no.'</td>
-                                                    <td>
+                                                    <td style="width:40%">
                                                         <select class="form-select ser_product_det" name="ipd_prod_detl[]" required>';
                                                             foreach($products as $prod){
                                                                 $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
@@ -1178,6 +1227,337 @@ class CreditInvoice extends BaseController
     
     
             echo json_encode($data);
+           
+        }
+
+
+        public function Pdf($id)
+        {   
+            if(!empty($id))
+            {   
+                
+    
+                $joins1 = array(
+                
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'ipd_prod_detl',
+                    ),
+                   
+                );
+
+                $product_details = $this->common_model->FetchWhereJoin('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$id),$joins1);
+                    
+                
+                $pdf_data = "";
+
+                foreach($product_details as $prod_det)
+                {
+                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->ipd_quantity.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->ipd_unit.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->ipd_rate.'</td>';
+
+                    $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->ipd_discount.'</td>';
+
+                    $pdf_data .= '<td align="left">'.$prod_det->ipd_amount.'</td></tr>';
+                }
+
+                $join =  array(
+                    
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'cci_customer',
+                    ),
+
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'cci_sales_order',
+                    ),
+
+                   
+
+                );
+                
+
+                $credit_invoice = $this->common_model->SingleRowJoin('crm_credit_invoice',array('cci_id'=>$id),$join);
+                
+                $credit_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$id));
+
+                $credit_prod_id = $credit_prod->ipd_delivery_prod_id;
+
+                $delivery_prod_id = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' =>$credit_prod_id));
+
+                $delivery_reffer_id = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
+
+                $date = date('d-M-Y',strtotime($credit_invoice->cci_date));
+
+                $title = 'CRN - '.$credit_invoice->cci_reffer_no;
+
+                $mpdf = new \Mpdf\Mpdf();
+
+                $mpdf->SetTitle($title); // Set the title
+    
+                $html ='
+            
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+               
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+
+                <table><tr><td></td></tr></table>
+               
+                <table><tr><td></td></tr></table>
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+                <tr width="100%">
+                <td>Date : '.$date.'</td>
+                <td>Credit Note No : '.$credit_invoice->cci_reffer_no.'</td>
+                <td align="right"><h2>Credit Note</h2></td>
+            
+                </tr>
+            
+                </table>
+
+            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        
+                <tr>
+                
+                    <td > </td>
+                    
+                    <td >'.$credit_invoice->cc_customer_name.'</td>
+                
+                </tr>
+        
+        
+            <tr>
+            
+            <td>Customer</td>
+            
+                
+            <td >Tel : '.$credit_invoice->cc_telephone.', Fax : '.$credit_invoice->cc_fax.', Email : '.$credit_invoice->cc_email.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+            <td >Post Box : -, Doha - '.$credit_invoice->cc_post_box.'</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+            <td >Mr. Johnson - Manager, Mobile: -, Email: - </td>
+            
+            </tr>
+        
+        
+            </table>
+    
+               
+            
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                
+                    <th align="left" style="border-bottom:2px solid;">Rate</th>
+        
+                    <th align="left" style="border-bottom:2px solid;">Disc%</th>
+        
+                    <th align="left" style="border-bottom:2px solid;">Amount</th>
+        
+                
+                </tr>
+
+
+                '.$pdf_data.'
+    
+                 
+                
+            </table>';
+            
+            $footer = '
+        
+                <table style="border-bottom:2px solid">
+                
+                    <tr>
+                        <td></td>
+
+                        <td>IBAN : QA97CBQA000000004570407137001</td>
+                    
+                        <td>Gross Total</td>
+            
+                        <td>'.$credit_invoice->cci_total_amount.'</td>
+                
+                    </tr>
+    
+                    <tr>
+        
+                        <td>Bank Details</td>
+                    
+                        <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                       
+                        <td>Less. Special Discount</td>
+            
+                        <td>-------</td>
+                    
+                    </tr>
+
+
+                    <tr>
+        
+                        <td></td>
+                    
+                        <td>SWIFT : CBQAQAQA</td>
+                       
+                        <td></td>
+            
+                        <td></td>
+                    
+                    </tr>
+    
+    
+                    <tr>
+        
+                        <td>Amount in words</td>
+                    
+                        <td>----------------------------------</td>
+            
+                        <td style="font-weight: bold;">Net Invoice Value</td>
+            
+                        <td>-----</td>
+                    
+                    </tr>
+    
+                </table>
+    
+    
+               <table>
+               
+                    <tr>
+                        <td style="width:20%">Invoice Terms</td>
+
+                        <td style="width:20%">LPO Ref</td>
+
+                        <td style="width:20%">Waiting for PO</td>
+
+                        <td style="width:10%"></td>
+
+                        <td style="width:10%">Payment:</td>
+
+                        <td style="width:20%">Cash on delivery</td>
+                    
+                    </tr>
+
+
+                    <tr>
+                        
+                        <td style="width:20%"></td>
+                        <td style="width:20%">Project:</td>
+                        <td style="width:20%">-</td>
+                        <td style="width:10%"></td>
+                        <td style="width:10%">Invoice:</td>
+                        <td style="width:20%">'.$credit_invoice->cci_reffer_no.'</td>
+                    
+                    </tr>
+
+
+                    <tr>
+                        
+                        <td style="width:20%"></td>
+                        <td style="width:20%">Sales Order:</td>
+                        <td style="width:20%">'.$credit_invoice->so_reffer_no.'</td>
+                        <td style="width:10%"></td>
+                        <td style="width:10%">DN No:</td>
+                        <td style="width:20%">'.$delivery_reffer_id->dn_reffer_no.'</td>
+                
+                    </tr>
+                
+               </table>
+    
+    
+                <table style="border-top:2px solid;">
+    
+                <tr>
+                
+                    <td>Received by: </td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Prepared by:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Finance Dept:</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    
+                    <td>Workshop Manager</td>
+    
+                  
+    
+                </tr>
+    
+                
+                </table>';
+            
+                
+                $mpdf->WriteHTML($html);
+                $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+            
+            }
+    
            
         }
         

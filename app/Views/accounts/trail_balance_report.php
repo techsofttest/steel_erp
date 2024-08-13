@@ -1,9 +1,13 @@
  <!--header section start-->
 
- <?php echo view('accounts/reports_sub_header');?>
+ <?php 
+ if(empty($_GET))
+ {
+ echo view('accounts/reports_sub_header');
+ }
+ ?>
 
 <!--header section end-->
-
 
 
 <div class="tab-content text-muted">
@@ -23,7 +27,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET"  class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Trial Balance</h5>
@@ -124,6 +128,18 @@
                                                                     
                                                                     
                                                                      </table>
+
+
+                                                                     <div class="row my-2">
+                                                                        
+                                                                        <div class="col-lg-6 text-center">
+                                                                        Zero Balance <input type="checkbox" name="zero" value="1">
+                                                                        </div>                                                  
+    
+                                                                        </div>
+
+
+
                                                                 </div>
 
                                                                 <!--table section end-->
@@ -197,24 +213,57 @@
                                             </thead>
                                             
 
-                                            <tbody class="tbody_data">
+                                              <tbody class="tbody_data">
 
                                             <?php 
 
                                             $total_credit=0;
 
+                                            $total_deb=number_format(0,2);
+
+                                            $total_cred=number_format(0,2);
+
                                             foreach($c_accounts as $account){ ?>
+
+                                            <?php 
+                                            if( ($account->balance==0) && (!empty($_GET['zero'])))
+                                            {
+                                            $total_deb = $total_deb+ $account->total_debit;
+                                            $total_cred = $total_cred + $account->total_credit;
+                                            ?>
+                                            <tr>
+
+                                            <td><?= $account->ca_name; ?></td>
+                                            <td><?php echo empty ($account->start_balance) ? "0.00"  : $account->start_balance; ?></td>
+                                            <td><?= $account->total_debit; ?></td>
+                                            <td><?= $account->total_credit; ?></td>
+                                            <td><?= $account->net_change; ?></td>
+                                            <td><?= $account->balance; ?></td>
+                                            
+                                            </tr>
+
+                                            <?php
+                                            }
+                                            ?>
+
+                                            <?php if( ($account->balance>0) )
+                                            { 
+                                            $total_deb = $total_deb+ $account->total_debit;
+                                            $total_cred = $total_cred + $account->total_credit; 
+                                            ?>
 
                                             <tr>
 
                                             <td><?= $account->ca_name; ?></td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            
+                                            <td><?php echo empty ($account->start_balance) ? "0.00"  : $account->start_balance; ?></td>
+                                            <td><?= $account->total_debit; ?></td>
+                                            <td><?= $account->total_credit; ?></td>
+                                            <td><?= $account->net_change; ?></td>
+                                            <td><?= $account->balance; ?></td>
+
                                             </tr>
+
+                                            <?php } ?>
 
                                             <?php 
                                             
@@ -234,8 +283,8 @@
 
                                             <td><b style="font-size:20px;">Total</b></td>
                                             <td><b>(0.00)</b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>(0.00)</b></td>
+                                            <td><b><?= $total_deb; ?></b></td>
+                                            <td><b><?= $total_cred; ?></b></td>
                                             <td><b>0.00</b></td>
                                             <td><b>0.00</b></td>
 
@@ -322,11 +371,11 @@
 
         /*modal open start*/
 
-        <?php if(empty($_GET)){ ?>
+        <?php /* if(empty($_GET)){ ?>
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php } ?>
+        <?php } */ ?>
 
 
 

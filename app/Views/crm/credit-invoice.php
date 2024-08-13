@@ -11,15 +11,26 @@
     justify-content: unset !important;
 }
 .cust_more_modal {
-    position: absolute;
-    left: 470px;
-    padding: 1px 27px;
-    z-index: 999;
-    border: 1px solid black;
-    border: 1px solid #0000003b;
+    
+        position: absolute;
+        right: 32px;
+        top: -16px;
+        font-size: 25px;
+        color: #ff0000b5;
+
 }
-
-
+.input_length
+{
+    width: 95%;
+}
+.select2.select2-container{
+    width: 95% !important;
+}
+.disabled-span{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 </style>
 
 
@@ -71,7 +82,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control" required readonly>
+                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -91,7 +102,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker" required>
+                                                                        <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -124,6 +135,37 @@
 
                                                             <!-- ### --> 
 
+
+
+                                                            <!--Single Row Start-->
+
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Credit Account</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                      
+                                                                        <select class="form-select input_length" name="ci_credit_account" id="" required>
+                                                                            <option value="" selected disabled>Select Credit Account</option>
+                                                                            <?php foreach($charts_of_accounts as $chart_account){?> 
+                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        
+                                                                    </div>
+
+                                                                </div> 
+
+                                                            </div> 
+
+
+                                                            <!--####-->
+
                                                             
 
                                                             <!-- Single Row Start -->
@@ -134,17 +176,22 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Sales Order <span class="add_more_icon cust_more_modal">Select</span></label>
+                                                                        <label for="basicInput" class="form-label">Sales Order</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-8 col-lg-8">
                                                                       
-                                                                        <select class="form-select sales_order_add_clz" name="cci_sales_order" id="sales_order_add" style="width:80%;" required>
+                                                                        <select class="form-select sales_order_add_clz" name="cci_sales_order" id="sales_order_add" required>
 
                                                                             <option value="" selected disabled>Select Sales Order</option>
 
                                                                         </select>
                                                                         
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -157,9 +204,7 @@
 
                                                             
 
-                                                           
-
-                                                            
+                             
 
                                                         </div>
 
@@ -186,7 +231,7 @@
                                                                         
                                                                         <input type="text" name="cci_lpo_reff" class="form-control lpo_ref" required>
                                                                     
-                                                                </div>
+                                                                    </div>
 
                                                                 </div> 
 
@@ -202,16 +247,16 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                    <label for="basicInput" class="form-label">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
                                                                    
-                                                                    <select class="form-select cont_person" name="cci_contact_person" id="" required></select>
+                                                                        <select class="form-select cont_person" name="cci_contact_person" id="" required></select>
                                                                    
                                                                     
-                                                                </div>
+                                                                    </div>
 
                                                                 </div> 
 
@@ -283,7 +328,7 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td>DN No.</td>
                                                                 <td>Product Description</td>
                                                                 <td>Unit</td>
                                                                 <td>Qty</td>
@@ -323,23 +368,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         
-                                                        <div class="row row_align mb-4">
-                                                            <div class="col-lg-3">
-                                                                <label for="basicInput" class="form-label">Credit Account</label>
-                                                            </div>
-
-                                                            <div class="col-lg-4">
-                                                               
-                                                                <select class="form-select" name="ci_credit_account" id="" required>
-                                                                    <option value="" selected disabled>Select Credit Account</option>
-                                                                    <?php foreach($charts_of_accounts as $chart_account){?> 
-                                                                         <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                                     
-                                                            </div>
-
-                                                        </div>
+                                                        
 
                                                         <div class="row row_align mb-4">
                                                             <div class="col-lg-3">
@@ -357,7 +386,8 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="modal-footer justify-content-center">
-                                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                                            <span class="print_btn_clz once_form_submit" style="display:none"><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
                                                         </div>
                                                     </div>
                                                     <!--<div class="col-lg-6">
@@ -645,6 +675,36 @@
 
                                     
                                     <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <select class="form-select edit_charts_account" name="ci_credit_account" id="" required></select>
+
+                                                
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+
+
+
                                 </div>
 
                             </div>
@@ -769,6 +829,8 @@
                             </thead>
                             
                             <tbody  class="travelerinfo edit_product_table"></tbody>
+
+                            <tbody  class="travelerinfo edit_total_amount"></tbody>
                            
                             
                         </table>
@@ -778,21 +840,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                                                         
-                            <div class="row row_align mb-4">
-                                <div class="col-lg-3">
-                                    <label for="basicInput" class="form-label">Credit Account</label>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    
-                                    <select class="form-select edit_charts_account" name="ci_credit_account" id="" required>
-                                      
-                                    </select>
-                                            
-                                </div>
-
-                            </div>
-
+                            
                             <div class="row row_align mb-4">
                                 <div class="col-lg-3">
                                     <label for="basicInput" class="form-label" style="display:none">Attach</label>
@@ -805,10 +853,10 @@
                             </div>
                         </div>
                         
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
 
                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                            <button class="btn btn btn-success" type="submit">Save</button>
                        </div>
                         </div>
                        
@@ -1010,6 +1058,30 @@
 
                                     
                                     <!-- ### --> 
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Credit Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name=""  class="form-control view_credit_account" required>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
                                 </div>
 
                             </div>
@@ -1140,18 +1212,11 @@
                                 </thead>
                                                         
                                 <tbody  class="travelerinfo view_prod_table"></tbody>
+
+
+                                <tbody  class="travelerinfo view_total_amount"></tbody>
                                                        
-                                <!--<tbody>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                        <td colspan="3" class="performa_amount_in_word_val"></td>
-                                        <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                        <td>Total</td>
-                                        <td><input type="text" name="cci_total_amount" class="amount_total form-control" readonly></td>
-                                    </tr>
-                                    
-                                    
-                                </tbody>--->
+                                
                                                        
                             </table>
                             
@@ -1161,18 +1226,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                                         
-                                <div class="row row_align mb-4">
-                                    <div class="col-lg-3">
-                                        <label for="basicInput" class="form-label">Credit Account</label>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        
-                                        <input type="text" name=""  class="form-control view_credit_account" required>
-                                                
-                                    </div>
-
-                                </div>
+                                
 
                                 <div class="row row_align mb-4">
                                     <div class="col-lg-3">
@@ -1321,7 +1375,8 @@
                     // Submit the form for the current tab
 
                     if($('#add_form1').attr('data-product')=="true")
-                    {
+                    {   
+                        $('.once_form_submit').attr('disabled', true); // Disable this input.
                         $.ajax({
                             url: "<?php echo base_url(); ?>Crm/CreditInvoice/Add",
                             method: "POST",
@@ -1353,6 +1408,11 @@
                                     $('#SaveModal').modal('show');
                                 }
 
+                                if(data.print!="")
+                                {
+                                    window.open(data.print, '_blank');
+                                }
+
 
                                 TotalAmount();
                             
@@ -1363,7 +1423,23 @@
                     }
                     else
                     {
-                        alertify.error('Please Add Select').delay(3).dismissOthers();
+                        alertify.error('Please Select Products').delay(3).dismissOthers();
+
+                        $('#blink').each(function() {
+                            var elem = $(this);
+                            refreshIntervalId = setInterval(function() {
+                                if (elem.css('visibility') == 'hidden') {
+                                    elem.css('visibility', 'visible');
+                                } else {
+                                    elem.css('visibility', 'hidden');
+                                }    
+                            }, 200);
+                        });
+
+                        setTimeout(function(){
+                            clearInterval(refreshIntervalId);
+                            
+                        }, 1000)
                     }
 
 
@@ -1950,7 +2026,7 @@
             var formData = new FormData($('#add_form1')[0]);
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
-
+            $(".cust_more_modal").addClass("disabled-span");
             $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CreditInvoice/Add",
                         method: "POST",
@@ -2020,6 +2096,8 @@
 
             var selectId = $('#select_prod_id').val();
 
+            $('.print_btn_clz').css('display', 'block');
+
             checked = $("input[type=checkbox]:checked").length;
 
             if(!checked) {
@@ -2041,7 +2119,6 @@
                 
                     var data = JSON.parse(data);
                                     
-                
                     $('.product_more2').html(data.product_detail);
 
                     $('#SelectProduct').modal("hide");
@@ -2049,6 +2126,8 @@
                     $('#CreditInvoice').modal("show");
 
                     $('.selected_table').show();
+
+                    checkedIds.length = 0;
 
                     TotalAmount();
                 }
@@ -2114,7 +2193,8 @@
                     $('.edit_product_table').html(data.product_detail);
 
                     $('.edit_charts_account').html(data.charts_account);
-
+                    
+                    $('.edit_total_amount').html(data.total_amount);
                    
 
                    // $('.edit_image_table').html(data.image_table);
@@ -2228,7 +2308,7 @@
 
                     $('.view_prod_table').html(data.product_detail);
 
-                     
+                    $('.view_total_amount').html(data.total_amount);
                     
                     
                     /*$('.edit_credit_invoice_id').val(data.credit_invoice_id);
@@ -2252,6 +2332,8 @@
         $('.add_model_btn').click(function(){
 
             $('#add_form1')[0].reset();
+
+            $('.print_btn_clz').css('display', 'none');
                                 
             $('#CreditInvoice').modal('hide');
 
@@ -2266,6 +2348,10 @@
             $('.cont_person  option').remove();
 
             $('#add_form1').attr('data-product','false');
+
+            $('.once_form_submit').attr('disabled', false); // Disable this input.
+
+            $(".cust_more_modal").removeClass("disabled-span");
 
             $.ajax({
 
@@ -2388,6 +2474,9 @@
         /*checkbox section start*/
 
         var checkedIds = [];
+
+        checkedIds.length = 0;
+
 
 // Check All function
 

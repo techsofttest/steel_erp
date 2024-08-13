@@ -1,37 +1,42 @@
 <style>
     span.select2.customer_width {
-        width: 80% !important;
+        /*width: 80% !important;*/
     } 
     .contact_more_modal
     {
         position: absolute;
-        left: 471px;
-        padding: 2px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+        right: 25px;
+        top: -16px;
+        font-size: 25px;
+        color: #ff0000b5;
+       
     }
     .cust_more_modal
     {
+        font-size: 25px;
+        color: #ff0000b5;
         position: absolute;
-        left: 471px;
-        padding: 2px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+        right: 25px;
+        top: -16px;
     }
     span.select2.select_width
     {
-        width: 70% !important;
+        width: 94% !important;
     }
     .prod_add_more
     {
         position: absolute;
-        left: 340px;
-        padding: 4px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+        left: 532px;
+        font-size: 25px;
+        color: #ff0000b5;
+    }
+    .zero_padding
+    {
+        padding: 0px 0px;
+    }
+    .input_length
+    {
+        width: 97%;
     }
 </style>
 
@@ -77,7 +82,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_reff" id="enqid" class="form-control" value="<?php echo $enquiry_id; ?>" required readonly>
+                                                                        <input type="text" name="enquiry_reff" id="enqid" class="form-control input_length" value="<?php echo $enquiry_id; ?>" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -98,7 +103,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control enquiry_date datepicker" required>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control enquiry_date datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -114,14 +119,21 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer Name<span class="add_more_icon cust_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" style="width:80%;" required>
+                                                                    <div class="col-col-md-8 col-lg-8 zero_padding">
+                                                                        <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                
                                                                         </select>
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
+
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill"></span>
+
                                                                     </div>
 
                                                                 </div> 
@@ -136,16 +148,25 @@
 
                                                                 <div class="row align-items-center mb-2">
 
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
+                                                                    <div class="col-col-md-3 col-lg-3 ">
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id" style="width: 80%;" required>
+                                                                    <div class="col-col-md-8 col-lg-8 zero_padding">
+                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
+
                                                                         
+                                                                        
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
+
+                                                                        <span class="add_more_icon contact_more_modal ri-add-box-fill"></span>
+                                                                    
                                                                     </div>
 
                                                                     
@@ -269,19 +290,21 @@
                                                             <tr>
                                                                 <td>Serial No.</td>
                                                                 <td>Product Description</td>
+                                                                <td></td>
                                                                 <td>Unit</td>
                                                                 <td>Quantity</td>
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr class="prod_row">
                                                                 <td style="width: 10%;"class="si_no">1</td>
-                                                                <td style="width:28%">
-                                                                <span class="add_more_icon prod_add_more">New</span>
+                                                                <td style="width:40%">
+                                                                <!--<span class="add_more_icon prod_add_more">New</span>--->
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[0]" required>
                                                                         <option value=""  selected disabled>Select Product Description</option>
                                                                         
                                                                     </select>
                                                                 </td>
+                                                                <td><span class="add_more_icon prod_add_more ri-add-box-fill"></span></td>
                                                                 <td><input type="text" name="pd_unit[0]" class="form-control" required></td>
                                                                 <td><input type="number" name="pd_quantity[0]" class="form-control" required></td>
                                                                 <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
@@ -320,7 +343,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
                                         </div>
 
 
@@ -974,9 +997,9 @@
 
                                                         <tr>
                                                             <td>1</td>
-                                                            <td>
+                                                            <td style="width:40%">
                                                                 <select class="edit_add_prod" name="pd_product_detail" required>
-                                                                    <option>select</option>
+                                                                    <option value="" selected disabled>select</option>
                                                                 </select>
                                                             </td>
                                                             <td><input type="text" name="pd_unit" class="form-control" required></td>
@@ -1086,6 +1109,8 @@
         /*add section*/
         $(function() {
             var form = $('#add_enquiry_form');
+
+            
             
             form.validate({
                 rules: {
@@ -1097,6 +1122,7 @@
                 errorPlacement: function(error, element) {} , // To Hide Validation Messages
                 submitHandler: function(currentForm) {
                     // Submit the form for the current tab
+                    $('.once_form_submit').attr('disabled', true); // Disable this input.
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/Enquiry/Add",
                         method: "POST",
@@ -1111,6 +1137,7 @@
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                            
                             datatable.ajax.reload(null, false);
+
                            
                             
                         }
@@ -1221,7 +1248,7 @@
 			    pp++;
                 j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td style='width: 28%;'><span class='add_more_icon prod_add_more'>New</span><select class='form-select ser_product_det' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pd_unit["+j+"]' class='form-control' required=''></td><td><input type='number' name='pd_quantity["+j+"]' class='form-control' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td style='width: 28%;'><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><span class='add_more_icon prod_add_more ri-add-box-fill'></span></td><td><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/
@@ -1390,6 +1417,7 @@
                 success:function(data)
                 {  
                     $('#enqid').val(data);
+                    $('.once_form_submit').attr('disabled', false); // Disable this input.
                 
                 }
 
@@ -1484,8 +1512,6 @@
                 {   
                     var data = JSON.parse(data);
 
-                    
-                    
                     $('.edit_reff').val(data.enquiry_reff);
 
                     $('.edit_date').val(data.enquiry_date);
@@ -1504,10 +1530,9 @@
 
                     $('.edit_enquiry_id').val(data.enquiry_id);
 
-                  
                     $('.edit_contact_detail').html(data.prod_details);
 
-                       $('#EditEnquiry').modal('show');
+                    $('#EditEnquiry').modal('show');
                    
                 
                 }
@@ -1999,10 +2024,10 @@
           /*add customer contact person section start*/
          
         $("body").on('click', '.contact_more_modal', function(){ 
+
+            
 	        
             var customer_id = $('#customer_id').val();
-
-           
 
             if(customer_id === null)
             {
@@ -2010,9 +2035,8 @@
                 alertify.success('Please Select Customer').delay(2).dismissOthers();
             
             }
-            else{
-
-               // $('#AddEnquiry').modal('hide');
+            else
+            {
 
                 $('#ContactDeatils2').modal('show');
 
@@ -2038,13 +2062,20 @@
 
           
             var pp =1;
-            
+
+            var rp =0;
             $('body .prod_row').each(function() {
                   
                 $(this).find('.si_no').html(pp);
+
+               $(this).find('.ser_product_det').attr("name", "pd_product_detail["+rp+"]");
+
+               $(this).find('.unit_clz').attr("name", "pd_unit["+rp+"]");
+
+               $(this).find('.qty_clz').attr("name", "pd_quantity["+rp+"]");
                   
                 
-                
+                rp++;
                 pp++;
 
                

@@ -59,6 +59,8 @@ abstract class BaseController extends Controller
 
     public $crm_modal;
 
+    public $pro_modal;
+
     public $session;
 
     public $data;
@@ -71,11 +73,15 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
 
+        $this->account_model = new \App\Models\AccountsModel();
+
         $this->report_model = new \App\Models\ReportModel();
 
         $this->common_model = new \App\Models\CommonModel();
 
         $this->crm_modal = new \App\Models\CrmReportModel();
+
+        $this->pro_modal = new \App\Models\ProcurementModel();
 
         $this->validation = \Config\Services::validation();
 

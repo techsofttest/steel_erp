@@ -49,7 +49,7 @@ class SalesQuotReport extends BaseController
         );
       
         $data['result'] = $this->common_model->ReportFetchLimit('crm_quotation_details','qd_customer','asc',$term,$start,$end,$joins,'qd_customer');
-    
+       
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
@@ -125,7 +125,8 @@ class SalesQuotReport extends BaseController
     {
        
         //Filter 
-
+       
+       
         if(!empty($_GET['form_date']))
         {
             $from_date = $_GET['form_date'];
@@ -134,6 +135,8 @@ class SalesQuotReport extends BaseController
         {
             $from_date = "";
         }
+        
+        
 
         if(!empty($_GET['to_date']))
         {
@@ -190,30 +193,73 @@ class SalesQuotReport extends BaseController
                 'fk'    => 'qd_sales_executive',
             ),
            
+           
 
         );
 
-        $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no');  
+
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+
+           
+        );
+
+        $data['quotation_data'] = $this->crm_modal->CheckData($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
         
-        if(!empty($_POST['pdf']))
+        if(!empty($from_date))
         {
-            $this->Pdf($data['quotation_data']);
+            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        }
+        else
+        {
+            $data['from_dates'] ="";
+        } 
+        
+
+        if(!empty($to_date))
+        {
+            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+        }
+        else
+        {
+            $data['to_dates'] = "";
         }
 
+       
+
+        if(!empty($_POST['pdf']))
+        {   
+            $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
+        }
+        
         if(!empty($_POST['excel']))
         {
             $this->Excel($data['quotation_data']);
         }
 
-        $data['content'] = view('crm/sales-quot_report',$data);
+        //$data['content'] = view('crm/sales-quot_report_search');
 
-        return view('crm/report-module',$data);
+       // return view('crm/report-module',$data);
+
+      // return view('crm/sales-quot_report_search',$data);
+
+       $data['content'] = view('crm/sales-quot_report',$data);
+
+       return view('crm/report-module-search',$data);
+
+      
         
     }
 
 
-    public function Pdf($quotation_data)
+    public function Pdf($quotation_data,$from_date,$to_date)
     {   
+        
+
         if(!empty($quotation_data))
         {   
             $pdf_data = "";
@@ -324,7 +370,37 @@ class SalesQuotReport extends BaseController
                
                 
             }
-            $mpdf = new \Mpdf\Mpdf();
+
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+            
+
+            $title = "SQR";
+
+            $mpdf = new \Mpdf\Mpdf(
+
+                [
+                    'format' => 'A3', // Set page size to A3
+                    'margin_left' => 15,
+                    'margin_right' => 15,
+                    'margin_top' => 16,
+                    'margin_bottom' => 16,
+                    'margin_header' => 9,
+                    'margin_footer' => 9,
+                ]
+            );
+
+         
+
+            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
 
             $html ='
         
@@ -377,7 +453,7 @@ class SalesQuotReport extends BaseController
             
         
             <tr width="100%">
-            <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
+            <td>Period : '.$dates.'</td>
             <td align="right"><h3>Sales Quotation Report</h3></td>
         
             </tr>
@@ -425,6 +501,7 @@ class SalesQuotReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                
             </tr>    
            
             
@@ -438,9 +515,10 @@ class SalesQuotReport extends BaseController
         
             
             $mpdf->WriteHTML($html);
+           
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output();
+            $mpdf->Output($title . '.pdf', 'I');
         
         }
 
@@ -560,36 +638,101 @@ class SalesQuotReport extends BaseController
             $sheet->setCellValue(++$column . $excel_row, $quot_data->cc_customer_name);
             $sheet->setCellValue(++$column . $excel_row, $quot_data->se_name);
             $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_sales_amount);
+
+            //$column++;
+            echo $column . $excel_row;
+
+            echo ++$column . ++$excel_row;
+
+
+            //$column++;
+            //echo $column;
+
+
             $j=1;
             $k =1; 
+            //$excel_row++;
+            //echo $excel_row;
+
+            foreach($product_details as $prod_del)
+            {   
+
+                if($j != 1) 
+                { 
+                //$column++;
+                }
+
+                $sheet->setCellValue($column . $excel_row, $prod_del->product_details);
+
+                $j++;
+
+            }
+
+            /*
             foreach($product_details as $prod_del)
             {   
                  
-                if($j == 1){ $col1 =  ++$column; $excel1 = $excel_row;}
-                else{$col1 = $column; $excel1 = ++$excel_row;}
+                if($j == 1) 
+                
+                { 
+                    $col1 = $column; $excel1 = $excel_row;
+                }
+
+                else{
+                    $col1 = ++$column; $excel1 = $excel_row;
+                }
+
+                echo $col1 . $excel1;
                
                 $sheet->setCellValue($col1 . $excel1, $prod_del->product_details);
 
-                if($k == 1){ $col2 =  ++$column; $excel2 = $excel_row;}
-                else{$col2 = $column; $excel2 = ++$excel_row;}
+                 $j++;
+            }
+
+            foreach($product_details as $prod_del)
+            {   
+
+                if($k == 1)
+
+                //if(1 == 2)
+                
+                { 
+                    
+                $col2 =  $column; $excel2 = $excel_row;
+                
+                }
+
+                else{
+                    $col2 = ++$column; $excel2 = $excel_row;
+                }
                
                 $sheet->setCellValue($col2 . $excel2, $prod_del->qpd_unit);
-                
+               
+                $k++;
 
-                $j++;
-                
+
             }
+
+            */
+
+            
 
 
             // Increase row height to add vertical space
-            $sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
+            //$sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
             
             //$sheet->getColumnDimension($column)->setWidth(20); // Change 20 to your desired width
             
             // Reset column index for the next row
             $column = 'A';
-            $excel_row++; // Move to the next row
+            //$excel_row++; // Move to the next row 
+
+            //echo "<br><br>";
         }
+
+
+
+        exit;
 
         // Instantiate the Xlsx writer
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);

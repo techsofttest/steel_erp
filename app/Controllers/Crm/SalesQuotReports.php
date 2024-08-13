@@ -139,8 +139,6 @@ class SalesQuotReports extends BaseController
 
         $product         = trim($this->request->getPost('product'));
 
-       
-
         $joins = array(
             
             array(
@@ -148,13 +146,7 @@ class SalesQuotReports extends BaseController
                 'pk'    => 'qpd_quotation_details',
                 'fk'    => 'qd_id ',
             ),
-           /* array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'qd_customer',
-            ),*/
-           
-
+         
         );
 
        

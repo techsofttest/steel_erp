@@ -16,7 +16,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesOrderReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" id="sales_order_report_form">
+                                <form method="GET" class="Dashboard-form class" action="<?php echo base_url();?>Crm/SalesOrderReport/GetData" id="add_form" target="_blank">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Sales Order Report</h5>
@@ -32,7 +32,60 @@
                                                             <div class="live-preview">
 
                                                               <!--table section start-->
+                                                                
+                                                                <?php
 
+                                                                    if(!empty($_GET['form_date']))
+                                                                    {
+                                                                        $from_date = $_GET['form_date'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $from_date = "";
+                                                                    }
+                                                                    if(!empty($_GET['to_date']))
+                                                                    {
+                                                                        $to_date = $_GET['to_date'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $to_date ="";
+                                                                    }
+                                                                    if(!empty($_GET['customer']))
+                                                                    {
+                                                                        $customer = $_GET['customer'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $customer = "";
+                                                                    }
+                                                                    if(!empty($_GET['sales_order']))
+                                                                    {
+                                                                        $sales_order = $_GET['sales_order'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $sales_order ="";
+                                                                    }
+                                                                    if(!empty($_GET['sales_executive']))
+                                                                    {
+                                                                        $sales_executive =  $_GET['sales_executive'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $sales_executive = "";
+                                                                    }
+
+                                                                    if(!empty($_GET['product']))
+                                                                    {
+                                                                            $product =  $_GET['product'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $product = "";
+                                                                    }
+                                                               
+                                                                ?>
 
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
@@ -40,9 +93,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control" required ></td>
+                                                                                <td><input type="date" name="form_date"  value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control" required ></td>
+                                                                                <td><input type="date" name="to_date" value='<?php echo $to_date; ?>' id="to_date_id" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -54,7 +107,7 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer value='<?php echo $customer;?>' customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -63,7 +116,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Order Ref</td>
-                                                                                <td><select class="form-select sales_order_ref sales_order" name=""><option value="" selected disabled>Select Order Ref</option></select></td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" value='<?php echo $sales_order;?>' name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -72,7 +125,7 @@
 
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
+                                                                                <td><select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -81,7 +134,7 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz" value='<?php echo $product; ?>' name="product"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -110,7 +163,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
                                         </div>
 
                                         
@@ -132,22 +185,93 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Order Reports</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <form method="POST"  target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="email_button report_button" type="submit">Email</button>
+                                        </form>
+                                        
+                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
                                                     <th>Date</th>
-                                                    <th>Action</th>
-                                                    
+                                                    <th>Sales Order Ref</th>
+                                                    <th>Customer</th>
+                                                    <th>LPO Ref</th>
+                                                    <th>Sales Executive</th>
+                                                    <th>Amount</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
-                                            <tbody class="tbody_data"></tbody>
+                                            <tbody class="tbody_data">
+                                            <?php
+                                                if(!empty($sales_orders))
+                                                {
+                                                    $i=1;
+                                                    foreach($sales_orders as $sales_order){
+                                                         
+                                                    ?> 
+                                                    
+                                                    <tr>
+                                                        <td><?php echo $i;?></td>
+                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
+                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <td><?php echo $sales_order->so_amount_total;?></td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->product_details;?><br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->spd_quantity;?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->spd_rate;?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->spd_amount;?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        
+                                                       
+                                                    </tr>
+                                                
+                                                <?php $i++; }  } ?>
+                                            </tbody>
 
                                         </table>
                 
@@ -191,11 +315,13 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
 
         /*modal open start*/
-
-        $(window).on('load', function() {
-            $('#SalesOrderReport').modal('show');
-        });
+        <?php if(empty($_GET)): ?>
         
+            $(window).on('load', function() {
+            $('#SalesOrderReport').modal('show');
+
+        });
+        <?php endif; ?>
         
         /*modal open end*/
 
@@ -268,60 +394,31 @@
         
         /*####*/
 
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_order_report_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
 
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesOrderReport/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
 
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
+       /*form submit start*/
 
-                            $("#SalesOrderReport").modal('hide');
+       $(".submit_btn").on('click', function(){ 
 
-                            $('#sales_order_report_form')[0].reset();
+            /*$('#SalesOrderReport').modal("hide");
 
-                            $('.customer_clz').val('').trigger('change');
+            $('#add_form')[0].reset();
 
-                            $('.executive_clz').val('').trigger('change');
+            $('.customer_clz option').remove();
 
-                            $('.product_clz').val('').trigger('change');
+            $('.sales_order option').remove();
 
-                            datatable.ajax.reload(null, false);
+            $('.executive_clz option').remove();
 
-                            
-                        
-                        }
-                    });
-                }
-            });
+            $('.product_clz option').remove();*/
+
+
         });
 
-        /*####*/
+        /*#####*/
 
+       
 
-        
 
 
     });

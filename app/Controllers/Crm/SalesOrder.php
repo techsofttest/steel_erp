@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'CRM/SalesOrder/Print/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'CRM/SalesOrder/Pdf/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
              
             if(!empty($record->so_edit_reff_no))
             {
@@ -77,7 +77,7 @@ class SalesOrder extends BaseController
            $data[] = array( 
               "so_id"            =>$i,
               'so_reffer_no'      => $reffer_num,
-              'so_date'          => date('d-m-Y',strtotime($record->so_date)),
+              'so_date'          => date('d-M-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
               'so_quotation_ref' => $record->qd_reffer_no,
               "action"           => $action,
@@ -169,6 +169,8 @@ class SalesOrder extends BaseController
     // add account head
     Public function Add()
     {   
+        $return['print'] = "";
+
         if(!empty($this->request->getPost('so_quotation_ref')))
         {
             $quotation_ref = $this->request->getPost('so_quotation_ref');
@@ -239,6 +241,7 @@ class SalesOrder extends BaseController
                     {
                         $quot_prod_id = 0;
                     }
+
                     $prod_data  	= array(  
                         
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
@@ -264,8 +267,8 @@ class SalesOrder extends BaseController
                         $product_detail = $this->common_model->FetchWhere('crm_quotation_product_details',array('qpd_quotation_details' => $_POST['quotation_id'][$j]));
                         
                         $product_details = $this->common_model->CheckTwiceCond1('crm_quotation_product_details',array('qpd_quotation_details' => $_POST['quotation_id'][$j]),array('qpd_status'=>1));
+                       
                         
-
                         if(count($product_detail) == count($product_details))
                         {
                             $updated_data2 = array('qd_status'=>1);
@@ -275,11 +278,22 @@ class SalesOrder extends BaseController
                         }
 
                     }
+
+
+                    if(!empty($_POST['print_btn']))
+                    {
+                       
+                        $return['print'] =  base_url() . 'Crm/SalesOrder/Pdf/' . urlencode($sales_order_id);
+
+                    }
+                    
+                   
             
                 } 
             }
         }
-
+        
+         echo json_encode($return);
         /*####*/
 
     }
@@ -389,7 +403,7 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
             <td class="si_no2">'.$i.'</td>
-            <td style="width:20%">
+            <td style="width:40%">
                 <select class="form-select droup_product add_prod" name="spd_product_details['.$si.']" required>';
                     
                     foreach($products as $prod){
@@ -541,11 +555,11 @@ class SalesOrder extends BaseController
     {   
         $cond = array('so_id' => $this->request->getPost('so_id'));
 
-        $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
+        /*$sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
         
         $sales_flag = ++$sales_order->so_edit_flag;
         
-        $output = $this->request->getPost('so_reffer_no') . "-REV-" ."0". $sales_flag;
+        $output = $this->request->getPost('so_reffer_no') . "-REV-" ."0". $sales_flag;*/
 
 
        $update_data = [
@@ -568,32 +582,32 @@ class SalesOrder extends BaseController
 
         'so_project'                => $this->request->getPost('so_project'),
 
-        'so_edit_flag'              => $sales_flag,
+        //'so_edit_flag'              => $sales_flag,
 
-        'so_edit_reff_no'           => $output,
+        //'so_edit_reff_no'           => $output,
 
         
         ];
 
-        // Handle file upload
-        if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
-            
-            
-            if($this->request->getFile('so_file') != '' ){ 
-            
-                $previousImagePath = 'uploads/SalesOrder/' .$sales_order->so_file;
-            
-                if (file_exists($previousImagePath)) {
-                    unlink($previousImagePath);
+            // Handle file upload
+            if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
+                
+                
+                if($this->request->getFile('so_file') != '' ){ 
+                
+                    $previousImagePath = 'uploads/SalesOrder/' .$sales_order->so_file;
+                
+                    if (file_exists($previousImagePath)) {
+                        unlink($previousImagePath);
+                    }
                 }
-            }
+                
+                // Upload the new image
+                $AttachFileName = $this->uploadFile('so_file', 'uploads/SalesOrder');
             
-            // Upload the new image
-            $AttachFileName = $this->uploadFile('so_file', 'uploads/SalesOrder');
-        
-            // Update the data with the new image filename
-            $update_data['so_file'] = $AttachFileName;
-        }
+                // Update the data with the new image filename
+                $update_data['so_file'] = $AttachFileName;
+            }
 
         $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
        
@@ -837,7 +851,7 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove edit_product_row" id="'.$prod_det->spd_id.'">
             <td class="delete_sino">'.$i.'</td>
-            <td style="width:20%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+            <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
             <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->spd_quantity.'" class="form-control"  readonly></td>
             <td> <input type="text" value="'.$prod_det->spd_rate.'"  class="form-control" readonly></td>
@@ -946,12 +960,13 @@ class SalesOrder extends BaseController
 
         $data['payment_term']   = $sales_order->so_payment_term;
 
-        $data['delivery_term']  = $sales_order->so_delivery_term;
+        $data['delivery_term']  = date('d-M-Y',strtotime($sales_order->so_delivery_term));
 
         $data['project']        = $sales_order->so_project;
 
         $data['file_name']      = $sales_order->so_file;
-
+        
+        $data['total_amount']      = $sales_order->so_amount_total;
         
         $data['file_attach'] = '<a href="' . base_url('uploads/SalesOrder/' . $sales_order->so_file) . '" target="_blank">View</a>';  
 
@@ -982,7 +997,7 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
             <td class="si_no2">'.$i.'</td>
-            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control " readonly></td>
             <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id"  readonly></td>
             <td> <input type="text" name="spd_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" readonly></td>
@@ -1156,7 +1171,7 @@ class SalesOrder extends BaseController
             $data['prod_details'] .='<tr class="edit_prod_row">
             <td>1</td>
            
-            <td><select class="form-select droup_product" name="spd_product_details	" required>';
+            <td style="width:34%"><select class="form-select droup_product" name="spd_product_details	" required>';
                     
                 foreach($products as $prod){
                     $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
@@ -1243,6 +1258,8 @@ class SalesOrder extends BaseController
         $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
 
         $this->common_model->DeleteData('crm_sales_product_details',$cond);
+        
+        $this->common_model->EditData(array('qpd_status' => 0),array('qpd_id' => $prod_det->spd_quot_prod_id),'crm_quotation_product_details');
 
         $product_cond = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order'=>$prod_det->spd_sales_order));
         
@@ -1340,56 +1357,75 @@ class SalesOrder extends BaseController
         echo json_encode($data);
     }
 
-    public function Print($id){
+    public function Pdf($id)
+    {   
+        if(!empty($id))
+        {   
+            
 
-        $cond= array('so_id' => $id);
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'spd_product_details',
+                ),
+               
+                
+            );
 
-        $joins = array(
-           
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'so_customer',
-            ),
-           
-        );
-        
-        $sales_order = $this->common_model->SingleRowJoin('crm_sales_orders',$cond,$joins);
+            $product_details = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$id),$joins1);
+                
+            
+            $pdf_data = "";
 
-        if(!empty($sales_order)){
-
-            $sales_order->so_id;
-
-            $cond1 = array('spd_sales_order' => $sales_order->so_id);
-
-            $product_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
-
-            $i =1;
             foreach($product_details as $prod_det)
             {
-                $item_no = "{$sales_order->so_order_no}"; 
+                $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
 
-                $si = "{$i}";
+                $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                $prod_desc = "{$prod_det->spd_product_details}";
+                $pdf_data .= '<td align="left">'.$prod_det->spd_quantity.'</td>';
 
-                $prod_qty = "{$prod_det->spd_quantity}";
+                $pdf_data .= '<td align="left">'.$prod_det->spd_unit.'</td>';
 
-                $prod_unit = "{$prod_det->spd_unit}";
+                $pdf_data .= '<td align="left">'.$prod_det->spd_rate.'</td>';
 
-                $prod_rate = "{$prod_det->spd_rate}";
+                $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->spd_discount.'</td>';
 
-                $prod_discount = "{$prod_det->spd_discount}";
-
-                $prod_amount = "{$prod_det->spd_amount}";
-
-            
+                $pdf_data .= '<td align="left">'.$prod_det->spd_amount.'</td></tr>';
             }
-            $i++;
+
+            $join =  array(
+                
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'so_customer',
+                ),
+
+                array(
+                    'table' => 'crm_quotation_details',
+                    'pk'    => 'qd_id',
+                    'fk'    => 'so_quotation_ref',
+                ),
+
+               
+            );
+            
+
+            $sales_order = $this->common_model->SingleRowJoin('crm_sales_orders',array('so_id'=>$id),$join);
+            
+            $date = date('d-M-Y',strtotime($sales_order->so_date));
+
+            $delivery_date = date('d-M-Y',strtotime($sales_order->so_delivery_term));
+
+            $title = 'SO - '.$sales_order->so_reffer_no;
+
             $mpdf = new \Mpdf\Mpdf();
 
-        
-        
+            $mpdf->SetTitle($title); // Set the title
+
             $html ='
         
             <style>
@@ -1416,171 +1452,159 @@ class SalesOrder extends BaseController
             
             </style>
         
+           
             <table>
-            
-            <tr>
-            
-            <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
         
-            <td>
+                <tr>
+                    
+                    <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
         
-            <h2>Al Fuzail Engineering Services WLL</h2>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-            
-            
-            </td>
-            
-            </tr>
+                    <td>
+                
+                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    
+                    
+                    </td>
+                
+                </tr>
         
             </table>
-        
         
         
             <table width="100%" style="margin-top:10px;">
             
         
             <tr width="100%">
-            <td>Date:31-Jul-2016</td>
-            <td>Sales Order No.:03562</td>
-            <td align="right"><h3>Sales Order</h3></td>
+            <td>Date : '.$date.'</td>
+            <td>Sales Order No : '.$sales_order->so_reffer_no.'</td>
+            <td align="right"><h2>Sales Order</h2></td>
         
             </tr>
         
             </table>
-        
-        
-            <table  width="100%" style="margin-top:2px;border-top:2px solid;border-bottom:2px solid;">
-        
+
+        <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+    
             <tr>
             
-            <td > </td>
-            
-            <td >'.$sales_order->cc_customer_name.'</td>
-            
-            </tr>
-        
-        
-            <tr>
-            
-            <td >Customer</td>
-            
+                <td > </td>
                 
-            <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+                <td >'.$sales_order->cc_customer_name.'</td>
             
             </tr>
+    
+    
+        <tr>
         
+        <td>Customer</td>
         
-            <tr>
             
-            <td ></td>
-            
-            <td >Post Box : -, Doha - '.$sales_order->cc_post_box.'</td>
-            
-            </tr>
+        <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
         
+        </tr>
+    
+    
+        <tr>
         
-            <tr>
-            
-            <td >Attention</td>
-            
-            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
-            
-            </tr>
+        <td ></td>
         
+        <td >Post Box : -, Doha - '.$sales_order->cc_post_box.'</td>
         
-            </table>
+        </tr>
+    
+    
+        <tr>
         
+        <td >Attention</td>
         
+        <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
         
-        
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
-            
-        
-            <tr>
-            
-            <th align="left" style="border-bottom: 2px solid;">Item No.</th>
-        
-            <th align="left" style="border-bottom: 2px solid;">Description</th>
-        
-            <th align="left" style="border-bottom: 2px solid;">Qty</th>
-        
-            <th align="left" style="border-bottom: 2px solid;">Unit</th>
-        
-            <th align="left" style="border-bottom: 2px solid;">Rate</th>
+        </tr>
+    
+    
+        </table>
 
-            <th align="left" style="border-bottom: 2px solid;">Disc %</th>
-
-            <th align="left" style="border-bottom: 2px solid;">Amount</th>
+           
         
-            
-            </tr>
-
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
             
         
             <tr>
             
-            <td>'.$si.'-'.$item_no.'</td>
-        
-            <td>'.$prod_desc.'</td>
-        
-            <td>'.$prod_qty.'</td>
-        
-            <td>'.$prod_unit.'</td>
-        
-            <td>'.$prod_rate.'</td>
-        
-            <td>'.$prod_discount.'</td>
-
-            <td>'.$prod_amount.'</td>
+                <th align="left" style="border-bottom:2px solid;">Item No</th>
             
-            </tr>
-
+                <th align="left" style="border-bottom:2px solid;">Description</th>
             
-            </table>
-        
-            ';
-        
-            $footer = '
-        
-            <table style="border-bottom:1px solid">
+                <th align="left" style="border-bottom:2px solid;">Qty</th>
             
-            <tr>
+                <th align="left" style="border-bottom:2px solid;">Unit</th>
             
-            <td>Promised Date</td>
-        
-            <td>15-Aug-2016</td>
-
-            <td>Gross Total</td>
-
-            <td>2,445.00</td>
-        
-            </tr>
-
-            <tr>
-
-            <td>Promised Date</td>
-        
-            <td></td>
-
-            <td>Less. Special Discount</td>
-
-            <td>122.25</td>
+                <th align="left" style="border-bottom:2px solid;">Rate</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Disc%</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Amount</th>
+    
             
             </tr>
 
 
-            <tr>
+            '.$pdf_data.'
 
-            <td>Amount in words</td>
-        
-            <td>Two thousand three hundred twenty two & seventy five Dirhams onl</td>
-
-            <td>Net Quote Value</td>
-
-            <td>2,322.75</td>
+             
             
-            </tr>
+        </table>';
+        
+        $footer = '
+    
+            <table style="border-bottom:2px solid">
+            
+                <tr>
+                    <td>Promised Date</td>
+
+                    <td>'.$delivery_date.'</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td>Gross Total</td>
+        
+                    <td>'.$sales_order->so_amount_total.'</td>
+            
+                </tr>
+
+                <tr>
+    
+                    <td>Notes</td>
+                
+                    <td></td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td>Less. Special Discount</td>
+        
+                    <td>-------</td>
+                
+                </tr>
+
+
+                
+
+
+                <tr>
+    
+                    <td>Amount in words</td>
+                
+                    <td>----------------------------------</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td style="font-weight: bold;">Net Invoice Value</td>
+        
+                    <td>-----</td>
+                
+                </tr>
 
             </table>
 
@@ -1594,7 +1618,9 @@ class SalesOrder extends BaseController
 
                 <td style="width:20%">Verbal</td>
 
-                <td style="width:20%">Payment:</td>
+                <td style="width:10%"></td>
+
+                <td style="width:10%">Payment:</td>
 
                 <td style="width:20%">Cash on delivery</td>
                 
@@ -1605,9 +1631,11 @@ class SalesOrder extends BaseController
 
                 <td style="width:20%">Quote Reference</td>
 
-                <td style="width:20%">02462</td>
+                <td style="width:20%">'.$sales_order->qd_reffer_no.'</td>
 
-                <td style="width:20%">Delivery</td>
+                <td style="width:10%"></td>
+
+                <td style="width:10%">Delivery</td>
 
                 <td style="width:20%">Ex-works</td>
 
@@ -1616,63 +1644,29 @@ class SalesOrder extends BaseController
             </table>
 
 
-            <table style="border-top:1px solid">
+            <table style="border-top:2px solid;">
 
             <tr>
             
-                <td>Antony Raphel - Production In-charge</td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-                
-                <td></td>
-
-                <td></td>
-
-            
-
-            
-                <td>Justin Jose - Operations Manager</td>
+               <td>Antony Raphel - Production In-charge</td>
+               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td>Justin Jose - Operations Manager</td>
+              
 
             </tr>
 
 
             <tr>
-
+            
                 <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
-
-            
-
-                
-
+                <td></td><td></td><td></td><td></td><td></td><td></td>
                 <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
-            
+           
+
             </tr>
+
+
+            
             
             
             </table>
@@ -1685,14 +1679,13 @@ class SalesOrder extends BaseController
             $mpdf->WriteHTML($html);
             $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output();
-
+            $mpdf->Output($title . '.pdf', 'I');
+        
         }
 
-
-    
+       
     }
-    
+
 
 
 }

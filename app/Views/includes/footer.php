@@ -82,7 +82,7 @@
     <script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
 
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-   
+
 
     <script>
 
@@ -157,6 +157,48 @@
         }
 
 
+        $('#filter_range').change(function(){
+
+        var val = $(this).val();
+
+        if(val !="Range")
+        {
+        $('.datepicker').attr('disabled',true);
+
+        if(val=="Month")
+            {
+                var date = new Date();
+                var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+                $('input[name=start_date]').val(FormatDate(firstDay));
+                $('input[name=end_date]').val(FormatDate(lastDay));
+
+            }
+
+        if(val=="Year")
+        {
+            var date = new Date();
+            var firstDay = new Date(date.getFullYear(), 0, 1); // First day of current year
+            var lastDay = new Date(date.getFullYear(), 11, 31);
+
+            $('input[name=start_date]').val(FormatDate(firstDay));
+            $('input[name=end_date]').val(FormatDate(lastDay));
+
+        }
+
+        if(val=="Range")
+        {
+            $('input[name=start_date]').val('');
+            $('input[name=end_date]').val('');
+        }
+
+        }
+
+
+        });
+
+
     </script>
 
 
@@ -182,12 +224,12 @@
     
     <?php if($type=="success") { ?>
 
-    alertify.success('<?php echo $msg; ?>').delay(8).dismissOthers();
+    alertify.success('<?php echo $msg; ?>').delay(5).dismissOthers();
 
     <?php } ?>
 
     <?php if($type=="error") { ?>
-    alertify.error('<?php echo $msg; ?>').delay(8).dismissOthers();
+    alertify.error('<?php echo $msg; ?>').delay(5).dismissOthers();
     <?php } ?>
 
 
@@ -196,6 +238,189 @@
     </script>
 
 
+
     <?php } ?>
 
     <!-- ### -->
+
+
+
+
+
+   <script>
+    
+        $(document).ready(function() {
+
+            parent = $('#AddModal');
+            const $inputs = parent.find('input,select, button,.select2-hidden-accessible');
+            const $form = $('#add_form');
+
+            //console.log($inputs);
+
+            /*
+            $inputs.on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+
+                    const $currentInput = $(this);
+
+                    if ($currentInput.is('[type="submit"]')) {
+                        $form.submit();
+                    } else {
+                        const currentIndex = $inputs.index($currentInput);
+                        const $nextInput = $inputs.eq(currentIndex + 1);
+                        if ($nextInput.length) {
+                            $nextInput.focus();
+                            if($nextInput.prop('nodeName')=="SELECT")
+                            {
+                            $nextInput.attr('size',6);
+                            }
+                        }
+                    }
+                    
+                }
+            });
+            */
+
+            
+
+            $inputs.on('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+
+        const $currentInput = $(this);
+
+        if ($currentInput.is('[type="submit"]')) {
+            $form.submit();
+        } else {
+            let currentIndex = $inputs.index($currentInput);
+            let $nextInput;
+
+            do {
+                currentIndex = (currentIndex + 1) % $inputs.length; // wrap around to the start
+                $nextInput = $inputs.eq(currentIndex);
+            } while ($nextInput.is(':disabled') || $nextInput.prop('readonly'));
+
+            $nextInput.focus();
+
+            // if ($nextInput.prop('nodeName') === "SELECT") {
+            //     $nextInput.attr('size', 6);
+            // }
+        }
+    }
+});
+
+
+
+            
+
+
+            $('select').on('focus', function() {
+                $(this).click();
+            });
+
+
+
+            $(document).on('keypress',function(e) {
+            if(e.which == 43) {
+                //e.preventDefault();
+               $('.add_more').trigger('click');
+            }
+            });
+
+
+
+            $(document).on("select2:open", () => {
+            document.querySelector(".select2-container--open .select2-search__field").focus()
+            })
+
+
+            /*
+            $('.select2-hidden-accessible').on("select2:selecting", function(e) { 
+            // what you would like to happen
+
+            const $currentInput = $(this);
+
+            let currentIndex = $inputs.index($currentInput);
+            let $nextInput;
+
+            //$(this).select2('close');
+
+            currentIndex = (currentIndex + 1) % $inputs.length; // wrap around to the start
+            $nextInput = $inputs.eq(currentIndex);
+
+            //alert($nextInput.attr("name"));
+
+            $nextInput.focus();
+
+            //e.preventDefault();
+
+           
+            });
+            */
+
+            $('.debit_account_select2').on('select2:select', function(e) {
+
+            $('#receipt_no').focus();
+
+            });
+
+
+            $('.credit_account_select2').on('select2:select', function(e) {
+
+            parent = $(this).closest('.invoice_row');
+
+            nextelem = parent.find('.credit_amount');
+
+            nextelem.focus();
+
+            }); 
+
+        });
+
+
+        
+        document.addEventListener("DOMContentLoaded", function(event) { 
+
+            function isDataTableRequest(ajaxSettings) {
+            // Check for DataTables-specific URL or any other pattern
+            return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+            }
+
+            function isSelect2Request(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+            }
+
+            
+            function isSelect2Search(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+            }
+
+
+            $(document).ajaxSend(function(event, jqXHR, ajaxSettings){
+                if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings)) ) {
+                $("#overlay").fadeIn(300);
+                }
+            });
+
+            
+            $(document).ajaxComplete(function(event, jqXHR, ajaxSettings){
+                if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings))  && (!isSelect2Search(ajaxSettings)) ) {
+                $("#overlay").fadeOut(300);
+                }
+            });
+
+
+            
+            $(document).ajaxError(function(){
+                alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+            });
+            
+
+        });
+
+        
+   
+    </script>

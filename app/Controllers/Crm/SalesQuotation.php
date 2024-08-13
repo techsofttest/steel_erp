@@ -65,7 +65,10 @@ class SalesQuotation extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$record->qd_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+
+            ';
            
             if(!empty($record->qd_edit_quot_reff))
             {
@@ -81,7 +84,7 @@ class SalesQuotation extends BaseController
            $data[] = array( 
               "qd_id"               =>$i,
               'qd_reffer_no'        => $reffer_num,
-              'qd_date'             => date('d-m-Y',strtotime($record->qd_date)),
+              'qd_date'             => date('d-M-Y',strtotime($record->qd_date)),
               'qd_customer'         => $record->cc_customer_name,
               'qd_enquiry'          => $record->enquiry_reff,
               "action"              => $action,
@@ -366,10 +369,15 @@ class SalesQuotation extends BaseController
 
         $data['project'] = $quotation_details->qd_project;
 
+        $data['quot_id'] = $quotation_details->qd_id;
+
+
+        $data['print_pdf_btn'] = '<a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$quotation_details->qd_id.'" class="btn btn btn-success print_pdf_btn" target="_blank">Print</a>';
+
 
         $cond2 = array('qpd_quotation_details'=>$quotation);
 
-        $joins2 = array(
+        /*$joins2 = array(
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
@@ -379,7 +387,19 @@ class SalesQuotation extends BaseController
 
         );
 
-        $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond2);
+        $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond2);*/
+
+
+        $joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+        );
+
+        $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond2,$joins1);
+        
 
         
         $data['view_product'] = "";
@@ -392,6 +412,7 @@ class SalesQuotation extends BaseController
 
             $data['view_product'] .=  '<tr>
                 <td style="width: 10%;">'.$i.'</td>
+                <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
                 <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
                 <td><input type="number" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
                 <td><input type="number"  value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
@@ -400,9 +421,46 @@ class SalesQuotation extends BaseController
                 
             </tr>';
             $i++;
+
+
+            //cost calculation start
+
+            $joins2 = array(
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'qc_material',
+                ),
+               
+            );
+    
+            
+            $cost_calculation_data = $this->common_model->FetchWhereJoin('crm_quotation_cost_calculation',array('qc_quotation_id' => $quotation),$joins2);
+            
+            $j=1;
+
+            $data['cost_details'] = "";
+
+            foreach($cost_calculation_data as $cost_cal_data)
+            {
+
+                $data['cost_details'] .='<tr>
+                <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
+                <td colspan="2"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
+                <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control" readonly></td>
+                </tr>'; 
+
+                $j++;
+             
+            }
+
+            //cost calculation end            
         }
 
-
+        
         
   
         echo json_encode($data);
@@ -560,7 +618,7 @@ class SalesQuotation extends BaseController
         {
             $data['cost_details'] .='<tr>
             <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
+            <td colspan="2"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control" readonly></td>
@@ -574,6 +632,8 @@ class SalesQuotation extends BaseController
         $data['prod_details'] ="";
 
         $j=1;
+
+        
 
         foreach($product_details_data as $prod_det)
         {
@@ -836,7 +896,7 @@ class SalesQuotation extends BaseController
 
             $data['product_detail'] .=  '<tr class="prod_row enq_remove quot_row_leng" id="'.$prod_det->pd_id.'">
                 <td style="width: 10%;" class="si_no">'.$i.'</td>
-                <td style="width:20%">
+                <td style="width:40%">
                     <select class="form-select droup_product add_prod" name="qpd_product_description['.$k.']" required>';
                     
                         foreach($products as $prod){
@@ -1037,7 +1097,7 @@ class SalesQuotation extends BaseController
         {
             $data['prod_details'] .='<tr class="edit_add_prod_row">
             <td class="edit_add_prod_si_no"><input type="text"  value="'.$i.'" class="form-control" readonly></td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
@@ -1075,7 +1135,7 @@ class SalesQuotation extends BaseController
         {
             $data['cost_prod_det'] .='<tr class="edt_cost_row">
             <td class="edit_cost_si_no">'.$j.'</td>
-            <td><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_unit.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_qty.'" class="form-control" readonly></td>
             <td><a href="javascript:void(0)">click</a></td>
@@ -1311,29 +1371,46 @@ class SalesQuotation extends BaseController
         $cond = array('qc_id' => $this->request->getPost('ID'));
 
         $single_cost_cal = $this->common_model->SingleRow('crm_quotation_cost_calculation',$cond);
- 
-        $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond);
 
-        $cond2 = array('qc_quotation_id'=>$single_cost_cal->qc_quotation_id);
+        $count = $this->common_model->FetchWhereCount('crm_quotation_cost_calculation',array('qc_quotation_id' => $single_cost_cal->qc_quotation_id));
 
-        $cost_calculation = $this->common_model->FetchWhere('crm_quotation_cost_calculation',$cond2);
-
-        $old_amount = 0;
-
-        foreach($cost_calculation as $cost_cal)
+        if($count > 1)
         {
-            $old_amount =  $old_amount + $cost_cal->qc_amount;
+
+            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond);
+
+            $cond2 = array('qc_quotation_id'=>$single_cost_cal->qc_quotation_id);
+
+            $cost_calculation = $this->common_model->FetchWhere('crm_quotation_cost_calculation',$cond2);
+
+            $old_amount = 0;
+
+            foreach($cost_calculation as $cost_cal)
+            {
+                $old_amount =  $old_amount + $cost_cal->qc_amount;
+            }
+        
+            $quotation_update = array('qd_cost_amount' => $old_amount);
+
+            $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
+
+            $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
+
+            $data['quot_id']  =  $single_cost_cal->qc_quotation_id;
+        
+            $this->UpdatePercentage($single_cost_cal->qc_quotation_id);
+
+            $data['status'] ="true";
+
         }
-       
-        $quotation_update = array('qd_cost_amount' => $old_amount);
+        else
+        {
+            $data['status'] ="false";
+        }
 
-        $cond3 = array('qd_id'=>$single_cost_cal->qc_quotation_id);
+       echo json_encode($data); 
 
-        $this->common_model->EditData($quotation_update,$cond3,'crm_quotation_details');
-
-        $data['quot_id']  =  $single_cost_cal->qc_quotation_id;
-       
-        $this->UpdatePercentage($single_cost_cal->qc_quotation_id);
+     
 
     }
 
@@ -1353,7 +1430,7 @@ class SalesQuotation extends BaseController
             $data['prod_details'] .='<tr class="edit_prod_row">
             <td>1</td>
            
-            <td><select class="form-select droup_product" name="qpd_product_description" required>';
+            <td style="width:34%"><select class="form-select droup_product" name="qpd_product_description" required>';
                     
                 foreach($products as $prod){
                     $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
@@ -1460,6 +1537,59 @@ class SalesQuotation extends BaseController
 
     }
 
+
+    public function DeleteProdDet()
+    {
+        $cond = array('qpd_id' => $this->request->getPost('ID'));
+
+        $single_prod  = $this->common_model->SingleRow('crm_quotation_product_details',$cond);
+
+        $quot_prod = $single_prod->qpd_quotation_details;
+
+        $count = $this->common_model->FetchWhereCount('crm_quotation_product_details',array('qpd_quotation_details' => $quot_prod));
+       
+        if($count >1){
+
+            $this->common_model->DeleteData('crm_quotation_product_details',$cond);
+
+            $this->common_model->EditData(array('pd_status' => 0),array('pd_id' => $single_prod->qpd_enq_prod_id),'crm_product_detail');
+
+            $cond3 = array('qpd_quotation_details' => $quot_prod);
+
+            $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond3);
+
+            $old_amount = 0;
+
+            foreach($product_details as $prod_det)
+            {
+                $old_amount =  $old_amount + $prod_det->qpd_amount;
+            }
+        
+            $quotation_update = array('qd_sales_amount' => $old_amount);
+
+            $cond4 = array('qd_id'=>$quot_prod);
+
+            $this->common_model->EditData($quotation_update,$cond4,'crm_quotation_details');
+
+            $data['quotation_id']  =  $quot_prod;
+
+            $this->UpdatePercentage($quot_prod);
+
+            $data['status'] = "true";
+
+        }
+        else
+        {
+            $data['status'] = "false";
+        }
+
+        echo json_encode($data); 
+
+       
+
+    }
+
+
     public function UpdatePercentage($quot_id)
     {
        $cond = array('qd_id' => $quot_id);
@@ -1473,7 +1603,7 @@ class SalesQuotation extends BaseController
        $result = $cost_amount / $sales_amount;
 
        $percentage = $result * 100;
-       
+            
        $percentage = number_format((float)$percentage, 2, '.', '');  // Outputs -> 105.00
 
        $data = array('qd_percentage' => $percentage);
@@ -1482,43 +1612,13 @@ class SalesQuotation extends BaseController
 
        $this->common_model->EditData($data,$cond2,'crm_quotation_details');
 
-
-    }
-
-
-    public function DeleteProdDet()
-    {
-        $cond = array('qpd_id' => $this->request->getPost('ID'));
-
-        $single_prod  = $this->common_model->SingleRow('crm_quotation_product_details',$cond);
-
-        $this->common_model->DeleteData('crm_quotation_product_details',$cond);
-
-        $cond3 = array('qpd_quotation_details' => $single_prod->qpd_quotation_details);
-
-        $product_details = $this->common_model->FetchWhere('crm_quotation_product_details',$cond3);
-
-        $old_amount = 0;
-
-        foreach($product_details as $prod_det)
-        {
-            $old_amount =  $old_amount + $prod_det->qpd_amount;
-        }
        
         
-        $quotation_update = array('qd_sales_amount' => $old_amount);
-
-        $cond4 = array('qd_id'=>$single_prod->qpd_quotation_details);
-
-        $this->common_model->EditData($quotation_update,$cond4,'crm_quotation_details');
-
-        $data['quotation_id']  =  $single_prod->qpd_quotation_details;
-
-        $this->UpdatePercentage($single_prod->qpd_quotation_details);
-
-       
 
     }
+
+
+
 
 
     /*public function UpdateTab()
@@ -1574,6 +1674,9 @@ class SalesQuotation extends BaseController
         echo json_encode($data); 
 
     }*/
+
+    
+
 
 
     public function UpdateTab()
@@ -1637,194 +1740,324 @@ class SalesQuotation extends BaseController
 	}
 
 
-
-    public function Print($id){
-
-        $mpdf = new \Mpdf\Mpdf();
-
-        
-        $cond = array('qd_id' => $id);
-
-        
-        $joins = array(
+    public function Pdf($id)
+    {    
+        if(!empty($id))
+        {   
             
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'qd_customer',
-            ),
-            array(
-                'table' => 'executives_sales_executive',
-                'pk'    => 'se_id',
-                'fk'    => 'qd_sales_executive',
-            ),
+
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'qpd_product_description',
+                ),
+               
+                
+            );
+
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$id),$joins1);
+                
+            
+            $pdf_data = "";
+
+            foreach($product_details as $prod_det)
+            {
+                $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->qpd_quantity.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->qpd_unit.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->qpd_rate.'</td>';
+
+                $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->qpd_discount.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->qpd_amount.'</td></tr>';
+            }
+
+            $join =  array(
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'qd_customer',
+                ),
+
+                /*array(
+                    'table' => 'crm_sales_orders',
+                    'pk'    => 'so_id',
+                    'fk'    => 'ci_sales_order',
+                ),*/
+            );
+            
+
+            $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',array('qd_id'=>$id),$join);
+            
+            $date = date('d-M-Y',strtotime($quotation_details->qd_date));
+
+            $title = 'SQ- '.$quotation_details->qd_reffer_no;
+
+            $mpdf = new \Mpdf\Mpdf();
+
+            $mpdf->SetTitle($title); // Set the title
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
            
-            
-        );
-
-        $quotation = $this->common_model->SingleRowJoin('crm_quotation_details',$cond,$joins);
+            <table>
         
-        $cond1 = array('qpd_quotation_details' => $quotation->qd_id);
-
-        $joins1 = array(
+                <tr>
+                    
+                    <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
+        
+                    <td>
+                
+                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    
+                    
+                    </td>
+                
+                </tr>
+        
+            </table>
+        
+        
+            <table width="100%" style="margin-top:10px;">
             
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'qpd_product_description',
-            ),
+        
+            <tr width="100%">
+            <td>Date : '.$date.'</td>
+            <td>Quote No : '.$quotation_details->qd_reffer_no.'</td>
+            <td align="right"><h2>Sales Quotation</h2></td>
+        
+            </tr>
+        
+            </table>
+
+        <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+    
+            <tr>
+            
+                <td > </td>
+                
+                <td >'.$quotation_details->cc_customer_name.'</td>
+            
+            </tr>
+    
+    
+        <tr>
+        
+        <td>Customer</td>
+        
+            
+        <td >Tel : '.$quotation_details->cc_telephone.', Fax : '.$quotation_details->cc_fax.', Email : '.$quotation_details->cc_email.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td ></td>
+        
+        <td >Post Box : -, Doha - '.$quotation_details->cc_post_box.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td >Attention</td>
+        
+        <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+        
+        </tr>
+    
+    
+        </table>
+
            
+        
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
             
-        );
-
-        $quotation_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);
         
-        
+            <tr>
+            
+                <th align="left" style="border-bottom:2px solid;">Item No</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Description</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Qty</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Unit</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Rate</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Disc%</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Amount</th>
+    
+            
+            </tr>
 
-        foreach($quotation_details as $quot_det)
-        {
-            $prod_det ="{$quot_det->product_details}";
+
+            '.$pdf_data.'
+
+             
+            
+        </table>';
+        
+        $footer = '
+    
+            <table style="border-bottom:2px solid">
+            
+                <tr>
+                    <td>Quote Validity</td>
+
+                    <td>10 Days</td>
+                
+                    <td>Gross Total</td>
+        
+                    <td>'.$quotation_details->qd_sales_amount.'</td>
+            
+                </tr>
+
+                <tr>
+    
+                    <td>Currency</td>
+                
+                    <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                   
+                    <td>Less. Special Discount</td>
+        
+                    <td>-------</td>
+                
+                </tr>
+
+
+                
+
+
+                <tr>
+    
+                    <td>Amount in words</td>
+                
+                    <td>----------------------------------</td>
+        
+                    <td style="font-weight: bold;">Net Invoice Value</td>
+        
+                    <td>-----</td>
+                
+                </tr>
+
+            </table>
+
+
+            <table>
+            
+            <tr>
+                <td style="width:20%">Quote Terms</td>
+
+                <td style="width:20%">Enquiry Ref.</td>
+
+                <td style="width:20%">By Mail</td>
+
+                <td style="width:20%">Payment:</td>
+
+                <td style="width:20%">Cash on delivery</td>
+                
+            </tr>
+
+            <tr>
+                <td style="width:20%"></td>
+
+                <td style="width:20%">Delivery Period</td>
+
+                <td style="width:20%">4-5 Days</td>
+
+                <td style="width:20%">Delivery</td>
+
+                <td style="width:20%">Ex-works</td>
+
+            </tr>
+            
+            </table>
+
+
+            <table style="border-top:2px solid;">
+
+            <tr>
+            
+               <td>Antony Raphel - Production In-charge</td>
+               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td>Justin Jose - Operations Manager</td>
+              
+
+            </tr>
+
+
+            <tr>
+            
+                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+           
+
+            </tr>
+
 
             
+            
+            
+            </table>
+        
+        
+        
+            ';
+        
+            
+            $mpdf->WriteHTML($html);
+            $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
         }
-
-        $html ='
-    
-        <style>
-
-        th, td {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 5px;
-            padding-right: 5px;
-            font-size:12px;
-        }
-        </style>
-    
-        <table>
-        
-        <tr>
-        
-        <td>
-    
-        <h3>Al Fuzail Engineering Services WLL</h3>
-        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
-        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-        
-        
-        </td>
-        
-        </tr>
-    
-        </table>
-    
-    
-    
-        <table width="100%" style="margin-top:10px;">
-        
-    
-        <tr width="100%">
-        
-        <td>Period : 01 Sep 2020 to 03 Sep 2020</td>
-
-        <td align="right"><h3>Sales Quotation Report</h3></td>
-    
-        </tr>
-    
-        </table>
-    
-    
-    
-        <table  width="100%" style="margin-top:2px;border-top:2px solid;border-collapse: collapse; border-spacing: 0;">
-        
-    
-        <tr  style="border-bottom:3px solid;">
-        
-        <th align="left">Date</th>
-    
-        <th align="left">Quotation Ref.</th>
-    
-        <th align="left">Customer</th>
-    
-        <th align="left">Sales Executive</th>
-    
-        <th align="left">Amount</th>
-    
-        <th align="left">Product</th>
-
-        <th align="left">Quantity</th>
-
-        <th align="left">Rate</th>
-
-        <th align="left">Amount</th>
-    
-        </tr>
-    
-    
-    
-        <tr>
-    
-    
-        
-        <td style="border-bottom:2px solid">'.$quotation->qd_date.'</td>
-    
-        <td style="border-bottom:2px solid">'.$quotation->qd_reffer_no.'</td>
-    
-        <td style="border-bottom:2px solid">'.$quotation->cc_customer_name.'</td>
-    
-        <td style="border-bottom:2px solid">'.$quotation->se_name.'</td>
-    
-        <td style="border-bottom:2px solid">2500</td>
-    
-        <td style="border-bottom:2px solid">'.$prod_det.'</td>
-
-        <td style="border-bottom:2px solid">2</td>
-
-        <td style="border-bottom:2px solid">4,600.00</td>
-
-        <td style="border-bottom:2px solid">6,265.00</td>
-        
-        </tr>
-
-        <tr>
-        
-            <td>Total</td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td>864,925.00</td>
-
-            <td></td>
-
-            <td></td>
-
-            <td></td>
-
-            <td>864,925.00</td>
-        
-        </tr>
-    
-    
-        
-        </table>
 
        
-    
-        ';
-    
-        $footer = '';
-    
-        
-        $mpdf->WriteHTML($html);
-        $mpdf->SetFooter($footer);
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output();
-    
     }
+
+    
+
+
+
 
 
 

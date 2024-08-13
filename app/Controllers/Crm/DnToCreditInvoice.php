@@ -126,10 +126,7 @@ class DnToCreditInvoice extends BaseController
                     }
                 }
             } 
-            /*else 
-            {
-                $data['quot_prod'] .= '<option value="">No Product Details Available</option>';
-            }*/
+
         }
 
 
@@ -142,68 +139,392 @@ class DnToCreditInvoice extends BaseController
     //fetch data
     public function GetData()
     {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
+      
 
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
+        if(!empty($_GET['form_date']))
+        {
+            $from_date = $_GET['form_date'];
+        }
+        else
+        {
+            $from_date = "";
+        }
+        
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
 
-        $customer        = trim($this->request->getPost('customer'));
+        if(!empty($_GET['customer']))
+        {
+            $data1 = $_GET['customer'];
+        }
+        else
+        {
+            $data1 = "";
+        }
 
-        $sales_order    = trim($this->request->getPost('sales_order'));
 
-        $delivery_note  = trim($this->request->getPost('delivery_note'));
+        if(!empty($_GET['sales_order']))
+        {
+            $data2 = $_GET['sales_order'];
+        }
+        else
+        {
+            $data2 = "";
+        }
 
-        $product        = trim($this->request->getPost('product'));
+
+        if(!empty($_GET['delivery_note']))
+        {
+            $data3 = $_GET['delivery_note'];
+        }
+        else
+        {
+            $data3 = "";
+        }
+
+
+        if(!empty($_GET['product']))
+        {
+            $data4 = $_GET['product'];
+        }
+        else
+        {
+            $data4 = "";
+        }
+
 
        
         $joins = array(
+            
             array(
-                'table' => 'crm_credit_invoice_prod_det',
-                'pk'    => 'ipd_prod_detl',
-                'fk'    => 'cci_id',
+                'table' => 'crm_delivery_product_details',
+                'pk'    => 'dpd_delivery_id',
+                'fk'    => 'dn_id',
             ),
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'dn_customer',
+            ),
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'dn_sales_order_num',
+            ),
+           
            
 
         );
 
       
-        $credit_invoice = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer',$delivery_note,'cci_id',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins,'cci_reffer_no');
+
+        $data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det','crm_delivery_note',$joins,'dn_reffer_no');
         
+       //$data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det','crm_delivery_note',$joins,'dn_reffer_no',$joins1,'crm_delivery_product_details','dpd_prod_det');  
+       
+       if(!empty($from_date))
+       {
+           $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+       }
+       else
+       {
+           $data['from_dates'] ="";
+       } 
        
 
-        $data['product_data'] =""; 
+       if(!empty($to_date))
+       {
+           $data['to_dates'] = date('d-M-Y',strtotime($to_date));
+       }
+       else
+       {
+           $data['to_dates'] = "";
+       }
 
-       if(!empty($credit_invoice)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($credit_invoice as $cred_inv)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$cred_inv->cci_reffer_no.'</td>
-                <td>'.$cred_inv->cci_date.'</td>
-                <td>
-                    <a href="javascript:void(0)" class="report_icon report_icon_excel"   data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-file-excel-fill"></i>Excel</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_pdf" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-file-pdf-fill"></i>Pdf</a>
-                    <a href="javascript:void(0)" class="report_icon report_icon_mail" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-mail-open-fill"></i>Email</a>
-                </td>
-                </tr>';
-                $i++; 
-            }
-        }
-        else
-        {
-            $data['status'] ="False";
-        }
-
-        echo json_encode($data);
        
+       if(!empty($_POST['pdf']))
+       {
+           $this->Pdf($data['delivery_data'],$data['from_dates'],$data['to_dates']);
+       }
+
+      
+       $data['content'] = view('crm/dn_to_credit_invoice',$data);
+
+       return view('crm/report-module-search',$data);
+  
       
     }
+
+
+    public function Pdf($delivery_data,$from_date,$to_date)
+    {   
+        
+        if(!empty($delivery_data)){
+
+            $title = "SQR";
+
+            $pdf_data = "";
+            $delivery_prod = 0;
+            $invoice_amount = 0;
+            $difference_amount = 0;
+            foreach($delivery_data as $del_note){
+                $new_date = date('d-M-Y',strtotime($del_note->dn_date));
+                $pdf_data .="<tr>
+                                <td style='border-top: 2px solid'>{$new_date}</td>
+                                <td style='border-top: 2px solid'>{$del_note->dn_reffer_no}</td>
+                                <td style='border-top: 2px solid'>{$del_note->cc_customer_name}</td>
+                                <td style='border-top: 2px solid'>{$del_note->so_reffer_no}</td>
+                                <td style='border-top: 2px solid'>{$del_note->dn_lpo_reference}</td>
+                                <td style='border-top: 2px solid'>{$del_note->dn_total_amount}</td>
+                                <td colspan='4' align='left' class='p-0' style='border-top: 2px solid'>
+                                    <table>";
+                                        foreach($del_note->delivery_products as $del_prod){
+
+                                            $pdf_data .="<tr  class='product-row'>
+                                                            <td  width='100px' height='90px'>{$del_prod->product_details}</td>
+                                                            <td  width='100px' height='90px'>{$del_prod->dpd_current_qty}</td>
+                                                            <td  width='100px' height='90px'>{$del_prod->dpd_prod_rate}</td>
+                                                            <td  width='100px' height='90px'>{$del_prod->dpd_total_amount}</td>
+                                                        </tr>";
+                                                        $delivery_prod  =  $del_prod->dpd_total_amount +  $delivery_prod;
+                                        }
+                                    $pdf_data .="</table>
+                                </td>
+
+                                <td colspan='6' align='left' class='p-0' style='border-top: 2px solid'>" ;
+                                    if(!empty($del_note->credit_invoices)){
+                                        $pdf_data .="<table>";
+                                            foreach($del_note->credit_invoices as $credit_inv){
+                                                $j=1;
+                                                foreach($credit_inv->invoices_product as $inv_prod){ 
+
+                                                    $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;' class='invoice-row'>";
+                                                        if($j==1){
+                                                            $pdf_data .="<td width='100px' height='90px'>{$credit_inv->cci_reffer_no}</td>";
+                                                        } else{
+                                                            $pdf_data .="<td width='100px' height='90px'></td>";
+                                                        }
+
+                                                    $pdf_data .= "<td width='100px' height='90px'>{$inv_prod->product_details}</td>
+                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_quantity}</td>
+                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_rate}</td>
+                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_amount}</td>";
+                                                                  if(!empty($credit_inv->invoices_product)){
+                                                                    $pdf_data .= "<td width='100px'>----</td>";
+                                                                  }
+                                                                  $invoice_amount =  $inv_prod->ipd_amount + $invoice_amount;
+                                                    $pdf_data .= "</tr>";
+                                                    $j++;
+                                                }
+                                            }
+                                        $pdf_data .="</table>";
+                                    } else{
+                                        $pdf_data .="<table>";
+                                                        foreach($del_note->delivery_products as $del_prod){
+
+                                                        $pdf_data .="<tr class='invoice-row' style='background: unset;border-bottom: hidden !important;'>
+                                                            <td width='100px' height='90px'></td>
+                                                            <td width='100px' height='90px'></td>
+                                                            <td width='100px' height='90px'></td>
+                                                            <td width='100px' height='90px'></td>
+                                                            <td width='100px' height='90px'></td>
+                                                            <td width='100px'>{$del_prod->dpd_total_amount}</td>
+                                                        </tr>";
+
+                                                        $difference_amount = $del_prod->dpd_total_amount + $difference_amount;
+                                                         
+                                                        }
+
+                                        $pdf_data .="</table>"; 
+                                    }
+                                $pdf_data .="</td>
+
+
+
+                            </tr>";
+
+            }
+
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+
+            
+           // $mpdf = new \Mpdf\Mpdf();
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => [300, 400], // Custom page size in millimeters
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+            ]);
+
+
+            $mpdf->SetTitle('Delivery Note / Invoice Analysis'); // Set the title
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : '.$dates.'</td>
+            <td align="right"><h3>Delivery Note / Invoice Analysis</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+                <th align="left">Date</th>
+
+                <th align="left">Delivery Note Number</th>
+
+                <th align="left">Customer</th>
+            
+                <th align="left">Sales Order Ref</th>
+            
+                <th align="left">LPO Ref</th>
+            
+                <th align="left">Amount</th>
+
+                <th align="left">Product</th>
+
+                <th align="left">Quantity</th>
+
+                <th align="left">Rate</th>
+
+                <th align="left">Amount</th>
+
+                <th align="left" width="100px">Invoice Ref</th>
+
+                <th align="left" width="100px">Product</th>
+
+                <th align="left" width="100px">Quantity</th>
+
+                <th align="left" width="100px">Rate</th>
+
+                <th align="left" width="100px">Amount</th>
+
+                <th align="left" width="100px">Difference</th>
+
+            </tr>
+
+             
+            '.$pdf_data.'
+
+
+            <tr>
+                
+                <td style="border-top: 2px solid;">Total</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$delivery_prod.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$delivery_prod.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$invoice_amount.'</td>
+                <td style="border-top: 2px solid;">'.$difference_amount.'</td>
+            
+            </tr> 
+
+
+
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+        
+            
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
+        }
+
+       
+    }
+   
+
+    
 
 
 

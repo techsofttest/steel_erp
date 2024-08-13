@@ -12,7 +12,6 @@
         display:none;
     }
 
-  
 
 </style>
 
@@ -305,24 +304,23 @@
                                     </tbody>
 
 
-                                    <!--
+                                   
                                     <tr>
 
                                     <td>Total Receipt</td>
 
-                                    <td></td>
+                                    <td id="invoice_total"></td>
 
                                     <td>Adjusted</td>
 
-                                    <td></td>
+                                    <td id="invoice_adjusted"></td>
 
 
                                     <td>Balance</td>
 
-                                    <td></td>
+                                    <td id="invoice_balance"></td>
 
                                     </tr>
-                                    -->
 
 
                         </table>
@@ -906,7 +904,7 @@
 
                         <div class="col-col-md-9 col-lg-9 select2_parent">
 
-                        <select class="form-control debit_account_select2" name="r_debit_account">
+                        <select class="form-control debit_account_select2" name="r_debit_account" required>
 
                         </select>
 
@@ -927,10 +925,42 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text"  name="r_receipt_no" class="form-control" required>
+                        <input id="receipt_no" type="text"  name="r_receipt_no" class="form-control" autocomplete="off" required>
 
                         </div>
 
+                        </div>
+
+
+
+                        <div class="row align-items-center justify-content-start mb-2">
+                        
+                        <div class="col-col-md-3 col-lg-3">
+    
+                            <label for="basiInput" class="form-label">Collected By</label>
+                            
+                        </div>
+    
+    
+                        <div class="col-col-md-6 col-lg-6">
+    
+                            <select name="r_collected_by" class="form-control" required>
+    
+                            <option value="">Select Collector</option>
+    
+                            <?php 
+                            foreach($collectors as $col_add){
+                            ?>
+    
+                            <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
+    
+                            <?php } ?>
+    
+                            </select>
+    
+                        </div>
+    
+    
                         </div>
 
 
@@ -979,7 +1009,7 @@
 
 
 
-                    <div class="row align-items-center mb-2">
+                    <div class="row align-items-center mb-2" id="bank_sec_add">
                     <div class="col-col-md-3 col-lg-3">
                         <label for="basiInput" class="form-label">Bank</label>
                     </div>
@@ -1029,11 +1059,33 @@
 
                     <div class="col-col-md-9 col-lg-9">
 
-                    <input type="date"  name="r_cheque_date" class="form-control" required>
+                    <input type="text" name="r_cheque_date" class="form-control datepicker" required readonly>
 
                     </div>
 
                     </div>
+
+
+
+
+                   
+
+
+
+
+                        <div class="row align-items-center justify-content-start mb-2 cheque_sec d-none">
+
+                        <div class="col-col-md-3 col-lg-3">
+                            <label for="basiInput" class="form-label">Cheque Copy</label>
+                        </div>
+
+                        <div class="col-col-md-6 col-lg-6">
+                            <input type="file"  name="r_cheque_copy" class="form-control">
+                        </div>
+
+                        </div>
+
+
 
                     
 
@@ -1074,7 +1126,7 @@
 
                                     <td class="select2_parent"> 
 
-                                       <select class="form-control credit_account credit_account_select2" name="r_credit_account[]">
+                                       <select class="form-control credit_account credit_account_select2" name="r_credit_account[]" data-max="">
 
                                     
 
@@ -1112,7 +1164,7 @@
 
                                     <td colspan="6">
 
-                                    <div class="col-lg-12 text-center">
+                                    <div class="col-lg-12 text-end">
                                                             
                                       <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
                                 
@@ -1158,50 +1210,7 @@
                         <div class="col-lg-6">
 
 
-                        <div class="row align-items-center justify-content-start mb-2">
-                        
-                        <div class="col-col-md-3 col-lg-3">
-    
-                            <label for="basiInput" class="form-label">Collected By</label>
-                            
-                        </div>
-    
-    
-                        <div class="col-col-md-6 col-lg-6">
-    
-                            <select name="r_collected_by" class="form-control" required>
-    
-                            <option value="">Select Collector</option>
-    
-                            <?php 
-                            foreach($collectors as $col_add){
-                            ?>
-    
-                            <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
-    
-                            <?php } ?>
-    
-                            </select>
-    
-                        </div>
-    
-    
-                        </div>
-
-
-
-
-                        <div class="row align-items-center justify-content-start mb-2 cheque_sec d-none">
-
-                        <div class="col-col-md-3 col-lg-3">
-                            <label for="basiInput" class="form-label">Cheque Copy</label>
-                        </div>
-
-                        <div class="col-col-md-6 col-lg-6">
-                            <input type="file"  name="r_cheque_copy" class="form-control" required>
-                        </div>
-
-                        </div>
+                       
 
 
 
@@ -1223,7 +1232,7 @@
                                                             <td><button class="submit_btn">Email</button></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><button class="submit_btn" type="submit">Save</button></td>
+                                                            <td><button class="submit_btn" name="main_submit" type="submit">Save</button></td>
                                                             <td><button class="submit_btn">PDF</button></td>
                                                         </tr>
                                                     </table>
@@ -1393,11 +1402,13 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
+                        <input id="r_debit_account_edit" type="text"  name="r_debit_account" class="form-control" readonly>
+
+                        <!--
                         <select id="r_debit_account_edit" class="form-control" name="r_debit_account">
 
-                    
-
                         </select>
+                        -->
 
                         </div>
 
@@ -1493,7 +1504,7 @@
 
 
 
-                    <div class="row align-items-center mb-2">
+                    <div class="row align-items-center mb-2 bank_sec_edit">
                     <div class="col-col-md-3 col-lg-3">
                         <label for="basiInput" class="form-label">Bank</label>
                     </div>
@@ -1628,6 +1639,7 @@
 
 
 
+                        <!--
                         <div class="row align-items-center justify-content-start mb-2 view_copy cheque_sec d-none">
 
                         <div class="col-col-md-3 col-lg-3">
@@ -1640,6 +1652,7 @@
 
 
                         </div>
+                        -->
 
 
 
@@ -1684,7 +1697,7 @@
                 <th>Credit Account</th>
                 <th>Amount</th>
                 <th>Narration</th>
-                <th>Action</th>
+             
                 </tr>
             </thead>
 
@@ -1700,7 +1713,7 @@
             <tbody>
 
 
-                    <tr class="edit_add_credit">
+                    <tr class="edit_add_credit invoice_row">
 
                                     <td>
 
@@ -1709,12 +1722,13 @@
                                     </td>
 
 
-                                    <td> 
+                                    <td > 
 
-                                       <select class="form-control credit_account" name="r_credit_account[]">
+                                       <select class="form-control credit_account credit_account_select2" name="r_credit_account[]">
 
                                      
                                        </select> 
+
                                     </td>
 
 
@@ -1817,16 +1831,43 @@
     
         /*account head add section*/    
    
+        var added_id_var;
+
         $(function() {
             $('#add_form').validate({
                 rules: {
                     required: 'required',
+                    r_receipt_no: {
+                    required:true,
+                    remote:{
+                        url:"<?= base_url() ?>Accounts/Receipts/ReceiptNoCheck",
+                        type:'POST',
+                        async:false,
+                        data:
+                        {
+                           receipt_no : function()
+                          {
+                            return $('#receipt_no').val();
+                        }
+                        },
+                    }
+                    }
                 },
                 messages: {
-                    required: 'This field is required',
+                    required: '',
+                    r_receipt_no: {
+                    remote:"Duplicate receipt number",
+                    required:""
+                    },
                 },
-                errorPlacement: function(error, element) {} ,
+                errorPlacement: function(error, element) {
+                    if (element.attr("name") == "r_receipt_no") {
+                    error.insertAfter(element);
+                    }
+                } ,
                 submitHandler: function(form) {
+
+                    var submitButtonName =  $(this.submitButton).attr("name");
 
                     var formData = new FormData(form);
 
@@ -1839,12 +1880,37 @@
                         contentType: false,
                         success: function(data) 
                         {
-                       
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            var data = JSON.parse(data);
+
+                            //console.log(data.status);
+
+                            if(data.status==0)
+                            {
+
+                            alertify.error(data.error).delay(3).dismissOthers();
+
+                            return false;
+                            
+                            }
+
+                            else 
+
+                            {
+                            
                             $('#add_form').attr('data-submit','true');
                             $('#add_form').attr('data-rcid',data);
-                            $('#added_id').val(data);
+                            $('#added_id').val(data.id);
+                            added_id_var = data.id;
+
+                            if(submitButtonName=="main_submit")
+                            {
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            $('#AddModal').modal('hide');
+                            }
+
                             datatable.ajax.reload( null, false)
+
+                            }
 
                         }
                        
@@ -1877,6 +1943,8 @@
             $('#EditModal .edit_add_credit').show();
 
 
+
+
             var id = $(this).data('id');
 
             $.ajax({
@@ -1899,7 +1967,7 @@
 
                     $('#r_date_edit').val(data.rc.r_date);
 
-                    $('#r_debit_account_edit').val(data.rc.r_debit_account);
+                    $('#r_debit_account_edit').val(data.rc.ca_name);
 
                     $('#r_no_edit').val(data.rc.r_number);
 
@@ -1911,6 +1979,8 @@
                     $('.cheque_sec').removeClass("d-none");
 
                     $('.cheque_file_sec').removeClass("d-none");
+
+                    $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
            
                     $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
 
@@ -1927,6 +1997,21 @@
                     $('.cheque_file_sec').addClass("d-none");
 
                     }
+
+                    if(data.rc.r_method="2")
+                    {
+
+                    $('#EditModal .bank_sec_edit').addClass("d-none");  
+
+                    }
+
+                    else
+                    {
+
+                    $('#EditModal .bank_sec_edit').removeClass("d-none");  
+
+                    }
+
 
                     $('#r_bank_edit').val(data.rc.r_bank);
 
@@ -2213,7 +2298,7 @@
 
                         $('#r_date_edit').val(data.rc.r_date);
 
-                        $('#r_debit_account_edit').val(data.rc.r_debit_account);
+                        $('#r_debit_account_edit').val(data.rc.ca_name);
 
                         $('#r_no_edit').val(data.rc.r_number);
 
@@ -2249,6 +2334,15 @@
 
                         }
 
+                        if(data.rc.r_method=="2")
+                        {
+                        $('.bank_sec_edit').hide();
+                        }
+                        else
+                        {
+                        $('.bank_sec_edit').show();    
+                        }
+
 
                         $('#r_bank_edit').val(data.rc.r_bank);
 
@@ -2259,11 +2353,11 @@
                         $('#sel_invoices_edit').html(data.invoices);
 
 
-
-
                         $("#EditModal :input").prop("disabled", true);
 
                         $('#EditModal .btn-close').prop("disabled",false);
+
+                        $('#EditModal .cheque_file_edit_sec').addClass('d-none');
 
                         $('#EditModal .submit_btn').hide();
 
@@ -2513,9 +2607,15 @@
                     { data : 'receipt_method'},
                     { data: 'bank' },
                     { data: 'action' },
-                ]
-                
+                ],
+                    "initComplete": function () {
+                       
+                    }
+                                
            });
+
+           
+
         }
 
         $(document).ready(function () {
@@ -2539,6 +2639,19 @@
             {
             $('.cheque_sec').addClass("d-none");
             }
+
+            if($(this).children(':selected').text()=="Cash")
+            {
+            $('#bank_sec_add').addClass("d-none");
+            $('.bank_sec_edit').addClass("d-none");
+            }
+            else
+            {
+            $('#bank_sec_add').removeClass("d-none"); 
+            $('.bank_sec_edit').removeClass("d-none");   
+            }
+
+
 
         });
 
@@ -2568,36 +2681,18 @@
 
         /* Fetch Invoices */
 
+        var LinkTotal = 0;
      
         $("body").on('click', '.add_invoices', function(){ 
         
-            
-            if(!$("#add_form").valid())
-            {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-            
-            
-            if($('#added_id').val()=='')
-            {
-
-             $('#add_form').submit();
-
-                if(!$("#add_form").valid())
-                {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-                }
-
-            }
-            
 
             var parent = $(this).closest('tr');
 
             var c_account = parent.find('.credit_account');
 
             var c_amount = parent.find('.credit_amount');
+
+            LinkTotal = c_amount;
 
             if( c_account.val() =="")
             {
@@ -2623,10 +2718,45 @@
             }
 
 
+            if(!$("#add_form").valid())
+            {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+            
+            
+            if($('#added_id').val()=='')
+            {
+
+                $('#add_form').submit();
+
+                if(!$("#add_form").valid())
+                {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+                }
+
+                /*
+                if($('#added_id').val()=='')
+                {
+                return false;
+                }
+                */
+
+            }
+
+
             //var id=1;
 
-            var receipt = $('#added_id').val();
+           // Use a timeout-based polling approach
+           var checkValueInterval = setInterval(function() {
+            if ($('#added_id').val() !== '') {
+            clearInterval(checkValueInterval); 
 
+            console.log($('#added_id').val());
+
+            var receipt = $('#added_id').val();
+            
             var id = c_account.val(); //Customer_ID
 
             var credit_date = parent.find('.credit_date').val();
@@ -2637,6 +2767,7 @@
 
 
             $.ajax({
+                
 
                 url : "<?php echo base_url(); ?>Accounts/Receipts/FetchInvoices",
 
@@ -2654,6 +2785,8 @@
                     {
                     alertify.error('No Invoices Found!').delay(3).dismissOthers();   
 
+                    $('#AddModal').modal('show'); 
+
                     return false;
                     }
                     
@@ -2666,7 +2799,13 @@
 
                     $('#AddModal').modal('hide');
 
-                    $('#fifo_add').attr('data-total',credit_amount);
+                    $('body #fifo_add').attr('data-total',credit_amount);
+
+                    $('#invoice_total').html(credit_amount);
+
+                    $('#invoice_adjusted').html('0');
+
+                    $('#invoice_balance').html('0');
 
                     $('#InvoicesModal').modal('show');
 
@@ -2675,34 +2814,12 @@
 
             });
 
-        });
-
-
-
-        $("body").on('change','.invoice_add_check',function(){
-
-        parent = $(this).closest('tr');
-
-        if($(this).prop('checked')==true)
-
-        {
-
-        var total_amount = parent.find('.invoice_total_amount').val();
-
-        parent.find('.invoice_receipt_amount').val(total_amount);
-        
-        }
-
-        else
-        {
-
-        parent.find('.invoice_receipt_amount').val(0);   
-
-        }
-
+        } else {
+            console.log('No'); // Logging for debugging purposes
+            }
+        }, 100);
 
         });
-
 
 
 
@@ -2747,6 +2864,32 @@
 
 
 
+
+
+        });
+
+
+
+        //Add Adjust Amount
+        $("body").on('input change', '.invoice_receipt_amount', function(){ 
+
+            var invoice_total = 0;
+
+            var receipt_total = parseInt($('#fifo_add').attr('data-total'))||0;
+
+            $('.invoice_receipt_amount').each(function(){
+
+            parent =  $(this).closest('tr');
+
+            invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
+
+            })
+
+            balance = receipt_total - invoice_total;
+
+            $('#invoice_balance').html(balance);
+
+            $('#invoice_adjusted').html(invoice_total);
 
 
         });
@@ -2897,7 +3040,17 @@
 
             $('#add_form')[0].reset();
 
+            $('#total_amount').html('0.00');
+
+            $('.debit_account_select2').val('').trigger('change');
+
+            $('.credit_account_select2').val('').trigger('change');
+
+            $('#total_amount_val').val('0.00');
+
             $('.invoice_row').not(':first').remove();
+
+            InitAccountsSelect2('.credit_account_select2','.invoice_row');
 
             $.ajax({
 
@@ -3217,7 +3370,41 @@
 
         e.preventDefault();
 
+        var total = parseInt($('#fifo_add').attr('data-total'))||0;
+
+        var invoice_total = 0;
+
+        $('.invoice_receipt_amount').each(function(){
+
+        parent =  $(this).closest('tr');
+
+        invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
+
+        })
+
+        if(invoice_total>total)
+        {
+
+        alertify.error('Amount should not be greater than credit amount!').delay(3).dismissOthers();     
+
+        return false;
+        
+        }
+
+
+        if(invoice_total<total)
+        {
+
+        alertify.error('Total receipt amount should be adjusted!').delay(3).dismissOthers();      
+
+        return false;
+        
+        }
+
+
+
         $.ajax({
+
 
         url : "<?php echo base_url(); ?>Accounts/Receipts/AddInvoices",
 
@@ -3230,9 +3417,9 @@
 
         alertify.success('Saved!').delay(3).dismissOthers();   
 
-        //$('#InvoicesModal').modal('hide');
+        $('#InvoicesModal').modal('hide');
 
-        //$('#AddModal').modal('show');
+        $('#AddModal').modal('show');
 
         }
 
@@ -3311,6 +3498,47 @@
 
 
 
+
+        
+        $("body").on('change','.invoice_add_check',function(){
+
+        parent = $(this).closest('tr');
+
+        var total = $('#fifo_add').data('total');
+
+        // LinkTotal
+
+        if($(this).prop('checked')==true)
+
+        {
+
+        var total_amount = parent.find('.invoice_total_amount').val();
+
+        var fill_amount = Math.min(total,total_amount);
+
+        parent.find('.invoice_receipt_amount').val(fill_amount);
+
+        parent.find('.invoice_receipt_amount').trigger('change');
+
+        }
+
+        else
+        {
+
+        parent.find('.invoice_receipt_amount').val(0);   
+
+        }
+
+
+
+
+        });
+
+
+
+
+
+
         $('body').on('click','#fifo_add',function(){
 
             var total = $(this).data('total');
@@ -3326,6 +3554,7 @@
                parent.find('.invoice_receipt_amount').val(fill_amount);
 
                total -= fill_amount;
+               
 
             });
 
@@ -3338,10 +3567,10 @@
 
 
 
-
 /* Accounts Init Select 2 */
 
                 function InitAccountsSelect2(classname,parent){
+
                     $('body '+classname+':last').select2({
                         placeholder: "Select Account",
                         theme : "default form-control-",
@@ -3382,6 +3611,167 @@
 
 
 
+                /* Select 2 Remove Validation On Change */
+                $(".debit_account_select2").on("change",function(e) {
+                    $(this).parent().find(".error").removeClass("error");         
+                });
+                /*###*/
+
+
+
+
+                /*
+                $('body').on('change','.debit_account_select2', function(){
+
+                var account_id = $(this).val();
+
+                //var parent = $(this).closest('.invoice_row');
+
+                    $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/Receipts/CreditTotal",
+
+                    method : "POST",
+
+                    data: {account:account_id},
+
+                    success:function(data)
+                    {
+
+                    
+                    $('body').find('.credit_amount').attr('data-max',data);
+
+                    //console.log(data);
+
+                    //alertify.success(data).delay(3).dismissOthers();   
+
+
+                    }
+
+                    });
+
+                });
+                */
+
+
+
+                $('body').on('change','.credit_account_select2', function(){
+
+                var account_id = $(this).val();
+
+                parent = $(this).closest('.invoice_row');
+
+                //var parent = $(this).closest('.invoice_row');
+
+                    $.ajax({
+
+                    url : "<?php echo base_url(); ?>Accounts/Receipts/CreditTotal",
+
+                    method : "POST",
+
+                    data: {account:account_id},
+
+                    success:function(data)
+                    {
+
+                    if(data!="")
+                    {
+                    parent.find('.credit_amount').attr('data-max',data);
+                    }
+                    else
+                    {
+                    parent.find('.credit_amount').attr('data-max',0);
+                    }
+
+                    //console.log(data);
+
+                    //alertify.success(data).delay(3).dismissOthers();   
+
+
+                    }
+
+                    });
+
+                });
+
+
+                
+
+
+
+                $('body').on('input','.credit_amount ', function(){
+
+                value = parseFloat($(this).val())||0;
+
+                max = parseFloat($(this).attr('data-max'))||0;
+
+                if((max!="") && (value>max))
+                {
+
+                alertify.error('Cannot be greater than pending invoice amount!').delay(3).dismissOthers();  
+
+                $(this).val(max);
+
+                }
+
+                
+                
+                if(max=="")
+                {
+
+                alertify.error('No pending amount to credit!').delay(3).dismissOthers();  
+
+                $(this).val(max);
+
+                }
+                
+
+
+                var total= 0;
+
+                $('body .credit_amount').each(function()
+                {
+                    var sub_tot = parseFloat($(this).val());
+
+                    total += parseFloat(sub_tot.toFixed(2))||0;
+                //total = Number(total).toFixed(2)
+                });
+
+                total = total.toFixed(2);
+
+                $('#total_amount').html(total);
+
+                $('#total_amount_val').val(total);
+
+                var resultQuotation = numberToWords.toWords(total);
+
+                });
+
+
+
+
+                $('body').on('input','.invoice_receipt_amount', function(){
+
+                val = parseFloat($(this).val())||0;
+
+                max = $(this).attr('maxlength');
+
+                if(val>max)
+                {
+
+                $(this).val(max);
+
+                $(this).trigger('change');
+
+                }
+
+
+                });
+
+                
+
+
+
 
 
 
@@ -3419,7 +3809,6 @@
            
 
         }
-
 
       
 

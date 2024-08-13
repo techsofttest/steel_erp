@@ -3,22 +3,20 @@
 .cust_more_modal
 {
         
+    font-size: 25px;
+    color: #ff0000b5;
     position: absolute;
-    left: 470px;
-    padding: 1px 27px;
-    z-index: 999;
-    border: 1px solid black;
-    border: 1px solid #0000003b;
+    right: 34px;
+    top: -16px;
 
 }
  .contact_more_modal
     {
         position: absolute;
-        left: 471px;
-        padding: 1px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+        right: 35px;
+        font-size: 25px;
+        top: -15px;
+        color: #ff0000b5;
     }
 .left_input .row
 {
@@ -30,6 +28,15 @@
     display: flex;
     align-items: center;
     justify-content: unset !important;
+}
+.input_length
+{
+    width: 95%;
+}
+
+.input_length2
+{
+    width: 93%;
 }
 </style>
 
@@ -78,7 +85,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control" required readonly>
+                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -98,7 +105,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -115,14 +122,19 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer Name<span class="add_more_icon cust_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Customer Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-8 col-lg-8 zero_padding">
                                                                         <select class="form-select droup_customer_id" name="so_customer" id="customer_id" style="width:80%;" required>
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                            
                                                                         </select>
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -146,7 +158,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select quotation_ref" name="so_quotation_ref" id="">
+                                                                        <select class="form-select quotation_ref input_length" name="so_quotation_ref" id="">
                                                                             <option value="" selected disabled>Quotation Ref</option>
                                                                
                                                                         </select>
@@ -170,7 +182,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_lpo" id="qd_quotation_number_id" class="form-control" required>
+                                                                        <input type="text" name="so_lpo" id="qd_quotation_number_id" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -204,7 +216,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                        
-                                                                        <select class="form-select enqinput sales_executive_clz" name="so_sales_executive"  required>
+                                                                        <select class="form-select enqinput sales_executive_clz input_length2" name="so_sales_executive"  required>
                                                                            <option value="" selected disabled>Sales Executive</option>
                                                                             <?php foreach($sales_executive as $sale_exc){?> 
                                                                                 <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
@@ -229,11 +241,11 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal">New</span></label>
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select contact_person_clz" name="so_contact_person" style="width: 80%;" required>
+                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                        <select class="form-select contact_person_clz" name="so_contact_person"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                             <!--<?php foreach($contacts as $cont){?> 
                                                                             
@@ -244,6 +256,11 @@
                                                                         </select>
                                                                        
                                                                        
+                                                                    </div>
+
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+                                                                        <span class="add_more_icon contact_more_modal ri-add-box-fill"></span>
                                                                     </div>
 
                                                                 </div> 
@@ -261,11 +278,11 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Payment Term</label>
+                                                                        <label for="basicInput" class="form-label ">Payment Term</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_payment_term"  class="form-control payment_term" required>
+                                                                        <input type="text" name="so_payment_term"  class="form-control payment_term input_length2" required>
                                                                     </div>
 
                                                                 </div> 
@@ -281,12 +298,12 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Delivery Date</label>
+                                                                        <label for="basicInput" class="form-label ">Delivery Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker" required>
+                                                                        <input type="text" name="so_delivery_term" id="delivery_term" class="form-control datepicker input_length2" required>
                                                             
                                                                     </div>
 
@@ -302,11 +319,11 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Project</label>
+                                                                        <label for="basicInput" class="form-label ">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_project"  class="form-control project" required>
+                                                                        <input type="text" name="so_project"  class="form-control project input_length2" required>
                                                                     </div>
 
                                                                 </div> 
@@ -425,7 +442,8 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
+                                            <span><button class="btn btn btn-success once_form_submit" name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
                                         
@@ -856,7 +874,7 @@
 
                                                             <tr class="edit_add_prod_row">
                                                                 <td style="width: 10%;" class="">1</td>
-                                                                <td>
+                                                                <td style="width:34%">
                                                                     <select class="form-select  edit_product_det" name="spd_product_details" required>
                                                                         
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -1267,6 +1285,18 @@
                                                         </thead>
                                                         
                                                         <tbody  class="travelerinfo view_product_data"></tbody>
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="2"></td>
+                                                                <td colspan="3" class=""></td>
+                                                                
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="" class="view_total_amount form-control" readonly=""></td>
+                                                            </tr>
+                                                            
+                                                          
+                                                        </tbody>
                                                         
                                                        
                                                     </table>
@@ -1408,6 +1438,7 @@
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
                     var formData = new FormData(currentForm);
+                    $('.once_form_submit').attr('disabled', true); // Disable this input.
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/SalesOrder/Add",
@@ -1417,7 +1448,9 @@
                         contentType: false, // Don't set content type
                         //data: $(currentForm).serialize(),
                         success: function(data) {
-                         
+                            
+                            var data = JSON.parse(data);
+
                             $('#add_sales_order_form')[0].reset();
                            
                             $('#AddSalesOrder').modal('hide');
@@ -1438,15 +1471,15 @@
 
                             $('.prod_row2').remove();
 
-                           
-
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
 
-                            
+                            if(data.print!="")
+                            {
+                                window.open(data.print, '_blank');
+                            }
                            
-                            
                         }
                     });
                 }
@@ -1842,6 +1875,8 @@
             
             reName();
 
+            TotalAmount();
+
             slno2();
         });
 
@@ -2048,6 +2083,8 @@
             $('.quotation_ref option').remove();
 
             $('.contact_person_clz option').remove();
+
+            $('.once_form_submit').attr('disabled', false); // Disable this input.
 
            // $('.sales_executive_clz option').remove();
 
@@ -2807,11 +2844,13 @@
 
                     $(".view_project").val(data.project);
 
+                    $(".view_total_amount").val(data.total_amount);
+
                     $(".view_product_data").html(data.prod_details);
 
                     $(".view_image_table").html(data.image_table);
 
-                    console.log(data.image_table);
+                   
 
                     $('#ViewSalesOrder').modal('show');
                 

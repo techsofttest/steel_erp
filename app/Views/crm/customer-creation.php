@@ -1512,10 +1512,6 @@
                         alertify.success('Data Delete Successfully').delay(3).dismissOthers();
                     }); 
 
-                   
-                    
-                   
-                  
                 }
 
 
@@ -1794,17 +1790,13 @@
                     var data = JSON.parse(data);
 
                     $(".single_contact_edit").html(data.single_contact);
-                
-                    
+                   
                 }
 
 
             });
 
-            
-
-            
-
+         
 
         });
       
@@ -2011,14 +2003,8 @@
 
 
         /*####*/
-
+});
         
-
-
-
-     
-
-    });
 
 
 </script>
