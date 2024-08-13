@@ -379,6 +379,17 @@
                                                         </tbody>
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
+
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td colspan="7" class=""></td>
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="" class="total_prod_amount form-control" readonly=""></td>
+                                                             </tr>
+                                                        
+                                                        </tbody>
+	
                                                         
                                                     </table>
                                                 </div>
@@ -1135,7 +1146,7 @@
 
         /*calculation section start*/
 
-	    /*$("body").on('keyup', '.add_discount', function(){ 
+	    /*$("body").on('keyup', '.add_discount','.add_prod_rate','.add_prod_qty', function(){ 
 
             var $discountSelect = $(this);
 
@@ -1203,9 +1214,33 @@
 
             $amountElement.val(orginalPrice);
 
-            //TotalAmount();
+            TotalAmount();
 
         });
+
+
+        function TotalAmount()
+        {
+
+            var total= 0;
+
+            $('body .add_prod_amount').each(function()
+            {
+                var sub_tot = parseFloat($(this).val());
+
+                total += parseFloat(sub_tot.toFixed(2))||0;
+               
+            });
+
+           total = total.toFixed(2);
+
+           $('.total_prod_amount').val(total);
+
+          
+            
+
+        }
+		
 
 
 
