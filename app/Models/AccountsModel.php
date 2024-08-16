@@ -142,7 +142,7 @@ class AccountsModel extends Model
 
     $ci_total =  $result->ci_credit_total;
 
-
+    $this->db->table('master_transactions');
 
     $query = $this->db->table('crm_credit_invoice');
 
@@ -170,35 +170,38 @@ class AccountsModel extends Model
     return 0;
     }
     
-
-
-    /*
-    $query = $this->db->table('master_transactions');
-
-    //  $query = $this->db->query('SELECT SUM(tran_credit) - SUM(tran_debit) AS total_balance FROM '.$this->db->getPrefix().'master_transactions WHERE (tran_datetime<= CONVERT( \''.date("Y-m-d",strtotime($date_to)).'\' , DATETIME)) && (tran_account = '.$account.')');
-
-    $query->select('SUM(tran_credit) - SUM(tran_debit) AS total_balance', FALSE);
-
-    $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_id=master_transactions.tran_account','left');
-
-    $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
-
-    $query->join('accounts_account_types','accounts_account_types.at_id=accounts_account_heads.ah_account_type','left');
-
-    
-    if($account!="")
-    {
-    $query->where('accounts_charts_of_accounts.ca_id',$account);    
     }
 
+
+
+
+    
+
+
+
+
+
+
+    public function FetchMaxDebitAmount($vendor)
+    {
+    
+    $query = $this->db->table('pro_purchase_voucher');
+
+    $query->select('SUM(pv_total) - SUM(pv_paid) AS debit_total', FALSE);
+    
+    $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=pro_purchase_voucher.pv_vendor_name','left');
+
+    //$query->join('pro_vendor','pro_vendor.ven_id=pro_purchase_voucher.pv_vendor_name','left');
+    
+    $query->where('ca_id',$vendor);
+    
     $result = $query->get()->getRow();
 
-    */
+    $max = $result->debit_total;
 
-
-    if($result->total_balance>0)
+    if($max>0)
     {
-    return $result->total_balance;
+    return $max;
     }
     else
     {
@@ -206,6 +209,24 @@ class AccountsModel extends Model
     }
 
 
+    }
+
+
+
+
+
+
+    public function FetchUnpaidPurchaseVoucher($vendor)
+    {
+    $where_or = 'pv_status = 0 || 1';
+    $query = $this->db->table('pro_purchase_voucher');
+    $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=pro_purchase_voucher.pv_vendor_name','left');
+    $query->where('accounts_charts_of_accounts.ca_id',$vendor);
+    $query->groupStart();
+    $query->where($where_or);
+    $query->groupEnd();
+    return $query->get()->getResult();
+       
     }
 
 

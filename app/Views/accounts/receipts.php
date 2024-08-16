@@ -827,10 +827,11 @@
     <!-- Add Modal -->
 
 
-    <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
             <form  class="Dashboard-form class" data-submit="false" data-rcid="" id="add_form">
                 <input id="added_id" type="hidden" name="r_id" value="" autocomplete="off">
+                <input id="add_saved" value="no" type="hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Receipt</h5>
@@ -1842,7 +1843,7 @@
                     remote:{
                         url:"<?= base_url() ?>Accounts/Receipts/ReceiptNoCheck",
                         type:'POST',
-                        async:false,
+                        async:true,
                         data:
                         {
                            receipt_no : function()
@@ -1905,6 +1906,7 @@
                             if(submitButtonName=="main_submit")
                             {
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                            $('#add_saved').val("yes");
                             $('#AddModal').modal('hide');
                             }
 
@@ -2753,8 +2755,6 @@
             if ($('#added_id').val() !== '') {
             clearInterval(checkValueInterval); 
 
-            console.log($('#added_id').val());
-
             var receipt = $('#added_id').val();
             
             var id = c_account.val(); //Customer_ID
@@ -2783,7 +2783,7 @@
                     
                     if(data.status==0)
                     {
-                    alertify.error('No Invoices Found!').delay(3).dismissOthers();   
+                    alertify.error(data.msg).delay(3).dismissOthers();   
 
                     $('#AddModal').modal('show'); 
 
@@ -2815,7 +2815,7 @@
             });
 
         } else {
-            console.log('No'); // Logging for debugging purposes
+            //console.log('No'); // Logging for debugging purposes
             }
         }, 100);
 
@@ -3037,6 +3037,8 @@
 
 
             $('#added_id').val('');
+
+            $('#add_saved').val("no");
 
             $('#add_form')[0].reset();
 
@@ -3527,6 +3529,8 @@
 
         parent.find('.invoice_receipt_amount').val(0);   
 
+        parent.find('.invoice_receipt_amount').trigger('change');
+
         }
 
 
@@ -3661,6 +3665,8 @@
 
                 parent = $(this).closest('.invoice_row');
 
+                parent.find('.credit_amount').val('0');
+
                 //var parent = $(this).closest('.invoice_row');
 
                     $.ajax({
@@ -3693,6 +3699,43 @@
                     });
 
                 });
+
+
+
+
+                $('#AddModal .btn-close').click(function(){
+
+                //$('#AddModal').on('hidden.bs.modal', function () {
+
+                var stat =$('#AddModal #add_saved').val();
+
+                if(stat=="no")
+                {
+                    if($('#added_id').val() !="")
+                    {
+
+                       var id = $('#added_id').val();
+
+                        $.ajax({
+
+                            url : "<?php echo base_url(); ?>Accounts/Receipts/Delete",
+
+                            method : "POST",
+
+                            data: {id: id},
+
+                            success:function(data)
+                            {
+                                //alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+
+                                datatable.ajax.reload( null, false )
+                            }
+                        })
+
+                    }
+                }
+
+                })
 
 
                 

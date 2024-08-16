@@ -1149,6 +1149,19 @@ class Receipts extends BaseController
 
     $reciept_amount = $this->request->getPost('camount');
 
+    if($reciept_amount<1)
+    {
+
+        $data['status']= 0 ;
+
+        $data['msg'] = "Please enter amount!";
+
+        echo json_encode($data);
+
+        exit;
+
+    }
+
     
     $insert_data['ri_receipt'] = $this->request->getPost('rid');
 
@@ -1203,6 +1216,8 @@ class Receipts extends BaseController
     $invoices = $this->common_model->FetchUnpaidInvoices('crm_cash_invoice',$cond,'ci_paid_status');
    
     $data['status']=0;
+
+    $data['msg'] = "No invoices found!";
 
     $data['invoices']="";
 
