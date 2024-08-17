@@ -142,6 +142,8 @@ class CustomerCreation extends BaseController
 
         $coa_data['ca_account_id'] = $this->request->getPost('cc_account_id');
 
+        $coa_data['ca_type'] = "CUSTOMER";
+
         $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
         echo json_encode($data);
