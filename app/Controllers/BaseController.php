@@ -59,7 +59,7 @@ abstract class BaseController extends Controller
 
     public $crm_modal;
 
-    public $pro_modal;
+    public $pro_model;
 
     public $session;
 
@@ -81,7 +81,7 @@ abstract class BaseController extends Controller
 
         $this->crm_modal = new \App\Models\CrmReportModel();
 
-        $this->pro_modal = new \App\Models\ProcurementModel();
+        $this->pro_model = new \App\Models\ProcurementModel();
 
         $this->validation = \Config\Services::validation();
 
