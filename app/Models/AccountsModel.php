@@ -231,8 +231,91 @@ class AccountsModel extends Model
 
 
 
+    public function FetchEnquiryInQuot($id)
+    {
+        $query = $this->db->table('crm_enquiry')
+
+        ->select('*')
+
+        ->where('enquiry_customer', $id)
+
+        ->join('crm_quotation_details', 'crm_enquiry.enquiry_id = crm_quotation_details.qd_enq_ref', 'left')
+
+        ->groupStart()
+
+            ->where('crm_quotation_details.qd_enq_ref IS NULL') // Include rows where qd_enq_ref is NULL
+            
+            ->orWhere('crm_enquiry.enquiry_id NOT IN (SELECT qd_enq_ref FROM '.$this->db->getPrefix().'crm_quotation_details)')
+
+        ->groupEnd()
+
+        ->get();
+
+        return $query->getResult();
+    }
+
+    
+    public function FetchAdvanceSalesOrder($cid)
+    {
+
+        $query = $this->db->table('crm_sales_orders')
+
+        ->select('*')
+
+        ->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=crm_sales_orders.so_customer','left')
+
+        ->where('accounts_charts_of_accounts.ca_id',$cid)
+
+        ->where('so_pay_status !=',2)
+
+        ->groupStart()
+
+        ->where('crm_sales_orders.so_id NOT IN (SELECT ci_sales_order FROM '.$this->db->getPrefix().'crm_cash_invoice)')
+
+        ->where('crm_sales_orders.so_id NOT IN (SELECT cci_sales_order FROM '.$this->db->getPrefix().'crm_credit_invoice)')
+
+        ->groupEnd()
+
+        ->get();
+
+        return $query->getResult();
+
+    }
 
 
+
+    public function FetchAllLimitWhere($table,$order_key,$order,$where,$term,$end,$start)
+    {
+      
+        return $this->db
+        ->table($table)
+        ->select('*')
+        ->where($where)
+        ->like($order_key,$term)
+        ->limit($end,$start)
+        ->orderBy($order_key, $order)
+        ->get()
+        ->getResult();
+        
+    }
+
+
+    public function FetchSalesReturnAmount($inv_ref)
+    {
+
+        $query = $this->db->table('crm_sales_return');
+
+        $query->selectSum('sr_total');
+
+        $query->where('sr_invoice',$inv_ref);
+
+        $result = $query->get()->getRow();
+
+        return $result->sr_total;
+
+
+    }
+    
 
 
 }

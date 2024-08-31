@@ -1446,7 +1446,7 @@ class CommonModel extends Model
 
     public function FetchUnpaidInvoices($table,$cond,$field)
     {
-    $where_or = ''.$field.' = 0 || 1';
+    $where_or = ''.$field.' != 2';
     $query = $this->db->table($table)->where($cond);
     $query->where($cond);
     $query->groupStart();

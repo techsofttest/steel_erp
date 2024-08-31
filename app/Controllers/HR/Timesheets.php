@@ -223,6 +223,8 @@ class TimeSheets extends BaseController
 
         $data['table'] ="";
 
+        $data['table1'] ="";
+
         $daytype_select ="";
 
         $data['table'] .='
@@ -237,7 +239,7 @@ class TimeSheets extends BaseController
         $select ="";
         if($dt->dt_id=="1")
         {
-        $select="selected";
+        //$select="selected";
         }
         
 
@@ -248,7 +250,9 @@ class TimeSheets extends BaseController
         foreach($list as $date)
         {
 
-        $data['table'] .='
+
+        // Test Mode
+        $data['table1'] .='
 
             <tr class="day_row">
 
@@ -283,6 +287,47 @@ class TimeSheets extends BaseController
                         <td><input class="form-control normal_ot" type="number" name="normal_ot[]" ></td>
 
                         <td><input class="form-control friday_ot" type="number" name="friday_ot[]" ></td>
+
+                        </tr>
+
+                        ';
+
+
+                        $data['table'] .='
+
+            <tr class="day_row">
+
+                        <td>'.$date["date"].'</td>
+
+                        <td>'.$date["day"].'</td>
+
+                        <td>
+
+                        <input type="hidden" name="date[]" value="'.$date["date"].'">
+
+                        <input type="hidden" name="day[]" value="'.$date["day"].'">
+
+                        <select class="day_type form-control" name="day_type[]" required>
+                        
+                        <option value="">Select Day Type</option>
+
+                        '.$daytype_select.'
+
+                        </select>
+                        
+                        </td>
+
+                        <td><input class="form-control time_from" name="time_from[]" value="" onclick="this.showPicker();" type="time" required></td>
+
+                        <td><input class="form-control time_to" name="time_to[]" value="" onclick="this.showPicker();" type="time" required></td>
+
+                        <td><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required></td>
+
+                        <td><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]"></td>
+
+                        <td><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" ></td>
+
+                        <td><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" ></td>
 
                         </tr>
 
@@ -355,6 +400,76 @@ class TimeSheets extends BaseController
             $data['status']=1;
 
         }
+
+
+
+        //Validation For Days
+
+        for($d=0;$d<count($_POST['day_type']);$d++){
+
+            $check['td_date'] = date('Y-m-d',strtotime($this->request->getPost('date')[$d]));
+    
+            $check['td_day'] = $this->request->getPost('day')[$d];
+    
+            $check['td_daytype'] = $this->request->getPost('day_type')[$d];
+    
+            $check['td_time_in'] = $this->request->getPost('time_from')[$d];
+    
+            $check['td_time_out'] = $this->request->getPost('time_to')[$d];
+    
+            $check['td_total_hours'] = $this->request->getPost('total_hours')[$d];
+    
+            $check['td_normal_hours'] = $this->request->getPost('normal_hours')[$d];
+    
+            $check['td_normal_ot'] = $this->request->getPost('normal_ot')[$d];
+    
+            $check['td_friday_ot'] = $this->request->getPost('friday_ot')[$d];
+
+
+            if((empty($check['td_daytype'])))
+            {
+                $data['status']=0;
+                $data['msg'] ="Fill all day types to continue!";
+                echo json_encode($data);
+                exit;
+            }
+
+
+            if(($check['td_daytype'] == 1))
+            {
+
+            if((empty($check['td_time_in'])) || (empty($check['td_time_out'])) || (empty($check['td_total_hours'])) )
+            {
+
+                $data['status']=0;
+                $data['msg'] ="Fill all days to continue!";
+                echo json_encode($data);
+                exit;
+
+            }
+
+
+            if((empty($check['td_normal_hours'])) || (empty($check['td_normal_ot'])) || (empty($check['td_friday_ot'])) )
+            {
+            
+                $data['status']=0;
+                $data['msg'] ="Fill all days to continue!";
+                echo json_encode($data);
+                exit;
+
+            }
+
+
+
+
+
+
+            }
+
+
+        }
+
+
 
 
         $insert_data['ts_working_days'] = $this->request->getPost('total_working_days'); 

@@ -188,7 +188,7 @@ class Payments extends BaseController
             $ccAttachCrFileName = $this->uploadFile('p_cheque_copy','uploads/Payments');
             $update_data['pay_cheque_copy'] = $ccAttachCrFileName;
         }
-        
+
 
         $id = $this->common_model->InsertData('accounts_payments',$insert_data);
 
@@ -1116,12 +1116,12 @@ class Payments extends BaseController
     if($_POST)
     {
 
-    $ac_id = $this->request->getPost('id');
+    $vendor_id = $this->request->getPost('id');
 
 
     $insert_data['pd_payment'] = $this->request->getPost('pid');
 
-    $insert_data['pd_debit_account'] = $ac_id;
+    $insert_data['pd_debit_account'] = $vendor_id;
 
     $insert_data['pd_payment_amount'] = $this->request->getPost('camount');
 
@@ -1150,29 +1150,27 @@ class Payments extends BaseController
 
     $joins = array(
         array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
+            'table' => 'pro_vendor',
+            'pk' => 'ven_id',
             'fk' => 'ca_customer',
             ),
     );
 
     //$customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
 
-    $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $ac_id),$joins);
+    $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $vendor_id),$joins);
 
-    //$cond = array('pf_customer' => $customer->cc_id);
+    /*
+    $cond = array('ci_customer' => $customer->cc_id);
 
-    //$invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
-
-    $cond = array('ci_customer' => $customer->cc_id,'ci_paid_status' => 0);
-    
-    $invoices = $this->common_model->FetchWhere('crm_cash_invoice',$cond);
+    $invoices = $this->common_model->FetchUnpaidInvoices('crm_cash_invoice',$cond,'ci_paid_status');
 
     $data['status']=0;
 
     $data['invoices']="";
 
     $sl =0;
+
 
     foreach($invoices as $inv)
     {
@@ -1202,12 +1200,128 @@ class Payments extends BaseController
 
     }
 
+    */
+
+    $data['status']=0;
+
+    $data['invoices']="";
+
+    $cond = array('pv_vendor_name' => $vendor_id);
+
+    $purchase_vouchers = $this->account_model->FetchUnpaidPurchaseVoucher($vendor_id);
+
+    $sl =0;
+
+    foreach($purchase_vouchers as $pv)
+    {
+
+    $sl++;
+
+    $balance_amount = $pv->pv_total - $pv->pv_paid;
+
+    $data['invoices'].='<tr id="'.$pv->pv_id.'">
+    <input type="hidden" name="pay_debit_id[]" value="'.$pd_id.'">
+    <input type="hidden" name="debit_account_invoice[]" value="'.$vendor_id.'">
+    <th>'.$sl.'</th>
+    <th>'.date('d-m-Y',strtotime($pv->pv_date)).'</th>
+    <th>'.$pv->pv_reffer_id.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$pv->pv_reffer_id.'" required></th>
+    
+    <th>'.$balance_amount.'
+    <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$balance_amount.'">
+    </th>
+
+    <th><input class="form-control invoice_receipt_amount" maxlength="'.$balance_amount.'" name="inv_receipt_amount[]" type="number"></th>
+    
+    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$pv->pv_id.'"></th>
+    </tr>';
+
+    $data['status']=1;
+
+    }
+
     echo json_encode($data);
 
     }
 
 
     }
+
+
+
+
+
+
+    public function FetchPVAdvanceAdd()
+    {
+
+    if($_POST)
+    {
+
+    $vendor_id = $this->request->getPost('id');
+
+    $joins = array(
+        array(
+            'table' => 'pro_vendor',
+            'pk' => 'ven_id',
+            'fk' => 'ca_customer',
+            ),
+    );
+
+    $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $vendor_id),$joins);
+
+    $data['status']=0;
+
+    $data['invoices']="";
+
+    $cond = array('pv_vendor_name' => $vendor_id);
+
+    $purchase_vouchers = $this->account_model->FetchUnpaidPurchaseVoucher($vendor_id);
+
+    $sl =0;
+
+    foreach($purchase_vouchers as $pv)
+    {
+
+    $sl++;
+
+    $balance_amount = $pv->pv_total - $pv->pv_paid;
+
+    $data['invoices'].='<tr id="'.$pv->pv_id.'">
+    <input type="hidden" name="pay_debit_id[]" value="'.$pd_id.'">
+    <input type="hidden" name="debit_account_invoice[]" value="'.$vendor_id.'">
+    <th>'.$sl.'</th>
+    <th>'.date('d-m-Y',strtotime($pv->pv_date)).'</th>
+    <th>'.$pv->pv_reffer_id.'</th>
+    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$pv->pv_reffer_id.'" required></th>
+    
+    <th>'.$balance_amount.'
+    <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$balance_amount.'">
+    </th>
+
+    <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" type="number"></th>
+    
+    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$pv->pv_id.'"></th>
+    </tr>';
+
+    $data['status']=1;
+
+    }
+
+    echo json_encode($data);
+
+    }
+
+
+    }
+
+
+
+
+
+
+
+
 
 
 
@@ -1339,15 +1453,21 @@ class Payments extends BaseController
 
 
 
+    public function DebitTotal()
+    {
 
+        if($_POST)
+        {
+    
+        $vendor = $this->request->getPost('vendor');
+    
+        $debit_amount = $this->account_model->FetchMaxDebitAmount($vendor);
 
+        echo $debit_amount;
+    
+        }
 
-
-
-
-
-
-
+    }
 
 
 
@@ -1685,6 +1805,38 @@ class Payments extends BaseController
         $mpdf->Output();
     
         }
+
+
+
+
+
+         //Common For Select 2 Dropdown
+
+    public function FetchAccounts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $where = array('ca_type' => 'VENDOR');
+
+        $data['result'] = $this->account_model->FetchAllLimitWhere('accounts_charts_of_accounts','ca_name','asc',$where,$term,$end,$start);
+
+        //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+
+
 
 
 

@@ -1850,12 +1850,14 @@
         $(function() {
           
             $('#timesheet_add_form').validate({
+            
                 rules: {
                     required: 'required',
                 },
                 messages: {
                     required: 'This field is required',
                 },
+            
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(form) {
 
@@ -1870,7 +1872,6 @@
                         contentType: false,
                         success: function(data) 
                         {
-
                             var data = JSON.parse(data);
 
                             if(data.status==0)

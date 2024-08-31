@@ -77,7 +77,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#" >
+                                <a class="nav-link menu-link" href="<?php echo base_url();?>HR/Employees" >
                                     <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
                                 </a>
                             

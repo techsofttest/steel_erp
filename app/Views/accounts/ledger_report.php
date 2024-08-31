@@ -364,7 +364,7 @@
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable" class="ReportTable table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
                                                 <tr>
@@ -468,7 +468,20 @@
                                            
                                             <td><?php echo date('d-m-Y',strtotime($vc->transaction_date)); ?></td>
 
-                                            <td><?= $vc->reference; ?></td>
+                                            <td>
+                                            <?php if($vc->voucher_type=="Receipt"){
+                                             $href="Accounts/Receipts";
+                                             } 
+                                             else
+                                             {
+                                             $href="";
+                                             }
+                                             ?>
+                                            <a target="_blank" href="<?= base_url(); ?><?= $href ?>?view=<?= $vc->id; ?>">
+                                            <?= $vc->reference; ?>
+                                              </a>
+                                        
+                                            </td>
 
                                             <td>
 
@@ -485,29 +498,29 @@
 
                                             <td><?= $vc->account_name; ?></td>
 
-                                            <td>
+                                            <td class="currency_format1">
 
                                                <?php if($vc->debit_amount !="") { 
-                                                echo  round($vc->debit_amount,2);
+                                                echo  format_currency($vc->debit_amount);
                                                 $total_debit = $total_debit-$vc->debit_amount;
 
                                                } else {?>
-                                                ---
+                                                
                                                <?php } ?>
                                             
                                             </td>
 
-                                            <td> 
+                                            <td class="currency_format1"> 
                                                 
                                                <?php if($vc->credit_amount !="") { 
-                                                echo  round($vc->credit_amount,2); 
+                                                echo  format_currency($vc->credit_amount); 
                                                 $total_credit=$total_credit+$vc->credit_amount;
                                                 
                                                } else {?>
-                                                ---
+                                                
                                                <?php } ?></td>
 
-                                            <td>
+                                            <td class="currency_format1">
                                             
                                               <?php
                                                 
@@ -520,7 +533,7 @@
                                                 $balance = $balance+$vc->credit_amount; 
                                                 }
 
-                                                echo round($balance,2);
+                                                echo format_currency($balance);
 
                                               ?>
                                               
@@ -547,8 +560,9 @@
                                             <td></td>
                                             <td></td>
                                             <td><b></b></td>
-                                            <td><b><?= round($total_credit,2); ?></b></td>
-                                            <td><b><?= round($balance,2); ?></b></td>
+                                            <td><b ><?= format_currency($total_credit); ?></b></td> 
+                                            
+                                            <td><b ><?= format_currency($balance); ?></b></td>
                                             </tr>
 
                                             </tfoot>
@@ -623,6 +637,7 @@
 
 
 <script>
+
 
 
     document.addEventListener("DOMContentLoaded", function(event) { 

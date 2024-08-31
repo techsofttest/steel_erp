@@ -301,7 +301,7 @@
                         <div class="col-lg-2">
 
                         
-                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
+                        <button type="button" class="w-100" id="add_pvadvance_btn">Advance</button>
 
                         <button id="fifo_add" class="w-100" type="button">FIFO</button>
 
@@ -637,7 +637,7 @@
 
                                     <td>
 
-                                        <input class="form-control credit_amount" type="number" name="inv_amount[]">
+                                        <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
 
                                     </td>
 
@@ -759,16 +759,16 @@
 <!-- View Modal -->
 
 
-<div class="modal fade" id="SalesOrderModal"  aria-hidden="true">
+<div class="modal fade" id="AddPVAdvanceModal" aria-hidden="true">
 
     <div class="modal-dialog modal-xl">
 
-    <form class="" id="sales_order_add">
+    <form class="" id="add_pv_advance_form">
 
         <div class="modal-content">
             <div class="modal-header">
-                <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
-                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
+              <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
+              <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
@@ -792,7 +792,7 @@
                                     <thead>
                                         <tr>
                                         <th>Sl No</th>
-                                        <th>Vendor</th>
+                                        <th>Purchase Voucher</th>
                                         <th>LPO Ref</th>
                                         <th>Amount</th>
                                         <th>Payments</th>
@@ -801,40 +801,7 @@
                                         </tr>
                                     </thead>
 
-
-                                    <tbody id="lpo_body">
-
-                                        <tr class="lpo_row">
-
-                                        <td class="lpo_slno">1</td>
-
-                                        <td>
-
-                                        <select class="form-control" name="lpo_select">
-
-                                        <option value="">Select Vendor</option>
-
-                                        <option value="">Vendor 1</option>
-
-                                        <option value="<?php #pay_credit_account; ?>"></option>
-
-                                       
-                                        </select>
-                                        
-                                        </td>
-
-                                        <td></td>
-                                        <td></td>
-                                        <td><input class="form-control" type="number" name="lpo_reciept[]"></td>
-                                        <td><input type="checkbox" name="lpo_selected[]"></td>
-
-                                        
-                                        <th> <a href="javascript:void(0);" class="lpo_del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
-
-
-                                        </tr>
-
-
+                                    <tbody id="purchase_voucher_add">
 
                                     </tbody>
 
@@ -1500,11 +1467,12 @@
                             }
 
                             $('#added_id').val(data.id);
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                           
 
                              if(submitButtonName=="main_submit")
                             {
                             $('#AddModal').modal('hide');
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             }
                             
                             //datatable.ajax.reload( null, false )
@@ -1724,6 +1692,8 @@
         var parent = $(this).closest('tr');
 
         var c_account = parent.find('.debit_account');
+
+        console.log(c_account.val());
 
         var c_amount = parent.find('.credit_amount');
 
@@ -2519,6 +2489,81 @@ $('#uid').val(data);
 
 
 
+
+
+$("body").on('input change', '.invoice_receipt_amount', function(event){
+            
+
+            val = parseFloat($(this).val())||0;
+
+            max = $(this).attr('maxlength');
+
+            if(val>max)
+            {
+
+            $(this).val(max);
+
+            $(this).trigger('change');
+
+            }
+
+
+            var invoice_total = 0;
+
+            //var receipt_total = parseInt($('#fifo_add').attr('data-total'))||0;
+
+            var receipt_total = parseInt($('#fifo_add').data('total'))||0;
+
+            var max_receipt = parseInt(parent.find('.invoice_total_amount').val())||0;
+
+            var receipt_amount = $(this).val();
+
+            parent =  $(this).closest('tr');
+
+            if(max_receipt!=receipt_amount)
+            {
+                parent.find('.invoice_add_check').prop('checked',false);
+            }
+            else
+            {
+                parent.find('.invoice_add_check').prop('checked',true);
+            }
+
+            // $('.invoice_receipt_amount').each(function(){
+
+            // parent =  $(this).closest('tr');
+
+            // invoice_total += parseInt(parent.find('.invoice_receipt_amount').val())||0;
+
+            // })
+
+            // balance = (parseFloat(receipt_total)||0) - (parseFloat(invoice_total)||0);
+
+            // balance = Math.max(0,balance);
+
+            // $('.invoice_balance').html(balance);
+
+            // $('.invoice_adjusted').html(invoice_total);
+
+           
+            //}
+
+            CalcBalance();
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
 $("body").on('change','.invoice_add_check',function(){
 
 parent = $(this).closest('tr');
@@ -2552,6 +2597,33 @@ parent.find('.invoice_receipt_amount').val(0);
 
 
         $("body").on('keyup', '.credit_amount', function(){ 
+
+            value = parseFloat($(this).val())||0;
+
+                max = parseFloat($(this).attr('data-max'))||0;
+
+
+                /*
+                if((max!="") && (value>max))
+                {
+
+                alertify.error('Cannot be greater than pending amounts!').delay(3).dismissOthers();  
+
+                $(this).val(max);
+
+                }
+
+                
+                
+                if(max=="")
+                {
+
+                alertify.error('No pending amount to debit!').delay(3).dismissOthers();  
+
+                $(this).val(max);
+
+                }
+                */
 
         TotalAmount();
 
@@ -2724,11 +2796,49 @@ parent.find('.invoice_receipt_amount').val(0);
         }); 
 
 
-
-
         });
 
 
+
+
+
+        $('body').on('change','.debit_account_select2', function(){
+
+var vendor_id = $(this).val();
+
+parent = $(this).closest('.invoice_row');
+
+    //var parent = $(this).closest('.invoice_row');
+
+    $.ajax({
+
+    url : "<?php echo base_url(); ?>Accounts/Payments/DebitTotal",
+
+    method : "POST",
+
+    data: {vendor:vendor_id},
+
+    success:function(data)
+    {
+
+    if(data!="")
+    {
+    parent.find('.credit_amount').attr('data-max',data);
+    }
+    else
+    {
+    parent.find('.credit_amount').attr('data-max',0);
+    }
+
+    //console.log(data);
+
+    //alertify.success(data).delay(3).dismissOthers();   
+
+    }
+
+    });
+
+    });
 
 
 
@@ -2742,7 +2852,7 @@ function InitAccountsSelect2(classname,parent){
                         theme : "default form-control-",
                         dropdownParent: $($(''+classname+':last').closest(''+parent+'')),
                         ajax: {
-                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                            url: "<?= base_url(); ?>Accounts/Payments/FetchAccounts",
                             dataType: 'json',
                             delay: 250,
                             cache: false,
@@ -2776,8 +2886,7 @@ function InitAccountsSelect2(classname,parent){
                 InitAccountsSelect2('.debit_account_select2','.invoice_row');
 
                 /* ### */
-                
-            //
+
 
 
 
@@ -2789,7 +2898,55 @@ function InitAccountsSelect2(classname,parent){
 
 
 
+
+                $('body').on('click','.add_pvadvance_btn', function(){
+
+                var vendor_id = $(this).val();
+
+                parent = $(this).closest('.invoice_row');
+
+                //var parent = $(this).closest('.invoice_row');
+
+                $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/Payments/FetchPVAdvanceAdd",
+
+                method : "POST",
+
+                data: {vendor:vendor_id},
+
+                success:function(data)
+                {
+
+                if(data!="")
+                {
+                parent.find('.credit_amount').attr('data-max',data);
+                }
+                else
+                {
+                parent.find('.credit_amount').attr('data-max',0);
+                }
+
+                }
+
+                    });
+
+
+
+
+                });
+
+
+
+
+
+
     });
+
+
+
+
+    
 
 
 

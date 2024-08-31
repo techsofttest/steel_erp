@@ -413,6 +413,25 @@ table.menu td{
 
 
 
+/* Datatable Alignment For Currency */
+/*
+.ReportTable>table.tfoot th, table.tfoot td,table.dataTable thead th, table.dataTable thead td{
+    text-align: end;
+}
+
+.ReportTable>.table-bordered tr {
+    text-align: end;
+}
+
+.ReportTable>thead th, thead td,table.dataTable tfoot td,table.dataTable tfoot th {
+    text-align: end;
+}
+    */
+
+
+/* ## */
+
+
 /* ##### */
 
 </style>
