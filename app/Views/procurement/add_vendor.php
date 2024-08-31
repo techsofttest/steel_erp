@@ -218,7 +218,7 @@
                                         <!-- ### -->
 
                                         <div class="modal-footer justify-content-center">
-                                            <button  class="btn btn btn-success">Save</button>
+                                            <button  class="btn btn btn-success vendor_once_form_submit1">Save</button>
                                         </div>
                                     </div>
 
@@ -284,7 +284,7 @@
                                 <input type="hidden" class="vendor_hidden_id" name="pro_con_vendor">
                                 <div class="modal-footer justify-content-center">
                                     
-                                    <button class="btn btn btn-success">Save</button>
+                                    <button class="btn btn btn-success vendor_once_form_submit2">Save</button>
                                 </div>
                             </div>   
                                                                     
@@ -499,7 +499,7 @@
                                         <input type="hidden" class="vendor_hidden_id" name="ven_id">
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success">Save</button>
+                                            <button class="btn btn btn-success vendor_once_form_submit3">Save</button>
                                         </div>
 
 
@@ -541,6 +541,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             },
             errorPlacement: function(error, element) {} ,
             submitHandler: function(form) {
+                $('.vendor_once_form_submit1').attr('disabled', true); // Disable this input.
                 $.ajax({
                     url: "<?php echo base_url(); ?>Procurement/Vendor/Add",
                     method: "POST",
@@ -577,6 +578,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             },
             errorPlacement: function(error, element) {} ,
             submitHandler: function(form) {
+                $('.vendor_once_form_submit2').attr('disabled', true); // Disable this input.
                 $.ajax({
                     url: "<?php echo base_url(); ?>Procurement/Vendor/AddTab2",
                     method: "POST",
@@ -611,7 +613,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             submitHandler: function(currentForm) {
                 // Create FormData object to handle file uploads
                 var formData = new FormData(currentForm);
-
+                $('.vendor_once_form_submit3').attr('disabled', true); // Disable this input.
                 // Submit the form for the current tab
                 $.ajax({
                     url: "<?php echo base_url(); ?>Procurement/Vendor/AddTab3",
@@ -775,7 +777,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             //$(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
             
-            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+            $(".person-more").append("<tr class='prod_row prod_row_remove'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
             
             slno();
 

@@ -7,7 +7,7 @@
                     
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Create Contact Details</h5>
-                        <button type="button" class="btn-close modal_close"  aria-label="Close"></button>
+                        <button type="button" class="btn-close  vendor_con_close"  aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">

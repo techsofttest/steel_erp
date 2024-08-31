@@ -725,7 +725,7 @@ class PurchaseOrder extends BaseController
         foreach($purchase_order_product as $pur_order_prod)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
-            <td class="si_no1">'.$i.'</td>
+            <td class="si_no1 delete_sino">'.$i.'</td>
             <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>

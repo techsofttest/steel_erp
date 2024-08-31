@@ -285,7 +285,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_reffer_no"  class="form-control view_reffer_no"  required readonly>
+                                                                        <input type="text" name="mr_reffer_no"  class="form-control view_reffer_no"  readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -306,7 +306,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker view_date" required>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date  view_date" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -338,7 +338,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date datepicker view_time_frame" value="" required>
+                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date  view_time_frame" value="" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -359,7 +359,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                    <input type="text" name="mr_time_frame" class="form-control view_assigned_to" value="" required>
+                                                                    <input type="text" name="mr_time_frame" class="form-control view_assigned_to" value="" readonly>
 
                                                                
                                                                     </div>
@@ -414,9 +414,7 @@
 				                        </div>
 
 
-                                        <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
-                                        </div>
+                                       
 
 
                                         
@@ -1027,7 +1025,7 @@
 
             var $salesSelect = $(this);
 	        
-            var sales_order = $(this).val();
+            //var sales_order = $(this).val();
  
             $.ajax({
  
@@ -1035,7 +1033,7 @@
  
                  method : "POST",
  
-                 data: {salesOrder: sales_order},
+                 //data: {salesOrder: sales_order},
  
                  success:function(data)
                  {   

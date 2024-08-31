@@ -865,6 +865,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     /*validation section start*/
 
+    $('.edit_post_box').on('input', function() {
+       
+       $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
+    });
+
+
     $('#edit_telephone_id').on('input', function() {
        
        $(this).val($(this).val().replace(/[^0-9+\- ]/g, ''));
@@ -1175,8 +1181,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         var id = $('.edit_con_ven_id').val()
 
-         $('.edit_contact_hidden_id').val(id);
-
+        $('.edit_contact_hidden_id').val(id);
 
         $('#EditAddContact').modal('show');
 

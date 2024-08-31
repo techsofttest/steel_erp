@@ -1,0 +1,10 @@
+14-08-2024 - updated
+
+ALTER TABLE `steel_pro_material_received_note_prod` ADD `rnp_purchase_order_id` INT(255) NOT NULL AFTER `rnp_purchase_id`;
+
+ALTER TABLE `steel_pro_material_received_note_prod` CHANGE `rnp_purchase_order_id` `rnp_purchase_prod_id` INT(255) NOT NULL;
+
+
+31-08-2024
+
+ALTER TABLE `steel_crm_sales_return` ADD `sr_total` DECIMAL(19,2) NOT NULL AFTER `sr_modified_date`;

@@ -306,7 +306,7 @@ class SalesReturn extends BaseController
 
                     if(!empty($_POST['cash_id'][$j]))
                     {
-                        
+                         
                         $cash_prod_single = $this->common_model->SingleRow('crm_cash_invoice_prod_det',array('cipd_id' => $_POST['cash_id'][$j]));
                         
                         $this->common_model->EditData(array('cipd_delivered_qty'=> $cash_prod_single->cipd_delivered_qty + $_POST['srp_quantity'][$j]),array('cipd_id'=>  $_POST['cash_id'][$j]),'crm_cash_invoice_prod_det');
@@ -328,17 +328,12 @@ class SalesReturn extends BaseController
                         
                         $cash_datas = $this->common_model->CheckTwiceCond1('crm_cash_invoice_prod_det',array('cipd_cash_invoice'=>$_POST['cash_main_table'][$j]),array('cipd_status' => 1));
                          
-                       
-
+                        
                         if(count($cash_data) == count($cash_datas))
                         {
                             $this->common_model->EditData(array('ci_status'=>1),array('ci_id'=>$_POST['cash_main_table'][$j]),'crm_cash_invoice');
                         }
 
-
-                       
-                       
-                       
                     }
 
                     if(!empty($_POST['credit_id'][$j]))
@@ -906,48 +901,7 @@ class SalesReturn extends BaseController
         }
 
 
-        /*public function AddProduct()
-        {
-            $cond1 = array('cipd_cash_invoice' => $this->request->getPost('cashInvoice'));
-            
-            $joins = array(
-                array(
-                    'table' => 'crm_products',
-                    'pk'    => 'product_id',
-                    'fk'    => 'cipd_prod_det',
-                ),
-    
-            );
-
-            $cash_invoice_product = $this->common_model->FetchWhereJoin('crm_cash_invoice_prod_det',$cond1,$joins);
-             
-            //print_r($cash_invoice_product); exit();
-          
-            $i = 1; 
-            
-            $data['product_detail'] ="";
-
-            
-
-            foreach($cash_invoice_product as $cash_invoice_prod){
-
-                $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$cash_invoice_prod->cipd_id.'">
-                                                <td class="si_no">'.$i.'</td>
-                                                <td><input type="text" name="dpd_prod_det[]" value="'.$cash_invoice_prod->product_details.'" class="form-control"  readonly></td>
-                                            
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$cash_invoice_prod->cipd_qtn.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_id .'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
-                                                
-                                            </tr>';
-                                                $i++;
-            }
-
         
-
-            echo json_encode($data);
-                      
-
-        }*/
 
         public function AddProduct()
         {

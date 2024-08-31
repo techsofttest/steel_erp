@@ -102,7 +102,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_reffer_no" id="pr_id" class="form-control input_length" value="" required readonly>
+                                                                        <input type="text" name="pr_reffer_id" id="pr_id" class="form-control input_length" value="" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -123,7 +123,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_date" class="form-control mr_date datepicker input_length" required>
+                                                                        <input type="text" name="pr_date" class="form-control mr_date datepicker input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -146,7 +146,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select select_vendor add_vendor vendor_data" name="purchase_vendor_name" id=""  required>
+                                                                        <select class="form-select select_vendor add_vendor vendor_data" name="pr_vendor_name" id=""  required>
                                                                             
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                            
@@ -174,7 +174,7 @@
 
                                                                     <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <select class="form-select vendor_inv_ref" name="vendor_inv" id="" required></select>
+                                                                        <select class="form-select vendor_inv_ref" name="pr_vendor_inv" id="" required></select>
                                                                     
                                                                     </div>
 
@@ -215,7 +215,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="purchase_lpo_ref" class="form-control input_length2" value="" required>   
+                                                                        <input type="text" name="pr_lpo" class="form-control input_length2" value="" required>   
 
                                                                     </div>
 
@@ -235,7 +235,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_contact" class="form-control  add_contact_person" value="" required>
+                                                                        <input type="text" name="pr_contact_person" class="form-control  add_contact_person" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -256,7 +256,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_payment_term" class="form-control add_payment_term input_length2" value="" required>
+                                                                        <input type="text" name="pr_payment_term" class="form-control add_payment_term input_length2" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -270,7 +270,7 @@
                                                             
 
 
-                                                            <input type="hidden" class="hidden_purchase_return_id" name="purchase_return_id">
+                                                            <input type="hidden" class="hidden_purchase_return_id" name="pr_id">
 
 
 
@@ -300,9 +300,21 @@
                                                                 <td>Amount</td>
                                                             </tr>
                                                             
+                                                            
                                                         </tbody>
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
+
+                                                        <tbody>
+                                                            <tr>
+                                                               
+                                                                <td colspan="7" class="sales_order_amount_in_word"></td>
+                                                                <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="pr_total_amount" class="amount_total form-control" readonly=""></td>
+                                                            </tr>
+
+                                                        </tbody>
                                                         
                                                     </table>
                                                 </div>
@@ -318,7 +330,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name="po_file" Class="image_file"  class="form-control">
+                                                                <input type="file" name="pr_file" Class="image_file"  class="form-control">
                                                             </div>
 
                                                         </div>
@@ -373,7 +385,7 @@
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Reffer Number</th>
-                                                    <th>Purchase Order</th>
+                                                    <th>Vendor Name</th>
                                                     <th>Date</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -433,7 +445,6 @@
                                     <tr>
                                         <td>Serial No.</td>
                                         <td>Product Description</td>
-                                        <td>Unit</td>
                                         <td>Qty</td>
                                         <td>Tick</td>
                                     </tr>
@@ -442,6 +453,9 @@
                                 </thead>
                                                         
                                 <tbody  class="travelerinfo select_prod_add"></tbody>
+
+                               
+
 
 
                             </table>
@@ -479,6 +493,82 @@
 <!--select  modal section end-->
 
 
+
+<!--payment modal start-->
+
+
+<div class="modal fade" id="paymentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Date</td>
+                                        <td>Invoice Ref</td>
+                                        <td>Amount</td>
+                                        <td>Adjustment</td>
+                                        <td>Tick</td>
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo payment_prod">
+                                    
+                                </tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
+                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+
+
+<!--payment modal end-->
+
+
+
+
 <!--vendor modal start-->
 
 <?= $this->include('procurement/add_vendor') ?>
@@ -491,6 +581,278 @@
 <?= $this->include('procurement/add_vendor_contact') ?>
 
 <!--contact modal end-->
+
+
+  <!---view modal start--->
+
+<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+        <form  class="Dashboard-form class" id="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Purchase Return</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="live-preview">
+                        
+                        <div class="row">
+                            
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                        
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_date" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                            
+                                                <input type="text" name="" class="form-control view_vendor_name" readonly>
+                                        
+                                            </select>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                    
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Inv Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_vendor_inv_ref" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+
+
+                                    
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                    
+
+                                    
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Lpo Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_lpo_ref" readonly>
+                                            
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                    
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_contact_person" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                    
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_payment_term" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+
+
+                                </div>
+
+                            </div>
+                                                                    
+
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        
+                                        <td>Serial No.</td>
+                                        <td>Sales Order</td>
+                                        <td>Product Description</td>
+                                        <td>Credit A/C</td>
+                                        <td>Qty</td>
+                                        <td>Unit</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                       
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                
+                                <tbody  class="travelerinfo view_prod_data"></tbody>
+
+                                <tbody>
+                                    <tr>
+                                        
+                                        <td colspan="6" class=""></td>
+                                        <td>Total</td>
+                                        <td><input type="text" name="" class="view_total_prod form-control" readonly=""></td>
+                                    </tr>
+
+                                </tbody>
+
+                                
+                            </table>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                
+                                <div class="card-body view_image_table" style="float: inline-start;"></div>
+
+                                
+                            </div>
+                            <div class="col-lg-6"></div>
+                            
+                        </div>
+
+                        <!--table section end-->
+
+
+                    </div>  
+                        
+                    
+                </div>
+
+
+                
+            </div>
+        </form>
+
+	</div>
+</div>
+
+<!--view modal end-->
 
 
 <script>
@@ -516,16 +878,42 @@
 
                         // Submit the form for the current tab
                         $.ajax({
-                            url: "<?php echo base_url(); ?>Procurement/PurchaseVoucher/Add",
+                            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
                             method: "POST",
                             data: $(currentForm).serialize(),
                             success: function(data) {
-                                
-                                $('#AddPurchaseVoucher').modal('hide');
+                                var data = JSON.parse(data);
+
+                                $('#AddPurchaseReturn').modal('hide');
+
+                                $('#paymentModal').modal('show');
                             
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             
                                 datatable.ajax.reload(null, false);
+
+                                var vendorID = data.vendor_id;
+
+                                $.ajax({
+
+                                    url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchInvoice",
+
+                                    method : "POST",
+
+                                    data: {ID: vendorID},
+                                    
+                                    success: function(data) {
+                                         
+                                        var data = JSON.parse(data);
+
+                                        $('.payment_prod').html(data.product_detail);
+
+                                        
+
+                                    }
+                                    
+
+                                });
                             
                                 
                             }
@@ -747,7 +1135,7 @@
             'serverMethod': 'post',
             'ajax': 
             {
-                'url': "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/FetchData",
+                'url': "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchData",
                 'data': function (data) {
                     // CSRF Hash
                     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -766,10 +1154,10 @@
                 }
             },
             'columns': [
-                { data: 'mrn_id'},
-                { data: 'mrn_reffer'},
-                { data: 'mrn_purchase_order'},
-                { data: 'mrn_date'},
+                { data: 'pr_id'},
+                { data: 'pr_reffer_id'},
+                { data: 'pr_vendor_name'},
+                { data: 'pr_date'},
                 { data: 'action'},
                 
                ]
@@ -857,7 +1245,7 @@
         /*add selected product*/
 
 
-        $("body").on('click', '.cust_more_modal', function()
+        /*$("body").on('click', '.cust_more_modal', function()
         { 
             if(!$("#purchase_form").valid())
             {
@@ -880,7 +1268,9 @@
 
             var formData = new FormData($('#purchase_form')[0]);
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
-            formData.append('image', image); // Append the file to FormData object
+            formData.append('pr_file', image); // Append the file to FormData object
+
+           
 
             $.ajax({
                         url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
@@ -892,7 +1282,7 @@
 
                             var data = JSON.parse(data);
 
-                            /*var purchase_voucher_id = data.purchase_voucher_id;
+                            var purchase_voucher_id = data.purchase_voucher_id;
 
                             $('.hidden_purchase_voucher_id').val(purchase_voucher_id);
 
@@ -919,14 +1309,14 @@
                          
                                 }  
 
-                            });*/
+                            });
  
                             
                         }
 
                     });
 
-        });
+        });*/
 
 
         /*#######*/
@@ -940,7 +1330,7 @@
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/SelectedProduct",
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/SelectedProduct",
 
                 method : "POST",
 
@@ -953,9 +1343,11 @@
 
                     $('.product-more2').html(data.product_detail);
 
+                    $('.amount_total').val(data.total_amount);
+
                     $('#SelectProduct').modal("hide");
 
-                    $('#AddPurchaseVoucher').modal("show");
+                    $('#AddPurchaseReturn').modal("show");
 
                     $('.selected_table').show();
                         
@@ -1189,7 +1581,7 @@
 
         /*add product start*/
 
-        $("body").on('click', '.add_contact', function()
+        $("body").on('click', '.add_more_icon', function()
         { 
             if(!$("#purchase_form").valid())
             {
@@ -1224,24 +1616,24 @@
 
                             var data = JSON.parse(data);
 
-                            /*var purchase_voucher_id = data.purchase_voucher_id;
+                            var purchase_return_id = data.purchase_return_id;
 
-                            $('.hidden_purchase_voucher_id').val(purchase_voucher_id);
+                            $('.hidden_purchase_return_id').val(purchase_return_id);
 
-                            var purchase_id = data.purchase_order;
+                            var vendor_inv_ref = data.vendor_inv_ref;
 
-                            $('#AddPurchaseVoucher').modal('hide');
+                            $('#AddPurchaseReturn').modal('hide');
 
                             $('#SelectProduct').modal('show');
 
                            
                             $.ajax({
 
-                                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchProduct",
+                                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchProduct",
 
                                 method : "POST",
 
-                                data: {ID: purchase_id},
+                                data: {ID: vendor_inv_ref},
                                 
                                 success:function(data)
                                 {   
@@ -1251,7 +1643,7 @@
                          
                                 }  
 
-                            });*/
+                            });
  
                             
                         }
@@ -1340,6 +1732,55 @@
 
 
         /*add section end*/
+
+
+
+        
+        /*view section start*/
+
+        $("body").on('click', '.view_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/View",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+                                    
+                    $('.view_ref').val(data.reffer_id);
+
+                    $('.view_date').val(data.date);
+
+                    $('.view_vendor_name').val(data.vendor_name);
+
+                    $('.view_vendor_inv_ref').val(data.vendor_inv);
+
+                    $('.view_lpo_ref').val(data.lpo);
+
+                    $('.view_contact_person').val(data.contact_person);
+
+                    $('.view_payment_term').val(data.payment_term);
+
+                    $('.view_prod_data').html(data.purchase_return);
+
+                    $('#ViewModal').modal("show");
+                    
+                }
+
+            });
+
+        });
+
+
+        /*view section end*/
 
 
 

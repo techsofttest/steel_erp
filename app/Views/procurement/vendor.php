@@ -25,7 +25,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Vendor</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddVendor" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddVendor" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -106,7 +106,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_name" class="form-control view_vendor_name" required>
+                                                                        <input type="text" name="ven_name" class="form-control view_vendor_name" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -128,7 +128,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         <!--<select class="form-select account_head_select account_head_clz edit_account_head"  name="ven_account_head"  required></select>-->
 
-                                                                        <input type="text" name="" class="form-control view_account_head" required>
+                                                                        <input type="text" name="" class="form-control view_account_head" readonly>
                                                                         
                                                                     </div>
 
@@ -149,7 +149,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_account_id" class="form-control view_account_id" readonly required>
+                                                                        <input type="text" name="ven_account_id" class="form-control view_account_id" readonly >
                                                                     </div>
 
                                                                 </div> 
@@ -169,7 +169,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_post_box" class="form-control view_post_box" required>
+                                                                        <input type="text" name="ven_post_box" class="form-control view_post_box" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -189,7 +189,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_telephone" id="telephone"  class="form-control view_telephone"  required>
+                                                                        <input type="text" name="ven_telephone" id="telephone"  class="form-control view_telephone"  readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -207,7 +207,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_fax" id="fax" class="form-control view_fax" required>
+                                                                        <input type="text" name="ven_fax" id="fax" class="form-control view_fax" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -225,7 +225,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="email" name="ven_email" class="form-control view_email" required>
+                                                                        <input type="email" name="ven_email" class="form-control view_email" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -249,7 +249,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ven_credit_term" class="form-control view_credit_term" required>
+                                                                        <input type="text" name="ven_credit_term" class="form-control view_credit_term" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -268,7 +268,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="ven_credit_period" class="form-control view_credit_period" required>
+                                                                        <input type="number" name="ven_credit_period" class="form-control view_credit_period" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -287,7 +287,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="ven_credit_limit" class="form-control view_credit_limit" required>
+                                                                        <input type="number" name="ven_credit_limit" class="form-control view_credit_limit" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -295,9 +295,7 @@
 
                                                             <!-- ### -->
 
-                                                            <div class="modal-footer justify-content-center">
-                                                                    <button  class="btn btn btn-success">Save</button>
-                                                            </div>
+                                                           
 
                                                         </div>
 
@@ -401,7 +399,7 @@
                                                                 <label for="basiInput" class="form-label">CR No</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number"   class="form-control view_cr_no" required>
+                                                                <input type="number"   class="form-control view_cr_no" readonly>
                                                             </div>
                                                         </div>
                                                         
@@ -419,7 +417,7 @@
                                                                 <label for="basicInput" class="form-label">	CR Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text"  class="form-control view_cr_expiry" required>
+                                                                <input type="text"  class="form-control view_cr_expiry" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -437,7 +435,7 @@
                                                                 <label for="basicInput" class="form-label">Est.ID</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number" class="form-control view_est_id" required>
+                                                                <input type="number" class="form-control view_est_id" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -458,7 +456,7 @@
                                                                 <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" class="form-control ven_est_expiry" required>
+                                                                <input type="text" class="form-control ven_est_expiry" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -476,7 +474,7 @@
                                                                 <label for="basicInput" class="form-label">Signatory Name</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text"  class="form-control view_signature_name" required>
+                                                                <input type="text"  class="form-control view_signature_name" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -494,7 +492,7 @@
                                                                 <label for="basicInput" class="form-label">QID Number</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number" class="form-control ven_qid_no" required>
+                                                                <input type="number" class="form-control ven_qid_no" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -514,7 +512,7 @@
                                                                 <label for="basicInput" class="form-label">QID Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" class="form-control ven_qid_expiry" required>
+                                                                <input type="text" class="form-control ven_qid_expiry" readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -752,6 +750,25 @@
             $('#ViewContactDeatils').modal('hide');
 
         });
+
+
+        /*reset reffer no*/ 
+        $('.add_model_btn').click(function(){
+
+            $('#add_vendor_form')[0].reset();
+
+            $('.prod_row_remove').remove();
+
+            $('.vendor_once_form_submit1').attr('disabled', false); // Disable this input.
+
+            $('.vendor_once_form_submit2').attr('disabled', false); // Disable this input.
+
+            $('.vendor_once_form_submit3').attr('disabled', false); // Disable this input.
+
+           
+        });
+
+        /*####*/
 
 
 

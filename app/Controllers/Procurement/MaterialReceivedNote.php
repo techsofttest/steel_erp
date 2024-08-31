@@ -165,15 +165,15 @@ class MaterialReceivedNote extends BaseController
 
             ];
             
-            /*if (isset($_FILES['po_file']) && $_FILES['po_file']['name'] !== '') {
+            if (isset($_FILES['mrn_file']) && $_FILES['mrn_file']['name'] !== '') {
                 
                 // Upload the new image
-                $attachFileName = $this->uploadFile('po_file', 'uploads/PurchaseOrder');
+                $attachFileName = $this->uploadFile('mrn_file', 'uploads/MaterialReceived');
             
                 // Update the data with the new image filename
-                $insert_data['po_file'] = $attachFileName;
+                $insert_data['mrn_file'] = $attachFileName;
  
-            }*/
+            }
 
             $material_received_id = $this->common_model->InsertData('pro_material_received_note',$insert_data);
 
@@ -208,20 +208,22 @@ class MaterialReceivedNote extends BaseController
 
             ];
             
-            /*if (isset($_FILES['po_file']) && $_FILES['po_file']['name'] !== '') {
+          
+
+            if (isset($_FILES['mrn_file']) && $_FILES['mrn_file']['name'] !== '') {
                 
                 // Upload the new image
-                $attachFileName = $this->uploadFile('po_file', 'uploads/PurchaseOrder');
+                $attachFileName = $this->uploadFile('mrn_file', 'uploads/MaterialReceived');
             
                 // Update the data with the new image filename
-                $insert_data['po_file'] = $attachFileName;
+                $updated_data['mrn_file'] = $attachFileName;
 
                 
-            }*/
+            }
 
             $this->common_model->EditData($updated_data, array('mrn_id' => $this->request->getPost('received_id')),'pro_material_received_note');
             
-            //$material_recived_id = $this->request->getPost('mrn_id');
+            
 
 
             if(!empty($_POST['pop_qty']))
@@ -248,6 +250,7 @@ class MaterialReceivedNote extends BaseController
                             'rnp_current_delivery'       =>  $_POST['current_qty'][$j],
                             'rnp_material_received_note' =>  $this->request->getPost('received_id'),
                             'rnp_purchase_id'            =>  $_POST['purchase_org_id'][$j],
+                            'rnp_purchase_prod_id'       =>  $_POST['purchase_id'][$j],
                             'rnp_amount'                 =>  $total_amount,
                             
                         );
@@ -255,8 +258,10 @@ class MaterialReceivedNote extends BaseController
 
                         $this->common_model->InsertData('pro_material_received_note_prod',$insert_data);
 
+                        
                         $this->common_model->EditData(array('pop_delivered_order' => $new_delivery_qty),array('pop_id' => $_POST['purchase_id'][$j]),'pro_purchase_order_product');
                         
+
                         $purchase_prod = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $_POST['purchase_id'][$j]));
                         
                        if($purchase_prod->pop_qty == $purchase_prod->pop_delivered_order)
@@ -473,7 +478,7 @@ class MaterialReceivedNote extends BaseController
                                             <td><input type="text" name="prod_desc[]" value="'.$product->product_details.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->pop_unit.'" class="form-control" required></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$product->pop_qty.'"  class="form-control add_order_qty" readonly required></td>
-                                            <td><input type="text" name="delivered_qty[]" value="'.$product->pop_delivered_order.'"  class="form-control add_delivery_qty" required></td>
+                                            <td><input type="text" name="delivered_qty[]" value="'.$product->pop_delivered_order.'"  class="form-control add_delivery_qty" required readonly></td>
                                             <td><input type="text" name="current_qty[]" value=""  class="form-control add_current_qty" required></td>
                                             <td><input type="hidden" name="purchase_id[]" value="'.$product->pop_id.'"></td>
                                             <td><input type="hidden" name="purchase_org_id[]" value="'.$product->pop_purchase_order.'"></td>
@@ -548,6 +553,342 @@ class MaterialReceivedNote extends BaseController
         echo json_encode($data);
         
     }
- 
+
+
+    public function View(){
+
+        $join =  array(
+            
+            array(
+                'table' => 'pro_vendor',
+                'pk'    => 'ven_id',
+                'fk'    => 'mrn_vendor_name',
+            ),
+
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'mrn_purchase_order',
+            ),
+
+            
+
+        );
+        
+        $material_received = $this->common_model->SingleRowJoin('pro_material_received_note', array('mrn_id' => $this->request->getPost('ID')),$join);
+        
+        $data['reffer_n0']      = $material_received->mrn_reffer;
+
+        $data['date']           = date('d-M-Y',strtotime($material_received->mrn_date));
+
+        $data['vendor_name']    = $material_received->ven_name;
+
+        $data['purchase_order'] = $material_received->po_reffer_no;
+
+        $data['delivery_note']  = $material_received->mrn_delivery_note;
+
+        $data['mr_reffer']      = $material_received->mrn_mr_reffer;
+
+        $data['payment_term']   = $material_received->mrn_payment_term;
+
+       
+        /*$join =  array(
+            
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'pop_prod_desc',
+            ),
+
+            
+        );*/
+
+        //$purchase_order_product = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $this->request->getPost('ID')),$join);
+        
+        $material_received_product = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $this->request->getPost('ID')));
+        
+
+        $i=1;
+
+        $data['sales_order'] = '';
+
+        foreach($material_received_product as $material_received_prod)
+        {
+            $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
+           </tr>
+            ';
+            $i++; 
+        }
+
+        if(!empty($material_received->mrn_file))
+	    {
+            $data['image_table'] ='
+            <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                <thead>
+                    <tr>
+                        <th class="cust_img_rgt_border">File Name</th>
+                        <th class="cust_img_rgt_border">Download</th>
+                        
+                    </tr>
+                <thead>
+                <tbody>
+                    <tr>
+                        <td class="cust_img_rgt_border edit_file_name" >'.$material_received->mrn_file.'</td>
+                        <td class="cust_img_rgt_border edit_file_attach"><a href="'.base_url('uploads/MaterialReceived/' .$material_received->mrn_file).'" target="_blank">View</a></td>
+                        
+                    </tr>
+                </tbody>
+            </table>';
+	    }
+
+
+
+
+        echo json_encode($data);
+    }
+
+
+    public function Edit(){
+        
+        $join =  array(
+            
+            array(
+                'table' => 'pro_vendor',
+                'pk'    => 'ven_id',
+                'fk'    => 'mrn_vendor_name',
+            ),
+
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'mrn_purchase_order',
+            ),
+
+            
+
+        );
+        
+        $material_received = $this->common_model->SingleRowJoin('pro_material_received_note', array('mrn_id' => $this->request->getPost('ID')),$join);
+        
+        $data['reffer_n0']      = $material_received->mrn_reffer;
+
+        $data['date']           = date('d-M-Y',strtotime($material_received->mrn_date));
+
+        $data['vendor_name']    = $material_received->ven_name;
+
+        $data['purchase_order'] = $material_received->po_reffer_no;
+
+        $data['delivery_note']  = $material_received->mrn_delivery_note;
+
+        $data['mr_reffer']      = $material_received->mrn_mr_reffer;
+
+        $data['payment_term']   = $material_received->mrn_payment_term;
+
+        $data['main_id']        = $material_received->mrn_id;
+
+        
+        $material_received_product = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $this->request->getPost('ID')));
+        
+
+        $i=1;
+
+        $data['sales_order'] = "";
+
+        foreach($material_received_product as $material_received_prod)
+        {
+            $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
+            
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_amount.'" class="form-control" readonly></td>
+           
+            <td style="width:15%">
+                <a href="javascript:void(0)" class="delete delete-color sales_delete" data-id="'.$material_received_prod->rnp_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            </td>
+            </tr>
+            ';
+            $i++; 
+        }
+
+        if(!empty($material_received->mrn_file))
+        {
+            $data['image_table'] ='
+            <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                <thead>
+                    <tr>
+                        <th class="cust_img_rgt_border">File Name</th>
+                        <th class="cust_img_rgt_border">Download</th>
+                        <th class="cust_img_rgt_border">Update</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    <tr>
+                        <td class="cust_img_rgt_border edit_file_name" >'. $material_received->mrn_file.'</td>
+                        <td class="cust_img_rgt_border edit_file_attach"><a href="'.base_url('uploads/MaterialReceived/' .$material_received->mrn_file).'" target="_blank">View</a></td>
+                        <td class="cust_img_rgt_border" ><input type="file" name="mrn_file"></td>
+                    </tr>
+                </tbody>
+             </table>';
+        }
+
+
+
+        echo json_encode($data);
+    }
+
+
+    public function Update()
+    {
+        $cond = array('mrn_id' => $this->request->getPost('mrn_id'));
+
+        $material_received = $this->common_model->SingleRow('pro_material_received_note',$cond);
+
+        $update_data = $this->request->getPost();
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('mrn_id', $update_data)) 
+        {
+            unset($update_data['mrn_id']);
+        }  
+            
+        $update_data['mrn_date'] =  date('Y-m-d',strtotime($this->request->getPost('mrn_date')));
+        
+        // Handle file upload
+	    if (isset($_FILES['mrn_file']) && $_FILES['mrn_file']['name'] !== '') {
+		
+		
+            if($this->request->getFile('mrn_file') != '' ){ 
+            
+                $previousImagePath = 'uploads/MaterialReceived/' .$material_received->mrn_file;
+            
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+            }
+		
+		    // Upload the new image
+		    $AttachFileName = $this->uploadFile('mrn_file', 'uploads/MaterialReceived');
+	
+		    // Update the data with the new image filename
+		    $update_data['mrn_file'] = $AttachFileName;
+	    }
+
+       
+
+        $this->common_model->EditData($update_data, array('mrn_id' => $this->request->getPost('mrn_id')), 'pro_material_received_note');
+        
+    }
+
+
+    public function DeleteSales()
+    { 
+        $cond = array('rnp_id' => $this->request->getPost('ID'));
+
+        $material_received_prod = $this->common_model->SingleRow('pro_material_received_note_prod',$cond);
+
+        $this->common_model->EditData(array('po_delivered_status' => 0), array('po_id' => $material_received_prod->rnp_purchase_id), 'pro_purchase_order');
+        
+        $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $material_received_prod->rnp_purchase_prod_id));
+        
+        $new_delivery_qty = $purchase_order_product->pop_delivered_order -  $material_received_prod->rnp_current_delivery;
+        
+        $this->common_model->EditData(array('pop_delivered_order'=>$new_delivery_qty,'pop_delivered_status'=>0), array('pop_id' => $material_received_prod->rnp_purchase_prod_id), 'pro_purchase_order_product');
+        
+        $material_received_prod_all = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $material_received_prod->rnp_material_received_note));
+        
+        
+
+        if(count($material_received_prod_all) == 1)
+        {
+            $this->common_model->DeleteData('pro_material_received_note',array('mrn_id' => $material_received_prod->rnp_material_received_note));
+            
+            $data['status'] = "true";
+        }
+        else
+        {
+            $data['status'] = "false";
+        }
+
+        $this->common_model->DeleteData('pro_material_received_note_prod',$cond); 
+
+        echo json_encode($data);
+
+
+    }
+
+
+    public function Delete()
+    {
+        $cond = array('mrn_id' => $this->request->getPost('ID'));
+
+        $material_received_note = $this->common_model->SingleRow('pro_material_received_note',$cond);
+
+        $material_received_product = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $material_received_note->mrn_id));
+
+        foreach($material_received_product as $material_received_prod)
+        {
+            $this->common_model->EditData(array('po_delivered_status' => 0), array('po_id' => $material_received_prod->rnp_purchase_id), 'pro_purchase_order');
+            
+            $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $material_received_prod->rnp_purchase_prod_id));
+            
+            $new_delivery_qty = $purchase_order_product->pop_delivered_order -  $material_received_prod->rnp_current_delivery;
+            
+            $this->common_model->EditData(array('pop_delivered_order'=>$new_delivery_qty,'pop_delivered_status'=>0), array('pop_id' => $material_received_prod->rnp_purchase_prod_id), 'pro_purchase_order_product');
+            
+            $this->common_model->DeleteData('pro_material_received_note_prod',array('rnp_material_received_note' =>$material_received_prod->rnp_material_received_note)); 
+        }
+
+        if(!empty($material_received_note->mrn_file))
+        {
+            $previousImagePath = 'uploads/MaterialReceived/' .$material_received_note->mrn_file;
+            
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+        }
+
+        $this->common_model->DeleteData('pro_material_received_note',$cond); 
+    }
+
+    // Function to handle file upload
+    public function uploadFile($fieldName, $uploadPath)
+    {
+        $file = $this->request->getFile($fieldName);
+  
+        if($file === null){
+  
+            // Debugging output
+            echo('No file uploaded or incorrect field name');
+             
+        }
+   
+        if ($file->isValid() && !$file->hasMoved()) 
+        {
+            $newName = $file->getRandomName();
+            $file->move($uploadPath, $newName);
+            return $newName;
+        }
+   
+        return null;
+  
+    }
+  
+
 
 }

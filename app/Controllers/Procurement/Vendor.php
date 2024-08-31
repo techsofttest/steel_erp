@@ -106,13 +106,17 @@ class Vendor extends BaseController
 
         $data['vendor_id'] = $id;
 
-        /*$coa_data['ca_name'] = $this->request->getPost('cc_customer_name');
+        $coa_data['ca_name'] = $this->request->getPost('ven_name');
 
-        $coa_data['ca_account_type'] = $this->request->getPost('cc_account_head');
+        $coa_data['ca_account_type'] = $this->request->getPost('ven_account_head');
 
         $coa_data['ca_customer'] = $id;
 
-        $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);*/
+        $coa_data['ca_account_id'] = $this->request->getPost('ven_account_id');
+
+        $coa_data['ca_type'] = "VENDOR";
+
+        $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
         echo json_encode($data);
  
@@ -593,8 +597,6 @@ class Vendor extends BaseController
         
         $update_data = $this->request->getPost();
 
-        
-
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('ven_id', $update_data)) 
         {
@@ -612,6 +614,10 @@ class Vendor extends BaseController
         } 
        
 	    $this->common_model->EditData($update_data,$cond,'pro_vendor');
+
+        $charts_of_account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $this->request->getPost('ven_id')),array('ca_type' => 'VENDOR'));
+        
+        $this->common_model->EditData(array('ca_name' => $this->request->getPost('ven_name')),array('ca_id' => $charts_of_account->ca_id),'accounts_charts_of_accounts');
 
         
     }

@@ -315,7 +315,7 @@
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <input type="file" name="po_file" Class="image_file"  class="form-control">
+                                                                <input type="file" name="mrn_file" Class="image_file"  class="form-control">
                                                             </div>
 
                                                         </div>
@@ -341,7 +341,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
                                         </div>
 
 
@@ -406,6 +406,515 @@
     
                         
 </div>
+
+<!--view section start-->
+
+<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Material Received Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="row">
+                                                 
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                                             
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_date" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                            
+                                                <input type="text" name="" class="form-control view_vendor_name" readonly>
+                                        
+                                            </select>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Purchase Order</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_contact_person" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                                            
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Delivery Note</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+
+                                                <input type="text" name="" class="form-control view_mrn_ref" readonly>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                                           
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">MR Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control view_payment_term" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+                                    <!-- ### -->
+
+                                                            
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control view_delivery_date" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                   
+
+                                </div>
+
+                            </div>
+                                                                                          
+
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Sales Order</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        
+                                        
+                                        
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo view_prod_data"></tbody>
+
+                                
+
+                                                        
+                            </table>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                
+                                <div class="card-body view_image_table" style="float: inline-start;"></div>
+
+                                
+                            </div>
+                            <div class="col-lg-6"></div>
+                            
+                        </div>
+
+                        <!--table section end-->
+
+                    </div>  
+                                            
+                </div>
+
+            </div>
+	    </form>
+
+    </div>
+</div>
+
+<!--view section end-->
+
+
+
+<!--edit section start-->
+
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="edit_modal_form">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Material Received Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="row">
+                                                 
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name=""  class="form-control edit_reff"  required readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="mrn_date" class="form-control edit_date datepicker" required>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control edit_vendor" required readonly>
+                                            </div>
+
+
+                                           
+                                        </div> 
+
+                                    </div>  
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Purchase Order</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control edit_purchase" required readonly>
+                                            </div>
+
+
+                                            
+
+                                        </div> 
+
+                                    </div>  
+
+                                    <!-- ### --> 
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                    
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Delivery Note</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+
+                                                <input type="text" name="mrn_delivery_note" class="form-control edit_delivery" value="" required>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>  
+
+                                    <!-- ### --> 
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">MR Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+
+                                                <input type="text" name="" class="form-control edit_mr" value="" readonly>
+
+                                            </div>
+
+                                        </div> 
+
+                                    </div>  
+
+                                    <!-- ### --> 
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control  edit_payment_term" value="" required readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                  
+
+                                   
+                                    
+                                    <input type="hidden" name="mrn_id"  class="edit_main_id">
+
+                                    <!--<input type="hidden"   class="edit_mrn_reff_id">--->
+
+                                    <!-- ### --> 
+
+
+
+
+                                </div>
+
+                            </div>
+                                                   
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <tbody class="travelerinfo">
+                                    
+                                    <tr>
+                                        <td>Serial No.</td>
+                                        <td>Sales Order Ref</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Order Qty</td>
+                                        <td>Order Qty</td>
+                                        <td>Rate</td>
+                                        <td>Action</td>
+                                    </tr>
+                                    
+                                </tbody>
+                                
+                                <tbody class="edit_products"></tbody>
+
+                                
+                            </table>
+                        </div>
+
+                        <!--table section end-->
+
+
+                        <!--image section start--->
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card-body edit_image_table"></div>
+                            </div>
+                            <div class="col-lg-6"></div>
+                            
+                        </div>
+
+
+                        <!--image section end-->
+
+                    </div>  
+                                            
+                </div>
+
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn btn-success" type="submit">Save</button>
+                </div>
+
+            </div>
+		</form>
+
+	</div>
+</div>
+
+<!--edit section end-->
+
+
+
+
 
 <!--select modal section start-->
 
@@ -509,13 +1018,18 @@
                 },
                 errorPlacement: function(error, element) {} , // To Hide Validation Messages
                 submitHandler: function(currentForm) {
-                    if($('#add_material_form').attr('data_fill')=="true"){   
 
+                    if($('#add_material_form').attr('data_fill')=="true"){   
+                        var formData = new FormData(currentForm);
+                        $('.once_form_submit').attr('disabled', true); // Disable this input.
                         // Submit the form for the current tab
                         $.ajax({
                             url: "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/Add",
                             method: "POST",
-                            data: $(currentForm).serialize(),
+                            //data: $(currentForm).serialize(),
+                            data: formData,
+                            processData: false, // Don't process the data
+                            contentType: false, // Don't set content type
                             success: function(data) {
                                 
                                 $('#AddMaterialReceived').modal('hide');
@@ -696,6 +1210,235 @@
 
 
 
+        /*view section start*/
+
+        $("body").on('click', '.view_btn', function(){ 
+
+        var id = $(this).data('id');
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/View",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+            
+                var data = JSON.parse(data);
+                                
+                $('.view_ref').val(data.reffer_n0);
+
+                $('.view_date').val(data.date);
+
+                $('.view_vendor_name').val(data.vendor_name);
+
+                $('.view_contact_person').val(data.purchase_order);
+
+                $('.view_mrn_ref').val(data.delivery_note);
+
+                $('.view_payment_term').val(data.mr_reffer);
+
+                $('.view_delivery_date').val(data.payment_term);
+
+                $('.view_prod_data').html(data.sales_order);
+
+                $('.view_image_table').html(data.image_table)
+
+                $('#ViewModal').modal("show");
+                
+            }
+
+        });
+
+    });
+
+    /*view section end*/
+
+
+
+    /*edit section start*/
+
+
+    $("body").on('click', '.edit_btn', function(){ 
+
+        var id = $(this).data('id');
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/Edit",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+            
+                var data = JSON.parse(data);
+                                
+                $('.edit_reff').val(data.reffer_n0);
+
+                $('.edit_date').val(data.date);
+
+                $('.edit_vendor').val(data.vendor_name);
+
+                $('.edit_purchase').val(data.purchase_order);
+
+                $('.edit_delivery').val(data.delivery_note);
+
+                $('.edit_mr').val(data.mr_reffer);
+
+                $('.edit_payment_term').val(data.payment_term);
+
+                $('.edit_main_id').val(data.main_id);
+
+                $('.edit_products').html(data.sales_order);
+
+                $('.edit_image_table').html(data.image_table);
+
+                $('#EditModal').modal("show");
+
+            }
+
+        });
+
+    });
+
+
+    /*add form*/
+    $(function() {
+        var form = $('#edit_modal_form');
+            
+        form.validate({
+            rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+            errorPlacement: function(error, element) {} , // To Hide Validation Messages
+            submitHandler: function(currentForm) {
+                var formData = new FormData(currentForm);
+                // Submit the form for the current tab
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/Update",
+                    method: "POST",
+                    //data: $(currentForm).serialize(),
+                    data: formData,
+                    processData: false, // Don't process the data
+                    contentType: false, // Don't set content type
+                    success: function(data) {
+                        
+                        $('#EditModal').modal('hide');
+                    
+                        alertify.success('Data Update Successfully').delay(3).dismissOthers();
+                    
+                        datatable.ajax.reload(null, false);
+                    
+                        
+                    }
+                });
+     
+            }
+        });
+    });
+
+    /*#####*/
+
+
+
+    /*delete section start*/
+
+    $("body").on('click', '.sales_delete', function(){ 
+
+        var id = $(this).data('id');
+
+        var rowToDelete = $(this).closest('tr');
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/DeleteSales",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+                var data = JSON.parse(data);
+
+                rowToDelete.fadeOut(500, function() {
+                    
+                    $(this).remove();
+                    
+                    alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                    
+                    if(data.status === "true")
+                    {
+                        $('#EditModal').modal('hide');
+                    }
+
+                    datatable.ajax.reload(null,false);
+                }); 
+
+            }
+
+        });
+
+    });
+
+    /*delete section end*/
+
+
+
+    /*edit section end*/
+
+
+    
+    /*delete section start*/
+
+    $("body").on('click', '.delete_btn', function(){ 
+
+        var id = $(this).data('id');
+
+        var rowToDelete = $(this).closest('tr');
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/Delete",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+                //var data = JSON.parse(data);
+
+                rowToDelete.fadeOut(500, function() {
+                    
+                    $(this).remove();
+                    
+                    alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                    
+                  
+
+                    datatable.ajax.reload(null,false);
+                });
+
+            }
+
+        });
+
+    });
+
+    /*delete section end*/
+
+
+
 
         /*data table start*/ 
 
@@ -754,6 +1497,7 @@
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
+            $('.once_form_submit').attr('disabled', false); // Disable this input.
 
             $.ajax({
 
@@ -899,6 +1643,13 @@
 
             var selectId = $('#select_prod_id').val();
 
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                alert("You must check at least one checkbox.");
+                return false;
+            }
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/SelectedProduct",
@@ -911,8 +1662,6 @@
                 {
                 
                     var data = JSON.parse(data);
-
-                   
 
                     $('.product-more2').html(data.product_detail);
 

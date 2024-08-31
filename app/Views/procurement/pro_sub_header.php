@@ -10,8 +10,8 @@
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="MaterialReceivedNote"){echo "active" ;}?>"  href="<?= base_url();?>Procurement/MaterialReceivedNote" role="tab" aria-selected="false">Material Received Note</a> </li>
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="PurchaseVoucher"){echo "active"; }?>"  href="<?= base_url();?>Procurement/PurchaseVoucher" role="tab" aria-selected="false">Purchase Voucher</a> </li>
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="PurchaseReturn"){echo "active";}?>"  href="<?= base_url();?>Procurement/PurchaseReturn" role="tab" aria-selected="false">Purchase Return</a> </li>
-          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="ProFormaInvoice"){echo "active"; }?>" href="<?= base_url();?>Crm/ProFormaInvoice"  role="tab" aria-selected="false">Fixed Asset Creation</a> </li>
-          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="DeliverNote"){echo "active";}?>"  href="<?= base_url();?>Crm/DeliverNote" role="tab" aria-selected="false">Depreciation Calculation</a> </li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="FixedAssetCreation"){echo "active"; }?>" href="<?= base_url();?>Procurement/FixedAssetCreation"  role="tab" aria-selected="false">Fixed Asset Creation</a> </li>
+          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="DepreciationCalculation"){echo "active";}?>"  href="<?= base_url();?>Procurement/DepreciationCalculation" role="tab" aria-selected="false">Depreciation Calculation</a> </li>
           <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="CashInvoice"){echo "active";}?>"  href="<?= base_url();?>Crm/CashInvoice" role="tab" aria-selected="false">Fixed Asset Disposal</a> </li>
           
         </ul>

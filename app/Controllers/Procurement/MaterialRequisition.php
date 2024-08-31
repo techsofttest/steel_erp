@@ -53,7 +53,8 @@ class MaterialRequisition extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view print_color print_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-file-pdf-2-line"></i> View</a>';
            
            $data[] = array( 
               "mr_id"         => $i,
@@ -116,7 +117,7 @@ class MaterialRequisition extends BaseController
 
         $data['material_requisition'] = $this->common_model->FetchNextId('pro_material_requisition','MR');
 
-        $cond = array('so_deliver_flag' => 1);
+        $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
         
@@ -201,25 +202,13 @@ class MaterialRequisition extends BaseController
 
     public function FetchProdDes(){
 
-        $sales_id = $this->request->getPost('salesOrder');
+        $sales_order_details = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $joins = array(
-            
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'spd_product_details',
-            ),
-           
-        );
-
-        $sales_order_details = $this->pro_modal->FetchWhereJoinGp('crm_sales_product_details',array('spd_sales_order' => $sales_id),$joins,'spd_product_details');
-       
         $data['product'] = "<option value='' selected disabled>Select Product Description</option>";
 
         foreach($sales_order_details as $sales_order){
              
-            $data['product'] .="<option value='".$sales_order->spd_product_details."'>".$sales_order->product_details."</option>";
+            $data['product'] .="<option value='".$sales_order->product_id."'>".$sales_order->product_details."</option>";
         }
 
         echo json_encode($data);
@@ -404,6 +393,8 @@ class MaterialRequisition extends BaseController
 
         $sales_orders = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
+       
+
         $material_requisition = $this->common_model->SingleRowJoin('pro_material_requisition_prod', array('mrp_id' => $this->request->getPost('ID')),$join);
         
         $joins = array(
@@ -415,9 +406,9 @@ class MaterialRequisition extends BaseController
          
         );
 
-        $products = $this->common_model->FetchWherejoin('crm_sales_product_details',array('spd_sales_order' => $material_requisition->mrp_sales_order),$joins);
+        //$products = $this->common_model->FetchWherejoin('crm_sales_product_details',array('spd_sales_order' => $material_requisition->mrp_sales_order),$joins);
 
-        //$products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['sales_order'] ='<tr class="" id="'.$material_requisition->mrp_id.'">
 
@@ -438,7 +429,7 @@ class MaterialRequisition extends BaseController
               <select class="form-select edit_prod_desc" name="mrp_product_desc" required>';
                             
                     foreach($products as $prod){
-                        $data['sales_order'] .='<option value="'.$prod->product_id.'" '; 
+                        $data['sales_order'] .='<option value="'.$prod->product_id .'" '; 
                         if($prod->product_id == $material_requisition->mrp_product_desc){ $data['sales_order'] .= "selected"; }
                         $data['sales_order'] .='>'.$prod->product_details.'</option>';
                     }
@@ -542,9 +533,334 @@ class MaterialRequisition extends BaseController
         ];
 
         $this->common_model->EditData($update_data, array('mr_id' => $this->request->getPost('mr_id')), 'pro_material_requisition');
-        
+       
+    }
 
+
+    public function Pdf(){
+
+        if(!empty($id))
+        {   
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'spd_product_details',
+                ),
+               
+                
+            );
+
+            $product_details = $this->common_model->FetchWhereJoin('crm_sales_product_details',array('spd_sales_order'=>$id),$joins1);
+                
+            
+            $pdf_data = "";
+
+            foreach($product_details as $prod_det)
+            {
+                $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->spd_quantity.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->spd_unit.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->spd_rate.'</td>';
+
+                $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->spd_discount.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->spd_amount.'</td></tr>';
+            }
+
+            $join =  array(
+                
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'so_customer',
+                ),
+
+                array(
+                    'table' => 'crm_quotation_details',
+                    'pk'    => 'qd_id',
+                    'fk'    => 'so_quotation_ref',
+                ),
+
+               
+            );
+            
+
+            $sales_order = $this->common_model->SingleRowJoin('crm_sales_orders',array('so_id'=>$id),$join);
+            
+            $date = date('d-M-Y',strtotime($sales_order->so_date));
+
+            $delivery_date = date('d-M-Y',strtotime($sales_order->so_delivery_term));
+
+            $title = 'SO - '.$sales_order->so_reffer_no;
+
+            $mpdf = new \Mpdf\Mpdf();
+
+            $mpdf->SetTitle($title); // Set the title
+
+            $html ='
         
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+           
+            <table>
+        
+                <tr>
+                    
+                    <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
+        
+                    <td>
+                
+                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    
+                    
+                    </td>
+                
+                </tr>
+        
+            </table>
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Date : '.$date.'</td>
+            <td>Sales Order No : '.$sales_order->so_reffer_no.'</td>
+            <td align="right"><h2>Sales Order</h2></td>
+        
+            </tr>
+        
+            </table>
+
+        <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+    
+            <tr>
+            
+                <td > </td>
+                
+                <td >'.$sales_order->cc_customer_name.'</td>
+            
+            </tr>
+    
+    
+        <tr>
+        
+        <td>Customer</td>
+        
+            
+        <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td ></td>
+        
+        <td >Post Box : -, Doha - '.$sales_order->cc_post_box.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td >Attention</td>
+        
+        <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+        
+        </tr>
+    
+    
+        </table>
+
+           
+        
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+                <th align="left" style="border-bottom:2px solid;">Item No</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Description</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Qty</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Unit</th>
+            
+                <th align="left" style="border-bottom:2px solid;">Rate</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Disc%</th>
+    
+                <th align="left" style="border-bottom:2px solid;">Amount</th>
+    
+            
+            </tr>
+
+
+            '.$pdf_data.'
+
+             
+            
+        </table>';
+        
+        $footer = '
+    
+            <table style="border-bottom:2px solid">
+            
+                <tr>
+                    <td>Promised Date</td>
+
+                    <td>'.$delivery_date.'</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td>Gross Total</td>
+        
+                    <td>'.$sales_order->so_amount_total.'</td>
+            
+                </tr>
+
+                <tr>
+    
+                    <td>Notes</td>
+                
+                    <td></td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td>Less. Special Discount</td>
+        
+                    <td>-------</td>
+                
+                </tr>
+
+
+                
+
+
+                <tr>
+    
+                    <td>Amount in words</td>
+                
+                    <td>----------------------------------</td>
+
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+                    <td style="font-weight: bold;">Net Invoice Value</td>
+        
+                    <td>-----</td>
+                
+                </tr>
+
+            </table>
+
+
+            <table>
+            
+            <tr>
+                <td style="width:20%">Order Terms</td>
+
+                <td style="width:20%">LPO Reference</td>
+
+                <td style="width:20%">Verbal</td>
+
+                <td style="width:10%"></td>
+
+                <td style="width:10%">Payment:</td>
+
+                <td style="width:20%">Cash on delivery</td>
+                
+            </tr>
+
+            <tr>
+                <td style="width:20%"></td>
+
+                <td style="width:20%">Quote Reference</td>
+
+                <td style="width:20%">'.$sales_order->qd_reffer_no.'</td>
+
+                <td style="width:10%"></td>
+
+                <td style="width:10%">Delivery</td>
+
+                <td style="width:20%">Ex-works</td>
+
+            </tr>
+            
+            </table>
+
+
+            <table style="border-top:2px solid;">
+
+            <tr>
+            
+               <td>Antony Raphel - Production In-charge</td>
+               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td>Justin Jose - Operations Manager</td>
+              
+
+            </tr>
+
+
+            <tr>
+            
+                <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
+                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+           
+
+            </tr>
+
+
+            
+            
+            
+            </table>
+        
+        
+        
+            ';
+        
+            
+            $mpdf->WriteHTML($html);
+            $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
+        }
+
     }
 
 

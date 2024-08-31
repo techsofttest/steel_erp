@@ -400,7 +400,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                            <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
                                         </div>
 
 
@@ -1254,7 +1254,8 @@
                         var formData = new FormData($('#add_po_form')[0]);
                         var image = $('.image_file').prop('files')[0]; // Get the file from input field
                         formData.append('image', image); // Append the file to FormData object
-
+                        
+                        $('.once_form_submit').attr('disabled', true); // Disable this input.
                         
                         // Submit the form for the current tab
                         $.ajax({
@@ -1570,6 +1571,8 @@
             $('#po_mrn_reff_id ').trigger("reset");
 
             $(".cust_more_modal").removeClass("disabled-span");
+
+            $('.once_form_submit').attr('disabled', false); // Disable this input.
 
             $.ajax({
 
@@ -1908,6 +1911,26 @@
         /*contact new modal end*/
 
 
+        /*modal close section start*/
+
+        $("body").on('click', '.vendor_con_close', function(){
+           
+          $('#AddNewContact').modal("hide");
+
+          $('#AddVendor').modal("hide");
+
+          $('#AddPurchaseOrder').modal("show")
+           
+         
+        });
+
+
+        /*modal close section end*/
+
+
+
+
+
 
         /*view section start*/
 
@@ -2129,7 +2152,10 @@
                     $('.edit_total_prod').val(data.total_amount);
 
                     rowToDelete.fadeOut(500, function() {
+                       
                         $(this).remove();
+
+                        deleteSlno();
                        
                         alertify.success('Data Delete Successfully').delay(3).dismissOthers();
                         
@@ -2150,11 +2176,27 @@
 
         });
 
+
+        function deleteSlno()
+	    {
+          
+		    var pp =1;
+
+            $('body.edit_product_row').each(function() {
+
+                $(this).find('.delete_sino').html('<td class="delete_sino">' + pp + '</td>');
+
+                pp++;
+                
+            });
+
+          
+        }
+
+
         /*delete section end*/
 
 
-
-       
 
 
 
