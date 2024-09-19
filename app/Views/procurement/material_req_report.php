@@ -18,7 +18,7 @@
                         <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET" action="<?php echo base_url();?>Procurement/MaterialReqReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Material Requesition Report</h5>
@@ -52,22 +52,22 @@
                                                                {
                                                                     $to_date ="";
                                                                }
-                                                               if(!empty($_GET['customer']))
+                                                               if(!empty($_GET['sales_order']))
                                                                {
-                                                                    $customer = $_GET['customer'];
+                                                                    $customer = $_GET['sales_order'];
                                                                }
                                                                else
                                                                {
                                                                     $customer = "";
                                                                }
-                                                               if(!empty($_GET['sales_executive']))
-                                                               {
-                                                                    $sales_executive = $_GET['sales_executive'];
-                                                               }
-                                                               else
-                                                               {
-                                                                    $sales_executive ="";
-                                                               }
+                                                            //    if(!empty($_GET['sales_executive']))
+                                                            //    {
+                                                            //         $sales_executive = $_GET['sales_executive'];
+                                                            //    }
+                                                            //    else
+                                                            //    {
+                                                            //         $sales_executive ="";
+                                                            //    }
                                                                if(!empty($_GET['product']))
                                                                {
                                                                     $product =  $_GET['product'];
@@ -101,8 +101,8 @@
                                                                             <tr>
                                                                                 <td>Sales Order</td>
                                                                                 <td>
-                                                                                    <select class="form-select droup_sales value='' customer_clz" name="customer">
-                                                                                        <option value="" selected disabled>Select Customer</option>
+                                                                                    <select class="form-select droup_sales value='' customer_clz" name="sales_order">
+                                                                                        <option value="" selected disabled>Select sales order</option>
                                                                                         <?php foreach($sales_orders as $sales_order){?> 
                                                                                             <option><?php echo $sales_order->so_reffer_no;?></option>
                                                                                         <?php } ?>
@@ -115,14 +115,14 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
+                                                                                <td>
+                                                                                    <select class="form-select executive_clz" value="<?php// echo $sales_executive; ?>" name="product">
+                                                                                        <option value="" selected disabled>Select Porduct</option>
+                                                                                    </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
-                                                                            </tr>
-
-
-                                                                         
+                                                                            </tr>                                                                        
 
 
                                                                         </tbody>
@@ -361,7 +361,7 @@
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/SalesQuotReport/FetchData",
+                url : "<?php echo base_url(); ?>Procurement/MaterialReqReport/FetchData",
 
                 method : "POST",
 

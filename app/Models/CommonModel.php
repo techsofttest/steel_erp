@@ -898,6 +898,25 @@ class CommonModel extends Model
         return $result;
     }
 
+    public function FetchProductsByCustomer($table,$id)
+    {
+        $query = $this->db->table($table)
+                      ->select('*')
+                      ->where('product_id', $id)
+                      ->get();
+
+        $result = $query->getResult();
+
+        $i = 0;
+
+        foreach ($result as $quotation_details) {
+            $result[$i]->product_details = $this->product_details($quotation_details->product_id);
+            $i++;
+        }
+
+        return $result;
+    }
+
 
 
     public function product_details($pid)

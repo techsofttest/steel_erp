@@ -385,7 +385,7 @@
                                                             <tr>
                                                                 <td colspan="7" class=""></td>
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="" class="total_prod_amount form-control" readonly=""></td>
+                                                                <td><input type="text" name="total_vou_amount" class="total_prod_amount form-control" readonly=""></td>
                                                              </tr>
                                                         
                                                         </tbody>

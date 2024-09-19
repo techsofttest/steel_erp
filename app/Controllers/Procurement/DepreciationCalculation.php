@@ -102,7 +102,7 @@ class DepreciationCalculation extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
        
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_account_name','asc',$term,$start,$end);
  
         $data['total_count'] =count($data['result']);
  
@@ -110,7 +110,24 @@ class DepreciationCalculation extends BaseController
  
     }
  
- 
+         //search droup drown (accountid)
+         public function FetchDebitAcc()
+         {
+      
+             $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+             $term = !empty($_GET['term']) ? $_GET['term'] : "";
+             $resultCount = 10;
+             $end = ($page - 1) * $resultCount;       
+             $start = $end + $resultCount;
+            
+             $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+      
+             $data['total_count'] = count($data['result']);
+      
+             return json_encode($data);
+      
+         }
+      
 
     // search droup drown (product description)
     public function FetchProdDes()
@@ -183,10 +200,6 @@ class DepreciationCalculation extends BaseController
 
             $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
-
-           
-  
-
     }
     
 
@@ -233,15 +246,12 @@ class DepreciationCalculation extends BaseController
                 'pk'    => 'po_id',
                 'fk'    => 'mrn_purchase_order',
             ),
-
         );
 
         
         //contact person
         
-        $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
-        
-       
+        $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));     
 
         $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
         

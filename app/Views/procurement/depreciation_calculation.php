@@ -194,7 +194,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to" name="cfs_debit_account"  required>
+                                                                        <select class="form-select add_assigned_to debit_account_select" name="cfs_debit_account"  required>
                                                                             <option value="" selected disabled>Debit Account</option>
                                                                             <?php
                                                                                 foreach($charts_of_account as $chart_account)
@@ -210,7 +210,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>
 
                                                             <!-- ### --> 
 
@@ -224,7 +224,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to" name="cfs_credit_account"  required>
+                                                                        <select class="form-select add_assigned_to debit_account_select" name="cfs_credit_account"  required>
                                                                             <option value="" selected disabled>Credit Account</option>
                                                                             <?php
                                                                                 foreach($charts_of_account as $chart_account)
@@ -879,6 +879,41 @@
         })
 
         /*###*/
+        $(".debit_account_select").select2({
+            placeholder: "Select Account Name",
+            theme: "default form-control-",
+            dropdownParent: $('#AddFixedAssetCreation'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchDebitAcc",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function(params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.ca_id,
+                                text: item.ca_name
+                            }
+                        }),
+                        pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        })
 
 
 
@@ -926,34 +961,34 @@
         /*Time Frame section start*/
 
          
-         $("body").on('change', '.mr_date', function(){ 
+        //  $("body").on('change', '.mr_date', function(){ 
 	        
-            var date = $(this).val();
+        //     var date = $(this).val();
  
             
  
-            $.ajax({
+        //     $.ajax({
  
-                url : "<?php echo base_url(); ?>Procurement/MaterialRequisition/Date",
+        //         url : "<?php echo base_url(); ?>Procurement/MaterialRequisition/Date",
  
-                method : "POST",
+        //         method : "POST",
  
-                data: {Date: date},
+        //         data: {Date: date},
  
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+        //         success:function(data)
+        //         {   
+        //             var data = JSON.parse(data);
                  
-                    $('.time_frame_date').val(data.increment_date_date)
+        //             $('.time_frame_date').val(data.increment_date_date)
                  
                      
-                }
+        //         }
  
  
-            });
+        //     });
  
  
-        });
+        // });
  
       
  

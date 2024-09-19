@@ -149,6 +149,8 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
+                'pv_total' => $this->request->getPost('total_vou_amount'),
+                
                 'pv_added_by'        => 0,
 
                 'pv_added_date'      => date('Y-m-d'),
@@ -193,6 +195,8 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
+                'pv_total' => $this->request->getPost('total_vou_amount'),
+
                 'pv_added_by'        => 0,
 
                 'pv_added_date'      => date('Y-m-d'),
@@ -214,8 +218,7 @@ class PurchaseVoucher extends BaseController
                     for($j=0;$j<=$count-1;$j++)
                     {
                         
-                        $insert_data  	= array(  
-                            
+                        $insert_data = array(                              
                             'pvp_sales_order'  =>  $_POST['pvp_sales_order'][$j],
                             'pvp_prod_dec'     =>  $_POST['pvp_product_desc'][$j],
                             'pvp_debit'        =>  $_POST['debit_account'][$j],
@@ -226,7 +229,6 @@ class PurchaseVoucher extends BaseController
                             'pvp_amount'       =>  $_POST['pvp_amount'][$j],
                             'pvp_reffer_id'    =>  $this->request->getPost('purchase_voucher_id'),
                         );
-
                         
                         $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data);
 
@@ -468,7 +470,7 @@ class PurchaseVoucher extends BaseController
                                             <td><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
                                             <td>
-                                               <select class="form-select" name="debit_account" required>
+                                               <select class="form-select" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';
                                                    foreach($debit_accounts as $debit_account){
 

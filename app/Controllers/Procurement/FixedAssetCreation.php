@@ -98,18 +98,40 @@ class FixedAssetCreation extends BaseController
  
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
+
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
        
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_account_name','asc',$term,$start,$end);
  
         $data['total_count'] =count($data['result']);
  
+
         return json_encode($data);
  
     }
  
+
+        //search droup drown (accountid)
+        public function FetchDebitAcc()
+        {
+     
+            $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+            $term = !empty($_GET['term']) ? $_GET['term'] : "";
+            $resultCount = 10;
+            $end = ($page - 1) * $resultCount;       
+            $start = $end + $resultCount;
+           
+            $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+     
+            $data['total_count'] = count($data['result']);
+     
+            return json_encode($data);
+     
+        }
+     
  
 
     // search droup drown (product description)
@@ -182,10 +204,6 @@ class FixedAssetCreation extends BaseController
             $coa_data['ca_type'] = "FIXED_ASSET";
 
             $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
-
-
-           
-  
 
     }
     
@@ -538,86 +556,237 @@ class FixedAssetCreation extends BaseController
 
     public function View()
     {
-        $join =  array(
-            
+        $join =  array(            
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
-                'fk'    => 'pr_vendor_name',
-            ),
-            array(
-                'table' => 'pro_purchase_voucher',
-                'pk'    => 'pv_id',
-                'fk'    => 'pr_vendor_inv',
-            ),
-
+                'table' => 'accounts_account_heads',
+                'pk'    => 'ah_id',
+                'fk'    => 'cfs_account_head',
+            ),         
         );
-
-
-        $purchase_return = $this->common_model->SingleRowJoin('pro_purchase_return', array('pr_id' => $this->request->getPost('ID')),$join);
+        $fixedCredit1 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
         
-        
-        $data['reffer_id']      = $purchase_return->pr_reffer_id;
 
-        $data['date']           = date('d-M-Y',strtotime($purchase_return->pr_date));
-
-        $data['vendor_name']    = $purchase_return->ven_name;
-
-        $data['vendor_inv']     = $purchase_return->pv_vendor_inv;
-
-        $data['lpo']            = $purchase_return->pr_lpo;
-
-        $data['contact_person'] = $purchase_return->pr_contact_person;
-
-        $data['payment_term']   = $purchase_return->pr_payment_term;
-
-        /*$join =  array(
-            
+        $join =  array(           
             array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'cfs_debit_account',
+            ),       
+        );
+        $fixedCredit2 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
+        
 
+        $join =  array(        
             array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'cfs_credit_account',
             ),
-
-            
-        );*/
-
-        //$purchase_order_product = $this->common_model->FetchWhereJoin('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')),$join);
+        );
+        $fixedCredit3 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
         
-        $purchase_return_prod = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
         
-        $i=1;
+        $data['description']      = $fixedCredit1->cfs_description;
 
-        $data['purchase_return'] = '';
+        $data['date']           = date('d-M-Y',strtotime($fixedCredit1->cfs_acquired_date));
 
-        foreach($purchase_return_prod as $pur_return_prod)
-        {
-            $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_amount.'" class="form-control" readonly></td>
-            </tr>
-            ';
-            $i++; 
-        }
+        $data['account_id']    = $fixedCredit1->cfs_account_id;
 
+        $data['account_head']     = $fixedCredit1->ah_account_name;
+
+        $data['debit_account']   = $fixedCredit2->ca_name;
+
+        $data['credit_account'] = $fixedCredit3->ca_name;
+
+        $data['depreciation']   = $fixedCredit1->cfs_depreciation;
+
+        $data['attach']   = $fixedCredit1->cfs_attact != '' ? base_url().'public/uploads/FixedAsset/'.$fixedCredit1->cfs_attact : '';
+       
 
         echo json_encode($data);
 
 
     }
  
+
+
+    
+    public function Edit(){
+        
+        $join =  array(            
+            array(
+                'table' => 'accounts_account_heads',
+                'pk'    => 'ah_id',
+                'fk'    => 'cfs_account_head',
+            ),         
+        );
+        $fixedCredit1 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
+        
+
+        $join =  array(           
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'cfs_debit_account',
+            ),       
+        );
+        $fixedCredit2 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
+        
+
+        $join =  array(        
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'cfs_credit_account',
+            ),
+        );
+        $fixedCredit3 = $this->common_model->SingleRowJoin('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')),$join);
+        
+        
+        $data['cfsid']      = $fixedCredit1->cfs_id;
+
+        $data['description']      = $fixedCredit1->cfs_description;
+
+        $data['date']           = date('d-M-Y',strtotime($fixedCredit1->cfs_acquired_date));
+
+        $data['account_id']    = $fixedCredit1->cfs_account_id;
+
+        $data['account_head']     = '';
+
+        $heads = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','desc');
+
+        foreach($heads as $head)
+        {  
+            
+            $data['account_head'] .= '<option value="' .$head->ah_id.'"'; 
+
+            if($fixedCredit1->cfs_account_head == $head->ah_id)
+            {
+                $data['account_head'] .= ' selected'; 
+            }
+
+		    $data['account_head'] .= '>' . $head->ah_account_name.'</option>';
+        }
+
+
+        $data['debit_account']   = '';
+        $data['credit_account'] = '';
+
+        $charts_acc = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+
+        foreach($charts_acc as $charts)
+        {  
+            
+            $data['debit_account'] .= '<option value="' .$charts->ca_id.'"'; 
+
+            if($fixedCredit2->ca_id == $charts->ca_id)
+            {
+                $data['debit_account'] .= ' selected'; 
+            }
+
+		    $data['debit_account'] .= '>' . $charts->ca_name.'</option>';
+        }
+
+        foreach($charts_acc as $charts)
+        {  
+            
+            $data['credit_account'] .= '<option value="' .$charts->ca_id.'"'; 
+
+            if($fixedCredit3->ca_id == $charts->ca_id)
+            {
+                $data['credit_account'] .= ' selected'; 
+            }
+
+		    $data['credit_account'] .= '>' . $charts->ca_name.'</option>';
+        }
+
+
+
+
+        $data['depreciation']   = $fixedCredit1->cfs_depreciation;
+
+        $data['attach']   = $fixedCredit1->cfs_attact != '' ? base_url().'public/uploads/FixedAsset/'.$fixedCredit1->cfs_attact : '';
+       
+
+
+        echo json_encode($data);
+    }
+
+
+
+
+    public function Update()
+    {
+        $cfs_id =$this->request->getPost('cfs_id');
+        
+        $cond = array('cfs_id' => $this->request->getPost('cfs_id'));
+
+        $fixedasset = $this->common_model->SingleRow('pro_create_fixed_asset',$cond);
+                
+        $update_data = $this->request->getPost();
+
+        
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('cfs_id', $update_data)) 
+        {
+            unset($update_data['cfs_id']);
+        }  
+
+        $update_data['cfs_acquired_date'] =  date('Y-m-d',strtotime($this->request->getPost('cfs_acquired_date')));
+
+
+       // Handle file upload
+	    if (isset($_FILES['cfs_attact']) && $_FILES['cfs_attact']['name'] !== '') {
+				
+            if($this->request->getFile('cfs_attact') != '' ){
+            
+                $previousImagePath = 'uploads/FixesAsset/' .$fixedasset->cfs_attact;
+            
+                if (file_exists($previousImagePath)) {
+                    unlink($previousImagePath);
+                }
+
+            }
+		
+		    // Upload the new image
+		    $AttachFileName = $this->uploadFile('cfs_attact', 'uploads/FixesAsset');
+	
+		    // Update the data with the new image filename
+		    $update_data['cfs_attact'] = $AttachFileName;
+	    }
+
+
+        $this->common_model->EditData($update_data, array('cfs_id' => $this->request->getPost('cfs_id')), 'pro_create_fixed_asset');
+        
+
+        // ============================================================
+
+        $coa_data['ca_name'] = $this->request->getPost('cfs_description');
+
+        $coa_data['ca_account_type'] = $this->request->getPost('cfs_account_head');
+
+        $coa_data['ca_account_id'] = $this->request->getPost('cfs_account_id');
+
+        $coa_data['ca_type'] = "FIXED_ASSET";
+
+        $this->common_model->EditData($coa_data,['ca_customer' => $cfs_id],'accounts_charts_of_accounts');
+
+    }
+
+
+
+    public function Delete()
+    {
+    
+          
+        $this->common_model->DeleteData('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')));
+
+        $this->common_model->DeleteData('accounts_charts_of_accounts', array('ca_customer' => $this->request->getPost('ID')));
+
+        
+
+    }
+
+
 
 }

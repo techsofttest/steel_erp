@@ -204,15 +204,10 @@ class Receipts extends BaseController
 
                 if(!empty($r_no_check))
                 {
-
-                $return['status'] = 0;
-        
-                $return['error'] ="Duplicate Receipt Number!";
-        
-                echo json_encode($return);
-        
-                exit;
-        
+                    $return['status'] = 0;        
+                    $return['error'] ="Duplicate Receipt Number!";        
+                    echo json_encode($return);        
+                    exit;        
                 }
                 
 
@@ -242,7 +237,6 @@ class Receipts extends BaseController
         $update_data['r_ref_no'] = $r_ref_no;
 
         $this->common_model->EditData($update_data,$cond,'accounts_receipts');
-
 
 
         //Add invoices
@@ -471,6 +465,8 @@ class Receipts extends BaseController
 
      $remaining_amount = $remaining_amount - $sales_return_amount;
 
+     if($remaining_amount !=0 ){
+
      $data['invoices'].='<tr id="'.$inv->ci_id.'">
      <input type="hidden" class="invoice_selector_rid" name="receipt_id[]" value="'.$ri_id.'">
      <input type="hidden" name="type[]" value="cash_invoice">
@@ -482,20 +478,26 @@ class Receipts extends BaseController
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" value="0"></th>
+     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" value="0"></th>
+     <th>
+        <input class="form-control invoice_discount_amount" name="inv_discount_amount[]" type="number" value="0">
+     </th>
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
      </th>
      </tr>';
- 
+    
+    }
+
      $data['status']=1;
  
      }
+
  
      $credit_cond = array('cci_customer' => $customer->cc_id);
      $invoices_credit = $this->common_model->FetchUnpaidInvoices('crm_credit_invoice',$credit_cond,'cci_paid_status');
  
-     $sl =0; 
+     $sl = 0; 
      foreach($invoices_credit as $inv)
      {
      $sl++;
@@ -526,6 +528,9 @@ class Receipts extends BaseController
      </th>
      <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" value="0"></th>
      <th>
+        <input class="form-control invoice_discount_amount" name="inv_discount_amount[]" type="number" value="0">
+    </th>
+     <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
      </th>
      </tr>';
@@ -553,14 +558,11 @@ class Receipts extends BaseController
     public function AddInvoices()
     {
 
-
         if($_POST)
         {
 
             $rid = $this->request->getPost('receipt_id')[0];
-
-            
-
+          
             $cond_receipt = array('rid_receipt_invoice' => $rid);
 
             $this->common_model->DeleteData('accounts_receipt_invoice_data',$cond_receipt);
@@ -572,7 +574,7 @@ class Receipts extends BaseController
 
                 $invoice_id = $this->request->getPost('credit_account_invoice')[$i];
 
-                $receipt_amount = $this->request->getPost('inv_receipt_amount')[$i];
+                $receipt_amount  = $this->request->getPost('inv_receipt_amount')[$i];
     
                 //echo $this->request->getPost('receipt_id')[$i]; exit;
 
@@ -586,21 +588,15 @@ class Receipts extends BaseController
     
                 $insert_data['rid_invoice_type'] = $type;
     
-            
                 $check_invoice = $this->common_model->SingleRow('accounts_receipt_invoice_data',array('rid_receipt_invoice' => $insert_data['rid_receipt_invoice'],'rid_invoice' => $insert_data['rid_invoice']));
     
                 if(empty($check_invoice))
-                {
-                   
+                {                   
                         if($this->request->getPost('inv_receipt_amount')[$i]>0)
                         {
-
-                $rid = $this->common_model->InsertData('accounts_receipt_invoice_data',$insert_data);
-
+                            $rid = $this->common_model->InsertData('accounts_receipt_invoice_data',$insert_data);
                         }
-
                 }
-    
                 else
                 {
     
@@ -616,11 +612,9 @@ class Receipts extends BaseController
 
             {
 
-
             if($type=="cash_invoice")
 
             {
-
           
             $invoice_total = $this->common_model->SingleRowCol('crm_cash_invoice','ci_total_amount',array('ci_id' => $invoice_id));
 
@@ -659,7 +653,7 @@ class Receipts extends BaseController
         {
 
 
-            $invoice_total = $this->common_model->SingleRowCol('crm_credit_invoice','cci_total_amount',array('cci_id' => $invoice_id));
+            $invoice_total   = $this->common_model->SingleRowCol('crm_credit_invoice','cci_total_amount',array('cci_id' => $invoice_id));
 
             $cr_invoice_paid = $this->common_model->SingleRowCol('crm_credit_invoice','cci_paid_amount',array('cci_id' => $invoice_id));
             

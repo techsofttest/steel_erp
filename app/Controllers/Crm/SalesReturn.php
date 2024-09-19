@@ -366,13 +366,8 @@ class SalesReturn extends BaseController
                         if(count($credit_invoice) == count($credit_invoices))
                         {
                             $this->common_model->EditData(array('cci_status'=>1),array('cci_id'=>$_POST['credit_main_table'][$j]),'crm_credit_invoice');
-                        }
-
-                       
-                    }
-
-                
-                    
+                        }                     
+                    }                                  
                 } 
             }
 
@@ -402,7 +397,6 @@ class SalesReturn extends BaseController
                                 </tr>
                                 ";
                     }
-                
                 }
 
 
