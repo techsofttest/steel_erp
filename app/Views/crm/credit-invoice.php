@@ -452,6 +452,8 @@
                                                     <th>Invoice No.</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Paid Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1517,9 +1519,11 @@
             },
             'columns': [
                 { data: 'cci_id' },
-                { data: 'cci_reffer_no' },
+                { data: 'cci_reffer_no'},
                 { data: 'cci_date'},
                 { data: 'cci_customer'},
+                { data: 'cci_total_amount'},
+                { data: 'cci_paid_amount'},
                 { data: 'action'},
                 
                ]

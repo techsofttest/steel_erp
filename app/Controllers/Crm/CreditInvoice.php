@@ -64,11 +64,13 @@ class CreditInvoice extends BaseController
             ';
            
            $data[] = array( 
-              'cci_id'         => $i,
-              'cci_reffer_no'  => $record->cci_reffer_no,
-              'cci_date'       => date('d-M-Y',strtotime($record->cci_date)),
-              'cci_customer'   => $record->cc_customer_name,
-              'action'         => $action,
+              'cci_id'            => $i,
+              'cci_reffer_no'     => $record->cci_reffer_no,
+              'cci_date'          => date('d-M-Y',strtotime($record->cci_date)),
+              'cci_customer'      => $record->cc_customer_name,
+              'cci_total_amount'  => $record->cci_total_amount,
+              'cci_paid_amount'   => $record->cci_paid_amount,
+              'action'            => $action,
            );
            $i++; 
         }

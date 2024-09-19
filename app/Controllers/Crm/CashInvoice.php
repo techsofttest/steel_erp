@@ -68,12 +68,14 @@ class CashInvoice extends BaseController
             ';
            
            $data[] = array( 
-              'ci_id'          => $i,
-              'ci_reffer_no'   => $record->ci_reffer_no,
-              'ci_date'        => date('d-M-Y',strtotime($record->ci_date)),
-              'ci_customer'    => $record->cc_customer_name,
-              'ci_sales_order' => $record->so_reffer_no,
-              'action'         => $action,
+              'ci_id'           => $i,
+              'ci_reffer_no'    => $record->ci_reffer_no,
+              'ci_date'         => date('d-M-Y',strtotime($record->ci_date)),
+              'ci_customer'     => $record->cc_customer_name,
+              'ci_sales_order'  => $record->so_reffer_no,
+              'ci_total_amount' => $record->ci_total_amount,
+              'ci_paid_amount'  => $record->ci_paid_amount,
+              'action'          => $action,
            );
            $i++; 
         }

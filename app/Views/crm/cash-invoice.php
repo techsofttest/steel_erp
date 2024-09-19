@@ -468,6 +468,8 @@
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Sales Order</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Paid Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1500,6 +1502,8 @@
                 { data: 'ci_date'},
                 { data: 'ci_customer'},
                 { data: 'ci_sales_order'},
+                { data: 'ci_total_amount'},
+                { data: 'ci_paid_amount'},
                 { data: 'action'},
                 
                ]
