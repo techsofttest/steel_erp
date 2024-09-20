@@ -253,7 +253,121 @@ class PurchaseVoucher extends BaseController
   
 
     }
-    
+
+
+    public function View(){
+
+        /*$join =  array(
+            
+            array(
+                'table' => 'pro_vendor',
+                'pk'    => 'ven_id',
+                'fk'    => 'po_vendor_name',
+            ),
+
+            array(
+                'table' => 'pro_contact',
+                'pk'    => 'pro_con_id',
+                'fk'    => 'po_contact_person',
+            ),
+
+            array(
+                'table' => 'pro_material_requisition',
+                'pk'    => 'mr_id',
+                'fk'    => 'po_mrn_reff',
+            ),
+
+        );*/
+        
+        //$material_requisition = $this->common_model->SingleRowJoin('pro_purchase_order', array('po_id' => $this->request->getPost('ID')),$join);
+        
+        $material_requisition = $this->common_model->SingleRow('pro_purchase_order', array('po_id' => $this->request->getPost('ID')));
+        
+        $data['reffer_no'] = $material_requisition->po_reffer_no;
+
+       // $data['date'] = date('d-M-Y',strtotime($material_requisition->po_date));
+
+       // $data['vendor_name'] = $material_requisition->ven_name;
+
+        //$data['contact_person'] = $material_requisition->pro_con_person;
+
+       // $data['mrn_reff'] = $material_requisition->mr_reffer_no;
+
+        //$data['payment_term'] = $material_requisition->po_payment_term;
+
+        //$data['delivery_date'] = date('d-M-Y',strtotime($material_requisition->po_delivery_date));
+
+        //$data['vendor_ref'] = $material_requisition->po_vendor_ref;
+
+        //$data['total_amount'] = $material_requisition->po_amount;
+
+
+
+        /*$join =  array(
+            
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'pop_prod_desc',
+            ),
+
+            
+        );*/
+
+        /*$purchase_order_product = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $this->request->getPost('ID')),$join);
+        
+        $i=1;
+
+        $data['sales_order'] = '';
+
+        foreach($purchase_order_product as $pur_order_prod)
+        {
+            $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_order_prod->pop_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_order_prod->pop_amount.'" class="form-control" readonly></td>
+            </tr>
+            ';
+            $i++; 
+        }*/
+
+
+        /*if(!empty($material_requisition->po_file))
+	    {
+            $data['image_table'] ='
+            <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
+                <thead>
+                    <tr>
+                        <th class="cust_img_rgt_border">File Name</th>
+                        <th class="cust_img_rgt_border">Download</th>
+                        
+                    </tr>
+                <thead>
+                <tbody>
+                    <tr>
+                        <td class="cust_img_rgt_border edit_file_name" >'.$material_requisition->po_file.'</td>
+                        <td class="cust_img_rgt_border edit_file_attach"><a href="'.base_url('uploads/PurchaseOrder/' .$material_requisition->po_file).'" target="_blank">View</a></td>
+                        
+                    </tr>
+                </tbody>
+            </table>';
+	    }*/
+
+
+        echo json_encode($data);
+    }
+	
 
     public function Date()
     {

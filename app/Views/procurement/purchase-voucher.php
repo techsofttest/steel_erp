@@ -73,7 +73,7 @@
                     <!--product head tab--> 
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
                         
-                        <!--add enquiry modal start-->
+                        <!--add purchse voucher modal start-->
                         <div class="modal fade" id="AddPurchaseVoucher" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                        <div class="modal-dialog modal-xl">
 		                        <form  class="Dashboard-form class" id="purchase_form" data_fill="false">
@@ -172,16 +172,14 @@
                                                                     
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                    <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select add_contact_person" name="purchase_contact_person" id="" required></select>
+                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>
                                                                     
                                                                     </div>
 
 
-                                                                    <div class="col-col-md-1 col-lg-1">
-                                                                        <span class="add_more_icon add_new add_contact ri-add-box-fill"></span>
-                                                                    </div>
+                                                                   
 
                                                                 </div> 
 
@@ -444,6 +442,253 @@
 
 
                         <!--####-->
+
+
+
+                        <!--view modal section start--->
+                        <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <form class="Dashboard-form class" id="">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Voucher</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <div class="live-preview">
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control view_date" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Vendor Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_vendor_name" readonly>
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+
+                                                            <!-- Single Row Start -->
+
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_contact_person" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <!-- ### -->
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Delivery Note</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_mrn_ref" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">MR Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_payment_term" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Term</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control view_delivery_date" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td>Serial No.</td>
+                                                                <td>Sales Order</td>
+                                                                <td>Product Description</td>
+                                                                <td>Unit</td>
+                                                                <td>Qty</td>
+                                                                <td>Rate</td>
+
+
+
+                                                            </tr>
+
+
+                                                        </thead>
+
+                                                        <tbody class="travelerinfo view_prod_data"></tbody>
+
+
+
+
+                                                    </table>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+
+                                                        <div class="card-body view_image_table" style="float: inline-start;"></div>
+
+
+                                                    </div>
+                                                    <div class="col-lg-6"></div>
+
+                                                </div>
+
+                                                <!--table section end-->
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        
+
+
+                        <!--view modal section end-->
 
 
                         <div class="row">
@@ -1464,6 +1709,43 @@
 
 
         /*add section end*/
+
+
+        
+        /*view section start*/
+
+       
+        $("body").on('click', '.view_btn', function(){ 
+            console.log("sucess");
+            /*$('#purchase_form')[0].reset();
+            $('.add_vendor').val('').trigger('change');
+            $('#AddPurchaseOrder').modal('hide');
+            $('.add_prod_remove').remove();
+            $('.hidden_recived_id').val("");*/
+
+            $('#ViewModal').modal('show');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/View",
+
+                method : "GET",
+
+                success:function(data)
+                {
+
+                    //$('#pv_id').val(data);
+
+                }
+            });
+
+        });
+ 
+
+        /*view section end*/
+
+
+
 
 
 
