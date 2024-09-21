@@ -243,6 +243,8 @@ class AccountsModel extends Model
 
         $max = $result->debit_total;
 
+        //echo $max; exit;    
+
         if ($max > 0) {
             return $max;
         } else {

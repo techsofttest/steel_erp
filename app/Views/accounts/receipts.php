@@ -519,7 +519,7 @@
                                                                     <th>LPO Ref</th>
                                                                     <th>Amount</th>
                                                                     <th>Receipt</th>
-                                                                    <th>Discount</th>
+                                                                  
                                                                     <th>Tick</th>
                                                                 </tr>
                                                             </thead>
@@ -1936,7 +1936,7 @@
 
         $('body').on('input', '.credit_amount', function() {
 
-            value = parseFloat($(this).val()) || 0;
+            value = parseFloat($(this).val());
 
             max = parseFloat($(this).attr('data-max')) || 0;
 
@@ -1950,7 +1950,7 @@
 
 
 
-            if (max == "") {
+            if (max == "" && value>0) {
 
                 alertify.error('No pending amount to credit!').delay(3).dismissOthers();
 

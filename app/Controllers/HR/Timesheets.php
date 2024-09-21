@@ -449,7 +449,7 @@ class TimeSheets extends BaseController
             }
 
 
-            if((empty($check['td_normal_hours'])) || (empty($check['td_normal_ot'])) || (empty($check['td_friday_ot'])) )
+            if((empty($check['td_normal_hours'])) )
             {
             
                 $data['status']=0;

@@ -1096,7 +1096,7 @@ class Payments extends BaseController
     <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
     </th>
 
-    <th><input class="form-control invoice_receipt_amount" maxlength="' . $balance_amount . '" name="inv_receipt_amount[]" type="number"></th>
+    <th><input class="form-control invoice_receipt_amount" maxlength="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_receipt_amount[]" type="number"></th>
     
     <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
     </tr>';

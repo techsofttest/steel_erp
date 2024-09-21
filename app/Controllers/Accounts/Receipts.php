@@ -313,7 +313,7 @@ class Receipts extends BaseController
 
                 
 
-                if(empty($check_credit))
+                if(empty($check_credit) || $insert_inv_data['ri_amount']<0)
                 {
                 $this->common_model->InsertData('accounts_receipt_invoices',$insert_inv_data);
                 }
@@ -397,7 +397,7 @@ class Receipts extends BaseController
      $check_invoice = $this->common_model->SingleRow('accounts_receipt_invoices',array('ri_receipt' => $insert_data['ri_receipt'],'ri_credit_account' => $insert_data['ri_credit_account']));
  
      if(empty($check_invoice))
-     {
+     { 
      $ri_id = $this->common_model->InsertData('accounts_receipt_invoices',$insert_data);
      }
  
@@ -465,6 +465,8 @@ class Receipts extends BaseController
 
      $remaining_amount = $remaining_amount - $sales_return_amount;
 
+     $remaining_amount = max($remaining_amount,0);
+
      if($remaining_amount !=0 ){
 
      $data['invoices'].='<tr id="'.$inv->ci_id.'">
@@ -479,9 +481,7 @@ class Receipts extends BaseController
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
      <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" value="0"></th>
-     <th>
-        <input class="form-control invoice_discount_amount" name="inv_discount_amount[]" type="number" value="0">
-     </th>
+     
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
      </th>
@@ -515,6 +515,8 @@ class Receipts extends BaseController
 
      $remaining_amount = $remaining_amount - $sales_return_amount;
 
+     $remaining_amount = max($remaining_amount,0);
+
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="receipt_id[]" value="'.$ri_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
@@ -527,9 +529,7 @@ class Receipts extends BaseController
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
      <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" value="0"></th>
-     <th>
-        <input class="form-control invoice_discount_amount" name="inv_discount_amount[]" type="number" value="0">
-    </th>
+    
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
      </th>

@@ -270,7 +270,7 @@
 
 
                                                             <tr>
-                                                                <td>Total Receipt</td>
+                                                                <td>Total Payment</td>
 
                                                                 <td class="invoice_total"></td>
 
@@ -1759,6 +1759,8 @@
 
                     $('#fifo_add').attr('data-total', credit_amount);
 
+                    $('body #fifo_add').data('total', credit_amount);
+
                     $('#InvoicesModal').modal('show');
 
                     $('.invoice_total').html(credit_amount);
@@ -2444,9 +2446,26 @@
 
             })
 
+            $('#AddSOAdvanceModal .so_receipt_amount').each(function() {
+
+                parent = $(this).closest('tr');
+
+                invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
+
+            })
+
             if (invoice_total > total) {
 
                 alertify.error('Amount should not be greater than credit amount!').delay(3).dismissOthers();
+
+                return false;
+
+            }
+
+
+            if (invoice_total < total) {
+
+                alertify.error('Total payment amount should be adjusted!').delay(3).dismissOthers();
 
                 return false;
 
@@ -2491,12 +2510,15 @@
 
             $('#total_amount_val').val('0.00');
 
+            //$('.add_credit_account_select2').val('').trigger('change');
+
+            $('#AddModal .debit_account_select2').val('').trigger('change');
+
             $('#add_form')[0].reset();
 
             $('.invoice_row').not(':first').remove();
 
             InitAccountsSelect2('.debit_account_select2', '.invoice_row');
-
 
             $.ajax({
 
