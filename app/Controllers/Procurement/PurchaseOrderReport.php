@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-class MaterialReqReport extends BaseController
+class PurchaseOrderReport extends BaseController
 {
     
     
@@ -20,6 +20,8 @@ class MaterialReqReport extends BaseController
         //$data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
 
         $cond = array('so_deliver_flag' => 0);
 
@@ -27,7 +29,7 @@ class MaterialReqReport extends BaseController
 
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['content'] = view('procurement/material_req_report',$data);
+        $data['content'] = view('procurement/purchase_order_report',$data);
 
         return view('procurement/report-module',$data);
 
@@ -144,9 +146,9 @@ class MaterialReqReport extends BaseController
             $to_date = "";
         }
 
-        if(!empty($_GET['sales_order']))
+        if(!empty($_GET['vendor']))
         {
-            $data1 = $_GET['sales_order'];
+            $data1 = $_GET['vendor'];
         }
         else
         {
@@ -155,34 +157,45 @@ class MaterialReqReport extends BaseController
         
         
         
-        if(!empty($_GET['product']))
+        if(!empty($_GET['sales_order']))
         {
-            $data2 = $_GET['product'];
+            $data2 = $_GET['sales_order'];
         }
         else
         {
             $data2 = "";
         }
         
+
+        if(!empty($_GET['product']))
+        {
+            $data3 = $_GET['product'];
+        }
+        else
+        {
+            $data3 = "";
+        }
+        
+       
        
 
         $joins = array(
             
             array(
-                'table' => 'pro_material_requisition',
-                'pk'    => 'mr_id',
-                'fk'    => 'mrp_mr_id',
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'pop_purchase_order',
             ),
             array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
-                'fk'    => 'mrp_sales_order',
+                'fk'    => 'pop_sales_order',
             ),
 
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'fk'    => 'pop_prod_desc',
             ),
            
            
@@ -194,7 +207,7 @@ class MaterialReqReport extends BaseController
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'fk'    => 'pop_prod_desc',
             ),
 
            
@@ -203,9 +216,9 @@ class MaterialReqReport extends BaseController
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['material_requesition'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1);  
+        $data['purchase_order'] = $this->pro_model->CheckData($from_date,'po_date',$to_date,'',$data1,'po_vendor_name',$data2,'pop_sales_order',$data3,'pop_prod_desc','','','pro_purchase_order_product',$joins,'pop_id',$joins1);  
         
-        //print_r($data['quotation_data']); exit();
+        //print_r($data['material_requesition']); exit();
 
         if(!empty($from_date))
         {
@@ -228,6 +241,9 @@ class MaterialReqReport extends BaseController
 
         $cond = array('so_deliver_flag' => 0);
 
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+
+        $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
@@ -243,7 +259,7 @@ class MaterialReqReport extends BaseController
             $this->Excel($data['quotation_data']);
         }
 
-        $data['content'] = view('procurement/material_req_report',$data);
+        $data['content'] = view('procurement/purchase_order_report',$data);
 
         return view('crm/report-module-search',$data);
 

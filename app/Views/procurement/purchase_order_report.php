@@ -18,10 +18,10 @@
                         <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url();?>Procurement/MaterialReqReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET" action="<?php echo base_url();?>Procurement/PurchaseOrderReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Material Requesition Report</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Order Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -98,6 +98,18 @@
                                                                     
                                                                         <tbody  class="travelerinfo">
                                                                             
+                                                                            <tr>
+                                                                                <td>Vendor</td>
+                                                                                <td>
+                                                                                    <select class="form-select value='' customer_clz" name="vendor">
+                                                                                        <option value="" selected disabled>Select Vendor</option>
+                                                                                        <?php foreach($vendors as $vendor){?> 
+                                                                                            <option value="<?php echo $vendor->ven_id?>"><?php echo $vendor->ven_name;?></option>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </td>
+                                                                            </tr>
+
                                                                             <tr>
                                                                                 <td>Sales Order</td>
                                                                                 <td>
@@ -185,7 +197,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Material Requesition Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Purchase Order Reports</h4>
                                         
                                         <form method="POST"  target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -222,15 +234,15 @@
                                             
                                             <tbody class="tbody_data">
                                                 <?php
-                                                if(!empty($material_requesition))
+                                                if(!empty($purchase_order))
                                                 {
                                                     $i=1;
-                                                    foreach($material_requesition as $material_req){?> 
+                                                    foreach($purchase_order as $pur_order){?> 
                                                     <tr>
                                                         <td><?php echo $i;?></td>
-                                                        <td><?php echo $material_req->mr_date;?></td>
-                                                        <td><?php echo $material_req->so_reffer_no;?></td>
-                                                        <td><?php echo $material_req->product_details;?></td>
+                                                        <td><?php echo $pur_order->po_date;?></td>
+                                                        <td><?php echo $pur_order->so_reffer_no;?></td>
+                                                        <td><?php echo $pur_order->product_details;?></td>
                                                        
                                                        
 
