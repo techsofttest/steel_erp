@@ -191,7 +191,7 @@
 
                                                             <!-- Single Row Start -->
 
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2">
 
@@ -207,11 +207,11 @@
 
                                                                         <option value='' selected disabled>Select Material Received Note</option>
 
-                                                                        <?php foreach($material_received as $mat_rec){?>
+                                                                        <?php //foreach($material_received as $mat_rec){?>
                                                                             
-                                                                            <option value="<?php echo $mat_rec->mrn_id;?>"><?php echo $mat_rec->mrn_reffer; ?></option>
+                                                                            <option value="<?php //echo $mat_rec->mrn_id;?>"><?php //echo $mat_rec->mrn_reffer; ?></option>
 
-                                                                        <?php } ?>
+                                                                        <?php //} ?>
 
                                                                         </select>
 
@@ -221,7 +221,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>--->    
 
                                                             <!-- ### -->
                                                             
@@ -254,13 +254,19 @@
 
                                                                     <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <!--<select class="form-select select_purchase" name="mrn_purchase" id=""  required="" aria-required="true">
+                                                                        <select class="form-select select_purchase" name="purchase_order" id=""  required="" aria-required="true">
                                                                             
                                                                             <option value="" selected="" disabled="">Select Purchase Order</option>
 
-                                                                        </select>--->
+                                                                            <?php foreach($material_received as $material_rec){?>
+                                                                                
+                                                                                <option value="<?php echo $material_rec->po_id;?>"><?php echo $material_rec->po_reffer_no; ?></option>
 
-                                                                        <input type="text" name="purchase_order" class="form-control select_purchase input_length" required>
+                                                                            <?php } ?>
+
+                                                                        </select>
+
+                                                                        <!--<input type="text" name="purchase_order" class="form-control select_purchase input_length" required>-->
 
                                                                     </div>
 
@@ -1316,6 +1322,8 @@
 
                             var purchase_id = data.purchase_order;
 
+                            console.log(purchase_id);
+
                             $('#AddPurchaseVoucher').modal('hide');
 
                             $('#SelectProduct').modal('show');
@@ -1368,6 +1376,8 @@
                 {
                 
                     var data = JSON.parse(data);
+
+                    $('.total_prod_amount').val(data.final_amount);
 
                     $('.product-more2').html(data.product_detail);
 
@@ -1692,6 +1702,8 @@
                     var data = JSON.parse(data);
 
                     $('.add_payment_term').val(data.payment_term);
+
+                    $('.delivery_note_clz').val(data.delivery_date);
 
                     $('.mr_ref').val(data.mr_reff);
 

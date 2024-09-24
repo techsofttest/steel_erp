@@ -170,7 +170,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Quotation Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                         
                                         <form method="POST" action="" target="_blank" >
                                             <input type="hidden" name="pdf" value="1">
@@ -195,22 +195,23 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotAnalysisReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive" style="overflow-x:auto;">
+                                        <table style="table-layout:fixed;" id="" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Quotation Ref</th>
-                                                    <th>Customer Name</th>
-                                                    <th>Sales Executive</th>
-                                                    <th width="100px">Product</th>
-                                                    <th width="100px">Quantity</th>
-                                                    <th width="100px">Rate</th>
-                                                    <th width="100px">Amount</th>
-                                                    <th width="100px">Sales Order</th>
-                                                    <th width="100px">Amount</th>
-                                                    <th>Difference</th>
+                                                    <th class="no-sort" style="white-space: nowrap;width:100px">Sl no</th>
+                                                    <th style="white-space: nowrap;width:100px">Date</th>
+                                                    <th style="white-space: nowrap;width:100px">Quotation Ref</th>
+                                                    <th style="white-space: nowrap;width:500px">Customer Name</th>
+                                                    <th style="white-space: nowrap;width:100px">Sales Executive</th>
+                                                    <th style="width:500px">Product</th>
+                                                    <th style="width:100px;white-space: nowrap" >Quantity</th>
+                                                    <th style="width:100px;white-space: nowrap" >Rate</th>
+                                                    <th style="width:100px;white-space: nowrap" >Discount</th>
+                                                    <th style="width:100px;white-space: nowrap" >Amount</th>
+                                                    <th style="width:100px;white-space: nowrap" >Sales Order</th>
+                                                    <th style="width:100px;white-space: nowrap" >Amount</th>
+                                                    <th style="width:100px;white-space: nowrap">Difference</th>
                                                 </tr>
                                             </thead>
                                             
@@ -221,24 +222,25 @@
                                                     $i=1;
                                                     foreach($quotation_data as $quot_data){?> 
                                                     <tr>
-                                                        <td><?php echo $i;?></td>
-                                                        <td><?php echo date('d-M-Y',strtotime($quot_data->qd_date));?></td>
-                                                        <td><a href="<?php echo base_url();?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id;?>" target="_blank"><?php echo $quot_data->qd_reffer_no;?></a></td>
-                                                        <td><?php echo $quot_data->cc_customer_name;?></td>
-                                                        <td><?php echo $quot_data->se_name;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $i;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo date('d-M-Y',strtotime($quot_data->qd_date));?></td>
+                                                        <td style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id;?>" target="_blank"><?php echo $quot_data->qd_reffer_no;?></a></td>
+                                                        <td style="white-space: nowrap;width:500px"><?php echo $quot_data->cc_customer_name;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $quot_data->se_name;?></td>
                                                         
                                                       
 
                                                         <!--********-->
 
-                                                        <td  colspan="4" align="left" class="p-0">
+                                                        <td  colspan="5" align="left" class="p-0">
                                                             <table>
                                                                 <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    <td  width="100px"><?php echo $quot_prod->product_details;?></td>
-                                                                    <td  width="100px"><?php echo $quot_prod->qpd_quantity;?></td>
-                                                                    <td  width="100px"><?php echo $quot_prod->qpd_rate;?></td>
-                                                                    <td  width="100px"><?php echo $quot_prod->qpd_amount;?></td>
+                                                                    <td  style="width:500px"><?php echo $quot_prod->product_details;?></td>
+                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_quantity;?></td>
+                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_rate;?></td>
+                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_discount;?></td>
+                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_amount;?></td>
                                                                   
                                                                 </tr>
                                                                 <?php } ?>
@@ -307,7 +309,7 @@
                                                        
 
                                                         <?php if(!empty($quot_data->sales_orders)){?> 
-                                                        <td>---</td>   
+                                                        <td>00.0</td>   
                                                         <?php } else{?> 
                                                         <td></td>
                                                         

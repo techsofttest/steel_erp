@@ -39,7 +39,7 @@
         
           <li class="nav-item"><a class="nav-link <?php  if($uri->getSegment(3)=="MaterialReqReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Procurement/MaterialReqReport"role="tab" aria-selected="true">Material Requesition Report </a></li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="PurchaseOrderReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Procurement/PurchaseOrderReport" role="tab" aria-selected="false">Purchase Order Report</a> </li>
-          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderReport"){echo "active" ;}?>" href="<?= base_url();?>Procurement/SalesOrderReport" role="tab" aria-selected="false">Material Received Note Report</a> </li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="MaterialRecReport"){echo "active" ;}?>" href="<?= base_url();?>Procurement/MaterialRecReport" role="tab" aria-selected="false">Material Received Note Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderSummeryReport"){echo "active" ;}?>" href="<?= base_url();?>Procurement/SalesOrderSummeryReport" role="tab" aria-selected="false">LPO to MRN Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderToDn"){echo "active" ;}?>"  href="<?= base_url();?>Crm/SalesOrderToDn" role="tab" aria-selected="false">MRN to Purchase Voucher Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="DeliveryNoteReport"){echo "active";}?>"  href="<?= base_url();?>Crm/DeliveryNoteReport" role="tab" aria-selected="false">LPO to Purchase Voucher Report</a> </li>

@@ -178,4 +178,26 @@ class ProcurementModel extends Model
         // Return the max total or 0 if no valid result
         return $max > 0 ? $max : 0;
     }
+
+    public function FetchAllOrderJoin($table,$order_key,$order,$joins,$group_by_col){
+           
+        $query= $this->db
+        ->table($table)
+        ->select('*')
+        ->orderBy($order_key, $order);
+        if(!empty($joins))
+        foreach($joins as $join)
+        {
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+        }
+
+        $query->groupBy($table . '.' . $group_by_col);
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+        //->get()
+        //->getResult();
+    }
 }

@@ -116,7 +116,7 @@
                                                                             <tr>
                                                                                 <td>Product</td>
                                                                                 <td>
-                                                                                    <select class="form-select" value="<?php// echo $sales_executive; ?>" name="product">
+                                                                                    <select class="form-select" value="" name="product">
                                                                                         <option value="" selected disabled>Select Porduct</option>
                                                                                         <?php foreach($products as $product){?> 
                                                                                             <option value="<?php echo $product->product_id;?>"><?php echo $product->product_details;?></option>    

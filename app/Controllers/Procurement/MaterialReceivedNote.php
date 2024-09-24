@@ -238,7 +238,13 @@ class MaterialReceivedNote extends BaseController
                     
                         $new_delivery_qty = $_POST['current_qty'][$j] + $_POST['delivered_qty'][$j];
 
-                        $total_amount = $_POST['rate'][$j] *  $_POST['current_qty'][$j];
+                        $multipliedTotal = $_POST['rate'][$j] *  $_POST['current_qty'][$j];
+
+                        $per_amount = ($_POST['discount'][$j]/100)*$multipliedTotal;
+
+                        $orginalPrice = $multipliedTotal - $per_amount;
+
+                        $total_amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
 
                         $insert_data  	= array(  
                             
@@ -251,7 +257,9 @@ class MaterialReceivedNote extends BaseController
                             'rnp_material_received_note' =>  $this->request->getPost('received_id'),
                             'rnp_purchase_id'            =>  $_POST['purchase_org_id'][$j],
                             'rnp_purchase_prod_id'       =>  $_POST['purchase_id'][$j],
+                            'rnp_discount'               =>  $_POST['discount'][$j],
                             'rnp_amount'                 =>  $total_amount,
+                            'rnp_rate'                   =>  $_POST['rate'][$j],
                             
                         );
 
@@ -483,6 +491,7 @@ class MaterialReceivedNote extends BaseController
                                             <td><input type="hidden" name="purchase_id[]" value="'.$product->pop_id.'"></td>
                                             <td><input type="hidden" name="purchase_org_id[]" value="'.$product->pop_purchase_order.'"></td>
                                             <td><input type="hidden" name="rate[]" value="'.$product->pop_rate.'"></td>
+                                            td><input type="hidden" name="discount[]" value="'.$product->pop_discount.'"></td>
                                            
                                         </tr>';
  

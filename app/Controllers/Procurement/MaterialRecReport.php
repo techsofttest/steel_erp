@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-class MaterialReqReport extends BaseController
+class MaterialRecReport extends BaseController
 {
     
     
@@ -17,17 +17,15 @@ class MaterialReqReport extends BaseController
     //view page
     public function index()
     {   
-        //$data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
-
-        //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        
         $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['content'] = view('procurement/material_req_report',$data);
+        $data['content'] = view('procurement/material_rec_report',$data);
 
         return view('procurement/report-module',$data);
 
