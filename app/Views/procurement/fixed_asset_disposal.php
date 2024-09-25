@@ -73,12 +73,12 @@
                     <div class="tab-pane active" id="arrow-1" role="tabpanel">
 
                         <!--add enquiry modal start-->
-                        <div class="modal fade" id="AddDepreciationModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="AddFixedAssetDisposal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
-                                <form class="Dashboard-form class" id="AddDepreciation" data_fill="false">
+                                <form class="Dashboard-form class" id="AddAssetDisposal" data_fill="false">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Depreciation Calculation</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Fixed Asset Displosal</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
@@ -96,19 +96,41 @@
 
                                                                 <div class="row align-items-center mb-2">
 
+
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Account Head</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select account_head_select account_head_clz" name="dpc_account_head" required></select>
+                                                                        <select class="form-select account_head_select add_account_head_select account_head_clz" name="dfs_account_head" required></select>
+
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Fixed Asset</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select fixed_asset_select" name="dfs_fixed_asset" required></select>
 
                                                                     </div>
 
                                                                 </div>
 
                                                             </div>
-
 
                                                             <!-- ### -->
 
@@ -121,12 +143,12 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
 
-                                                                        <label for="basicInput" class="form-label">Date</label>
+                                                                        <label for="basicInput" class="form-label"> Date</label>
 
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dpc_acquired_date" class="form-control mr_date datepicker" required>
+                                                                        <input type="text" name="dfs_date_dispose" class="form-control mr_date datepicker" required>
                                                                     </div>
 
 
@@ -137,36 +159,6 @@
                                                             </div>
 
                                                             <!-- ### -->
-
-
-
-
-
-                                                            <!-- Single Row Start -->
-
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Current Balance</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dpc_amount" class="form-control currentbalance " readonly required>
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-
-
-
-                                                            <!-- ### -->
-
-
-
 
 
 
@@ -180,36 +172,6 @@
                                                         <div class="row">
 
 
-
-                                                            <!-- Single Row Start -->
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-
-                                                                        <label for="basicInput" class="form-label">Debit Account</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to debit_account_select" id="debit_account_select" name="dpc_debit_account" readonly required>
-                                                                            <option value="" selected disabled>Debit Account</option>
-                                                                            <?php
-                                                                            foreach ($charts_of_account as $chart_account) {
-                                                                            ?>
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                                            <?php
-                                                                            }
-                                                                            ?>
-
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-
                                                             <!-- ### -->
 
                                                             <!-- Single Row Start -->
@@ -222,7 +184,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select add_assigned_to debit_account_select" id="credit_account_select" name="dpc_credit_account" readonly required>
+                                                                        <select class="form-select asset_credit_acc debit_account_select" name="dfs_credit_account" required>
                                                                             <option value="" selected disabled>Credit Account</option>
                                                                             <?php
                                                                             foreach ($charts_of_account as $chart_account) {
@@ -249,11 +211,41 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Depreciation</label>
+                                                                        <label for="basicInput" class="form-label">Current Balance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dpc_depreciation" class="form-control add_payment_term depriciation_input" value="" readonly required>
+                                                                        <input type="text" name="dfs_asset_balance" class="form-control add_current_balance" value="" required>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">GI Account</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select add_assigned_to debit_account_select" name="dfs_debit_account" required>
+                                                                            <option value="" selected disabled>GI Account</option>
+                                                                            <?php
+                                                                            foreach ($charts_of_account as $chart_account) {
+                                                                            ?>
+                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
+                                                                            <?php
+                                                                            }
+                                                                            ?>
+
+                                                                        </select>
                                                                     </div>
 
                                                                 </div>
@@ -266,6 +258,7 @@
 
 
 
+
                                                         </div>
 
                                                     </div>
@@ -273,10 +266,11 @@
 
 
                                                 </div>
+
                                                 <div class="row">
 
                                                     <div class="mt-4">
-                                                        <table class="table table-bordered table-striped delTable selected_table" style="display: none;">
+                                                        <table class="table table-bordered table-striped delTable view_selected_table" style="display: none;">
                                                             <tbody class="travelerinfo">
 
                                                                 <tr>
@@ -285,29 +279,26 @@
                                                                     <td>Date Acquired</td>
                                                                     <td>Amount</td>
                                                                     <td>Depreciation</td>
-                                                                    <td>Entitlement</td>
-                                                                    <td>Depreciation</td>
+                                                                    <td>Sales Price</td>
+                                                                    <td>Profit/Loss</td>
                                                                 </tr>
 
                                                             </tbody>
 
-                                                            <tbody class="travelerinfo product-more2 assets-body"></tbody>
+                                                            <tbody class="travelerinfo product-more2 view-assets-body"></tbody>
 
                                                         </table>
                                                     </div>
 
                                                 </div>
 
-
                                                 <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><button type="submit">Generate JV</button></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <table class="table table-bordered table-striped enq_tab_submit menu">
+                                                    <tbody><tr>
+                                                        <td><button type="submit">Generate JV</button></td>                                                     
+                                                    </tr>
+                                                </tbody></table>
+                                            </div>
 
 
 
@@ -317,10 +308,11 @@
 
                                         </div>
 
-
                                         <!-- <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success" type="submit">Save</button>
                                         </div> -->
+
+
 
                                     </div>
                                 </form>
@@ -336,8 +328,8 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Depreciation Calculation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddDepreciationModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Fixed Asset Disposal</h4>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddFixedAssetDisposal" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -345,10 +337,11 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Account head</th>
-                                                    <th>Acquired Date</th>
-                                                    <th>Amount</th>
-                                                    <th>Depreciation</th>
+                                                    <th>Description</th>
+                                                    <th>Account Head</th>
+                                                    <th>Date of Dispose</th>
+                                                    <th>Sale Price</th>
+                                                    <th>Profit/Lose</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -456,6 +449,7 @@
 
 
 
+
 <!--payment modal start-->
 
 
@@ -543,9 +537,9 @@
 <!--vendor modal start-->
 
 <?= $this->include('procurement/add_vendor') ?>
+<?= $this->include('procurement/edit_vendor') ?>
 
 <!--vendor modal end-->
-
 
 
 
@@ -556,12 +550,11 @@
         <form class="Dashboard-form class" id="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Deperication Calculation</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Fixed Asset Disposal</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-
 
                     <div class="live-preview">
 
@@ -575,19 +568,41 @@
 
                                         <div class="row align-items-center mb-2">
 
+
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select account_head_select account_head_clz view_acc_head" name="dpc_account_head" required></select>
+                                                <select class="form-select  view_account_head_select account_head_clz" name="dfs_account_head" required></select>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Fixed Asset</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <select class="form-select fixed_asset_select view_fixed_asset_select" name="dfs_fixed_asset" required></select>
 
                                             </div>
 
                                         </div>
 
                                     </div>
-
 
                                     <!-- ### -->
 
@@ -600,12 +615,12 @@
 
                                             <div class="col-col-md-3 col-lg-3">
 
-                                                <label for="basicInput" class="form-label">Date</label>
+                                                <label for="basicInput" class="form-label"> Date</label>
 
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_acquired_date" class="form-control view_acq_date " required>
+                                                <input type="text" name="dfs_date_dispose" class="form-control mr_date  view_dispose_date" readonly required>
                                             </div>
 
 
@@ -616,36 +631,6 @@
                                     </div>
 
                                     <!-- ### -->
-
-
-
-
-
-                                    <!-- Single Row Start -->
-
-
-                                    <div class="col-lg-12">
-
-                                        <div class="row align-items-center mb-2">
-
-                                            <div class="col-col-md-3 col-lg-3">
-                                                <label for="basiInput" class="form-label">Current Balance</label>
-                                            </div>
-
-                                            <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_amount" class="form-control view_currentbalance " readonly required>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <!-- ### -->
-
-
-
 
 
 
@@ -659,36 +644,6 @@
                                 <div class="row">
 
 
-
-                                    <!-- Single Row Start -->
-
-                                    <div class="col-lg-12">
-
-                                        <div class="row align-items-center mb-2">
-
-                                            <div class="col-col-md-3 col-lg-3">
-
-                                                <label for="basicInput" class="form-label">Debit Account</label>
-                                            </div>
-
-                                            <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select add_assigned_to debit_account_select view_debit_account_select" name="dpc_debit_account" readonly required>
-                                                    <option value="" selected disabled>Debit Account</option>
-                                                    <?php
-                                                    foreach ($charts_of_account as $chart_account) {
-                                                    ?>
-                                                        <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
                                     <!-- ### -->
 
                                     <!-- Single Row Start -->
@@ -701,7 +656,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select add_assigned_to debit_account_select view_credit_account_select" name="dpc_credit_account" readonly required>
+                                                <select class="form-select view_credit_acc debit_account_select" name="dfs_credit_account" required>
                                                     <option value="" selected disabled>Credit Account</option>
                                                     <?php
                                                     foreach ($charts_of_account as $chart_account) {
@@ -728,11 +683,41 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Depreciation</label>
+                                                <label for="basicInput" class="form-label">Current Balance</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_depreciation" class="form-control add_payment_term view_depriciation_input" value="" readonly required>
+                                                <input type="text" name="dfs_asset_balance" class="form-control view_current_balance" value="" readonly required>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">GI Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <select class="form-select add_assigned_to debit_account_select view_gi_account" name="dfs_debit_account" required>
+                                                    <option value="" selected disabled>GI Account</option>
+                                                    <?php
+                                                    foreach ($charts_of_account as $chart_account) {
+                                                    ?>
+                                                        <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+
+                                                </select>
                                             </div>
 
                                         </div>
@@ -746,10 +731,11 @@
                             </div>
 
                         </div>
+
                         <div class="row">
 
                             <div class="mt-4">
-                                <table class="table table-bordered table-striped delTable view_selected_table" style="display: none;">
+                                <table class="table table-bordered table-striped delTable view-dispose-table">
                                     <tbody class="travelerinfo">
 
                                         <tr>
@@ -758,13 +744,34 @@
                                             <td>Date Acquired</td>
                                             <td>Amount</td>
                                             <td>Depreciation</td>
-                                            <td>Entitlement</td>
-                                            <td>Depreciation</td>
+                                            <td>Sales Price</td>
+                                            <td>Profit/Loss</td>
                                         </tr>
 
                                     </tbody>
 
-                                    <tbody class="travelerinfo product-more2 view-assets-body"></tbody>
+                                    <tbody class="travelerinfo product-more2 view-dispose-body">
+
+                                        <tr>
+                                            <td> 1 </td>
+                                            <td><input type="text" name="dfs_description" class="form-control view_description" readonly></td>
+                                            <td><input type="text" name="dfs_acquired_date" class="form-control view_acquired_date" readonly></td>
+                                            <td><input type="text" name="dfs_asset_amount" class="form-control view_asset_amt" readonly></td>
+                                            <td><input type="text" name="dfs_depreciation" class="form-control view_depreciation" readonly></td>
+                                            <td><input type="number" name="dfs_sales_price" value="" class="form-control view_sale_price" readonly></td>
+                                            <td><input type="text" name="dfs_profit" value="" class="form-control view_profit" readonly></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="1"></td>
+                                            <td colspan="2" align="left" class="amount_in_words_add"></td>
+                                            <td align="right" colspan="3">Total</td>
+                                            <input type="hidden" id="view_total_amount_val" val="">
+                                            <th id="view_total_amount"></th>
+                                        </tr>
+
+
+                                    </tbody>
 
                                 </table>
                             </div>
@@ -774,8 +781,9 @@
 
 
 
-
                     </div>
+
+
 
                 </div>
 
@@ -790,14 +798,16 @@
 <!--view modal end-->
 
 <!--edit section start-->
-
 <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <form class="Dashboard-form class" id="edit_modal_form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Depreciation Calculation</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Fixed Asset Disposal</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                    <input type="hidden" name="dfs_id" id="" class="form-control edit_id">
+
                 </div>
 
                 <div class="modal-body">
@@ -814,19 +824,40 @@
 
                                         <div class="row align-items-center mb-2">
 
+
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select account_head_clz edit_acc_head" name="dpc_account_head" required></select>
+                                                <select class="form-select  edit_account_head_select account_head_select account_head_clz" name="dfs_account_head" required></select>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Fixed Asset</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <select class="form-select fixed_asset_select edit_fixed_asset_select" name="dfs_fixed_asset" required></select>
 
                                             </div>
 
                                         </div>
 
                                     </div>
-
 
                                     <!-- ### -->
 
@@ -839,12 +870,12 @@
 
                                             <div class="col-col-md-3 col-lg-3">
 
-                                                <label for="basicInput" class="form-label">Date</label>
+                                                <label for="basicInput" class="form-label"> Date</label>
 
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_acquired_date" class="form-control edit_acq_date datepicker" required>
+                                                <input type="text" name="dfs_date_dispose" class="form-control mr_date  edit_dispose_date" readonly required>
                                             </div>
 
 
@@ -855,36 +886,6 @@
                                     </div>
 
                                     <!-- ### -->
-
-
-
-
-
-                                    <!-- Single Row Start -->
-
-
-                                    <div class="col-lg-12">
-
-                                        <div class="row align-items-center mb-2">
-
-                                            <div class="col-col-md-3 col-lg-3">
-                                                <label for="basiInput" class="form-label">Current Balance</label>
-                                            </div>
-
-                                            <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_amount" class="form-control edit_currentbalance " readonly required>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <!-- ### -->
-
-
-
 
 
 
@@ -898,36 +899,6 @@
                                 <div class="row">
 
 
-
-                                    <!-- Single Row Start -->
-
-                                    <div class="col-lg-12">
-
-                                        <div class="row align-items-center mb-2">
-
-                                            <div class="col-col-md-3 col-lg-3">
-
-                                                <label for="basicInput" class="form-label">Debit Account</label>
-                                            </div>
-
-                                            <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select add_assigned_to debit_account_select2 edit_debit_account_select" name="dpc_debit_account" readonly required>
-                                                    <option value="" selected disabled>Debit Account</option>
-                                                    <?php
-                                                    foreach ($charts_of_account as $chart_account) {
-                                                    ?>
-                                                        <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
                                     <!-- ### -->
 
                                     <!-- Single Row Start -->
@@ -940,7 +911,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select add_assigned_to debit_account_select2 edit_credit_account_select" name="dpc_credit_account" readonly required>
+                                                <select class="form-select edit_credit_acc asset_credit_acc edit_debit_account_select" name="dfs_credit_account" required>
                                                     <option value="" selected disabled>Credit Account</option>
                                                     <?php
                                                     foreach ($charts_of_account as $chart_account) {
@@ -967,11 +938,41 @@
                                         <div class="row align-items-center mb-2">
 
                                             <div class="col-col-md-3 col-lg-3">
-                                                <label for="basicInput" class="form-label">Depreciation</label>
+                                                <label for="basicInput" class="form-label">Current Balance</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_depreciation" class="form-control add_payment_term edit_depriciation_input" value="" readonly required>
+                                                <input type="text" name="dfs_asset_balance" class="form-control edit_current_balance add_current_balance" value="" readonly required>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">GI Account</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <select class="form-select  edit_debit_account_select  edit_gi_account add_assigned_to debit_account_select" name="dfs_debit_account" required>
+                                                    <option value="" selected disabled>GI Account</option>
+                                                    <?php
+                                                    foreach ($charts_of_account as $chart_account) {
+                                                    ?>
+                                                        <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+
+                                                </select>
                                             </div>
 
                                         </div>
@@ -985,10 +986,11 @@
                             </div>
 
                         </div>
+
                         <div class="row">
 
                             <div class="mt-4">
-                                <table class="table table-bordered table-striped delTable edit_selected_table" style="display: none;">
+                                <table class="table table-bordered table-striped delTable edit-dispose-table view_selected_table" style="display:none">
                                     <tbody class="travelerinfo">
 
                                         <tr>
@@ -997,13 +999,34 @@
                                             <td>Date Acquired</td>
                                             <td>Amount</td>
                                             <td>Depreciation</td>
-                                            <td>Entitlement</td>
-                                            <td>Depreciation</td>
+                                            <td>Sales Price</td>
+                                            <td>Profit/Loss</td>
                                         </tr>
 
                                     </tbody>
 
-                                    <tbody class="travelerinfo product-more2 edit-assets-body"></tbody>
+                                    <tbody class="travelerinfo product-more2 edit-assets-body">
+
+
+                                        <tr>
+                                            <td> 1 </td>
+                                            <td><input type="text" name="dfs_description" class="form-control edit_description" readonly></td>
+                                            <td><input type="text" name="dfs_acquired_date" class="form-control edit_acquired_date" readonly></td>
+                                            <td><input type="text" name="dfs_asset_amount" class="form-control edit_asset_amt" readonly></td>
+                                            <td><input type="text" name="dfs_depreciation" class="form-control edit_depreciation" readonly></td>
+                                            <td><input type="number" name="dfs_sales_price" value="" class="form-control edit_sale_price"></td>
+                                            <td><input type="text" name="dfs_profit" value="" class="form-control edit_profit" readonly></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="1"></td>
+                                            <td colspan="2" align="left" class="amount_in_words_add"></td>
+                                            <td align="right" colspan="3">Total</td>
+                                            <input type="hidden" id="edit_total_amount_val" val="">
+                                            <th id="edit_total_amount"></th>
+                                        </tr>
+
+                                    </tbody>
 
                                 </table>
                             </div>
@@ -1013,9 +1036,7 @@
 
 
 
-
                     </div>
-
 
                 </div>
 
@@ -1041,7 +1062,7 @@
 
         /*add form*/
         $(function() {
-            var form = $('#AddDepreciation');
+            var form = $('#AddAssetDisposal');
 
             form.validate({
                 rules: {
@@ -1057,7 +1078,7 @@
 
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Add",
+                        url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/Add",
                         method: "POST",
                         data: formData,
                         processData: false, // Don't process the data
@@ -1065,7 +1086,7 @@
                         //data: $(currentForm).serialize(),
                         success: function(data) {
 
-                            $('#AddDepreciationModal').modal('hide');
+                            $('#AddFixedAssetDisposal').modal('hide');
 
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
@@ -1082,14 +1103,17 @@
 
         /*#####*/
 
+
+
+
         /* account head  search droup drown start*/
 
         $(".account_head_select").select2({
             placeholder: "Select Account Name",
             theme: "default form-control-",
-            dropdownParent: $('#AddDepreciationModal'),
+            dropdownParent: $('#AddFixedAssetDisposal'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1120,12 +1144,15 @@
             }
         })
 
-        $(".edit_acc_head").select2({
+
+
+
+        $(".edit_account_head_select").select2({
             placeholder: "Select Account Name",
             theme: "default form-control-",
             dropdownParent: $('#EditModal'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1156,13 +1183,16 @@
             }
         })
 
-        // Initialize Select2 for the .view_acc_head select field
-        $(".view_acc_head").select2({
-            placeholder: "Select Account Name",
+
+        // Capture acc_head value
+
+        $(".fixed_asset_select").select2({
+            placeholder: "Select Assets",
             theme: "default form-control-",
-            dropdownParent: $('#ViewModal'),
+            dropdownParent: $('#AddFixedAssetDisposal'),
+
             ajax: {
-                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1170,36 +1200,88 @@
                 allowClear: true,
                 data: function(params) {
                     return {
-                        term: params.term,
-                        page: params.page || 1,
+                        term: params.term, // Search term
+                        page: params.page || 1 // Pagination
                     };
                 },
                 processResults: function(data, params) {
                     var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
+                    var acc_head = $('.add_account_head_select').val();
+
+                    // Filter results where acc_head matches cfs_account_head
+                    var filteredResults = $.map(data.result, function(item) {
+                        if (item.cfs_account_head == acc_head) {
                             return {
-                                id: item.ah_id,
-                                text: item.ah_account_name
+                                id: item.cfs_id,
+                                text: item.cfs_description
                             };
-                        }),
+                        }
+                        // If it doesn't match, return nothing (null)
+                        return null;
+                    });
+
+                    return {
+                        results: filteredResults,
                         pagination: {
-                            more: (page * 10) <= data.total_count // Handle pagination if needed
+                            more: (page * 10) <= data.total_count // Handle pagination
                         }
                     };
-                },
+                }
             }
         });
 
 
+        $(".edit_fixed_asset_select").select2({
+            placeholder: "Select Assets",
+            theme: "default form-control-",
+            dropdownParent: $('#EditModal'),
 
-        /*###*/
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function(params) {
+                    return {
+                        term: params.term, // Search term
+                        page: params.page || 1 // Pagination
+                    };
+                },
+                processResults: function(data, params) {
+                    var page = params.page || 1;
+                    var acc_head = $('.edit_account_head_select').val();
+
+                    // Filter results where acc_head matches cfs_account_head
+                    var filteredResults = $.map(data.result, function(item) {
+                        if (item.cfs_account_head == acc_head) {
+                            return {
+                                id: item.cfs_id,
+                                text: item.cfs_description
+                            };
+                        }
+                        // If it doesn't match, return nothing (null)
+                        return null;
+                    });
+
+                    return {
+                        results: filteredResults,
+                        pagination: {
+                            more: (page * 10) <= data.total_count // Handle pagination
+                        }
+                    };
+                }
+            }
+        })
+
+
         $(".debit_account_select").select2({
             placeholder: "Select Account Name",
             theme: "default form-control-",
-            dropdownParent: $('#AddDepreciationModal'),
+            dropdownParent: $('#AddFixedAssetDisposal'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchDebitAcc",
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchDebitAcc",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1230,12 +1312,13 @@
             }
         })
 
-        $(".debit_account_select2").select2({
+
+        $(".edit_debit_account_select").select2({
             placeholder: "Select Account Name",
             theme: "default form-control-",
             dropdownParent: $('#EditModal'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchDebitAcc",
+                url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchDebitAcc",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -1265,6 +1348,9 @@
                 },
             }
         })
+
+
+        /*###*/
 
 
 
@@ -1314,144 +1400,131 @@
 
 
 
-        /*Time Frame section start*/
-
-
-        // Function to trigger AJAX if both date and account head are valid
-        // Trigger function when either date or account head changes
-        function triggerDepreciationCalculation() {
-            var date = $('.mr_date').val() || new Date().toISOString().slice(0, 10);
-            // Get the selected date
-            var accountHead = $('.account_head_select').val(); // Get the selected account head
-
-            // Check if both fields have values
-            if (accountHead) {
-                $.ajax({
-                    url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Date",
-                    method: "POST",
-                    data: {
-                        AccountHead: accountHead,
-                        Date: date
-                    },
-                    success: function(data) {
-                        var parsedData = JSON.parse(data);
-
-                        $('.depriciation_input').val('');
-
-                        // Update fields based on the response
-                        if (parsedData.fixedasset) {
-                            // Do something with parsedData.fixedasset, if needed
-                            var fixedasset = parsedData.fixedasset;
-
-                            $('#debit_account_select').val(fixedasset.cfs_debit_account).trigger('change');
-                            $('#credit_account_select').val(fixedasset.cfs_credit_account).trigger('change');
-
-
-                            if (fixedasset.cfs_depreciation) {
-                                $('.depriciation_input').val(fixedasset.cfs_depreciation);
-                            } else {
-                                $('.depriciation_input').val('');
-                            }
-
-                        }
-                        if (parsedData.acchead_balance) {
-                            // Do something with the account head balance
-
-                            $('.currentbalance').val(parsedData.acchead_balance);
-                        }
-
-                        if (parsedData.fixed_asset && parsedData.fixed_asset != '') {
-                            // Display the table by selecting the correct class for the table
-                            $('.selected_table').css('display', 'block');
-
-                            // Populate the table's body with the data received from `fixed_asset`
-                            $('.assets-body').html(parsedData.fixed_asset);
-                        }
 
 
 
+        $("body").on('change', '.fixed_asset_select', function() {
 
-                    }
-                });
-            }
-        }
-
-        // Bind event handlers
-
-        $('.mr_date').on('change', triggerDepreciationCalculation);
-
-        $('.account_head_select').on('change', triggerDepreciationCalculation);
-
-
-
-
-
-
-        /*Time Frame section end*/
-
-
-
-        /*material recived not section start*/
-
-
-        /*$("body").on('change', '.material_received_note', function(){ 
-	        
-            var date = $(this).val();
- 
- 
-            $.ajax({
- 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPurchase",
- 
-                method : "POST",
- 
-                data: {Date: date},
- 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                 
-                    $('.time_frame_date').val(data.increment_date_date)
-                 
-                     
-                }
- 
- 
-            });
- 
- 
-        });*/
-
-
-        /*material receivec not section end*/
-
-
-        /*reset reff no*/
-
-        $('.add_mr_form').click(function() {
-
-            $('#add_enquiry_form')[0].reset();
-            $('.ser_product_det').val('').trigger('change');
-            $('.add_assigned_to').val('').trigger('change');
-            $('.add_sales_order').val('').trigger('change');
-            $('.mr_remove').remove();
+            var fixed_asset = $(this).val();
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Procurement/MaterialRequisition/FetchReference",
+                url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/FillData",
 
-                method: "GET",
+                method: "POST",
+
+                data: {
+                    Fixed: fixed_asset
+                },
 
                 success: function(data) {
-                    $('#mr_id').val(data);
+                    var data = JSON.parse(data);
+                    var fixedData = data.fixedasset;
 
+                    $('.add_current_balance').val(data.asset_balance);
+                    $('.asset_credit_acc').val(fixedData.cfs_credit_account).trigger('change');
+
+                    // $('.edit_gi_account').val(null).trigger('change');
+
+                    // $('.view-assets-body').html('');
+
+                    if (data.asset_det != '') {
+                        $('.view-assets-body').html(data.asset_det);
+                        $('.view_selected_table').css('display', 'block');
+
+                    }
                 }
-
             });
 
         });
 
-        /*####*/
+        // Define the round function
+        function round(value, decimals) {
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+
+        // Define the floatVal function
+        function floatVal(value) {
+            return parseFloat(value) || 0; // Ensures valid float, defaults to 0 if invalid
+        }
+
+        // jQuery event listener
+        $("body").on('input', '.add_sale_price', function() {
+
+            var sale_price = $(this).val(); // Get sale price from input
+
+            var amt = $('.add_asset_amt').val(); // Get asset amount from input
+
+            var depric = $('.add_current_balance').val(); // Get depreciation from input
+
+            var profit = round(floatVal(sale_price) - (floatVal(amt) - floatVal(depric)), 2); // Calculate profit
+
+            $('.add_profit').val(profit); // Update profit input field
+
+            $('#total_amount_val').val(profit); // Update hidden total amount input
+
+            $('#total_amount').text(profit); // Update displayed total amount
+
+        });
+
+
+        // jQuery event listener
+        $("body").on('input', '.edit_sale_price', function() {
+
+            var sale_price = $(this).val(); // Get sale price from input
+
+            var amt = $('.edit_asset_amt').val(); // Get asset amount from input
+
+            var depric = $('.edit_current_balance').val(); // Get depreciation from input
+
+            var profit = round(floatVal(sale_price) - (floatVal(amt) - floatVal(depric)), 2); // Calculate profit
+
+            $('.edit_profit').val(profit); // Update profit input field
+
+            $('#edit_total_amount_val').val(profit); // Update hidden total amount input
+
+            $('#edit_total_amount').text(profit); // Update displayed total amount
+
+        });
+
+        /*Time Frame section start*/
+
+
+        $("body").on('change', '.mr_date', function() {
+
+            var date = $(this).val();
+
+
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Procurement/MaterialRequisition/Date",
+
+                method: "POST",
+
+                data: {
+                    Date: date
+                },
+
+                success: function(data) {
+                    var data = JSON.parse(data);
+
+                    $('.time_frame_date').val(data.increment_date_date)
+
+
+                }
+
+
+            });
+
+
+        });
+
+
+
+
+
+
 
 
         /*serial no correction section start*/
@@ -1489,7 +1562,7 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url': "<?php echo base_url(); ?>Procurement/DepreciationCalculation/FetchData",
+                    'url': "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/FetchData",
                     'data': function(data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -1508,19 +1581,22 @@
                     }
                 },
                 'columns': [{
-                        data: 'dpc_id'
+                        data: 'dfs_id'
                     },
                     {
-                        data: 'dpc_account_head'
+                        data: 'dfs_description'
                     },
                     {
-                        data: 'dpc_acquired_date'
+                        data: 'dfs_account_head'
                     },
                     {
-                        data: 'dpc_amount'
+                        data: 'dfs_date_dispose'
                     },
                     {
-                        data: 'dpc_depreciation'
+                        data: 'dfs_sale_price'
+                    },
+                    {
+                        data: 'dfs_profit'
                     },
                     {
                         data: 'action'
@@ -1539,33 +1615,26 @@
         /*###*/
 
 
-        /*reset reffer no*/
+
         $('.add_model_btn').click(function() {
+            // Reset the form fields (inputs, selects, etc.)
+            $('#AddAssetDisposal')[0].reset();
 
-            // Reset the form
-            $('#AddDepreciation')[0].reset();
+            // Reset select2 elements to their placeholder
+            $('#AddAssetDisposal').find('.form-select ').val(null).trigger('change');
 
-            // Clear select fields
-            $('#AddDepreciation select').val('').trigger('change'); // Reset selects
+            // Clear any input type="checkbox" or type="radio" specifically
+            $('#AddAssetDisposal').find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
 
-            // Clear dynamically populated fields (e.g., from server-side response)
-            $('#AddDepreciation').find('input[type="text"], textarea').val(''); // Clear text inputs and textareas
-            $('#AddDepreciation').find('input[type="number"]').val(''); // Clear number inputs
-            $('#AddDepreciation').find('.fixed_asset').html(''); // Assuming fixed_asset is dynamically loaded HTML
+            // Clear any input fields that may not be covered by form reset (e.g. custom input types)
+            $('#AddAssetDisposal').find('input[type="text"], input[type="number"], input[type="email"], textarea').val('');
 
 
-            // $.ajax({
+            // Reset custom elements like date pickers, if any
+            $('#AddAssetDisposal').find('.datepicker').datepicker('setDate', null);
 
-            //     url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchReference",
-
-            //     method: "GET",
-
-            //     success: function(data) {
-
-            //         $('#pr_id').val(data);
-
-            //     }
-            // });
+            // Clear out any dynamically added fields (if you have dynamic form fields)
+            $('#AddAssetDisposal').find('.view_selected_table').css('display', 'none'); // Example, adjust if needed
 
         });
 
@@ -1618,86 +1687,6 @@
 
 
 
-        /*add selected product*/
-
-
-        /*$("body").on('click', '.cust_more_modal', function()
-        { 
-            if(!$("#purchase_form").valid())
-            {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-
-            if($('#purchase_form').attr('data-submit')=='false')
-            {
-
-             $('#purchase_form').submit();
-
-                if(!$("#purchase_form").valid())
-                {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-                }
-
-            }
-
-            var formData = new FormData($('#purchase_form')[0]);
-            var image = $('.image_file').prop('files')[0]; // Get the file from input field
-            formData.append('pr_file', image); // Append the file to FormData object
-
-           
-
-            $.ajax({
-                        url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
-                        method: "POST",
-                        data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        success: function(data) {
-
-                            var data = JSON.parse(data);
-
-                            var purchase_voucher_id = data.purchase_voucher_id;
-
-                            $('.hidden_purchase_voucher_id').val(purchase_voucher_id);
-
-                            var purchase_id = data.purchase_order;
-
-                            $('#AddPurchaseVoucher').modal('hide');
-
-                            $('#SelectProduct').modal('show');
-
-                           
-                            $.ajax({
-
-                                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchProduct",
-
-                                method : "POST",
-
-                                data: {ID: purchase_id},
-                                
-                                success:function(data)
-                                {   
-                                    var data = JSON.parse(data);
-
-                                    $(".select_prod_add").html(data.product_detail);
-                         
-                                }  
-
-                            });
- 
-                            
-                        }
-
-                    });
-
-        });*/
-
-
-        /*#######*/
-
-
         /*prod modal submit start*/
 
         $("body").on('click', '.prod_modal_submit', function() {
@@ -1736,301 +1725,7 @@
         });
 
 
-        /*prod modal submit end*/
 
-        /*calculation section start*/
-
-        $("body").on('keyup', '.add_discount', function() {
-
-            var $discountSelect = $(this);
-
-            var discount = parseInt($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
-
-            var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
-
-            var rate = $discountSelectElement.val();
-
-            var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
-
-            var quantity = parseInt($quantitySelectElement.val()) || 0;
-
-            var parsedRate = parseFloat(rate);
-
-            var parsedQuantity = quantity;
-
-            var multipliedTotal = parsedRate * parsedQuantity;
-
-            var per_amount = (discount / 100) * multipliedTotal;
-
-            var orginalPrice = multipliedTotal - per_amount;
-
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
-
-            var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
-
-            $amountElement.val(orginalPrice);
-
-        });
-
-        /*####*/
-
-
-
-        /*add current delivery start*/
-
-        $("body").on('keyup', '.add_current_qty', function() {
-
-
-            var dataSelect = $(this);
-
-            var deliverySelectElement = dataSelect.closest('.add_prod_row').find('.add_delivery_qty');
-
-            var delivery = parseFloat(deliverySelectElement.val()) || 0; // Convert to number, default to 0 if NaN
-
-            var currentSelectElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-
-            var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
-
-            var total = delivery + current;
-
-            var orderSelectElement = dataSelect.closest('.add_prod_row').find('.add_order_qty');
-
-            var order = orderSelectElement.val();
-
-            //var order = parseFloat(orderSelectElement.val()) || 0;
-
-
-
-
-            if (total > order) {
-
-                /*var currencyNull = currentSelectElement.val("");
-
-                console.log(currencyNull);
-
-                var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-
-                $currencyNullElement.val(currencyNull);*/
-
-                /**/
-
-                currentSelectElement.val(""); // Set the value to an empty string
-                var currencyNull = currentSelectElement.val(); // Get the current (now empty) value
-
-                var $currencyNullElement = dataSelect.closest('.add_prod_row').find('.add_current_qty');
-                $currencyNullElement.val(currencyNull); // Set the value of $currencyNullElement to the empty string
-
-
-                /**/
-
-
-                alertify.error('Delivery Qty + Current Delivery Should Not Exceed The Order Qty').delay(3).dismissOthers();
-
-            }
-
-        });
-
-
-        /*add current delivery end*/
-
-
-        /*vendor new modal start*/
-
-        $("body").on('click', '.vendor_new_modal', function() {
-
-            $('#AddPurchaseOrder').modal('hide');
-
-            $('#AddVendor').modal('show');
-
-
-        });
-
-        /*vendor new modal end*/
-
-
-        //trigger when form is submitted
-
-        $("#add_office_form").submit(function(e) {
-
-            $('#AddPurchaseOrder').modal('show');
-
-            return false;
-
-        });
-
-        /*#####*/
-
-
-        /*contact new modal start*/
-
-        $("body").on('click', '.contact_new_modal', function() {
-
-            var vendor = $('.add_vendor').val();
-
-            if (vendor === null) {
-                alertify.error('Please Select Vendor Name').delay(2).dismissOthers();
-            } else {
-                $('#AddNewContact').modal('show');
-
-                $('#AddPurchaseOrder').modal('hide');
-
-                $('.new_pro_con_vendor').val(vendor);
-            }
-
-
-        });
-
-
-        /*contact new modal end*/
-
-
-        /*fetch purchase order by vendor name*/
-
-        $("body").on('change', '.vendor_data', function() {
-
-            var Id = $('.vendor_data').val();
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/VendorInv",
-
-                method: "POST",
-
-                data: {
-                    ID: Id
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    console.log(data.vendor_inv)
-
-                    $('.vendor_inv_ref').html(data.vendor_inv);
-
-                }
-
-            });
-        });
-
-        /*###*/
-
-
-
-        /*fetch data by vendor inv */
-
-        $("body").on('change', '.vendor_inv_ref', function() {
-
-            var id = $('.vendor_inv_ref').val();
-
-
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchContact",
-
-                method: "POST",
-
-                data: {
-                    ID: id
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    $('.add_contact_person').val(data.contact_person);
-
-                    $('.add_payment_term').val(data.payment_term);
-
-                }
-
-            });
-        });
-
-        /*###*/
-
-
-
-        /*add product start*/
-
-        $("body").on('click', '.add_more_icon', function() {
-            if (!$("#purchase_form").valid()) {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-
-            if ($('#purchase_form').attr('data-submit') == 'false') {
-
-                $('#purchase_form').submit();
-
-                if (!$("#purchase_form").valid()) {
-                    alertify.error('Fill required fields!').delay(3).dismissOthers();
-                    return false;
-                }
-
-            }
-
-            var formData = new FormData($('#purchase_form')[0]);
-            var image = $('.image_file').prop('files')[0]; // Get the file from input field
-            formData.append('image', image); // Append the file to FormData object
-
-            $.ajax({
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Add",
-                method: "POST",
-                data: formData,
-                processData: false, // Don't process the data
-                contentType: false, // Don't set content type
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    var purchase_return_id = data.purchase_return_id;
-
-                    $('.hidden_purchase_return_id').val(purchase_return_id);
-
-                    var vendor_inv_ref = data.vendor_inv_ref;
-
-                    $('#AddPurchaseReturn').modal('hide');
-
-                    $('#SelectProduct').modal('show');
-
-
-                    $.ajax({
-
-                        url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchProduct",
-
-                        method: "POST",
-
-                        data: {
-                            ID: vendor_inv_ref
-                        },
-
-                        success: function(data) {
-                            var data = JSON.parse(data);
-
-                            $(".select_prod_add").html(data.product_detail);
-
-                        }
-
-                    });
-
-
-                }
-
-            });
-
-        });
-
-
-        /*#####*/
-
-
-
-
-
-
-        /*add section end*/
 
 
 
@@ -2042,58 +1737,92 @@
 
             // Fetch the view data
             $.ajax({
-                url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/View",
+                url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/View",
                 method: "POST",
                 data: {
                     ID: id
                 },
                 success: function(response) {
                     var data = JSON.parse(response);
+                    var assetDisposed = data.assetdisposed;
 
-                    // Fetch the options for Select2 before trying to set the value
+                    // Set other form fields
+                    $('.view_description').val(assetDisposed.dfs_description);
+                    $('.view_acquired_date').val(assetDisposed.dfs_acquired_date);
+                    $('.view_asset_amt').val(assetDisposed.dfs_asset_amount);
+                    $('.view_depreciation').val(assetDisposed.dfs_depreciation);
+                    $('.view_sale_price').val(assetDisposed.dfs_sales_price);
+                    $('.view_profit').val(assetDisposed.dfs_profit);
+                    $('#view_total_amount').text(assetDisposed.dfs_profit);
+                    $('.view_dispose_date').val(assetDisposed.dfs_date_dispose);
+                    $('.view_current_balance').val(assetDisposed.dfs_asset_balance);
+
+                    // Fetch and populate account head Select2
                     $.ajax({
-                        url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
                         method: "GET",
                         dataType: 'json',
                         success: function(fetchResponse) {
-                            // Clear and append new options
-                            var select = $('.view_acc_head');
-                            select.empty(); // Clear existing options
+                            var selectAccountHead = $('.view_account_head_select');
+                            selectAccountHead.empty(); // Clear existing options
 
-                            // Populate select options
+                            // Populate select options for account head
                             $.each(fetchResponse.result, function(index, item) {
                                 var option = new Option(item.ah_account_name, item.ah_id, false, false);
-                                select.append(option);
+                                selectAccountHead.append(option);
                             });
 
-                            // Set the selected option
-                            if (data.account_head) {
-                                select.val(data.account_head).trigger('change'); // Set the value and trigger Select2 update
+                            // Set the selected value and trigger the Select2 update
+                            if (assetDisposed.dfs_account_head) {
+                                selectAccountHead.val(assetDisposed.dfs_account_head).trigger('change');
                             }
+                            selectAccountHead.prop('disabled', true).trigger('change'); // Disable it
+                        }
 
-                            // Disable the Select2 dropdown
-                            select.prop('disabled', true).trigger('change'); // Disable it
 
-                            // Set other form fields
-                            $('.view_acq_date').val(data.acquired_date);
-                            $('.view_currentbalance').val(data.balance_amt);
-                            $('.view_debit_account_select').val(data.debit_account).trigger('change');
-                            $('.view_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.view_depriciation_input').val(data.depreciation);
+                    });
 
-                            if (data.depreciation_det != '') {
-                                $('.view-assets-body').html(data.depreciation_det)
-                                $('.view_selected_table').css('display', 'block');
+                    // Fetch and populate fixed asset Select2
+                    $.ajax({
+                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
+                        method: "GET",
+                        dataType: 'json',
+                        success: function(fetchResponse) {
+                            var selectFixedAsset = $('.view_fixed_asset_select');
+                            selectFixedAsset.empty(); // Clear existing options
 
+                            // Populate select options for fixed asset
+                            $.each(fetchResponse.result, function(index, item) {
+                                var option = new Option(item.cfs_description, item.cfs_id, false, false);
+                                selectFixedAsset.append(option);
+                            });
+
+                            // Set the selected value and trigger the Select2 update
+                            if (assetDisposed.dfs_fixed_asset) {
+                                selectFixedAsset.val(assetDisposed.dfs_fixed_asset).trigger('change');
                             }
-                            // Show the modal
-                            $('#ViewModal').modal("show");
+                            selectFixedAsset.prop('disabled', true).trigger('change'); // Disable it
                         }
                     });
+
+                    // Set other select fields that don't require fetching new options
+                    $('.view_credit_acc').val(assetDisposed.dfs_credit_account).trigger('change');
+                    $('.view_gi_account').val(assetDisposed.dfs_debit_account).trigger('change');
+
+
+
+                    // Show the modal after all fields are set
+                    $('#ViewModal').modal("show");
                 }
             });
         });
 
+
+
+        /*view section end*/
+
+
+        /*edit section start*/
 
 
         $("body").on('click', '.edit_btn', function() {
@@ -2102,7 +1831,7 @@
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Edit",
+                url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/Edit",
 
                 method: "POST",
 
@@ -2112,50 +1841,75 @@
 
                 success: function(response) {
                     var data = JSON.parse(response);
+                    var assetDisposed = data.assetdisposed;
 
-                    // Fetch the options for Select2 before trying to set the value
+                    // Set other form fields
+                    $('.edit_id').val(assetDisposed.dfs_id);
+                    $('.edit_description').val(assetDisposed.dfs_description);
+                    $('.edit_acquired_date').val(assetDisposed.dfs_acquired_date);
+                    $('.edit_asset_amt').val(assetDisposed.dfs_asset_amount);
+                    $('.edit_depreciation').val(assetDisposed.dfs_depreciation);
+                    $('.edit_sale_price').val(assetDisposed.dfs_sales_price);
+                    $('.edit_profit').val(assetDisposed.dfs_profit);
+                    $('#edit_total_amount').text(assetDisposed.dfs_profit);
+                    $('.edit_dispose_date').val(assetDisposed.dfs_date_dispose);
+                    $('.edit_current_balance').val(assetDisposed.dfs_asset_balance);
+
+                    // Fetch and populate account head Select2
                     $.ajax({
-                        url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
                         method: "GET",
                         dataType: 'json',
                         success: function(fetchResponse) {
-                            // Clear and append new options
-                            var select = $('.edit_acc_head');
-                            select.empty(); // Clear existing options
+                            var selectAccountHead = $('.edit_account_head_select');
+                            selectAccountHead.empty(); // Clear existing options
 
-                            // Populate select options
+                            // Populate select options for account head
                             $.each(fetchResponse.result, function(index, item) {
                                 var option = new Option(item.ah_account_name, item.ah_id, false, false);
-                                select.append(option);
+                                selectAccountHead.append(option);
                             });
 
-                            // Set the selected option
-                            if (data.account_head) {
-                                select.val(data.account_head).trigger('change'); // Set the value and trigger Select2 update
+                            // Set the selected value and trigger the Select2 update
+                            if (assetDisposed.dfs_account_head) {
+                                selectAccountHead.val(assetDisposed.dfs_account_head).trigger('change');
                             }
 
-                            // Disable the Select2 dropdown
-                            // select.prop('disabled', true).trigger('change'); // Disable it
+                        }
 
-                            // Set other form fields
-                            $('.edit_acq_date').val(data.acquired_date);
-                            $('.edit_currentbalance').val(data.balance_amt);
-                            $('.edit_debit_account_select').val(data.debit_account).trigger('change');
-                            $('.edit_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.edit_depriciation_input').val(data.depreciation);
 
-                            $('.edit_debit_account_select').prop('disabled', true).trigger('change');
-                            $('.edit_credit_account_select').prop('disabled', true).trigger('change');
+                    });
 
-                            if (data.depreciation_det != '') {
-                                $('.edit-assets-body').html(data.depreciation_det)
-                                $('.edit_selected_table').css('display', 'block');
+                    // Fetch and populate fixed asset Select2
+                    $.ajax({
+                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
+                        method: "GET",
+                        dataType: 'json',
+                        success: function(fetchResponse) {
+                            var selectFixedAsset = $('.edit_fixed_asset_select');
+                            selectFixedAsset.empty(); // Clear existing options
 
+                            // Populate select options for fixed asset
+                            $.each(fetchResponse.result, function(index, item) {
+                                var option = new Option(item.cfs_description, item.cfs_id, false, false);
+                                selectFixedAsset.append(option);
+                            });
+
+                            // Set the selected value and trigger the Select2 update
+                            if (assetDisposed.dfs_fixed_asset) {
+                                selectFixedAsset.val(assetDisposed.dfs_fixed_asset).trigger('change');
                             }
-                            // Show the modal
-                            $('#EditModal').modal("show");
                         }
                     });
+
+                    // Set other select fields that don't require fetching new options
+                    $('.edit_credit_acc').val(assetDisposed.dfs_credit_account).trigger('change');
+                    $('.edit_gi_account').val(assetDisposed.dfs_debit_account).trigger('change');
+
+
+
+                    // Show the modal after all fields are set
+                    $('#EditModal').modal("show");
                 }
 
             });
@@ -2163,10 +1917,7 @@
         });
 
 
-
-
-        /*view section end*/
-
+        /*delete section start*/
 
         $("body").on('click', '.delete_btn', function() {
 
@@ -2176,7 +1927,7 @@
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Delete",
+                url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/Delete",
 
                 method: "POST",
 
@@ -2204,46 +1955,51 @@
 
         });
 
-
-        var form = $('#edit_modal_form');
-
-        form.validate({
-            rules: {
-                required: 'required',
-            },
-            messages: {
-                required: 'This field is required',
-            },
-            errorPlacement: function(error, element) {}, // To Hide Validation Messages
-            submitHandler: function(currentForm) {
-                var formData = new FormData(currentForm);
-                // Submit the form for the current tab
-                $.ajax({
-                    url: "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/Update",
-                    method: "POST",
-                    //data: $(currentForm).serialize(),
-                    data: formData,
-                    processData: false, // Don't process the data
-                    contentType: false, // Don't set content type
-                    success: function(data) {
-
-                        $('#EditModal').modal('hide');
-
-                        alertify.success('Data Update Successfully').delay(3).dismissOthers();
-
-                        datatable.ajax.reload(null, false);
+        /*delete section end*/
 
 
-                    }
-                });
 
-            }
+        $(function() {
+
+            var form = $('#edit_modal_form');
+
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {}, // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+
+                    var formData = new FormData(currentForm);
+
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/Update",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+
+                            $('#EditModal').modal('hide');
+
+                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+
+                        }
+                    });
+
+
+                }
+            });
         });
 
 
-
     });
-
 
 
 

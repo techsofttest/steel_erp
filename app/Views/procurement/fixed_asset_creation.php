@@ -350,8 +350,8 @@
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Description</th>
-                                                    <th>Debit Account</th>
-                                                    <th>Credit Account</th>
+                                                    <th>Account ID</th>
+                                                    <th>Account Head</th>
                                                     <th>Acquired Date</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -1378,11 +1378,12 @@
                         data: 'cfs_description'
                     },
                     {
-                        data: 'cfs_account_head'
-                    },
-                    {
                         data: 'cfs_account_id'
                     },
+                    {
+                        data: 'cfs_account_head'
+                    },
+                    
                     {
                         data: 'cfs_acquired_date'
                     },

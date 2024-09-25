@@ -168,6 +168,17 @@ class CommonModel extends Model
     }
 
 
+    public function FetchWhereOrder($table,$cond,$order_key,$order)
+    {
+        $query = $this->db->table($table)
+        ->where($cond)
+        ->orderBy($order_key,$order)
+        ->get();
+        return $query->getResult();
+
+    }
+
+
     //Fetch Sum Of Coloumn Where
 
 
@@ -1390,6 +1401,10 @@ class CommonModel extends Model
      return $result->account_balance;
 
     }
+        
+
+
+
 
     public function FetchBRAccount($id,$date)
     {

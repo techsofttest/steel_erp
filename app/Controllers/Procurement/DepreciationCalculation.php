@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 
 class DepreciationCalculation extends BaseController
 {
-    
+
     public function FetchData()
     {
 
@@ -16,7 +16,7 @@ class DepreciationCalculation extends BaseController
         $postData = $request->getPost();
         $dtpostData = $postData['data'];
         $response = array();
- 
+
         ## Read value
         $draw = $dtpostData['draw'];
         $start = $dtpostData['start'];
@@ -29,58 +29,60 @@ class DepreciationCalculation extends BaseController
         // Check if the current sort order is 'asc', then set it to 'desc'
         if ($columnSortOrder === 'asc') {
             $columnSortOrder = 'desc';
-        } 
+        }
 
- 
+
         ## Total number of records without filtering
-       
-        $totalRecords = $this->common_model->GetTotalRecords('pro_create_fixed_asset','cfs_id','DESC');
-        
-        
-        ## Total number of records with filtering
-       
-        $searchColumns = array('cfs_description');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_create_fixed_asset','cfs_id',$searchValue,$searchColumns);
-    
+        $totalRecords = $this->common_model->GetTotalRecords('pro_depreciation_calculation', 'dpc_id', 'DESC');
+
+
+        ## Total number of records with filtering
+
+        $searchColumns = array('dpc_account_head');
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_depreciation_calculation', 'dpc_id', $searchValue, $searchColumns);
+
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
                 'table' => 'accounts_account_heads',
                 'pk'    => 'ah_id',
-                'fk'    => 'cfs_account_head',
+                'fk'    => 'dpc_account_head',
             ),
-            
+
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('pro_create_fixed_asset','cfs_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
-        
+        $records = $this->common_model->GetRecord('pro_depreciation_calculation', 'dpc_id', $searchValue, $searchColumns, $columnName, $columnSortOrder, $joins, $rowperpage, $start);
+
         $data = array();
 
-        $i=1;
-        foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cfs_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cfs_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cfs_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
-           
-           $data[] = array( 
-              "cfs_id"               => $i,
-              'cfs_description'      => $record->cfs_description,
-              'cfs_account_head'     => $record->ah_account_name,
-              'cfs_account_id'       => $record->cfs_account_id,
-              'cfs_acquired_date'    => date('d-M-Y',strtotime($record->cfs_acquired_date)),
-              "action"               => $action,
-           );
-           $i++; 
+        $i = 1;
+        foreach ($records as $record) {
+            $action = '<a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="' . $record->dpc_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="' . $record->dpc_id . '"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+
+            // <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="' . $record->dpc_id . '" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+
+            $data[] = array(
+                "dpc_id"               => $i,
+                'dpc_account_head'     => $record->ah_account_name,
+                'dpc_acquired_date'    => date('d-M-Y', strtotime($record->dpc_acquired_date)),
+                'dpc_amount'           => $record->dpc_amount,
+                'dpc_depreciation'     => $record->dpc_depreciation,
+                "action"               => $action,
+            );
+            $i++;
         }
- 
+
         ## Response
         $response = array(
-         "draw"                 => intval($draw),
-         "iTotalRecords"        => $totalRecords,
-         "iTotalDisplayRecords" => $totalRecordwithFilter,
-         "aaData"               => $data,
-         "token"                => csrf_hash() // New token hash
+            "draw"                 => intval($draw),
+            "iTotalRecords"        => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData"               => $data,
+            "token"                => csrf_hash() // New token hash
         );
- 
+
         //return $this->response->setJSON($response);
 
         echo json_encode($response);
@@ -88,178 +90,214 @@ class DepreciationCalculation extends BaseController
         exit;
 
         /*pagination end*/
-    } 
+    }
 
 
 
     //search droup drown (accountid)
     public function FetchTypes()
     {
- 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_account_name','asc',$term,$start,$end);
- 
-        $data['total_count'] =count($data['result']);
- 
+
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads', 'ah_account_name', 'asc', $term, $start, $end);
+
+        $data['total_count'] = count($data['result']);
+
         return json_encode($data);
- 
     }
- 
-         //search droup drown (accountid)
-         public function FetchDebitAcc()
-         {
-      
-             $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-             $term = !empty($_GET['term']) ? $_GET['term'] : "";
-             $resultCount = 10;
-             $end = ($page - 1) * $resultCount;       
-             $start = $end + $resultCount;
-            
-             $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
-      
-             $data['total_count'] = count($data['result']);
-      
-             return json_encode($data);
-      
-         }
-      
+
+    //search droup drown (accountid)
+    public function FetchDebitAcc()
+    {
+
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;
+        $start = $end + $resultCount;
+
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts', 'ca_name', 'asc', $term, $start, $end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+    }
+
 
     // search droup drown (product description)
     public function FetchProdDes()
     {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products', 'product_details', 'asc', $term, $start, $end);
 
         $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
-    
+
 
 
     //view page
     public function index()
-    {    
-        $data['material_received']   = $this->common_model->FetchAllOrder('pro_material_received_note','mrn_id','desc');
-        
-        $data['charts_of_account']   = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+    {
+        $data['material_received']   = $this->common_model->FetchAllOrder('pro_material_received_note', 'mrn_id', 'desc');
 
-        $data['content'] = view('Procurement/depreciation_calculation',$data);
+        $data['charts_of_account']   = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_id', 'desc');
 
-        return view('procurement/pro-module',$data);
+        $data['content'] = view('procurement/depreciation_calculation', $data);
 
+        return view('procurement/pro-module', $data);
     }
 
 
     // add account head
-    Public function Add()
-    {   
+    public function Add()
+    {
         $insert_data = $this->request->getPost();
 
-            // Check if the 'account_id' key exists before unsetting it
-            if (array_key_exists('cfs_acquired_date', $insert_data)) 
-            {
-                unset($insert_data['cfs_acquired_date']);
-            }
-            
-            $insert_data['cfs_acquired_date'] = date('Y-m-d',strtotime($this->request->getPost('cfs_acquired_date')));
-         
-            // Handle file upload
-            if ($_FILES['cfs_attact']['name'] !== '') 
-		    {   
-                $soAttachFileName = $this->uploadFile('cfs_attact','uploads/FixedAsset');
-                $insert_data['cfs_attact'] = $soAttachFileName;
-            }
+        $insert_data = [
+            'dpc_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpc_acquired_date'))),
+            'dpc_account_head' => $this->request->getPost('dpc_account_head'),
+            'dpc_debit_account' => $this->request->getPost('dpc_debit_account'),
+            'dpc_credit_account' => $this->request->getPost('dpc_credit_account'),
+            'dpc_amount' => $this->request->getPost('dpc_amount'),
+            'dpc_depreciation' => $this->request->getPost('dpc_depreciation'),
+        ];
+
+        $id = $this->common_model->InsertData('pro_depreciation_calculation', $insert_data);
 
 
-            $id = $this->common_model->InsertData('pro_create_fixed_asset',$insert_data);
+        for ($i = 0; $i < count($this->request->getPost('dpcd_acquired_date')); $i++) {
+
+            $det_data = [
+                'dpcd_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpcd_acquired_date')[$i])),
+                'dpcd_depreciation_id' => $id,
+                'dpcd_asset_id' => $this->request->getPost('dpcd_asset_id')[$i],
+                'dpcd_description' => $this->request->getPost('dpcd_description')[$i],
+                'dpcd_amount' => $this->request->getPost('dpcd_amount')[$i],
+                'dpcd_depreciation' => $this->request->getPost('dpcd_depreciation')[$i],
+                'dpcd_entitlement' => $this->request->getPost('dpcd_entitlement')[$i],
+                'dpcd_depreciation_amt' => $this->request->getPost('dpcd_depreciation_amt')[$i],
+            ];
 
 
-            $coa_data['ca_name'] = $this->request->getPost('cfs_description');
-
-            $coa_data['ca_account_type'] = $this->request->getPost('cfs_account_head');
-
-            $coa_data['ca_customer'] = $id;
-
-            $coa_data['ca_account_id'] = $this->request->getPost('cfs_account_id');
-
-            $coa_data['ca_type'] = "FIXED_ASSET";
-
-            $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
-
+            $this->common_model->InsertData('pro_depreciation_det', $det_data);
+        }
     }
-    
+
 
     public function Date()
     {
-        $date = $this->request->getPost('Date');
 
-        $your_date = strtotime("1 day", strtotime($date));
-     
-        $data['increment_date_date'] = date("d-M-Y", $your_date);
+        $acchead = $this->request->getPost('AccountHead');
 
-        echo json_encode($data);
-    }
+        // Define condition for query
+        $cond = ['cfs_account_head' => $acchead];
 
-
-   
-
-    /*public function FetchPurchase()
-    {
-
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-        $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-      
-        $data['result'] = $this->common_model->FetchAllLimit('steel_pro_purchase_order','po_reffer_no','asc',$term,$start,$end);
-        
-        
-
-        $data['total_count'] =count($data['result']);
-
-        return json_encode($data);
-
-    }*/
-
-    public function ContactPerson()
-    {
-        $vendor_id  = $this->request->getPost('ID');
-
+        // Joins array for fetching related data
         $joins = array(
             array(
-                'table' => 'pro_purchase_order',
-                'pk'    => 'po_id',
-                'fk'    => 'mrn_purchase_order',
-            ),
+                'table' => 'accounts_account_heads',
+                'pk'    => 'ah_id',
+                'fk'    => 'cfs_account_head',
+            )
         );
 
-        
-        //contact person
-        
-        $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));     
+        // Fetch the fixed asset data
+        $data['fixedasset'] = $this->common_model->SingleRowJoin('pro_create_fixed_asset', $cond, $joins);
 
-        $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
-        
-        foreach($contacts as $ven_contact)
-        {
-            $data['condact_data'] .='<option value='.$ven_contact->pro_con_id.'>'.$ven_contact->pro_con_person.'</option>';
+        // Fetch account head related charts of accounts
+        // $chartsofacc = $this->common_model->FetchWhere('accounts_charts_of_accounts', ['ca_account_type' => $acchead]);
+
+        // Calculate account head balance
+        $acchead_balance = 0;
+
+        $acchead_balance = $this->pro_model->AccHeadBalance($data['fixedasset']->cfs_credit_account);
+
+        $data['acchead_balance'] = $acchead_balance;
+
+
+        $cond = ['cfs_account_head' => $acchead];
+        // Fetching fixed assets with the same condition
+        $assets = $this->common_model->FetchWhereOrder('pro_create_fixed_asset', $cond, 'cfs_id', 'desc');
+
+        // Prepare the HTML for fixed assets rows
+        $fixed_asset = '';
+        $j = 1; // Start row count from 1
+
+        $total_amt = 0;
+
+        $sel_date = $this->request->getPost('Date'); // Assuming 'Date' is in 'Y-m-d' format
+
+        foreach ($assets as $asset) {
+
+            $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id);
+
+            // echo $fixed_amount;
+
+
+            // Ensure $sel_date is in year format (extract only the year part)
+            $sel_year = date('Y-m-d', strtotime($sel_date));
+
+            // Get the acquired year and set it to January 1st of that year
+            $acq_year = date('Y', strtotime($asset->cfs_acquired_date));
+            $acq_date = date('Y-m-d', strtotime($acq_year . '-01-01')); // January 1st of the acquired year
+
+            // Calculate the difference in days between the two dates
+            $diff_in_days = (strtotime($sel_date) - strtotime($acq_date)) / (60 * 60 * 24);
+
+            // Output the difference in days
+            $entitlement = $diff_in_days+1;
+
+
+            $acchead_balance = isset($fixed_amount) ? $fixed_amount : 0;
+
+            $depreciation_percent = preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation); // Remove non-numeric characters
+            $depreciation = floatval($depreciation_percent)/100; // Convert to float
+
+            $depreciation_amount = round(floatval(($acchead_balance * $depreciation * $entitlement) / 365), 2);
+
+            $total_amt += $depreciation_amount;
+
+            $fixed_asset .= '<tr>
+                                <td>' . $j . '</td>
+                                 <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
+                                <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_acquired_date[]" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_amount[]" value="' . $fixed_amount . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation[]" value="' . $depreciation_percent . '%" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation_amt[]" value="' . $depreciation_amount . '" class="form-control"  readonly></td>
+                            </tr>';
+            $j++; // Increment row count
         }
-        
+
+        $fixed_asset .= '<tr>
+            <td colspan="1"></td>
+            <td colspan="2" align="left" class="amount_in_words_add"></td>
+            <td align="right" colspan="3">Total</td>
+            <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
+            <th id="total_amount"> ' . $total_amt . '</th>
+        </tr>';
+
+        // Set fixed_asset key in the response data
+        $data['fixed_asset'] = $fixed_asset;
+
+        // exit;
+
+        // Return the data as a JSON response
         echo json_encode($data);
     }
 
@@ -267,45 +305,44 @@ class DepreciationCalculation extends BaseController
 
     public function FetchPurchase()
     {
-       
+
         //purchase voucher
-        
-        $material_received_note = $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $this->request->getPost('ID')));
-        
+
+        $material_received_note = $this->common_model->SingleRow('pro_material_received_note', array('mrn_id' => $this->request->getPost('ID')));
+
         $purchase = $material_received_note->mrn_purchase_order;
 
         $data['delivery_note'] = $material_received_note->mrn_delivery_note;
 
         $data['payment_term'] = $material_received_note->mrn_payment_term;
 
-        $purchase_data = $this->common_model->SingleRow('pro_purchase_order',array('po_id'=>$purchase));
+        $purchase_data = $this->common_model->SingleRow('pro_purchase_order', array('po_id' => $purchase));
 
         $data['purchase_order'] = $purchase_data->po_reffer_no;
-        
-       
-        
+
+
+
         echo json_encode($data);
     }
 
 
-    
+
 
 
     public function FetchReference()
     {
-    
-        $uid = $this->common_model->FetchNextId('pro_purchase_return',"PR");
-    
+
+        $uid = $this->common_model->FetchNextId('pro_purchase_return', "PR");
+
         echo $uid;
-    
     }
 
 
     public function FetchProduct()
-    {   
-       
-        $purchase_return = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $this->request->getPost('ID')));
-        
+    {
+
+        $purchase_return = $this->common_model->SingleRow('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')));
+
         /*$joins = array(
             
             array(
@@ -318,30 +355,28 @@ class DepreciationCalculation extends BaseController
         );*/
 
         //$products = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->po_id),$joins);
-       
-        $products = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_return->pv_id));
-        
 
-        $i = 1; 
-        
-        $data['product_detail'] ="";
+        $products = $this->common_model->FetchWhere('pro_purchase_voucher_prod', array('pvp_reffer_id' => $purchase_return->pv_id));
 
-        foreach($products as $prod){
 
-            $data['product_detail'] .='<tr class="" id="'.$prod->pvp_id.'">
+        $i = 1;
+
+        $data['product_detail'] = "";
+
+        foreach ($products as $prod) {
+
+            $data['product_detail'] .= '<tr class="" id="' . $prod->pvp_id . '">
                                             
-                                            <td class="si_no">'.$i.'</td>
-                                            <td><input type="text" name="" value="'.$prod->pvp_prod_dec.'" class="form-control"  readonly></td>
-                                            <td><input type="number" name="" value="'.$prod->pvp_qty.'"  class="form-control order_qty" readonly></td>
-                                            <td><input type="checkbox" name="" id="'.$prod->pvp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                            <td class="si_no">' . $i . '</td>
+                                            <td><input type="text" name="" value="' . $prod->pvp_prod_dec . '" class="form-control"  readonly></td>
+                                            <td><input type="number" name="" value="' . $prod->pvp_qty . '"  class="form-control order_qty" readonly></td>
+                                            <td><input type="checkbox" name="" id="' . $prod->pvp_id . '"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                           
                                         </tr>';
-                                            $i++;
+            $i++;
         }
 
         echo json_encode($data);
-                      
-
     }
 
 
@@ -356,9 +391,8 @@ class DepreciationCalculation extends BaseController
         $data['product_detail'] = "";
 
         // Fetch details for each selected product ID
-        $i = 1;  
-        foreach ($idsArray as $number) 
-        {
+        $i = 1;
+        foreach ($idsArray as $number) {
             $cond = array('pvp_id' => $number);
 
             $joins1 = array(
@@ -367,81 +401,73 @@ class DepreciationCalculation extends BaseController
                     'pk'    => 'ca_id',
                     'fk'    => 'pvp_debit',
                 ),
-               
-              
+
+
             );
 
             //$products = $this->common_model->FetchWhereJoin('pro_purchase_order_product',$cond,$joins1);
 
-            $products = $this->common_model->FetchWhereJoin('pro_purchase_voucher_prod',$cond,$joins1);
+            $products = $this->common_model->FetchWhereJoin('pro_purchase_voucher_prod', $cond, $joins1);
 
-            $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');    
+            $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_id', 'desc');
 
-            
-            foreach($products as $product){
 
-                $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pvp_id.'">
-                                            <td class="si_no">'.$i.'</td>
-                                            <td><input type="text" name="prp_sales_order[]" value="'.$product->pvp_sales_order.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="prp_prod_desc[]" value="'.$product->pvp_prod_dec.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="prp_debit[]" value="'.$product->ca_name.'" class="form-control" readonly></td>
-                                            <td><input type="number" name="prp_qty[]" value="'.$product->pvp_qty.'"  class="form-control add_prod_qty" readonly required></td>
-                                            <td><input type="text" name="prp_unit[]" value="'.$product->pvp_unit.'" class="form-control" required readonly></td>
-                                            <td><input type="text" name="prp_rate[]" value="'.$product->pvp_rate.'"  class="form-control add_prod_rate" required readonly></td>
-                                            <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount" required readonly></td>
-                                            <td><input type="text" name="prp_amount[]" value="'.$product->pvp_amount.'"  class="form-control add_prod_amount" required readonly></td>
+            foreach ($products as $product) {
+
+                $data['product_detail'] .= '<tr class="add_prod_row add_prod_remove" id="' . $product->pvp_id . '">
+                                            <td class="si_no">' . $i . '</td>
+                                            <td><input type="text" name="prp_sales_order[]" value="' . $product->pvp_sales_order . '" class="form-control" readonly></td>
+                                            <td><input type="text" name="prp_prod_desc[]" value="' . $product->pvp_prod_dec . '" class="form-control" readonly></td>
+                                            <td><input type="text" name="prp_debit[]" value="' . $product->ca_name . '" class="form-control" readonly></td>
+                                            <td><input type="number" name="prp_qty[]" value="' . $product->pvp_qty . '"  class="form-control add_prod_qty" readonly required></td>
+                                            <td><input type="text" name="prp_unit[]" value="' . $product->pvp_unit . '" class="form-control" required readonly></td>
+                                            <td><input type="text" name="prp_rate[]" value="' . $product->pvp_rate . '"  class="form-control add_prod_rate" required readonly></td>
+                                            <td><input type="text" name="prp_discount[]" value="' . $product->pvp_discount . '"  class="form-control add_discount" required readonly></td>
+                                            <td><input type="text" name="prp_amount[]" value="' . $product->pvp_amount . '"  class="form-control add_prod_amount" required readonly></td>
                                            
                                         </tr>';
- 
-                                    
-                                     $i++;
-                                    
-            }
 
-       
+
+                $i++;
+            }
         }
 
         // Output JSON encoded data
         echo json_encode($data);
-
     }
 
 
     public function AddContactDetails()
-    {   
-        
+    {
 
-        if(!empty($_POST['pro_con_person']))
-        {    
+
+        if (!empty($_POST['pro_con_person'])) {
             $count =  count($_POST['pro_con_person']);
-            
-            if($count!=0)
-            {  
-            
-                for($j=0;$j<=$count-1;$j++)
-                {
-                
-                    $insert_data  	= array(  
-                        
+
+            if ($count != 0) {
+
+                for ($j = 0; $j <= $count - 1; $j++) {
+
+                    $insert_data      = array(
+
                         'pro_con_person'       =>  $_POST['pro_con_person'][$j],
                         'pro_con_designation'  =>  $_POST['pro_con_designation'][$j],
                         'pro_con_mobile'       =>  $_POST['pro_con_mobile'][$j],
                         'pro_con_email'        =>  $_POST['pro_con_email'][$j],
                         'pro_con_vendor'       =>  $_POST['new_vendor_hidden_id'],
-                      
+
                     );
 
-                    $this->common_model->InsertData('pro_contact',$insert_data);
-
-                } 
+                    $this->common_model->InsertData('pro_contact', $insert_data);
+                }
             }
-    
-        }   
+        }
     }
 
 
-    public function FetchPayment(){
-        
+    public function FetchPayment()
+    {
+
         $purchase_id  = $this->request->getPost('ID');
 
         $joins = array(
@@ -451,45 +477,42 @@ class DepreciationCalculation extends BaseController
                 'pk'    => 'mr_id',
                 'fk'    => 'po_mrn_reff',
             ),
-            
+
         );
 
-        $purchases = $this->common_model->SingleRowJoin('pro_purchase_order',array('po_id' => $purchase_id),$joins);
+        $purchases = $this->common_model->SingleRowJoin('pro_purchase_order', array('po_id' => $purchase_id), $joins);
 
         $data['payment_term'] = $purchases->po_payment_term;
 
         $data['mr_reff'] = $purchases->mr_reffer_no;
-       
+
         echo json_encode($data);
-        
     }
 
 
     public function VendorInv()
-    {   
-      
-        $purchase_voucher = $this->pro_model->FetchWhereNotIn('pro_purchase_voucher',array('pv_vendor_name' => $this->request->getPost('ID')),'pv_status','2');
-         
-      
+    {
 
-        $data['vendor_inv'] ="";
+        $purchase_voucher = $this->pro_model->FetchWhereNotIn('pro_purchase_voucher', array('pv_vendor_name' => $this->request->getPost('ID')), 'pv_status', '2');
 
-        $data['vendor_inv'] ='<option value="" selected disabled>Vendor Inv Ref</option>';
 
-        foreach($purchase_voucher as $pur_vou)
-        {
-            $data['vendor_inv'] .='<option value='.$pur_vou->pv_id.'';
-           
-            $data['vendor_inv'] .='>' .$pur_vou->pv_vendor_inv. '</option>'; 
+
+        $data['vendor_inv'] = "";
+
+        $data['vendor_inv'] = '<option value="" selected disabled>Vendor Inv Ref</option>';
+
+        foreach ($purchase_voucher as $pur_vou) {
+            $data['vendor_inv'] .= '<option value=' . $pur_vou->pv_id . '';
+
+            $data['vendor_inv'] .= '>' . $pur_vou->pv_vendor_inv . '</option>';
         }
-        
+
 
         echo json_encode($data);
-        
     }
 
     public function FetchContact()
-    {   
+    {
         $joins = array(
 
             array(
@@ -498,11 +521,11 @@ class DepreciationCalculation extends BaseController
                 'pk'    => 'pro_con_id',
                 'fk'    => 'pv_contact_person',
             ),
-            
+
         );
 
-        $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher',array('pv_id' => $this->request->getPost('ID')),$joins);
-        
+        $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')), $joins);
+
         $data['contact_person'] = $purchase_voucher->pro_con_person;
 
         $data['payment_term']   = $purchase_voucher->pv_payment_term;
@@ -517,30 +540,27 @@ class DepreciationCalculation extends BaseController
     public function uploadFile($fieldName, $uploadPath)
     {
         $file = $this->request->getFile($fieldName);
- 
-        if($file === null){
- 
+
+        if ($file === null) {
+
             // Debugging output
-            echo('No file uploaded or incorrect field name');
-            
+            echo ('No file uploaded or incorrect field name');
         }
-  
-        if ($file->isValid() && !$file->hasMoved()) 
-        {
+
+        if ($file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
             $file->move($uploadPath, $newName);
             return $newName;
         }
-  
-         return null;
- 
+
+        return null;
     }
 
     public function FetchInvoice()
     {
         $purchase_id  = $this->request->getPost('ID');
 
-        $purchase_return = $this->common_model->SingleRow('pro_purchase_return',array('pr_id' => $purchase_id));
+        $purchase_return = $this->common_model->SingleRow('pro_purchase_return', array('pr_id' => $purchase_id));
 
         $purchase_return->pr_vendor_name;
     }
@@ -548,86 +568,124 @@ class DepreciationCalculation extends BaseController
 
     public function View()
     {
-        $join =  array(
-            
-            array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
-                'fk'    => 'pr_vendor_name',
-            ),
-            array(
-                'table' => 'pro_purchase_voucher',
-                'pk'    => 'pv_id',
-                'fk'    => 'pr_vendor_inv',
-            ),
-
-        );
 
 
-        $purchase_return = $this->common_model->SingleRowJoin('pro_purchase_return', array('pr_id' => $this->request->getPost('ID')),$join);
-        
-        
-        $data['reffer_id']      = $purchase_return->pr_reffer_id;
+        $depreciation_calc = $this->common_model->SingleRow('pro_depreciation_calculation', array('dpc_id' => $this->request->getPost('ID')));
 
-        $data['date']           = date('d-M-Y',strtotime($purchase_return->pr_date));
 
-        $data['vendor_name']    = $purchase_return->ven_name;
+        $data['account_head']   = $depreciation_calc->dpc_account_head;
 
-        $data['vendor_inv']     = $purchase_return->pv_vendor_inv;
+        $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
 
-        $data['lpo']            = $purchase_return->pr_lpo;
+        $data['balance_amt']    = $depreciation_calc->dpc_amount;
 
-        $data['contact_person'] = $purchase_return->pr_contact_person;
+        $data['debit_account']  = $depreciation_calc->dpc_debit_account;
 
-        $data['payment_term']   = $purchase_return->pr_payment_term;
+        $data['credit_account'] = $depreciation_calc->dpc_credit_account;
 
-        /*$join =  array(
-            
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+        $data['depreciation'] = $depreciation_calc->dpc_depreciation;
 
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
-            ),
 
-            
-        );*/
 
-        //$purchase_order_product = $this->common_model->FetchWhereJoin('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')),$join);
-        
-        $purchase_return_prod = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
-        
-        $i=1;
+        // Fetch account head related charts of accounts
+        $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
 
-        $data['purchase_return'] = '';
+        $dep_det = '';
+        $j = 1;
+        $total_amt = 0;
+        foreach ($depreciation_det as $det) {
 
-        foreach($purchase_return_prod as $pur_return_prod)
-        {
-            $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_amount.'" class="form-control" readonly></td>
-            </tr>
-            ';
-            $i++; 
+            $total_amt += $det->dpcd_amount;
+
+            $dep_det .= '<tr>
+                                 <td>' . $j . '</td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_description . '" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_acquired_date . '" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_amount . '" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_depreciation . '%" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_entitlement . '" class="form-control"  readonly></td>
+                                 <td><input type="text" name="" value="' . $det->dpcd_depreciation_amt .  '" class="form-control"  readonly></td>
+                             </tr>';
+
+            $j++; // Increment row count
         }
 
 
+        $dep_det .= '<tr>
+        <td colspan="1"></td>
+        <td colspan="2" align="left" class="amount_in_words_add"></td>
+        <td align="right" colspan="3">Total</td>
+        <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
+        <th id="total_amount"> ' . $total_amt . '</th>
+    </tr>';
+
+        // Set fixed_asset key in the response data
+        $data['depreciation_det'] = $dep_det;
+
+
+
         echo json_encode($data);
-
-
     }
- 
 
+
+    public function Delete()
+    {
+        $cond = array('dpc_id' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('pro_depreciation_calculation', $cond);
+
+        $cond = array('dpcd_depreciation_id' => $this->request->getPost('ID'));
+
+        $this->common_model->DeleteData('pro_depreciation_det', $cond);
+    }
+
+
+    public function Edit()
+    {
+
+        $depreciation_calc = $this->common_model->SingleRow('pro_depreciation_calculation', array('dpc_id' => $this->request->getPost('ID')));
+
+
+        $data['account_head']   = $depreciation_calc->dpc_account_head;
+
+        $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
+
+        $data['balance_amt']    = $depreciation_calc->dpc_amount;
+
+        $data['debit_account']  = $depreciation_calc->dpc_debit_account;
+
+        $data['credit_account'] = $depreciation_calc->dpc_credit_account;
+
+        $data['depreciation'] = $depreciation_calc->dpc_depreciation;
+
+
+
+        // Fetch account head related charts of accounts
+        $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
+
+        $dep_det = '';
+        $j = 1;
+        foreach ($depreciation_det as $det) {
+
+
+
+            $dep_det .= '<tr>
+                                     <td>' . $j . '</td>
+                                     <td><input type="text" name="" value="' . $det->dpcd_description . '" class="form-control"  readonly></td>
+                                     <td><input type="text" name="" value="' . $det->dpcd_acquired_date . '" class="form-control"  readonly></td>
+                                     <td><input type="text" name="" value="' . $det->dpcd_amount . '" class="form-control"  readonly></td>
+                                     <td><input type="text" name="" value="' . $det->dpcd_depreciation . '%" class="form-control"  readonly></td>
+                                     <td><input type="text" name="" value="' . $det->dpcd_entitlement . '" class="form-control"  readonly></td>
+                                     <td><input type="text" name="" value="' . '' . '" class="form-control"  readonly></td>
+                                 </tr>';
+
+            $j++; // Increment row count
+        }
+
+
+        // Set fixed_asset key in the response data
+        $data['depreciation_det'] = $dep_det;
+
+        echo json_encode($data);
+    }
 }
