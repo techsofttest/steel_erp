@@ -144,10 +144,7 @@ class ProcurementModel extends Model
         // Return the total balance if the result exists, otherwise return 0
         return $result ? $result->total_balance : 0;
     }
-
-
-
-
+    // NewAddition
     public function FetchFixedPurchases($vendor)
     {
         // Select the table and columns
@@ -179,6 +176,7 @@ class ProcurementModel extends Model
         return $max > 0 ? $max : 0;
     }
 
+
     public function FetchAllOrderJoin($table,$order_key,$order,$joins,$group_by_col){
            
         $query= $this->db
@@ -200,4 +198,32 @@ class ProcurementModel extends Model
         //->get()
         //->getResult();
     }
+
+
+    // NewAddition
+    public function FixedAssetBalance($account)
+    {
+        // Ensure the account and date are sanitized or properly escaped to prevent SQL injection
+        $account = $this->db->escape($account);
+
+
+        // Create the SQL query
+        $query = $this->db->query(
+            '
+                SELECT 
+                    SUM(dpcd_depreciation_amt) AS total_balance 
+                FROM 
+                    ' . $this->db->getPrefix() . 'pro_depreciation_det 
+                WHERE                    
+                    dpcd_asset_id = ' . $account
+        );
+
+        // Fetch the result
+        $result = $query->getRow();
+
+        // Return the total balance if the result exists, otherwise return 0
+        return $result ? $result->total_balance : 0;
+    }
+
+
 }
