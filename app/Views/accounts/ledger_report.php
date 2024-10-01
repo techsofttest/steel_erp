@@ -357,6 +357,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
+                            
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
@@ -372,9 +373,9 @@
                                                     <th>Voucher Number</th>
                                                     <th>Voucher Type</th>
                                                     <th>Related Account</th>
-                                                    <th>Debit Amount</th>
-                                                    <th>Credit Amount</th>
-                                                    <th>Balance</th>
+                                                    <th class="text-end">Debit Amount</th>
+                                                    <th class="text-end">Credit Amount</th>
+                                                    <th class="text-end">Balance</th>
                                                     
                                                 </tr>
                                             </thead>
@@ -402,8 +403,8 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><b>Opening Balance</b></td>
-                                            <td><?= $balance; ?></td>
+                                            <td class="text-end"><b>Opening Balance</b></td>
+                                            <td class="text-end"><?= $balance; ?></td>
 
                                             </tr>
 
@@ -466,12 +467,20 @@
 
                                             <tr>
                                            
-                                            <td><?php echo date('d-m-Y',strtotime($vc->transaction_date)); ?></td>
+                                            <td><?php echo date('d-F-Y',strtotime($vc->transaction_date)); ?></td>
 
                                             <td>
-                                            <?php if($vc->voucher_type=="Receipt"){
+                                            <?php if(($vc->voucher_type=="Receipt") || ($vc->voucher_type=="Receipt Invoice")){
                                              $href="Accounts/Receipts";
                                              } 
+                                             else if($vc->voucher_type=="Cash Invoice")
+                                             {
+                                             $href="CRM/CashInvoice";
+                                             }
+                                             else if($vc->voucher_type=="Credit Invoice")
+                                             {
+                                             $href="CRM/CreditInvoice";
+                                             }
                                              else
                                              {
                                              $href="";
@@ -498,21 +507,25 @@
 
                                             <td><?= $vc->account_name; ?></td>
 
-                                            <td class="currency_format1">
+                                            <td class="currency_format1 text-end">
 
                                                <?php if($vc->debit_amount !="") { 
-                                                echo  format_currency($vc->debit_amount);
-                                                $total_debit = $total_debit-$vc->debit_amount;
 
-                                               } else {?>
+                                                echo  format_currency($vc->debit_amount);
+                                                $total_debit = $total_debit+$vc->debit_amount;
+
+                                               } else if($vc->credit_amount<0) {
+
+                                                echo  format_currency($vc->credit_amount); 
+                                                $total_debit=$total_debit+$vc->credit_amount;
                                                 
-                                               <?php } ?>
+                                               } ?>
                                             
                                             </td>
 
-                                            <td class="currency_format1"> 
+                                            <td class="currency_format1 text-end"> 
                                                 
-                                               <?php if($vc->credit_amount !="") { 
+                                               <?php if($vc->credit_amount !="" && $vc->credit_amount>0) { 
                                                 echo  format_currency($vc->credit_amount); 
                                                 $total_credit=$total_credit+$vc->credit_amount;
                                                 
@@ -520,17 +533,17 @@
                                                 
                                                <?php } ?></td>
 
-                                            <td class="currency_format1">
+                                            <td class="currency_format1 text-end">
                                             
                                               <?php
                                                 
                                                 if(!empty($vc->debit_amount))
                                                 {
-                                                $balance = $balance-$vc->debit_amount; 
+                                                $balance = $balance+$vc->debit_amount; 
                                                 }
                                                 else
                                                 {
-                                                $balance = $balance+$vc->credit_amount; 
+                                                $balance = $balance-$vc->credit_amount; 
                                                 }
 
                                                 echo format_currency($balance);
@@ -560,9 +573,9 @@
                                             <td></td>
                                             <td></td>
                                             <td><b></b></td>
-                                            <td><b ><?= format_currency($total_credit); ?></b></td> 
+                                            <td class="text-end"><b ><?= format_currency($total_credit); ?></b></td> 
                                             
-                                            <td><b ><?= format_currency($balance); ?></b></td>
+                                            <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
                                             </tr>
 
                                             </tfoot>

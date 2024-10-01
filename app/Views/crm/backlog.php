@@ -147,7 +147,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
                                         
                                     </div>
@@ -189,10 +189,10 @@
                                                     <th>Customer</th>
                                                     <th>Lpo Ref</th>
                                                     <th>Sales Executive</th>
-                                                    <th>Amount</th>   
-                                                    <th>Delivered</th>
-                                                    <th>Invoiced</th>
-                                                    <th>Balance</th>
+                                                    <th class="text-end">Amount</th>   
+                                                    <th class="text-end">Delivered</th>
+                                                    <th class="text-end">Invoiced</th>
+                                                    <th class="text-end">Balance</th>
 
                                                 </tr>
                                             </thead>
@@ -200,7 +200,7 @@
                                             <tbody class="tbody_data">
 
                                             <?php
-                                                
+                                                $total_amount = 0;
                                                 if(!empty($sales_orders))
                                                 {
                                                     $i=1;
@@ -212,11 +212,14 @@
 
                                                         <td><?php echo $i;?></td>
                                                         <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
+                                                        <td><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                         <td><?php echo $sales_order->cc_customer_name;?></td>
                                                         <td><?php echo $sales_order->so_lpo;?></td>
                                                         <td><?php echo $sales_order->se_name;?></td>
-                                                        <td><?php echo $sales_order->so_amount_total;?></td>
+                                                        <?php
+                                                           $total_amount = $sales_order->so_amount_total + $total_amount;
+                                                        ?>
+                                                        <td class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
                                                         
                                                         <?php
                                                         
@@ -233,11 +236,15 @@
                                                         
                                                         ?>
                                                          
-                                                        <td><?php echo $delivery_amount;?></td>
+                                                        <td class="text-end"><?php echo format_currency($delivery_amount);?></td>
                                                         
                                                         <?php } else{?> 
-                                                            <td>---</td>    
-                                                        <?php } 
+                                                            <td class="text-end">00.0</td>   
+
+                                                            <?php } ?>
+
+
+                                                            <?php
 
                                                             $invoiced_amount = 0;
 
@@ -246,27 +253,54 @@
                                                                 $invoiced_amount =  $cash_inv->ci_total_amount + $invoiced_amount;
                                                             }
                                                             
+                                                            $invoiced_amount1 = 0;
+
+                                                            foreach($sales_order->credit_invoiced as $credit_inv)
+                                                            {
+                                                                $invoiced_amount1 =  $credit_inv->cci_total_amount + $invoiced_amount1;
+                                                            }
+
                                                             if(!empty($sales_order->cash_invoiced)){?>
 
-                                                                <td><?php echo $invoiced_amount; ?></td>
+                                                                <td class="text-end"><?php echo format_currency($invoiced_amount); ?></td>
                                                             
-                                                            <?php }  else{?> 
-
-                                                                <td>----</td>  
-
                                                             <?php } 
                                                             
+                                                           
+                                                            elseif(!empty($sales_order->credit_invoiced)){  ?>
+                                                                  
+                                                                <td class="text-end"><?php echo format_currency($invoiced_amount1); ?></td>
                                                                 
-                                                            ?>
+                                                                <!--<td>sucess</td>--->
+
+                                                            <?php }
+
+                                                            else { ?> 
+                                                 
+                                                                <td class="text-end">00.0</td>
+                                                                
+                                                                <!--<td>error</td>--->
+
+                                                            <?php }  ?>
+                                                            
+
+                                                            <!------->
+
+
+                                                            <!------->
+
+
                                                             
                                                            <?php if(!empty($sales_order->sales_delivery)){
                                                                 $balance =  $sales_order->so_amount_total - $delivery_amount;
                                                             ?> 
                                                             
-                                                                <td><?php echo $balance;?></td>
+                                                                <td class="text-end"><?php echo format_currency($balance);?></td>
+
+                                                                
 
                                                             <?php } else{?> 
-                                                                 <td>----</td>    
+                                                                 <td class="text-end">00.0</td>    
                                                             <?php } ?>
                                                         
 
@@ -279,6 +313,23 @@
 
                                                     
                                                 <?php   } ?>
+                                                
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount);?></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                   
+                                                    
+                                                 
+                                                </tr>
+
                                             </tbody>
 
                                         </table>

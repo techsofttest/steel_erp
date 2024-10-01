@@ -644,9 +644,11 @@ class CrmReportModel extends Model
         foreach ($result as $res) {
             $cond_user = ['dn_sales_order_num' => $res->so_id];
 
-            $result[$i]->sales_delivery = $this->FetchWhere('crm_delivery_note',array('dn_sales_order_num' => $res->so_id));
+            $result[$i]->sales_delivery   = $this->FetchWhere('crm_delivery_note',array('dn_sales_order_num' => $res->so_id));
             
-            $result[$i]->cash_invoiced = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+            $result[$i]->cash_invoiced    = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+
+            $result[$i]->credit_invoiced  = $this->FetchWhere('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
    
             $i++;
         }

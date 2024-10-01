@@ -438,6 +438,8 @@
 
                         <th>Transport Allowance</th>
 
+                        <th>Telephone Allowance</th>
+
                         <th>Food Allowance</th>
 
                         <th>Other Allowance</th>
@@ -469,7 +471,7 @@
 
                                 <td align="right">Staff Salary</td>
 
-                                <th id="staff_salary_add">10000</th>
+                                <th id="staff_salary_add"></th>
 
                                 </tr>
 
@@ -479,7 +481,7 @@
 
                                 <td align="right">Salaries And Wages</td>
 
-                                <th id="salaries_and_wages_add">10000</th>
+                                <th id="salaries_and_wages_add"></th>
 
                                 </tr>
 
@@ -488,7 +490,7 @@
 
                                 <td align="right">Overtime</td>
 
-                                <th id="overtime_add">10000</th>
+                                <th id="overtime_add"></th>
 
                                 </tr>
 
@@ -498,7 +500,7 @@
 
                                 <td align="right">House Rent Allowance</td>
 
-                                <th id="hra_add">10000</th>
+                                <th id="hra_add"></th>
 
                                 </tr>
 
@@ -507,7 +509,7 @@
 
                                 <td align="right">Transportation Allowance</td>
 
-                                <th id="transport_allow_add">10000</th>
+                                <th id="transport_allow_add"></th>
 
                                 </tr>
 
@@ -515,7 +517,7 @@
 
                                 <td align="right">Telephone Allowance</td>
 
-                                <th id="telephone_allow_add">10000</th>
+                                <th id="telephone_allow_add"></th>
 
                                 </tr>
 
@@ -524,7 +526,7 @@
 
                                 <td align="right">Food Allowance</td>
 
-                                <th id="food_allow_add">10000</th>
+                                <th id="food_allow_add"></th>
 
                                 </tr>
 
@@ -533,7 +535,7 @@
 
                                 <td align="right">Other Allowance</td>
 
-                                <th id="other_allow_add">10000</th>
+                                <th id="other_allow_add"></th>
 
                                 </tr>
 
@@ -543,7 +545,7 @@
 
                                 <td align="right">Total Salary</td>
 
-                                <th id="total_salary_add">10000</th>
+                                <th id="total_salary_add"></th>
 
                                 </tr>
                                 
@@ -668,6 +670,7 @@
     <!-- ### -->
 
     
+    <?php /*
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
@@ -677,16 +680,14 @@
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
                     <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
-                    <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
+                    <table id="accountTable1" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
-                                <th>Employee ID</th>
-                                <th>Name</th>
-                                <th>Division</th>
-                                <th>Designation</th>
-                                <th>Date Of Join</th>
-                                <th>Contract Expiry</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Staff Salary</th>
+                                <th>Salaries And Wages</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -701,7 +702,12 @@
                 </div>
             </div>
         </div>
+
+        */ ?>
+       
         <!--end col-->
+
+
     </div>
 
                                           
@@ -742,6 +748,9 @@
 
 
      document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+        $('#AddModal').modal('show');
     
 
         $('.sec_btn').click(function(){
@@ -806,6 +815,22 @@
                             //$('.added_id').val(data);
 
                             $('#timesheets_row').html(data.table);
+
+                            $('#staff_salary_add').html(data.staff_salary);
+
+                            $('#salaries_and_wages_add').html(data.salaries_wages);
+
+                            $('#transport_allow_add').html(data.transport_allow);
+
+                            $('#hra_add').html(data.hra);
+
+                            $('#telephone_allow_add').html(data.tel_allow);
+
+                            $('#food_allow_add').html(data.food_allow);
+
+                            $('#other_allow_add').html(data.other_allow);
+
+                            $('#total_salary_add').html(data.total_salary);
 
                             $('#timesheet_sec').show();
 

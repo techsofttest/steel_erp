@@ -81,7 +81,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" name="r_date" value="<?= date('d-F-Y') ?>" class="form-control datepicker" required readonly>
+                                                        <input type="text" name="r_date" value="" class="form-control datepicker" required readonly>
 
                                                     </div>
 
@@ -331,7 +331,7 @@
 
                                                             <td>
 
-                                                                <input class="form-control credit_amount" type="number" name="inv_amount[]">
+                                                                <input class="form-control credit_amount" type="number" name="inv_amount[]" value="">
 
                                                             </td>
 
@@ -1696,9 +1696,18 @@
 
                                             </tbody>
 
+                                           
+
 
                                         </table>
 
+
+
+                                        <div class="col-lg-12 text-center">
+
+                                        <p><b>Total : <span id="total_receipt_amount_view"></span></b></p>
+
+                                        </div>
 
 
 
@@ -1954,7 +1963,7 @@
 
                 alertify.error('No pending amount to credit!').delay(3).dismissOthers();
 
-                $(this).val(max);
+                $(this).val('');
 
             }
 
@@ -3073,7 +3082,8 @@
 
                             $('.view_cheque_sec').removeClass("d-none");
 
-                            if (data.rc.r_cheque_copy != "") {
+                            if ((data.rc.r_cheque_copy != "") && (data.rc.r_cheque_copy != null) ) {
+                                
                                 $('#view_cheque_file').html('<a href="<?= base_url(); ?>uploads/Receipts/' + data.rc.r_cheque_copy + '" target="_blank">View </a>');
                             } else {
                                 $('#view_cheque_file').html("-");
@@ -3097,6 +3107,8 @@
                         $('#view_collected_by').html(data.rc.col_name);
 
                         $('#view_receipt_invoices').html(data.invoices);
+
+                        $('#total_receipt_amount_view').html(data.rc.r_amount);
 
                         //$('#total_amount_edit').html(data.rc.r_amount);
 
@@ -4695,7 +4707,7 @@
 
             parent = $(this).closest('.invoice_row');
 
-            parent.find('.credit_amount').val('0');
+            parent.find('.credit_amount').val('');
 
             //var parent = $(this).closest('.invoice_row');
 

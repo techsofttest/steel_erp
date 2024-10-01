@@ -900,10 +900,24 @@ class PurchaseOrder extends BaseController
         $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
         
         $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $purchase->po_mrn_reff),'pro_material_requisition');
-          
-        $this->common_model->DeleteData('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
         
-        $this->common_model->DeleteData('pro_purchase_order',$cond);
+        $material_received = $this->common_model->FetchWhere('pro_material_received_note',array('mrn_purchase_order' => $this->request->getPost('ID')));
+        
+        if(empty($material_received)){
+           
+            $this->common_model->DeleteData('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
+        
+            $this->common_model->DeleteData('pro_purchase_order',$cond);
+
+            $data['status'] ="true";
+
+        }
+        else{
+
+            $data['status'] ="false";
+        }
+
+        echo json_encode($data);
         
 
     }

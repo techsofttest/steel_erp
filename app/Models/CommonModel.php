@@ -7,10 +7,9 @@ use CodeIgniter\Database\ConnectionInterface;
 
 class CommonModel extends Model
 {
-
     protected $db;
 
-   
+  
 
     //Admin Authentication
 
@@ -483,22 +482,36 @@ class CommonModel extends Model
     }
 
 
-    public function GetTotalRecords($table,$coloum)
+    public function GetTotalRecords($table,$coloum,$order,$cond="")
     {  
-        return $this->db
-        ->table($table)
-        ->select($coloum)
-        ->countAllResults();
-    }
-
-    public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum)
-    {
-         $query = $this->db
+        $query = $this->db
         ->table($table)
         ->select($coloum);
 
+         if($cond!="")
+         {
+         $query->where($cond);
+         }
+
+
+        return $query->countAllResults();
+    }
+
+    public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum,$cond="")
+    {
+        $query = $this->db->table($table);
+        
+        $query->select($coloum);
+
+        $query->groupStart();
         foreach($searchColoum as $col){
         $query->orLike($col, $searchValue);
+        }
+        $query->groupEnd();
+
+        if($cond!="")
+        {
+        $query->where($cond);
         }
 
         return $query->countAllResults();
@@ -507,17 +520,19 @@ class CommonModel extends Model
     }
 
 
-    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder="",$joins,$rowperpage,$start)
+    public function GetRecord($table,$coloum,$searchValue,$searchColoum,$columnName,$columnSortOrder="",$joins,$rowperpage,$start,$cond="")
     {
 
 
         $query = $this->db->table($table)
         ->select('*');
 
+        $query->groupStart();
         foreach($searchColoum as $col)
         {
             $query->orLike($col, $searchValue);
         }
+        $query->groupEnd();
 
         $query->orderBy($columnName,$columnSortOrder);
 
@@ -530,6 +545,14 @@ class CommonModel extends Model
     
             }
         }
+
+        if($cond !="")
+        {
+       
+        $query->where($cond);
+       
+        }
+
         $query->limit($rowperpage,$start);
 
         $result = $query->get()->getResult();
@@ -567,6 +590,8 @@ class CommonModel extends Model
         $row = $query->getRow();
 
         $id = $row->Auto_increment;
+
+        $prefix = session()->get('admin_prefix').$prefix;
 
         $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
 

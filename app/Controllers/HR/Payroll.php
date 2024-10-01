@@ -212,18 +212,37 @@ class Payroll extends BaseController
         $basic_salary=0;
         $house_rent_allow=0;
         $transport_allow=0;
+        $telephone_allow=0;
         $food_allow=0;
         $other_allow=0;
         $total_salary=0;
 
+        $staff_salary=0;
+        $salaries_wages=0;
+
         foreach($timesheets as $ts)
         {
+
+        if($ts->emp_division==2)
+        {
+        //staff_salary 
+        $staff_salary+= $ts->ts_basic_salary;
+        }
+
+
+        if($ts->emp_division==1)
+        {
+        $salaries_wages+=$ts->ts_basic_salary;
+        }
+
 
         $basic_salary+=$ts->ts_basic_salary;
 
         $house_rent_allow+=$ts->ts_house_rent_allowance;
 
         $transport_allow+=$ts->ts_transportation_allowance;
+
+        $telephone_allow+=$ts->ts_telephone_allowance;
 
         $food_allow+=$ts->ts_food_allowance;
 
@@ -248,6 +267,8 @@ class Payroll extends BaseController
                         <td>'.$ts->ts_house_rent_allowance.'</td>
 
                         <td>'.$ts->ts_transportation_allowance.'</td>
+
+                        <td>'.$ts->ts_telephone_allowance.'</td>
 
                         <td>'.$ts->ts_food_allowance.'</td>
 
@@ -291,8 +312,23 @@ class Payroll extends BaseController
         ';
 
 
-        echo json_encode($data);
+        $data['staff_salary']=$staff_salary;
 
+        $data['salaries_wages']=$salaries_wages;
+
+        $data['hra'] = $house_rent_allow;
+
+        $data['transport_allow'] = $transport_allow;
+
+        $data['tel_allow'] = $telephone_allow;
+
+        $data['food_allow'] = $food_allow;
+
+        $data['other_allow'] = $other_allow;
+
+        $data['total_salary'] = $total_salary;
+
+        echo json_encode($data);
 
         }
 

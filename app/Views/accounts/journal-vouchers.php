@@ -18,147 +18,6 @@
 
 
 
-
-<!-- View Modal Start-->
-
-
-<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Journal Voucher</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-
-    <div class="row">
-
-
-    <div class="col-lg-12">
-    <div class="card">
-       
-        <div class="card-body">
-            <div class="live-preview">
-            
-                    <div class="row align-items-start justify-content-start">
-
-                    <div class="col-lg-6">
-
-                    <div class="row align-items-center mb-2">
-                            
-
-                            <div class="col-col-md-3 col-lg-3">
-
-                                <label for="basiInput" class="form-label">Reference</label>
-
-                            </div>
-
-
-                            <div class="col-col-md-9 col-lg-9">
-
-                            <input type="text" id="uid_view"  class="form-control" readonly>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="row align-items-center mb-2">
-                            
-                            <div class="col-col-md-3 col-lg-3">
-
-                                <label for="basiInput" class="form-label">Date</label>
-
-                            </div>
-
-                            <div class="col-col-md-9 col-lg-9">
-
-                            <input type="text" id="date_view" class="form-control"  readonly>
-
-                            </div>
-
-                        </div>
-
-                        
-                        </div>
-
-                          
-                        <div class="col-col-md-12 col-lg-12">
-
-
-                        <table class="table table-bordered" style="overflow-y:scroll;">
-
-                                    <thead>
-                                        <tr>    
-                                        <th>Sl No</th>
-                                        <th>Sales Order No</th>
-                                        <th>Narration</th>
-                                        <th>Debit</th>
-                                        <th>Credit</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="jv_invoices_view">
-
-                                    </tbody>
-
-                                    <tr>
-
-                                    <td colspan="4" align="right">Total</td>
-                                   
-                                    <th id="total_debit_view">0</th>
-
-                                    <th  id="total_credit_view">0</th>
-                                  
-                                    
-                                    </tr>
-
-
-
-                        </table>
-
-                        
-                        </div>
-
-
-                        <div>
-                        
-
-                        </div>
-
-
-                        
-                        
-                    </div>
-                    <!--end row-->
-                
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-
-<!--end col-->
-</div>
-
-</div>
-           
-
-        </div>
-     
-
-    </div>
-</div>
-
-
-<!-- View Modal End -->
-
-
-
-
 									
 <div class="tab-pane active" id="border-nav-1" role="tabpanel">
 
@@ -254,7 +113,7 @@
                                         
                                         <th>
 
-                                        <select name="jv_sale_invoice[]" class="form-control">
+                                        <select name="jv_sale_invoice[]" class="form-control so_select_add">
 
                                         <option value="0">None</option>
 
@@ -390,6 +249,140 @@
 
 
     <!-- ### -->
+
+
+
+
+
+
+
+    
+    <!-- Add Modal -->
+
+
+    <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Journal Voucher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+    <div class="card">
+       
+        <div class="card-body">
+            <div class="live-preview">
+            
+                    <div class="row align-items-start justify-content-start">
+
+                          
+                        <div class="col-col-md-12 col-lg-12">
+
+
+                        <table class="table table-bordered" style="overflow-y:scroll;">
+
+
+                        <tr>
+
+
+                        <td>Reference</td>
+
+                        <td id="reference_view"></td>
+
+
+                        <td>Date</td>
+
+                        <td id="date_view"></td>
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+                        <th>Sl No</th>
+
+                        <th>Sales Order</th>
+
+                        <th>Account</th>
+
+                        <th>Narration</th>
+
+                        <th>Debit</th>
+
+                        <th>Credit</th>
+
+                        </tr>
+
+
+                        <tbody id="jv_rows">
+
+                        </tbody>
+
+                                 
+
+                        </table>
+
+                        
+                        </div>
+
+
+                        <div>
+
+                        
+
+                        </div>
+
+
+                        
+                        
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+
+
+
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+            <!-- <div class="modal-footer justify-content-center">
+                <button  class="btn btn btn-success">Save</button>
+            </div> -->
+
+        </div>
+        
+
+    </div>
+</div>
+
+
+    <!-- ### -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -633,7 +626,21 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function(event) { 
+
+        document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+        //$("body").on('keypress','.credit_amount', function(e){ 
+        $('.credit_amount').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $('.add_more').trigger('click');
+            return false;  
+        }
+        });  
+
+
 
 
         /*cost calculation add more*/
@@ -660,6 +667,9 @@
             $clone.find(".del_elem").show();
 
             $clone.insertAfter('.so_row:last');
+
+            $('.so_row:last').find('.so_select_add').focus();
+            
 
 			}
 
@@ -942,64 +952,40 @@ $('#total_amount_credit_disp_edit').html(c_total);
             
             var id = $(this).data('jvview');
 
-
             $.ajax({
 
-url : "<?php echo base_url(); ?>Accounts/JournalVouchers/Edit",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/View",
 
-method : "POST",
+            method : "POST",
 
-data: {jv_id: id},
+            data: {jv_id: id},
 
-success:function(data)
-{  
-    if(data)
-    {
+            success:function(data)
+            {  
+            if(data)
+            {
 
-    var data = JSON.parse(data);
+            var data = JSON.parse(data);
 
-    $('#id_edit').val(data.jv.jv_id);
+            //$('#id_edit').val(data.jv.jv_id);
 
-    $('#uid_edit').val(data.jv.jv_voucher_no);
+            $('#reference_view').html(data.jv.jv_voucher_no);
 
-    $('#jv_date_edit').val(data.jv.jv_date);
+            $('#date_view').html(data.jv.jv_date);
 
-    $('#jv_invoices_edit').html(data.invoices);
+            $('#jv_rows').html(data.invoices);
 
-    $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
-
-    $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
-
-    $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
-
-    $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
-
-
-    $("#EditModal :input").prop("disabled", true);
-
-    $('#EditModal .btn-close').prop("disabled",false);
-
-    $('#EditModal .action_btns').hide();
-
-    $('#EditModal .submit_btn').hide();
-
-    $('#EditModal .edit_invoice').hide();
-
-    $('#EditModal .view_linked').hide();
+            $('#ViewModal').modal('show');
+            }
+            else
+            {
+            alertify.error('Something went wrong!').delay(8).dismissOthers();  
+            }
+            
+            }
 
 
-    $('#EditModal').modal('show');
-  
-    }
-    else
-    {
-    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-    }
-    
-    }
-
-
-    });
+            });
 
 
 
@@ -1342,11 +1328,8 @@ $('#uid').val(data);
 
 
 
-
-
-     
-
     });
+
 
 
 </script>

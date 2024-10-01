@@ -1,3 +1,5 @@
+<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
+
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
@@ -26,11 +28,16 @@
             <i class="ri-record-circle-line"></i>
         </button>
 				
+        <!--
 		<div  class="row dashbaord-items">
-			<div  class="col-4"><small >Sales</small><h6 >456</h6></div>
-			    <div  class="col-4"><small >Order</small><h6 >1350</h6></div>
-			        <div  class="col-4"><small >Revenue</small><h6 >100AED</h6></div>
+			<div  class="col-4"><small >Sales</small><h6 ></h6></div>
+			    <div  class="col-4"><small >Order</small><h6 ></h6></div>
+			        <div  class="col-4"><small >Revenue</small><h6 ></h6></div>
 			    </div>
+
+        -->
+
+
             </div>
 			
 
@@ -43,7 +50,7 @@
                       
                             <li class="nav-item">
                                 <a class="nav-link menu-link" href="<?= base_url(); ?>"   >
-                                    <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
+                                    <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                                 </a>
                                 
                             </li> <!-- end Dashboard Menu -->
@@ -53,7 +60,7 @@
 
                             <li class="nav-item">
                                 
-                                <a class="nav-link menu-link" href="<?= base_url() ?>Accounts/AccountHead">
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Accounts") {echo "active" ;} ?>" href="<?= base_url() ?>Accounts/AccountHead">
                                     <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
                                 </a>
                             
@@ -61,15 +68,15 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="<?= base_url() ?>Crm/ProductHead" >
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
                                     <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
                                 </a>
                             
                             </li>
 
 
-                            <li class="nav-item">
-                                <a class="nav-link menu-link" href="<?php echo base_url();?>Procurement/Vendor" >
+                             <li class="nav-item">
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
                                     <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
                                 </a>
                                 
@@ -77,7 +84,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="<?php echo base_url();?>HR/Employees" >
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
                                     <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
                                 </a>
                             

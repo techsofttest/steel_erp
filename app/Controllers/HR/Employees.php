@@ -513,9 +513,9 @@ class Employees extends BaseController
            $end = ($page - 1) * $resultCount;       
            $start = $end + $resultCount;
          
-           $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
+           $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_account_name','asc',$term,$end,$start);
    
-           $data['total_count'] =count($data['result']);
+           $data['total_count'] = count($data['result']);
    
            return json_encode($data);
    

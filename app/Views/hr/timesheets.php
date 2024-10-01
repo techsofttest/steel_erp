@@ -167,20 +167,266 @@
                         <tbody id="days_row">
 
                         </tbody>
+
+
                             
 
                     </table>
 
 
 
+                    <div class="col-lg-6">
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Working Days</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="working_days_view" type="number" value="0" name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
 
 
-                    <table class="table table-bordered">
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Public Holiday</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="public_holidays_view" type="number" value="0"  name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
 
 
-                    
-                    </table>
+    <div class="row align-items-center mb-2">
 
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Leave</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="leave_view" type="number" value="0"  name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
+
+
+    <!-- Unpaid leave sec -->
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Unpaid Leave</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="unpaid_leave_view" type="number" value="0"  name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
+
+
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Medical Leave</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="medical_leave_view" type="number" value="0"  name="total_medical_leaves" class="form-control" readonly>
+
+    </div>
+
+    </div>
+
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Normal OT</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="normal_ot_view" type="number" value="0"  name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
+
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Friday OT</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="friday_ot_view" type="number" value="0"  name="" class="form-control" readonly>
+
+    </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+<div class="col-lg-6">
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Leave</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="leave_total_amount_view" type="number"  name="" class="form-control" step=".01" min="0" readonly>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Unpaid Leave</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="" type="number"  name="" class="form-control" step=".01" min="0">
+
+</div>
+
+</div>
+
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Medical Leave</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="" type="number"  name="" class="form-control" step=".01" min="0" readonly>
+
+</div>
+
+</div>
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Normal OT</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_normal_ot_salary_view" type="number"  name="" class="form-control" step=".01" min="0"  readonly>
+
+</div>
+
+</div>
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Friday OT</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_friday_ot_salary_view" type="number"  name="" class="form-control" step=".01" min="0"  readonly>
+
+</div>
+
+</div>
+
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Salary (Selected Month)</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_month_salary_view" type="number"  name="" class="form-control" step=".01" min="0" readonly>
+
+</div>
+
+</div>
+
+
+
+
+
+
+</div>
 
 
                         
@@ -1667,10 +1913,10 @@
                                 <th class="no-sort">Sl no</th>
                                 <th>Employee ID</th>
                                 <th>Name</th>
-                                <th>Division</th>
-                                <th>Designation</th>
-                                <th>Date Of Join</th>
-                                <th>Contract Expiry</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Working Days</th>
+                                <th>Total Salary</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1980,6 +2226,34 @@
 
                     $('#days_row').html(data.ts_days);
 
+                    $('#working_days_view').val(data.ts.ts_working_days);
+
+                    $('#public_holidays_view').val(data.ts.ts_public_holidays);
+
+                    $('#leave_view').val(data.ts.ts_leave);
+
+                    $('#unpaid_leave_view').val(data.ts.ts_unpaid_leave);
+
+                    $('#medical_leave_view').val(data.ts.ts_medical_leave);
+
+                    $('#normal_ot_view').val(data.ts.ts_normal_ot);
+
+                    $('#friday_ot_view').val(data.ts.ts_friday_ot);
+
+
+                    //Salary
+
+                    $('#leave_total_amount_view').val(data.ts.ts_cur_month_leave);
+
+                    $('#total_normal_ot_salary_view').val(data.ts.ts_cur_month_normal_ot);
+
+                    $('#total_friday_ot_salary_view').val(data.ts.ts_cur_month_friday_ot);
+
+                    $('#total_month_salary_view').val(data.ts.ts_cur_month_salary);
+
+
+
+
                     $('#ViewModal').modal('show');
 
 
@@ -2048,6 +2322,7 @@
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
+                'bAutoWidth': true, 
                 'ajax': {
                     'url': "<?php echo base_url(); ?>HR/Timesheets/FetchData",
                     'data': function (data) {
@@ -2389,6 +2664,16 @@
 
             parent.find('.time_to').removeAttr('readonly');
 
+
+            parent.find('.total_hours').removeAttr('readonly');
+
+            parent.find('.normal_hours').removeAttr('readonly');
+
+            parent.find('.normal_ot').removeAttr('readonly');
+
+            parent.find('.friday_ot').removeAttr('readonly');
+
+
             }   
             else
             {
@@ -2398,6 +2683,16 @@
             parent.find('.time_from').attr('readonly',true);
 
             parent.find('.time_to').attr('readonly',true);
+
+
+            parent.find('.total_hours').attr('readonly',true);
+
+            parent.find('.normal_hours').attr('readonly',true);
+
+            parent.find('.normal_ot').attr('readonly',true);
+
+            parent.find('.friday_ot').attr('readonly',true);
+
 
             parent.find('.total_hours').val(0);
 
@@ -2409,6 +2704,8 @@
 
             }
 
+
+            $('#leave_total_amount').val(0);
 
             $('body .day_type').each(function(i, obj) {
 

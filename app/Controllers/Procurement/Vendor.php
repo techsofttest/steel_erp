@@ -230,7 +230,7 @@ class Vendor extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_head_id','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_account_heads','ah_account_name','asc',$term,$start,$end);
 
         $data['total_count'] = count($data['result']);
 
@@ -815,11 +815,21 @@ class Vendor extends BaseController
             }
         }
 
-        $this->common_model->DeleteData('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+        $purchase_order = $this->common_model->FetchWhere('pro_purchase_order',array('po_vendor_name' => $this->request->getPost('ID')));
 
-        $this->common_model->DeleteData('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
+        if(empty($purchase_order)){
+
+            $this->common_model->DeleteData('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+
+            $this->common_model->DeleteData('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
         
-        $data['status'] = "true"; 
+            $data['status'] = "true"; 
+        }
+        else{
+
+            $data['status'] ="false";
+        }
+        
 
         echo json_encode($data);
         
