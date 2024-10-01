@@ -232,7 +232,7 @@
                 
                 <th>
 
-                <select name="pcv_sale_invoice[]" class="form-control">
+                <select name="pcv_sale_invoice[]" class="form-control sales_order_add">
 
                 <option value="0">None</option>
 
@@ -258,7 +258,7 @@
                 <th><input name="pcv_debit[]" type="number" class="form-control pcv_amount" ></th>
 
                 <th>
-                    <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
+                    <a class="btn btn-primary add_invoices disabled" href="javascript:void(0);">Click</a>
                 </th>
 
                 <th><input name="pcv_remarks[]" type="text" class="form-control" ></th>
@@ -287,7 +287,7 @@
 
             <td colspan="1"></td>
 
-            <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
+            <td colspan="3" align="left" class="sales_quotation_amount_in_word_disabled"></td>
 
             <td align="right" colspan="3">Total</td>
 
@@ -1008,6 +1008,15 @@
 
 
 
+
+        $("body").on('change', '.debit_account_select2_add', function(){
+
+        parent = $(this).closest('.so_row');
+
+        parent.find('.add_invoices').removeClass('disabled');
+
+        });
+
         
         $('.add_model_btn').click(function(){
 
@@ -1107,6 +1116,8 @@
             $clone.find(".sl_no").html(cc);
 
             $clone.find(".del_elem").show();
+
+            $clone.find('.add_invoices').addClass('disabled');
 
             $clone.insertAfter('.so_row:last');
 

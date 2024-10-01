@@ -36,6 +36,8 @@ class Home extends BaseController
 
     public function index()
     {
+  
+        $this->dash_model = new \App\Models\DashboardModel();
 
         $data['products']=$this->common_model->FetchAllOrderLimit('crm_products','product_id','desc',5,0);
 
@@ -47,7 +49,27 @@ class Home extends BaseController
 
         $data['enquiry_count'] = $this->common_model->CountWhere('crm_enquiry',array());
 
+        $data['receipts_today'] = $this->dash_model->ReceiptTotalToday();
+
+        $data['sales_orders_today'] = $this->dash_model->SalesOrdersToday();
+
+        $data['purchase_orders_today'] = $this->dash_model->PurchaseOrdersToday();
+
+        $data['employee_count'] = $this->common_model->CountWhere('hr_employees',array());
+
         return view('index',$data);
+
+    }
+
+
+
+
+
+    public function ChangePassword()
+    {
+
+
+
 
     }
 

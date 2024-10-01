@@ -2222,13 +2222,21 @@
 
                 success:function(data)
                 {   
-                    
+                    var data = JSON.parse(data);
 
-                    rowToDelete.fadeOut(500, function() {
-                        $(this).remove();
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
-                        datatable.ajax.reload(null,false);
-                    });
+                    if(data.status == "false")
+		            {
+			            alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
+		            }
+                    else
+                    {
+                        rowToDelete.fadeOut(500, function() {
+                            $(this).remove();
+                            alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                            datatable.ajax.reload(null,false);
+                        });
+                    }
+                   
 
                     
                         

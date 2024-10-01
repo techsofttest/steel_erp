@@ -1,3 +1,22 @@
+<style>
+
+.divcontainer {
+  overflow-x: scroll;
+  overflow-y: auto;
+  transform: rotateX(180deg);
+}
+
+.divcontainer table {
+  transform: rotateX(180deg);
+}
+
+.table-responsive {
+  width: 100%;
+  display: block overflow-x: scroll;
+}
+
+</style>
+
 
 <div class="tab-content text-muted">
 								
@@ -163,7 +182,7 @@
                                         </div>
 
                                         <div class="modal-footer justify-content-center">
-                                            <button class="btn btn btn-success submit_btn" type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
 
                                         
@@ -207,43 +226,45 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive" style="overflow-x:auto;">
+                                    <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
-                                                    <th style="white-space: nowrap">Date</th>
-                                                    <th style="white-space: nowrap">Sales Order Ref</th>
-                                                    <th style="white-space: nowrap">Customer</th>
-                                                    <th style="white-space: nowrap">LPO Ref</th>
-                                                    <th style="white-space: nowrap">Sales Executive</th>
-                                                    <th style="white-space: nowrap">Amount</th>
-                                                    <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap">Quantity</th>
-                                                    <th style="white-space: nowrap">Rate</th>
-                                                    <th style="white-space: nowrap">Discount</th>
-                                                    <th style="white-space: nowrap">Amount</th>
+                                                    <th class="no-sort">Sl no</th>
+                                                    <th>Date</th>
+                                                    <th>Sales Order Ref</th>
+                                                    <th>Customer</th>
+                                                    <th>LPO Ref</th>
+                                                    <th>Sales Executive</th>
+                                                    <th>Amount</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
                                             <tbody class="tbody_data">
                                             <?php
+                                                $total_amount  = 0;
+                                                $total_amount1  = 0;
                                                 if(!empty($sales_orders))
                                                 {
                                                     $i=1;
+                                                    
                                                     foreach($sales_orders as $sales_order){
                                                          
                                                     ?> 
                                                     
                                                     <tr>
                                                         <td><?php echo $i;?></td>
-                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_reffer_no;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->cc_customer_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_amount_total;?></td>
-                                                        <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
+                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
+                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <td><?php echo $sales_order->so_amount_total;?></td>
+                                                        <td>
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->product_details;?><br>
                                                             <?php } ?>
@@ -255,22 +276,26 @@
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td style="white-space: nowrap">
+                                                        <td>
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_rate;?></br>
+                                                                <?php echo format_currency($sales_prod->spd_rate);?></br>
                                                             <?php } ?>
                                                            
                                                         </td>
-
-                                                        <td style="white-space: nowrap">
+                                                        <td>
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->spd_discount;?></br>
                                                             <?php } ?>
                                                         </td>
 
-                                                        <td style="white-space: nowrap">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_amount;?></br>
+                                                        <td style="white-space: nowrap" class="text-end">
+                                                            
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){
+
+                                                                $total_amount1 = $sales_prod->spd_amount + $total_amount1;
+
+                                                            ?> 
+                                                            <?php echo format_currency($sales_prod->spd_amount);?></br>
                                                             <?php } ?>
                                                            
                                                         </td>
@@ -279,6 +304,23 @@
                                                     </tr>
                                                 
                                                 <?php $i++; }  } ?>
+
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                   
+                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                </tr>
+
                                             </tbody>
 
                                         </table>

@@ -33,8 +33,11 @@ font-weight:700
 }
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 :root {
 --theme-color:#e31d24;
+--vz-body-font-family:"Open Sans" !important;
 }
 #page-topbar {
 	position:fixed;
@@ -475,10 +478,12 @@ transition:all .1s ease-out
 	-webkit-box-align:center;
 	-ms-flex-align:center;
 	align-items:center;
+	font-weight: 700;
 padding:.625rem 1.5rem;
 	color:var(--vz-secondary-color);
 font-size:.9375rem;
-	font-family:hkgrotesk, sans-serif
+	/*font-family:hkgrotesk, sans-serif*/
+	font-family:"Open Sans", sans-serif;
 }
 .navbar-menu .navbar-nav .nav-link.active {
 	color:#000
@@ -3762,7 +3767,7 @@ html {
 	min-height:100%
 }
 :is(.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6) {
-font-family:Poppins, sans-serif
+font-family:"Raleway", sans-serif
 }
 label {
 	font-weight:500;

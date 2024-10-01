@@ -35,7 +35,7 @@
 
         }
 
-        .sec_btn,.sec_btn_edit.active
+        .sec_btn.active,.sec_btn_edit.active
         {
 
         background:#e0dbdb !important;
@@ -561,7 +561,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <select class="form-control" name="mode_of_payment" required>
+                        <select id="mop_add" class="form-control" name="mode_of_payment" required>
 
                         <option value="" >Select Mode Of Payment</option>
 
@@ -580,7 +580,8 @@
 
 
 
-                        <div class="row align-items-center mb-2">
+
+                        <div class="row align-items-center mb-2 bank_sec_add">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -598,7 +599,7 @@
 
 
 
-                        <div class="row align-items-center mb-2">
+                        <div class="row align-items-center mb-2 bank_sec_add">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -1804,7 +1805,7 @@
 
 
 
-                        <div class="row align-items-center mb-2">
+                        <div class="row align-items-center mb-2 edit_bank_sec">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -1822,7 +1823,7 @@
 
 
 
-                        <div class="row align-items-center mb-2">
+                        <div class="row align-items-center mb-2 edit_bank_sec">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -2271,6 +2272,25 @@
 
 
 
+        $('#mop_add').change(function(){
+
+            if($(this).val()=="2")
+                {
+                $('.bank_sec_add').show();
+                }
+                else
+                {
+                $('.bank_sec_add').hide();
+            } 
+
+        })
+
+
+                        
+
+
+
+
         /* Main Add */    
    
         $(function() {
@@ -2322,6 +2342,8 @@
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             $('#add_form').attr('data-empid',data);
                             $('.added_id').val(data);
+                            $('#employee_sec').hide();
+                            $('#salary_sec').show();
                             datatable.ajax.reload( null, false)
 
                         }
@@ -2373,6 +2395,8 @@
                             alertify.success('Data Saved Successfully').delay(3).dismissOthers();
                             //$('#add_form').attr('data-empid',data);
                             //$('.added_id').val(data);
+                            $('#salary_sec').hide();
+                            $('#document_sec').show();
                             datatable.ajax.reload( null, false)
 
                         }
@@ -2430,6 +2454,7 @@
                             alertify.success('Data Saved Successfully').delay(3).dismissOthers();
                             //$('#add_form').attr('data-empid',data);
                             //$('.added_id').val(data);
+                            $('#AddModal').modal('hide');
                             datatable.ajax.reload( null, false)
 
                         }
@@ -2505,6 +2530,15 @@
                     $('#edit_total_salary').val(data.emp.emp_total_salary);
 
                     $('#mop_edit').val(data.emp.emp_mode_of_payment);
+
+                    if(data.emp.emp_mode_of_payment==2)
+                    {
+                    $('.edit_bank_sec').show();
+                    }
+                    else
+                    {
+                    $('.edit_bank_sec').hide();
+                    }
 
                     $('#account_no_edit').val(data.emp.emp_account_number);
 

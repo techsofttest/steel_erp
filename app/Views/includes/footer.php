@@ -29,7 +29,9 @@
    
     <script src="<?php echo base_url(); ?>public/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     
-    <script src="<?php echo base_url(); ?>public/assets/libs/simplebar/simplebar.min.js"></script>
+
+    <!--<script src="<?php echo base_url(); ?>public/assets/libs/simplebar/simplebar.min.js"></script>-->
+
 
     <!--
     <script src="<?php echo base_url(); ?>public/assets/libs/node-waves/waves.min.js"></script>
@@ -58,7 +60,10 @@
 
     <script src="<?php echo base_url(); ?>public/assets/libs/feather-icons/feather.min.js"></script>
 
+    
+    
     <script src="<?php echo base_url(); ?>public/assets/libs/node-waves/waves.min.js"></script>
+
 
     <!-- App js -->
     <script src="<?php echo base_url(); ?>public/assets/js/app.js"></script>
@@ -249,9 +254,12 @@
 
    <script>
     
+
+        
+
         $(document).ready(function() {
 
-            parent = $('#AddModal');
+            parent = $('body #AddModal');
             const $inputs = parent.find('input,select, button,.select2-hidden-accessible');
             const $form = $('#add_form');
 

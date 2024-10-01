@@ -1,3 +1,26 @@
+<style>
+
+.divcontainer {
+  overflow-x: scroll;
+  overflow-y: auto;
+  transform: rotateX(180deg);
+}
+
+.divcontainer table {
+  transform: rotateX(180deg);
+}
+
+.table-responsive {
+  width: 100%;
+  display: block overflow-x: scroll;
+}
+
+.rotate{
+    transform: rotateX(180deg);
+}
+
+</style>
+
 <div class="tab-content text-muted">
 								
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -148,7 +171,7 @@
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button  class="btn btn btn-success submit_btn" type="submit">Search</button>
+                                            <button  class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
 
                                         
@@ -195,23 +218,22 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotAnalysisReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive" style="overflow-x:auto;">
-                                        <table style="table-layout:fixed;" id="" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body">
+                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap;width:100px">Sl no</th>
-                                                    <th style="white-space: nowrap;width:100px">Date</th>
-                                                    <th style="white-space: nowrap;width:100px">Quotation Ref</th>
-                                                    <th style="white-space: nowrap;width:500px">Customer Name</th>
-                                                    <th style="white-space: nowrap;width:100px">Sales Executive</th>
-                                                    <th style="width:500px">Product</th>
-                                                    <th style="width:100px;white-space: nowrap" >Quantity</th>
-                                                    <th style="width:100px;white-space: nowrap" >Rate</th>
-                                                    <th style="width:100px;white-space: nowrap" >Discount</th>
-                                                    <th style="width:100px;white-space: nowrap" >Amount</th>
-                                                    <th style="width:100px;white-space: nowrap" >Sales Order</th>
-                                                    <th style="width:100px;white-space: nowrap" >Amount</th>
-                                                    <th style="width:100px;white-space: nowrap">Difference</th>
+                                                    <th class="no-sort">Sl no</th>
+                                                    <th>Date</th>
+                                                    <th>Quotation Ref</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Sales Executive</th>
+                                                    <th width="100px">Product</th>
+                                                    <th width="100px">Quantity</th>
+                                                    <th width="100px">Rate</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th width="100px">Sales Order</th>
+                                                    <th width="100px">Amount</th>
+                                                    <th>Difference</th>
                                                 </tr>
                                             </thead>
                                             
@@ -220,6 +242,9 @@
                                                 if(!empty($quotation_data))
                                                 {
                                                     $i=1;
+                                                    $total = 0;
+                                                    $total1 = 0;
+                                                    $total2 = 0;
                                                     foreach($quotation_data as $quot_data){?> 
                                                     <tr>
                                                         <td style="white-space: nowrap;width:100px"><?php echo $i;?></td>
@@ -236,11 +261,10 @@
                                                             <table>
                                                                 <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    <td  style="width:500px"><?php echo $quot_prod->product_details;?></td>
-                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_quantity;?></td>
-                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_rate;?></td>
-                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_discount;?></td>
-                                                                    <td  style="width:100px"><?php echo $quot_prod->qpd_amount;?></td>
+                                                                    <td  width="100px"><?php echo $quot_prod->product_details;?></td>
+                                                                    <td  width="100px"><?php echo $quot_prod->qpd_quantity;?></td>
+                                                                    <td  width="100px"><?php echo $quot_prod->qpd_rate;?></td>
+                                                                    <td  width="100px"><?php echo $quot_prod->qpd_amount;?></td>
                                                                   
                                                                 </tr>
                                                                 <?php } ?>
@@ -257,18 +281,21 @@
                                                             
                                                             foreach($quot_data->sales_orders as $sal_ord){?>
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                <td width="100px"><?php echo $sal_ord->so_reffer_no;?></td>
+                                                                <td class="rotate text-end" width="100px"><?php echo $sal_ord->so_reffer_no;?></td>
 
                                                                 <?php 
                                                                 $so_pro_count = 1;
                                                                 if(!empty($sal_ord->sales_product))
                                                                 {
-                                                                foreach($sal_ord->sales_product as $sales_prod){?>
+                                                                foreach($sal_ord->sales_product as $sales_prod){
+                                                                    
+                                                                    $total1 = $sales_prod->spd_amount + $total1;
+                                                                ?>
 
                                                                 <?php if($so_pro_count==1){ ?>
 
                                                                 
-                                                                <td width="100"><?php echo $sales_prod->spd_amount;?></td>
+                                                                <td class="rotate text-end" width="100"><?php echo format_currency($sales_prod->spd_amount);?></td>
                                                                 </tr>
                                                                 <?php } else {  ?>
                                                                 </tr>
@@ -277,7 +304,7 @@
 
                                                                 <td width=""></td>
                                                                 
-                                                                <td width="100"><?php echo $sales_prod->spd_amount;?></td>
+                                                                <td class="rotate text-end" width="100"><?php echo format_currency($sales_prod->spd_amount);?></td>
                                                                 </tr>
 
                                                                 <?php } ?>
@@ -309,12 +336,13 @@
                                                        
 
                                                         <?php if(!empty($quot_data->sales_orders)){?> 
-                                                        <td>00.0</td>   
+                                                        <td>---</td>   
                                                         <?php } else{?> 
                                                         <td></td>
                                                         
+                                                        <?php  $total2 = $quot_data->qpd_amount + $total2 ?>
                                                           
-                                                        <td><?php echo $quot_data->qpd_amount;?></td>    
+                                                        <td class="text-end"><?php echo format_currency($quot_data->qpd_amount);?></td>    
                                                         <?php } ?>
 
                                                     </tr>
@@ -323,7 +351,28 @@
 
 
                                                 
-                                                <?php $i++; }  } ?>
+                                                <?php $i++; } ?> 
+                                                
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td  class="text-end"><?php echo format_currency($total); ?></td>
+                                                    <td></td>
+                                                    <td class="text-end"><?php echo format_currency($total1)?></td>
+                                                    <td class="text-end"><?php echo format_currency($total2)?></td>
+                                                </tr>
+                                                
+                                                
+                                                <?php  }  ?>
+
+                                                
 
                                             </tbody>
 

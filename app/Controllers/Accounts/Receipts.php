@@ -34,16 +34,20 @@ class Receipts extends BaseController
             $columnSortOrder = 'desc';
         } 
 
- 
+
+        ##For Getting Only Logged In Admin Added Records
+
+        $cond = array('company_id' => session()->get('admin_company'));
+
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('accounts_receipts','r_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('accounts_receipts','r_id',$cond);
  
         ## Total number of records with filtering
        
         $searchColumns = array('r_number','r_id');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_receipts','r_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_receipts','r_id',$searchValue,$searchColumns,$cond);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
@@ -69,7 +73,7 @@ class Receipts extends BaseController
 
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('accounts_receipts','r_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('accounts_receipts','r_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start,$cond);
     
         $data = array();
 
@@ -163,7 +167,6 @@ class Receipts extends BaseController
         $insert_data['r_date'] = date('Y-m-d',strtotime($this->request->getPost('r_date')));
 
         $insert_data['r_debit_account'] = $this->request->getPost('r_debit_account');
-
         
         $insert_data['r_method'] = $this->request->getPost('r_method');
 
@@ -193,9 +196,10 @@ class Receipts extends BaseController
 
         $insert_data['r_amount'] = $this->request->getPost('total_receipt_amount');
 
+
         if(empty($this->request->getPost('r_id')))
 
-        {
+        {   
 
                 $insert_data['r_number'] = str_replace(" ","",$this->request->getPost('r_receipt_no'));
                 //Check Duplicate Receipt Number
@@ -230,7 +234,9 @@ class Receipts extends BaseController
 
         }
 
-        $r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        //$r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
+
+        $r_ref_no = $this->common_model->FetchNextId('accounts_receipts',"REC");
 
         $cond = array('r_id' => $id);
 
@@ -311,9 +317,13 @@ class Receipts extends BaseController
 
                 $this->common_model->InsertData('master_transactions',$credit_trans_data);
 
+
+
                 
 
-                if(empty($check_credit) || $insert_inv_data['ri_amount']<0)
+                
+
+                if(empty($check_credit))
                 {
                 $this->common_model->InsertData('accounts_receipt_invoices',$insert_inv_data);
                 }
@@ -465,7 +475,7 @@ class Receipts extends BaseController
 
      $remaining_amount = $remaining_amount - $sales_return_amount;
 
-     $remaining_amount = max($remaining_amount,0);
+     $remaining_amount = max($remaining_amount,0);   
 
      if($remaining_amount !=0 ){
 
@@ -1546,7 +1556,6 @@ class Receipts extends BaseController
         //Fetch Receipt
         $cond = array('r_id' => $this->request->getPost('id'));
         $receipt = $this->common_model->SingleRow('accounts_receipts',$cond);
-
 
         $cond_receipt = array('ri_receipt' => $this->request->getPost('id'));
 

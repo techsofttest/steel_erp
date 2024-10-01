@@ -477,7 +477,9 @@ class PurchaseReturn extends BaseController
                     
                                     
             }
-
+            
+           // echo $new_amount;
+            
             //exit();
            
             $data['total_amount'] = $new_amount;

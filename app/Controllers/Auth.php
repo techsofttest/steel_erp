@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
+use Config\Database;
+
 class Auth extends BaseController
 {
 
@@ -50,14 +52,25 @@ class Auth extends BaseController
             $user = $this->common_model->GetProfile($username,$password);
 
             if($user)
-            {
-                
+            { 
                 $admin_data = [
                     'admin_username'=> $user->user_name,
                     'admin_id'      => $user->user_id,
                     'admin_role'    => $user->user_role,
+                    'admin_company' => $user->user_company,
                     'admin_login'   => true,
                 ];
+
+                if($user->user_company==2)
+                {
+                $company_pref = "CP";
+                }
+                else
+                {
+                $company_pref = "AF";
+                }
+
+                $admin_data['admin_prefix'] = $company_pref;
                 
                 $this->session->set($admin_data);
 
@@ -90,6 +103,7 @@ class Auth extends BaseController
             'admin_username',
             'admin_id',
             'admin_role',
+            'admin_company',
             'admin_login',
         ];
 
@@ -99,7 +113,30 @@ class Auth extends BaseController
 
         return redirect()->to('Login');
         
+
     }
+
+
+
+
+
+    protected function changeDatabase($dbName)
+    {
+        // Check if the database name is valid
+        $dbConfig = config('Database');
+        $dbConfig->default['database'] = $dbName;
+        $db = Database::connect($dbConfig->default);
+        return $db;
+
+    }
+
+
+
+
+
+
+
+
 
 
 

@@ -64,7 +64,7 @@ class PettyCashVoucher extends BaseController
            $data[] = array( 
               "pcv_id"=>$i,
               "pcv_voucher_no"=>$record->pcv_voucher_no,
-              "pcv_date"=>date('d-m-Y',strtotime($record->pcv_date)),
+              "pcv_date"=>date('d-F-Y',strtotime($record->pcv_date)),
               "pcv_credit_account"=>$record->ca_name,
               "action" =>$action,
            );
@@ -135,7 +135,7 @@ class PettyCashVoucher extends BaseController
     Public function Add()
     {   
 
-        $insert_data['pcv_date'] = $this->request->getPost('pcv_date');
+        $insert_data['pcv_date'] = date('Y-m-d',strtotime($this->request->getPost('pcv_date')));
 
         $insert_data['pcv_credit_account'] = $this->request->getPost('pcv_credit_account');
 

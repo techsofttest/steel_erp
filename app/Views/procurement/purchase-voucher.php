@@ -174,8 +174,10 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>
-                                                                    
+                                                                        <!--<select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>-->
+                                                                        
+                                                                        <input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>
+
                                                                     </div>
 
 
@@ -1217,6 +1219,7 @@
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
+            //$('.select_purchase option').remove();  
 
             $.ajax({
 
@@ -1226,8 +1229,13 @@
 
                 success:function(data)
                 {
+                    var data = JSON.parse(data);
 
-                    $('#pv_id').val(data);
+                    console.log(data);
+
+                    $('#pv_id').val(data.uid);
+
+                    $('.select_purchase').html(data.pur_reff);
 
                 }
             });
@@ -1702,8 +1710,6 @@
                     var data = JSON.parse(data);
 
                     $('.add_payment_term').val(data.payment_term);
-
-                    $('.delivery_note_clz').val(data.delivery_date);
 
                     $('.mr_ref').val(data.mr_reff);
 

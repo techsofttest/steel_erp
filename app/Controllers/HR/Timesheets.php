@@ -67,7 +67,7 @@ class TimeSheets extends BaseController
 
         $monthName = date('F', mktime(0, 0, 0, $record->ts_month, 10)); // March
 
-        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <!--<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>--> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "ts_id"=>$i,
@@ -295,13 +295,13 @@ class TimeSheets extends BaseController
 
                         $data['table'] .='
 
-            <tr class="day_row">
+                        <tr class="day_row">
 
-                        <td>'.$date["date"].'</td>
+                        <td width="15%">'.$date["date"].'</td>
 
-                        <td>'.$date["day"].'</td>
+                        <td width="10%">'.$date["day"].'</td>
 
-                        <td>
+                        <td width="15%">
 
                         <input type="hidden" name="date[]" value="'.$date["date"].'">
 
@@ -317,17 +317,17 @@ class TimeSheets extends BaseController
                         
                         </td>
 
-                        <td><input class="form-control time_from" name="time_from[]" value="" onclick="this.showPicker();" type="time" required></td>
+                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" onclick="this.showPicker();" type="time" required></td>
 
-                        <td><input class="form-control time_to" name="time_to[]" value="" onclick="this.showPicker();" type="time" required></td>
+                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" onclick="this.showPicker();" type="time" required></td>
 
-                        <td><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required></td>
+                        <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required></td>
 
-                        <td><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]"></td>
+                        <td width="10%"><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]"></td>
 
-                        <td><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" ></td>
+                        <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" ></td>
 
-                        <td><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" ></td>
+                        <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" ></td>
 
                         </tr>
 
@@ -679,6 +679,14 @@ class TimeSheets extends BaseController
         {
            //$date = date("d-M-Y,strtotime($ts->td_date)");
 
+           $ti="-";
+           $to="-";
+           if($ts->td_daytype==1)
+           {
+            $ti = date('h:i a',strtotime($ts->td_time_in));
+            $to  = date('h:i a',strtotime($ts->td_time_out));
+           }
+
            $data['ts_days'] .='
            <tr>
            
@@ -688,9 +696,9 @@ class TimeSheets extends BaseController
 
            <td>'.$ts->dt_name.'</td>
 
-           <td>'.date('d-M-Y',strtotime($ts->td_date)).'</td>
+           <td>'.$ti.'</td>
 
-           <td>'.date('h:i',strtotime($ts->td_date)).'</td>
+           <td>'.$to.'</td>
 
            <td>'.(empty($ts->td_total_hours) ? "-" : $ts->td_total_hours).'</td>
 

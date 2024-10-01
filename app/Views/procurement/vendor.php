@@ -786,6 +786,8 @@
             
             var id = $(this).data('id');
 
+            var rowToDelete = $(this).closest('tr');
+
             if (!confirm('Are you absolutely sure you want to delete?')) return false;
 
             $.ajax({
@@ -800,15 +802,29 @@
             {   
                 var data = JSON.parse(data);
 
-                if(data.status=='true'){
+                /*if(data.status=='true'){
 
                     alertify.success('Data Delete Successfully').delay(3).dismissOthers();
                     datatable.ajax.reload(null, false);
-                }
+                }*/
                 /*else{
 
                     alertify.error("Customer In Use Cant't Delete").delay(3).dismissOthers();
                 }*/
+
+                
+                if(data.status == "false")
+                {
+                    alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
+                }
+                else
+                {
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        datatable.ajax.reload(null,false);
+                    }); 
+                }
             }
 
 

@@ -295,9 +295,7 @@ class JournalVouchers extends BaseController
 
         }
 
-
-
-
+        
         $data['invoices'] .= "<tr>
             
         <td>".$i."</td>

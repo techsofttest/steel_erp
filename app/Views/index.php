@@ -51,7 +51,7 @@
                             <div class="row">
                                 <div class="col-xl-4">
                                     <div class="card card-animate">
-                                        <div class="card-body">
+                                        <div class="card-body" style="background: #405189;">
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-primary-subtle text-primary rounded-2 fs-2">
@@ -59,12 +59,12 @@
                                                     </span>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden ms-3">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Sales</p>
+                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Sales</p>
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="<?= $sales_count; ?>">0</span></h4>
+                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $sales_count; ?>">0</span></h4>
                                                         <!-- <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>5.02 %</span> -->
                                                     </div>
-                                                    <p class="text-muted text-truncate mb-0">Sales this month</p>
+                                                    <p class="text-white text-truncate mb-0"></p>
                                                 </div>
                                             </div>
                                         </div><!-- end card body -->
@@ -73,20 +73,20 @@
 
                                 <div class="col-xl-4">
                                     <div class="card card-animate">
-                                        <div class="card-body">
+                                        <div class="card-body" style="background: cadetblue;">
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-warning-subtle text-warning rounded-2 fs-2">
-                                                        <i data-feather="award" class="text-warning"></i>
+                                                        <i data-feather="user" class="text-warning"></i>
                                                     </span>
                                                 </div>
                                                 <div class="flex-grow-1 ms-3">
-                                                    <p class="text-uppercase fw-medium text-muted mb-3">Customers</p>
+                                                    <p class="text-uppercase fw-medium text-white mb-3">Customers</p>
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="<?= $customers_count; ?>">0</span></h4>
+                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $customers_count; ?>">0</span></h4>
                                                         <!-- <span class="badge bg-success-subtle text-success fs-12"><i class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>3.58 %</span> -->
                                                     </div>
-                                                    <p class="text-muted mb-0">Added this month</p>
+                                                    <p class="text-muted mb-0"></p>
                                                 </div>
                                             </div>
                                         </div><!-- end card body -->
@@ -95,7 +95,7 @@
 
                                 <div class="col-xl-4">
                                     <div class="card card-animate">
-                                        <div class="card-body">
+                                        <div class="card-body" style="background: darkslategray;">
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-info-subtle text-info rounded-2 fs-2">
@@ -103,12 +103,12 @@
                                                     </span>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden ms-3">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Enquiries</p>
+                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Enquiries</p>
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="<?= $enquiry_count; ?>">0</span></h4>
+                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $enquiry_count; ?>">0</span></h4>
                                                         <!-- <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span> -->
                                                     </div>
-                                                    <p class="text-muted text-truncate mb-0">Enquiries this month</p>
+                                                    <p class="text-muted text-truncate mb-0"></p>
                                                 </div>
                                             </div>
                                         </div><!-- end card body -->
@@ -123,14 +123,14 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Accounts Module</p>
+                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Receipt Total Today</p>
                                                     </div>
                                                    
                                                 </div>
                                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                                     <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="559.25">0</span>k </h4>
-                                                        <a href="#" class="text-decoration-underline">View All</a>
+                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $receipts_today; ?>">0</span> AED</h4>
+                                                        <a href="<?php echo base_url(); ?>Accounts/Receipts" class="text-decoration-underline">View All</a>
                                                     </div>
                                                     <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -148,14 +148,14 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 overflow-hidden">
-                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">CRM Module</p>
+                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Sales Order Total Today</p>
                                                     </div>
                                                   
                                                 </div>
                                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                                     <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="36894">0</span></h4>
-                                                        <a href="#" class="text-decoration-underline">View all </a>
+                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $sales_orders_today; ?>">0</span> AED</h4>
+                                                        <a href="<?php echo base_url(); ?>CRM/SalesOrder" class="text-decoration-underline">View all </a>
                                                     </div>
                                                     <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -173,14 +173,14 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Procurement Module</p>
+                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Purchase Order Total Today</p>
                                                     </div>
                                                    
                                                 </div>
                                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                                     <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="183.35">0</span>M </h4>
-                                                        <a href="#" class="text-decoration-underline">View All</a>
+                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $purchase_orders_today; ?>">0</span> AED</h4>
+                                                        <a href="<?php echo base_url(); ?>Procurement/PurchaseOrder" class="text-decoration-underline">View All</a>
                                                     </div>
                                                     <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -198,14 +198,14 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Human Resource</p>
+                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Employees</p>
                                                     </div>
                                                  
                                                 </div>
                                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                                     <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="165.89">0</span>k </h4>
-                                                        <a href="#" class="text-decoration-underline">View All</a>
+                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $employee_count; ?>">0</span> </h4>
+                                                        <a href="<?php echo base_url(); ?>HR/Employees" class="text-decoration-underline">View All</a> 
                                                     </div>
                                                     <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-primary-subtle rounded fs-3">

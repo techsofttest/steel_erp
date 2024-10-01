@@ -1689,6 +1689,3 @@ class SalesOrder extends BaseController
 
 
 }
-
-
-
