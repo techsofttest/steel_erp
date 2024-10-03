@@ -226,21 +226,22 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:auto;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Sales Order Ref</th>
-                                                    <th>Customer</th>
-                                                    <th>LPO Ref</th>
-                                                    <th>Sales Executive</th>
-                                                    <th>Amount</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
+                                                    <th style="white-space: nowrap">Date</th>
+                                                    <th style="white-space: nowrap">Sales Order Ref</th>
+                                                    <th style="white-space: nowrap">Customer</th>
+                                                    <th style="white-space: nowrap">LPO Ref</th>
+                                                    <th style="white-space: nowrap">Sales Executive</th>
+                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th style="width:70%">Product</th>
+                                                    <th style="white-space: nowrap">Quantity</th>
+                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
+                                                    <th style="white-space: nowrap">Discount</th>
+                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
                                             
@@ -258,13 +259,14 @@
                                                     
                                                     <tr>
                                                         <td><?php echo $i;?></td>
-                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
-                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
-                                                        <td><?php echo $sales_order->so_lpo;?></td>
-                                                        <td><?php echo $sales_order->se_name;?></td>
-                                                        <td><?php echo $sales_order->so_amount_total;?></td>
-                                                        <td>
+                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td style="white-space: nowrap"><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
+                                                        <td style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
+                                                        <?php $total_amount = $sales_order->so_amount_total + $total_amount ;?>
+                                                        <td style="white-space: nowrap" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
+                                                        <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->product_details;?><br>
                                                             <?php } ?>
@@ -276,13 +278,14 @@
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td>
+                                                        <td style="white-space: nowrap" class="text-end">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo format_currency($sales_prod->spd_rate);?></br>
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td>
+
+                                                        <td style="white-space: nowrap">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->spd_discount;?></br>
                                                             <?php } ?>

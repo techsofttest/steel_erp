@@ -167,17 +167,6 @@ class CommonModel extends Model
     }
 
 
-    public function FetchWhereOrder($table,$cond,$order_key,$order)
-    {
-        $query = $this->db->table($table)
-        ->where($cond)
-        ->orderBy($order_key,$order)
-        ->get();
-        return $query->getResult();
-
-    }
-
-
     //Fetch Sum Of Coloumn Where
 
 
@@ -601,8 +590,6 @@ class CommonModel extends Model
         $row = $query->getRow();
 
         $id = $row->Auto_increment;
-
-        $prefix = session()->get('admin_prefix').$prefix;
 
         $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
 
@@ -1426,10 +1413,6 @@ class CommonModel extends Model
      return $result->account_balance;
 
     }
-        
-
-
-
 
     public function FetchBRAccount($id,$date)
     {

@@ -1711,6 +1711,10 @@
 
                     $('.add_payment_term').val(data.payment_term);
 
+                    $('.delivery_note_clz').val(data.delivery_date);
+
+                    $('.add_contact_person').val(data.contact_person);
+
                     $('.mr_ref').val(data.mr_reff);
 
                     
