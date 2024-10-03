@@ -8,12 +8,8 @@ use App\Controllers\BaseController;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class MaterialReqReport extends BaseController
+class MRN_PVReport extends BaseController
 {
-
-
-
-
 
     //view page
     public function index()
@@ -22,17 +18,17 @@ class MaterialReqReport extends BaseController
 
         //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
+
         $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
-
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
-
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
 
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        $data['content'] = view('procurement/material_req_report', $data);
+        $data['content'] = view('procurement/mrn_pv_report', $data);
 
         return view('procurement/report-module', $data);
     }
@@ -137,45 +133,67 @@ class MaterialReqReport extends BaseController
             $to_date = "";
         }
 
-        if (!empty($_GET['sales_order'])) {
-            $data1 = $_GET['sales_order'];
+        if (!empty($_GET['vendor'])) {
+            $data1 = $_GET['vendor'];
         } else {
             $data1 = "";
         }
 
 
 
-        if (!empty($_GET['product'])) {
-            $data2 = $_GET['product'];
+        if (!empty($_GET['sales_order'])) {
+            $data2 = $_GET['sales_order'];
         } else {
             $data2 = "";
         }
 
+        if (!empty($_GET['lpo_ref'])) {
+            $data3 = $_GET['lpo_ref'];
+        } else {
+            $data3 = "";
+        }
+
+        if (!empty($_GET['product'])) {
+            $data5 = $_GET['product'];
+        } else {
+            $data5 = "";
+        }
+
+
+
+        if (!empty($_GET['pending'])) {
+            $data6 = $_GET['pending'];
+        } else {
+            $data6 = "";
+        }
+
+
+
+        if (!empty($_GET['linked'])) {
+            $data7 = $_GET['linked'];
+        } else {
+            $data7 = "";
+        }
 
 
         $joins = array(
 
             array(
-                'table' => 'pro_material_requisition',
-                'pk'    => 'mr_id',
-                'fk'    => 'mrp_mr_id',
-            ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'mrp_sales_order',
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'rnp_material_received_note',
             ),
 
             array(
                 'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'pk'    => 'product_details',
+                'fk'    => 'rnp_product_desc',
             ),
 
             array(
                 'table' => 'pro_purchase_order',
-                'pk'    => 'po_mrn_reff',
-                'fk'    => 'mrp_mr_id',
+                'pk'    => 'po_id',
+                'fk'    => 'rnp_purchase_id',
             ),
 
         );
@@ -184,24 +202,76 @@ class MaterialReqReport extends BaseController
         $joins1 = array(
             array(
                 'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'pk'    => 'product_details',
+                'fk'    => 'rnp_product_desc',
             ),
             array(
                 'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'mrp_sales_order',
+                'pk'    => 'so_reffer_no',
+                'fk'    => 'rnp_sales_order',
             ),
+
+            array(
+                'table' => 'pro_purchase_order_product',
+                'pk'    => 'pop_id',
+                'fk'    => 'rnp_purchase_prod_id',
+            ),
+
 
         );
 
-
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
 
-        $data['material_requesition'] = $this->pro_model->MaterialReqCheckData($from_date, 'mr_date', $to_date, '', $data1, 'mrp_sales_order', $data2, 'mrp_product_desc', '', '', '', '', 'pro_material_requisition_prod', $joins, 'mrp_mr_id', $joins1);
+        // $data['purchase_order'] = $this->pro_model->CheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_id',$joins1);  
 
-        //      echo '<pre>';
-        // print_r($data['material_requesition']); exit();
+        $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $data5, 'rnp_prod_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
+
+        $new_order = [];
+
+        foreach ($data['purchase_order'] as $orders) {
+
+            // Fetch the MRN record
+            $mrns = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_mrn' => $orders->mrn_id]);
+
+
+            $pvps = $this->common_model->FetchWhere('pro_purchase_voucher_prod', ['pvp_reffer_id' => $mrns->pv_id]);
+
+            $mrns->voucher_prod = $pvps;
+
+            // Merge the $orders and $mrns arrays, then cast the result back to an object
+            $new_order[] = (object) array_merge((array)$orders, (array)$mrns);
+        }
+
+        $data['purchase_order'] = $new_order;
+
+
+        if ($data6 != "" || $data7 != "") {
+
+            if ($data6 != "") {
+                // Filter the array to remove instances where 'mrn_id' is empty
+                $filterdata = array_filter($data['purchase_order'], function ($item) {
+                    return empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "") {
+                // Filter the array to remove instances where 'mrn_id' is empty
+                $filterdata = array_filter($data['purchase_order'], function ($item) {
+                    return !empty($item->pv_id);
+                });
+            }
+
+            if ($data7 != "" && $data6 != "") {
+                // Filter the array to remove instances where 'mrn_id' is empty
+                $filterdata = $data['purchase_order'];
+            }
+
+            $data['purchase_order'] = $filterdata;
+        }
+
+        // echo '<pre>';
+        // print_r($data['purchase_order']); exit;
+
 
         if (!empty($from_date)) {
             $data['from_dates'] = date('d-M-Y', strtotime($from_date));
@@ -220,23 +290,68 @@ class MaterialReqReport extends BaseController
 
         $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
 
+        $cond = array('so_deliver_flag' => 0);
+
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
+
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
 
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-
         if (!empty($_POST['pdf'])) {
-            $this->Pdf($data['material_requesition'], $data['from_dates'], $data['to_dates']);
+            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
         }
 
         if (!empty($_POST['excel'])) {
-            $this->Excel($data['material_requesition']);
+            $this->Excel($data['purchase_order']);
         }
 
-        $data['content'] = view('procurement/material_req_report', $data);
+        $data['content'] = view('procurement/mrn_pv_report', $data);
 
         return view('crm/report-module-search', $data);
     }
+
+
+    // Fetch Lpo Ref based on Vendor ID
+    public function fetch_lpo_ref()
+    {
+        $vendor_id = $this->request->getPost('vendor_id');
+
+        // Get Lpo Ref data from the database based on vendor_id
+        $p_returns = $this->common_model->FetchWhere('pro_purchase_order', ['po_vendor_name' => $vendor_id]);
+
+        echo json_encode($p_returns); // Return data as JSON response
+    }
+
+    // Fetch Sales Orders based on Lpo Ref
+    public function fetch_sales_order()
+    {
+        $lpo_ref = $this->request->getPost('lpo_ref');
+
+
+        $pur_order = $this->common_model->SingleRow('pro_purchase_order', ['po_id' => $lpo_ref]);
+
+        // echo $lpo_ref;
+        // print_r($pur_order);
+        // exit;
+        $joins1 = array(
+
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+
+
+        );
+
+        // Get Sales Order data from the database based on lpo_ref
+        $sales_orders = $this->common_model->FetchWhereJoin('pro_purchase_order_product', ['pop_purchase_order' => $pur_order->po_id], $joins1);
+
+        echo json_encode($sales_orders); // Return data as JSON response
+    }
+
+
 
     public function Pdf($purchase_order, $from_date, $to_date)
     {
@@ -255,25 +370,68 @@ class MaterialReqReport extends BaseController
 
             );
 
+            $total_amount =  $pvp_amt = $rnp_amt = $diff_amt = 0;
 
             foreach ($purchase_order as $order_data) {
                 $q = 1;
                 $border = "border-top: 2px solid";
-                $product_details = $order_data->product_orders;
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
+                // ===========================
+                $product_orders = $order_data->product_orders;
+                $voucher_prod = $order_data->voucher_prod;
 
-                // Print vendor for debugging
-                // print_r($vendor);
+                $product_details = [];
+                $max_count = max(count($product_orders), count($voucher_prod));
+
+                // Loop through the arrays
+                for ($i = 0; $i < $max_count; $i++) {
+                    $merged_obj = new \stdClass();
+
+                    if (isset($product_orders[$i])) {
+                        // Add properties from product_orders
+                        foreach ($product_orders[$i] as $key => $value) {
+                            $merged_obj->$key = $value;
+                        }
+                    }
+
+                    if (isset($voucher_prod[$i])) {
+                        // Add/overwrite properties from voucher_prod
+                        foreach ($voucher_prod[$i] as $key => $value) {
+                            $merged_obj->$key = $value;
+                        }
+                    }
+
+                    $product_details[] = $merged_obj;
+                }
+
+                // Result is in $merged_product_details
+            // =========================
+
+                // echo '<pre>';
+                // print_r($order_data);
                 
-                $new_date = date('d-m-Y', strtotime($order_data->mr_date));
-                
+                $mrn_amount = 0;
+
+                foreach ($product_details as $prod_del) {
+                    $mrn_amount += $prod_del->rnp_amount ?? 0;
+                }
+ 
+
+                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->mrn_vendor_name]);
+
+                // echo '<pre>';
+                // print_r($product_details);
+                // exit;
+
+                $new_date = date('d-m-Y', strtotime($order_data->mrn_date));
+
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mr_reffer_no}</td>";
-                
-                // Fix: null coalescing operator should be outside the curly braces
-                $pdf_data .= "<td style='border-top: 2px solid'>" . ($vendor->ven_name ?? '') . "</td>";
-                
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
 
 
@@ -291,10 +449,78 @@ class MaterialReqReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
                     }
 
 
-                    
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->so_reffer_no  ?? '') . "</td>";
+
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                        $pdf_data .= "'> $order_data->mrn_delivery_note </td>";
+                    } else {
+                        $pdf_data .= "'> </td>";
+                    }
+
+
+
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                        $pdf_data .= "'>{$mrn_amount}</td>";
+                        $total_amount += $mrn_amount;
+                    }else{
+                        $pdf_data .= "'></td>";
+                    }
+                   
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->product_details ?? '') . "</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? '') . "</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->pop_rate ?? '') . "</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->rnp_amount ?? 0) . "</td>";
+                    $rnp_amt += $prod_del->rnp_amount ?? 0;
+
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$order_data->pv_vendor_inv}</td>";
 
 
 
@@ -303,7 +529,7 @@ class MaterialReqReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
+                    $pdf_data .= "'>" . ($prod_del->pvp_qty ?? '') . "</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -311,7 +537,7 @@ class MaterialReqReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+                    $pdf_data .= "'>" . ($prod_del->pvp_rate ?? '') . "</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -319,7 +545,16 @@ class MaterialReqReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->mrp_qty}</td>";
+                    $pdf_data .= "'>" . ($prod_del->pvp_amount ?? 0) . "</td>";
+                    $pvp_amt += $prod_del->pvp_amount ?? 0 ;
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>" . ($prod_del->rnp_amount - $prod_del->pvp_amount ) . "</td>";
+                    $diff_amt += $prod_del->rnp_amount - $prod_del->pvp_amount ;
 
 
 
@@ -333,8 +568,6 @@ class MaterialReqReport extends BaseController
                 if ($q == 1) {
                     $pdf_data .= "</tr>";
                 }
-
-                $pdf_data .= "</tr>";
             }
 
             if (empty($from_date) && empty($to_date)) {
@@ -363,111 +596,135 @@ class MaterialReqReport extends BaseController
 
 
 
-            $mpdf->SetTitle('Material Requesition Report'); // Set the title
+            $mpdf->SetTitle('Material Received Note to Purchase Voucher Report'); // Set the title
 
             $html = '
-        
-            <style>
-            th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 12px;
-            }
-            p{
-                
-                font-size: 12px;
-
-            }
-            .dec_width
-            {
-                width:30%
-            }
-            .disc_color
-            {
-                color:red;
-            }
             
-            </style>
-        
-            <table>
-            
-            <tr>
-            
-            
-        
-            <td>
-        
-            <h3>Al Fuzail Engineering Services WLL</h3>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-            
-            
-            </td>
-            
-            </tr>
-        
-            </table>
-        
-        
-        
-            <table width="100%" style="margin-top:10px;">
-            
-        
-            <tr width="100%">
-            <td>Period : ' . $dates . '</td>
-                <td align="right"><h2>Material Requesition Report</h2></td>
-            </tr>
-        
-            </table>
-            
-          
-
-           
-        
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
-            
-        
-            <tr>
-            
-            <th align="left">Date</th>
-        
-            <th align="left">MRN Ref.</th>
-        
-            <th align="left">Vendor</th>
-        
-            <th align="left">Sales Order Ref</th>
-
-            <th align="left">Product</th>
-
-            <th align="left">Quantity</th>
-       
-            
-            </tr>
-
-               
-            ' . $pdf_data . '
-
-            <tr>
-                <td style="border-top: 2px solid;">Total</td>
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
     
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
                 
-            </tr>    
-           
+                </style>
             
-            </table>
+                <table>
+                
+                <tr>
+                
+                
+            
+                <td>
+            
+                <h3>Al Fuzail Engineering Services WLL</h3>
+                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                
+                
+                </td>
+                
+                </tr>
+            
+                </table>
+            
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+            
+                <tr width="100%">
+                <td>Period : ' . $dates . '</td>
+                <td align="right"><h2>Material Recieved Note to Purchase Voucher Report</h2></td>
+            
+                </tr>
+            
+                </table>
+                
+              
+    
+               
+            
+                <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+                <th align="left">Date</th>
+            
+                <th align="left">MRN Ref.</th>
+            
+                <th align="left">Vendor</th>
+            
+                <th align="left">Purchase Order Ref</th>
 
+                <th align="left">Sales Order Ref</th>
+            
+                <th align="left">Vendor DN Ref</th>
+    
+                <th align="left">Amount</th>
 
-        
-            ';
+                <th align="left">Product</th>
+    
+                <th align="left">Quantity</th>
+    
+                <th align="left">Rate</th>
+    
+                <th align="left">Amount</th>
+    
+                <th align="left">Vendor Invoice Ref</th>
+    
+                <th align="left">Quantity</th>
+            
+                <th align="left">Rate</th>
+                
+                <th align="left">Amount</th>
+    
+                <th align="left">Difference</th>
+    
+                </tr>
+    
+                   
+                ' . $pdf_data . '
+    
+                <tr>
+                    <td style="border-top: 2px solid;">Total</td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>   
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>               
+                    <td style="border-top: 2px solid;">' .  $total_amount . '</td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;">' . $pvp_amt . '</td>
+                    <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                    
+                </tr>    
+               
+                
+                </table>
+                ';
 
             $footer = '';
 
@@ -479,6 +736,7 @@ class MaterialReqReport extends BaseController
             $mpdf->Output($title . '.pdf', 'I');
         }
     }
+
 
     public function Excel($quotation_data)
     {

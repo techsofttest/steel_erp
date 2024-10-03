@@ -16,10 +16,10 @@
                         <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url(); ?>Procurement/PurchaseOrderReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET" action="<?php echo base_url(); ?>Procurement/MaterialRecReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Order Report</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Material Received Note Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -96,10 +96,11 @@
                                                                                 </td>
                                                                             </tr>
 
+
                                                                             <tr>
                                                                                 <td>Sales Order</td>
                                                                                 <td>
-                                                                                    <select class="form-select customer_clz" name="sales_order">
+                                                                                    <select class="form-select value='' customer_clz" name="sales_order">
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                         <?php foreach ($sales_orders as $sales_order) { ?>
                                                                                             <option value="<?php echo $sales_order->so_id ?>"><?php echo $sales_order->so_reffer_no; ?></option>
@@ -184,7 +185,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Purchase Order Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Material Received Note Report</h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -214,9 +215,10 @@
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Date</th>
-                                                    <th>Purchase Order Ref</th>
+                                                    <th>MRN Ref</th>
                                                     <th>Vendor</th>
-                                                    <th>Sales Order Ref</th>
+                                                    <th>Purchase Order</th>
+                                                    <th>Vendor DN Ref</th>
                                                     <th>Amount</th>
                                                     <th>Product</th>
                                                     <th>Quantity</th>
@@ -227,44 +229,50 @@
 
                                             <tbody class="tbody_data">
                                                 <?php
-                                                if (!empty($purchase_order)) {
+                                                if (!empty($material_requesition)) {
                                                     $i = 1;
-                                                    $total = $po_total = 0;
-                                                    foreach ($purchase_order as $pur_order) { ?>
+                                                    $total = $mr_total = 0;
+                                                    foreach ($material_requesition as $material_req) { ?>
+
                                                         <tr>
 
                                                             <td><?php echo $i; ?></td>
-                                                            <td><?php echo $pur_order->po_date; ?></td>
-                                                            <td><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td><?php echo $material_req->mrn_date; ?></td>
+                                                            <td><?php echo $material_req->mrn_reffer; ?></td>
+
                                                             <td><?php foreach ($vendors as $vendor) {
-                                                                    echo $pur_order->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                    echo $material_req->mrn_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
                                                             </td>
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->so_reffer_no;  ?><br>
-                                                                <?php } ?></td>
 
-                                                            <td><?php echo $pur_order->po_amount;
-                                                                $total += $pur_order->po_amount; ?></td>
+                                                            <td><?php echo $material_req->po_reffer_no; ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td><?php echo $material_req->mrn_delivery_note; ?></td>
+
+                                                            <td><?php $tot_amt = 0;
+                                                                foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php $tot_amt += $orders->rnp_amount; ?>
+                                                                <?php }
+                                                                echo $tot_amt;
+                                                                $total += $tot_amt; ?> </td>
+
+                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_qty; ?><br>
+                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_rate; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_amount;
-                                                                    $po_total += $orders->pop_amount; ?><br>
+                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo $orders->rnp_amount;
+                                                                    $mr_total += $orders->rnp_amount ?><br>
                                                                 <?php } ?></td>
 
                                                         </tr>
-
                                                     <?php $i++;
                                                     } ?>
 
@@ -274,11 +282,12 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total; ?></th>
+                                                        <th></th>
+                                                        <th><?php echo $total;?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $po_total; ?></th>
+                                                        <th><?php echo $mr_total;?></th>
                                                     </tr>
 
                                                 <?php
@@ -433,13 +442,13 @@
         /*#####*/
 
 
-
-
-
         $(".search-btn").on('click', function() {
 
-            $('#MaterialRequesitionReport').modal('show');
-        });
+$('#MaterialRequesitionReport').modal('show');
+});F
+
+
+
 
 
     });

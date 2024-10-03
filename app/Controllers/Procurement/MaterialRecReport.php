@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-class MaterialReqReport extends BaseController
+class MaterialRecReport extends BaseController
 {
     
     
@@ -17,17 +17,15 @@ class MaterialReqReport extends BaseController
     //view page
     public function index()
     {   
-        //$data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
-
-        //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        
         $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['content'] = view('procurement/material_req_report',$data);
+        $data['content'] = view('procurement/material_rec_report',$data);
 
         return view('procurement/report-module',$data);
 
@@ -169,22 +167,29 @@ class MaterialReqReport extends BaseController
         $joins = array(
             
             array(
-                'table' => 'pro_material_requisition',
-                'pk'    => 'mr_id',
-                'fk'    => 'mrp_mr_id',
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'rnp_material_received_note',
             ),
             array(
                 'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'mrp_sales_order',
+                'pk'    => 'so_reffer_no',
+                'fk'    => 'rnp_sales_order',
             ),
 
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'fk'    => 'rnp_product_desc',
             ),
-           
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'rnp_purchase_id',
+            ),
+
+         
+            
            
 
         );
@@ -193,19 +198,23 @@ class MaterialReqReport extends BaseController
         $joins1 = array(
             array(
                 'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'mrp_product_desc',
+                'pk'    => 'product_details',
+                'fk'    => 'rnp_product_desc',
             ),
-
+            array(
+                'table' => 'pro_purchase_order_product',
+                'pk'    => 'pop_id',
+                'fk'    => 'rnp_purchase_prod_id',
+            ),
            
         );
 
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['material_requesition'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1);  
+        $data['material_requesition'] = $this->pro_model->MaterialRecCheckData($from_date,'mrn_date',$to_date,'',$data1,'mrn_sales_order',$data2,'mrn_product_desc','','','','','steel_pro_material_received_note_prod',$joins,'rnp_material_received_note',$joins1);  
         
-        //print_r($data['quotation_data']); exit();
+        // echo '<pre>';print_r($data['material_requesition']); exit();
 
         if(!empty($from_date))
         {
@@ -228,6 +237,7 @@ class MaterialReqReport extends BaseController
 
         $cond = array('so_deliver_flag' => 0);
 
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
@@ -235,15 +245,15 @@ class MaterialReqReport extends BaseController
 
         if(!empty($_POST['pdf']))
         {   
-            $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
+            $this->Pdf($data['material_requesition'],$data['from_dates'],$data['to_dates']);
         }
         
         if(!empty($_POST['excel']))
         {
-            $this->Excel($data['quotation_data']);
+            $this->Excel($data['material_requesition']);
         }
 
-        $data['content'] = view('procurement/material_req_report',$data);
+        $data['content'] = view('procurement/material_rec_report',$data);
 
         return view('crm/report-module-search',$data);
 
@@ -252,11 +262,11 @@ class MaterialReqReport extends BaseController
     }
 
 
-    public function Pdf($quotation_data,$from_date,$to_date)
+    public function Pdf($purchase_order,$from_date,$to_date)
     {   
-        
+        // echo '<pre>'; print_r($purchase_order);exit;
 
-        if(!empty($quotation_data))
+        if(!empty($purchase_order))
         {   
             $pdf_data = "";
 
@@ -265,33 +275,42 @@ class MaterialReqReport extends BaseController
                 array(
                     'table' => 'crm_products',
                     'pk'    => 'product_id',
-                    'fk'    => 'qpd_product_description',
+                    'fk'    => 'pop_prod_desc',
                 ),
                
-                
             );
 
-            
-            $total_amount = 0;
-            foreach($quotation_data as $quot_data)
+            $total_amount =  $mrn_tot = 0;
+            foreach($purchase_order as $order_data)
             {   
                 $q=1;
                 $border="border-top: 2px solid";
-                $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
-                
-                $total_amount = $total_amount + $quot_data->qd_sales_amount;
+                $product_details = $order_data->product_orders;
 
-                $new_date = date('d-m-Y',strtotime($quot_data->qd_date));
+                $mrn_amount = 0;
+
+                foreach($product_details as $prod_del)
+                {
+                    $mrn_amount += $prod_del->rnp_amount;
+                }
+                $mrn_tot += $mrn_amount;
+                $total_amount = $total_amount + $mrn_amount;
+
+                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->mrn_vendor_name]);
+
+                $new_date = date('d-m-Y',strtotime($order_data->po_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_delivery_note}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$mrn_amount}</td>";
                 
                 
                 if($q!=1){
@@ -313,6 +332,8 @@ class MaterialReqReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
                     }
 
                     
@@ -329,23 +350,22 @@ class MaterialReqReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
+                    $pdf_data .= "'>{$prod_del->rnp_current_delivery}</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
+                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
+                    $pdf_data .= "'>{$prod_del->rnp_amount}</td>";                  
 
-                    
                     if($q!=1)
                     {
                         $pdf_data .="</tr>";
@@ -396,7 +416,7 @@ class MaterialReqReport extends BaseController
 
          
 
-            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
+            $mpdf->SetTitle('Material Received Note Report'); // Set the title
 
             $html ='
         
@@ -450,11 +470,13 @@ class MaterialReqReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Quotation Report</h3></td>
+            <td align="right"><h2>Material Recieved Note Report</h2></td>
         
             </tr>
         
             </table>
+            
+          
 
            
         
@@ -465,11 +487,13 @@ class MaterialReqReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Quotation Ref.</th>
+            <th align="left">MRN Ref.</th>
         
-            <th align="left">Customer</th>
+            <th align="left">Vendor</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left">Purchase Order Ref</th>
+
+            <th align="left">Vendor DN Ref</th>
         
             <th align="left">Amount</th>
 
@@ -484,7 +508,7 @@ class MaterialReqReport extends BaseController
             
             </tr>
 
-             
+               
             '.$pdf_data.'
 
             <tr>
@@ -492,7 +516,8 @@ class MaterialReqReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;">'.$mrn_tot.'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
@@ -507,7 +532,7 @@ class MaterialReqReport extends BaseController
         
             ';
         
-            //$footer = '';
+            $footer = '';
         
             
             $mpdf->WriteHTML($html);
@@ -520,6 +545,7 @@ class MaterialReqReport extends BaseController
 
        
     }
+
 
    
     public function Excel($quotation_data)
@@ -625,15 +651,15 @@ class MaterialReqReport extends BaseController
         );
 
         // Populate quotation data
-        foreach ($quotation_data as $quot_data) {
+        foreach ($quotation_data as $order_data) {
 
-            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$order_data->qd_id),$joins1);
             
-            $sheet->setCellValue($column . $excel_row, $quot_data->qd_date);
-            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_reffer_no);
-            $sheet->setCellValue(++$column . $excel_row, $quot_data->cc_customer_name);
-            $sheet->setCellValue(++$column . $excel_row, $quot_data->se_name);
-            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_sales_amount);
+            $sheet->setCellValue($column . $excel_row, $order_data->qd_date);
+            $sheet->setCellValue(++$column . $excel_row, $order_data->qd_reffer_no);
+            $sheet->setCellValue(++$column . $excel_row, $order_data->cc_customer_name);
+            $sheet->setCellValue(++$column . $excel_row, $order_data->se_name);
+            $sheet->setCellValue(++$column . $excel_row, $order_data->qd_sales_amount);
 
             //$column++;
             echo $column . $excel_row;

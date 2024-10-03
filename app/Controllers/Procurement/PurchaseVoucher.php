@@ -509,9 +509,8 @@ class PurchaseVoucher extends BaseController
     {
     
         $data['uid'] = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
-        
-          
-        $join =  array(
+
+       $join =  array(
             
             array(
                 'table' => 'pro_purchase_order',

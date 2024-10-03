@@ -1,3 +1,22 @@
+<style>
+
+.divcontainer {
+  overflow-x: scroll;
+  overflow-y: auto;
+  transform: rotateX(180deg);
+}
+
+.divcontainer table {
+  transform: rotateX(180deg);
+}
+
+.table-responsive {
+  width: 100%;
+  display: block overflow-x: scroll;
+}
+
+</style>
+
 
 <div class="tab-content text-muted">
 								
@@ -14,12 +33,12 @@
                         
                         
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="backLog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="SalesOrderReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form  class="Dashboard-form class" action="<?php echo base_url();?>Crm/BackLog/GetData" target="_blank" method="GET" id="add_form">
+                                <form method="GET" class="Dashboard-form class" action="<?php echo base_url();?>Crm/SalesOrderReport/GetData" id="add_form" target="_blank">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">BackLog</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Sales Order Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -31,58 +50,71 @@
                                                         <div class="card-body">
                                                             <div class="live-preview">
 
+                                                              <!--table section start-->
+                                                                
                                                                 <?php
-                                                              
+
                                                                     if(!empty($_GET['form_date']))
                                                                     {
-                                                                        $from_date =  $_GET['form_date'];
+                                                                        $from_date = $_GET['form_date'];
                                                                     }
                                                                     else
                                                                     {
-                                                                        $from_date ="";
+                                                                        $from_date = "";
                                                                     }
-
                                                                     if(!empty($_GET['to_date']))
                                                                     {
-                                                                        $to_date =  $_GET['to_date'];
+                                                                        $to_date = $_GET['to_date'];
                                                                     }
                                                                     else
                                                                     {
-                                                                        $to_date =  "";
+                                                                        $to_date ="";
                                                                     }
-
                                                                     if(!empty($_GET['customer']))
                                                                     {
-                                                                        $customer =  $_GET['customer'];
+                                                                        $customer = $_GET['customer'];
                                                                     }
                                                                     else
                                                                     {
-                                                                        $customer =  "";
+                                                                        $customer = "";
                                                                     }
-
+                                                                    if(!empty($_GET['sales_order']))
+                                                                    {
+                                                                        $sales_order = $_GET['sales_order'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $sales_order ="";
+                                                                    }
                                                                     if(!empty($_GET['sales_executive']))
                                                                     {
-                                                                        $sales_executives =  $_GET['sales_executive'];
+                                                                        $sales_executive =  $_GET['sales_executive'];
                                                                     }
                                                                     else
                                                                     {
-                                                                        $sales_executives ="";
+                                                                        $sales_executive = "";
                                                                     }
+
+                                                                    if(!empty($_GET['product']))
+                                                                    {
+                                                                            $product =  $_GET['product'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $product = "";
+                                                                    }
+                                                               
                                                                 ?>
-
-                                                              <!--table section start-->
-
 
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
-                                                                                
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date;?>"  class="form-control"></td>
+                                                                                <td><input type="date" name="form_date"  value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" value="<?php echo $to_date;?>" class="form-control"></td>
+                                                                                <td><input type="date" name="to_date" value='<?php echo $to_date; ?>' id="to_date_id" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -94,7 +126,16 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" value="<?php echo $customer;?>" name="customer" ><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer value='<?php echo $customer;?>' customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Sales Order Ref</td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" value='<?php echo $sales_order;?>' name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -103,24 +144,22 @@
 
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
-                                                                                <td>
-                                                                                    <select class="form-select sales_order_ref sales_order" value="<?php echo $sales_executives; ?>" name="sales_executive">
-                                                                                        <option value="" selected disabled>Select Sales Executive</option>
-                                                                                        <?php 
-                                                                                           foreach($sales_executive as $sales_exec)
-                                                                                           { ?>
-                                                                                             <option value="<?php echo $sales_exec->se_id; ?>"><?php echo  $sales_exec->se_name;?></option>
-                                                                                         <?php  }
-                                                                                        ?>
-                                                                                    </select>
-                                                                                </td>
+                                                                                <td><select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
-
                                                                             </tr>
 
-                                                                          
+
+                                                                            <tr>
+                                                                                <td>Product</td>
+                                                                                <td><select class="form-select product_clz" value='<?php echo $product; ?>' name="product"><option value="" selected disabled>Select Product</option></select></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                
+                                                                            </tr>
+
 
                                                                         </tbody>
                                                                     
@@ -131,9 +170,6 @@
                                                                 <!--table section end-->
 
                                                                
-                                                                
-                                                                
-                                                                
 
                     
                                                             </div>
@@ -145,10 +181,10 @@
                                             </div>
                                         </div>
 
-
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
+
                                         
                                     </div>
                                 </form>
@@ -168,7 +204,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View BackLog <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                         <form method="POST"  target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit"  class="pdf_button report_button" >PDF</button>
@@ -177,7 +213,18 @@
                                             <input type="hidden" name="excel" value="1">
                                             <button class="excel_button report_button" type="submit">Excel</button>
                                         </form>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1">
+                                            <button class="email_button report_button" type="submit">Email</button>
+                                        </form>
+                                        
+                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -187,102 +234,77 @@
                                                     <th>Date</th>
                                                     <th>Sales Order Ref</th>
                                                     <th>Customer</th>
-                                                    <th>Lpo Ref</th>
+                                                    <th>LPO Ref</th>
                                                     <th>Sales Executive</th>
-                                                    <th class="text-end">Amount</th>   
-                                                    <th class="text-end">Delivered</th>
-                                                    <th class="text-end">Invoiced</th>
-                                                    <th class="text-end">Balance</th>
-
+                                                    <th>Amount</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
                                             <tbody class="tbody_data">
-
                                             <?php
-                                                $total_amount = 0;
+                                                $total_amount  = 0;
+                                                $total_amount1  = 0;
                                                 if(!empty($sales_orders))
                                                 {
                                                     $i=1;
+                                                    
                                                     foreach($sales_orders as $sales_order){
                                                          
                                                     ?> 
-                                                   
+                                                    
                                                     <tr>
-
                                                         <td><?php echo $i;?></td>
                                                         <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td><?php echo $sales_order->so_reffer_no;?></td>
                                                         <td><?php echo $sales_order->cc_customer_name;?></td>
                                                         <td><?php echo $sales_order->so_lpo;?></td>
                                                         <td><?php echo $sales_order->se_name;?></td>
-                                                        <?php
-                                                           $total_amount = $sales_order->so_amount_total + $total_amount;
-                                                        ?>
-                                                        <td class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
-                                                        
-                                                        <?php
-                                                        
-                                                            $delivery_amount = 0;
-
-                                                            foreach($sales_order->sales_delivery as $del)
-                                                            {
-                                                                $delivery_amount =  $del->dn_total_amount + $delivery_amount;
-
-                                                                
-                                                            }
-
-                                                            if(!empty($sales_order->sales_delivery)){
-                                                        
-                                                        ?>
-                                                         
-                                                        <td class="text-end"><?php echo format_currency($delivery_amount);?></td>
-                                                        
-                                                        <?php } else{?> 
-                                                            <td class="text-end">00.0</td>    
-                                                        <?php } 
-
-                                                            $invoiced_amount = 0;
-
-                                                            foreach($sales_order->cash_invoiced as $cash_inv)
-                                                            {
-                                                                $invoiced_amount =  $cash_inv->ci_total_amount + $invoiced_amount;
-                                                            }
-                                                            
-                                                            if(!empty($sales_order->cash_invoiced)){?>
-
-                                                                <td class="text-end"><?php echo format_currency($invoiced_amount); ?></td>
-                                                            
-                                                            <?php }  else{?> 
-
-                                                                <td class="text-end">00.0</td>  
-
-                                                            <?php } 
-                                                            
-                                                                
-                                                            ?>
-                                                            
-                                                           <?php if(!empty($sales_order->sales_delivery)){
-                                                                $balance =  $sales_order->so_amount_total - $delivery_amount;
-                                                            ?> 
-                                                            
-                                                                <td class="text-end"><?php echo format_currency($balance);?></td>
-
-                                                            <?php } else{?> 
-                                                                 <td class="text-end">00.0</td>    
+                                                        <td><?php echo $sales_order->so_amount_total;?></td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->product_details;?><br>
                                                             <?php } ?>
-                                                        
+                                                           
+                                                        </td>
+                                                        <td style="white-space: nowrap">
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->spd_quantity;?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo format_currency($sales_prod->spd_rate);?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
+                                                                <?php echo $sales_prod->spd_discount;?></br>
+                                                            <?php } ?>
+                                                        </td>
 
-                                    
+                                                        <td style="white-space: nowrap" class="text-end">
+                                                            
+                                                            <?php foreach($sales_order->sales_product as $sales_prod){
 
+                                                                $total_amount1 = $sales_prod->spd_amount + $total_amount1;
+
+                                                            ?> 
+                                                            <?php echo format_currency($sales_prod->spd_amount);?></br>
+                                                            <?php } ?>
+                                                           
+                                                        </td>
                                                         
+                                                       
                                                     </tr>
-                                                        
-                                                    <?php  $i++; }?> 
-
-                                                    
-                                                <?php   } ?>
                                                 
+                                                <?php $i++; }  } ?>
+
                                                 <tr>
                                                     <td>Total</td>
                                                     <td></td>
@@ -290,13 +312,13 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount);?></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                    
-                                                    
-                                                 
+                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
                                                 </tr>
 
                                             </tbody>
@@ -344,12 +366,13 @@
 
         /*modal open start*/
         <?php if(empty($_GET)): ?>
-            
-        $(window).on('load', function() {
-            $('#backLog').modal('show');
-        });
         
+            $(window).on('load', function() {
+            $('#SalesOrderReport').modal('show');
+
+        });
         <?php endif; ?>
+        
         /*modal open end*/
 
 
@@ -357,10 +380,10 @@
          $(".droup_customer").select2({
             placeholder: "Select Customer",
             theme : "default form-control- customer_width",
-            dropdownParent: $('#backLog'),
+            dropdownParent: $('#SalesOrderReport'),
 
             ajax: {
-                url: "<?= base_url(); ?>Crm/BackLog/FetchTypes",
+                url: "<?= base_url(); ?>Crm/SalesOrderReport/FetchTypes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -386,11 +409,48 @@
         })
         /**/
 
-        /*form submit start*/
+        /*fetch  sales executive by  customer*/   
 
-        /*$(".submit_btn").on('click', function(){ 
+        $("body").on('change', '.customer_clz', function(){ 
 
-            $('#backLog').modal("hide");
+
+            var id = $(this).val();
+
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrderReport/FetchData",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    //console.log(data.prod_details);
+                    $('.executive_clz').html(data.quot_det);
+                    
+                    $('.product_clz').html(data.quot_prod);
+
+                    $('.sales_order_ref').html(data.sales_reff);
+
+                }
+
+
+            });
+        });
+        
+        /*####*/
+
+
+
+       /*form submit start*/
+
+       $(".submit_btn").on('click', function(){ 
+
+            /*$('#SalesOrderReport').modal("hide");
 
             $('#add_form')[0].reset();
 
@@ -398,11 +458,14 @@
 
             $('.sales_order option').remove();
 
-        
-        });*/
+            $('.executive_clz option').remove();
+
+            $('.product_clz option').remove();*/
 
 
-/*#####*/
+        });
+
+        /*#####*/
 
        
 

@@ -204,8 +204,6 @@ class SalesQuotAnalysisReport extends BaseController
                 'pk'    => 'product_id',
                 'fk'    => 'qpd_product_description',
             ),
-
-           
         );
 
         $data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  

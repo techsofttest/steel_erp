@@ -7,13 +7,9 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-class PurchaseOrderReport extends BaseController
+class PurchaseVoucherReport extends BaseController
 {
     
-    
-
-
-
     //view page
     public function index()
     {   
@@ -27,9 +23,11 @@ class PurchaseOrderReport extends BaseController
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['content'] = view('procurement/purchase_order_report',$data);
+        $data['content'] = view('procurement/purchase_voucher_report',$data);
 
         return view('procurement/report-module',$data);
 
@@ -166,66 +164,98 @@ class PurchaseOrderReport extends BaseController
             $data2 = "";
         }
         
-
-        if(!empty($_GET['product']))
+        if(!empty($_GET['lpo_ref']))
         {
-            $data3 = $_GET['product'];
+            $data3 = $_GET['lpo_ref'];
         }
         else
         {
             $data3 = "";
         }
+
+        if(!empty($_GET['gl_account']))
+        {
+            $data4 = $_GET['gl_account'];
+        }
+        else
+        {
+            $data4 = "";
+        }
+
+
+
+        if(!empty($_GET['product']))
+        {
+            $data5 = $_GET['product'];
+        }
+        else
+        {
+            $data5 = "";
+        }
         
-       
+ 
        
 
         $joins = array(
             
             array(
-                'table' => 'pro_purchase_order',
-                'pk'    => 'po_id',
-                'fk'    => 'pop_purchase_order',
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'pvp_reffer_id',
             ),
             array(
                 'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
+                'pk'    => 'so_reffer_no',
+                'fk'    => 'pvp_sales_order',
             ),
-
             array(
                 'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
+                'pk'    => 'product_details',
+                'fk'    => 'pvp_prod_dec',
             ),
-           
-           
-
+            // array(
+            //     'table' => 'pro_material_received_note',
+            //     'pk'    => 'mrn_id',
+            //     'fk'    => 'pv_mrn',
+            // ),
+        
         );
 
 
         $joins1 = array(
             array(
                 'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
+                'pk'    => 'product_details',
+                'fk'    => 'pvp_prod_dec',
             ),
-
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
-
-           
         );
-
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['purchase_order'] = $this->pro_model->CheckData($from_date,'po_date',$to_date,'',$data1,'po_vendor_name',$data2,'pop_sales_order',$data3,'pop_prod_desc','','','pro_purchase_order_product',$joins,'pop_purchase_order',$joins1);  
+        $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec','','','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
         
+
+        
+        $new_order = [];
+
+        foreach ($data['purchase_order'] as $orders) {
+        
+            // Fetch the MRN record
+            $pvs = $this->common_model->SingleRow('pro_material_received_note', ['mrn_id' => $orders->pv_mrn]);
+
+            // $pvps = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_reffer_no]);
+        
+            // Merge the $orders and $mrns arrays, then cast the result back to an object
+            $new_order[] = (object) array_merge((array)$orders, (array)$pvs);
+        }
+        
+        $data['purchase_order'] = $new_order;
+
         // echo '<pre>';
-        // print_r($data['purchase_order']); exit();
+        // print_r($data['purchase_order']); 
+        // echo '</pre>';
+        // exit();
+
 
         if(!empty($from_date))
         {
@@ -254,6 +284,8 @@ class PurchaseOrderReport extends BaseController
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         if(!empty($_POST['pdf']))
@@ -266,7 +298,7 @@ class PurchaseOrderReport extends BaseController
             $this->Excel($data['purchase_order']);
         }
 
-        $data['content'] = view('procurement/purchase_order_report',$data);
+        $data['content'] = view('procurement/purchase_voucher_report',$data);
 
         return view('crm/report-module-search',$data);
 
@@ -277,6 +309,8 @@ class PurchaseOrderReport extends BaseController
 
     public function Pdf($purchase_order,$from_date,$to_date)
     {   
+        
+
         if(!empty($purchase_order))
         {   
             $pdf_data = "";
@@ -298,23 +332,27 @@ class PurchaseOrderReport extends BaseController
                 $border="border-top: 2px solid";
                 $product_details = $order_data->product_orders;
                 
-                $total_amount = $total_amount + $order_data->po_amount;
+                $total_amount = $total_amount + $order_data->pv_total;
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
+                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->pv_vendor_name]);
 
 
-                $new_date = date('d-m-Y',strtotime($order_data->po_date));
+
+                $new_date = date('d-m-Y',strtotime($order_data->pv_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_vendor_inv}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
                 
-                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_purchase_order}</td>";
 
-                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
-                
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_total}</td>";
+
+
                 
                 if($q!=1){
                      
@@ -333,29 +371,17 @@ class PurchaseOrderReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
 
                         $pdf_data .= "<td style=''></td>";
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
+
+                        $pdf_data .= "<td style=''></td>";
                         
                      
                     }
 
                     
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>".($prod_del->so_reffer_no ?? '' )."</td>";
-
-                    
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    if ($q == 1) {
-                    $pdf_data .= "'>{$order_data->po_amount}</td>";
-                    }else{
-                        $pdf_data .= "'></td>";
-                    }
+                   
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
@@ -369,22 +395,22 @@ class PurchaseOrderReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_qty}</td>";
+                    $pdf_data .= "'>{$prod_del->pvp_qty}</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>{$prod_del->pvp_rate}</td>";
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_amount}</td>";
-                    $pop_total += $prod_del->pop_amount;
+                    $pdf_data .= "'>{$prod_del->pvp_amount}</td>";
+                    $pop_total += $prod_del->pvp_amount;
 
                     
                     if($q!=1)
@@ -437,7 +463,7 @@ class PurchaseOrderReport extends BaseController
 
          
 
-            $mpdf->SetTitle('Purchase Order Report'); // Set the title
+            $mpdf->SetTitle('Purchase Voucher Report'); // Set the title
 
             $html ='
         
@@ -491,7 +517,7 @@ class PurchaseOrderReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h2>Purchase Order Report</h2></td>
+            <td align="right"><h2>Purchase Voucher Report</h2></td>
         
             </tr>
         
@@ -508,11 +534,13 @@ class PurchaseOrderReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Purchase Order Ref.</th>
+            <th align="left">Vendor Invoice Ref.</th>
         
             <th align="left">Vendor</th>
         
-            <th align="left">Sales Order Ref</th>
+            <th align="left">Purchase Order Ref</th>
+
+             <th align="left">MRN Ref</th>
         
             <th align="left">Amount</th>
 
@@ -532,6 +560,7 @@ class PurchaseOrderReport extends BaseController
 
             <tr>
                 <td style="border-top: 2px solid;">Total</td>
+                <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
@@ -565,7 +594,7 @@ class PurchaseOrderReport extends BaseController
     }
 
    
-    public function Excel($purchase_order)
+    public function Excel($quotation_data)
     {
         // Create a new PhpSpreadsheet object
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -649,7 +678,7 @@ class PurchaseOrderReport extends BaseController
         $column = 'A';
 
         // Set padding and alignment for quotation data
-        $cellRange = 'A' . $excel_row . ':' . $column . ($excel_row + count($purchase_order) - 1);
+        $cellRange = 'A' . $excel_row . ':' . $column . ($excel_row + count($quotation_data) - 1);
         $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true); // Enable text wrapping
         $sheet->getStyle($cellRange)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Center vertically
         $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Center horizontally
@@ -668,15 +697,15 @@ class PurchaseOrderReport extends BaseController
         );
 
         // Populate quotation data
-        foreach ($purchase_order as $order_data) {
+        foreach ($quotation_data as $quot_data) {
 
-            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$order_data->qd_id),$joins1);
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
             
-            $sheet->setCellValue($column . $excel_row, $order_data->qd_date);
-            $sheet->setCellValue(++$column . $excel_row, $order_data->qd_reffer_no);
-            $sheet->setCellValue(++$column . $excel_row, $order_data->cc_customer_name);
-            $sheet->setCellValue(++$column . $excel_row, $order_data->se_name);
-            $sheet->setCellValue(++$column . $excel_row, $order_data->qd_sales_amount);
+            $sheet->setCellValue($column . $excel_row, $quot_data->qd_date);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_reffer_no);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->cc_customer_name);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->se_name);
+            $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_sales_amount);
 
             //$column++;
             echo $column . $excel_row;
