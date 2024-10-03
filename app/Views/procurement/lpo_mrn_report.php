@@ -320,7 +320,7 @@
                                                                 </td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_delivery_qty; ?><br>
+                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>

@@ -807,11 +807,11 @@ class ProcurementModel extends Model
             $query->like($data4_col, $data4);
         }
 
-        if (!empty($join)) {
+        if (!empty($join) && $group_by_col != '') {
             $query->groupBy($table . '.' . $group_by_col);
         }
 
-        $query->whereIn('pv_status', [0,1]);
+        // $query->whereIn('pv_status', [0,1]);
 
         $result = $query->get()->getResult();
 
@@ -820,25 +820,24 @@ class ProcurementModel extends Model
 
         //return $result;
 
-        $i = 0;
-        foreach ($result as $res) {
-            $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
+        // $i = 0;
+        // foreach ($result as $res) {
+        //     $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
         
-            // Create the query using the Query Builder
-            $query = $this->db->table($table)->where($cond_user); 
+        //     // Create the query using the Query Builder
+        //     $query = $this->db->table($table)->where($cond_user); 
         
-            // Echo the compiled select query without executing it
+        //     // Echo the compiled select query without executing it
 
-            $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
+        //     $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
 
-            // echo $this->db->getLastQuery();  // Will show the query without executing it
-            // exit;
+        //     // echo $this->db->getLastQuery();  // Will show the query without executing it
+        //     // exit;
 
-            $i++;
-        }
+        //     $i++;
+        // }
         
         
         return $result;
     }
-
 }

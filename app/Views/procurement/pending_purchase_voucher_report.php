@@ -251,27 +251,33 @@
                                                 <?php
                                                 if (!empty($purchase_order)) {
                                                     $i = 1;
-                                                    $balance = $pv_total = $pv_paid = $pv_booked = 0;
+                                                    $balance = $po_total = $pv_paid = $pv_booked = 0;
                                                     foreach ($purchase_order as $pur_vouc) { ?>
                                                         <tr>
 
                                                             <td><?php echo $i; ?></td>
-                                                            <td><?php echo $pur_vouc->pv_date; ?></td>
-                                                            <td><?php echo $pur_vouc->pv_purchase_order; ?></td>
+                                                            <td><?php echo $pur_vouc->po_date; ?></td>
+                                                            <td><?php echo $pur_vouc->po_reffer_no; ?></td>
 
                                                             <td><?php foreach ($vendors as $vendor) {
-                                                                    echo $pur_vouc->pv_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                    echo $pur_vouc->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
-                                                            </td>
+                                                            </td>                                                            
 
-                                                            <td><?php echo $pur_vouc->pv_total; $pv_total += $pur_vouc->pv_total;?></td>
+                                                            <td><?php echo $pur_vouc->po_amount; $po_total += $pur_vouc->po_amount; ?></td>
 
-                                                            <td><?php echo $pur_vouc->pv_paid; $pv_paid += $pur_vouc->pv_paid; ?></td>
+                                                            <td><?php  $booked_note = 0; foreach ($pur_vouc->received_products as $notes) {
+                                                                   $booked_note += $notes->rnp_amount ;
+                                                                //   print_r($notes);
+                                                                }  echo $booked_note; $pv_booked += $booked_note;?></td>
 
-                                                            <td>0</td>
+                                                            <td><?php echo $pur_vouc->pv_paid ?? 0; $pv_paid += $pur_vouc->pv_paid ?? 0;?></td>
 
-                                                            <td><?php echo $pur_vouc->pv_total - $pur_vouc->pv_paid;
-                                                                $balance = $pur_vouc->pv_total - $pur_vouc->pv_paid; ?></td>
+                                                            <td><?php echo $booked_note - $pur_vouc->pv_paid;
+                                                                $balance += $booked_note - $pur_vouc->pv_paid; ?></td>
+
+
+                                                           
 
                                                         </tr>
 
@@ -283,9 +289,9 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $pv_total; ?></th>
-                                                        <th><?php echo $pv_paid; ?></th>
+                                                        <th><?php echo $po_total; ?></th>
                                                         <th><?php echo $pv_booked; ?></th>
+                                                        <th><?php echo $pv_paid; ?></th>
                                                         <th><?php echo $balance; ?></th>
                                                     </tr>
 

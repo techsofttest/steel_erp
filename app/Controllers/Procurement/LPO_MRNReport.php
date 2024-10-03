@@ -453,9 +453,9 @@ class LPO_MRNReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
 
 
 
@@ -474,11 +474,24 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= "<td style=''></td>";
 
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
+                    
                     }
 
+
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$order_data->po_amount}</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -514,8 +527,9 @@ class LPO_MRNReport extends BaseController
                     if ($q == 1) {
 
                         $pdf_data .= $border;
+                        $pdf_data .= "'>{$order_data->mrn_reffer}</td>";
                     }
-                    $pdf_data .= "'>{$prod_del->mrn_reffer}</td>";
+                    $pdf_data .= "'></td>";
 
 
                     $pdf_data .= "<td style='";
@@ -523,7 +537,7 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_delivery_qty ?? 0) . "</td>";
+                    $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? 0) . "</td>";
 
 
                     $pdf_data .= "<td style='";
