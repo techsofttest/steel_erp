@@ -591,6 +591,7 @@ class ProcurementModel extends Model
             $query->groupBy($table . '.' . $group_by_col);
         }
 
+        //$query->groupBy('crm_sales_orders.so_id');
 
         $result = $query->get()->getResult();
 
@@ -599,22 +600,26 @@ class ProcurementModel extends Model
 
         //return $result;
 
-        $i = 0;
-        foreach ($result as $res) {
-            $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
+        // $i = 0;
+        // foreach ($result as $res) {
+        //     $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
         
-            // Create the query using the Query Builder
-            $query = $this->db->table($table)->where($cond_user); 
+        //     // Create the query using the Query Builder
+        //     $query = $this->db->table($table)
+        //     ->where($cond_user)
+        //     ->groupBy('pop_id') // This should work as expected
+        //     ->get();
+
         
-            // Echo the compiled select query without executing it
+        //     // Echo the compiled select query without executing it
 
-            $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
+        //     $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
 
-            // echo $this->db->getLastQuery();  // Will show the query without executing it
-            // exit;
+        //     // echo $this->db->getLastQuery();  // Will show the query without executing it
+        //     // exit;
 
-            $i++;
-        }
+        //     $i++;
+        // }
         
         
         return $result;

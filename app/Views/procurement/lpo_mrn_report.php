@@ -123,7 +123,7 @@
                                                                                     <select class="form-select" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
-                                                                                            <option value="<?php echo $product->product_details; ?>"><?php echo $product->product_details; ?></option>
+                                                                                            <option value="<?php echo $product->product_id; ?>"><?php echo $product->product_details; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -315,9 +315,9 @@
                                                                     echo $orders->pop_amount; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->mrn_reffer; ?><br>
-                                                                <?php } ?></td>
+                                                            <td>
+                                                                    <?php echo $pur_order->mrn_reffer; ?><br>
+                                                                </td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_delivery_qty; ?><br>

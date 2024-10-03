@@ -224,7 +224,7 @@ class MRN_PVReport extends BaseController
 
         // $data['purchase_order'] = $this->pro_model->CheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_id',$joins1);  
 
-        $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $data5, 'rnp_prod_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
+        $data['purchase_order'] = $this->pro_model->MRN_PVCheckData($from_date, 'mrn_date', $to_date, '', $data1, 'mrn_vendor_name', $data2, 'rnp_sales_order', $data5, 'rnp_product_desc', $data3, 'mrn_purchase_order', 'steel_pro_material_received_note_prod', $joins, 'rnp_material_received_note', $joins1);
 
         $new_order = [];
 
