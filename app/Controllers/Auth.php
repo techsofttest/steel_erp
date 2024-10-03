@@ -61,17 +61,6 @@ class Auth extends BaseController
                     'admin_login'   => true,
                 ];
 
-                if($user->user_company==2)
-                {
-                $company_pref = "CP";
-                }
-                else
-                {
-                $company_pref = "AF";
-                }
-
-                $admin_data['admin_prefix'] = $company_pref;
-                
                 $this->session->set($admin_data);
 
                 return redirect()->to('Home');

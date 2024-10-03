@@ -591,8 +591,6 @@ class CommonModel extends Model
 
         $id = $row->Auto_increment;
 
-        $prefix = session()->get('admin_prefix').$prefix;
-
         $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
 
         return $uid;
