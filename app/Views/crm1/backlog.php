@@ -239,8 +239,12 @@
                                                         <td class="text-end"><?php echo format_currency($delivery_amount);?></td>
                                                         
                                                         <?php } else{?> 
-                                                            <td class="text-end">00.0</td>    
-                                                        <?php } 
+                                                            <td class="text-end">00.0</td>   
+
+                                                            <?php } ?>
+
+
+                                                            <?php
 
                                                             $invoiced_amount = 0;
 
@@ -249,24 +253,51 @@
                                                                 $invoiced_amount =  $cash_inv->ci_total_amount + $invoiced_amount;
                                                             }
                                                             
+                                                            $invoiced_amount1 = 0;
+
+                                                            foreach($sales_order->credit_invoiced as $credit_inv)
+                                                            {
+                                                                $invoiced_amount1 =  $credit_inv->cci_total_amount + $invoiced_amount1;
+                                                            }
+
                                                             if(!empty($sales_order->cash_invoiced)){?>
 
                                                                 <td class="text-end"><?php echo format_currency($invoiced_amount); ?></td>
                                                             
-                                                            <?php }  else{?> 
-
-                                                                <td class="text-end">00.0</td>  
-
                                                             <?php } 
                                                             
+                                                           
+                                                            elseif(!empty($sales_order->credit_invoiced)){  ?>
+                                                                  
+                                                                <td class="text-end"><?php echo format_currency($invoiced_amount1); ?></td>
                                                                 
-                                                            ?>
+                                                                <!--<td>sucess</td>--->
+
+                                                            <?php }
+
+                                                            else { ?> 
+                                                 
+                                                                <td class="text-end">00.0</td>
+                                                                
+                                                                <!--<td>error</td>--->
+
+                                                            <?php }  ?>
+                                                            
+
+                                                            <!------->
+
+
+                                                            <!------->
+
+
                                                             
                                                            <?php if(!empty($sales_order->sales_delivery)){
                                                                 $balance =  $sales_order->so_amount_total - $delivery_amount;
                                                             ?> 
                                                             
                                                                 <td class="text-end"><?php echo format_currency($balance);?></td>
+
+                                                                
 
                                                             <?php } else{?> 
                                                                  <td class="text-end">00.0</td>    

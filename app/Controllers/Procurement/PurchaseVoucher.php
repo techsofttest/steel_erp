@@ -120,8 +120,21 @@ class PurchaseVoucher extends BaseController
     //view page
     public function index()
     {    
-        $data['material_received']   = $this->common_model->FetchAllOrder('pro_material_received_note','mrn_id','desc');       
+        //$data['material_received']   = $this->common_model->FetchAllOrder('pro_material_received_note','mrn_id','desc');       
+        
+        $join =  array(
+            
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'mrn_purchase_order',
+            ),
 
+         
+        );
+
+        $data['material_received']   = $this->pro_model->FetchAllOrderJoin('pro_material_received_note','mrn_id','desc',$join,'mrn_purchase_order',array('mrn_status' => 0));       
+        
         $data['content'] = view('procurement/purchase-voucher',$data);
 
         return view('procurement/pro-module',$data);
@@ -496,9 +509,8 @@ class PurchaseVoucher extends BaseController
     {
     
         $data['uid'] = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
-        
-          
-        $join =  array(
+
+       $join =  array(
             
             array(
                 'table' => 'pro_purchase_order',
@@ -719,7 +731,11 @@ class PurchaseVoucher extends BaseController
 
         $purchases = $this->common_model->SingleRowJoin('pro_purchase_order',array('po_id' => $purchase_id),$joins);
 
-        $data['payment_term'] = $purchases->po_payment_term;
+        $data['payment_term']   = $purchases->po_payment_term;
+
+        $data['delivery_date']  = $purchases->po_delivery_date;
+
+        $data['contact_person'] = $purchases->pro_con_person;
 
         $data['mr_reff'] = $purchases->mr_reffer_no;
        

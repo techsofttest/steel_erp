@@ -1,30 +1,4 @@
-<style>
- 
-table {
-    table-layout: auto !important;
-}
 
-th, td, thead th, .tbody td, .tfoot td, .tfoot th {
-    width: auto !important;
-}
-
-
-.divcontainer {
-  overflow-x: scroll;
-  overflow-y: auto;
-  transform: rotateX(180deg);
-}
-
-.divcontainer table {
-  transform: rotateX(180deg);
-}
-
-.table-responsive {
-  width: 100%;
-  display: block overflow-x: scroll;
-}
-
-</style>
 
 <div class="tab-content text-muted">
 								
@@ -230,21 +204,20 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:auto;">
+                                    <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
-                                                    <th style="white-space: nowrAap">Date</th>
-                                                    <th style="white-space: nowrap">Quotation Ref</th>
-                                                    <th style="white-space: nowrap">Customer Name</th>
-                                                    <th style="white-space: nowrap">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap" class="text-end">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th class="no-sort">Sl no</th>
+                                                    <th>Date</th>
+                                                    <th>Quotation Ref</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Sales Executive</th>
+                                                    <th>Amount</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Rate</th>
+                                                    <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             
@@ -258,33 +231,30 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                     foreach($quotation_data as $quot_data){?> 
                                                     <tr>
                                                         <td><?php echo $i;?></td>
-                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($quot_data->qd_date));?></td>
-                                                        <td style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id;?>" target="blank" class="" data-id ="<?php echo $quot_data->qd_id;?>"><?php echo $quot_data->qd_reffer_no;?></a></td>
-                                                        <td style="white-space: nowrap"><?php echo $quot_data->cc_customer_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $quot_data->se_name;?></td>
-                                                        <?php 
-                                                          $total = $quot_data->qd_sales_amount + $total;
-                                                        ?>
-                                                        <td style="white-space: nowrap" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount);?></td>
-                                                        <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
+                                                        <td><?php echo $quot_data->qd_date;?></td>
+                                                        <td><a href="<?php echo base_url();?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id;?>" target="blank" class="" data-id ="<?php echo $quot_data->qd_id;?>"><?php echo $quot_data->qd_reffer_no;?></a></td>
+                                                        <td><?php echo $quot_data->cc_customer_name;?></td>
+                                                        <td><?php echo $quot_data->se_name;?></td>
+                                                        <td><?php echo $quot_data->qd_sales_amount;?></td>
+                                                        <td>
                                                             <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <?php echo $quot_prod->product_details;?><br>   
                                                             <?php } ?>
                                                         </td> 
                                                        
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td>
                                                             <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <?php echo $quot_prod->qpd_quantity;?><br>
                                                             <?php } ?>
                                                         </td>
 
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td>
                                                             <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <?php echo format_currency($quot_prod->qpd_rate);?><br>
                                                             <?php } ?>
                                                         </td>
 
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td>
                                                             <?php foreach($quot_data->quotation_product as $quot_prod){?> 
                                                                 <?php echo $quot_prod->qpd_discount;?><br>
                                                             <?php } ?>

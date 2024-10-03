@@ -1,15 +1,6 @@
 <style>
  
-table {
-    table-layout: auto !important;
-}
-
-th, td, thead th, .tbody td, .tfoot td, .tfoot th {
-    width: auto !important;
-}
-
-
-.divcontainer {
+ .divcontainer {
   overflow-x: scroll;
   overflow-y: auto;
   transform: rotateX(180deg);
@@ -23,6 +14,7 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
   width: 100%;
   display: block overflow-x: scroll;
 }
+
 
 </style>
 
@@ -41,13 +33,12 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                         
                         
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="DeliveryNoteReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET" action="<?php echo base_url();?>Crm/DeliveryNoteReport/GetData" target="blank" id="add_form" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Sales Quotation Report</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Delivery Note Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -60,7 +51,8 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                             <div class="live-preview">
 
                                                               <!--table section start-->
-                                                               
+
+
                                                               <?php
                                                                if(!empty($_GET['form_date']))
                                                                {
@@ -86,13 +78,13 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                                {
                                                                     $customer = "";
                                                                }
-                                                               if(!empty($_GET['sales_executive']))
+                                                               if(!empty($_GET['sales_order']))
                                                                {
-                                                                    $sales_executive = $_GET['sales_executive'];
+                                                                    $sales_order = $_GET['sales_order'];
                                                                }
                                                                else
                                                                {
-                                                                    $sales_executive ="";
+                                                                    $sales_order ="";
                                                                }
                                                                if(!empty($_GET['product']))
                                                                {
@@ -104,7 +96,7 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                                }
                                                                
                                                                ?>
-                                                                
+
 
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
@@ -112,9 +104,9 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="from_date_id"  value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control" ></td>
+                                                                                <td><input type="date" name="form_date" id="from_date_id" value="<?php echo $from_date;?>"  onclick="this.showPicker();" class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();"  class="form-control"></td>
+                                                                                <td><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date;?>" onclick="this.showPicker();"  class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -126,24 +118,25 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer value='<?php echo $customer; ?>' customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td><select class="form-select droup_customer  customer_clz" value="<?php echo $customer;?>" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                             </tr>
+
 
                                                                             <tr>
-                                                                                <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive"><option value="" selected disabled>Select Executive</option></select></td>
+                                                                                <td>Sales Order Ref</td>
+                                                                                <td><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order;?>" name="sales_order"><option value="" selected disabled>Select Order Ref</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                             </tr>
-
+                                          
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select value='<?php echo $product; ?>' product_clz"name="product"><option value="" selected disabled>Select Product</option></select></td>
+                                                                                <td><select class="form-select product_clz"name="product" value="<?php echo $product;?>"><option value="" selected disabled>Select Product</option></select></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -159,18 +152,7 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
 
                                                                 <!--table section end-->
 
-                                                                <!--<div style="float: right;">
-                                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                           
-                                                                            <td><button type="submit">View</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>--->
-                                                                
+                                                               
                                                                 
                                                                 
 
@@ -186,9 +168,8 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
 
 
                                         <div class="modal-footer justify-content-center">
-                                            <button  class="btn btn btn-success submit_btn" data-bs-dismiss="modal"  type="submit">Search</button>
+                                            <button class="btn btn btn-success submit_btn" data-bs-dismiss="modal" type="submit">Search</button>
                                         </div>
-
                                         
                                     </div>
                                 </form>
@@ -208,12 +189,14 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Quotation Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Delivery Note Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        
                                         <form method="POST"  target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit"  class="pdf_button report_button" >PDF</button>
                                         </form>
-                                        <form method="POST" action="" target="_blank">
+
+                                        <form method="POST" action="<?php echo base_url();?>Crm/SalesQuotReport/GetData" target="_blank">
                                             <input type="hidden" name="excel" value="1">
                                             <button class="excel_button report_button" type="submit">Excel</button>
                                         </form>
@@ -228,101 +211,105 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                                             <button class="email_button report_button" type="submit">Email</button>
                                         </form>
                                         
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#DeliveryNoteReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:auto;">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
-                                                    <th style="white-space: nowrAap">Date</th>
-                                                    <th style="white-space: nowrap">Quotation Ref</th>
-                                                    <th style="white-space: nowrap">Customer Name</th>
-                                                    <th style="white-space: nowrap">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap" class="text-end">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th class="no-sort" style="white-space: nowrap;width:100px">Sl no</th>
+                                                    <th style="white-space: nowrap;width:100px">Date</th>
+                                                    <th style="white-space: nowrap;width:100px">Delivery Note Ref</th>
+                                                    <th style="white-space: nowrap;width:500px">Customer Name</th>
+                                                    <th style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th style="white-space: nowrap;width:100px">Lpo Ref</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                    <th style="white-space: nowrap;width:500px">Product</th> 
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Qty Ordered</th> 
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Qty Delivered</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Rate</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                   
                                                 </tr>
                                             </thead>
                                             
                                             <tbody class="tbody_data">
                                                 <?php
-                                                if(!empty($quotation_data))
+                                                $total_amount = 0; 
+                                                $total_amount1 = 0; 
+                                                if(!empty($delivery_note))
                                                 {
                                                     $i=1;
-                                                    $total = 0;
-                                                    $total1 = 0;
-                                                    foreach($quotation_data as $quot_data){?> 
+                                                    foreach($delivery_note as $del_note){?> 
                                                     <tr>
-                                                        <td><?php echo $i;?></td>
-                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($quot_data->qd_date));?></td>
-                                                        <td style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id;?>" target="blank" class="" data-id ="<?php echo $quot_data->qd_id;?>"><?php echo $quot_data->qd_reffer_no;?></a></td>
-                                                        <td style="white-space: nowrap"><?php echo $quot_data->cc_customer_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $quot_data->se_name;?></td>
-                                                        <?php 
-                                                          $total = $quot_data->qd_sales_amount + $total;
-                                                        ?>
-                                                        <td style="white-space: nowrap" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount);?></td>
-                                                        <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
-                                                            <?php foreach($quot_data->quotation_product as $quot_prod){?> 
-                                                                <?php echo $quot_prod->product_details;?><br>   
-                                                            <?php } ?>
+                                                        
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $i;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $del_note->dn_date;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $del_note->dn_id;?>" target="_blank"><?php echo $del_note->dn_reffer_no;?></a></td>
+                                                        <td style="white-space: nowrap;width:500px"><?php echo $del_note->cc_customer_name;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $del_note->so_reffer_no;?></td>
+                                                        <td style="white-space: nowrap;width:100px"><?php echo $del_note->dn_lpo_reference;?></td>
+                                                        <?php $total_amount =  $del_note->dn_total_amount + $total_amount; ?>
+                                                        <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($del_note->dn_total_amount);?></td>
+                                                        
+                                                        <td>
+                                                        <?php foreach($del_note->delivery_product as $delv_prod){?> 
+                                                            <?php echo $delv_prod->product_details;?><br>   
+                                                        <?php } ?>
                                                         </td> 
+
+                                                        <td class="text-end">
+                                                        <?php foreach($del_note->delivery_product as $delv_prod){?> 
+                                                            <?php echo $delv_prod->dpd_current_qty;?><br>   
+                                                        <?php } ?>
+                                                        </td> 
+
+                                                        <td class="text-end">
+                                                        <?php foreach($del_note->delivery_product as $delv_prod){?> 
+                                                            <?php echo $delv_prod->dpd_delivery_qty;?><br>   
+                                                        <?php } ?>
+                                                        </td> 
+
+                                                        <td class="text-end">
+                                                        <?php foreach($del_note->delivery_product as $delv_prod){?> 
+                                                            <?php echo format_currency($delv_prod->dpd_prod_rate);?><br>   
+                                                        <?php } ?>
+                                                        </td> 
+
+                                                        <td class="text-end">
+                                                        <?php foreach($del_note->delivery_product as $delv_prod){
+                                                        
+                                                        $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1;
+
+                                                        ?> 
+                                                            <?php echo format_currency($delv_prod->dpd_total_amount);?><br>   
+                                                        <?php } ?>
+                                                        </td> 
+
                                                        
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            <?php foreach($quot_data->quotation_product as $quot_prod){?> 
-                                                                <?php echo $quot_prod->qpd_quantity;?><br>
-                                                            <?php } ?>
-                                                        </td>
 
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            <?php foreach($quot_data->quotation_product as $quot_prod){?> 
-                                                                <?php echo format_currency($quot_prod->qpd_rate);?><br>
-                                                            <?php } ?>
-                                                        </td>
-
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            <?php foreach($quot_data->quotation_product as $quot_prod){?> 
-                                                                <?php echo $quot_prod->qpd_discount;?><br>
-                                                            <?php } ?>
-                                                        </td>
-
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            <?php foreach($quot_data->quotation_product as $quot_prod){
-
-                                                               $total1  = $quot_prod->qpd_amount + $total1;
-                                                            ?>
-
-                                                                <?php echo format_currency($quot_prod->qpd_amount);?><br>
-                                                            <?php } ?>
-                                                        </td>
                                                     </tr>
-
-                                                    
-                                                    
                                                 
-                                                <?php $i++; }  ?>
-                                            
+                                                <?php $i++; }  } ?>
+
                                                 <tr>
                                                     <td>Total</td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total);?></td>
+                                                    <td></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total1);?></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                   
+                                                    
+                                                 
                                                 </tr>
 
-                                                <?php   } ?>
-
-                                               
 
                                             </tbody>
 
@@ -363,21 +350,19 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
 
 
 
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function(event) { 
-        
+
         /*modal open start*/
         <?php if(empty($_GET)): ?>
 
         $(window).on('load', function() {
-           
-            $('#SalesQuotReport').modal('show');
+            $('#DeliveryNoteReport').modal('show');
         });
-
+        
         <?php endif; ?>
-      
+        
         /*modal open end*/
 
 
@@ -385,10 +370,10 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
          $(".droup_customer").select2({
             placeholder: "Select Customer",
             theme : "default form-control- customer_width",
-            dropdownParent: $('#SalesQuotReport'),
+            dropdownParent: $('#DeliveryNoteReport'),
 
             ajax: {
-                url: "<?= base_url(); ?>Crm/SalesQuotReport/FetchTypes",
+                url: "<?= base_url(); ?>Crm/DeliveryNoteReport/FetchTypes",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -424,7 +409,7 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
 
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/SalesQuotReport/FetchData",
+                url : "<?php echo base_url(); ?>Crm/DeliveryNoteReport/FetchData",
 
                 method : "POST",
 
@@ -434,10 +419,12 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
                 {   
                     var data = JSON.parse(data);
 
-                    //console.log(data.prod_details);
-                    $('.executive_clz').html(data.quot_det);
+                    //console.log(data.sales_reff);
+                    //$('.executive_clz').html(data.quot_det);
                     
                     $('.product_clz').html(data.quot_prod);
+
+                    $('.sales_order_ref').html(data.sales_reff);
 
                 }
 
@@ -447,32 +434,25 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
         
         /*####*/
 
-        /*form submit start*/
+       /*form submit start*/
 
-        $(".submit_btn").on('click', function(){ 
+       /*$(".submit_btn").on('click', function(){ 
 
-           /* $('#SalesQuotReport').modal("hide");
+            $('#DeliveryNoteReport').modal("hide");
 
             $('#add_form')[0].reset();
 
             $('.customer_clz option').remove();
 
-            $('.executive_clz option').remove();
+            $('.sales_order option').remove();
 
-            $('.product_clz option').remove();*/
-
-            
-        });
+            $('.product_clz option').remove();
+        
+        });*/
 
 
         /*#####*/
-
-
-     
        
-        
-
-        
 
 
     });
@@ -482,5 +462,4 @@ th, td, thead th, .tbody td, .tfoot td, .tfoot th {
 
 
 </script>
-
 

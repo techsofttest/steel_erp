@@ -1,21 +1,4 @@
-<style>
 
-.divcontainer {
-  overflow-x: scroll;
-  overflow-y: auto;
-  transform: rotateX(180deg);
-}
-
-.divcontainer table {
-  transform: rotateX(180deg);
-}
-
-.table-responsive {
-  width: 100%;
-  display: block overflow-x: scroll;
-}
-
-</style>
 
 
 <div class="tab-content text-muted">
@@ -35,10 +18,10 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesOrderReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET" class="Dashboard-form class" action="<?php echo base_url();?>Crm/SalesOrderReport/GetData" id="add_form" target="_blank">
+                                <form method="GET" class="Dashboard-form class" action="<?php echo base_url();?>Crm/SalesOrderSummeryReport/GetData" id="add_form" target="_blank">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Sales Order Report</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Sales Order Summery Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -204,7 +187,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Order Summery Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                         <form method="POST"  target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit"  class="pdf_button report_button" >PDF</button>
@@ -226,82 +209,42 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:auto;">
+                                    <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
-                                                    <th style="white-space: nowrap">Date</th>
-                                                    <th style="white-space: nowrap">Sales Order Ref</th>
-                                                    <th style="white-space: nowrap">Customer</th>
-                                                    <th style="white-space: nowrap">LPO Ref</th>
-                                                    <th style="white-space: nowrap">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th class="no-sort">Sl no</th>
+                                                    <th>Date</th>
+                                                    <th>Sales Order Ref</th>
+                                                    <th>Customer</th>
+                                                    <th>LPO Ref</th>
+                                                    <th>Sales Executive</th>
+                                                    <th class="text-end">Amount</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             
                                             <tbody class="tbody_data">
                                             <?php
-                                                $total_amount  = 0;
-                                                $total_amount1  = 0;
+                                               $total_amount = 0; 
                                                 if(!empty($sales_orders))
                                                 {
                                                     $i=1;
-                                                    
+
                                                     foreach($sales_orders as $sales_order){
                                                          
                                                     ?> 
                                                     
                                                     <tr>
                                                         <td><?php echo $i;?></td>
-                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->cc_customer_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
-                                                        <?php $total_amount = $sales_order->so_amount_total + $total_amount ;?>
-                                                        <td style="white-space: nowrap" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
-                                                        <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->product_details;?><br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-                                                        <td style="white-space: nowrap">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_quantity;?></br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo format_currency($sales_prod->spd_rate);?></br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-
-                                                        <td style="white-space: nowrap">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_discount;?></br>
-                                                            <?php } ?>
-                                                        </td>
-
-                                                        <td style="white-space: nowrap" class="text-end">
-                                                            
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){
-
-                                                                $total_amount1 = $sales_prod->spd_amount + $total_amount1;
-
-                                                            ?> 
-                                                            <?php echo format_currency($sales_prod->spd_amount);?></br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
+                                                        <td><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td><?php echo $sales_order->cc_customer_name;?></td>
+                                                        <td><?php echo $sales_order->so_lpo;?></td>
+                                                        <td><?php echo $sales_order->se_name;?></td>
+                                                        <?php  $total_amount = $sales_order->so_amount_total + $total_amount; ?>
+                                                        <td class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
+                                                       
                                                         
                                                        
                                                     </tr>
@@ -315,14 +258,12 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td class="text-end"><?php echo format_currency($total_amount);?></td>
+                                                    
                                                    
-                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                   
                                                 </tr>
+
 
                                             </tbody>
 
@@ -449,24 +390,24 @@
 
 
 
-       /*form submit start*/
+        /*form submit start*/
 
-       $(".submit_btn").on('click', function(){ 
+        /*$(".submit_btn").on('click', function(){ 
 
-            /*$('#SalesOrderReport').modal("hide");
+            $('#SalesOrderReport').modal("hide");
 
             $('#add_form')[0].reset();
 
             $('.customer_clz option').remove();
 
-            $('.sales_order option').remove();
-
             $('.executive_clz option').remove();
 
-            $('.product_clz option').remove();*/
+            $('.product_clz option').remove();
+
+            $('.sales_order option').remove();
 
 
-        });
+        });*/
 
         /*#####*/
 
