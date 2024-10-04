@@ -350,7 +350,7 @@ class PurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_total}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
 
 
                 
@@ -390,26 +390,26 @@ class PurchaseVoucherReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pvp_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pvp_rate}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pvp_rate)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pvp_amount}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pvp_amount)."</td>";
                     $pop_total += $prod_del->pvp_amount;
 
                     
@@ -542,15 +542,15 @@ class PurchaseVoucherReport extends BaseController
 
              <th align="left">MRN Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -564,11 +564,11 @@ class PurchaseVoucherReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right;">'.format_currency($total_amount).'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right; ">'.format_currency($total_amount).'</td>
                 
             </tr>    
            

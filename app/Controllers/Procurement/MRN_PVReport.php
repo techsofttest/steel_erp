@@ -474,11 +474,11 @@ class MRN_PVReport extends BaseController
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>{$mrn_amount}</td>";
+                        $pdf_data .= "'>".format_currency($mrn_amount)."</td>";
                         $total_amount += $mrn_amount;
                     }else{
                         $pdf_data .= "'></td>";
@@ -492,26 +492,26 @@ class MRN_PVReport extends BaseController
                     }
                     $pdf_data .= "'>" . ($prod_del->product_details ?? '') . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? '') . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pop_rate ?? '') . "</td>";
+                    $pdf_data .= "'>" .format_currency($prod_del->pop_rate ?? '') . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_amount ?? 0) . "</td>";
+                    $pdf_data .= "'>" .format_currency($prod_del->rnp_amount ?? 0) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
 
@@ -524,7 +524,7 @@ class MRN_PVReport extends BaseController
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
@@ -532,28 +532,28 @@ class MRN_PVReport extends BaseController
                     $pdf_data .= "'>" . ($prod_del->pvp_qty ?? '') . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_rate ?? '') . "</td>";
+                    $pdf_data .= "'>" .format_currency($prod_del->pvp_rate ?? '') . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_amount ?? 0) . "</td>";
+                    $pdf_data .= "'>" .format_currency($prod_del->pvp_amount ?? 0) . "</td>";
                     $pvp_amt += $prod_del->pvp_amount ?? 0 ;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_amount - $prod_del->pvp_amount ) . "</td>";
+                    $pdf_data .= "'>" .format_currency($prod_del->rnp_amount - $prod_del->pvp_amount ) . "</td>";
                     $diff_amt += $prod_del->rnp_amount - $prod_del->pvp_amount ;
 
 
@@ -677,25 +677,25 @@ class MRN_PVReport extends BaseController
             
                 <th align="left">Vendor DN Ref</th>
     
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
 
                 <th align="left">Product</th>
     
-                <th align="left">Quantity</th>
+                <th align="right">Quantity</th>
     
-                <th align="left">Rate</th>
+                <th align="right">Rate</th>
     
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
     
                 <th align="left">Vendor Invoice Ref</th>
     
-                <th align="left">Quantity</th>
+                <th align="right">Quantity</th>
             
-                <th align="left">Rate</th>
+                <th align="right">Rate</th>
                 
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
     
-                <th align="left">Difference</th>
+                <th align="right">Difference</th>
     
                 </tr>
     
@@ -709,16 +709,16 @@ class MRN_PVReport extends BaseController
                     <td style="border-top: 2px solid;"></td>   
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>               
-                    <td style="border-top: 2px solid;">' .  $total_amount . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' . format_currency($total_amount) . '</td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' .format_currency($rnp_amt) . '</td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;">' . $pvp_amt . '</td>
-                    <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                    <td style="border-top: 2px solid;text-align:right;">' . format_currency($pvp_amt) . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' .format_currency($diff_amt) . '</td>
                     
                 </tr>    
                

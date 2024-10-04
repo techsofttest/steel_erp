@@ -486,12 +486,12 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$order_data->po_amount}</td>";
+                    $pdf_data .= "'>".format_currency($order_data->po_amount)."</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -501,29 +501,29 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pop_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_amount}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_amount)."</td>";
                     $pop_amt += $prod_del->pop_amount;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
@@ -532,35 +532,35 @@ class LPO_MRNReport extends BaseController
                     $pdf_data .= "'></td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? 0) . "</td>";
+                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_current_delivery ?? 0)) . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_amount ?? 0) . "</td>";
+                    $pdf_data .= "'>".format_currency(($prod_del->rnp_amount ?? 0)) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pop_amount - $prod_del->rnp_amount) . "</td>";
+                    $pdf_data .= "'>".format_currency(($prod_del->pop_amount - $prod_del->rnp_amount)) . "</td>";
                     $diff_amt += $prod_del->pop_amount - $prod_del->rnp_amount;
 
                     // 
@@ -686,25 +686,25 @@ class LPO_MRNReport extends BaseController
         
             <th align="left">Sales Order Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">MRN Ref</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
         
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
             
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Difference</th>
+            <th align="right">Difference</th>
 
             </tr>
 
@@ -716,16 +716,16 @@ class LPO_MRNReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>               
-                <td style="border-top: 2px solid;">' .  $po_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $pop_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' .format_currency( $pop_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
-                <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                 
             </tr>    
            

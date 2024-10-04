@@ -198,7 +198,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -219,11 +219,11 @@
                                                     <th>Vendor</th>
                                                     <th>Purchase Order</th>
                                                     <th>Vendor DN Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -249,26 +249,26 @@
 
                                                             <td><?php echo $material_req->mrn_delivery_note; ?></td>
 
-                                                            <td><?php $tot_amt = 0;
+                                                            <td class="text-end"><?php $tot_amt = 0;
                                                                 foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php $tot_amt += $orders->rnp_amount; ?>
                                                                 <?php }
-                                                                echo $tot_amt;
+                                                                echo format_currency($tot_amt);
                                                                 $total += $tot_amt; ?> </td>
 
                                                             <td><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_amount;
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->rnp_amount);
                                                                     $mr_total += $orders->rnp_amount ?><br>
                                                                 <?php } ?></td>
 
@@ -283,11 +283,11 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total;?></th>
+                                                        <th class="text-end"><?php echo format_currency($total);?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $mr_total;?></th>
+                                                        <th class="text-end"><?php echo format_currency($mr_total);?></th>
                                                     </tr>
 
                                                 <?php
@@ -445,11 +445,19 @@
         $(".search-btn").on('click', function() {
 
 $('#MaterialRequesitionReport').modal('show');
-});F
+});
 
 
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>

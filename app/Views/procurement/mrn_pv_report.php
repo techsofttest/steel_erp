@@ -237,7 +237,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -300,11 +300,11 @@
 
                                                             <td><?php echo $pur_order->mrn_delivery_note; ?></td>
 
-                                                            <td><?php $total_amt = 0;
+                                                            <td class="text-end"><?php $total_amt = 0;
                                                                 foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $total_amt += $orders->rnp_amount; ?>
                                                                 <?php }
-                                                                echo $total_amt;
+                                                                echo format_currency($total_amt);
                                                                 $total += $total_amt; ?></td>
 
 
@@ -313,38 +313,38 @@
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_amount;
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->rnp_amount);
                                                                     $mrn_total += $orders->rnp_amount; ?><br>
                                                                 <?php } ?></td>
 
 
                                                             <td><?php echo $pur_order->pv_vendor_inv; ?></td>
 
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
                                                                     <?php echo $orders->pvp_qty; ?><br>
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pvp_rate); ?><br>
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_amount;
+                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pvp_amount);
                                                                     $pvp_total += $orders->pvp_amount; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td>
+                                                            <td class="text-end">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
                                                                 $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
@@ -354,7 +354,7 @@
                                                                     $rnp_amount = $pur_order->product_orders[$i]->rnp_amount;
                                                                     $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount;
                                                                     $difference = $rnp_amount - $pvp_amount;
-                                                                    echo $difference . "<br>";
+                                                                    echo format_currency($difference) . "<br>";
 
                                                                     $balance += $difference;
                                                                 }
@@ -375,16 +375,16 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $mrn_total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($mrn_total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $pvp_total; ?></th>
-                                                        <th><?php echo $balance; ?></th>
+                                                        <th class="text-end"><?php echo format_currency( $pvp_total); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($balance); ?></th>
                                                     </tr>
                                                 <?php
                                                 } ?>
@@ -597,5 +597,13 @@
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>

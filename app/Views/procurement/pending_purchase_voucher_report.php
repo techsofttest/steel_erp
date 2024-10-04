@@ -221,7 +221,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -240,10 +240,10 @@
                                                     <th>Date</th>
                                                     <th>Purchase Order Ref</th>
                                                     <th>Vendor</th>
-                                                    <th>Amount</th>
-                                                    <th>Recieved</th>
-                                                    <th>Booked</th>
-                                                    <th>Balance</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">Recieved</th>
+                                                    <th class="text-end">Booked</th>
+                                                    <th class="text-end">Balance</th>
                                                 </tr>
                                             </thead>
 
@@ -262,22 +262,27 @@
                                                             <td><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_vouc->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
-                                                            </td>                                                            
+                                                            </td>
 
-                                                            <td><?php echo $pur_vouc->po_amount; $po_total += $pur_vouc->po_amount; ?></td>
+                                                            <td class="text-end"><?php echo format_currency($pur_vouc->po_amount);
+                                                                $po_total += $pur_vouc->po_amount; ?></td>
 
-                                                            <td><?php  $booked_note = 0; foreach ($pur_vouc->received_products as $notes) {
-                                                                   $booked_note += $notes->rnp_amount ;
-                                                                //   print_r($notes);
-                                                                }  echo $booked_note; $pv_booked += $booked_note;?></td>
+                                                            <td class="text-end"><?php $booked_note = 0;
+                                                                foreach ($pur_vouc->received_products as $notes) {
+                                                                    $booked_note += $notes->rnp_amount;
+                                                                    //   print_r($notes);
+                                                                }
+                                                                echo format_currency($booked_note);
+                                                                $pv_booked += $booked_note; ?></td>
 
-                                                            <td><?php echo $pur_vouc->pv_paid ?? 0; $pv_paid += $pur_vouc->pv_paid ?? 0;?></td>
+                                                            <td class="text-end"><?php echo format_currency($pur_vouc->pv_paid ?? 0);
+                                                                $pv_paid += $pur_vouc->pv_paid ?? 0; ?></td>
 
-                                                            <td><?php echo $booked_note - $pur_vouc->pv_paid;
-                                                                $balance += $booked_note - $pur_vouc->pv_paid; ?></td>
+                                                            <td class="text-end"><?php echo format_currency($pur_vouc->po_amount - $pur_vouc->pv_paid);
+                                                                $balance += $pur_vouc->po_amount - $pur_vouc->pv_paid; ?></td>
 
 
-                                                           
+
 
                                                         </tr>
 
@@ -289,10 +294,10 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $po_total; ?></th>
-                                                        <th><?php echo $pv_booked; ?></th>
-                                                        <th><?php echo $pv_paid; ?></th>
-                                                        <th><?php echo $balance; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($po_total); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pv_booked); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pv_paid); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($balance); ?></th>
                                                     </tr>
 
                                                 <?php
@@ -479,7 +484,7 @@
 
         $(".search-btn").on('click', function() {
 
-             $('#MaterialRequesitionReport').modal('show');
+            $('#MaterialRequesitionReport').modal('show');
         });
 
 
@@ -491,5 +496,13 @@
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>

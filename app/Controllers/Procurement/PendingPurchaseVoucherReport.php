@@ -303,7 +303,7 @@ class PendingPurchaseVoucherReport extends BaseController
                  } 
                 $total_booked += $booked_note;
 
-                $total_balance += $booked_note - $order_data->pv_paid;
+                $total_balance += $order_data->po_amount - $order_data->pv_paid;
 
                 $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
 
@@ -317,14 +317,14 @@ class PendingPurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->po_amount)."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$booked_note}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($booked_note)."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->pv_paid ?? 0)."</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_paid ?? 0)."</td>";
                 
 
-                $pdf_data .= "<td style='border-top: 2px solid'>" . ($booked_note - $order_data->pv_paid) . "</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . (format_currency($order_data->po_amount - $order_data->pv_paid)) . "</td>";
 
 
                 if ($q != 1) {
@@ -472,13 +472,13 @@ class PendingPurchaseVoucherReport extends BaseController
         
             <th align="left">Vendor</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Recieved</th>
+            <th align="right">Recieved</th>
 
-            <th align="left">Booked</th>
+            <th align="right">Booked</th>
 
-            <th align="left">Balance</th>
+            <th align="right">Balance</th>
         
             
             </tr>
@@ -490,10 +490,10 @@ class PendingPurchaseVoucherReport extends BaseController
                 <td style="border-top: 2px solid;">Total</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $total_amount . '</td>
-                <td style="border-top: 2px solid;">' . $total_booked. '</td>
-                <td style="border-top: 2px solid;">' . $total_recieved . '</td>
-                <td style="border-top: 2px solid;">' . $total_balance . '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_amount) . '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_booked). '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_recieved) . '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_balance) . '</td>
                 
             </tr>    
            

@@ -840,4 +840,22 @@ class ProcurementModel extends Model
         
         return $result;
     }
+
+
+        //Fetch All By Order
+
+        public function FetchWhereOrder($table,$cond,$order_key,$order)
+        {
+    
+            return $this->db
+            ->table($table)
+            ->where($cond)
+            ->select('*')
+            ->orderBy($order_key, $order)
+            ->get()
+            ->getResult();
+        }
+
+
+
 }

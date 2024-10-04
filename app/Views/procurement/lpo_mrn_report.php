@@ -238,7 +238,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -258,16 +258,16 @@
                                                     <th>Purchase Order Ref</th>
                                                     <th>Vendor</th>
                                                     <th>Sales Order Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>MRN Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th>Difference</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">Difference</th>
                                                 </tr>
 
                                             </thead>
@@ -295,46 +295,46 @@
                                                                     <?php echo $orders->so_reffer_no; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php $tot_amount += $pur_order->po_amount;
-                                                                echo $pur_order->po_amount; ?></td>
+                                                            <td class="text-end"><?php $tot_amount += $pur_order->po_amount;
+                                                                echo format_currency($pur_order->po_amount); ?></td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $mr_amount += $orders->pop_amount;
-                                                                    echo $orders->pop_amount; ?><br>
+                                                                    echo format_currency($orders->pop_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td>
+                                                            <td >
                                                                     <?php echo $pur_order->mrn_reffer; ?><br>
                                                                 </td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $po_amount += $orders->rnp_amount;
-                                                                    echo $orders->rnp_amount; ?><br>
+                                                                    echo format_currency($orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
-                                                                    echo $orders->pop_amount - $orders->rnp_amount; ?><br>
+                                                                    echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
                                                         </tr>
@@ -347,16 +347,16 @@
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $tot_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $mr_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($mr_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $po_amount; ?></th>
-                                                    <th><?php echo $difference; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($po_amount); ?></th>
+                                                    <th class="text-end"><?php echo format_currency($difference); ?></th>
                                                 <?php   } ?>
 
                                             </tbody>
@@ -565,5 +565,13 @@
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>

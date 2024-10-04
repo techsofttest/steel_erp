@@ -181,7 +181,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -203,7 +203,8 @@
                                                     <th>Sales Order Ref</th>
 
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
+                                                    <th  class="text-end">Quantity</th>
+                                                    <th></th>
 
                                                 </tr>
                                             </thead>
@@ -234,12 +235,12 @@
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->mrp_qty; ?><br>
                                                                 <?php } ?></td>
 
 
-
+                                                            <td></td>
                                                         </tr>
 
                                                 <?php $i++;
@@ -376,18 +377,9 @@
 
         /*form submit start*/
 
-        $(".submit_btn").on('click', function() {
+        $(".add_form").on('submit', function() {
 
-            /* $('#SalesQuotReport').modal("hide");
-
-             $('#add_form')[0].reset();
-
-             $('.customer_clz option').remove();
-
-             $('.executive_clz option').remove();
-
-             $('.product_clz option').remove();*/
-
+            $('#MaterialRequesitionReport').modal('hide');
 
         });
 
@@ -404,5 +396,13 @@
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>

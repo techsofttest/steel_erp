@@ -197,7 +197,7 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -217,11 +217,11 @@
                                                     <th>Purchase Order Ref</th>
                                                     <th>Vendor</th>
                                                     <th>Sales Order Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -244,22 +244,22 @@
                                                                     <?php echo $orders->so_reffer_no;  ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php echo $pur_order->po_amount;
+                                                            <td class="text-end"><?php echo format_currency($pur_order->po_amount);
                                                                 $total += $pur_order->po_amount; ?></td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_rate; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_amount;
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_amount);
                                                                     $po_total += $orders->pop_amount; ?><br>
                                                                 <?php } ?></td>
 
@@ -274,11 +274,11 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $po_total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($po_total); ?></th>
                                                     </tr>
 
                                                 <?php
@@ -442,5 +442,13 @@
         });
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
     });
 </script>
