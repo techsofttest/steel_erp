@@ -386,7 +386,6 @@ class SalesQuotReport extends BaseController
             $title = "SQR";
 
             $mpdf = new \Mpdf\Mpdf(
-
                 [
                     'format' => 'A3', // Set page size to A3
                     'margin_left' => 15,
