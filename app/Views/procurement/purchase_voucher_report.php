@@ -126,7 +126,7 @@
                                                                                     <select class="form-select " name="gl_account">
                                                                                         <option value="" selected disabled>Select GL</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
-                                                                                            <option value="<?php echo $charts->ca_id ?>"><?php echo $charts->ca_name; ?></option>
+                                                                                            <option value="<?php echo $charts->ca_customer ?>"><?php echo $charts->ca_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -270,7 +270,7 @@
 
                                                             <td><?php echo $pur_vouc->pv_purchase_order; ?></td>
 
-                                                            <td><?php echo $pur_vouc->mrn_reffer; ?></td>
+                                                            <td><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td>
 
                                                             <td class="text-end"><?php echo format_currency($pur_vouc->pv_total);
                                                                 $total += $pur_vouc->pv_total; ?> </td>

@@ -407,7 +407,7 @@ class ProcurementModel extends Model
     }
 
     
-    public function VoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
+    public function VoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $data5, $data5_col, $table, $joins, $group_by_col, $joins1)
     {
         $query = $this->db->table($table)
             ->select('*');
@@ -442,6 +442,10 @@ class ProcurementModel extends Model
 
         if (!empty($data4)) {
             $query->like($data4_col, $data4);
+        }
+
+        if (!empty($data5)) {
+            $query->like($data5_col, $data5);
         }
 
         if (!empty($join)) {
@@ -770,7 +774,7 @@ class ProcurementModel extends Model
     }
 
 
-    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
+    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col,  $table, $joins, $group_by_col, $joins1)
     {
         $query = $this->db->table($table)
             ->select('*');
@@ -800,12 +804,17 @@ class ProcurementModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
             $query->like($data4_col, $data4);
         }
+
+        // if (!empty($data5)) {
+        //     $query->like($data5_col, $data5);
+        // }
+
 
         if (!empty($join) && $group_by_col != '') {
             $query->groupBy($table . '.' . $group_by_col);

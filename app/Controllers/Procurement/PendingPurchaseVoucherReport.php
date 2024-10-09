@@ -196,18 +196,18 @@ class PendingPurchaseVoucherReport extends BaseController
             ),
         );
 
-        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', '', '', '', '', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
+        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
 
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {
-
+        
             // Fetch the associated MRN products
             $nrps = $this->common_model->FetchWhere('pro_material_received_note_prod', ['rnp_purchase_id' => $orders->po_id]);
-
+        
             // Create a copy of the $orders object
             $merged_order = $orders;
-
+        
             // Check if $nrps contains any products
             if (!empty($nrps)) {
                 // Append the fetched products as a sub-array called 'received_products'
@@ -216,13 +216,44 @@ class PendingPurchaseVoucherReport extends BaseController
                 // If no products are found, set 'received_products' as an empty array to avoid errors
                 $merged_order->received_products = [];
             }
-
+        
             // Append the merged order data to the $new_order array
             $new_order[] = $merged_order;
         }
-
+        
         // Update the data array with the merged orders
         $data['purchase_order'] = $new_order;
+        
+        if ($data5 != "" || $data2 != "") {
+            $filterdata = [];
+        
+            foreach ($data['purchase_order'] as $order) {
+                // Filter 'received_products' within each order based on $data5 or $data2
+                $filtered_received_products = $order->received_products;
+        
+                if ($data5 != "") {
+                    $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data5) {
+                        return $item->rnp_product_desc == $data5;
+                    });
+                }
+        
+                if ($data2 != "") {
+                    $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data2) {
+                        return $item->rnp_sales_order == $data2;
+                    });
+                }
+        
+                // If there are matching received products, update the order with them
+                if (!empty($filtered_received_products)) {
+                    $order->received_products = $filtered_received_products;
+                    $filterdata[] = $order;
+                }
+            }
+        
+            // Update the data array with the filtered orders
+            $data['purchase_order'] = $filterdata;
+        }
+        
 
 
         // echo '<pre>';

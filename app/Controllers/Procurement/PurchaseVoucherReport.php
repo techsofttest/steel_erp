@@ -232,7 +232,7 @@ class PurchaseVoucherReport extends BaseController
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec','','','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
+        $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data4,'pv_vendor_name',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
         
 
         
@@ -348,7 +348,7 @@ class PurchaseVoucherReport extends BaseController
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_purchase_order}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->mrn_reffer ?? '')."</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
 

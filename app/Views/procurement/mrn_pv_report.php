@@ -241,10 +241,10 @@
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -301,11 +301,11 @@
                                                             <td><?php echo $pur_order->mrn_delivery_note; ?></td>
 
                                                             <td class="text-end"><?php $total_amt = 0;
-                                                                foreach ($pur_order->product_orders as $orders) { ?>
+                                                                                    foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $total_amt += $orders->rnp_amount; ?>
                                                                 <?php }
-                                                                echo format_currency($total_amt);
-                                                                $total += $total_amt; ?></td>
+                                                                                    echo format_currency($total_amt);
+                                                                                    $total += $total_amt; ?></td>
 
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
@@ -314,52 +314,77 @@
 
 
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
+                                                                    <?php echo $orders->rnp_current_delivery ?? ''; ?><br>
                                                                 <?php } ?></td>
 
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
+                                                                    <?php echo format_currency($orders->pop_rate ?? 0); ?><br>
                                                                 <?php } ?></td>
 
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->rnp_amount);
-                                                                    $mrn_total += $orders->rnp_amount; ?><br>
+                                                                    <?php echo format_currency($orders->rnp_amount ?? 0);
+                                                                                        $mrn_total += $orders->rnp_amount ?? 0; ?><br>
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php echo $pur_order->pv_vendor_inv; ?></td>
+                                                            <td><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
 
-                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_qty; ?><br>
-                                                                <?php } ?></td>
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo $orders->pvp_qty ?? 0; ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo "0"; // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
 
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo format_currency($orders->pvp_rate ?? 0); ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
 
-                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pvp_rate); ?><br>
-                                                                <?php } ?></td>
-
-
-                                                            <td class="text-end"><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pvp_amount);
-                                                                    $pvp_total += $orders->pvp_amount; ?><br>
-                                                                <?php } ?></td>
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo format_currency($orders->pvp_amount ?? 0);
+                                                                        $pvp_total += $orders->pvp_amount ?? 0; ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
 
                                                             <td class="text-end">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
-                                                                $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
+                                                                if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
 
-                                                                // Loop through both arrays simultaneously
-                                                                for ($i = 0; $i < $count; $i++) {
-                                                                    $rnp_amount = $pur_order->product_orders[$i]->rnp_amount;
-                                                                    $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount;
-                                                                    $difference = $rnp_amount - $pvp_amount;
-                                                                    echo format_currency($difference) . "<br>";
-
-                                                                    $balance += $difference;
+                                                                    for ($i = 0; $i < $count; $i++) {
+                                                                        $rnp_amount = $pur_order->product_orders[$i]->rnp_amount ?? 0;
+                                                                        $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount ?? 0;
+                                                                        $difference = $rnp_amount - $pvp_amount;
+                                                                        echo format_currency($difference) . "<br>";
+                                                                        $balance += $difference;
+                                                                    }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle case when either array is not set
                                                                 }
                                                                 ?>
                                                             </td>
+
 
                                                         </tr>
 
@@ -383,7 +408,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th class="text-end"><?php echo format_currency( $pvp_total); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pvp_total); ?></th>
                                                         <th class="text-end"><?php echo format_currency($balance); ?></th>
                                                     </tr>
                                                 <?php
@@ -602,8 +627,42 @@
 
 <script>
     // Close modal when form is submitted
-    document.getElementById('add_form').addEventListener('submit', function (e) {
+    document.getElementById('add_form').addEventListener('submit', function(e) {
         // Close the modal after the form is submitted
         $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Purchase Voucher Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
     });
 </script>

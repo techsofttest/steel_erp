@@ -126,7 +126,7 @@
                                                                                     <select class="form-select " name="gl_account">
                                                                                         <option value="" selected disabled>Select GL</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
-                                                                                            <option value="<?php echo $charts->ca_id ?>"><?php echo $charts->ca_name; ?></option>
+                                                                                            <option value="<?php echo $charts->ca_customer ?>"><?php echo $charts->ca_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -225,10 +225,10 @@
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -382,7 +382,7 @@
                         $('#sales_order').prop('disabled', false); // Enable Sales Order dropdown
                         $('#sales_order').html('<option value="" selected disabled>Select Sales Order</option>'); // Reset Sales Order dropdown
                         $.each(response, function(index, salesOrder) {
-                            $('#sales_order').append('<option value="' + salesOrder.so_id + '">' + salesOrder.so_reffer_no + '</option>');
+                            $('#sales_order').append('<option value="' + salesOrder.so_reffer_no + '">' + salesOrder.so_reffer_no + '</option>');
                         });
                     }
                 });
@@ -505,4 +505,43 @@
         // Close the modal after the form is submitted
         $('#MaterialRequesitionReport').modal('hide');
     });
+</script>
+
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alert("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("Purchase Voucher Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            console.log("Failed to copy table.");
+        }
+    } catch (err) {
+        console.error("Error in copying table: ", err);
+    }
+});
+
+
+
 </script>
