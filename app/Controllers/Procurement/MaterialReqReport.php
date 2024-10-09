@@ -314,7 +314,7 @@ class MaterialReqReport extends BaseController
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
@@ -441,7 +441,7 @@ class MaterialReqReport extends BaseController
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="" style="text-align:right;">Quantity</th>
        
             
             </tr>

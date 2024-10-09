@@ -19,7 +19,7 @@
                                 <form method="GET" action="<?php echo base_url(); ?>Procurement/LPO_PVReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Order to Material Received Note Analysis </h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Order Note to Purchase Voucher Analysis </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -225,7 +225,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Material Received Note to Purchase Voucher Analysis </h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">View Purchase Order Note to Purchase Voucher Analysis </h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -238,14 +238,14 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -260,16 +260,16 @@
                                                     <th>MRN Ref</th>
                                                     <th>Sales Order Ref</th>
                                                     <th>Vendor Inv Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Vendor invoice Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th>Balance</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">Balance</th>
                                                 </tr>
                                             </thead>
 
@@ -295,60 +295,74 @@
 
 
                                                             <td><?php echo $pur_order->po_vendor_ref; ?></td>
-                                                            <td><?php echo $pur_order->po_amount;
-                                                                $tot_amount += $pur_order->po_amount; ?></td>
+                                                            <td class="text-end"><?php echo format_currency($pur_order->po_amount);
+                                                                                    $tot_amount += $pur_order->po_amount; ?></td>
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_amount;
-                                                                    $po_amount += $orders->pop_amount; ?><br>
+                                                            <td class="text-end"><?php $po_amt = 0; foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency(($orders->pop_amount ?? 0));
+                                                                                        $po_amount += $orders->pop_amount;
+                                                                                        $po_amt = $orders->pop_amount; ?><br>
                                                                 <?php } ?></td>
 
                                                             <td><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
 
-                                                            <td><?php if (isset($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                        <?php echo $orders->pvp_qty; ?><br>
+                                                            <td class="text-end"><?php if (isset($pur_order->voucher_prod)) {
+                                                                                        foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                                        <?php echo $orders->pvp_qty ?? 0; ?><br>
                                                                 <?php }
-                                                                } ?></td>
+                                                                                    } ?></td>
 
-                                                            <td><?php if (isset($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                        <?php echo $orders->pvp_rate; ?><br>
+                                                            <td class="text-end"><?php if (isset($pur_order->voucher_prod)) {
+                                                                                        foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                                        <?php echo format_currency($orders->pvp_rate ?? 0); ?><br>
                                                                 <?php }
-                                                                } ?></td>
+                                                                                    } ?></td>
 
-                                                            <td><?php if (isset($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                        <?php echo $orders->pvp_amount;
-                                                                        $pv_amount += $orders->pvp_amount; ?><br>
+                                                            <td class="text-end"><?php $voc_sum = 0;  if (isset($pur_order->voucher_prod)) {
+                                                                                       foreach ($pur_order->voucher_prod as $orders) { ?>
+                                                                        <?php echo format_currency($orders->pvp_amount ?? 0);
+                                                                                            $pv_amount += $orders->pvp_amount;
+                                                                                            $voc_sum += $orders->pvp_amount; ?><br>
                                                                 <?php }
-                                                                } ?></td>
+                                                                                    } ?></td>
 
-                                                            <td>
+                                                            <td class="text-end">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
-                                                                if (isset($pur_order->voucher_prod) && isset($pur_order->product_orders)) {
-                                                                    $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
+                                                                // if (isset($pur_order->voucher_prod) && isset($pur_order->product_orders)) {
+                                                                //     $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
 
-                                                                    // Loop through both arrays simultaneously
-                                                                    for ($i = 0; $i < $count; $i++) {
-                                                                        $pop_amount = $pur_order->product_orders[$i]->pop_amount;
-                                                                        $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount;
-                                                                        $difference = $pop_amount - $pvp_amount;
-                                                                        echo $difference . "<br>";
+                                                                //     // Loop through both arrays simultaneously
+                                                                //     for ($i = 0; $i < $count; $i++) {
+                                                                //         $pop_amount = $pur_order->product_orders[$i]->pop_amount ?? 0;
+                                                                //         $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount ?? 0;
+                                                                //         $difference = $pop_amount - $pvp_amount;
+                                                                //         echo format_currency($difference) . "<br>";
 
-                                                                        $balance += $difference;
-                                                                    }
-                                                                }
+                                                                //         $balance += $difference;
+                                                                //     }
+                                                                // } else {
+                                                                //     $count = count($pur_order->product_orders);
+                                                                    
+                                                                //     for ($i = 0; $i < $count; $i++) {
+                                                                //         $pop_amount = $pur_order->product_orders[$i]->pop_amount ?? 0;
+                                                                //         $difference = $pop_amount;
+                                                                //         echo format_currency($difference) . "<br>";
+
+                                                                //         $balance += $difference;
+                                                                //     }
+                                                                // }
+                                                                echo $po_amt - $voc_sum;
+                                                                $balance += $po_amt - $voc_sum;
                                                                 ?>
                                                             </td>
 
@@ -365,16 +379,16 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $tot_amount; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $po_amount; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($po_amount); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $pv_amount; ?></th>
-                                                        <th><?php echo $balance; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pv_amount); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($balance); ?></th>
                                                     </tr>
                                                 <?php } ?>
 
@@ -585,5 +599,47 @@
 
 
 
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Purchase Voucher Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
     });
 </script>

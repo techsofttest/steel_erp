@@ -181,14 +181,14 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -203,7 +203,8 @@
                                                     <th>Sales Order Ref</th>
 
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
+                                                    <th  class="text-end">Quantity</th>
+                                                    <th></th>
 
                                                 </tr>
                                             </thead>
@@ -234,12 +235,12 @@
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->mrp_qty; ?><br>
                                                                 <?php } ?></td>
 
 
-
+                                                            <td></td>
                                                         </tr>
 
                                                 <?php $i++;
@@ -376,18 +377,9 @@
 
         /*form submit start*/
 
-        $(".submit_btn").on('click', function() {
+        $(".add_form").on('submit', function() {
 
-            /* $('#SalesQuotReport').modal("hide");
-
-             $('#add_form')[0].reset();
-
-             $('.customer_clz option').remove();
-
-             $('.executive_clz option').remove();
-
-             $('.product_clz option').remove();*/
-
+            $('#MaterialRequesitionReport').modal('hide');
 
         });
 
@@ -405,4 +397,51 @@
 
 
     });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alert("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("Purchase Voucher Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            console.log("Failed to copy table.");
+        }
+    } catch (err) {
+        console.error("Error in copying table: ", err);
+    }
+});
+
+
+
 </script>

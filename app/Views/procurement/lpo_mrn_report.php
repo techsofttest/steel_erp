@@ -238,14 +238,14 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
-
+<!-- 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -258,16 +258,16 @@
                                                     <th>Purchase Order Ref</th>
                                                     <th>Vendor</th>
                                                     <th>Sales Order Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>MRN Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th>Difference</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">Difference</th>
                                                 </tr>
 
                                             </thead>
@@ -295,46 +295,46 @@
                                                                     <?php echo $orders->so_reffer_no; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php $tot_amount += $pur_order->po_amount;
-                                                                echo $pur_order->po_amount; ?></td>
+                                                            <td class="text-end"><?php $tot_amount += $pur_order->po_amount;
+                                                                echo format_currency($pur_order->po_amount); ?></td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $mr_amount += $orders->pop_amount;
-                                                                    echo $orders->pop_amount; ?><br>
+                                                                    echo format_currency($orders->pop_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td>
+                                                            <td >
                                                                     <?php echo $pur_order->mrn_reffer; ?><br>
                                                                 </td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $po_amount += $orders->rnp_amount;
-                                                                    echo $orders->rnp_amount; ?><br>
+                                                                    echo format_currency($orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
-                                                                    echo $orders->pop_amount - $orders->rnp_amount; ?><br>
+                                                                    echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
                                                         </tr>
@@ -347,16 +347,16 @@
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $tot_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $mr_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($mr_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $po_amount; ?></th>
-                                                    <th><?php echo $difference; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($po_amount); ?></th>
+                                                    <th class="text-end"><?php echo format_currency($difference); ?></th>
                                                 <?php   } ?>
 
                                             </tbody>
@@ -566,4 +566,50 @@
 
 
     });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alert("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("Purchase Voucher Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            console.log("Failed to copy table.");
+        }
+    } catch (err) {
+        console.error("Error in copying table: ", err);
+    }
+});
+
+
+
 </script>

@@ -234,10 +234,11 @@ class MRN_PVReport extends BaseController
             $mrns = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_mrn' => $orders->mrn_id]);
 
 
-            $pvps = $this->common_model->FetchWhere('pro_purchase_voucher_prod', ['pvp_reffer_id' => $mrns->pv_id]);
+            if (!empty($mrns)) {
+                $pvps = $this->common_model->FetchWhere('pro_purchase_voucher_prod', ['pvp_reffer_id' => $mrns->pv_id]);
 
-            $mrns->voucher_prod = $pvps;
-
+                $mrns->voucher_prod = $pvps;
+            }
             // Merge the $orders and $mrns arrays, then cast the result back to an object
             $new_order[] = (object) array_merge((array)$orders, (array)$mrns);
         }
@@ -378,7 +379,7 @@ class MRN_PVReport extends BaseController
 
                 // ===========================
                 $product_orders = $order_data->product_orders;
-                $voucher_prod = $order_data->voucher_prod;
+                $voucher_prod = $order_data->voucher_prod ?? [];
 
                 $product_details = [];
                 $max_count = max(count($product_orders), count($voucher_prod));
@@ -405,17 +406,17 @@ class MRN_PVReport extends BaseController
                 }
 
                 // Result is in $merged_product_details
-            // =========================
+                // =========================
 
                 // echo '<pre>';
                 // print_r($order_data);
-                
+
                 $mrn_amount = 0;
 
                 foreach ($product_details as $prod_del) {
                     $mrn_amount += $prod_del->rnp_amount ?? 0;
                 }
- 
+
 
                 $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->mrn_vendor_name]);
 
@@ -474,16 +475,16 @@ class MRN_PVReport extends BaseController
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>{$mrn_amount}</td>";
+                        $pdf_data .= "'>" . format_currency($mrn_amount) . "</td>";
                         $total_amount += $mrn_amount;
-                    }else{
+                    } else {
                         $pdf_data .= "'></td>";
                     }
-                   
+
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
@@ -492,26 +493,26 @@ class MRN_PVReport extends BaseController
                     }
                     $pdf_data .= "'>" . ($prod_del->product_details ?? '') . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? '') . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pop_rate ?? '') . "</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_rate ?? 0) . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_amount ?? 0) . "</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->rnp_amount ?? 0) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
 
@@ -520,41 +521,41 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$order_data->pv_vendor_inv}</td>";
+                    $pdf_data .= "'>". ($order_data->pv_vendor_inv ?? '') ."</td>";
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_qty ?? '') . "</td>";
+                    $pdf_data .= "'>" . ($prod_del->pvp_qty ?? 0) . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_rate ?? '') . "</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pvp_rate ?? 0) . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_amount ?? 0) . "</td>";
-                    $pvp_amt += $prod_del->pvp_amount ?? 0 ;
+                    $pdf_data .= "'>" . format_currency($prod_del->pvp_amount ?? 0) . "</td>";
+                    $pvp_amt += $prod_del->pvp_amount ?? 0;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_amount - $prod_del->pvp_amount ) . "</td>";
-                    $diff_amt += $prod_del->rnp_amount - $prod_del->pvp_amount ;
+                    $pdf_data .= "'>" . format_currency( ($prod_del->rnp_amount ?? 0) - ($prod_del->pvp_amount ?? 0) ) . "</td>";
+                    $diff_amt += ($prod_del->rnp_amount ?? 0) - ($prod_del->pvp_amount ?? 0);
 
 
 
@@ -677,25 +678,25 @@ class MRN_PVReport extends BaseController
             
                 <th align="left">Vendor DN Ref</th>
     
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
 
                 <th align="left">Product</th>
     
-                <th align="left">Quantity</th>
+                <th align="right">Quantity</th>
     
-                <th align="left">Rate</th>
+                <th align="right">Rate</th>
     
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
     
                 <th align="left">Vendor Invoice Ref</th>
     
-                <th align="left">Quantity</th>
+                <th align="right">Quantity</th>
             
-                <th align="left">Rate</th>
+                <th align="right">Rate</th>
                 
-                <th align="left">Amount</th>
+                <th align="right">Amount</th>
     
-                <th align="left">Difference</th>
+                <th align="right">Difference</th>
     
                 </tr>
     
@@ -709,16 +710,16 @@ class MRN_PVReport extends BaseController
                     <td style="border-top: 2px solid;"></td>   
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>               
-                    <td style="border-top: 2px solid;">' .  $total_amount . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' . format_currency($total_amount) . '</td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
-                    <td style="border-top: 2px solid;">' . $pvp_amt . '</td>
-                    <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                    <td style="border-top: 2px solid;text-align:right;">' . format_currency($pvp_amt) . '</td>
+                    <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                     
                 </tr>    
                

@@ -198,14 +198,14 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -219,11 +219,11 @@
                                                     <th>Vendor</th>
                                                     <th>Purchase Order</th>
                                                     <th>Vendor DN Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -249,26 +249,26 @@
 
                                                             <td><?php echo $material_req->mrn_delivery_note; ?></td>
 
-                                                            <td><?php $tot_amt = 0;
+                                                            <td class="text-end"><?php $tot_amt = 0;
                                                                 foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php $tot_amt += $orders->rnp_amount; ?>
                                                                 <?php }
-                                                                echo $tot_amt;
+                                                                echo format_currency($tot_amt);
                                                                 $total += $tot_amt; ?> </td>
 
                                                             <td><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_amount;
+                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->rnp_amount);
                                                                     $mr_total += $orders->rnp_amount ?><br>
                                                                 <?php } ?></td>
 
@@ -283,11 +283,11 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total;?></th>
+                                                        <th class="text-end"><?php echo format_currency($total);?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $mr_total;?></th>
+                                                        <th class="text-end"><?php echo format_currency($mr_total);?></th>
                                                     </tr>
 
                                                 <?php
@@ -445,11 +445,58 @@
         $(".search-btn").on('click', function() {
 
 $('#MaterialRequesitionReport').modal('show');
-});F
+});
 
 
 
 
 
     });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alert("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("Purchase Voucher Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            console.log("Failed to copy table.");
+        }
+    } catch (err) {
+        console.error("Error in copying table: ", err);
+    }
+});
+
+
+
 </script>

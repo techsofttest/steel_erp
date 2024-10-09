@@ -126,7 +126,7 @@
                                                                                     <select class="form-select " name="gl_account">
                                                                                         <option value="" selected disabled>Select GL</option>
                                                                                         <?php foreach ($chart_acc as $charts) { ?>
-                                                                                            <option value="<?php echo $charts->ca_id ?>"><?php echo $charts->ca_name; ?></option>
+                                                                                            <option value="<?php echo $charts->ca_customer ?>"><?php echo $charts->ca_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -221,14 +221,14 @@
                                         </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank"> -->
+                                            <!-- <input type="hidden" name="email" value="1"> -->
+                                            <button class="email_button report_button" type="button" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
@@ -242,12 +242,12 @@
                                                     <th>Vendor</th>
                                                     <th>Purchase Order Ref</th>
                                                     <th>MRN Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Discount</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Discount</th>
+                                                    <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -270,27 +270,27 @@
 
                                                             <td><?php echo $pur_vouc->pv_purchase_order; ?></td>
 
-                                                            <td><?php echo $pur_vouc->mrn_reffer; ?></td>
+                                                            <td><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td>
 
-                                                            <td><?php echo $pur_vouc->pv_total;
+                                                            <td class="text-end"><?php echo format_currency($pur_vouc->pv_total);
                                                                 $total += $pur_vouc->pv_total; ?> </td>
 
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                            <td ><?php foreach ($pur_vouc->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pvp_prod_dec; ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pvp_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pvp_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pvp_rate); ?><br>
                                                                 <?php } ?></td>
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pvp_discount; ?>%<br>
+                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pvp_discount); ?>%<br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pvp_amount;
+                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pvp_amount);
                                                                     $pv_total += $orders->pvp_amount; ?><br>
                                                                 <?php } ?></td>
 
@@ -306,12 +306,12 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $pv_total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pv_total); ?></th>
                                                     </tr>
 
                                                 <?php
@@ -525,4 +525,54 @@
 
 
     });
+</script>
+
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function (e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alert("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("Purchase Voucher Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            console.log("Failed to copy table.");
+        }
+    } catch (err) {
+        console.error("Error in copying table: ", err);
+    }
+});
+
+
+
 </script>

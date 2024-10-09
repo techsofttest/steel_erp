@@ -310,7 +310,7 @@ class MaterialRecReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_delivery_note}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$mrn_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid; text-align:right'>".(format_currency($mrn_amount))."</td>";
                 
                 
                 if($q!=1){
@@ -345,26 +345,26 @@ class MaterialRecReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->rnp_current_delivery}</td>";
+                    $pdf_data .= "'>".($prod_del->rnp_current_delivery)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_rate))."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->rnp_amount}</td>";                  
+                    $pdf_data .= "'>".(format_currency($prod_del->rnp_amount))."</td>";                  
 
                     if($q!=1)
                     {
@@ -495,15 +495,15 @@ class MaterialRecReport extends BaseController
 
             <th align="left">Vendor DN Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -517,11 +517,11 @@ class MaterialRecReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$mrn_tot.'</td>
+                <td style="border-top: 2px solid;text-align:right;">'.(format_currency($mrn_tot)).'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right;">'.(format_currency($total_amount)).'</td>
                 
             </tr>    
            

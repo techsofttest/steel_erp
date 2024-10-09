@@ -346,13 +346,13 @@ class PurchaseOrderReport extends BaseController
                     $pdf_data .= "'>".($prod_del->so_reffer_no ?? '' )."</td>";
 
                     
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     if ($q == 1) {
-                    $pdf_data .= "'>{$order_data->po_amount}</td>";
+                    $pdf_data .= "'>".(format_currency($order_data->po_amount))."</td>";
                     }else{
                         $pdf_data .= "'></td>";
                     }
@@ -364,26 +364,26 @@ class PurchaseOrderReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pop_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pop_rate}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_amount}</td>";
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_amount))."</td>";
                     $pop_total += $prod_del->pop_amount;
 
                     
@@ -514,15 +514,15 @@ class PurchaseOrderReport extends BaseController
         
             <th align="left">Sales Order Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -535,11 +535,11 @@ class PurchaseOrderReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right">'.format_currency($total_amount).'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right">'.format_currency($total_amount).'</td>
                 
             </tr>    
            
