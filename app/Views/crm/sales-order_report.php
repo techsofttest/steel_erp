@@ -3,18 +3,20 @@
 .divcontainer {
   overflow-x: scroll;
   overflow-y: auto;
-  transform: rotateX(180deg);
+  /* transform: rotateX(180deg); */
 }
 
 .divcontainer table {
-  transform: rotateX(180deg);
+  /* transform: rotateX(180deg); */
 }
 
 .table-responsive {
   width: 100%;
-  display: block overflow-x: scroll;
+  display: block; overflow-x: scroll;
 }
-
+#DataTable td{
+    line-height:2.3;
+}
 </style>
 
 
@@ -204,41 +206,41 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-15%">Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                         <form method="POST"  target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit"  class="pdf_button report_button" >PDF</button>
                                         </form>
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
                                             <button class="excel_button report_button" type="submit">Excel</button>
-                                        </form>
+                                        <!-- </form> -->
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:auto;">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;max-height:80vh">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort" style="white-space: nowrap">Sl no</th>
-                                                    <th style="white-space: nowrap">Date</th>
-                                                    <th style="white-space: nowrap">Sales Order Ref</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap" >Date</th>
+                                                    <th class="text-center" style="white-space: nowrap">Sales Order Ref</th>
                                                     <th style="white-space: nowrap">Customer</th>
-                                                    <th style="white-space: nowrap">LPO Ref</th>
-                                                    <th style="white-space: nowrap">Sales Executive</th>
+                                                    <th class="text-center" style="white-space: nowrap">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap">Sales Executive</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
                                                     <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap">Quantity</th>
+                                                    <th class="text-center" style="white-space: nowrap">Quantity</th>
                                                     <th style="white-space: nowrap" class="text-end">Rate</th>
                                                     <th style="white-space: nowrap">Discount</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
@@ -258,12 +260,12 @@
                                                     ?> 
                                                     
                                                     <tr>
-                                                        <td><?php echo $i;?></td>
-                                                        <td style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td class="text-center"><?php echo $i;?></td>
+                                                        <td class="text-center" style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td class="text-center" style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                         <td style="white-space: nowrap"><?php echo $sales_order->cc_customer_name;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
-                                                        <td style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
+                                                        <td class="text-center" style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
+                                                        <td class="text-center" style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
                                                         <?php $total_amount = $sales_order->so_amount_total + $total_amount ;?>
                                                         <td style="white-space: nowrap" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
                                                         <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
@@ -272,7 +274,7 @@
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td style="white-space: nowrap">
+                                                        <td class="text-center" style="white-space: nowrap">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->spd_quantity;?></br>
                                                             <?php } ?>
@@ -287,7 +289,7 @@
 
                                                         <td style="white-space: nowrap">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_discount;?></br>
+                                                                <?php echo format_currency($sales_prod->spd_discount);?></br>
                                                             <?php } ?>
                                                         </td>
 
@@ -472,14 +474,136 @@
 
        
 
+        $(document).ready(function() {
+            $(".excel_button").click(
+                function() {
+                    tableToExcel('DataTable', 'Sales Order Report', 'Sales Order Report');
+                }
+            );
+        })
 
+        function getIEVersion()
+        // Returns the version of Windows Internet Explorer or a -1
+        // (indicating the use of another browser).
+        {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
+        }
+
+
+
+
+
+
+        function tableToExcel(table, sheetName, fileName) {
+
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+                return fnExcelReport(table, fileName);
+            }
+
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64Conversion = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                },
+                formatExcelData = function(s, c) {
+                    return s.replace(/{(\w+)}/g, function(m, p) {
+                        return c[p];
+                    })
+                }
+
+            $("tbody > tr[data-level='0']").show();
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            var ctx = {
+                worksheet: sheetName || 'Worksheet',
+                table: table.innerHTML
+            }
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
+            element.setAttribute('download', fileName);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+
+            $("tbody > tr[data-level='0']").hide();
+        }
+
+        function fnExcelReport(table, fileName) {
+
+            var tab_text = "<table border='2px'>";
+            var textRange;
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            $("tbody > tr[data-level='0']").show();
+            tab_text = tab_text + table.innerHTML;
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
+            $("tbody > tr[data-level='0']").hide();
+            return (sa);
+
+        }
 
     });
-
-
-
-
-
 </script>
 
 
+
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Sales Order Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
+    });
+</script>

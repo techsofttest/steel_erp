@@ -65,8 +65,6 @@
                         <!--edit vendor modal end-->
 
 
-
-
                          
                         <!--view vendor modal start-->
 
