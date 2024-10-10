@@ -261,11 +261,9 @@
 
                                                                     <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id=""  >
+                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id="">
                                                                             
                                                                             <option value="" selected="" disabled="">Select Purchase Order</option>
-
-                                                                           
 
                                                                         </select>
 

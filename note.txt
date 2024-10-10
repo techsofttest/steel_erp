@@ -43,4 +43,6 @@ pending
 purchase voucher - delete - status not change in material received note
  
 purchase voucher edit not done 
+
+check purchase voucher deeply
    
