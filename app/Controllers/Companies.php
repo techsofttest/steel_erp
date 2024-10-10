@@ -3,32 +3,27 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-//use CodeIgniter\HTTP\RequestInterface;
-//use CodeIgniter\HTTP\ResponseInterface;
-//use Psr\Log\LoggerInterface;
 
 class Companies extends BaseController
 {
 
     public function __construct()
     {
-        $this->checkSession();
-
+       
         // Check if the user is not logged in
         if (!session()->get('admin_login')) {
             // Redirect to the login page if not logged in
             return redirect()->to('Login');
         }
 
+        if (session()->get('admin_role')!= 1) {
+            // Redirect to the login page if not logged in
+            return redirect()->to('Login');
+        }
+
     }
 
-    protected function checkSession()
-    {
-        if (!session()->get('loggedIn')) {
-            return redirect()->to('/login');
-        }
-        
-    }
+
 
 
     
@@ -37,15 +32,34 @@ class Companies extends BaseController
     public function index()
     {
 
-        $this->dash_model = new \App\Models\DashboardModel();
+        $data['companies'] = $this->common_model->FetchAll('users');
 
-        $data['companies'] = $this->common_model->FetchAll('master_companies');
+        return view('companies',$data);
 
-        print_r($data['companies']);
+    }
 
-        exit;
 
-        return view('index',$data);
+    public function ChangePassword()
+    {
+
+        if($this->request->getPost('user_id') != session()->get('admin_id'))
+
+        {
+
+        $cond = array('user_id' => $this->request->getPost('user_id'));
+        
+        $update_data['user_password'] = sha1($this->request->getPost('user_password')); 
+
+        // Check if the 'account_id' key exists before unsetting it
+        if (array_key_exists('user_id', $update_data)) 
+        {
+             unset($update_data['user_id']);
+        }       
+
+        $this->common_model->EditData($update_data,$cond,'users');
+
+        }
+
 
     }
 

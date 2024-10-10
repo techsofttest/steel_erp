@@ -150,7 +150,7 @@
     <!--alertify css-->
     <script src="<?php echo base_url(); ?>public/assets/js/alertify.min.js"></script> 
     
-    <script>alertify.set('notifier','position', 'bottom-center');</script>
+    <script>alertify.set('notifier','position', 'top-center');</script>
 
     <?php
     

@@ -54,6 +54,7 @@ class Auth extends BaseController
             if($user)
             { 
                 $admin_data = [
+                    'admin_name'    => $user->first_name." ".$user->last_name,
                     'admin_username'=> $user->user_name,
                     'admin_id'      => $user->user_id,
                     'admin_role'    => $user->user_role,
@@ -94,6 +95,7 @@ class Auth extends BaseController
             'admin_role',
             'admin_company',
             'admin_login',
+            'admin_name'
         ];
 
         $this->session->remove($admin_data);

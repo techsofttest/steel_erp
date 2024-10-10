@@ -544,8 +544,8 @@ $query .= "UNION ALL
         {$cash_invoice_table}.ci_reffer_no AS reference,
         {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
         {$cash_invoice_table}.ci_date AS transaction_date,
-        NULL AS credit_amount,
-        {$cash_invoice_table}.ci_total_amount AS debit_amount,
+        {$cash_invoice_table}.ci_total_amount AS credit_amount,
+        NULL AS debit_amount,
         'Cash Invoice' as voucher_type,
         {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
         {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
@@ -735,8 +735,8 @@ $query .= "UNION ALL
     {$credit_invoice_table}.cci_reffer_no AS reference,
     {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
     {$credit_invoice_table}.cci_date AS transaction_date,
-    NULL AS credit_amount,
-    {$credit_invoice_table}.cci_total_amount AS debit_amount,
+    {$credit_invoice_table}.cci_total_amount AS credit_amount,
+    NULL AS debit_amount,
     'Credit Invoice' as voucher_type,
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
@@ -1031,10 +1031,11 @@ $query .= "UNION ALL
     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
     FROM {$sr_table}
 
-LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name = {$sr_table}.sr_credit_account
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$sr_table}.sr_customer
 LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
 LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
- ";
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_name = {$sr_table}.sr_credit_account
+";
 
 if(!empty($time_frame) || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to))
 {
@@ -1075,7 +1076,104 @@ $query .= "AND ";
 }
 
 //$query .= "{$credit_invoice_table}.cci_credit_account = {$account} ";
-$query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+//$query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+
+$query .= "ca_credit_account.ca_id = {$account} ";
+
+
+}
+
+if($range_from !="")
+{
+
+if ($account_head != "" || $account_type != "" || $time_frame != "") {
+$query .= "AND ";
+}
+
+$query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id >= {$range_from} ";
+
+}
+
+if($range_to !="")
+{
+
+if ($account_head != "" || $account_type != "" || $time_frame != "" || $range_from !="") {
+$query .= "AND ";
+}
+
+$query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_to} ";
+
+}
+
+
+$query .= ")";
+
+
+
+//Sales Return Debit
+
+
+$query .= "UNION ALL 
+(SELECT 
+    {$sr_table}.sr_id AS id,
+    {$sr_table}.sr_reffer_no AS reference,
+    {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
+    {$sr_table}.sr_date AS transaction_date,
+    NULL AS credit_amount,
+    {$sr_table}.sr_total AS debit_amount,
+    'Sales Return' as voucher_type,
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+    FROM {$sr_table}
+
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name = {$sr_table}.sr_credit_account
+LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
+LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_customer = {$sr_table}.sr_customer
+";
+
+if(!empty($time_frame) || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to))
+{
+
+$query .= "WHERE ";
+
+}
+
+if ($time_frame != "") {
+if ($time_frame == "Range") {
+if ($date_from != "") {
+    $query .= "{$sr_table}.sr_date >= '{$date_from}' ";
+}
+
+if ($date_to != "") {
+    if ($date_from != "") {
+        $query .= "AND ";
+    }
+    $query .= "{$sr_table}.sr_date <= '{$date_to}' ";
+}
+} elseif ($time_frame == "Month") {
+$query .= "YEAR({$sr_table}.sr_date = YEAR(CURRENT_DATE()) AND MONTH({$sr_table}.sr_date) = MONTH(CURRENT_DATE()) ";
+} elseif ($time_frame == "Year") {
+$query .= "YEAR({$sr_table}.sr_date) = YEAR(CURRENT_DATE())";
+}
+}
+
+if ($account_head != "") {
+if ($time_frame != "" || $date_from != "" || $date_to != "") {
+$query .= "AND ";
+}
+$query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
+}
+
+if ($account != "") {
+if ($account_head != "" || $account_type != "" || $time_frame != "" || $date_from != "" || $date_to != "") {
+$query .= "AND ";
+}
+
+//$query .= "{$credit_invoice_table}.cci_credit_account = {$account} ";
+//$query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+
+$query .= "ca_credit_account.ca_id = {$account} ";
 
 }
 
@@ -1548,15 +1646,15 @@ $query .= "UNION ALL
 {$receipt_table}.r_ref_no AS reference, 
 {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
 {$receipt_table}.r_date AS transaction_date,
-{$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS credit_amount,
-NULL AS debit_amount,
+NULL AS credit_amount,
+{$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS debit_amount,
 'Receipt' as voucher_type,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
 FROM {$this->db->getPrefix()}accounts_receipts
 LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt = {$receipt_table}.r_id 
 LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice = {$this->db->getPrefix()}accounts_receipt_invoices.ri_id
-LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$this->db->getPrefix()}accounts_receipts.r_debit_account
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_credit_account
 LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS credit_account_receipt ON credit_account_receipt.ca_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_credit_account
 LEFT JOIN {$this->db->getPrefix()}crm_customer_creation ON {$this->db->getPrefix()}crm_customer_creation.cc_id = credit_account_receipt.ca_customer
 LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = credit_account_receipt.ca_account_type
@@ -1998,6 +2096,8 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
                     $query .= "AND ";
                 }
                 $query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
+
+
             }
         
             if ($account != "") {

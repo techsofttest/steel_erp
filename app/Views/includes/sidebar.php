@@ -93,20 +93,33 @@
 						
 						    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-components">Pages</span></li>
 
-                       
+
+                            <?php  
+                            if(session()->get('admin_role')==1)
+
+                            {
+
+                            ?>
+
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#" >
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Companies") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Companies" >
                                     <i class="ri-layout-grid-line"></i> <span data-key="t-company">Company</span>
                                 </a>
                                 
                             </li>
 
+                            <?php } ?>
+
+                            
+
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#">
+                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Executives") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Executives">
                                     <i class="ri-file-list-3-line"></i> <span data-key="t-executives">Executives</span>
                                 </a>
                                 
                             </li>
+
+
 
                             <li class="nav-item">
                                 <a onclick="return confirm('Are you sure you want to logout?')" class="nav-link menu-link" href="<?= base_url(); ?>Logout" >
