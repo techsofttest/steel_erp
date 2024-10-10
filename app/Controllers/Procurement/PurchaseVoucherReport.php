@@ -232,7 +232,7 @@ class PurchaseVoucherReport extends BaseController
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
         
-        $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec','','','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
+        $data['purchase_order'] = $this->pro_model->VoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec',$data4,'pv_vendor_name',$data3,'pv_purchase_order','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
         
 
         
@@ -348,9 +348,9 @@ class PurchaseVoucherReport extends BaseController
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_purchase_order}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->mrn_reffer ?? '')."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_total}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
 
 
                 
@@ -390,26 +390,26 @@ class PurchaseVoucherReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pvp_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pvp_rate}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pvp_rate)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pvp_amount}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pvp_amount)."</td>";
                     $pop_total += $prod_del->pvp_amount;
 
                     
@@ -542,15 +542,15 @@ class PurchaseVoucherReport extends BaseController
 
              <th align="left">MRN Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -564,11 +564,11 @@ class PurchaseVoucherReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right;">'.format_currency($total_amount).'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;text-align:right; ">'.format_currency($total_amount).'</td>
                 
             </tr>    
            

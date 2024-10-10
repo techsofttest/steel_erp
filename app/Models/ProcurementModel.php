@@ -138,6 +138,38 @@ class ProcurementModel extends Model
         //->get()
         //->getResult();
     }
+    
+    //purchase voucher own query
+    public function PurchaseVoucher($table,$joins,$vendorId){
+           
+        $query= $this->db
+        ->table($table)
+        ->select('*')
+        ->where('mrn_status',0)
+        ->where('mrn_vendor_name',$vendorId);
+        if(!empty($joins))
+        foreach($joins as $join)
+        {
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+        }
+       
+
+        $query->groupBy('pro_material_received_note' . '.' . 'mrn_purchase_order');
+
+        $result = $query->get()->getResult();
+
+
+       // echo $this->db->getLastQuery(); exit();
+
+        
+
+        return $result;
+
+        //->get()
+        //->getResult();
+    }
+
+
 
         // NewAddition
         public function FixedAssetBalance($account)
@@ -407,7 +439,7 @@ class ProcurementModel extends Model
     }
 
     
-    public function VoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
+    public function VoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $data5, $data5_col, $table, $joins, $group_by_col, $joins1)
     {
         $query = $this->db->table($table)
             ->select('*');
@@ -442,6 +474,10 @@ class ProcurementModel extends Model
 
         if (!empty($data4)) {
             $query->like($data4_col, $data4);
+        }
+
+        if (!empty($data5)) {
+            $query->like($data5_col, $data5);
         }
 
         if (!empty($join)) {
@@ -591,6 +627,7 @@ class ProcurementModel extends Model
             $query->groupBy($table . '.' . $group_by_col);
         }
 
+        //$query->groupBy('crm_sales_orders.so_id');
 
         $result = $query->get()->getResult();
 
@@ -599,22 +636,26 @@ class ProcurementModel extends Model
 
         //return $result;
 
-        $i = 0;
-        foreach ($result as $res) {
-            $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
+        // $i = 0;
+        // foreach ($result as $res) {
+        //     $cond_user = ['pop_purchase_order' => $res->pop_purchase_order];
         
-            // Create the query using the Query Builder
-            $query = $this->db->table($table)->where($cond_user); 
+        //     // Create the query using the Query Builder
+        //     $query = $this->db->table($table)
+        //     ->where($cond_user)
+        //     ->groupBy('pop_id') // This should work as expected
+        //     ->get();
+
         
-            // Echo the compiled select query without executing it
+        //     // Echo the compiled select query without executing it
 
-            $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
+        //     $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
 
-            // echo $this->db->getLastQuery();  // Will show the query without executing it
-            // exit;
+        //     // echo $this->db->getLastQuery();  // Will show the query without executing it
+        //     // exit;
 
-            $i++;
-        }
+        //     $i++;
+        // }
         
         
         return $result;
@@ -765,7 +806,7 @@ class ProcurementModel extends Model
     }
 
 
-    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
+    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col,  $table, $joins, $group_by_col, $joins1)
     {
         $query = $this->db->table($table)
             ->select('*');
@@ -795,18 +836,23 @@ class ProcurementModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
             $query->like($data4_col, $data4);
         }
 
-        if (!empty($join)) {
+        // if (!empty($data5)) {
+        //     $query->like($data5_col, $data5);
+        // }
+
+
+        if (!empty($join) && $group_by_col != '') {
             $query->groupBy($table . '.' . $group_by_col);
         }
 
-        $query->whereIn('pv_status', [0,1]);
+        // $query->whereIn('pv_status', [0,1]);
 
         $result = $query->get()->getResult();
 
@@ -815,25 +861,42 @@ class ProcurementModel extends Model
 
         //return $result;
 
-        $i = 0;
-        foreach ($result as $res) {
-            $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
+        // $i = 0;
+        // foreach ($result as $res) {
+        //     $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
         
-            // Create the query using the Query Builder
-            $query = $this->db->table($table)->where($cond_user); 
+        //     // Create the query using the Query Builder
+        //     $query = $this->db->table($table)->where($cond_user); 
         
-            // Echo the compiled select query without executing it
+        //     // Echo the compiled select query without executing it
 
-            $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
+        //     $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
 
-            // echo $this->db->getLastQuery();  // Will show the query without executing it
-            // exit;
+        //     // echo $this->db->getLastQuery();  // Will show the query without executing it
+        //     // exit;
 
-            $i++;
-        }
+        //     $i++;
+        // }
         
         
         return $result;
     }
+
+
+        //Fetch All By Order
+
+        public function FetchWhereOrder($table,$cond,$order_key,$order)
+        {
+    
+            return $this->db
+            ->table($table)
+            ->where($cond)
+            ->select('*')
+            ->orderBy($order_key, $order)
+            ->get()
+            ->getResult();
+        }
+
+
 
 }

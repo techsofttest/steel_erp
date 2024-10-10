@@ -3002,6 +3002,7 @@
         });
 
         
+       
 
 
 
@@ -3032,6 +3033,10 @@
             var orginalPrice = multipliedTotal - per_amount;
 
             var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+            //var formatted = formatCurrency(orginalPrice);
+
+            currency_format(orginalPrice);
 
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 

@@ -120,7 +120,13 @@ class PurchaseVoucher extends BaseController
     //view page
     public function index()
     {    
-        //$data['material_received']   = $this->common_model->FetchAllOrder('pro_material_received_note','mrn_id','desc');       
+        $data['sales_orders']   = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');   
+
+        $data['debit_accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');    
+
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');    
+            
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $join =  array(
             
@@ -133,7 +139,11 @@ class PurchaseVoucher extends BaseController
          
         );
 
-        $data['material_received']   = $this->pro_model->FetchAllOrderJoin('pro_material_received_note','mrn_id','desc',$join,'mrn_purchase_order',array('mrn_status' => 0));       
+        //$data['material_received']   = $this->pro_model->FetchAllOrderJoin('pro_material_received_note','mrn_id','desc',$join,'mrn_purchase_order',array('mrn_status' => 0));   
+        
+       // $data['material_received']   = $this->pro_model->PurchaseVoucher('pro_material_received_note',$join); 
+
+       
         
         $data['content'] = view('procurement/purchase-voucher',$data);
 
@@ -146,11 +156,23 @@ class PurchaseVoucher extends BaseController
     Public function Add()
     {   
         
+
         if(empty($this->request->getPost('purchase_voucher_id')))
-        {
+        {   
+            $uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
+
+            if(!empty($this->request->getPost('purchase_order')))
+            {
+                $purchase_order = $this->request->getPost('purchase_order');
+            }
+            else
+            {
+                $purchase_order = "";
+            }
+
             $insert_data = [
 
-                'pv_reffer_id'       => $this->request->getPost('purchase_reffer_no'),
+                'pv_reffer_id'       => $uid,
 
                 'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('purchase_date'))),
 
@@ -158,7 +180,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_contact_person'  => $this->request->getPost('purchase_contact_person'),
 
-                'pv_purchase_order'  => $this->request->getPost('purchase_order'),
+                'pv_purchase_order'  => $purchase_order,
 
                 'pv_vendor_inv'      => $this->request->getPost('purchase_vendor'),
 
@@ -166,7 +188,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
-                'pv_total' => $this->request->getPost('total_vou_amount'),
+                'pv_total'           => $this->request->getPost('total_vou_amount'),
                 
                 'pv_added_by'        => 0,
 
@@ -188,13 +210,51 @@ class PurchaseVoucher extends BaseController
 
             $data['mrn_recived_id'] =  $material_received_id;*/
 
+
+            // add product
+
+            if(!empty($_POST['pvp_discount']))
+		    {    
+                
+                $count =  count($_POST['pvp_discount']);
+                
+                if($count!=0)
+                {  
+                
+                    for($j=0;$j<=$count-1;$j++)
+                    {
+                        
+                        $insert_data2 = array(                              
+                            
+                            'pvp_sales_order'          =>  $_POST['pvp_sales_order'][$j],
+                            'pvp_prod_dec'             =>  $_POST['pvp_product_desc'][$j],
+                            'pvp_debit'                =>  $_POST['debit_account'][$j],
+                            'pvp_qty'                  =>  $_POST['pvp_qty'][$j],
+                            'pvp_unit'                 =>  $_POST['pvp_unit'][$j],
+                            'pvp_rate'                 =>  $_POST['pvp_rate'][$j],
+                            'pvp_discount'             =>  $_POST['pvp_discount'][$j],
+                            'pvp_amount'               =>  $_POST['pvp_amount'][$j],
+                            'pvp_reffer_id'            =>  $purchase_voucher,
+                        );
+                        
+                        $prodID = $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data2);
+                        
+                        
+                        
+                        
+                    } 
+                }
+      
+		    }
+
            
         }
+
         else
         {   
             $updated_data = [
 
-                'pv_reffer_id'       => $this->request->getPost('purchase_reffer_no'),
+              
 
                 'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('purchase_date'))),
 
@@ -210,7 +270,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
-                'pv_total' => $this->request->getPost('total_vou_amount'),
+                'pv_total'           => $this->request->getPost('total_vou_amount'),
 
                 'pv_added_by'        => 0,
 
@@ -233,7 +293,7 @@ class PurchaseVoucher extends BaseController
                     for($j=0;$j<=$count-1;$j++)
                     {
                         
-                        $insert_data = array(                              
+                        $insert_data4 = array(                              
                             
                             'pvp_sales_order'          =>  $_POST['pvp_sales_order'][$j],
                             'pvp_prod_dec'             =>  $_POST['pvp_product_desc'][$j],
@@ -247,26 +307,39 @@ class PurchaseVoucher extends BaseController
                             'pvp_mat_rec_id'           =>  $_POST['material_received_id'][$j],
                             'pvp_reffer_id'            =>  $this->request->getPost('purchase_voucher_id'),
                         );
+
                         
-                        $prodID = $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data);
+                        
+                        $prodID = $this->common_model->InsertData('pro_purchase_voucher_prod',$insert_data4);
                         
                         $this->common_model->EditData(array('rnp_status' => 1), array('rnp_id' => $_POST['rnp_id'][$j]), 'pro_material_received_note_prod');
+
+                        $material_req_prod_single = $this->common_model->SingleRow('pro_material_received_note_prod',array('rnp_material_received_note' => $_POST['material_received_id'][$j]));
                         
                         $material_req_prod1 = $this->common_model->FetchWhere('pro_material_received_note_prod' ,array('rnp_material_received_note' => $_POST['material_received_id'][$j]));
                         
                         $material_req_prod2 = $this->common_model->FetchSalesOrder('pro_material_received_note_prod' ,array('rnp_material_received_note' => $_POST['material_received_id'][$j]),array('rnp_status' => 1));
                         
                         if(count($material_req_prod1) == count($material_req_prod2)){
-                           
+                          
                             $this->common_model->EditData(array('mrn_status' => 1), array('mrn_id' =>$_POST['material_received_id'][$j]), 'pro_material_received_note');
                         }
+
+                        /*$material_req_prod3 = $this->common_model->FetchWhere('pro_material_received_note_prod' ,array('rnp_purchase_id' => $material_req_prod_single->rnp_purchase_id));
+
+                        $material_req_prod4 = $this->common_model->CheckTwiceCond1('pro_material_received_note_prod' ,array('rnp_purchase_id' => $material_req_prod_single->rnp_purchase_id),array('rnp_status' => 1));
+                        
+                        if(count($material_req_prod3) == count($material_req_prod4))
+                        {
+                            $this->common_model->EditData(array('po_voucher_status' => 1), array('po_id' =>$material_req_prod_single->rnp_purchase_id), 'pro_purchase_order');
+                        }*/
                         
                         
                     } 
                 }
       
 		    }
-            
+           
 
             $data['purchase_id'] = "";
 
@@ -284,114 +357,134 @@ class PurchaseVoucher extends BaseController
 
 
     public function View(){
-
-        /*$join =  array(
+        
+        $join =  array(
             
             array(
                 'table' => 'pro_vendor',
                 'pk'    => 'ven_id',
-                'fk'    => 'po_vendor_name',
+                'fk'    => 'pv_vendor_name',
             ),
+
+           
 
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
-                'fk'    => 'po_contact_person',
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'pv_purchase_order',
             ),
 
-            array(
-                'table' => 'pro_material_requisition',
-                'pk'    => 'mr_id',
-                'fk'    => 'po_mrn_reff',
-            ),
-
-        );*/
+        );
         
-        //$material_requisition = $this->common_model->SingleRowJoin('pro_purchase_order', array('po_id' => $this->request->getPost('ID')),$join);
+        $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')),$join);
         
-        $material_requisition = $this->common_model->SingleRow('pro_purchase_order', array('po_id' => $this->request->getPost('ID')));
+        $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
+
+        $data['date']            = $purchase_voucher->pv_date;
+
+        $data['vendor_name']     = $purchase_voucher->ven_name;
+
+        $data['contact_person']  = $purchase_voucher->pv_contact_person;
+
+        $data['purchase_order']  = $purchase_voucher->po_reffer_no;
+
+        $data['vendor_inv']      = $purchase_voucher->pv_vendor_inv;
+
+        $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
+
+        $data['payment_term']    = $purchase_voucher->pv_payment_term;
         
-        $data['reffer_no'] = $material_requisition->po_reffer_no;
+        $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
 
-       // $data['date'] = date('d-M-Y',strtotime($material_requisition->po_date));
-
-       // $data['vendor_name'] = $material_requisition->ven_name;
-
-        //$data['contact_person'] = $material_requisition->pro_con_person;
-
-       // $data['mrn_reff'] = $material_requisition->mr_reffer_no;
-
-        //$data['payment_term'] = $material_requisition->po_payment_term;
-
-        //$data['delivery_date'] = date('d-M-Y',strtotime($material_requisition->po_delivery_date));
-
-        //$data['vendor_ref'] = $material_requisition->po_vendor_ref;
-
-        //$data['total_amount'] = $material_requisition->po_amount;
-
-
-
-        /*$join =  array(
-            
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
-
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
-            ),
-
-            
-        );*/
-
-        /*$purchase_order_product = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $this->request->getPost('ID')),$join);
-        
         $i=1;
 
-        $data['sales_order'] = '';
+        $data['prod_desc'] = '';
 
-        foreach($purchase_order_product as $pur_order_prod)
+        foreach($purchase_voucher_product as $pur_vou_prod)
         {
-            $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
+            $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_amount.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_debit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
             </tr>
             ';
             $i++; 
-        }*/
+        }
 
 
-        /*if(!empty($material_requisition->po_file))
-	    {
-            $data['image_table'] ='
-            <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;width: 50%">
-                <thead>
-                    <tr>
-                        <th class="cust_img_rgt_border">File Name</th>
-                        <th class="cust_img_rgt_border">Download</th>
-                        
-                    </tr>
-                <thead>
-                <tbody>
-                    <tr>
-                        <td class="cust_img_rgt_border edit_file_name" >'.$material_requisition->po_file.'</td>
-                        <td class="cust_img_rgt_border edit_file_attach"><a href="'.base_url('uploads/PurchaseOrder/' .$material_requisition->po_file).'" target="_blank">View</a></td>
-                        
-                    </tr>
-                </tbody>
-            </table>';
-	    }*/
 
+        echo json_encode($data);
+    }
+
+
+    public function Edit()
+    {
+        $join =  array(
+            
+            array(
+                'table' => 'pro_vendor',
+                'pk'    => 'ven_id',
+
+
+                'fk'    => 'pv_vendor_name',
+            ),
+
+           
+
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'pv_purchase_order',
+            ),
+
+        );
+        
+        $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')),$join);
+        
+        $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
+
+        $data['date']            = $purchase_voucher->pv_date;
+
+        $data['vendor_name']     = $purchase_voucher->ven_name;
+
+        $data['contact_person']  = $purchase_voucher->pv_contact_person;
+
+        $data['purchase_order']  = $purchase_voucher->po_reffer_no;
+
+        $data['vendor_inv']      = $purchase_voucher->pv_vendor_inv;
+
+        $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
+
+        $data['payment_term']    = $purchase_voucher->pv_payment_term;
+        
+        $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
+
+        $i=1;
+
+        $data['prod_desc'] = '';
+
+        foreach($purchase_voucher_product as $pur_vou_prod)
+        {
+            $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_debit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
+            <td style="width:15%"><a href="javascript:void(0)" class="delete delete-color product_delete_data" data-id="'.$pur_vou_prod->pvp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
+            </tr>
+            ';
+            $i++; 
+        }
 
         echo json_encode($data);
     }
@@ -510,7 +603,7 @@ class PurchaseVoucher extends BaseController
     
         $data['uid'] = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
 
-       $join =  array(
+       /*$join =  array(
             
             array(
                 'table' => 'pro_purchase_order',
@@ -521,7 +614,7 @@ class PurchaseVoucher extends BaseController
          
         );
 
-        $material_received   = $this->pro_model->FetchAllOrderJoin('pro_material_received_note','mrn_id','desc',$join,'mrn_purchase_order',array('mrn_status' => 0));       
+        $material_received  = $this->pro_model->PurchaseVoucher('pro_material_received_note',$join);        
        
         $data['pur_reff'] = "<option value='' selected disabled>Select Purchase Order</option>";
 
@@ -529,7 +622,7 @@ class PurchaseVoucher extends BaseController
         {
             $data['pur_reff'] .="<option value='".$mat_rec->po_id."'>".$mat_rec->po_reffer_no."</option>";
 	
-        }
+        }*/
 
         echo json_encode($data);
     
@@ -556,16 +649,30 @@ class PurchaseVoucher extends BaseController
 
         //$products = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->po_id),$joins);
         
-        $purchase_order = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->po_id));
-        
+      
        // $purchase_order = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->pop_purchase_order));
         
        
         //$products = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_purchase_id' => $purchase_order->pop_purchase_order));
         
+        //$purchase_order = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_purchase_order' => $purchase_order->po_id));
         
-        $products = $this->common_model->FetchSalesOrder('pro_material_received_note_prod',array('rnp_purchase_id' => $purchase_order->pop_purchase_order),array('rnp_status' => 0));
+        
+        //$products = $this->common_model->FetchSalesOrder('pro_material_received_note_prod',array('rnp_purchase_id' => $purchase_order->pop_purchase_order),array('rnp_status' => 0));
+        
 
+        $joins = array(
+            
+            array(
+                'table' => 'pro_material_received_note_prod',
+                'pk'    => 'rnp_material_received_note',
+                'fk'    => 'mrn_id',
+            ),
+           
+
+        );
+
+        $products = $this->common_model->TwiceCondWithJoin('pro_material_received_note',array('mrn_purchase_order' => $purchase_order->po_id),array('rnp_status' => 0),$joins);
         
 
         $i = 1; 
@@ -578,8 +685,7 @@ class PurchaseVoucher extends BaseController
                                             
                                             <td class="si_no">'.$i.'</td>
                                             <td><input type="text" name="dpd_prod_det[]" value="'.$prod->rnp_product_desc.'" class="form-control"  readonly></td>
-                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->rnp_unit.'" class="form-control" readonly></td>
-                                            <td><input type="number" name="dpd_order_qty[]" value="'.$prod->rnp_current_delivery.'"  class="form-control order_qty" readonly></td>
+                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->mrn_reffer.'" class="form-control" readonly></td>
                                             <td><input type="checkbox" name="product_select[]" id="'.$prod->rnp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                           
                                         </tr>';
@@ -635,8 +741,8 @@ class PurchaseVoucher extends BaseController
             
             foreach($products as $product){
 
-                $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->rnp_id.'">
-                                            <td class="si_no">'.$i.'</td>
+                $data['product_detail'] .='<tr class="add_prod_row add_prod_remove prod_row quot_row_leng" id="'.$product->rnp_id.'">
+                                            
                                             <td><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
                                             <td>
@@ -743,6 +849,125 @@ class PurchaseVoucher extends BaseController
         
     }
 
+
+    public function DeleteProdDet()
+    {
+        $cond = array('pvp_id' => $this->request->getPost('ID'));
+
+        $purchase_voucher_prod = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_id' => $this->request->getPost('ID')));
+
+        $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond);
+
+        $purchase_voucher_prod2 = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_voucher_prod->pvp_reffer_id));
+        
+       
+
+        if(empty($purchase_voucher_prod2))
+        {   
+            $data['status']  = "true";
+
+            $this->common_model->DeleteData('pro_purchase_voucher',array('pv_id' => $purchase_voucher_prod->pvp_reffer_id));
+        }
+        else
+        {  
+            $data['status'] = "false";
+        }
+
+        echo json_encode($data);
+
+    }
+    
+
+    public function Delete()
+    {
+        $cond = array('pv_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('pro_purchase_voucher',$cond);
+
+        $cond2 = array('pvp_reffer_id' => $this->request->getPost('ID'));
+ 
+        $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
+
+        //$sales_order = $this->common_model->SingleRow('crm_sales_orders',array('pv_id' => $this->request->getPost('ID')));
+        
+        /*if(empty($sales_order))
+        {   
+            $quotation = $this->common_model->SingleRow('crm_quotation_details',array('qd_id' => $this->request->getPost('ID')));
+            
+            $enquiry_id = $quotation->qd_enq_ref;
+
+            $quotation_id = $quotation->qd_id;
+
+            $updated_data = array('enquiry_status'=>0);
+
+            $this->common_model->EditData($updated_data,array('enquiry_id' => $enquiry_id),'crm_enquiry');
+            
+            $quotation_product = $this->common_model->FetchWhere('crm_quotation_product_details',array('qpd_quotation_details' => $quotation_id));
+            
+            foreach($quotation_product as $quot_prod)
+            {
+                
+                $prod_update = array('pd_status'=>0);
+
+                $this->common_model->EditData($prod_update,array('pd_id' => $quot_prod->qpd_enq_prod_id),'crm_product_detail');
+
+            }
+            
+            $cond = array('qd_id' => $this->request->getPost('ID'));
+ 
+            $this->common_model->DeleteData('crm_quotation_details',$cond);
+    
+            $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
+    
+            $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
+     
+            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond2);
+
+
+
+            $data['status'] = "true";
+    
+        }*/
+        /*else
+        {
+            $data['status'] = "false";
+        }*/
+
+        //echo json_encode($data);
+    }
+
+
+    public function PurchaseOrder()
+    {
+        $vendor_id =  $this->request->getPost('ID');
+        
+        $join =  array(
+            
+            array(
+                'table' => 'pro_purchase_order',
+                'pk'    => 'po_id',
+                'fk'    => 'mrn_purchase_order',
+            ),
+
+         
+        );
+
+        $material_received  = $this->pro_model->PurchaseVoucher('pro_material_received_note',$join,$vendor_id);        
+       
+        $data['pur_reff'] = "<option value='' selected disabled>Select Purchase Order</option>";
+
+        foreach($material_received as $mat_rec)
+        {
+            $data['pur_reff'] .="<option value='".$mat_rec->po_id."'>".$mat_rec->po_reffer_no."</option>";
+	
+        }
+
+
+        echo json_encode($data);
+
+    }
 
    
  

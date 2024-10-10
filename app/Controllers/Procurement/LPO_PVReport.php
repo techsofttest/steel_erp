@@ -235,11 +235,13 @@ class LPO_PVReport extends BaseController
         foreach ($data['purchase_order'] as $orders) {
 
             // Fetch the MRN record
-            $pvs = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_reffer_no]);
+            $pvs = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_id]);
 
+// print_r($pvs); exit;
             // Check if the record exists before accessing properties
             if ($pvs && isset($pvs->pv_id) && $pvs->pv_id != '') {
-                $pvps = $this->common_model->FetchWhereOrder('pro_purchase_voucher_prod', ['pvp_reffer_id' => $pvs->pv_id], 'pvp_id', 'desc');
+              
+                $pvps = $this->pro_model->FetchWhereOrder('pro_purchase_voucher_prod', ['pvp_reffer_id' => $pvs->pv_id], 'pvp_id', 'desc');
                 $pvs->voucher_prod = $pvps;
             }
 
@@ -445,6 +447,9 @@ class LPO_PVReport extends BaseController
 
                     $pdf_data .= "</tr>";
                 }
+
+                $po_amts = 0 ;$pvp_amts=0;
+
                 foreach ($product_details as $prod_del) {
                     if ($q != 1) {
 
@@ -467,14 +472,14 @@ class LPO_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
+                    $pdf_data .= "'>".($prod_del->so_reffer_no ?? '')."</td>";
 
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>{$order_data->po_vendor_ref}</td>";
+                        $pdf_data .= "'>".($order_data->po_vendor_ref ?? '')."</td>";
                     } else {
                         $pdf_data .= "'></td>";
                     }
@@ -482,11 +487,11 @@ class LPO_PVReport extends BaseController
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>{$order_data->po_amount}</td>";
+                        $pdf_data .= "'>".format_currency($order_data->po_amount)."</td>";
                     } else {
                         $pdf_data .= "'></td>";
                     }
@@ -498,42 +503,44 @@ class LPO_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+                    $pdf_data .= "'>".($prod_del->product_details ?? '')."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_qty}</td>";
+                    $pdf_data .= "'>".($prod_del->pop_qty ?? 0)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_rate ?? 0))."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_amount}</td>";
-                    $pop_amt += $prod_del->pop_amount;
+                    $pdf_data .= "'>".format_currency($prod_del->pop_amount ?? 0)."</td>";
+                    $pop_amt += $prod_del->pop_amount ?? 0;
+                    
+                    $po_amts += $prod_del->pop_amount ?? 0;
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
-                        $pdf_data .= "'>" . ($order_data->pv_vendor_inv ?? 0) . "</td>";
+                        $pdf_data .= "'>" . ($order_data->pv_vendor_inv ?? '') . "</td>";
                     } else {
                         $pdf_data .= "'></td>";
                     }
 
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
@@ -541,28 +548,32 @@ class LPO_PVReport extends BaseController
                     $pdf_data .= "'>" . ($prod_del->pvp_qty ?? 0) . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_rate ?? 0) . "</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "'>" . format_currency(($prod_del->pvp_rate ?? 0 )) . "</td>";
+
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_amount ?? 0) . "</td>";
+                    $pdf_data .= "'>" . (format_currency($prod_del->pvp_amount ?? 0)) . "</td>";
                     $rnp_amt += $prod_del->pvp_amount ?? 0;
+                    
+                    $pvp_amts +=  $prod_del->pvp_amount ?? 0;
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . ($prod_del->pop_amount - ($prod_del->pvp_amount ?? 0)) . "</td>";
-                    $diff_amt += $prod_del->pop_amount - ($prod_del->pvp_amount ?? 0);
+                    // $pdf_data .= "<td style='text-align:right;";
+                    // if ($q == 1) {
+
+                    //     $pdf_data .= $border;
+                    // }
+                    // $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
+                     
 
                     // 
 
@@ -573,13 +584,27 @@ class LPO_PVReport extends BaseController
                     $q++;
                 }
 
+                $pdf_data .= "<td style='text-align:right; border-bottom: 2px solid;";
+                if ($q == 1) {
+
+                    $pdf_data .= $border; $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
+                    $diff_amt += $po_amts - $pvp_amts;
+    
+                }
+               
+                $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
+
+
                 if ($q == 1) {
                     $pdf_data .= "</tr>";
                 }
 
-                // $pdf_data .="</tr>";
+                
+
+                   
 
 
+                // $pdf_data .= "<td style='border-top: 2px solid'>".format_currency($po_amts - $pvp_amts)."</td>";
 
 
             }
@@ -621,6 +646,11 @@ class LPO_PVReport extends BaseController
                 padding-left: 5px;
                 padding-right: 5px;
                 font-size: 12px;
+            
+            }
+                th {
+               
+                border-bottom :2px solid;
             }
             p{
                 
@@ -691,25 +721,25 @@ class LPO_PVReport extends BaseController
 
             <th align="left">Vendor Inv Ref</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Vendor Inv Ref</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
         
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
             
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Balance</th>
+            <th align="right">Balance</th>
 
             </tr>
 
@@ -723,16 +753,16 @@ class LPO_PVReport extends BaseController
                 <td style="border-top: 2px solid;"></td>    
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>               
-                <td style="border-top: 2px solid;">' .  $po_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $pop_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($pop_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
-                <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                 
             </tr>    
            

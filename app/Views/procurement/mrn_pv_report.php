@@ -1,3 +1,9 @@
+<style>
+    #DataTable td{
+        line-height:2.3
+    }
+    </style>
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -224,48 +230,47 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Material Received Note to Purchase Voucher Analysis </h4>
+                                    <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Material Received Note to Purchase Voucher Analysis </h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
 
-                                        <!-- <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                
                                             <button class="excel_button report_button" type="submit">Excel</button>
-                                        </form> -->
+                                      
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
+                                    <div class="card-body" style="max-height:80vh; overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
 
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>MRN Ref</th>
-                                                    <th>Vendor</th>
-                                                    <th>Purchase Order Ref</th>
-                                                    <th>Sales Order Ref</th>
-                                                    <th>Vendor DN Ref</th>
+                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
+                                                    <th class="text-center">Date</th>
+                                                    <th class="text-center">MRN Ref</th>
+                                                    <thclass="text-center">Vendor</th>
+                                                    <th class="text-center">Purchase Order Ref</th>
+                                                    <th class="text-center">Sales Order Ref</th>
+                                                    <th class="text-center">Vendor DN Ref</th>
                                                     <th>Amount</th>
                                                     <th>Product</th>
                                                     <th>Quantity</th>
                                                     <th>Rate</th>
                                                     <th>Amount</th>
-                                                    <th>Vendor Invoice Ref</th>
+                                                    <th class="text-center">Vendor Invoice Ref</th>
                                                     <th>Quantity</th>
                                                     <th>Rate</th>
                                                     <th>Amount</th>
@@ -281,31 +286,31 @@
                                                     $mrn_total = $pvp_total = $total = $balance = 0;
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
-                                                            <td><?php echo $i; ?></td>
-                                                            <td><?php echo $pur_order->mrn_date; ?></td>
+                                                            <td class="text-center"><?php echo $i; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->mrn_date; ?></td>
 
-                                                            <td><?php echo $pur_order->mrn_reffer; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->mrn_reffer; ?></td>
 
-                                                            <td><?php foreach ($vendors as $vendor) {
+                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_order->mrn_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
                                                             </td>
 
-                                                            <td><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->po_reffer_no; ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-center"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->so_reffer_no; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php echo $pur_order->mrn_delivery_note; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->mrn_delivery_note; ?></td>
 
-                                                            <td><?php $total_amt = 0;
-                                                                foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php $total_amt = 0;
+                                                                                    foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $total_amt += $orders->rnp_amount; ?>
                                                                 <?php }
-                                                                echo $total_amt;
-                                                                $total += $total_amt; ?></td>
+                                                                                    echo format_currency($total_amt);
+                                                                                    $total += $total_amt; ?></td>
 
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
@@ -313,53 +318,78 @@
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo $orders->rnp_current_delivery ?? ''; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate ?? 0); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_amount;
-                                                                    $mrn_total += $orders->rnp_amount; ?><br>
-                                                                <?php } ?></td>
-
-
-                                                            <td><?php echo $pur_order->pv_vendor_inv; ?></td>
-
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_qty; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->rnp_amount ?? 0);
+                                                                                        $mrn_total += $orders->rnp_amount ?? 0; ?><br>
                                                                 <?php } ?></td>
 
 
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_rate; ?><br>
-                                                                <?php } ?></td>
+                                                            <td><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
 
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo $orders->pvp_qty ?? 0; ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo "0"; // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
 
-                                                            <td><?php foreach ($pur_order->voucher_prod as $orders) { ?>
-                                                                    <?php echo $orders->pvp_amount;
-                                                                    $pvp_total += $orders->pvp_amount; ?><br>
-                                                                <?php } ?></td>
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo format_currency($orders->pvp_rate ?? 0); ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
 
-                                                            <td>
+                                                            <td class="text-end">
+                                                                <?php
+                                                                // Check if voucher_prod exists and is an array
+                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    foreach ($pur_order->voucher_prod as $orders) {
+                                                                        echo format_currency($orders->pvp_amount ?? 0);
+                                                                        $pvp_total += $orders->pvp_amount ?? 0; ?><br>
+                                                                <?php }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
+                                                                } ?>
+                                                            </td>
+
+                                                            <td class="text-end">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
-                                                                $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
+                                                                if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
+                                                                    $count = min(count($pur_order->product_orders), count($pur_order->voucher_prod));
 
-                                                                // Loop through both arrays simultaneously
-                                                                for ($i = 0; $i < $count; $i++) {
-                                                                    $rnp_amount = $pur_order->product_orders[$i]->rnp_amount;
-                                                                    $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount;
-                                                                    $difference = $rnp_amount - $pvp_amount;
-                                                                    echo $difference . "<br>";
-
-                                                                    $balance += $difference;
+                                                                    for ($i = 0; $i < $count; $i++) {
+                                                                        $rnp_amount = $pur_order->product_orders[$i]->rnp_amount ?? 0;
+                                                                        $pvp_amount = $pur_order->voucher_prod[$i]->pvp_amount ?? 0;
+                                                                        $difference = $rnp_amount - $pvp_amount;
+                                                                        echo format_currency($difference) . "<br>";
+                                                                        $balance += $difference;
+                                                                    }
+                                                                } else {
+                                                                    echo format_currency(0); // Handle case when either array is not set
                                                                 }
                                                                 ?>
                                                             </td>
+
 
                                                         </tr>
 
@@ -375,16 +405,16 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $mrn_total; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($mrn_total); ?></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th><?php echo $pvp_total; ?></th>
-                                                        <th><?php echo $balance; ?></th>
+                                                        <th class="text-end"><?php echo format_currency($pvp_total); ?></th>
+                                                        <th class="text-end"><?php echo format_currency($balance); ?></th>
                                                     </tr>
                                                 <?php
                                                 } ?>
@@ -595,7 +625,142 @@
 
 
 
+        $(document).ready(function() {
+            $(".excel_button").click(
+                function() {
+                    tableToExcel('DataTable', 'Material Received Note to Purchase Voucher Analysis', 'Material Received Note to Purchase Voucher Analysis');
+                }
+            );
+        })
+
+        function getIEVersion()
+        // Returns the version of Windows Internet Explorer or a -1
+        // (indicating the use of another browser).
+        {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
+        }
 
 
+
+
+
+
+        function tableToExcel(table, sheetName, fileName) {
+
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+                return fnExcelReport(table, fileName);
+            }
+
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64Conversion = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                },
+                formatExcelData = function(s, c) {
+                    return s.replace(/{(\w+)}/g, function(m, p) {
+                        return c[p];
+                    })
+                }
+
+            $("tbody > tr[data-level='0']").show();
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            var ctx = {
+                worksheet: sheetName || 'Worksheet',
+                table: table.innerHTML
+            }
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
+            element.setAttribute('download', fileName);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+
+            $("tbody > tr[data-level='0']").hide();
+        }
+
+        function fnExcelReport(table, fileName) {
+
+            var tab_text = "<table border='2px'>";
+            var textRange;
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            $("tbody > tr[data-level='0']").show();
+            tab_text = tab_text + table.innerHTML;
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
+            $("tbody > tr[data-level='0']").hide();
+            return (sa);
+
+        }
+
+    });
+</script>
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Material Recieved Note Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
     });
 </script>

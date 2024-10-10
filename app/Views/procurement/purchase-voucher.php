@@ -58,6 +58,11 @@
     {
         width: 18%;
     }
+    .tecs span 
+    {
+        color: green;
+        cursor: pointer;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -102,7 +107,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_reffer_no" id="pv_id" class="form-control input_length" value="" required readonly>
+                                                                        <input type="text" name="purchase_reffer_no" id="pv_id" class="form-control input_length voucher_reff" value="" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -123,7 +128,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_date" class="form-control mr_date datepicker input_length" required>
+                                                                        <input type="text" name="purchase_date" class="form-control mr_date datepicker input_length voucher_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -256,15 +261,11 @@
 
                                                                     <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <select class="form-select select_purchase" name="purchase_order" id=""  required="" aria-required="true">
+                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id=""  >
                                                                             
                                                                             <option value="" selected="" disabled="">Select Purchase Order</option>
 
-                                                                            <?php foreach($material_received as $material_rec){?>
-                                                                                
-                                                                                <option value="<?php echo $material_rec->po_id;?>"><?php echo $material_rec->po_reffer_no; ?></option>
-
-                                                                            <?php } ?>
+                                                                           
 
                                                                         </select>
 
@@ -294,11 +295,12 @@
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
                                                                         <label for="basicInput" class="form-label">Vendor Inv Ref</label>
+                                                                        
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="purchase_vendor" class="form-control input_length2" value="" required>   
+                                                                        <input type="text" name="purchase_vendor" class="form-control input_length2 vendor_inv_ref" value="" required>   
 
                                                                     </div>
 
@@ -311,7 +313,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-item-scenter mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Note</label>
@@ -367,11 +369,11 @@
 
                                                 <!--table section start-->
                                                 <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable selected_table" style="display:none;">
+                                                    <table class="table table-bordered table-striped delTable ">
                                                         <tbody class="travelerinfo">
                                                             
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                
                                                                 <td>Sales Order Ref</td>
                                                                 <td>Product Description</td>
                                                                 <td>Debit A/C</td>
@@ -380,6 +382,7 @@
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
                                                                 <td>Amount</td>
+
                                                             </tr>
                                                             
                                                         </tbody>
@@ -389,7 +392,7 @@
                                                         <tbody>
 
                                                             <tr>
-                                                                <td colspan="7" class=""></td>
+                                                                <td colspan="6" class=""></td>
                                                                 <td>Total</td>
                                                                 <td><input type="text" name="total_vou_amount" class="total_prod_amount form-control" readonly=""></td>
                                                              </tr>
@@ -419,7 +422,12 @@
                                                         
                                                     </div>
                                                     
-                                                    <div class="col-lg-6"></div>
+                                                    <div class="col-lg-6 tecs">
+
+                                                        <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                                               
+                                                            
+                                                    </div>
                                                     
                                                 </div>
 
@@ -537,6 +545,40 @@
                                                             <!-- ### -->
 
 
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_contact_person" readonly>
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
 
                                                             <!-- Single Row Start -->
 
@@ -551,7 +593,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_contact_person" readonly>
+                                                                        <input type="text" name="" class="form-control view_purchase_order" readonly>
 
                                                                     </div>
 
@@ -561,14 +603,26 @@
 
 
                                                             <!-- ### -->
-                                                        </div>
-
-                                                    </div>
 
 
-                                                    <div class="col-lg-6">
+                                                             <!-- Single Row Start -->
+                                                             <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2">
 
-                                                        <div class="row">
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control view_vendor_inv_ref" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- ### -->
 
 
                                                             <!-- Single Row Start -->
@@ -582,7 +636,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_mrn_ref" readonly>
+                                                                        <input type="text" name="" class="form-control view_delivery_note" readonly>
 
                                                                     </div>
 
@@ -594,24 +648,7 @@
 
 
 
-                                                            <!-- Single Row Start -->
-                                                            <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">MR Ref</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <input type="text" name="" class="form-control view_payment_term" readonly>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-                                                            <!-- ### -->
+                                                           
 
 
                                                             <!-- Single Row Start -->
@@ -624,7 +661,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control view_delivery_date" readonly>
+                                                                        <input type="text" name="" class="form-control view_payment_term" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -646,12 +683,15 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Sales Order</td>
+                                                                <td>Serial No</td>
+                                                                <td>Sales Order Ref</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
+                                                                <td>Debit A/C</td>
                                                                 <td>Qty</td>
+                                                                <td>Unit</td>
                                                                 <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
 
 
 
@@ -697,6 +737,283 @@
 
 
                         <!--view modal section end-->
+
+
+
+                        <!--Edit modal section start--->
+                        <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <form class="Dashboard-form class" id="">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Purchase Voucher</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <div class="live-preview">
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" id="" class="form-control edit_ref" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basiInput" class="form-label">Date</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control edit_date" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Vendor Name</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control edit_vendor_name" readonly>
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control edit_contact_person" readonly>
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                            <!-- Single Row Start -->
+
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control edit_purchase_order" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <!-- ### -->
+
+
+                                                             <!-- Single Row Start -->
+                                                             <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control edit_vendor_inv_ref" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- ### -->
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Delivery Note</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                                        <input type="text" name="" class="form-control edit_delivery_note" readonly>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+
+
+
+                                                           
+
+
+                                                            <!-- Single Row Start -->
+                                                            <div class="col-lg-12">
+
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Payment Term</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="" class="form-control edit_payment_term" readonly>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ### -->
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <!--table section start-->
+                                                <div class="mt-4">
+                                                    <table class="table table-bordered table-striped delTable">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                
+                                                                <td>Sales Order Ref</td>
+                                                                <td>Product Description</td>
+                                                                <td>Debit A/C</td>
+                                                                <td>Qty</td>
+                                                                <td>Unit</td>
+                                                                <td>Rate</td>
+                                                                <td>Discount</td>
+                                                                <td>Amount</td>
+                                                                <td>Action</td>
+
+
+
+                                                            </tr>
+
+
+                                                        </thead>
+
+                                                        <tbody class="travelerinfo edit_prod_data"></tbody>
+
+
+
+
+                                                    </table>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+
+                                                        <div class="card-body view_image_table" style="float: inline-start;"></div>
+
+
+                                                    </div>
+                                                    <div class="col-lg-6"></div>
+
+                                                </div>
+
+                                                <!--table section end-->
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <!--Edit modal section end-->
 
 
                         <div class="row">
@@ -773,8 +1090,7 @@
                                     <tr>
                                         <td>Serial No.</td>
                                         <td>Product Description</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
+                                        <td>Vendor DN Ref</td>
                                         <td>Tick</td>
                                     </tr>
                                                             
@@ -936,7 +1252,7 @@
                 },
                 errorPlacement: function(error, element) {} , // To Hide Validation Messages
                 submitHandler: function(currentForm) {
-                    if($('#purchase_form').attr('data_fill')=="true"){   
+                    //if($('#purchase_form').attr('data_fill')=="true"){   
 
                         // Submit the form for the current tab
                         $.ajax({
@@ -957,8 +1273,8 @@
                             }
                         });
 
-                    }
-                    else
+                    //}
+                    /*else
                     {
                         alertify.error('Please Select Products').delay(3).dismissOthers();
 
@@ -978,7 +1294,7 @@
                             clearInterval(refreshIntervalId);
                             
                         }, 1000)
-                    }
+                    }*/
                    
                 }
             });
@@ -1072,28 +1388,25 @@
         /*Time Frame section end*/
 
 
+        /*select purchase order by vendor section start*/
 
-        /*material recived not section start*/
-
-
-        /*$("body").on('change', '.material_received_note', function(){ 
+        $("body").on('change', '.add_vendor', function(){ 
 	        
-            var date = $(this).val();
- 
+            var vendorid = $(this).val();
  
             $.ajax({
  
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPurchase",
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/PurchaseOrder",
  
                 method : "POST",
  
-                data: {Date: date},
+                data: {ID: vendorid},
  
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
                  
-                    $('.time_frame_date').val(data.increment_date_date)
+                    $('.purchase_order').html(data.pur_reff)
                  
                      
                 }
@@ -1102,10 +1415,14 @@
             });
  
  
-        });*/
+        });
 
 
-        /*material receivec not section end*/
+        /**/
+
+
+
+      
 
 
         /*reset reff no*/
@@ -1219,7 +1536,10 @@
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
-            //$('.select_purchase option').remove();  
+            $('.product-more2').show();
+            $('.hidden_purchase_voucher_id').val("");
+           
+            $(".purchase_order").val("").trigger( "change" );
 
             $.ajax({
 
@@ -1231,11 +1551,9 @@
                 {
                     var data = JSON.parse(data);
 
-                    console.log(data);
-
                     $('#pv_id').val(data.uid);
 
-                    $('.select_purchase').html(data.pur_reff);
+                    //$('.select_purchase').html(data.pur_reff);
 
                 }
             });
@@ -1328,9 +1646,11 @@
 
                             $('.hidden_purchase_voucher_id').val(purchase_voucher_id);
 
+                            console.log(purchase_voucher_id);
+
                             var purchase_id = data.purchase_order;
 
-                            console.log(purchase_id);
+                            //console.log(purchase_id);
 
                             $('#AddPurchaseVoucher').modal('hide');
 
@@ -1398,6 +1718,9 @@
                     checkedIds.length = 0; 
 
                     $('#purchase_form').attr('data_fill','true');
+
+                    $('.add_product2').hide();
+
 
                 }
 
@@ -1711,7 +2034,7 @@
 
                     $('.add_payment_term').val(data.payment_term);
 
-                    $('.delivery_note_clz').val(data.delivery_date);
+                    //$('.delivery_note_clz').val(data.delivery_date);
 
                     $('.add_contact_person').val(data.contact_person);
 
@@ -1726,6 +2049,129 @@
 
        /*####*/
 
+
+
+        /*add more section start*/
+
+        var max_fieldspp  = 30;
+
+        $("body").on('click', '.add_product2', function(){
+
+            var pp = $('.prod_row').length
+
+            var qj  = $('.quot_row_leng').length
+
+            if(pp < max_fieldspp){ 
+ 
+            
+            pp++;
+            
+            //$(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            
+            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]' required=''><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='text' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='text' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                
+
+            }
+
+           
+           
+        
+            //slno();
+
+            //InitProductSelect2();
+
+        });
+
+
+       /******/
+
+
+       /**delete section start**/
+
+       $("body").on('click', '.product_delete', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            /*$.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteProdDet",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                { */  
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        deleteSlno();
+                        EditProdTotal()
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    }); 
+
+                
+               // }
+
+
+           // });
+
+        });
+
+
+
+       /**delete section end**/
+
+
+       /*edit product delete section start*/
+       
+       $("body").on('click', '.product_delete_data', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/DeleteProdDet",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                { 
+                    var data = JSON.parse(data);
+
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        //deleteSlno();
+                        //EditProdTotal()
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+
+                        if(data.status === "true")
+                        {
+                            $('#EditModal').modal('hide');
+                        }
+
+                        datatable.ajax.reload(null,false);
+
+
+                    }); 
+
+                
+                }
+
+
+            });
+
+        });
+
+
+       /*edit product delete section end*/
+
        
 
 
@@ -1738,33 +2184,163 @@
 
        
         $("body").on('click', '.view_btn', function(){ 
-            console.log("sucess");
+
+            var id = $(this).data('id');
+           
             /*$('#purchase_form')[0].reset();
             $('.add_vendor').val('').trigger('change');
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");*/
-
-            $('#ViewModal').modal('show');
-
+            
+           
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/View",
 
-                method : "GET",
+                method : "POST",
+
+                data: {ID: id},
 
                 success:function(data)
                 {
 
-                    //$('#pv_id').val(data);
+                    var data = JSON.parse(data);
+
+                    console.log(data.reffer_id);
+
+                    $('.view_ref').val(data.reffer_id);
+
+                    $('.view_date').val(data.date);
+
+                    $('.view_vendor_name').val(data.vendor_name);
+
+                    $('.view_contact_person').val(data.contact_person);
+
+                    $('.view_purchase_order').val(data.purchase_order);
+
+                    $('.view_vendor_inv_ref').val(data.vendor_inv);
+
+                    $('.view_delivery_note').val(data.delivery_note);
+
+                    $('.view_payment_term').val(data.payment_term);
+
+                    $('.view_prod_data').html(data.prod_desc);
+
+                    
 
                 }
             });
+
+            $('#ViewModal').modal('show');
 
         });
  
 
         /*view section end*/
+
+
+
+
+        /*edit section start*/
+
+
+        $("body").on('click', '.edit_btn', function(){ 
+
+            var id = $(this).data('id');
+
+           
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    console.log(data.reffer_id);
+
+                    $('.edit_ref').val(data.reffer_id);
+
+                    $('.edit_date').val(data.date);
+
+                    $('.edit_vendor_name').val(data.vendor_name);
+
+                    $('.edit_contact_person').val(data.contact_person);
+
+                    $('.edit_purchase_order').val(data.purchase_order);
+
+                    $('.edit_vendor_inv_ref').val(data.vendor_inv);
+
+                    $('.edit_delivery_note').val(data.delivery_note);
+
+                    $('.edit_payment_term').val(data.payment_term);
+
+                    $('.edit_prod_data').html(data.prod_desc);
+
+                    
+
+                }
+            });
+
+            $('#EditModal').modal('show');
+
+        });
+
+
+        /*edit section end*/
+
+
+
+
+        /*delete section start*/
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            var id = $(this).data('id');
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                   // var data = JSON.parse(data);
+                    
+                    /*if(data.status == "true")
+                    {
+                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+                    }
+                    else
+                    {
+                        alertify.error("Sales Quotation In Use Cant't Delete").delay(2).dismissOthers();
+                    }*/
+
+                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+
+                    datatable.ajax.reload(null,false);
+                   
+                }
+
+            });
+
+        });
+
+
+        /*delete section end*/
 
 
 

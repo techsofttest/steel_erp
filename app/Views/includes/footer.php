@@ -90,6 +90,52 @@
 
 
     <script>
+       
+       
+        //$('.add_model_btn').click(function(){
+
+        function currency_format(orginalPrice){
+
+           var myObject = new Object();
+
+           var price = orginalPrice;
+
+           var decimals = 2;
+            
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/CurrencyFormat",
+
+                method : "POST",
+
+                data: {Price: price,Decimals: decimals},
+
+
+                success:function(data)
+                {
+
+                   // $('#sqid').val(data);
+
+                   console.log(data);
+
+                   var myObject = data
+
+                   //return data;
+
+                   return myObject;
+
+                }
+
+            });
+
+        };
+
+
+    </script>
+
+
+    <script>
 
 
 

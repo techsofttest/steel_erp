@@ -157,9 +157,9 @@
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Date</th>
-                                                    <!--<th>Invoice Ref.</th>-->
+                                                    <th>Invoice Ref.</th>
                                                     <th>Customer</th>
-                                                    <th>Delivery Note Ref.</th>
+                                                    <!--<th>Delivery Note Ref.</th>-->
                                                     <th>Sales Order Ref.</th>
                                                     <th>LPO Ref.</th>
                                                     <th class="text-end">Amount</th>
@@ -179,26 +179,26 @@
                                                     <tr>
                                                         <td class="height_class"><?php echo $i;?></td>
                                                         <td class="height_class"><?php echo date('d-M-Y',strtotime($del_note->dn_date));?></td>
-                                                        <!--<td colspan="1" align="left" class="p-0" style="height:100%">
+                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
                                                            
-                                                            <?php //if(!empty($del_note->credit_invoice) || !empty($del_note->performa_invoice)){ ?> 
+                                                            <?php if(!empty($del_note->credit_invoice) || !empty($del_note->performa_invoice)){ ?> 
                                                                <table>
-                                                                    <?php //foreach($del_note->credit_invoice as $cred_inv){?>
+                                                                    <?php foreach($del_note->credit_invoice as $cred_inv){?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><?php //echo $cred_inv->cci_reffer_no;?></td>
+                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_so=<?php echo $cred_inv->cci_id;?>" target="_blank"><?php echo $cred_inv->cci_reffer_no;?></a></td>
                                                                         </tr>
-                                                                    <?php //} ?>
-                                                                    <?php //foreach($del_note->performa_invoice as $per_inv){?>
+                                                                    <?php } ?>
+                                                                    <?php foreach($del_note->performa_invoice as $per_inv){?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><?php //echo $per_inv->pf_reffer_no;?></td>
+                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/ProFormaInvoice?view_so=<?php echo $per_inv->pf_id;?>" target="_blank"><?php echo $per_inv->pf_reffer_no;?></a></td>
                                                                         </tr> 
-                                                                    <?php //} ?>
+                                                                    <?php } ?>
                                                                </table>  
-                                                            <?php //} ?>
+                                                            <?php } ?>
                                                           
-                                                        </td>--->
+                                                        </td>
                                                         <td class="height_class"><?php echo $del_note->cc_customer_name;?></td>
-                                                        <td class="height_class"><?php echo $del_note->dn_reffer_no;?></td>
+                                                        <!--<td class="height_class"><?php //echo $del_note->dn_reffer_no;?></td>-->
                                                         <td class="height_class"><?php echo $del_note->so_reffer_no;?></td>
                                                         <td class="height_class"><?php echo $del_note->so_lpo;?></td>
                                                        

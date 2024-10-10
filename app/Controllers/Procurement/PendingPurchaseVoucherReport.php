@@ -7,30 +7,30 @@ use App\Controllers\BaseController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class PendingPurchaseVoucherReport extends BaseController
 {
-    
+
     //view page
     public function index()
-    {   
+    {
         //$data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-        
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
-        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
 
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        $data['content'] = view('procurement/pending_purchase_voucher_report',$data);
+        $data['content'] = view('procurement/pending_purchase_voucher_report', $data);
 
-        return view('procurement/report-module',$data);
-
+        return view('procurement/report-module', $data);
     }
 
 
@@ -38,19 +38,18 @@ class PendingPurchaseVoucherReport extends BaseController
     public function FetchTypes()
     {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? $_GET['page'] : 0;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
         $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
+        $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
-    
-        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
-    
 
-        $data['total_count'] =count($data['result']);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders', 'so_reffer_no', 'asc', $term, $start, $end);
+
+
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
-
     }
 
 
@@ -58,7 +57,7 @@ class PendingPurchaseVoucherReport extends BaseController
     public function FetchData()
     {
         //fetch executive
-        $cond = array('qd_customer'=>$this->request->getPost('ID'));
+        $cond = array('qd_customer' => $this->request->getPost('ID'));
 
         $joins = array(
             array(
@@ -66,31 +65,29 @@ class PendingPurchaseVoucherReport extends BaseController
                 'pk'    => 'se_id',
                 'fk'    => 'qd_sales_executive',
             ),
-           
+
 
         );
 
 
-        $quotation_details = $this->common_model->FetchWhereUniqueJoin('crm_quotation_details',$cond,$joins,'se_id');
-       
+        $quotation_details = $this->common_model->FetchWhereUniqueJoin('crm_quotation_details', $cond, $joins, 'se_id');
 
-        $data['quot_det'] = "<option value='' selected disabled>Select Sales Executive</option>"; 
 
-        foreach($quotation_details as $quot_det)
-        {
-            $data['quot_det'] .='<option value='.$quot_det->se_id.'>'.$quot_det->se_name.'</option>';
-            
+        $data['quot_det'] = "<option value='' selected disabled>Select Sales Executive</option>";
+
+        foreach ($quotation_details as $quot_det) {
+            $data['quot_det'] .= '<option value=' . $quot_det->se_id . '>' . $quot_det->se_name . '</option>';
         }
 
         //fetch product
 
-        $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details',$this->request->getPost('ID'));
-        
+        $product_data = $this->common_model->FetchProductByCustomer('crm_quotation_details', $this->request->getPost('ID'));
+
         $data['quot_prod'] = "<option value='' selected>Select Product</option>";
         $uniqueProductIds = []; // Array to store unique product IDs
 
 
-        
+
 
         foreach ($product_data as $prod_data) {
             // Check if product_details array is not empty
@@ -112,112 +109,83 @@ class PendingPurchaseVoucherReport extends BaseController
         }
 
         echo json_encode($data);
-
-
     }
 
 
     //fetch data
     public function GetData()
     {
-       
+
         //Filter 
-       
-       
-        if(!empty($_GET['form_date']))
-        {
+
+
+        if (!empty($_GET['form_date'])) {
             $from_date = $_GET['form_date'];
-        }
-        else
-        {
+        } else {
             $from_date = "";
         }
-        
 
-        if(!empty($_GET['to_date']))
-        {
+
+        if (!empty($_GET['to_date'])) {
             $to_date = $_GET['to_date'];
-        }
-        else
-        {
+        } else {
             $to_date = "";
         }
 
-        if(!empty($_GET['vendor']))
-        {
+        if (!empty($_GET['vendor'])) {
             $data1 = $_GET['vendor'];
-        }
-        else
-        {
+        } else {
             $data1 = "";
         }
-        
-        
-        
-        if(!empty($_GET['sales_order']))
-        {
+
+
+
+        if (!empty($_GET['sales_order'])) {
             $data2 = $_GET['sales_order'];
-        }
-        else
-        {
+        } else {
             $data2 = "";
         }
-        
-        if(!empty($_GET['lpo_ref']))
-        {
+
+        if (!empty($_GET['lpo_ref'])) {
             $data3 = $_GET['lpo_ref'];
-        }
-        else
-        {
+        } else {
             $data3 = "";
         }
 
-        if(!empty($_GET['gl_account']))
-        {
+        if (!empty($_GET['gl_account'])) {
             $data4 = $_GET['gl_account'];
-        }
-        else
-        {
+        } else {
             $data4 = "";
         }
 
 
 
-        if(!empty($_GET['product']))
-        {
+        if (!empty($_GET['product'])) {
             $data5 = $_GET['product'];
-        }
-        else
-        {
+        } else {
             $data5 = "";
         }
-        
- 
-       
+
+
+
 
         $joins = array(
-            
+
             array(
                 'table' => 'pro_purchase_voucher',
-                'pk'    => 'pv_id',
-                'fk'    => 'pvp_reffer_id',
+                'pk'    => 'pv_purchase_order',
+                'fk'    => 'po_reffer_no',
             ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_reffer_no',
-                'fk'    => 'pvp_sales_order',
-            ),
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_details',
-                'fk'    => 'pvp_prod_dec',
-            ),
+
+
             // array(
-            //     'table' => 'pro_material_received_note',
-            //     'pk'    => 'mrn_id',
-            //     'fk'    => 'pv_mrn',
+            //     'table' => 'pro_material_received_note_prod',
+            //     'pk'    => 'rnp_purchase_id',
+            //     'fk'    => 'po_id',
             // ),
+
         );
+
 
 
         $joins1 = array(
@@ -228,199 +196,220 @@ class PendingPurchaseVoucherReport extends BaseController
             ),
         );
 
-        //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
-        
-        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date,'pv_date',$to_date,'',$data1,'pv_vendor_name',$data2,'pvp_sales_order',$data5,'pvp_prod_dec','','','steel_pro_purchase_voucher_prod',$joins,'pvp_reffer_id',$joins1);  
-        
+        $data['purchase_order'] = $this->pro_model->PendingVoucherCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data3, 'po_id', $data4, 'po_vendor_name', '', '', 'steel_pro_purchase_order', $joins, 'po_id', '');
+
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {
         
-            // Fetch the MRN record
-            $pvs = $this->common_model->SingleRow('pro_material_received_note', ['mrn_id' => $orders->pv_mrn]);
-
-            // $pvps = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_reffer_no]);
+            // Fetch the associated MRN products
+            $nrps = $this->common_model->FetchWhere('pro_material_received_note_prod', ['rnp_purchase_id' => $orders->po_id]);
         
-            // Merge the $orders and $mrns arrays, then cast the result back to an object
-            $new_order[] = (object) array_merge((array)$orders, (array)$pvs);
+            // Create a copy of the $orders object
+            $merged_order = $orders;
+        
+            // Check if $nrps contains any products
+            if (!empty($nrps)) {
+                // Append the fetched products as a sub-array called 'received_products'
+                $merged_order->received_products = $nrps;
+            } else {
+                // If no products are found, set 'received_products' as an empty array to avoid errors
+                $merged_order->received_products = [];
+            }
+        
+            // Append the merged order data to the $new_order array
+            $new_order[] = $merged_order;
         }
         
+        // Update the data array with the merged orders
         $data['purchase_order'] = $new_order;
-
+        
+        if ($data5 != "" || $data2 != "") {
+            $filterdata = [];
+        
+            foreach ($data['purchase_order'] as $order) {
+                // Filter 'received_products' within each order based on $data5 or $data2
+                $filtered_received_products = $order->received_products;
+        
+                if ($data5 != "") {
+                    $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data5) {
+                        return $item->rnp_product_desc == $data5;
+                    });
+                }
+        
+                if ($data2 != "") {
+                    $filtered_received_products = array_filter($filtered_received_products, function ($item) use ($data2) {
+                        return $item->rnp_sales_order == $data2;
+                    });
+                }
+        
+                // If there are matching received products, update the order with them
+                if (!empty($filtered_received_products)) {
+                    $order->received_products = $filtered_received_products;
+                    $filterdata[] = $order;
+                }
+            }
+        
+            // Update the data array with the filtered orders
+            $data['purchase_order'] = $filterdata;
+        }
+        
 
 
         // echo '<pre>';
-        // print_r($data['purchase_order']); 
+        // print_r($data['purchase_order']);
         // echo '</pre>';
         // exit();
 
 
-        if(!empty($from_date))
-        {
-            $data['from_dates'] = date('d-M-Y',strtotime($from_date));
+        if (!empty($from_date)) {
+            $data['from_dates'] = date('d-M-Y', strtotime($from_date));
+        } else {
+            $data['from_dates'] = "";
         }
-        else
-        {
-            $data['from_dates'] ="";
-        } 
-        
 
-        if(!empty($to_date))
-        {
-            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
-        }
-        else
-        {
+
+        if (!empty($to_date)) {
+            $data['to_dates'] = date('d-M-Y', strtotime($to_date));
+        } else {
             $data['to_dates'] = "";
         }
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
+        $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
-        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+        $data['chart_acc'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
 
-        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
-        if(!empty($_POST['pdf']))
-        {   
-            $this->Pdf($data['purchase_order'],$data['from_dates'],$data['to_dates']);
+        if (!empty($_POST['pdf'])) {
+            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
         }
-        
-        if(!empty($_POST['excel']))
-        {
+
+        if (!empty($_POST['excel'])) {
             $this->Excel($data['purchase_order']);
         }
 
-        $data['content'] = view('procurement/pending_purchase_voucher_report',$data);
+        $data['content'] = view('procurement/pending_purchase_voucher_report', $data);
 
-        return view('crm/report-module-search',$data);
-
-      
-        
+        return view('crm/report-module-search', $data);
     }
 
 
-    public function Pdf($purchase_order,$from_date,$to_date)
-    {   
-        
+    public function Pdf($purchase_order, $from_date, $to_date)
+    {
 
-        if(!empty($purchase_order))
-        {   
+
+        if (!empty($purchase_order)) {
             $pdf_data = "";
 
             $joins1 = array(
-            
+
                 array(
                     'table' => 'crm_products',
                     'pk'    => 'product_id',
                     'fk'    => 'pop_prod_desc',
                 ),
-               
+
             );
 
             $total_amount = $total_recieved = $total_balance = $total_booked = 0;
-            foreach($purchase_order as $order_data)
-            {   
-                $q=1;
-                $border="border-top: 2px solid";
-                $product_details = $order_data->product_orders;
-                
-                $total_amount = $total_amount + $order_data->pv_total;
+            foreach ($purchase_order as $order_data) {
+                $q = 1;
+                $border = "border-top: 2px solid";
+                // $product_details = $order_data->product_orders;
+
+                $total_amount = $total_amount + $order_data->po_amount;
 
                 $total_recieved += $order_data->pv_paid;
 
-                $total_balance += $order_data->pv_total - $order_data->pv_paid;
+                $booked_note = 0; foreach ($order_data->received_products as $notes) {
+                    $booked_note += $notes->rnp_amount ;
+                 //   print_r($notes);
+                 } 
+                $total_booked += $booked_note;
 
-               
+                $total_balance += $order_data->po_amount - $order_data->pv_paid;
+
+                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
 
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->pv_vendor_name]);
 
-
-
-                $new_date = date('d-m-Y',strtotime($order_data->pv_date));
+                $new_date = date('d-m-Y', strtotime($order_data->po_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_purchase_order}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->po_amount)."</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($booked_note)."</td>";
+
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_paid ?? 0)."</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_total}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_paid}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>" . (format_currency($order_data->po_amount - $order_data->pv_paid)) . "</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>0</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>".( $order_data->pv_total - $order_data->pv_paid )."</td>";
+                if ($q != 1) {
 
-                
-                if($q!=1){
-                     
-                    $pdf_data .="</tr>";
+                    $pdf_data .= "</tr>";
                 }
-                foreach($product_details as $prod_del)
-                {
+                // foreach ($product_details as $prod_del) {
 
-                
-                    if($q!=1){
 
-                        $pdf_data .="<tr>";
+                //     if ($q != 1) {
 
-                        $pdf_data .= "<tr><td style=''></td>";
+                //         $pdf_data .= "<tr>";
 
-                        $pdf_data .= "<td style=''></td>";
+                //         $pdf_data .= "<tr><td style=''></td>";
 
-                        $pdf_data .= "<td style=''></td>";
-                        $pdf_data .= "<td style=''></td>";
+                //         $pdf_data .= "<td style=''></td>";
 
-                        $pdf_data .= "<td style=''></td>";
+                //         $pdf_data .= "<td style=''></td>";
+                //         $pdf_data .= "<td style=''></td>";
 
-                        $pdf_data .= "<td style=''></td>";
-                        
-                     
-                    }
+                //         $pdf_data .= "<td style=''></td>";
+
+                //         $pdf_data .= "<td style=''></td>";
+                //     }
 
 
 
-                    
-                    if($q!=1)
-                    {
-                        $pdf_data .="</tr>";
-                    }
 
-                    $q++;
+                //     if ($q != 1) {
+                //         $pdf_data .= "</tr>";
+                //     }
 
-                }
-                
-                if($q==1)
-                {
-                    $pdf_data .="</tr>";
+                //     $q++;
+                // }
+
+                if ($q == 1) {
+                    $pdf_data .= "</tr>";
                 }
 
-               // $pdf_data .="</tr>";
-                 
-                
-               
-                
+                // $pdf_data .="</tr>";
+
+
+
+
             }
 
-            if(empty($from_date) && empty($to_date))
-            {
-             
-               $dates = "";
-            }
-            else
-            {
-               $dates = $from_date . " to " . $to_date;
+            if (empty($from_date) && empty($to_date)) {
+
+                $dates = "";
+            } else {
+                $dates = $from_date . " to " . $to_date;
             }
 
-            
+
 
             $title = "SQR";
 
@@ -437,11 +426,11 @@ class PendingPurchaseVoucherReport extends BaseController
                 ]
             );
 
-         
+
 
             $mpdf->SetTitle('Pending Purchase Voucher Report'); // Set the title
 
-            $html ='
+            $html = '
         
             <style>
             th, td {
@@ -492,7 +481,7 @@ class PendingPurchaseVoucherReport extends BaseController
             
         
             <tr width="100%">
-            <td>Period : '.$dates.'</td>
+            <td>Period : ' . $dates . '</td>
             <td align="right"><h2>Pending Purchase Voucher Report</h2></td>
         
             </tr>
@@ -514,28 +503,28 @@ class PendingPurchaseVoucherReport extends BaseController
         
             <th align="left">Vendor</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Recieved</th>
+            <th align="right">Recieved</th>
 
-            <th align="left">Booked</th>
+            <th align="right">Booked</th>
 
-            <th align="left">Balance</th>
+            <th align="right">Balance</th>
         
             
             </tr>
 
                
-            '.$pdf_data.'
+            ' . $pdf_data . '
 
             <tr>
                 <td style="border-top: 2px solid;">Total</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
-                <td style="border-top: 2px solid;">'.$total_recieved.'</td>
-                <td style="border-top: 2px solid;">'.$total_booked.'</td>
-                <td style="border-top: 2px solid;">'.$total_balance.'</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_amount) . '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_booked). '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_recieved) . '</td>
+                <td style="border-top: 2px solid;text-align:right;">' . format_currency($total_balance) . '</td>
                 
             </tr>    
            
@@ -545,32 +534,29 @@ class PendingPurchaseVoucherReport extends BaseController
 
         
             ';
-        
+
             $footer = '';
-        
-            
+
+
             $mpdf->WriteHTML($html);
-           
-           // $mpdf->SetFooter($footer);
+
+            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
-        
         }
-
-       
     }
 
 
 
 
-   
+
     public function Excel($quotation_data)
     {
         // Create a new PhpSpreadsheet object
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        
+
         // Set table columns
         $table_columns = array(
             "Date",
@@ -654,23 +640,23 @@ class PendingPurchaseVoucherReport extends BaseController
         $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Center horizontally
         $sheet->getStyle($cellRange)->getAlignment()->setIndent(1); // Increase the indentation
 
-    
+
         $joins1 = array(
-        
+
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
                 'fk'    => 'qpd_product_description',
             ),
-            
-            
+
+
         );
 
         // Populate quotation data
         foreach ($quotation_data as $quot_data) {
 
-            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details',array('qpd_quotation_details'=>$quot_data->qd_id),$joins1);
-            
+            $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details', array('qpd_quotation_details' => $quot_data->qd_id), $joins1);
+
             $sheet->setCellValue($column . $excel_row, $quot_data->qd_date);
             $sheet->setCellValue(++$column . $excel_row, $quot_data->qd_reffer_no);
             $sheet->setCellValue(++$column . $excel_row, $quot_data->cc_customer_name);
@@ -687,23 +673,20 @@ class PendingPurchaseVoucherReport extends BaseController
             //echo $column;
 
 
-            $j=1;
-            $k =1; 
+            $j = 1;
+            $k = 1;
             //$excel_row++;
             //echo $excel_row;
 
-            foreach($product_details as $prod_del)
-            {   
+            foreach ($product_details as $prod_del) {
 
-                if($j != 1) 
-                { 
-                //$column++;
+                if ($j != 1) {
+                    //$column++;
                 }
 
                 $sheet->setCellValue($column . $excel_row, $prod_del->product_details);
 
                 $j++;
-
             }
 
             /*
@@ -757,9 +740,9 @@ class PendingPurchaseVoucherReport extends BaseController
 
             // Increase row height to add vertical space
             //$sheet->getRowDimension($excel_row)->setRowHeight(30); // Change the height value to adjust the vertical space
-            
+
             //$sheet->getColumnDimension($column)->setWidth(20); // Change 20 to your desired width
-            
+
             // Reset column index for the next row
             $column = 'A';
             //$excel_row++; // Move to the next row 
@@ -784,10 +767,5 @@ class PendingPurchaseVoucherReport extends BaseController
 
         // Save the Excel file to output
         $writer->save('php://output');
-
     }
-
-
-
-
 }

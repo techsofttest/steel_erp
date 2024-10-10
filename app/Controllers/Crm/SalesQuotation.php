@@ -2054,6 +2054,20 @@ class SalesQuotation extends BaseController
        
     }
 
+
+    public function CurrencyFormat()
+    {   
+       // $cond = array('qd_id' => $this->request->getPost('Price'));
+
+       //print_r($this->request->getPost('Price')); 
+
+        $price = number_format($this->request->getPost('Price'), $this->request->getPost('Decimals'), '.', ',');
+
+       
+
+        echo $price;
+    }
+
     
 
 

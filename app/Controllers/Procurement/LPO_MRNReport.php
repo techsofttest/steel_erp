@@ -185,11 +185,11 @@ class LPO_MRNReport extends BaseController
                 'pk'    => 'po_id',
                 'fk'    => 'pop_purchase_order',
             ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'pop_sales_order',
-            ),
+            // array(
+            //     'table' => 'crm_sales_orders',
+            //     'pk'    => 'so_id',
+            //     'fk'    => 'pop_sales_order',
+            // ),
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
@@ -238,6 +238,68 @@ class LPO_MRNReport extends BaseController
         // $data['purchase_order'] = $this->pro_model->CheckData($from_date,'mrn_date',$to_date,'',$data1,'mrn_vendor_name',$data2,'rnp_sales_order',$data5,'rnp_product_desc','','','steel_pro_material_received_note_prod',$joins,'rnp_id',$joins1);  
 
         $data['purchase_order'] = $this->pro_model->LPO_MRNCheckData($from_date, 'po_date', $to_date, '', $data1, 'po_vendor_name', $data2, 'pop_sales_order', $data5, 'pop_prod_desc', $data3, 'po_reffer_no', 'steel_pro_purchase_order_product', $joins, 'pop_purchase_order', $joins1);
+
+
+        $new_order = [];
+
+        foreach ($data['purchase_order'] as $orders) {
+        
+            // Fetch the MRN record for each purchase order
+            $pvs = $this->common_model->SingleRow('pro_purchase_order', ['po_id' => $orders->po_id]);
+        
+            // Check if the record exists and if po_id is valid
+            if ($pvs && isset($pvs->po_id) && $pvs->po_id != '') {
+        
+                $joins2 = array(
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'pop_prod_desc',
+                    ),
+                    array(
+                        'table' => 'crm_sales_orders',
+                        'pk'    => 'so_id',
+                        'fk'    => 'pop_sales_order',
+                    ),
+                    array(
+                        'table' => 'pro_material_received_note_prod',
+                        'pk'    => 'rnp_purchase_prod_id',
+                        'fk'    => 'pop_id',
+                    ),
+                    // array(
+                    //     'table' => 'pro_material_received_note',
+                    //     'pk'    => 'mrn_purchase_order',
+                    //     'fk'    => 'pop_purchase_order',
+                    // ),
+                );
+        
+                // Fetch related purchase order products with a join
+                $pvps = $this->common_model->FetchWhereJoin('pro_purchase_order_product', ['pop_purchase_order' => $pvs->po_id], $joins2);
+        
+                // If there are products, assign them to the current order
+                if ($pvps) {
+                    $orders->product_orders = $pvps;
+                } else {
+                    // If no products are found, set it to an empty array
+                    $orders->product_orders = [];
+                }
+            } else {
+                // If $pvs is not found, assign an empty product_orders array
+                $orders->product_orders = [];
+            }
+        
+            // Add the updated order to $new_order
+            $new_order[] = $orders;
+        }
+        
+        // Assign the result back to the purchase_order data
+        $data['purchase_order'] = $new_order;
+        
+
+
+
+        $lpo_ref = $this->request->getPost('lpo_ref');
+
 
 
 
@@ -391,9 +453,9 @@ class LPO_MRNReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_amount}</td>";
 
 
 
@@ -412,12 +474,24 @@ class LPO_MRNReport extends BaseController
 
                         $pdf_data .= "<td style=''></td>";
 
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
+                    
                     }
 
+
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->so_reffer_no}</td>";
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>".format_currency($order_data->po_amount)."</td>";
 
 
                     $pdf_data .= "<td style='";
@@ -427,67 +501,68 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->pop_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_amount}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_amount)."</td>";
                     $pop_amt += $prod_del->pop_amount;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                        $pdf_data .= "'>{$order_data->mrn_reffer}</td>";
+                    }
+                    $pdf_data .= "'></td>";
+
+
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->mrn_reffer}</td>";
+                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_current_delivery ?? 0)) . "</td>";
 
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".($prod_del->rnp_delivery_qty ?? 0)."</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
-
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_rate}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>".($prod_del->rnp_amount ?? 0)."</td>";
+                    $pdf_data .= "'>".format_currency(($prod_del->rnp_amount ?? 0)) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>".($prod_del->pop_amount - $prod_del->rnp_amount)."</td>";
+                    $pdf_data .= "'>".format_currency(($prod_del->pop_amount - $prod_del->rnp_amount)) . "</td>";
                     $diff_amt += $prod_del->pop_amount - $prod_del->rnp_amount;
-                    
+
                     // 
 
                     if ($q != 1) {
@@ -611,25 +686,25 @@ class LPO_MRNReport extends BaseController
         
             <th align="left">Sales Order Ref</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">MRN Ref</th>
 
-            <th align="left">Quantity</th>
+            <th align="right">Quantity</th>
         
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
             
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Difference</th>
+            <th align="right">Difference</th>
 
             </tr>
 
@@ -641,16 +716,16 @@ class LPO_MRNReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>               
-                <td style="border-top: 2px solid;">' .  $po_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $pop_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' .format_currency( $pop_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $rnp_amt . '</td>
-                <td style="border-top: 2px solid;">' . $diff_amt . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
+                <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                 
             </tr>    
            

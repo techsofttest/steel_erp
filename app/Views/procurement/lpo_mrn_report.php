@@ -1,3 +1,9 @@
+<style>
+    #DataTable td{
+        line-height:2.3
+    }
+</style>
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -123,7 +129,7 @@
                                                                                     <select class="form-select" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
-                                                                                            <option value="<?php echo $product->product_details; ?>"><?php echo $product->product_details; ?></option>
+                                                                                            <option value="<?php echo $product->product_id; ?>"><?php echo $product->product_details; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -225,49 +231,48 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Purchase Order to Material Received Note Analysis</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Purchase Order to Material Received Note Analysis</h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
 
-                                        <!-- <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="excel_button report_button" type="submit">Excel</button>
-                                        </form> -->
+
+                                        <button class="excel_button report_button" type="submit">Excel</button>
+
 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
-
+                                        <!-- 
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
-                                            <button class="email_button report_button" type="submit">Email</button>
-                                        </form>
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
+                                    <div class="card-body" style="max-height:80vh; overflow:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Purchase Order Ref</th>
-                                                    <th>Vendor</th>
-                                                    <th>Sales Order Ref</th>
-                                                    <th>Amount</th>
+                                                    <th class="no-sort text-center" style="width:60px;">Sl no</th>
+                                                    <th class="text-center">Date</th>
+                                                    <th class="text-center">Purchase Order Ref</th>
+                                                    <th class="text-center">Vendor</th>
+                                                    <th class="text-center">Sales Order Ref</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th>MRN Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th>Difference</th>
+                                                    <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">Difference</th>
                                                 </tr>
 
                                             </thead>
@@ -283,58 +288,58 @@
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
 
-                                                            <td><?php echo $i; ?></td>
-                                                            <td><?php echo $pur_order->po_date; ?></td>
-                                                            <td><?php echo $pur_order->po_reffer_no; ?></td>
-                                                            <td><?php foreach ($vendors as $vendor) {
+                                                            <td class="text-center"><?php echo $i; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->po_date; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_order->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
                                                             </td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-center"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->so_reffer_no; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php $tot_amount += $pur_order->po_amount;
-                                                                echo $pur_order->po_amount; ?></td>
+                                                            <td class="text-end"><?php $tot_amount += $pur_order->po_amount;
+                                                                                    echo format_currency($pur_order->po_amount); ?></td>
 
                                                             <td><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->product_details; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $mr_amount += $orders->pop_amount;
-                                                                    echo $orders->pop_amount; ?><br>
+                                                                                        echo format_currency($orders->pop_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->mrn_reffer; ?><br>
+                                                            <td>
+                                                                <?php echo $pur_order->mrn_reffer; ?><br>
+                                                            </td>
+
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_delivery_qty; ?><br>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pop_rate; ?><br>
-                                                                <?php } ?></td>
-
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $po_amount += $orders->rnp_amount;
-                                                                    echo $orders->rnp_amount; ?><br>
+                                                                                        echo format_currency($orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
-                                                                    echo $orders->pop_amount - $orders->rnp_amount; ?><br>
+                                                                                        echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                 <?php } ?></td>
 
                                                         </tr>
@@ -343,20 +348,20 @@
                                                     } ?>
 
                                                     <th></th>
-                                                    <th>Total</th>
+                                                    <th class="text-center">Total</th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $tot_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($tot_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $mr_amount; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($mr_amount); ?></th>
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th><?php echo $po_amount; ?></th>
-                                                    <th><?php echo $difference; ?></th>
+                                                    <th class="text-end"><?php echo format_currency($po_amount); ?></th>
+                                                    <th class="text-end"><?php echo format_currency($difference); ?></th>
                                                 <?php   } ?>
 
                                             </tbody>
@@ -564,6 +569,142 @@
 
 
 
+        $(document).ready(function() {
+            $(".excel_button").click(
+                function() {
+                    tableToExcel('DataTable', 'Purchase Order to Material Recieved Note', 'Purchase Order to Material Recieved Note');
+                }
+            );
+        })
 
+        function getIEVersion()
+        // Returns the version of Windows Internet Explorer or a -1
+        // (indicating the use of another browser).
+        {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
+        }
+
+
+
+
+
+
+        function tableToExcel(table, sheetName, fileName) {
+
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+                return fnExcelReport(table, fileName);
+            }
+
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64Conversion = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                },
+                formatExcelData = function(s, c) {
+                    return s.replace(/{(\w+)}/g, function(m, p) {
+                        return c[p];
+                    })
+                }
+
+            $("tbody > tr[data-level='0']").show();
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            var ctx = {
+                worksheet: sheetName || 'Worksheet',
+                table: table.innerHTML
+            }
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
+            element.setAttribute('download', fileName);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+
+            $("tbody > tr[data-level='0']").hide();
+        }
+
+        function fnExcelReport(table, fileName) {
+
+            var tab_text = "<table border='2px'>";
+            var textRange;
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            $("tbody > tr[data-level='0']").show();
+            tab_text = tab_text + table.innerHTML;
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
+            $("tbody > tr[data-level='0']").hide();
+            return (sa);
+
+        }
+
+    });
+</script>
+
+
+<script>
+    // Close modal when form is submitted
+    document.getElementById('add_form').addEventListener('submit', function(e) {
+        // Close the modal after the form is submitted
+        $('#MaterialRequesitionReport').modal('hide');
+    });
+</script>
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Purchase Order to Material Recieved Note Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
     });
 </script>
