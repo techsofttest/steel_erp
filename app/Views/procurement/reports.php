@@ -19,7 +19,7 @@
                                 <form  class="Dashboard-form class" id="sales_quot_report_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Sales Quotation Report</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -130,7 +130,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"></h4>
                                        
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
