@@ -679,7 +679,7 @@ class CreditInvoice extends BaseController
 
             'cci_project'        => $this->request->getPost('cci_project'),
 
-            'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
+            //'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
 
             'cci_credit_account' => $this->request->getPost('ci_credit_account'),
 

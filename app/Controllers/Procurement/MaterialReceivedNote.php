@@ -164,6 +164,8 @@ class MaterialReceivedNote extends BaseController
                 'mrn_added_date'      => date('Y-m-d'),
 
             ];
+          
+
             
             if (isset($_FILES['mrn_file']) && $_FILES['mrn_file']['name'] !== '') {
                 
@@ -184,6 +186,9 @@ class MaterialReceivedNote extends BaseController
             $data['purchase_id'] =  $material_received->mrn_purchase_order;
 
             $data['mrn_recived_id'] =  $material_received_id;
+
+            //$this->common_model->EditData(array('po_delivered_status' => 0), array('po_id' => $this->request->getPost('mrn_purchase')),'pro_purchase_order');
+
 
            // $data['mrn_reff_id'] = $this->request->getPost('po_mrn_reff');
         }

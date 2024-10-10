@@ -8,3 +8,9 @@ ALTER TABLE `steel_pro_material_received_note_prod` CHANGE `rnp_purchase_order_i
 31-08-2024
 
 ALTER TABLE `steel_crm_sales_return` ADD `sr_total` DECIMAL(19,2) NOT NULL AFTER `sr_modified_date`;
+
+
+
+09-10-2024(not given)
+
+ALTER TABLE `steel_pro_purchase_order` ADD `po_voucher_status` INT(255) NOT NULL DEFAULT '0' AFTER `po_delivered_status`;

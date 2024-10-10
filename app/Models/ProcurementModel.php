@@ -138,6 +138,38 @@ class ProcurementModel extends Model
         //->get()
         //->getResult();
     }
+    
+    //purchase voucher own query
+    public function PurchaseVoucher($table,$joins,$vendorId){
+           
+        $query= $this->db
+        ->table($table)
+        ->select('*')
+        ->where('mrn_status',0)
+        ->where('mrn_vendor_name',$vendorId);
+        if(!empty($joins))
+        foreach($joins as $join)
+        {
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+        }
+       
+
+        $query->groupBy('pro_material_received_note' . '.' . 'mrn_purchase_order');
+
+        $result = $query->get()->getResult();
+
+
+       // echo $this->db->getLastQuery(); exit();
+
+        
+
+        return $result;
+
+        //->get()
+        //->getResult();
+    }
+
+
 
         // NewAddition
         public function FixedAssetBalance($account)

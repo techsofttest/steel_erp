@@ -1,7 +1,5 @@
 27-09-2024(Friday)
 
-purchase voucher -  purchase order - twise - doute(ask)
-
 purchase return - view - edit -delete note done
 
 pro - forma invoice - igonre (ask)
@@ -14,12 +12,35 @@ purchase order - vendor - customer -together(sales quotation,sales order) (ask)
 
 invoive report pending
 
-
 sales summery report (currently ok - check)- (ask)
 
+invoice report -invoice reference (cash invoice)- doute (ask)
 
 
 
+07-10-2024(Monday)
+
+purchase voucher - vendor Dn reff - doute (ask)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pending
+
+
+purchase voucher - delete - status not change in material received note
  
- 
+purchase voucher edit not done 
    
