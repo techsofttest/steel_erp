@@ -13,4 +13,6 @@ ALTER TABLE `steel_crm_sales_return` ADD `sr_total` DECIMAL(19,2) NOT NULL AFTER
 
 09-10-2024(not given)
 
-ALTER TABLE `steel_pro_purchase_order` ADD `po_voucher_status` INT(255) NOT NULL DEFAULT '0' AFTER `po_delivered_status`;
+ALTER TABLE `steel_pro_purchase_order` ADD `po_voucher_status` INT(255) NOT NULL DEFAULT '0' AFTER `po_delivered_status`;   - updated  in demo
+
+ALTER TABLE `steel_pro_purchase_voucher` CHANGE `pv_contact_person` `pv_contact_person` VARCHAR(255) NOT NULL; - update in demo

@@ -363,7 +363,7 @@
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
-                                            <span class="print_btn_clz once_form_submit" style="display:none"><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
+                                            <span class="print_btn_clz once_form_submit" ><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
 
@@ -1883,7 +1883,7 @@
 
         $('#add_form1')[0].reset();
 
-        $('.print_btn_clz').css('display', 'none');
+        //$('.print_btn_clz').css('display', 'none');
 
         $('.customer_id').val('').trigger('change');
 
