@@ -42,6 +42,21 @@
 
 <style>
 
+
+
+
+
+.print_button {
+    background: blueviolet;
+    border: blueviolet;
+}
+
+.email_button {
+    background: dodgerblue;
+    border: dodgerblue;
+}
+
+
     /* Form Validation */
     label.error 
     {
