@@ -252,23 +252,29 @@ class SalesQuotAnalysisReport extends BaseController
             $sales_diff_amount = 0;
             foreach($quotation_data as $quot_data){
 
-                $new_date = date('d-m-Y', strtotime($quot_data->qd_date));
+                $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
             
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
-                $pdf_data .= "<td colspan='4' align='left' class='p-0' style='border-top: 2px solid'><table>";
+               
+                $pdf_data .= "<td colspan='5' align='left' class='p-0' style='border-top: 2px solid'><table>";
 
                
 
                 foreach($quot_data->quotation_product as $quot_prod){
                     $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
                     $pdf_data .= "<td width='100px'>{$quot_prod->product_details}</td>";
-                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_quantity}</td>";
-                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_rate}</td>";
-                    $pdf_data .= "<td width='100px'>{$quot_prod->qpd_amount}</td>";
+                    $pdf_data .= "<td width='100px' align='right'>{$quot_prod->qpd_quantity}</td>";
+
+                    $rate = format_currency($quot_prod->qpd_rate);
+
+                    $amount = format_currency($quot_prod->qpd_amount);
+
+                    $pdf_data .= "<td width='100px' align='right'>{$rate}</td>";
+                    $pdf_data .= "<td width='100px' align='right'>{$quot_prod->qpd_discount}</td>";
+                    $pdf_data .= "<td width='100px' align='right'>{$amount}</td>";
                     $pdf_data .= "</tr>";
                     
                     $total_quot_amount = $quot_prod->qpd_amount + $total_quot_amount;
@@ -278,7 +284,7 @@ class SalesQuotAnalysisReport extends BaseController
                 $pdf_data .= "</table></td>";
             
                 if(!empty($quot_data->sales_orders)){
-                    $pdf_data .= "<td colspan='5' align='left' class='p-0' style='border-top: 2px solid'><table>";
+                    $pdf_data .= "<td colspan='2' align='right' class='p-0' style='border-top: 2px solid'><table>";
             
                     foreach($quot_data->sales_orders as $sal_ord){
                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
@@ -288,21 +294,21 @@ class SalesQuotAnalysisReport extends BaseController
                         if(!empty($sal_ord->sales_product)){
                             foreach($sal_ord->sales_product as $sales_prod){
                                 if($so_pro_count == 1){
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->product_details}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_quantity}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_rate}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_amount}</td>";
+                                   
+                                    $amount2 = format_currency($sales_prod->spd_amount);
+
+                                    $pdf_data .= "<td width='100px'>{$amount2}</td>";
                                     
                                     $sales_amount = $sales_prod->spd_amount + $sales_amount;
 
                                     $pdf_data .= "</tr>";
                                 } else {
-                                    $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
+                                    $amount2 = format_currency($sales_prod->spd_amount);
+                                    $pdf_data .= "<tr align='right' style='background: unset;border-bottom: hidden !important;'>";
                                     $pdf_data .= "<td width='100px'></td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->product_details}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_quantity}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_rate}</td>";
-                                    $pdf_data .= "<td width='100px'>{$sales_prod->spd_amount}</td>";
+                                    
+                                    
+                                    $pdf_data .= "<td width='100px'>{$amount2}</td>";
                                     $pdf_data .= "</tr>";
 
                                     $sales_amount = $sales_prod->spd_amount + $sales_amount;
@@ -318,18 +324,17 @@ class SalesQuotAnalysisReport extends BaseController
                 } else {
                     $pdf_data .= "<td style='border-top: 2px solid'></td>
                                   <td style='border-top: 2px solid'></td>
-                                  <td style='border-top: 2px solid'></td>
-                                  <td style='border-top: 2px solid'></td>
-                                  <td style='border-top: 2px solid'></td>
+                                
                     ";
                 }
 
                 if(!empty($quot_data->sales_orders)){
-                    $pdf_data .= "<td style='border-top: 2px solid'>---</td>";  
+                    $pdf_data .= "<td align='right' style='border-top: 2px solid'>---</td>";  
                 }else{
-                    $pdf_data .="<td style='border-top: 2px solid'>{$quot_data->qpd_amount}</td>";
+                    
+                    $pdf_data .="<td align='right' style='border-top: 2px solid'>{$quot_data->qpd_amount}</td>";
 
-                    $sales_diff_amount = $quot_data->qpd_amount + $sales_diff_amount;
+                    $sales_diff_amount = format_currency($quot_data->qpd_amount + $sales_diff_amount);
                 }
             
                 $pdf_data .= "</tr>";
@@ -349,21 +354,46 @@ class SalesQuotAnalysisReport extends BaseController
 
            // $mpdf = new \Mpdf\Mpdf();
 
-           $mpdf = new \Mpdf\Mpdf([
-            'format' => [300, 400], // Custom page size in millimeters
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'margin_top' => 10,
-            'margin_bottom' => 10,
+           
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
 
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter', // Custom page size in millimeters
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
         ]);
+                
+        
+        
+       
         
 
             
 
             $mpdf->SetTitle('Sales Quotation Report'); // Set the title
 
-          
+            $sales_amount = format_currency($sales_amount);
+
+
+            $total_quot_amount = format_currency($total_quot_amount);
 
             $html ='
         
@@ -373,7 +403,7 @@ class SalesQuotAnalysisReport extends BaseController
                 padding-bottom: 10px;
                 padding-left: 5px;
                 padding-right: 5px;
-                font-size: 12px;
+                font-size: 15px;
             }
             p{
                 
@@ -438,27 +468,21 @@ class SalesQuotAnalysisReport extends BaseController
         
             <th align="left">Sales Executive</th>
         
-            <th align="left">Amount</th>
-
             <th align="left" width="100px">Product</th>
 
-            <th align="left" width="100px">Quantity</th>
+            <th align="right" width="100px">Quantity</th>
 
-            <th align="left" width="100px">Rate</th>
+            <th align="right" width="100px">Rate</th>
 
-            <th align="left" width="100px">Amount</th>
+            <th align="right" width="100px">Discount</th>
 
-            <th align="left" width="100px">Sales Order</th>
+            <th align="right" width="100px">Amount</th>
 
-            <th align="left" width="100px">Product</th>
+            <th align="right" width="100px">Sales Order</th>
 
-            <th align="left" width="100px">Quantity</th>
+             <th align="right" width="100px">Amount</th>
 
-            <th align="left" width="100px">Rate</th>
-
-            <th align="left" width="100px">Amount</th>
-
-            <th align="left">Difference</th>
+            <th align="right">Difference</th>
 
             
 
@@ -474,17 +498,14 @@ class SalesQuotAnalysisReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_quot_amount.'</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_quot_amount.'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$sales_amount.'</td>
-                <td style="border-top: 2px solid;">'.$sales_diff_amount.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$total_quot_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_amount.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_diff_amount.'</td>
             
             </tr>   
            
@@ -495,18 +516,32 @@ class SalesQuotAnalysisReport extends BaseController
         
             ';
         
-            //$footer = '';
-
-
-            //echo $html; exit;
-        
-           
             $mpdf->WriteHTML($html);
-           // $mpdf->SetFooter($footer);
+
+            // Generate the PDF content
+           // Generate the PDF content but do not output it immediately (use 'S' to return it as a string)
+           
+           /*$pdf_content = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
+
+            // Set headers for inline display with the correct filename
             $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output();
-        
-        }
+            $this->response->setHeader('Content-Disposition', 'inline; filename="Sales_Quotation_Report.pdf"');
+            $this->response->setHeader('Content-Length', strlen($pdf_content)); // Optional but helps ensure the browser knows the size
+
+            // Send the response with the PDF content
+            $this->response->setBody($pdf_content);
+            $this->response->send();*/
+            
+            ob_clean();
+
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+
+
+    }
+            
+
+           
 
        
     }

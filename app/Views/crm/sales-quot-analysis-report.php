@@ -343,8 +343,9 @@
                                         <td></td>
 
                                         <?php $total2 = $quot_data->qpd_amount + $total2 ?>
-
+                                        
                                         <td class="text-end"><?php echo format_currency($quot_data->qpd_amount); ?></td>
+                                       
                                     <?php } ?>
 
                                     </tr>
