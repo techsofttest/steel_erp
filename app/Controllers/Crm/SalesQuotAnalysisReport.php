@@ -255,9 +255,9 @@ class SalesQuotAnalysisReport extends BaseController
                 $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
             
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' width='100'>{$quot_data->qd_reffer_no}</td>";
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' width='100'>{$quot_data->se_name}</td>";
                
                 $pdf_data .= "<td colspan='5' align='left' class='p-0' style='border-top: 2px solid'><table>";
 
@@ -331,7 +331,7 @@ class SalesQuotAnalysisReport extends BaseController
                 if(!empty($quot_data->sales_orders)){
                     $pdf_data .= "<td align='right' style='border-top: 2px solid'>---</td>";  
                 }else{
-                    
+
                     $pdf_data .="<td align='right' style='border-top: 2px solid'>{$quot_data->qpd_amount}</td>";
 
                     $sales_diff_amount = format_currency($quot_data->qpd_amount + $sales_diff_amount);
@@ -403,8 +403,9 @@ class SalesQuotAnalysisReport extends BaseController
                 padding-bottom: 10px;
                 padding-left: 5px;
                 padding-right: 5px;
-                font-size: 15px;
+                font-size: 12px;
             }
+              
             p{
                 
                 font-size: 12px;
@@ -462,11 +463,11 @@ class SalesQuotAnalysisReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Quotation Ref.</th>
+            <th align="left" width="100px">Quotation Ref.</th>
         
             <th align="left">Customer</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" width="103px">Sales Executive</th>
         
             <th align="left" width="100px">Product</th>
 
@@ -536,6 +537,8 @@ class SalesQuotAnalysisReport extends BaseController
 
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
 
 
     }
