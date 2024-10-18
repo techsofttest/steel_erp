@@ -784,7 +784,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Sl No</th>
-                                                                <th>Purchase Voucher</th>
+                                                                <th>Purchase Order</th>
                                                                 <th>LPO Ref</th>
                                                                 <th>Amount</th>
                                                                 <th>Payments</th>
@@ -793,9 +793,12 @@
                                                             </tr>
                                                         </thead>
 
-                                                        <tbody id="purchase_voucher_add">
+
+                                                        <tbody id="purchase_order_add">
+
 
                                                         </tbody>
+
 
                                                         <tr>
 
@@ -3144,7 +3147,7 @@
 
 
 
-        $('body').on('click', '.add_pvadvance_btn', function() {
+        $('body').on('click', '#add_pvadvance_btn', function() {
 
             var vendor_id = $(this).val();
 
@@ -3164,11 +3167,15 @@
 
                 success: function(data) {
 
+                    var data = JSON.parse(data);
+
                     if (data != "") {
                         parent.find('.credit_amount').attr('data-max', data);
                     } else {
                         parent.find('.credit_amount').attr('data-max', 0);
                     }
+
+                    $('#invoices_sec').html(data.invoices);
 
                 }
 

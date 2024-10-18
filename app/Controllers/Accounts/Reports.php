@@ -14,7 +14,6 @@ class Reports extends BaseController
     {   
 
 
-
         $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
 
         $data['account_heads_filter'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_head_id','asc');
@@ -77,6 +76,8 @@ class Reports extends BaseController
 
         $account = $this->request->getGet('filter_account');
 
+        $data['account_name'] = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $account),array())->ca_name;
+
         }
 
         $range_from="";
@@ -133,6 +134,8 @@ class Reports extends BaseController
 
                     $total_credit = 0;
 
+                    $balance = 0;
+
                     foreach($data['vouchers'] as $vc)
                     {   
                         $q=1;
@@ -154,12 +157,20 @@ class Reports extends BaseController
                         $pdf_data .= "<td style='border-top: 2px solid'>{$vc->account_name}</td>";
 
 
+                    
+
+
                         if($vc->debit_amount !="") { 
 
                         $debit_am = format_currency($vc->debit_amount);
+
+                        $balance = $balance+$vc->debit_amount; 
+
                         } else if($vc->credit_amount<0) {
 
-                         $debit_am = format_currency($vc->credit_amount); 
+                        $debit_am = format_currency($vc->credit_amount); 
+
+                        $balance = $balance-$vc->credit_amount; 
                             
                         }
                         else
@@ -182,21 +193,21 @@ class Reports extends BaseController
         
                         $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$credit_am}</td>";
                         
-                        $pdf_data .= "<td style='border-top: 2px solid'></td>";
+                        $pdf_data .= "<td style='border-top: 2px solid' align='right'>".format_currency($balance)."</td>";
                         
                         $pdf_data .="</tr>";
                        
                         
                     }
         
-                    if(empty($from_date) && empty($to_date))
+                    if(empty($start_date) && empty($end_date))
                     {
                      
-                       $dates = "";
+                       $dates = "-";
                     }
                     else
                     {
-                       $dates = $from_date . " to " . $to_date;
+                       $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
                     }
         
                     
@@ -291,7 +302,7 @@ class Reports extends BaseController
                     <tr width="100%">
 
                     <td>
-                    Period : 01-Jan-2024 - 01-Sep-2024
+                    Period : '.$dates.'
                     </td>
 
                     </tr>
@@ -367,7 +378,7 @@ class Reports extends BaseController
                         <td style="border-top: 2px solid;"></td>
                         <td align="right" style="border-top: 2px solid;"></td>
                         <td align="right" style="border-top: 2px solid;"></td>
-                        <td align="right" style="border-top: 2px solid;"></td>
+                        <td align="right" style="border-top: 2px solid;">'.format_currency($balance).'</td>
                         
                     </tr>    
                    
@@ -460,12 +471,283 @@ class Reports extends BaseController
 
         $data['post_dated_cheques'] = $this->report_model->SOAPostDatedCheques($start_date,$end_date,$account);
 
+        $account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $account))->ca_name;
+
         //$data['payments'] = $this->report_model->SOAPayments($start_date,$end_date,$account);
 
         //$data['receipts'] = $this->report_model->SOAReceipts($start_date,$end_date,$account);
 
 
         $data['content'] = view('accounts/statement_of_accounts',$data);
+
+
+        if(!empty($_POST['pdf']))
+        {
+
+            $balance =0;
+
+            $total_credit=number_format(0,2);
+
+            $total_debit=number_format(0,2);
+
+            $pdf_data ="";
+
+
+            if(empty($start_date) && empty($end_date))
+            {
+                
+                $dates = "-";
+            }
+            else
+            {
+                $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+            }
+
+
+
+            foreach($data['vouchers'] as $vc){ 
+
+                if(!empty($vc->debit_amount)) { $vc->debit_amount = $vc->debit_amount;  } else{ $vc->debit_amount = ""; }
+
+                if(!empty($vc->credit_amount)) { $vc->credit_amount = $vc->credit_amount;  } else{ $vc->credit_amount = ""; }
+
+
+                
+
+                if(!empty($vc->debit_amount))
+                {
+                $balance = $balance-$vc->debit_amount;  
+                }
+                else
+                {
+                $balance = $balance+$vc->credit_amount;    
+                }
+
+               
+
+                $pdf_data .='
+
+                <tr>
+                
+                <td align="">'.$vc->reference.'</td>
+                
+                <td align="right">'.date('d-m-Y',strtotime($vc->voucher_date)).'</td>
+                
+                <td align="right">'.$vc->debit_amount.'</td>
+                
+                <td align="right">'.$vc->credit_amount.'</td>
+                
+                <td align="right">
+                
+                '.$balance.'
+                
+                </td>
+
+                </tr>
+                ';
+
+                if(!empty($vc->credit_amount)){
+                $total_credit = $total_credit+$vc->credit_amount;
+                }
+
+                if(!empty($vc->debit_amount)){
+                $total_debit = $total_debit+$vc->debit_amount;
+                }
+
+                } 
+           
+    
+                
+    
+                $title = "GLR";
+    
+                $mpdf = new \Mpdf\Mpdf(
+    
+                    [
+                        'format' => 'A3', // Set page size to A3
+                        'margin_left' => 15,
+                        'margin_right' => 15,
+                        'margin_top' => 16,
+                        'margin_bottom' => 16,
+                        'margin_header' => 9,
+                        'margin_footer' => 9,
+                    ]
+                );
+    
+    
+                if(empty($start_date) && empty($end_date))
+                {
+                 
+                   $dates = "";
+                }
+                else
+                {
+                   $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+                }
+    
+             
+    
+                $mpdf->SetTitle('Statements Of Accounts'); // Set the title
+    
+                $html ='
+            
+                <style>
+
+                .content-table th 
+                {
+                border-top: 1px solid rgba(100,100,100, .3);
+                }
+
+                .content-table td 
+                {
+                border-top: 1px solid rgba(100,100,100, .3);
+                }
+
+
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+                <table>
+                
+                <tr>
+                
+            
+                <td>
+            
+                <h3>Al Fuzail Engineering Services WLL</h3>
+                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                
+                
+                </td>
+                
+                </tr>
+            
+                </table>
+            
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+            
+                <tr width="100%">
+                <td align="right"><h3>Statements Of Accounts</h3></td>
+            
+                <hr>
+    
+                </tr>
+
+
+                <tr width="100%">
+    
+                <td>
+                Customer : '.$account.' 
+                </td>
+    
+                </tr>
+
+                
+
+                <tr width="100%">
+    
+                <td>
+                Attention : Accounts Department
+                </td>
+    
+                </tr>
+    
+    
+                <tr width="100%">
+    
+                <td>
+                Period : '.$dates.'
+                </td>
+    
+                </tr>
+    
+    
+                
+    
+            
+                </table>
+               
+            
+                <table class="content-table"  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+              
+                <th align="left">Voucher Number</th>
+            
+                <th align="right">Date</th>
+    
+                <th align="right">Debit Amount</th>
+    
+                <th align="right">Credit Amount</th>
+    
+                <th align="right">Balance</th>
+    
+                </tr>
+    
+                 
+                '.$pdf_data.'
+    
+                <tr >
+                
+                <th></th>
+
+                <th align=""></th>
+            
+                <th align="right">'.format_currency($total_debit).'</th>
+            
+                <th align="right">'.format_currency($total_credit).'</th>
+
+                <th align=""></th>
+                
+    
+                </tr>
+    
+    
+                
+                </table>
+    
+    
+            
+                ';
+            
+                //$footer = '';
+            
+                
+                $mpdf->WriteHTML($html);
+               
+               // $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+    
+        }
+
+
 
         return view('accounts/report-module',$data);
 
@@ -675,11 +957,19 @@ class Reports extends BaseController
 
                 $total_credit = 0;
 
+                $total_deb=number_format(0,2);
+
+                $total_cred=number_format(0,2);
+
                 foreach($data['c_accounts'] as $account)
                 {   
                     $q=1;
 
                     $border="border-top: 2px solid";
+
+                    $total_deb = $total_deb+ $account->total_debit;
+
+                    $total_cred = $total_cred + $account->total_credit; 
 
 
                    $pdf_data .="";
@@ -710,32 +1000,32 @@ class Reports extends BaseController
                    
                     
                 }
+
+
+
+
+                $pdf_data .='
+                <tr class="no-sort">
+                        <td align=""><b style="font-size:20px;">Total</b></td>
+                        <td align="right"><b>(0.00)</b></td>
+                        <td align="right"><b>'.$total_deb.'</b></td>
+                        <td align="right"><b>'.$total_cred.'</b></td>
+                        <td align="right"><b>0.00</b></td>
+                        <td align="right"><b>0.00</b></td>
+                </tr>';
+
+
     
-                if(empty($from_date) && empty($to_date))
+                if(empty($date_from) && empty($date_to))
                 {
                  
-                   $dates = "";
+                   $dates = "-";
                 }
                 else
                 {
-                   $dates = $from_date . " to " . $to_date;
+                   $dates = date('d-F-Y',strtotime($date_from)) ." to ". date('d-F-Y',strtotime($date_to));
                 }
 
-
-                $from_date_pdf = "";
-
-                $to_date_pdf = "";
-
-                if(!empty($from_date))
-                {
-                $from_date_pdf = $from_date;
-                }
-
-                if(!empty($to_date))
-                {
-                $to_date_pdf = $to_date;
-                }
-    
                 
     
                 $title = "GLR";
@@ -818,7 +1108,7 @@ class Reports extends BaseController
                 <tr width="100%">
 
                 <td>
-                Period : '.$from_date_pdf.' - '.$to_date_pdf.'
+                Period : '.$dates.'
                 </td>
 
                 </tr>
@@ -875,22 +1165,23 @@ class Reports extends BaseController
                 </tr>
 
 
-               
-                
                 </table>
     
-    
-            
                 ';
             
                 //$footer = '';
             
+                $mpdf->SetJS('this.print();');
                 
                 $mpdf->WriteHTML($html);
                
                // $mpdf->SetFooter($footer);
+
                 $this->response->setHeader('Content-Type', 'application/pdf');
+
                 $mpdf->Output($title . '.pdf', 'I');
+
+                
             
         }
 
@@ -950,7 +1241,6 @@ class Reports extends BaseController
     
         $time_frame = $this->request->getGet('filter_timeframe');
 
-
         $date_from = $start_date;
 
         $date_to = $end_date;
@@ -981,6 +1271,11 @@ class Reports extends BaseController
         $filter_type = $this->request->getGet('filter_type');
 
         $data['month_year'] = date('M Y',strtotime($date_to));
+
+        if(empty($date_to))
+        {
+        $data['month_year'] ="";
+        }
 
         $data['account_heads'] = $this->report_model->FetchPLAccount($date_from,$date_to);
 
@@ -1022,7 +1317,7 @@ class Reports extends BaseController
 
                     $border="border-top: 2px solid";
     
-                    $pdf_data .= "<tr>
+                    $pdf_data .= "<tr style='border-top: 2px solid'>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -1031,14 +1326,14 @@ class Reports extends BaseController
 
                                             </tr>
 
-                                            <tr>
+                                            <tr style='border-top: 2px solid'>
 
-                                            <th><b style='font-size:18px;'>".$ah->ah_account_name."</b></th>
+                                            <th style='border-top: 2px solid'><b style='font-size:18px;'>".$ah->ah_account_name."</b></th>
                                            
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td style='border-top: 2px solid'></td>
+                                            <td style='border-top: 2px solid'></td>
+                                            <td style='border-top: 2px solid'></td>
+                                            <td style='border-top: 2px solid'></td>
                                             
                                             </tr>";
 
@@ -1067,9 +1362,9 @@ class Reports extends BaseController
 
                  
 
-                    $pdf_data .= "<tr>
+                    $pdf_data .= "<tr style='border-top: 2px solid'>
 
-                                <td>".$ca->ca_name."</td>";
+                                <td style='border-top: 2px solid'>".$ca->ca_name."</td>";
                                 
 
                                 if(isset($ca->tran_total))
@@ -1081,10 +1376,10 @@ class Reports extends BaseController
                                     $ca_tran_total=0;
                                 }
 
-                                $pdf_data .= "<td>".$ca_tran_total."</td>
-                                <td>".$fm_perc." %</td>
-                                <td>".$ca->ytd_total."</td>
-                                <td>".$perc." %</td>
+                                $pdf_data .= "<td style='border-top: 2px solid' align='right'>".$ca_tran_total."</td>
+                                <td style='border-top: 2px solid'align='right'>".$fm_perc." %</td>
+                                <td style='border-top: 2px solid' align='right'>".$ca->ytd_total."</td>
+                                <td style='border-top: 2px solid' align='right'>".$perc." %</td>
                                 </tr>";
 
                                 $total_perc = $total_perc+$perc;
@@ -1092,24 +1387,24 @@ class Reports extends BaseController
 
                             }
 
-                            $pdf_data .=' <tr>
-                                        <th><b style="font-size:13px;">Total '.$ah->ah_account_name.'</b></th>
-                                        <td>'. $total_first_month.'</td>
-                                        <td>'.$total_fm_perc.' %</td>
-                                        <td>'.$total_ytd.'</td>
-                                        <td>'.$total_perc.' %</td>
+                            $pdf_data .=' <tr style="border-top: 2px solid">
+                                        <th style="border-top: 2px solid" align="right"><b style="font-size:13px;">Total '.$ah->ah_account_name.'</b></th>
+                                        <td style="border-top: 2px solid" align="right">'. $total_first_month.'</td>
+                                        <td style="border-top: 2px solid" align="right">'.$total_fm_perc.' %</td>
+                                        <td style="border-top: 2px solid" align="right">'.$total_ytd.'</td>
+                                        <td style="border-top: 2px solid" align="right">'.$total_perc.' %</td>
                                         </tr>';
                     
                             }
     
-                if(empty($from_date) && empty($to_date))
+                if(empty($date_from) && empty($date_to))
                 {
                  
                    $dates = "";
                 }
                 else
                 {
-                   $dates = $from_date . " to " . $to_date;
+                   $dates = date('d-F-Y',strtotime($date_from)) . " to " . date('d-F-Y',strtotime($date_to));
                 }
 
 
@@ -1214,7 +1509,7 @@ class Reports extends BaseController
                 <tr width="100%">
 
                 <td>
-                Period : '.$from_date_pdf.' - '.$to_date_pdf.'
+                Period : '.$dates.'
                 </td>
 
                 </tr>
@@ -1239,15 +1534,15 @@ class Reports extends BaseController
                 
                 <th align="right">Description</th>
             
-              
+                <th align="right"></th>
             
-                <th align="right">Credit Change</th>
+                <th align="right"></th>
             
-                <th align="right">Net Change</th>
+                <th align="right">Year To date</th>
     
-                <th align="right">Ending Balance</th>
+                <th align="right"></th>
 
-                 <th align="right">Ending Balance</th>
+                
     
                 </tr>
 
@@ -1343,6 +1638,292 @@ class Reports extends BaseController
 
     $data['all_accounts'] = $this->report_model->RPSummery($filter_account,$start_date);
 
+
+    if(!empty($_POST['pdf']))
+    {
+
+
+        if(!empty($start_date))
+        {
+        $date_pdf = date('d-F-Y',strtotime($start_date));
+        }
+        else{
+        $date_pdf="-";
+        }
+
+        $pdf_data ="";
+
+        $total_rec    = number_format(0,2);
+
+            $total_thirty = number_format(0,2);
+
+            $total_sixty  = number_format(0,2);
+            
+            $total_ninety = number_format(0,2);
+
+            $total_above = number_format(0,2);
+
+            foreach($data['all_accounts'] as $ac) {
+                
+            $grand_total = 0;
+
+            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
+
+
+            if(empty($ac->ThirtyDays))
+            {
+            $ac_30 = "---";
+            }
+            else
+            {
+            $ac_30 = $ac->ThirtyDays;
+            }
+
+            if(empty($ac->SixtyDays))
+            {
+            $ac_60 ="---";
+            }
+            else
+            {
+            $ac_60 = $ac->SixtyDays;    
+            }
+
+            if(empty($ac->NinetyDays))
+            {
+            $ac_90 ="---";
+            }
+            else
+            {
+            $ac_90 = $ac->NinetyDays;    
+            }
+
+            if(empty($ac->AboveNinetyDays))
+            {
+            $ac_a90 ="---";
+            }
+            else
+            {
+            $ac_a90 = $ac->AboveNinetyDays;    
+            }
+
+            $pdf_data .='
+            
+            <tr> 
+                <td align="left" class="border-top">'.$ac->cc_customer_name.'</td>
+                <td align="right" class="border-top">'.format_currency($grand_total).'</td>
+                <td align="right" class="border-top">'.$ac_30.'</td>
+                <td align="right" class="border-top">'.$ac_60.'</td>
+                <td align="right" class="border-top">'.$ac_90.'</td>
+                <td align="right" class="border-top">'.$ac_a90.'</td>
+            </tr>
+
+            ';
+
+
+            if($grand_total>0)
+            {
+            $total_rec = $total_rec+$grand_total;
+            }
+
+            $total_thirty = $total_thirty+$ac->ThirtyDays;
+           
+            $total_sixty  =  $total_sixty+$ac->SixtyDays;
+            
+            $total_ninety = $total_ninety+$ac->NinetyDays;
+
+            $total_above = $total_above+$ac->AboveNinetyDays;
+        }   
+
+
+        $pdf_footer='
+
+        <tfoot>
+
+        <tr class="no-sort">
+       
+        <td class="border-top"><b style="font-size:20px;" align="right">Total</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($total_rec).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($total_thirty).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($total_sixty).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($total_ninety).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($total_above).'</b></td>
+
+        </tfoot>
+        ';
+
+
+
+
+            
+
+            $title = "GLR";
+
+            $mpdf = new \Mpdf\Mpdf(
+
+                [
+                    'format' => 'A3', // Set page size to A3
+                    'margin_left' => 15,
+                    'margin_right' => 15,
+                    'margin_top' => 16,
+                    'margin_bottom' => 16,
+                    'margin_header' => 9,
+                    'margin_footer' => 9,
+                ]
+            );
+
+
+            if(empty($start_date) && empty($end_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+            }
+
+         
+
+            $mpdf->SetTitle('Receivables Payables Report'); // Set the title
+
+            $html ='
+        
+            <style>
+            .border-top
+            {
+            border-top: 1px solid rgba(100,100,100, .3);
+            }
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td align="right"><h3>Receivables Payables Report</h3></td>
+        
+            <hr>
+
+            </tr>
+
+
+            <tr width="100%">
+
+            <td>
+            Period : '.$date_pdf.'
+            </td>
+
+            </tr>
+
+
+            <tr width="100%">
+
+            <td>
+            Division : Al Fuzail
+            </td>
+
+            </tr>
+
+        
+            </table>
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+          
+            <th align="left">Name Of Customer</th>
+        
+            <th align="right">Amount</th>
+
+            <th align="right">0-30 Days</th>
+
+            <th align="right">31-60 Days</th>
+
+            <th align="right">61-90 Days</th>
+
+            <th align="right">Above 90 Days</th>
+
+            </tr>
+
+             
+            '.$pdf_data.'
+
+            <tr>
+            
+            <th align="left"></th>
+        
+            <th align="left"></th>
+        
+            <th align="left"></th>
+            
+
+            </tr>
+
+
+            '.$pdf_footer.'
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+        
+            
+            $mpdf->WriteHTML($html);
+           
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+
+    }
+
+
     
     $data['content'] = view('accounts/receivables_payable_summary_report',$data);
 
@@ -1376,7 +1957,7 @@ class Reports extends BaseController
     public function BalanceSheet()
     {
 
-
+        $border="border-top: 2px solid";
 
         if(!empty($_GET))
         {
@@ -1400,17 +1981,30 @@ class Reports extends BaseController
 
         }
 
-        else
+
+        if($time_frame=="CurrentYear")
+            {
+
+            $start_date = date("Y-01-01", strtotime("date(Y-m-d)"));
+
+            //$date_to = date("Y-12-t", strtotime($today));
+
+            $end_date = date("Y-m-d");
+
+            }
+
+
+        if($time_frame=="LastYear")
         {
 
-        
-        
-        $start_date="";
+        $start_date = date("Y-01-01", strtotime("last year January 1st"));
 
-        $end_date="";
-        
+        //$date_to = date("Y-12-t", strtotime($today));
+
+        $end_date = date("Y-m-d",strtotime(("last year December 31st")));
 
         }
+
 
         //Fetch Balance Sheets
 
@@ -1418,9 +2012,254 @@ class Reports extends BaseController
 
         //Fetch Next Balance Sheet For Validation
 
-        $data['balance_sheet_dummy'] = array(); //For empty array creation
 
-        $data['balance_sheet_empty'] = array(); //For empty array with name empty
+        if(!empty($_POST['pdf']))
+        {
+
+            $pdf_data ="";
+
+            foreach($data['account_heads'] as $ah){
+
+            $pdf_data .='<tr>
+
+                <td style="'.$border.'"><b>' .$ah->ah_account_name.'</b></td>
+
+                <td style="'.$border.'"> </td>
+
+                <td style="'.$border.'"></td>
+                
+                </tr>';
+
+            $total_bal = number_format(0,2);
+
+            foreach($ah->Charts as $ca){ 
+            $total_bal = $ca->balance + $total_bal;
+            }
+
+            $total_perc = 0;
+
+                    foreach($ah->Charts as $ca){ 
+                    
+                    if($ca->balance>0)
+                    {
+                    $perc = ($ca->balance/$total_bal)*100;
+                    } else
+                    {
+                    $perc=0;
+                    }
+                    $total_perc= $total_perc+$perc;
+
+
+                $pdf_data .='
+
+                    <tr>
+
+                    <td  style="'.$border.'">'.$ca->ca_name.'</td>
+
+                    <td  style="'.$border.'">'.format_currency($ca->balance).'</td>
+
+                    <td  style="'.$border.'">'.number_format($perc,2).' %</td>
+
+
+                    </tr>';
+
+                    
+               } 
+
+
+                $pdf_data .='
+                <tr>
+
+              
+
+                <td align="center" style="'.$border.'">Total '.$ah->ah_account_name.'</td>
+
+                <td style="'.$border.'">'.format_currency($total_bal).'</td>
+
+                <td style="'.$border.'">'.number_format($total_perc,2).' %</td>
+
+                </tr>
+
+
+                <tr>
+
+                
+
+                <td></td>
+
+                <td></td>
+
+                <td></td>
+
+                </tr>
+                ';
+    
+
+
+                
+    
+                
+    
+                $title = "GLR";
+    
+                $mpdf = new \Mpdf\Mpdf(
+    
+                    [
+                        'format' => 'A3', // Set page size to A3
+                        'margin_left' => 15,
+                        'margin_right' => 15,
+                        'margin_top' => 16,
+                        'margin_bottom' => 16,
+                        'margin_header' => 9,
+                        'margin_footer' => 9,
+                    ]
+                );
+
+
+                if(empty($start_date) && empty($end_date))
+                {
+                 
+                   $dates = "";
+                }
+                else
+                {
+                   $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+                }
+    
+             
+    
+                $mpdf->SetTitle('Balance Sheet Report'); // Set the title
+    
+                $html ='
+            
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+                <table>
+                
+                <tr>
+                
+            
+                <td>
+            
+                <h3>Al Fuzail Engineering Services WLL</h3>
+                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                
+                
+                </td>
+                
+                </tr>
+            
+                </table>
+            
+            
+            
+                <table width="100%" style="margin-top:10px;">
+                
+            
+                <tr width="100%">
+                <td align="right"><h3>Balance Sheet Report</h3></td>
+            
+                <hr>
+
+                </tr>
+
+
+                <tr width="100%">
+
+                <td>
+                Period : '.$dates.'
+                </td>
+
+                </tr>
+
+
+                <tr width="100%">
+
+                <td>
+                Division : Al Fuzail
+                </td>
+
+                </tr>
+
+            
+                </table>
+               
+            
+                <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+              
+                <th align="">Assets</th>
+            
+                <th align="">Amount</th>
+    
+                <th align="">%</th>
+
+    
+                </tr>
+
+                 
+                '.$pdf_data.'
+
+                <tr>
+                
+                <th align=""></th>
+            
+                <th align=""></th>
+            
+                <th align=""></th>
+                
+    
+                </tr>
+
+
+               
+                
+                </table>
+    
+    
+            
+                ';
+            
+                //$footer = '';
+            
+                
+                $mpdf->WriteHTML($html);
+               
+               // $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+
+
+        }
+
+    }
+
 
         $data['content'] = view('accounts/balance_sheet_report',$data);
 

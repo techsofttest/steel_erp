@@ -521,7 +521,6 @@ class JournalVouchers extends BaseController
         $cond_invoices = array('ji_voucher_id' => $this->request->getPost('id'));
 
         $this->common_model->DeleteData('accounts_journal_invoices',$cond_invoices);
-
         
     }
 
@@ -542,7 +541,7 @@ class JournalVouchers extends BaseController
 
     public function Print(){
 
-    $id = 1;
+    $id = 27;
 
     $cond = array('jv_id' => $id);
 
@@ -554,8 +553,9 @@ class JournalVouchers extends BaseController
 
     $jv = $this->common_model->SingleRowJoin('accounts_journal_vouchers',$cond,$joins);
 
-    $total_amount = NumberToWords::transformNumber('en',$jv->jv_total); // outputs "fifty dollars ninety nine cents"
+    //$total_amount = NumberToWords::transformNumber('en',$jv->jv_total); // outputs "fifty dollars ninety nine cents"
 
+    $total_amount = 10000;
 
     $joins_inv = array(
 
@@ -576,7 +576,6 @@ class JournalVouchers extends BaseController
     );
 
     $orders = $this->common_model->FetchWhereJoin('accounts_journal_invoices',array('ji_voucher_id'=>$id),$joins_inv);
-
 
     $orders_sec ="";
 
@@ -639,6 +638,12 @@ class JournalVouchers extends BaseController
             padding-left: 5px;
             padding-right: 5px;
           }
+
+        .border-bottom tr
+        {
+        border-bottom:1px solid;
+        }
+
         </style>
     
         <table>
@@ -720,17 +725,17 @@ class JournalVouchers extends BaseController
         <table  width="100%" style="margin-top:2px;">
         
     
-        <tr  style="border-bottom:3px solid;">
+        <tr class="border-bottom" style="border-bottom:3px solid;">
         
-        <th align="left">Sales Order No</th>
+        <td align="left">Sales Order No</td>
     
-        <th align="left">Account No</th>
+        <td align="left">Account No</td>
     
-        <th align="left">Account Description</th>
+        <td align="left">Account Description</td>
     
-        <th align="left">Debit</th>
+        <td align="left">Debit</td>
     
-        <th align="left">Credit</th>
+        <td align="left">Credit</td>
     
         </tr>
     
@@ -755,7 +760,7 @@ class JournalVouchers extends BaseController
         
         <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
     
-        <td colspan="1" align="left" style="text-align:right;"><b>'.$jv->jv_total.'</b></td>
+        <td colspan="1" align="left" style="text-align:right;"><b>'.$total_amount.'</b></td>
     
         </tr>
     

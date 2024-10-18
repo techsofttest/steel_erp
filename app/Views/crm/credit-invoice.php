@@ -1530,7 +1530,7 @@
 
                "initComplete": function () {
 
-                    var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
+                    var dataId = '<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>';
 
                     $('#DataTable').dataTable().fnFilter(dataId);
 
@@ -1538,7 +1538,7 @@
 
                 "drawCallback": function() {
 
-                $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+                $('.view_btn[data-id="<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>"]').trigger('click');
 
                 }
     

@@ -1506,7 +1506,21 @@
                 { data: 'ci_paid_amount'},
                 { data: 'action'},
                 
-               ]
+               ],
+
+                    "initComplete": function() {
+
+                        var dataId = '<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>';
+
+                        $('#Datatable').dataTable().fnFilter(dataId);
+
+                    },
+
+                    "drawCallback": function() {
+
+                        $('.view_btn[data-id="<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>"]').trigger('click');
+
+                    }
     
             });
         }

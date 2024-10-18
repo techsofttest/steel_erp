@@ -893,6 +893,15 @@ class Payments extends BaseController
 
         $payment = $this->common_model->SingleRow('accounts_payments', $cond);
 
+
+        //Fetch Debit Invoices 
+
+        //$debits = 
+
+
+
+
+
         $this->common_model->DeleteData('accounts_payments', $cond);
 
         $cond_tran = array('tran_reference' => $payment->pay_ref_no);
@@ -1407,8 +1416,6 @@ class Payments extends BaseController
 
         $invoices = $this->common_model->FetchWhereJoin('accounts_payment_invoices', array('pi_payment' => $id), $joins_inv);
 
-
-
         $invoice_sec = "";
 
         $first = true;
@@ -1677,7 +1684,9 @@ class Payments extends BaseController
         $end = ($page - 1) * $resultCount;
         $start = $end + $resultCount;
 
-        $where = array('ca_type' => 'VENDOR');
+        //$where = array('ca_type' => 'VENDOR');
+
+        $where = array();
 
         $data['result'] = $this->account_model->FetchAllLimitWhere('accounts_charts_of_accounts', 'ca_name', 'asc', $where, $term, $end, $start);
 

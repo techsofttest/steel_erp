@@ -184,14 +184,12 @@
                     <button class="excel_button report_button">Excel</button>
 
                 <form method="POST" action="" target="_blank">
-                    <input type="hidden" name="excel" value="1">
+                    <input type="hidden" name="pdf" value="1">
                     <button class="print_button report_button" type="submit">Print</button>
                 </form>
 
-                <form method="POST" action="" target="_blank">
-                    <input type="hidden" name="excel" value="1">
-                    <button class="email_button report_button" type="submit">Email</button>
-                </form>
+                
+                    <button id="email_button" class="email_button report_button" type="submit">Email</button>
 
 
                 <?php } ?>
@@ -651,6 +649,46 @@ function fnExcelReport(table, fileName) {
 
 
 </script>
+
+
+<script>
+
+
+document.getElementById("email_button").addEventListener("click", function() {
+    // Select the table element
+    var range = document.createRange();
+    range.selectNode(document.getElementById("DataTable"));
+    window.getSelection().removeAllRanges();  // Clear any existing selections
+    window.getSelection().addRange(range);    // Select the table content
+
+    try {
+        // Copy the selected content to clipboard
+        var successful = document.execCommand('copy');
+        if (successful) {
+            // Alert to notify the user
+            alertify.success("Table copied to clipboard! Please paste it in the email composer.");
+
+            // Email subject and body message
+            var subject = encodeURIComponent("General Ledger Report");
+            var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+            // Open the email composer
+            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+            // Optionally clear the selection after copying
+            window.getSelection().removeAllRanges();
+        } else {
+            alertify.error("Failed to copy table.");
+        }
+    } catch (err) {
+            alertify.error("Error in copying table: ", err);
+    }
+});
+
+
+
+</script>
+
 
 
 

@@ -34,7 +34,7 @@ class Receipts extends BaseController
             $columnSortOrder = 'desc';
         } 
 
-
+        //$mpdf->debug = true; simply true
         ##For Getting Only Logged In Admin Added Records
 
         $cond = array('company_id' => session()->get('admin_company'));
@@ -2609,9 +2609,13 @@ class Receipts extends BaseController
     
 
 
-    public function Print(){
+    public function Print($id=""){
 
-    $id =13;
+    if($id==""){
+    $id =1;
+    }
+
+
 
     $cond = array('r_id' => $id);
 
@@ -2643,27 +2647,58 @@ class Receipts extends BaseController
            ),
    
        );
+
    
     $receipt = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
 
+    $invoice_cond = array('ri_receipt' => $receipt->r_id);
 
-    $total_amount = NumberToWords::transformNumber('en',$receipt->r_amount); // outputs "fifty dollars ninety nine cents"
-   
-       $joins_inv = array(
+    $invoice_joins = array(
+        array(
+        'table' => 'accounts_charts_of_accounts',
+        'pk' => 'ca_id',
+        'fk' => 'ri_credit_account',
+        ),
+    ); 
+
+    $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',$invoice_cond,$invoice_joins);
+
+    $data['invoices'] ="";
+
+    $inv_ser = 0;
+
+    foreach($invoices as $invoice)
+    {
+
+    $inv_ser++;
+
+    $inv_data_join = array(
+           
            array(
-           'table' => 'crm_proforma_invoices',
-           'pk' => 'pf_id',
-           'fk' => 'ri_invoice',
+           'table' => 'crm_credit_invoice',
+           'pk' => 'cci_id', 
+           'fk' => 'rid_invoice',
            ),
 
            array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
-            'table2' => 'crm_proforma_invoices',
-            'fk' => 'pf_customer',
-           ),
+            'table' => 'crm_cash_invoice',
+            'pk' => 'ci_id',
+            'fk' => 'rid_invoice',
+            ),
    
        );
+
+    $invoice_datas = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',array('rid_receipt_invoice'=>$invoice->ri_id),$inv_data_join);
+
+    }
+
+
+    $total_amount = NumberToWords::transformNumber('en',$receipt->r_total); // outputs "fifty dollars ninety nine cents"
+   
+    $joins_inv = array(
+           
+    
+    );
    
     $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
    
@@ -2678,7 +2713,8 @@ class Receipts extends BaseController
 
     if($first == true)
     {
-        $cus_name = $inv->cc_customer_name;
+        //$cus_name = $inv->cc_customer_name;
+        $cus_name ="Test";
     }
     else
     {
@@ -2689,17 +2725,17 @@ class Receipts extends BaseController
     
     <tr>
 
-    <td>{$cus_name}</td>
+    <td align='center'>{$cus_name}</td>
 
-    <td>{$inv->pf_reffer_no}</td>
+    <td align='center'></td>
 
-    <td>".date('d-m-Y',strtotime($inv->pf_date))."</td>
+    <td align='center'>".date('d-m-Y',strtotime("12-10-2024"))."</td>
 
-    <td>{$inv->pf_total_amount}</td>
+    <td align='right'>10000.00</td>
 
-    <td>15-01-2024</td>
+    <td align='center'>15-01-2024</td>
 
-    <td>{$inv->pf_total_amount}</td>
+    <td align='right'>15000.00</td>
     
     </tr>
 
@@ -2710,19 +2746,41 @@ class Receipts extends BaseController
     }
 
 
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
 
     $mpdf = new \Mpdf\Mpdf([
         'format' => 'Letter',
         'default_font_size' => 9, 
         'margin_left' => 5, 
-        'margin_right' => 5, 
+        'margin_right' => 5,
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/fonts'
+        ]),
+        'fontdata' => $fontData + [
+            'bentonsans' => [
+                'R' => 'FreeSerif.ttf',
+                'B' => 'FreeSerifBold.ttf',
+            ],
+        ],
+        'default_font' => 'bentonsans'
+        
     ]);
 
 
     
     $html ='
-
+    
     <style>
+    table
+    {
+    font-family:"font-family: "freeserif";" !important;
+    }
+
     th, td {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -2786,7 +2844,7 @@ class Receipts extends BaseController
     
     <td width="50%">
     
-    Date : '.date('d-m-Y',strtotime($receipt->r_date)).'
+    Date : '.date('d-F-Y',strtotime($receipt->r_date)).'
     
     </td>
     
@@ -2864,19 +2922,19 @@ class Receipts extends BaseController
     <table  width="100%" style="margin-top:2px;">
     
 
-    <tr  style="border-bottom:3px solid;">
+    <tr style="border-bottom:2px solid;border-top:2px solid;">
     
-    <th align="left">Credit Account</th>
+    <td align="center" style="border-bottom:2px solid;">Credit Account</td>
 
-    <th align="left">Reference</th>
+    <td align="center" style="border-bottom:2px solid;">Reference</td>
 
-    <th align="left">Invoice Date</th>
+    <td align="center" style="border-bottom:2px solid;">Invoice Date</td>
 
-    <th align="left">Invoice Amount</th>
+    <td align="right" style="border-bottom:2px solid;">Invoice Amount</td>
 
-    <th align="left">Due Date</th>
+    <td align="center" style="border-bottom:2px solid;">Due Date</td>
 
-    <th align="left">Payment</th>
+    <td align="right" style="border-bottom:2px solid;">Payment</td>
 
     </tr>
 
@@ -2939,7 +2997,7 @@ class Receipts extends BaseController
 
     ';
 
-    
+    $mpdf->falseBoldWeight = 0;
     $mpdf->WriteHTML($html);
     $mpdf->SetFooter($footer);
     $this->response->setHeader('Content-Type', 'application/pdf');

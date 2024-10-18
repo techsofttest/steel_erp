@@ -357,9 +357,25 @@
                         <!--datatable section start-->
 
                         <div class="row">
+
                             
                             <div class="col-lg-12">
+
+
                                 <div class="card">
+
+
+                                <?php if(!empty($account_name)) { ?>
+
+                                    <div class="col-lg-12 my-3 text-center">
+
+                                        <h5>Account : <?php echo $account_name; ?></h5>
+
+                                    </div>                       
+
+                                <?php } ?>
+
+
 
                                 <div class="card-header align-items-center d-flex">
 
@@ -376,7 +392,7 @@
                                             <button id="btnExport" class="excel_button report_button" type="submit">Excel</button>
                                        
                                         <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="excel" value="1">
+                                            <input type="hidden" name="pdf" value="1">
                                             <button class="print_button report_button" type="submit">Print</button>
                                         </form>
 
@@ -418,7 +434,7 @@
                                             }
                                             else
                                             {
-                                            $balance=5000000.00;
+                                            $balance=10000;
                                             }
 
                                             ?>
@@ -432,7 +448,7 @@
                                             <td></td>
                                             <td></td>
                                             <td class="text-end"><b>Opening Balance</b></td>
-                                            <td class="text-end"><?= $balance; ?></td>
+                                            <td class="text-end"><?= format_currency($balance); ?></td>
 
                                             </tr>
 
@@ -503,11 +519,19 @@
                                              } 
                                              else if($vc->voucher_type=="Cash Invoice")
                                              {
-                                             $href="CRM/CashInvoice";
+                                             $href="Crm/CashInvoice";
                                              }
                                              else if($vc->voucher_type=="Credit Invoice")
                                              {
-                                             $href="CRM/CreditInvoice";
+                                             $href="Crm/CreditInvoice";
+                                             }
+                                             else if($vc->voucher_type=="Payment")
+                                             {
+                                             $href="Accounts/Payments";
+                                             }
+                                             else if($vc->voucher_type=="Sales Return")
+                                             {
+                                             $href="Crm/SalesReturn";
                                              }
                                              else
                                              {
@@ -540,12 +564,18 @@
                                                <?php if($vc->debit_amount !="") { 
 
                                                 echo  format_currency($vc->debit_amount);
-                                                $total_debit = $total_debit+$vc->debit_amount;
+
+                                                $vc->debit_amount === "" ? 0.00 : $vc->debit_amount;
+
+                                                $total_debit = (float)$total_debit+(float)$vc->debit_amount;
 
                                                } else if($vc->credit_amount<0) {
 
                                                 echo  format_currency($vc->credit_amount); 
-                                                $total_debit=$total_debit+$vc->credit_amount;
+
+                                                $vc->credit_amount === "" ? 0.00 : $vc->credit_amount;
+
+                                                $total_debit=(float)$total_debit+(float)$vc->credit_amount;
                                                 
                                                } ?>
                                             
@@ -567,11 +597,15 @@
                                                 
                                                 if(!empty($vc->debit_amount))
                                                 {
-                                                $balance = $balance+$vc->debit_amount; 
+                                                $vc->debit_amount === "" ? 0.00 : $vc->debit_amount;
+                                                
+                                                $balance = (float)$balance+(float)$vc->debit_amount;
+                                                
                                                 }
                                                 else
                                                 {
-                                                $balance = $balance-$vc->credit_amount; 
+                                                $vc->credit_amount === "" ? 0.00 : $vc->credit_amount;
+                                                $balance = (float)$balance-(float)$vc->credit_amount; 
                                                 }
 
                                                 echo format_currency($balance);
