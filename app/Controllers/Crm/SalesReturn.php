@@ -679,21 +679,21 @@ class SalesReturn extends BaseController
 
         $update_data = [
 
-            'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
+            'sr_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
 
-            'ci_customer'        => $this->request->getPost('ci_customer'),
+            'sr_customer'        => $this->request->getPost('ci_customer'),
 
-            'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
+            'sr_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
 
-            'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
+            'sr_contact_person'  => $this->request->getPost('ci_contact_person'),
 
-            'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
+            'sr_payment_term'    => $this->request->getPost('ci_payment_term'),
 
-            'ci_project'         => $this->request->getPost('ci_project'),
+            'sr_project'         => $this->request->getPost('ci_project'),
 
         ];
 
-        $this->common_model->EditData($update_data, array('ci_id' => $this->request->getPost('ci_id')), 'crm_cash_invoice');
+        $this->common_model->EditData($update_data, array('sr_id' => $this->request->getPost('ci_id')), 'crm_sales_return');
 
 
        

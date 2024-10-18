@@ -1027,7 +1027,7 @@
                                             <div class="col-col-md-9 col-lg-9">
                                                 
                                                 <!--<select class="form-select edit_sales_order" name="ci_sales_order" id="sales_order_add" required></select>-->
-                                                <input type="text" name="ci_sales_order" id="sales_order_add" class="form-control edit_sales_order" required>
+                                                <input type="text" name="ci_sales_order" id="sales_order_add" class="form-control edit_sales_order" required readonly>
                                             </div>
 
                                         </div> 
@@ -2524,7 +2524,7 @@
                     var formData = new FormData(currentForm);
                     // Submit the form for the current tab
                     $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/CashInvoice/Update",
+                        url: "<?php echo base_url(); ?>Crm/SalesReturn/Update",
                         method: "POST",
                         data: formData,
                         processData: false, // Don't process the data
