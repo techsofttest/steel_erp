@@ -788,7 +788,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control edit_date" readonly>
+                                                                        <input type="text" name="" class="form-control edit_date mr_date datepicker" >
                                                                     </div>
 
                                                                 </div>
@@ -892,7 +892,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_vendor_inv_ref" readonly>
+                                                                        <input type="text" name="" class="form-control edit_vendor_inv_ref">
 
                                                                     </div>
 
@@ -913,7 +913,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_delivery_note" readonly>
+                                                                        <input type="text" name="" class="form-control edit_delivery_note">
 
                                                                     </div>
 
@@ -938,7 +938,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control edit_payment_term" readonly>
+                                                                        <input type="text" name="" class="form-control edit_payment_term">
                                                                     </div>
 
                                                                 </div>

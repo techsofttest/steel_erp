@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'Crm/SalesOrder/Pdf/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'Crm/SalesOrder/Pdf/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
              
             if(!empty($record->so_edit_reff_no))
             {
@@ -1380,7 +1380,14 @@ class SalesOrder extends BaseController
             $pdf_data = "";
 
             foreach($product_details as $prod_det)
-            {
+            {   
+                $rate = format_currency($prod_det->spd_rate);
+
+                $amount = format_currency($prod_det->spd_amount);
+
+                $disc = number_format($prod_det->spd_discount, 2);
+
+
                 $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
@@ -1389,11 +1396,11 @@ class SalesOrder extends BaseController
 
                 $pdf_data .= '<td align="left">'.$prod_det->spd_unit.'</td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->spd_rate.'</td>';
+                $pdf_data .= '<td align="right">'.$rate.'</td>';
 
-                $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->spd_discount.'</td>';
+                $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->spd_amount.'</td></tr>';
+                $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
             }
 
             $join =  array(
@@ -1422,7 +1429,15 @@ class SalesOrder extends BaseController
 
             $title = 'SO - '.$sales_order->so_reffer_no;
 
-            $mpdf = new \Mpdf\Mpdf();
+            //$mpdf = new \Mpdf\Mpdf();
+
+            
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 5,     // Reduce top margin
+                'margin_bottom' => 5,  // Reduce bottom margin
+                'margin_left' => 5,    // Reduce left margin
+                'margin_right' => 5,   // Reduce right margin
+            ]);
 
             $mpdf->SetTitle($title); // Set the title
 
@@ -1438,7 +1453,7 @@ class SalesOrder extends BaseController
             }
             p{
                 
-                font-size: 12px;
+                font-size: 10px;
 
             }
             .dec_width
@@ -1461,7 +1476,7 @@ class SalesOrder extends BaseController
         
                     <td>
                 
-                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <h2>Al Fuzail Engineering Services WLL</h2>
                     <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
@@ -1477,8 +1492,9 @@ class SalesOrder extends BaseController
             
         
             <tr width="100%">
+            <td width="10%"></td>
             <td>Date : '.$date.'</td>
-            <td>Sales Order No : '.$sales_order->so_reffer_no.'</td>
+            <td align="center">Sales Order No : '.$sales_order->so_reffer_no.'</td>
             <td align="right"><h2>Sales Order</h2></td>
         
             </tr>
@@ -1533,19 +1549,19 @@ class SalesOrder extends BaseController
         
             <tr>
             
-                <th align="left" style="border-bottom:2px solid;">Item No</th>
+                <th align="left" style="border-bottom:2px solid;" width="10%">Item No</th>
             
-                <th align="left" style="border-bottom:2px solid;">Description</th>
+                <th align="left" style="border-bottom:2px solid;" width="35%">Description</th>
             
                 <th align="left" style="border-bottom:2px solid;">Qty</th>
             
                 <th align="left" style="border-bottom:2px solid;">Unit</th>
             
-                <th align="left" style="border-bottom:2px solid;">Rate</th>
+                <th align="center" style="border-bottom:2px solid;">Rate</th>
     
-                <th align="left" style="border-bottom:2px solid;">Disc%</th>
+                <th align="center" style="border-bottom:2px solid;">Disc%</th>
     
-                <th align="left" style="border-bottom:2px solid;">Amount</th>
+                <th align="center" style="border-bottom:2px solid;">Amount</th>
     
             
             </tr>
@@ -1559,7 +1575,7 @@ class SalesOrder extends BaseController
         
         $footer = '
     
-            <table style="border-bottom:2px solid">
+            <table>
             
                 <tr>
                     <td>Promised Date</td>
@@ -1596,7 +1612,7 @@ class SalesOrder extends BaseController
     
                     <td>Amount in words</td>
                 
-                    <td>----------------------------------</td>
+                    <td>'.$sales_order->so_amount_total_in_words.'</td>
 
                     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
         
@@ -1609,42 +1625,38 @@ class SalesOrder extends BaseController
             </table>
 
 
-            <table>
+            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
-                <td style="width:20%">Order Terms</td>
+                <td style="width:12%">Order Terms</td>
 
-                <td style="width:20%">LPO Reference</td>
+                <td style="width:15%">LPO Reference</td>
 
-                <td style="width:20%">Verbal</td>
+                <td style="width:29%">Verbal</td>
 
-                <td style="width:10%"></td>
+               <td style="width:9%">Payment:</td>
 
-                <td style="width:10%">Payment:</td>
-
-                <td style="width:20%">Cash on delivery</td>
+                <td style="">Cash on delivery</td>
                 
             </tr>
 
             <tr>
-                <td style="width:20%"></td>
+                <td style="width:12%"></td>
 
-                <td style="width:20%">Quote Reference</td>
+                <td style="width:15%">Quote Reference</td>
 
-                <td style="width:20%">'.$sales_order->qd_reffer_no.'</td>
+                <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
 
-                <td style="width:10%"></td>
+                <td style="width:9%">Delivery</td>
 
-                <td style="width:10%">Delivery</td>
-
-                <td style="width:20%">Ex-works</td>
+                <td style="">Ex-works</td>
 
             </tr>
             
             </table>
 
 
-            <table style="border-top:2px solid;">
+            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
 
             <tr>
             

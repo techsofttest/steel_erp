@@ -363,7 +363,7 @@
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
-                                            <span class="print_btn_clz once_form_submit" ><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
+                                            <span class="print_btn_clz once_form_submit" ><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Preview</button></span>
                                         </div>
 
 
@@ -1846,8 +1846,6 @@
                    
                     var data = JSON.parse(data);
                     
-                    //$('body').find('.delivery_note_remove').remove();
-                   
                     $('.product-more2').html(data.product_detail);
 
                     $('#SelectProduct').modal("hide");
@@ -1864,8 +1862,7 @@
 
                     $('.print_btn_clz').css('display', 'block');
                       
-                    checkedIds.length = 0; 
-                    //console.log(data.product_detail);
+                    checkedIds.length = 0;
 
                     
                 }

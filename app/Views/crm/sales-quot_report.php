@@ -1,3 +1,5 @@
+
+
 <style>
     table {
         table-layout: auto !important;
@@ -135,8 +137,12 @@
 
                                                                             <tr>
                                                                                 <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive">
+                                                                                <td><select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
+                                                                                        
+                                                                                        <?php foreach($sales_executives as $sales_exe){?> 
+                                                                                            <option value="<?php echo $sales_exe->se_id; ?>"><?php echo $sales_exe->se_name; ?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -148,6 +154,10 @@
                                                                                 <td>Product</td>
                                                                                 <td><select class="form-select value='<?php echo $product; ?>' product_clz" name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
+                                                                                        <?php foreach($Products as $prod){?> 
+                                                                                            <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details; ?></option>
+                                                                                        <?php } ?>
+                                                                                        
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>

@@ -17,8 +17,12 @@ class SalesOrderReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-        
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
         $data['content'] = view('crm/sales-order_report',$data);
 
         return view('crm/report-module',$data);
@@ -281,6 +285,12 @@ class SalesOrderReport extends BaseController
         {   
             $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
         }
+
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/sales-order_report',$data);
 
@@ -320,19 +330,21 @@ class SalesOrderReport extends BaseController
                 
                 //$total_amount = $total_amount + $quot_data->qd_sales_amount;
 
+                $format_sales_amount = format_currency($sales_order->so_amount_total);
+
                 $new_date = date('d-M-Y',strtotime($sales_order->so_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>";
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>";
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->se_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' width='110px'>{$sales_order->se_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>";
+                $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$format_sales_amount}</td>";
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
@@ -361,7 +373,9 @@ class SalesOrderReport extends BaseController
                         $pdf_data .= "<td style=''></td>";
                     }
 
-                    
+                    $format_ref_amount =  format_currency($prod_del->spd_amount);
+
+                    $format_rate =  format_currency($prod_del->spd_rate);
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {
@@ -382,14 +396,21 @@ class SalesOrderReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->spd_rate}</td>";
+                    $pdf_data .= "'>{$format_rate}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='right' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->spd_amount}</td>";
+                    $pdf_data .= "'>{$prod_del->spd_discount}</td>";
+
+                    $pdf_data .= "<td align='right' style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$format_ref_amount}</td>";
 
                     
                     if($q!=1)
@@ -426,19 +447,33 @@ class SalesOrderReport extends BaseController
             }
 
             $title = "SQR";
+            
+            $total_amount  = format_currency($total_amount); 
+               
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
 
-            $mpdf = new \Mpdf\Mpdf(
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
 
-                [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
-                ]
-            );
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter', // Custom page size in millimeters
+                'default_font_size' => 9, 
+                'margin_left' => 5, 
+                'margin_right' => 5,
+                'fontDir' => array_merge($fontDirs, [
+                    __DIR__ . '/fonts'
+                ]),
+                'fontdata' => $fontData + [
+                    'bentonsans' => [
+                      
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf',
+                    ],
+                ],
+                'default_font' => 'bentonsans'
+                
+            ]);
 
          
 
@@ -511,23 +546,25 @@ class SalesOrderReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Sales Order</th>
+            <th align="left" width="100px">Sales Order</th>
         
             <th align="left">Customer</th>
 
-            <th align="left">LPO Ref</th>
+            <th align="left" width="80px">LPO Ref</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" widht="110px">Sales Executive</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
             <th align="left">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
 
-            <th align="left">Amount</th>
+             <th align="right">Discount</th>
+
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -542,6 +579,7 @@ class SalesOrderReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
@@ -563,6 +601,8 @@ class SalesOrderReport extends BaseController
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
         
         }
 

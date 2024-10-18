@@ -19,8 +19,10 @@ class SalesQuotReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-        
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['Products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
         $data['content'] = view('crm/sales-quot_report',$data);
 
         return view('crm/report-module',$data);
@@ -247,6 +249,10 @@ class SalesQuotReport extends BaseController
 
       // return view('crm/sales-quot_report_search',$data);
 
+      $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+      $data['Products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
        $data['content'] = view('crm/sales-quot_report',$data);
 
        return view('crm/report-module-search',$data);
@@ -285,7 +291,9 @@ class SalesQuotReport extends BaseController
                 
                 $total_amount = $total_amount + $quot_data->qd_sales_amount;
 
-                $new_date = date('d-m-Y',strtotime($quot_data->qd_date));
+                $amount = format_currency($quot_data->qd_sales_amount);
+
+                $new_date = date('d-M-Y',strtotime($quot_data->qd_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
@@ -295,7 +303,7 @@ class SalesQuotReport extends BaseController
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' align='right'>{$amount}</td>";
                 
                 
                 if($q!=1){
@@ -328,26 +336,41 @@ class SalesQuotReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='center' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
+                    $pdf_data .= "'>{$prod_del->qpd_quantity}</td>";
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                    $pdf_data .= "<td align='right' style='";
                     
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
+                    $single_rate = format_currency($prod_del->qpd_rate);
 
-                    $pdf_data .= "<td style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
+                    $pdf_data .= "'>{$single_rate}</td>";
+
+                    $pdf_data .= "<td align='center' style='";
+                    
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->qpd_discount}</td>";
+
+                    $pdf_data .= "<td align='right' style='";
+                     
+
+                    $single_amount = format_currency($prod_del->qpd_amount);
+
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$single_amount}</td>";
 
                     
                     if($q!=1)
@@ -385,18 +408,39 @@ class SalesQuotReport extends BaseController
 
             $title = "SQR";
 
-            $mpdf = new \Mpdf\Mpdf(
-                [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
-                ]
-            );
+           
 
+
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+
+
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter',
+                'default_font_size' => 9, 
+                'margin_left' => 5, 
+                'margin_right' => 5,
+                'fontDir' => array_merge($fontDirs, [
+                    __DIR__ . '/fonts'
+                ]),
+                'fontdata' => $fontData + [
+                    'bentonsans' => [
+                      
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf',
+                    ],
+                ],
+                'default_font' => 'bentonsans'
+                
+            ]);
+                    
+            
+            //$stylesheet = file_get_contents(base_url('public/assets/css/MyStyleWithFont.css'));
+
+           // $mpdf->WriteHTML($stylesheet,1);
          
 
             $mpdf->SetTitle('Sales Quotation Report'); // Set the title
@@ -404,27 +448,37 @@ class SalesQuotReport extends BaseController
             $html ='
         
             <style>
+
             th, td {
                 padding-top: 10px;
                 padding-bottom: 10px;
                 padding-left: 5px;
                 padding-right: 5px;
-                font-size: 12px;
+                font-size: 11px;
+               
+               
             }
+            
+            
+          
+
             p{
                 
-                font-size: 12px;
+                font-size: 10px;
 
             }
+
             .dec_width
             {
                 width:30%
             }
+
             .disc_color
             {
                 color:red;
             }
-            
+
+           
             </style>
         
             <table>
@@ -480,9 +534,11 @@ class SalesQuotReport extends BaseController
 
             <th align="left">Quantity</th>
 
-            <th align="left">Rate</th>
+            <th align="center">Rate</th>
 
-            <th align="left">Amount</th>
+            <th align="center">Discount</th>
+
+            <th align="center">Amount</th>
         
             
             </tr>
@@ -495,11 +551,12 @@ class SalesQuotReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;" align="right">'.format_currency($total_amount).'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;" align="right">'.format_currency($total_amount).'</td>
                 
             </tr>    
            
@@ -518,6 +575,8 @@ class SalesQuotReport extends BaseController
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
         
         }
 

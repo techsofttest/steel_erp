@@ -89,6 +89,9 @@
                                                                                 <td>Sales Order Ref</td>
                                                                                 <td><select class="form-select sales_order_ref sales_order" name="sales_order_ref">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
+                                                                                        <?php foreach($sales_orders_data as $sale_ord_data){?> 
+                                                                                            <option value="<?php echo $sale_ord_data->so_id;?>"><?php echo $sale_ord_data->so_reffer_no;?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -100,6 +103,9 @@
                                                                                 <td>Sales Executive</td>
                                                                                 <td><select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
+                                                                                        <?php foreach($sales_executives as $sales_exec){?> 
+                                                                                            <option value="<?php echo $sales_exec->se_id;?>"><?php echo $sales_exec->se_name;?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -111,6 +117,9 @@
                                                                                 <td>Product</td>
                                                                                 <td><select class="form-select product_clz" name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
+                                                                                        <?php foreach($products_data as $prod_data){?> 
+                                                                                            <option value="<?php echo $prod_data->product_id; ?>"><?php echo $prod_data->product_details;?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>

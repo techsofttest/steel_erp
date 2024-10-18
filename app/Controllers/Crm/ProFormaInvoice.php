@@ -64,7 +64,7 @@ class ProFormaInvoice extends BaseController
         foreach($records as $record ){
             
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="'.base_url().'Crm/ProFormaInvoice/Pdf/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+            <a href="'.base_url().'Crm/ProFormaInvoice/Pdf/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
            
@@ -1128,7 +1128,13 @@ class ProFormaInvoice extends BaseController
 
                 foreach($product_details as $prod_det)
                 {
-                    
+                    $rate = format_currency($prod_det->pp_rate);
+
+                    $amount = format_currency($prod_det->pp_amount);
+    
+                    $disc = number_format($prod_det->pp_discount, 2);
+    
+
                     $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
@@ -1137,11 +1143,11 @@ class ProFormaInvoice extends BaseController
 
                     $pdf_data .= '<td align="left">'.$prod_det->pp_unit.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->pp_rate.'</td>';
+                    $pdf_data .= '<td align="right">'.$rate.'</td>';
 
-                    $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->pp_discount.'</td>';
+                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->pp_amount.'</td>';
+                    $pdf_data .= '<td align="right">'.$amount.'</td>';
 
                 }
 
@@ -1166,7 +1172,12 @@ class ProFormaInvoice extends BaseController
 
                 $title = 'PINV - '.$proforma_invoice->pf_reffer_no;
 
-                $mpdf = new \Mpdf\Mpdf();
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,     // Reduce top margin
+                    'margin_bottom' => 5,  // Reduce bottom margin
+                    'margin_left' => 5,    // Reduce left margin
+                    'margin_right' => 5,   // Reduce right margin
+                ]);
 
                 $mpdf->SetTitle($title); // Set the title
     
@@ -1182,7 +1193,7 @@ class ProFormaInvoice extends BaseController
                 }
                 p{
                     
-                    font-size: 12px;
+                    font-size: 10px;
     
                 }
                 .dec_width
@@ -1210,8 +1221,9 @@ class ProFormaInvoice extends BaseController
                 
             
                 <tr width="100%">
+                <td width="10%"></td>
                 <td>Date : '.$date.'</td>
-                <td>Invoice No : '.$proforma_invoice->pf_reffer_no.'</td>
+                <td align="center">Invoice No : '.$proforma_invoice->pf_reffer_no.'</td>
                 <td align="right"><h2>Pro-forma Invoice</h2></td>
             
                 </tr>
@@ -1266,19 +1278,19 @@ class ProFormaInvoice extends BaseController
             
                 <tr>
                 
-                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                    <th align="left" style="border-bottom:2px solid;" width="10%">Item No</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                    <th align="left" style="border-bottom:2px solid;" width="40%">Description</th>
                 
                     <th align="left" style="border-bottom:2px solid;">Qty</th>
                 
                     <th align="left" style="border-bottom:2px solid;">Unit</th>
         
-                    <th align="left" style="border-bottom:2px solid;">Rate</th>
+                    <th align="center" style="border-bottom:2px solid;" width="10%">Rate</th>
 
-                    <th align="left" style="border-bottom:2px solid;">Disc%</th>
+                    <th align="center" style="border-bottom:2px solid;">Disc%</th>
 
-                    <th align="left" style="border-bottom:2px solid;">Amount</th>
+                    <th align="center" style="border-bottom:2px solid;">Amount</th>
         
                  
                 
@@ -1293,7 +1305,7 @@ class ProFormaInvoice extends BaseController
             
             $footer = '
         
-                <table style="border-bottom:2px solid">
+                <table>
                 
                     <tr>
                         <td></td>
@@ -1336,7 +1348,7 @@ class ProFormaInvoice extends BaseController
         
                         <td>Amount in words</td>
                     
-                        <td>----------------------------------</td>
+                        <td>'.$proforma_invoice->pf_total_amount_in_words.'</td>
             
                         <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
             
@@ -1347,68 +1359,68 @@ class ProFormaInvoice extends BaseController
                 </table>
     
     
-                <table>
+                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
                 
                 <tr>
-                    <td style="width:20%">Invoice Terms</td>
+                    <td style="width:12%">Invoice Terms</td>
     
                     <td style="width:20%">LPO Ref:</td>
     
-                    <td style="width:20%">Waiting for PO</td>
+                    <td style="width:30%">Waiting for PO</td>
     
-                    <td style="width:20%">Payment:</td>
+                    <td style="width:10%">Payment:</td>
     
-                    <td style="width:20%">Cash on delivery</td>
+                    <td style="width:">Cash on delivery</td>
                     
                 </tr>
 
 
                 <tr>
-                    <td style="width:20%"></td>
+                    <td style="width:12%"></td>
     
                     <td style="width:20%">Project:</td>
     
-                    <td style="width:20%">-</td>
+                    <td style="width:30%">-</td>
     
-                    <td style="width:20%">Delivery: </td>
+                    <td style="width:10%">Delivery: </td>
     
-                    <td style="width:20%">: Ex- Factory</td>
+                    <td style="width:">: Ex- Factory</td>
                     
                 </tr>
     
                 <tr>
-                    <td style="width:20%"></td>
+                    <td style="width:12%"></td>
     
                     <td style="width:20%">Sales Order:</td>
     
-                    <td style="width:20%">'.$proforma_invoice->so_reffer_no.'</td>
+                    <td style="width:30%">'.$proforma_invoice->so_reffer_no.'</td>
     
-                    <td style="width:20%"></td>
+                    <td style="width:10%"></td>
     
-                    <td style="width:20%"></td>
+                    <td style="width:"></td>
     
                 </tr>
                 
                 </table>
     
     
-                <table style="border-top:2px solid;">
+                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
     
                 <tr>
                 
-                    <td>Received by: </td>
+                    <td><i>Received by: </i></td>
 
                     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
-                    <td>Prepared by:</td>
+                    <td><i>Prepared by:</i></td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
-                    <td>Finance Dept:</td>
+                    <td><i>Finance Dept:</i></td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
-                    <td>Workshop Manager</td>
+                    <td><i>Workshop Manager</i></td>
     
                   
     

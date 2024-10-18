@@ -17,7 +17,9 @@ class DeliveryNoteReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/delivery_note_report',$data);
 

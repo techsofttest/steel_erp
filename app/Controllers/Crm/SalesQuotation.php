@@ -1372,7 +1372,9 @@ class SalesQuotation extends BaseController
 
         $single_cost_cal = $this->common_model->SingleRow('crm_quotation_cost_calculation',$cond);
 
-        $count = $this->common_model->FetchWhereCount('crm_quotation_cost_calculation',array('qc_quotation_id' => $single_cost_cal->qc_quotation_id));
+        
+
+        $count = $this->common_model->CountWhere('crm_quotation_cost_calculation',array('qc_quotation_id' => $single_cost_cal->qc_quotation_id));
 
         if($count > 1)
         {
@@ -1546,7 +1548,7 @@ class SalesQuotation extends BaseController
 
         $quot_prod = $single_prod->qpd_quotation_details;
 
-        $count = $this->common_model->FetchWhereCount('crm_quotation_product_details',array('qpd_quotation_details' => $quot_prod));
+        $count = $this->common_model->CountWhere('crm_quotation_product_details',array('qpd_quotation_details' => $quot_prod));
        
         if($count >1){
 
@@ -1763,7 +1765,13 @@ class SalesQuotation extends BaseController
             $pdf_data = "";
 
             foreach($product_details as $prod_det)
-            {
+            {   
+                $rate = format_currency($prod_det->qpd_rate);
+
+                $amount = format_currency($prod_det->qpd_amount);
+
+                $disc = number_format($prod_det->qpd_discount, 2);
+
                 $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
@@ -1772,11 +1780,11 @@ class SalesQuotation extends BaseController
 
                 $pdf_data .= '<td align="left">'.$prod_det->qpd_unit.'</td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->qpd_rate.'</td>';
+                $pdf_data .= '<td align="right">'.$rate.'</td>';
 
-                $pdf_data .= '<td align="left" style="color: red";>'.$prod_det->qpd_discount.'</td>';
+                $pdf_data .= '<td align="center" style="color: red;"><i>'.$disc.'</i></td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->qpd_amount.'</td></tr>';
+                $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
             }
 
             $join =  array(
@@ -1800,7 +1808,15 @@ class SalesQuotation extends BaseController
 
             $title = 'SQ- '.$quotation_details->qd_reffer_no;
 
-            $mpdf = new \Mpdf\Mpdf();
+            //$mpdf = new \Mpdf\Mpdf();
+
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 5,     // Reduce top margin
+                'margin_bottom' => 5,  // Reduce bottom margin
+                'margin_left' => 5,    // Reduce left margin
+                'margin_right' => 5,   // Reduce right margin
+            ]);
+            
 
             $mpdf->SetTitle($title); // Set the title
 
@@ -1816,7 +1832,7 @@ class SalesQuotation extends BaseController
             }
             p{
                 
-                font-size: 12px;
+                font-size: 10px;
 
             }
             .dec_width
@@ -1839,7 +1855,7 @@ class SalesQuotation extends BaseController
         
                     <td>
                 
-                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <h2>Al Fuzail Engineering Services WLL</h2>
                     <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
@@ -1855,8 +1871,9 @@ class SalesQuotation extends BaseController
             
         
             <tr width="100%">
+            <td width="10%"></td>
             <td>Date : '.$date.'</td>
-            <td>Quote No : '.$quotation_details->qd_reffer_no.'</td>
+            <td align="center">Quote No : '.$quotation_details->qd_reffer_no.'</td>
             <td align="right"><h2>Sales Quotation</h2></td>
         
             </tr>
@@ -1911,19 +1928,19 @@ class SalesQuotation extends BaseController
         
             <tr>
             
-                <th align="left" style="border-bottom:2px solid;">Item No</th>
+                <th align="left" style="border-bottom:2px solid;" width="10%">Item No</th>
             
-                <th align="left" style="border-bottom:2px solid;">Description</th>
+                <th align="left" style="border-bottom:2px solid;" width="35%">Description</th>
             
                 <th align="left" style="border-bottom:2px solid;">Qty</th>
             
                 <th align="left" style="border-bottom:2px solid;">Unit</th>
             
-                <th align="left" style="border-bottom:2px solid;">Rate</th>
+                <th align="center" style="border-bottom:2px solid;"width="10%">Rate</th>
     
-                <th align="left" style="border-bottom:2px solid;">Disc%</th>
+                <th align="center" style="border-bottom:2px solid;">Disc%</th>
     
-                <th align="left" style="border-bottom:2px solid;">Amount</th>
+                <th align="center" style="border-bottom:2px solid;">Amount</th>
     
             
             </tr>
@@ -1937,12 +1954,12 @@ class SalesQuotation extends BaseController
         
         $footer = '
     
-            <table style="border-bottom:2px solid">
+            <table >
             
                 <tr>
                     <td>Quote Validity</td>
 
-                    <td>10 Days</td>
+                    <td width="59%">10 Days</td>
                 
                     <td>Gross Total</td>
         
@@ -1950,11 +1967,12 @@ class SalesQuotation extends BaseController
             
                 </tr>
 
+               
                 <tr>
     
                     <td>Currency</td>
                 
-                    <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
+                    <td>Qatar Riyals</td>
                    
                     <td>Less. Special Discount</td>
         
@@ -1970,9 +1988,9 @@ class SalesQuotation extends BaseController
     
                     <td>Amount in words</td>
                 
-                    <td>----------------------------------</td>
+                    <td>'.$quotation_details->qd_sales_quot_amount_in_words.'</td>
         
-                    <td style="font-weight: bold;">Net Invoice Value</td>
+                    <td style="font-weight: bold;">Net Quote Value</td>
         
                     <td>-----</td>
                 
@@ -1981,57 +1999,64 @@ class SalesQuotation extends BaseController
             </table>
 
 
-            <table>
+            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
-                <td style="width:20%">Quote Terms</td>
+                <td style="width:12%">Quote Terms</td>
 
-                <td style="width:20%">Enquiry Ref.</td>
+                <td style="width:15%">Enquiry Ref.</td>
 
-                <td style="width:20%">By Mail</td>
+                <td style="width:32%">By Mail</td>
 
-                <td style="width:20%">Payment:</td>
+                <td style="width:9%">Payment:</td>
 
-                <td style="width:20%">Cash on delivery</td>
+                <td style="width:">Cash on delivery</td>
                 
             </tr>
 
             <tr>
-                <td style="width:20%"></td>
+                <td style="width:12%"></td>
 
-                <td style="width:20%">Delivery Period</td>
+                <td style="width:15%">Delivery Period</td>
 
-                <td style="width:20%">4-5 Days</td>
+                <td style="width:32%">4-5 Days</td>
 
-                <td style="width:20%">Delivery</td>
+                <td style="width:9%">Delivery</td>
 
-                <td style="width:20%">Ex-works</td>
+                <td style="width:">Ex-works</td>
+
+                 
 
             </tr>
             
             </table>
 
 
-            <table style="border-top:2px solid;">
+            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
 
             <tr>
             
                <td>Antony Raphel - Production In-charge</td>
-               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                <td>Justin Jose - Operations Manager</td>
               
 
             </tr>
 
+            
+
 
             <tr>
             
                 <td>Mob : +974 6688 5418, antony@alfuzailgroup.com</td>
-                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
            
 
             </tr>
+
+
+           
 
 
             

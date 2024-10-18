@@ -331,10 +331,14 @@ class SalesQuotAnalysisReport extends BaseController
                 if(!empty($quot_data->sales_orders)){
                     $pdf_data .= "<td align='right' style='border-top: 2px solid'>---</td>";  
                 }else{
+                    
+                    $formalt_amount = format_currency($quot_data->qpd_amount);
+                    
+                    $pdf_data .="<td align='right' style='border-top: 2px solid'>{$formalt_amount}</td>";
 
-                    $pdf_data .="<td align='right' style='border-top: 2px solid'>{$quot_data->qpd_amount}</td>";
-
-                    $sales_diff_amount = format_currency($quot_data->qpd_amount + $sales_diff_amount);
+                    $sales_diff_amount = $quot_data->qpd_amount + $sales_diff_amount;
+                    
+                   // $sales_diff_amount = format_currency($sales_diff_amount);
                 }
             
                 $pdf_data .= "</tr>";
@@ -391,6 +395,8 @@ class SalesQuotAnalysisReport extends BaseController
             $mpdf->SetTitle('Sales Quotation Report'); // Set the title
 
             $sales_amount = format_currency($sales_amount);
+            
+            $sales_diff_amount = format_currency($sales_diff_amount);
 
 
             $total_quot_amount = format_currency($total_quot_amount);

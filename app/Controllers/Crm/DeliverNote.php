@@ -59,7 +59,7 @@ class DeliverNote extends BaseController
         $i=1;
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="'.base_url().'Crm/DeliverNote/Pdf/'.$record->dn_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print</a>
+            <a href="'.base_url().'Crm/DeliverNote/Pdf/'.$record->dn_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
             ';
            
            $data[] = array( 
@@ -1522,9 +1522,9 @@ class DeliverNote extends BaseController
 
                     $pdf_data .= '<td align="left">'.$prod_det->dpd_unit.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->dpd_order_qty.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->dpd_order_qty.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->dpd_current_qty.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->dpd_current_qty.'</td>';
 
                 }
 
@@ -1549,7 +1549,15 @@ class DeliverNote extends BaseController
 
                 $title = 'DN-'.$delivery_note->dn_reffer_no;
                 
-                $mpdf = new \Mpdf\Mpdf();
+                //$mpdf = new \Mpdf\Mpdf();
+
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,     // Reduce top margin
+                    'margin_bottom' => 5,  // Reduce bottom margin
+                    'margin_left' => 5,    // Reduce left margin
+                    'margin_right' => 5,   // Reduce right margin
+                ]);
+                
 
                 $mpdf->SetTitle($title); // Set the title
     
@@ -1565,7 +1573,7 @@ class DeliverNote extends BaseController
                 }
                 p{
                     
-                    font-size: 12px;
+                    font-size: 10px;
     
                 }
                 .dec_width
@@ -1593,8 +1601,9 @@ class DeliverNote extends BaseController
                 
             
                 <tr width="100%">
+                <td width="10%"></td>
                 <td>Date : '.$date.'</td>
-                <td>Delivery Note No : '.$delivery_note->dn_reffer_no.'</td>
+                <td align="center">Delivery Note No : '.$delivery_note->dn_reffer_no.'</td>
                 <td align="right"><h2>Delivery Note</h2></td>
             
                 </tr>
@@ -1651,13 +1660,13 @@ class DeliverNote extends BaseController
                 
                     <th align="left" style="border-bottom:2px solid;">Item No</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Description</th>
+                    <th align="center" style="border-bottom:2px solid;" width="60%">Description</th>
                 
                     <th align="left" style="border-bottom:2px solid;">Unit</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Qty Ordered</th>
+                    <th align="center" style="border-bottom:2px solid;">Qty Ordered</th>
         
-                    <th align="left" style="border-bottom:2px solid;">Delivery</th>
+                    <th align="center" style="border-bottom:2px solid;">Delivery</th>
         
                  
                 
@@ -1678,45 +1687,41 @@ class DeliverNote extends BaseController
                 <table>
                 
                 <tr>
-                    <td style="width:20%">Order Terms</td>
+                    <td style="width:10%">Order Terms</td>
     
-                    <td style="width:20%">LPO Ref:</td>
+                    <td style="width:15%">LPO Ref:</td>
     
-                    <td style="width:20%">Waiting for PO</td>
+                    <td style="width:30%">Waiting for PO</td>
 
-                    <td style="width:8%"></td>
-    
                     <td style="width:12%">Payment:</td>
     
-                    <td style="width:20%">Cash on delivery</td>
+                    <td style="">Cash on delivery</td>
                     
                 </tr>
     
                 <tr>
-                    <td style="width:20%"></td>
+                    <td style="width:10%"></td>
     
-                    <td style="width:20%">Project:</td>
+                    <td style="width:15%">Project:</td>
     
-                    <td style="width:20%">-</td>
+                    <td style="width:30%">-</td>
 
-                    <td style="width:8%"></td>
+                    <td style="width:12%">Sales Order:</td>
     
-                    <td style="width:12%">Sales Order</td>
-    
-                    <td style="width:20%">'.$delivery_note->so_reffer_no.'</td>
+                    <td style="">'.$delivery_note->so_reffer_no.'</td>
     
                 </tr>
                 
                 </table>
     
     
-                <table style="border-top:2px solid;">
+                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
     
                 <tr>
                 
-                    <td>Received by: </td>
+                    <td><i>Received by: </i></td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                    
 
@@ -1724,10 +1729,10 @@ class DeliverNote extends BaseController
     
                     <td>Driver:</td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
     
-                    <td>Store Keeper</td>
+                    <td><i>Store Keeper</i></td>
     
                   
     

@@ -17,7 +17,11 @@ class SalesOrderToDn extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/sales-order_to_dn',$data);
 
@@ -280,6 +284,12 @@ class SalesOrderToDn extends BaseController
        {   
            $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
        }
+
+       $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
        
        $data['content'] = view('crm/sales-order_to_dn',$data);
 
@@ -309,21 +319,27 @@ class SalesOrderToDn extends BaseController
                                 <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>
-                                <td colspan='4' align='left' class='p-0' style='border-top: 2px solid'>
+                                <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>
                                     <table>";
                                         foreach($sales_order->sales_products as $sales_prod){
+
+                                            $format_amount = format_currency($sales_prod->spd_amount);
+
+                                            $format_rate = format_currency($sales_prod->spd_rate);
+
                                             $pdf_data .= "<tr>
                                                             <td width='100px'>{$sales_prod->product_details}</td>
-                                                            <td  width='100px'>{$sales_prod->spd_quantity}</td>
-                                                            <td  width='100px'>{$sales_prod->spd_rate}</td>
-                                                            <td  width='100px'>{$sales_prod->spd_amount}</td>
+                                                            <td width='50px'  align='right'>{$sales_prod->spd_quantity}</td>
+                                                            <td width='100px' align='right'>{$format_rate}</td>
+                                                            <td width='100px'  align='right'>{$sales_prod->spd_discount}</td>
+                                                            <td  width='100px' align='right'>{$format_amount}</td>
                                                             
                                             </tr>";
                                             $sales_product = $sales_prod->spd_amount + $sales_product;
                                         } 
                                     $pdf_data .= "</table>
                                 </td>
-                                <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>";
+                                <td colspan='1' align='left' class='p-0' style='border-top: 2px solid'>";
                                    if(!empty($sales_order->sales_deliverys)){
                                     $pdf_data .="<table>"; 
                                     foreach($sales_order->sales_deliverys as $sales_del){
@@ -331,16 +347,15 @@ class SalesOrderToDn extends BaseController
                                         foreach($sales_del->sales_delivery_prod as $del_prod){
                                             $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
                                                 if($j==1){
-                                                    $pdf_data .="<td width='100px'>{$sales_del->dn_reffer_no}</td>";
+                                                    $pdf_data .="<td width='100px' align='right'>{$sales_del->dn_reffer_no}</td>";
                                                 }
                                                 else{
-                                                    $pdf_data .="<td width='100px'></td>";  
+                                                    $pdf_data .="<td width='100px' align='right'></td>";  
                                                 }
                                                     
-                                            $pdf_data .="<td width='100px'>{$del_prod->product_details}</td>
-                                                         <td width='100px'>{$del_prod->dpd_current_qty}</td>
-                                                         <td width='100px'>{$del_prod->dpd_prod_rate}</td>
-                                                         <td width='100px'>{$del_prod->dpd_total_amount}</td>
+                                            $pdf_data .="
+                                                        
+                                                         
                                             
                                             </tr>"; 
 
@@ -359,14 +374,13 @@ class SalesOrderToDn extends BaseController
                                                 foreach($sales_cash->cash_product as $cash_prod){ 
                                                 $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
                                                     if($k==1){
-                                                        $pdf_data .="<td width='100px'>{$sales_cash->ci_reffer_no}</td>";
+                                                        $pdf_data .="<td width='100px' align='right'>{$sales_cash->ci_reffer_no}</td>";
                                                     }else{
-                                                        $pdf_data .="<td width='100px'></td>";
+                                                        $pdf_data .="<td width='100px'  align='right'></td>";
                                                     }
-                                                    $pdf_data .="<td width='100px'>{$cash_prod->product_details}</td>
-                                                                <td width='100px'>{$cash_prod->cipd_qtn}</td>
-                                                                <td width='100px'>{$cash_prod->cipd_rate}</td>
-                                                                <td width='100px'>{$cash_prod->cipd_amount}</td>
+                                                    $pdf_data .="
+                                                                
+                                                               
 
                                                             </tr>";
                                                     
@@ -384,8 +398,9 @@ class SalesOrderToDn extends BaseController
                                     if(empty($sales_order->sales_deliverys) && empty($sales_order->sales_cash_invoice)){
                                         $pdf_data .="<table>";
                                             foreach($sales_order->sales_products as $sales_prod){
-                                                $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
-                                                    <td  width='100px'>{$sales_prod->spd_amount}</td>
+                                                $format_diff = format_currency($sales_prod->spd_amount);
+                                                $pdf_data .="<tr  style='background: unset;border-bottom: hidden !important;'>
+                                                    <td width='100px' align='right'>{$format_diff}</td>
                                                 </tr>";
 
                                                 $product_diff =  $sales_prod->spd_amount + $product_diff;
@@ -393,8 +408,8 @@ class SalesOrderToDn extends BaseController
                                         $pdf_data .="</table>";
                                     }else{
                                         $pdf_data .="<table>
-                                                        <tr style='background: unset;border-bottom: hidden !important;'>
-                                                            <td></td>
+                                                        <tr  style='background: unset;border-bottom: hidden !important;'>
+                                                            <td width='100px' align='right' >---</td>
                                                         </tr>
                                         </table>";
                                     }
@@ -419,20 +434,42 @@ class SalesOrderToDn extends BaseController
                $dates = $from_date . " to " . $to_date;
             }
 
-            $title = "SQR";
+            $title = "SOTODN";
 
            // $mpdf = new \Mpdf\Mpdf();
 
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
+
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
+
            $mpdf = new \Mpdf\Mpdf([
-            'format' => [300, 400], // Custom page size in millimeters
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'margin_top' => 10,
-            'margin_bottom' => 10,
+            'format' => 'Letter', 
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
             ]);
 
-
+           
             $mpdf->SetTitle('Sales Order - Delivery / Cash Invoice Analysis'); // Set the title
+
+            $product_diff = format_currency($product_diff);
+
+            $sales_product = format_currency($sales_product);
 
             $html ='
         
@@ -501,35 +538,29 @@ class SalesOrderToDn extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Sales Order</th>
+            <th align="left" width="100px">Sales Order</th>
         
             <th align="left">Customer</th>
 
-            <th align="left">LPO Ref</th>
+            <th align="left" width="70px">LPO Ref</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" width="120px">Sales Executive</th>
         
             <th align="left">Amount</th>
 
             <th align="left" width="100px">Product</th>
 
-            <th align="left" width="100px">Quantity</th>
+            <th align="right" width="50px">Quantity</th>
 
-            <th align="left" width="100px">Rate</th>
+            <th align="right" width="100px">Rate</th>
 
-            <th align="left" width="100px">Amount</th>
+            <th align="right" width="100px">Discount</th>
 
-            <th align="left" width="100px">Delivery Note / Cash Invoice</th>
+            <th align="right" width="100px">Amount</th>
 
-            <th align="left" width="100px">Product</th>
+            <th align="right" width="100px">Delivery Note / Cash Invoice</th>
 
-            <th align="left" width="100px">Quantity</th>
-
-            <th align="left" width="100px">Rate</th>
-
-            <th align="left" width="100px">Amount</th>
-
-            <th align="left" width="100px">Difference</th>
+            <th align="right" width="100px">Difference</th>
 
           
             
@@ -550,13 +581,11 @@ class SalesOrderToDn extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$sales_product.'</td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$product_price.'</td>
-                <td style="border-top: 2px solid;">'.$product_diff.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_product.'</td>
+                <td style="border-top: 2px solid;" ></td>
+                 
+                <td style="border-top: 2px solid;" align="right">'.$product_diff.'</td>
             
             </tr> 
 
@@ -571,11 +600,13 @@ class SalesOrderToDn extends BaseController
         
             //$footer = '';
         
-          
+            
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
         
         }
 

@@ -17,7 +17,11 @@ class SalesOrderSummeryReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/sales_order_summery_report',$data);
 
@@ -282,6 +286,12 @@ class SalesOrderSummeryReport extends BaseController
         {   
             $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
         }
+
+        $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/sales_order_summery_report',$data);
 
@@ -323,6 +333,8 @@ class SalesOrderSummeryReport extends BaseController
                 
                 //$total_amount = $total_amount + $quot_data->qd_sales_amount;
 
+                $formalt_amount = format_currency($sales_order->so_amount_total);
+
                 $new_date = date('d-M-Y',strtotime($sales_order->so_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
@@ -333,81 +345,18 @@ class SalesOrderSummeryReport extends BaseController
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->se_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' width='110'>{$sales_order->se_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>";
+                $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$formalt_amount}</td>";
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
                 
                 
-                if($q!=1){
-                     
-                    $pdf_data .="</tr>";
-                }
-                foreach($product_details as $prod_del)
-                {
-                    if($q!=1){
-
-                        $pdf_data .="<tr>";
-
-                        $pdf_data .= "<tr><td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                        
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                    }
-
-                    
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->spd_unit}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->spd_rate}</td>";
-
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->spd_amount}</td>";
-
-                    
-                    if($q!=1)
-                    {
-                        $pdf_data .="</tr>";
-                    }
-
-                    $q++;
-
-                }
                 
-                if($q==1)
-                {
-                    $pdf_data .="</tr>";
-                }
+                
+                
+               
 
                // $pdf_data .="</tr>";
                  
@@ -429,21 +378,37 @@ class SalesOrderSummeryReport extends BaseController
 
             $title = "SQR";
 
-            $mpdf = new \Mpdf\Mpdf(
-                [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
-                ]
-            );
+            $total_amount = format_currency($total_amount);
+
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+ 
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter', // Custom page size in millimeters
+                'default_font_size' => 9, 
+                'margin_left' => 5, 
+                'margin_right' => 5,
+                'fontDir' => array_merge($fontDirs, [
+                    __DIR__ . '/fonts'
+                ]),
+                'fontdata' => $fontData + [
+                    'bentonsans' => [
+                      
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf',
+                    ],
+                ],
+                'default_font' => 'bentonsans'
+                
+            ]);
+                    
 
          
 
-            $mpdf->SetTitle('Sales Order Report'); // Set the title
+            $mpdf->SetTitle('Sales Summery Report'); // Set the title
 
             $html ='
         
@@ -497,7 +462,7 @@ class SalesOrderSummeryReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Order Report</h3></td>
+            <td align="right"><h3>Sales Summery Report</h3></td>
         
             </tr>
         
@@ -516,20 +481,13 @@ class SalesOrderSummeryReport extends BaseController
         
             <th align="left">Customer</th>
 
-            <th align="left">LPO Ref</th>
+            <th align="left" width="70">LPO Ref</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left" width="110">Sales Executive</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
-            <th align="left">Product</th>
-
-            <th align="left">Quantity</th>
-
-            <th align="left">Rate</th>
-
-            <th align="left">Amount</th>
-        
+           
             
             </tr>
 
@@ -542,11 +500,8 @@ class SalesOrderSummeryReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$total_amount.'</td>
+                
                 
             </tr>    
            
@@ -564,6 +519,8 @@ class SalesOrderSummeryReport extends BaseController
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
         
         }
 
