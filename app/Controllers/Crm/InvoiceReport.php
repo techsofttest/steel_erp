@@ -18,6 +18,10 @@ class InvoiceReport extends BaseController
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
         
         $data['content'] = view('crm/invoice_report',$data);
 
@@ -221,7 +225,7 @@ class InvoiceReport extends BaseController
        
 
 
-        $joins = array(
+        /*$joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -233,11 +237,31 @@ class InvoiceReport extends BaseController
                 'fk'    => 'dn_sales_order_num',
             ),
 
-        );
+        );*/
 
         
-        $data['delivery_data'] = $this->crm_modal->invoice_report($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id','','','crm_delivery_note',$joins,'dn_reffer_no');
+       //$data['delivery_data'] = $this->crm_modal->invoice_report($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id','','','crm_delivery_note',$joins,'dn_reffer_no');
+       
+       $joins = array(
         
+            array(
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
+                'fk'    => 'so_customer',
+            ),
+            array(
+                'table' => 'crm_delivery_note',
+                'pk'    => 'dn_sales_order_num',
+                'fk'    => 'so_id',
+            ),
+          
+
+        );
+
+       $data['sales_orders'] = $this->crm_modal->invoice_report($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'spd_product_details','','','crm_sales_orders',$joins,'so_reffer_no');
+        
+      
+
         if(!empty($from_date))
         {
             $data['from_dates'] = date('d-M-Y',strtotime($from_date));
@@ -256,6 +280,10 @@ class InvoiceReport extends BaseController
         {
             $data['to_dates'] = "";
         }
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
 
         $data['content'] = view('crm/invoice_report',$data);

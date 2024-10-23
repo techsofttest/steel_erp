@@ -134,6 +134,9 @@
                                                                                 <td>Sales Order Ref</td>
                                                                                 <td><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order; ?>" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
+                                                                                        <?php foreach($sales_orders_data as $sales_data){?> 
+                                                                                            <option value="<?php echo $sales_data->so_id;?>"><?php echo $sales_data->so_reffer_no;?></option>
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -143,9 +146,14 @@
 
                                                                             <tr>
                                                                                 <td>Delivery Note Ref</td>
-                                                                                <td><select class="form-select  deliver_note_ref" value="<?php echo $delivery_note; ?>" name="delivery_note">
+                                                                                <td>
+                                                                                    <select class="form-select  deliver_note_ref" value="<?php echo $delivery_note; ?>" name="delivery_note">
                                                                                         <option value="" selected disabled>Select Delivery Note Ref</option>
-                                                                                    </select></td>
+                                                                                        <?php foreach($delivery_note_data  as $delivery_datas){?> 
+                                                                                            <option value="<?php echo $delivery_datas->dn_id;?>"><?php echo $delivery_datas->dn_reffer_no;?></option>    
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -157,6 +165,9 @@
                                                                                 <td>Product</td>
                                                                                 <td><select class="form-select product_clz" value="<?php echo $product; ?>" name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
+                                                                                        <?php foreach($products_data as $prod_data){?> 
+                                                                                            <option value="<?php echo $prod_data->product_id;?>"><?php echo $prod_data->product_details;?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -247,6 +258,7 @@
                                                     <th style="white-space: nowrap;width:500px">Product</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Quantity</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-end">Rate</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Discount</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
                                                     <!--<th width="100px">Product</th>
@@ -280,13 +292,14 @@
 
 
 
-                                                            <td colspan="4" align="left" class="p-0 ">
+                                                            <td colspan="5" align="left" class="p-0 ">
                                                                 <table>
                                                                     <?php foreach ($del_note->delivery_products as $del_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
                                                                             <td width="500px" class="responsive"><?php echo $del_prod->product_details; ?></td>
                                                                             <td width="100px" class="responsive text-center"><?php echo $del_prod->dpd_current_qty; ?></td>
                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_rate); ?></td>
+                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?></td>
                                                                             <?php $total_amount1 = $del_prod->dpd_total_amount + $total_amount1; ?>
                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
                                                                         </tr>
@@ -310,6 +323,8 @@
                                                                                     <?php } else { ?>
                                                                                         <td width="100px"></td>
                                                                                     <?php } ?>
+                                                                                    <!--<td width="100px"><?php //echo $credit_inv->ipd_discount;
+                                                                                                            ?></td>-->
                                                                                     <!--<td width="100px"><?php //echo $inv_prod->product_details;
                                                                                                             ?></td>
                                                                         <td width="100px"><?php //echo $inv_prod->ipd_quantity;
@@ -372,6 +387,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

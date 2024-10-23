@@ -118,6 +118,11 @@ class BackLog extends BaseController
                 'pk'    => 'dn_sales_order_num',
                 'fk'    => 'so_id',
             ),
+            array(
+                'table' => 'crm_sales_product_details',
+                'pk'    => 'spd_sales_order',
+                'fk'    => 'so_id',
+            ),
          
         );
 
@@ -176,7 +181,11 @@ class BackLog extends BaseController
             $balance_total = 0;
             foreach($sales_orders as $sales_order){
                 
+                $total_amount = format_currency($sales_order->so_amount_total);
+
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
+                
+                $dicount_amountss = format_currency($sales_order->spd_discount);
 
                 $pdf_data .="<tr>
                                 <td style='border-top: 2px solid'>{$new_date}</td>
@@ -184,7 +193,8 @@ class BackLog extends BaseController
                                 <td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>";
+                                <td style='border-top: 2px solid' align='right'>{$dicount_amountss}</td>
+                                <td style='border-top: 2px solid' align='right'>{$total_amount}</td>";
                                 
                                 $sales_total = $sales_order->so_amount_total + $sales_total;
                                 
@@ -199,10 +209,12 @@ class BackLog extends BaseController
 
                                 if(!empty($sales_order->sales_delivery)){ 
                                     
-                                    $pdf_data .="<td style='border-top: 2px solid'>{$delivery_amount}</td>";
+                                    $delivery_amountss = format_currency($delivery_amount);
+
+                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$delivery_amountss}</td>";
 
                                 } else{
-                                    $pdf_data .="<td style='border-top: 2px solid'>---</td>";
+                                    $pdf_data .="<td style='border-top: 2px solid' align='center'>---</td>";
                                 }
 
                                 $invoiced_amount = 0;
@@ -216,12 +228,14 @@ class BackLog extends BaseController
                                 }
 
                                 if(!empty($sales_order->cash_invoiced)){
+                                    
+                                    $invoiced_amountss = format_currency($invoiced_amount);
 
-                                    $pdf_data .="<td style='border-top: 2px solid'>{$invoiced_amount}</td>";
+                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$invoiced_amountss}</td>";
 
                                 } else{
 
-                                    $pdf_data .="<td style='border-top: 2px solid'>----</td>";
+                                    $pdf_data .="<td style='border-top: 2px solid' align='center'>----</td>";
                                 }
 
                                 if(!empty($sales_order->sales_delivery)){
@@ -229,12 +243,14 @@ class BackLog extends BaseController
                                     $balance =  $sales_order->so_amount_total - $delivery_amount;
 
                                     $balance_total = $balance + $balance_total;
+
+                                    $balancess = format_currency($balance);
                                     
-                                    $pdf_data .="<td style='border-top: 2px solid'>{$balance}</td>";
+                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$balancess}</td>";
 
                                 } else{
 
-                                    $pdf_data .="<td style='border-top: 2px solid'>----</td>";
+                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>----</td>";
                                 }
                                
 
@@ -255,16 +271,41 @@ class BackLog extends BaseController
 
            // $mpdf = new \Mpdf\Mpdf();
 
-           $mpdf = new \Mpdf\Mpdf([
-            'format' => [300, 400], // Custom page size in millimeters
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            ]);
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
 
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter', // Custom page size in millimeters
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
+        ]);
 
             $mpdf->SetTitle('Backlog'); // Set the title
+
+            $sales_total = format_currency($sales_total);
+
+            $delivered_total = format_currency($delivered_total);
+
+            $invoice_total = format_currency($invoice_total);
+
+            $balance_total = format_currency($balance_total);
 
             $html ='
         
@@ -340,14 +381,16 @@ class BackLog extends BaseController
             <th align="left">LPO Ref</th>
         
             <th align="left">Sales Executive</th>
+
+            <th align="left">Discount</th>
         
-            <th align="left">Amount</th>
+            <th align="center">Amount</th>
 
-            <th align="left">Delivered</th>
+            <th align="center">Delivered</th>
 
-            <th align="left">Invoiced</th>
+            <th align="center">Invoiced</th>
 
-            <th align="left">Balance</th>
+            <th align="center">Balance</th>
  
             
             </tr>
@@ -363,10 +406,11 @@ class BackLog extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$sales_total.'</td>
-                <td style="border-top: 2px solid;">'.$delivered_total.'</td>
-                <td style="border-top: 2px solid;">'.$invoice_total.'</td>
-                <td style="border-top: 2px solid;">'.$balance_total.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_total.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$delivered_total.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$invoice_total.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$balance_total.'</td>
                
                 
                 

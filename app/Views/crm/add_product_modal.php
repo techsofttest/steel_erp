@@ -160,6 +160,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 $("body").on('change', '.product_head', function(){ 
 
+    console.log('tr');
+
     var id = $(this).val();
 
     $.ajax({
@@ -227,6 +229,17 @@ $(".product_head_select").select2({
     }
 })
 /*###*/
+
+/*reset addd */
+
+$('.add_model_btn').click(function(){
+
+   
+    
+});
+
+
+/*#######*/
 
 
 

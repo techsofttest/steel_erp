@@ -187,6 +187,7 @@
                                                     <th>Customer</th>
                                                     <th class="text-center">Lpo Ref</th>
                                                     <th class="text-center">Sales Executive</th>
+                                                    <th class="text-center">Discount</th>
                                                     <th class="text-end">Amount</th>
                                                     <th class="text-end">Delivered</th>
                                                     <th class="text-end">Invoiced</th>
@@ -213,6 +214,7 @@
                                                             <td><?php echo $sales_order->cc_customer_name; ?></td>
                                                             <td class="text-center"><?php echo $sales_order->so_lpo; ?></td>
                                                             <td class="text-center"><?php echo $sales_order->se_name; ?></td>
+                                                            <td class="text-center"><?php echo format_currency($sales_order->spd_discount); ?></td>
                                                             <?php
                                                             $total_amount = $sales_order->so_amount_total + $total_amount;
                                                             ?>
@@ -288,6 +290,7 @@
 
                                                 <tr>
                                                     <td>Total</td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

@@ -741,7 +741,7 @@
                         <!--Edit modal section start--->
                         <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
-                                <form class="Dashboard-form class" id="">
+                                <form class="Dashboard-form class" id="edit_purchase_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Purchase Voucher</h5>
@@ -769,7 +769,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" id="" class="form-control edit_ref" readonly>
+                                                                        <input type="text" name="pv_reffer_id" id="" class="form-control edit_ref" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -788,7 +788,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control edit_date mr_date datepicker" >
+                                                                        <input type="text" name="pv_date" class="form-control edit_date mr_date datepicker" >
                                                                     </div>
 
                                                                 </div>
@@ -810,7 +810,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_vendor_name" readonly>
+                                                                        <input type="text" name="pv_vendor_name" class="form-control edit_vendor_name" readonly>
 
                                                                         </select>
                                                                     </div>
@@ -834,7 +834,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_contact_person" readonly>
+                                                                        <input type="text" name="pv_contact_person" class="form-control edit_contact_person" readonly>
 
                                                                         </select>
                                                                     </div>
@@ -870,7 +870,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_purchase_order" readonly>
+                                                                        <input type="text" name="pv_purchase_order" class="form-control edit_purchase_order" readonly>
 
                                                                     </div>
 
@@ -892,7 +892,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_vendor_inv_ref">
+                                                                        <input type="text" name="pv_vendor_inv" class="form-control edit_vendor_inv_ref">
 
                                                                     </div>
 
@@ -913,7 +913,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control edit_delivery_note">
+                                                                        <input type="text" name="pv_delivery_note" class="form-control edit_delivery_note">
 
                                                                     </div>
 
@@ -938,7 +938,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control edit_payment_term">
+                                                                        <input type="text" name="pv_payment_term" class="form-control edit_payment_term">
                                                                     </div>
 
                                                                 </div>
@@ -1004,6 +1004,13 @@
                                             </div>
 
                                         </div>
+
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn btn btn-success" type="submit">Save</button>
+                                        </div>
+
+                                         <input type="hidden" name="pv_id" value="" class="edit_purchase_id">
+
 
                                     </div>
                                 </form>
@@ -2282,7 +2289,7 @@
 
                     $('.edit_prod_data').html(data.prod_desc);
 
-                    
+                    $('.edit_purchase_id').val(data.purchase_id);
 
                 }
             });
@@ -2290,6 +2297,43 @@
             $('#EditModal').modal('show');
 
         });
+
+
+
+        $(function() {
+            var form = $('#edit_purchase_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    //if($('#purchase_form').attr('data_fill')=="true"){   
+
+                        // Submit the form for the current tab
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Procurement/PurchaseVoucher/Update",
+                            method: "POST",
+                            data: $(currentForm).serialize(),
+                            success: function(data) {
+                                
+                                $('#EditModal').modal('hide');
+                            
+                                alertify.success('Data Updated Successfully').delay(3).dismissOthers();
+                            
+                                datatable.ajax.reload(null, false);
+                             
+                            }
+                        });
+
+                }
+            });
+        });
+
 
 
         /*edit section end*/

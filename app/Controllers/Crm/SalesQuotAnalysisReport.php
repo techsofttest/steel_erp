@@ -272,8 +272,10 @@ class SalesQuotAnalysisReport extends BaseController
 
                     $amount = format_currency($quot_prod->qpd_amount);
 
+                    $discount = format_currency($quot_prod->qpd_discount);
+
                     $pdf_data .= "<td width='100px' align='right'>{$rate}</td>";
-                    $pdf_data .= "<td width='100px' align='right'>{$quot_prod->qpd_discount}</td>";
+                    $pdf_data .= "<td width='100px' align='right'>{$discount}</td>";
                     $pdf_data .= "<td width='100px' align='right'>{$amount}</td>";
                     $pdf_data .= "</tr>";
                     

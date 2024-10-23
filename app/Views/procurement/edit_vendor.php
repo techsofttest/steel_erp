@@ -95,7 +95,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_post_box" class="form-control edit_post_box" required>
+                                                <input type="text" name="ven_post_box" class="form-control edit_post_box">
                                             </div>
 
                                         </div>
@@ -133,7 +133,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_fax" id="edit_fax_id" class="form-control edit_fax" required>
+                                                <input type="text" name="ven_fax" id="edit_fax_id" class="form-control edit_fax">
                                             </div>
 
                                         </div>

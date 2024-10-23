@@ -627,7 +627,9 @@
                             $('#add_cond_detail')[0].reset();
                             $('#add_office_doc')[0].reset();
                             $('#AddOfficalDocument').modal('hide');
-                            $('.account_head_clz').val('').trigger('change');
+                            $('#add_cust_creation').find('form').trigger('reset');
+
+                            //$('.account_head_clz').val('').trigger('change');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                         }

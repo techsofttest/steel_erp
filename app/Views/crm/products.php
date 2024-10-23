@@ -27,7 +27,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Products</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddProdModal" class="btn btn-primary py-1">Add</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddProdModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -277,8 +277,7 @@
             var id = $(this).val();
 
             var prod_id = $('.prod_id').val();
-
-            
+ 
 
             console.log(prod_id);
 
@@ -297,8 +296,7 @@
                 {   
                     var data = JSON.parse(data);
 
-                
-                //$(".product_code").val(data.product_head_code);
+                    //$(".product_code").val(data.product_head_code);
 
                    $(".edit_produt_code").val(data.product_head_code);
                 
@@ -442,7 +440,7 @@
             
             $(this).find('form').trigger('reset');
 
-            $('.product_head').val('').trigger('change');
+            //$('.product_head').val('').trigger('change');
 
         })
         
@@ -451,9 +449,6 @@
 
 
     });
-
-   
-
 
 
 

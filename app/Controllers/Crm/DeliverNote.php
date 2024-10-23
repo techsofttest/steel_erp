@@ -58,7 +58,7 @@ class DeliverNote extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'" style="display:none;"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
             <a href="'.base_url().'Crm/DeliverNote/Pdf/'.$record->dn_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
             ';
            
@@ -300,6 +300,7 @@ class DeliverNote extends BaseController
                         'dpd_so_id'        =>  $_POST['sales_prod_id'][$j],
                         'dpd_total_amount' =>  $_POST['product_total'][$j],
                         'dpd_prod_rate'    =>  $_POST['dpd_rate_qty'][$j],
+                        'dpd_prod_dicount' =>  $_POST['dicount'][$j],
                         'dpd_delivery_qty' =>  $new_deli_qty,
                         'dpd_current_qty'  =>  $current_qty,
                         'dpd_delivery_id'  =>  $delivery_id,
@@ -963,7 +964,9 @@ class DeliverNote extends BaseController
                                                 <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery" required></td>
                                                 <input type="hidden" name="sales_prod_id[]" value="'.$sales_det->spd_id.'" class="form-control" required>
                                                 <input type="hidden" name="dpd_rate_qty[]" value="'.$sales_det->spd_rate.'" class="form-control rate_clz_id" required>
-                                                <input type="hidden" name="product_total[]" value="" class="form-control del_product_total" required>        
+                                                <input type="hidden" name="dicount[]" value="'.$sales_det->spd_discount.'" class="form-control dicount_clz_id" required>
+                                                <input type="hidden" name="product_total[]" value="" class="form-control del_product_total" required>
+                                                    
                                                         
                                                 </tr>
                                                 <input type="hidden" name="total_prod_amount" value="" class="total_prod_amount">

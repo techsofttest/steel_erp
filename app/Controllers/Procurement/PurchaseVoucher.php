@@ -63,7 +63,7 @@ class PurchaseVoucher extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  style="display:none;" data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "pv_id"             => $i,
@@ -449,7 +449,7 @@ class PurchaseVoucher extends BaseController
         
         $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
 
-        $data['date']            = $purchase_voucher->pv_date;
+        $data['date']            = date('d-M-Y',strtotime($purchase_voucher->pv_date));
 
         $data['vendor_name']     = $purchase_voucher->ven_name;
 
@@ -462,6 +462,8 @@ class PurchaseVoucher extends BaseController
         $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
 
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
+
+        $data['purchase_id']     = $purchase_voucher->pv_id;
         
         $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
 
@@ -860,6 +862,7 @@ class PurchaseVoucher extends BaseController
 
         $purchase_voucher_prod2 = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_voucher_prod->pvp_reffer_id));
         
+        $this->common_model->EditData(array('rnp_status' => 0), array('rnp_id' => $purchase_voucher_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
        
 
         if(empty($purchase_voucher_prod2))
@@ -867,6 +870,8 @@ class PurchaseVoucher extends BaseController
             $data['status']  = "true";
 
             $this->common_model->DeleteData('pro_purchase_voucher',array('pv_id' => $purchase_voucher_prod->pvp_reffer_id));
+
+            $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $purchase_voucher_prod->pvp_mat_rec_id), 'pro_material_received_note');
         }
         else
         {  
@@ -968,6 +973,35 @@ class PurchaseVoucher extends BaseController
         echo json_encode($data);
 
     }
+
+
+    public function Update()
+    {
+      
+
+        $update_data = [
+
+           
+
+            'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('pv_date'))),
+
+            'pv_vendor_inv'      => $this->request->getPost('pv_vendor_inv'),
+
+            'pv_delivery_note'   => $this->request->getPost('pv_delivery_note'),
+
+            'pv_payment_term'    => $this->request->getPost('pv_payment_term'),
+
+            
+
+        ];
+        
+       
+       
+
+        $this->common_model->EditData($update_data, array('pv_id' => $this->request->getPost('pv_id')), 'pro_purchase_voucher');
+        
+    }
+
 
    
  

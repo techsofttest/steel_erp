@@ -24,6 +24,8 @@ class CrmReportModel extends Model
             }
         }
 
+         
+
         if (!empty($from_date)) {
            
             $query->where($from_date_col.' >=', $from_date);
@@ -603,6 +605,8 @@ class CrmReportModel extends Model
             }
         }
 
+        $query->where('crm_delivery_note.dn_invoice_flag', 0);  
+
         if (!empty($from_date)) {
            
             $query->where($from_date_col.' >=', $from_date);
@@ -786,20 +790,25 @@ class CrmReportModel extends Model
             array(
                 'table' => 'crm_products',
                 'pk'    => 'product_id',
-                'fk'    => 'dpd_prod_det',
+                'fk'    => 'spd_product_details',
             ),
         );
 
         $i = 0;
 
         foreach ($result as $res) {
-            $cond_user = ['dpd_delivery_id' => $res->dn_id];
+            $cond_user = ['spd_sales_order' => $res->so_id];
 
-            $result[$i]->delivery_products = $this->FetchWhereJoin('crm_delivery_product_details',$cond_user,$joins1);
+            $result[$i]->sales_products   = $this->FetchWhereJoin('crm_sales_product_details',$cond_user,$joins1);
             
-            $result[$i]->credit_invoice    = $this->FetchWhere('crm_credit_invoice',array('cci_delivery_id' => $res->dn_id));
+            $result[$i]->credit_invoice   = $this->FetchWhere('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
 
-            $result[$i]->performa_invoice  = $this->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $res->dn_sales_order_num));
+            $result[$i]->delivery_note    = $this->FetchWhere('crm_delivery_note',array('dn_sales_order_num' => $res->so_id));
+
+            $result[$i]->cash_invoice    = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+
+
+            //$result[$i]->performa_invoice  = $this->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $res->dn_sales_order_num));
             
 
             
@@ -888,6 +897,23 @@ class CrmReportModel extends Model
 
 
     /*#####*/
+
+    public function CheckTwiceCond1($table,$cond1,$cond2)
+    {
+        $query = $this->db->table($table)
+        
+        ->select('*')
+
+        ->where($cond1)
+
+        ->where($cond2)
+
+        ->get();
+
+        return $query->getResult();
+ 
+    }
+
 
    
 

@@ -118,6 +118,10 @@
                                                                                 <td>Sales Order Ref</td>
                                                                                 <td><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order; ?>" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
+                                                                                        <?php foreach($sales_orders_data as $sales_ord){?> 
+                                                                                            <option value="<?php echo $sales_ord->so_id;?>"><?php echo $sales_ord->so_reffer_no;?></option>    
+                                                                                        <?php } ?>
+
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -129,6 +133,9 @@
                                                                                 <td>Product</td>
                                                                                 <td><select class="form-select product_clz" name="product" value="<?php echo $product; ?>">
                                                                                         <option value="" selected disabled>Select Product</option>
+                                                                                        <?php foreach($products_data as $prod_data){?> 
+                                                                                            <option value ="<?php echo $prod_data->product_id; ?>"><?php echo $prod_data->product_details;?></option>    
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -221,6 +228,7 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px" >Qty Ordered</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px" >Qty Delivered</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-end">Rate</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Discount</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
 
                                                 </tr>
@@ -269,6 +277,13 @@
                                                             </td>
 
                                                             <td class="text-end">
+                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
+                                                                    <?php echo format_currency($delv_prod->dpd_prod_dicount); ?><br>
+                                                                <?php } ?>
+                                                            </td>
+
+
+                                                            <td class="text-end">
                                                                 <?php foreach ($del_note->delivery_product as $delv_prod) {
 
                                                                     $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1;
@@ -294,6 +309,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

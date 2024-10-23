@@ -318,7 +318,7 @@ class SalesOrderToDn extends BaseController
                                 <td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->so_amount_total}</td>
+                                <td style='border-top: 2px solid' align='right'>{$sales_order->so_amount_total}</td>
                                 <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>
                                     <table>";
                                         foreach($sales_order->sales_products as $sales_prod){
@@ -327,11 +327,13 @@ class SalesOrderToDn extends BaseController
 
                                             $format_rate = format_currency($sales_prod->spd_rate);
 
+                                            $format_discount = format_currency($sales_prod->spd_discount);
+
                                             $pdf_data .= "<tr>
                                                             <td width='100px'>{$sales_prod->product_details}</td>
                                                             <td width='50px'  align='right'>{$sales_prod->spd_quantity}</td>
                                                             <td width='100px' align='right'>{$format_rate}</td>
-                                                            <td width='100px'  align='right'>{$sales_prod->spd_discount}</td>
+                                                            <td width='100px'  align='right'>{$format_discount}</td>
                                                             <td  width='100px' align='right'>{$format_amount}</td>
                                                             
                                             </tr>";
@@ -546,7 +548,7 @@ class SalesOrderToDn extends BaseController
         
             <th align="left" width="120px">Sales Executive</th>
         
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left" width="100px">Product</th>
 

@@ -224,13 +224,14 @@ class Products extends BaseController
 
     public function Code()
     {
-        
+        if(!empty($_POST))
+        {
         $cond2 = array('product_product_head' => $this->request->getPost('ID'));
 
         $product_head = $this->common_model->FetchWhere('crm_products',$cond2);
 
         if(empty($product_head))
-        {
+        {   
             $cond = array('ph_id' => $this->request->getPost('ID'));
 
             $single_product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
@@ -241,7 +242,7 @@ class Products extends BaseController
 
         else
         {   
-           
+            
             $prod_head = $this->common_model->FetchWhereLimit($this->request->getPost('ID'),'product_product_head','product_code','DESC','crm_products',0,1);
            
             $prod_head_data = $prod_head->product_code;
@@ -258,6 +259,7 @@ class Products extends BaseController
         }
 
         echo json_encode($data);
+    }
 
     }
 

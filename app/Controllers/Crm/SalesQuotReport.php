@@ -354,12 +354,14 @@ class SalesQuotReport extends BaseController
                     $pdf_data .= "'>{$single_rate}</td>";
 
                     $pdf_data .= "<td align='center' style='";
+
+                    $single_discount = format_currency($prod_del->qpd_discount);
                     
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->qpd_discount}</td>";
+                    $pdf_data .= "'>{$single_discount}</td>";
 
                     $pdf_data .= "<td align='right' style='";
                      

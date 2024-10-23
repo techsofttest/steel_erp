@@ -93,7 +93,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_post_box" id="postbox" class="form-control" required>
+                                                <input type="text" name="ven_post_box" id="postbox" class="form-control">
                                             </div>
 
                                         </div>
@@ -131,7 +131,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_fax" id="fax" class="form-control" required>
+                                                <input type="text" name="ven_fax" id="fax" class="form-control">
                                             </div>
 
                                         </div>
@@ -269,10 +269,10 @@
                                         </tr>
                                         <tr class="prod_row">
                                             <td class=" si_no">1</td>
-                                            <td><input type="text" name="pro_con_person[0]" class="form-control" required></td>
-                                            <td><input type="text" name="pro_con_designation[0]" class="form-control" required></td>
-                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz" required></td>
-                                            <td> <input type="email" name="pro_con_email[0]" class="form-control" required></td>
+                                            <td><input type="text" name="pro_con_person[0]" class="form-control"></td>
+                                            <td><input type="text" name="pro_con_designation[0]" class="form-control"></td>
+                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz"></td>
+                                            <td> <input type="email" name="pro_con_email[0]" class="form-control"></td>
                                             <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                         </tr>
                                     </tbody>

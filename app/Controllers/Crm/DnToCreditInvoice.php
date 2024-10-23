@@ -17,8 +17,12 @@ class DnToCreditInvoice extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
-        
+        $data['delivery_note_data'] = $this->common_model->FetchAllOrder('crm_delivery_note','dn_id','desc');
+
+        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
         $data['content'] = view('crm/dn_to_credit_invoice',$data);
 
         return view('crm/report-module',$data);
@@ -252,7 +256,12 @@ class DnToCreditInvoice extends BaseController
        {
            $this->Pdf($data['delivery_data'],$data['from_dates'],$data['to_dates']);
        }
+       
+       $data['delivery_note_data'] = $this->common_model->FetchAllOrder('crm_delivery_note','dn_id','desc');
 
+       $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+       $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
       
        $data['content'] = view('crm/dn_to_credit_invoice',$data);
 
@@ -275,22 +284,29 @@ class DnToCreditInvoice extends BaseController
             $difference_amount = 0;
             foreach($delivery_data as $del_note){
                 $new_date = date('d-M-Y',strtotime($del_note->dn_date));
+                $total_sales_amount = format_currency($del_note->dn_total_amount);
                 $pdf_data .="<tr>
                                 <td style='border-top: 2px solid'>{$new_date}</td>
                                 <td style='border-top: 2px solid'>{$del_note->dn_reffer_no}</td>
                                 <td style='border-top: 2px solid'>{$del_note->cc_customer_name}</td>
                                 <td style='border-top: 2px solid'>{$del_note->so_reffer_no}</td>
                                 <td style='border-top: 2px solid'>{$del_note->dn_lpo_reference}</td>
-                                <td style='border-top: 2px solid'>{$del_note->dn_total_amount}</td>
-                                <td colspan='4' align='left' class='p-0' style='border-top: 2px solid'>
+                                <td style='border-top: 2px solid'>{$total_sales_amount}</td>
+                                <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>
                                     <table>";
                                         foreach($del_note->delivery_products as $del_prod){
+                                            $sales_amount = format_currency($del_prod->dpd_total_amount);
+
+                                            $sales_rate = format_currency($del_prod->dpd_prod_rate);
+
+                                            $sales_discount = format_currency($del_prod->dpd_prod_dicount);
 
                                             $pdf_data .="<tr  class='product-row'>
                                                             <td  width='100px' height='90px'>{$del_prod->product_details}</td>
                                                             <td  width='100px' height='90px'>{$del_prod->dpd_current_qty}</td>
-                                                            <td  width='100px' height='90px'>{$del_prod->dpd_prod_rate}</td>
-                                                            <td  width='100px' height='90px'>{$del_prod->dpd_total_amount}</td>
+                                                            <td  align='right' width='100px' height='90px'>{$sales_rate}</td>
+                                                            <td align='right' width='100px' height='90px'>{$sales_discount}</td>
+                                                            <td align='right' width='100px' height='90px'>{$sales_amount}</td>
                                                         </tr>";
                                                         $delivery_prod  =  $del_prod->dpd_total_amount +  $delivery_prod;
                                         }
@@ -311,10 +327,7 @@ class DnToCreditInvoice extends BaseController
                                                             $pdf_data .="<td width='100px' height='90px'></td>";
                                                         }
 
-                                                    $pdf_data .= "<td width='100px' height='90px'>{$inv_prod->product_details}</td>
-                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_quantity}</td>
-                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_rate}</td>
-                                                                  <td width='100px' height='90px'>{$inv_prod->ipd_amount}</td>";
+                                                    $pdf_data .= "";
                                                                   if(!empty($credit_inv->invoices_product)){
                                                                     $pdf_data .= "<td width='100px'>----</td>";
                                                                   }
@@ -329,12 +342,8 @@ class DnToCreditInvoice extends BaseController
                                                         foreach($del_note->delivery_products as $del_prod){
 
                                                         $pdf_data .="<tr class='invoice-row' style='background: unset;border-bottom: hidden !important;'>
-                                                            <td width='100px' height='90px'></td>
-                                                            <td width='100px' height='90px'></td>
-                                                            <td width='100px' height='90px'></td>
-                                                            <td width='100px' height='90px'></td>
-                                                            <td width='100px' height='90px'></td>
-                                                            <td width='100px'>{$del_prod->dpd_total_amount}</td>
+                                                            
+                                                            
                                                         </tr>";
 
                                                         $difference_amount = $del_prod->dpd_total_amount + $difference_amount;
@@ -364,17 +373,36 @@ class DnToCreditInvoice extends BaseController
 
             
            // $mpdf = new \Mpdf\Mpdf();
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
+
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => [300, 400], // Custom page size in millimeters
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            ]);
+            'format' => 'Letter', // Custom page size in millimeters
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
+        ]);
 
 
             $mpdf->SetTitle('Delivery Note / Invoice Analysis'); // Set the title
+
+            $delivery_prod = format_currency($delivery_prod);
 
             $html ='
         
@@ -443,35 +471,29 @@ class DnToCreditInvoice extends BaseController
             
                 <th align="left">Date</th>
 
-                <th align="left">Delivery Note Number</th>
+                <th align="left" width="100px">Delivery Note</th>
 
                 <th align="left">Customer</th>
             
-                <th align="left">Sales Order Ref</th>
+                <th align="left" width="100px">Sales Order </th>
             
-                <th align="left">LPO Ref</th>
+                <th align="left" width="100px">LPO Ref</th>
             
-                <th align="left">Amount</th>
+                <th align="center">Amount</th>
 
                 <th align="left">Product</th>
 
                 <th align="left">Quantity</th>
 
-                <th align="left">Rate</th>
+                <th align="center" width="100px">Rate</th>
 
-                <th align="left">Amount</th>
+                <th align="center" width="100px">Discount</th>
+
+                <th align="center" width="100px">Amount</th>
 
                 <th align="left" width="100px">Invoice Ref</th>
 
-                <th align="left" width="100px">Product</th>
-
-                <th align="left" width="100px">Quantity</th>
-
-                <th align="left" width="100px">Rate</th>
-
-                <th align="left" width="100px">Amount</th>
-
-                <th align="left" width="100px">Difference</th>
+                 <th align="left" width="100px">Difference</th>
 
             </tr>
 
@@ -490,13 +512,12 @@ class DnToCreditInvoice extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$delivery_prod.'</td>
+                <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;" align="right">'.$delivery_prod.'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$invoice_amount.'</td>
-                <td style="border-top: 2px solid;">'.$difference_amount.'</td>
+                
             
             </tr> 
 
@@ -511,7 +532,8 @@ class DnToCreditInvoice extends BaseController
             ';
         
             //$footer = '';
-        
+             
+            //echo $html; exit();
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);

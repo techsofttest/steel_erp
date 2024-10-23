@@ -57,7 +57,7 @@ class Enquiry extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->enquiry_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->enquiry_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->enquiry_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->enquiry_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" style="display:none;" data-toggle="tooltip" data-id="'.$record->enquiry_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->enquiry_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "enquiry_id"         =>$i,
@@ -177,10 +177,12 @@ class Enquiry extends BaseController
     Public function Add()
     {   
         //print_r($_POST); exit();
+
+            $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ");
             
             $insert_data = [
                     
-                'enquiry_reff'           => $this->request->getPost('enquiry_reff'),
+                'enquiry_reff'           => $uid,
 
                 'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
 

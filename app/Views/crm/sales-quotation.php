@@ -2734,6 +2734,8 @@
 
             slno();
 
+            TotalAmount();
+
             
         });
         
@@ -3036,7 +3038,7 @@
 
             //var formatted = formatCurrency(orginalPrice);
 
-            currency_format(orginalPrice);
+            //currency_format(orginalPrice);
 
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
@@ -3779,8 +3781,6 @@
             var $amountElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_amount');
 
             $amountElement.val(orginalPrice);
-
-            
 
             
         });

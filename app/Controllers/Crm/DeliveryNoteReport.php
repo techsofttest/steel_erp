@@ -228,6 +228,10 @@ class DeliveryNoteReport extends BaseController
            $this->Pdf($data['delivery_note'],$data['from_dates'],$data['to_dates']);
        }
 
+       $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+       $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
        $data['content'] = view('crm/delivery_note_report',$data);
 
        return view('crm/report-module-search',$data);
@@ -265,6 +269,8 @@ class DeliveryNoteReport extends BaseController
                 
                 $total_amount = $total_amount + $del_note->dn_total_amount;
 
+                $sales_amount = format_currency($del_note->dn_total_amount);
+
                 $new_date = date('d-m-Y',strtotime($del_note->dn_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
@@ -277,7 +283,7 @@ class DeliveryNoteReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->dn_lpo_reference}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->dn_total_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid' align='right'>{$sales_amount}</td>";
                 
                 
                 if($q!=1){
@@ -326,20 +332,39 @@ class DeliveryNoteReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->dpd_delivery_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='right' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->dpd_prod_rate}</td>";
                     
-                    
-                    $pdf_data .= "<td style='";
+                    $delivery_date = format_currency($prod_del->dpd_prod_rate);
+
+                    $pdf_data .= "'>{$delivery_date}</td>";
+
+
+                    $pdf_data .= "<td align='right' style='";
+
+                    $discount_amount = format_currency($prod_del->dpd_prod_dicount);
+
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->dpd_total_amount}</td>";
+                    $pdf_data .= "'>{$discount_amount}</td>";
+
+                    
+                    
+                    $pdf_data .= "<td align='right' style='";
+
+                    
+                    $delivery_amount = format_currency($prod_del->dpd_total_amount);
+
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$delivery_amount}</td>";
 
                     
                     if($q!=1)
@@ -375,20 +400,35 @@ class DeliveryNoteReport extends BaseController
 
             $title = "SQR";
 
-            $mpdf = new \Mpdf\Mpdf(
-
-                [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
-                ]
-            );
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+ 
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+ 
+ 
+            $mpdf = new \Mpdf\Mpdf([
+             'format' => 'Letter', // Custom page size in millimeters
+             'default_font_size' => 9, 
+             'margin_left' => 5, 
+             'margin_right' => 5,
+             'fontDir' => array_merge($fontDirs, [
+                 __DIR__ . '/fonts'
+             ]),
+             'fontdata' => $fontData + [
+                 'bentonsans' => [
+                   
+                     'R' => 'OpenSans-Regular.ttf',
+                     'B' => 'OpenSans-Bold.ttf',
+                 ],
+             ],
+             'default_font' => 'bentonsans'
+             
+         ]);
 
             $mpdf->SetTitle('Delivery Note Report'); // Set the title
+
+            $total_amount = format_currency($total_amount);
 
             $html ='
         
@@ -457,25 +497,27 @@ class DeliveryNoteReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Delivery Note Ref.</th>
+            <th align="left" width="100px">Delivery Note.</th>
         
             <th align="left">Customer</th>
         
-            <th align="left">Sales Order Ref</th>
+            <th align="left" width="100px">Sales Order </th>
         
-            <th align="left">LPO Ref</th>
+            <th align="left" width="70px">LPO Ref</th>
 
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
 
             <th align="left">Product</th>
 
-            <th align="left">Qty Ordered</th>
+            <th align="left" width="90px">Qty Ordered</th>
 
-            <th align="left">Qty Delivered</th>
+            <th align="left" width="95px">Qty Delivered</th>
 
-            <th align="left">Rate</th>
+            <th align="right">Rate</th>
+
+            <th align="right">Discount</th>
             
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
@@ -494,6 +536,7 @@ class DeliveryNoteReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;" ></td>
                 <td style="border-top: 2px solid;">'.$total_amount.'</td>
                 
             </tr>    
@@ -512,6 +555,8 @@ class DeliveryNoteReport extends BaseController
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit();
         
         }
 

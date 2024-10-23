@@ -1609,13 +1609,22 @@
 
             var current = parseFloat(currentSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
 
+
+            var dicountSelectElement = dataSelect.closest('.prod_row').find('.dicount_clz_id');
+
+            var discount = parseFloat(dicountSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
+
             /**/
 
             var ratetSelectElement = dataSelect.closest('.prod_row').find('.rate_clz_id');
 
             var rate = parseFloat(ratetSelectElement.val()) || 0; // Convert to number, default to 0 if NaN
                  
-            var orginalPrice = current *  rate;
+            var multipliedTotal = current *  rate;
+
+            var per_amount = (discount/100)*multipliedTotal;
+            
+            var orginalPrice = multipliedTotal - per_amount;
 
             var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
             
