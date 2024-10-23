@@ -1995,9 +1995,9 @@
 
             $('#add_office_doc')[0].reset();
 
-            //$('.account_head_clz').val('').trigger('change');
+            $('.account_head_clz').val('').trigger('change');
 
-           
+            InitAccountsSelect('.account_head_select', '.select_parent');
 
         });
 

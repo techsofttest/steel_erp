@@ -53,7 +53,7 @@
                                                 <label for="basicInput" class="form-label">Account Head</label>
                                             </div>
 
-                                            <div class="col-col-md-9 col-lg-9">
+                                            <div class="col-col-md-9 col-lg-9 select_parent">
                                                 <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required>
                                                     
                                                 </select>
@@ -631,7 +631,8 @@
                             $('#AddOfficalDocument').modal('hide');
                             $('#add_cust_creation').find('select').val('');
                              
-                            $('.account_head_clz').val('').trigger('change');
+                            //$('.account_head_clz').val('').trigger('change');
+                            //InitAccountsSelect('.account_head_select', '.select_parent');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                         }
@@ -809,7 +810,7 @@
 
         /* account head  search droup drown start*/
         
-        $(".account_head_select").select2({
+        /*$(".account_head_select").select2({
             placeholder: "Select Account Name",
             theme : "default form-control-",
             dropdownParent: $('#AddCustomerCreation'),
@@ -838,7 +839,54 @@
                     };
                 },              
             }
-        })
+        })*/
+        
+        
+
+
+
+    function InitAccountsSelect(classname, parent) {
+
+        
+        $('body ' + classname + ':last').select2({
+                placeholder: "select Account Name",
+                theme: "default form-control-",
+                dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ah_id,
+                                    text: item.ah_account_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+        }
+
+        InitAccountsSelect('.account_head_select', '.select_parent');
+
+        //InitAccountsSelect2('.credit_account_select2', '.invoice_row');
 
         /*###*/
 
@@ -881,6 +929,9 @@
 
        
         /*add customer section end*/ 
+
+
+       
 
     });
      
