@@ -845,6 +845,13 @@ class CustomerCreation extends BaseController
 
         $id = $this->request->getPost('ID');
 
+        if(empty($id))
+        {
+            return false; 
+
+            exit();
+        }
+
         $data['account_id'] = $this->common_model->FetchNextHeadId($id);
 
         /*

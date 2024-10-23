@@ -54,7 +54,9 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required></select>
+                                                <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required>
+                                                    
+                                                </select>
                                                 
                                             </div>
 
@@ -627,9 +629,9 @@
                             $('#add_cond_detail')[0].reset();
                             $('#add_office_doc')[0].reset();
                             $('#AddOfficalDocument').modal('hide');
-                            $('#add_cust_creation').find('form').trigger('reset');
-
-                            //$('.account_head_clz').val('').trigger('change');
+                            $('#add_cust_creation').find('select').val('');
+                             
+                            $('.account_head_clz').val('').trigger('change');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             datatable.ajax.reload(null, false);
                         }
@@ -659,6 +661,9 @@
          
         $('.account_head_clz').on('change', function() {
           
+            if($(this).val()==""){
+                return false;
+            }
 
             var id = $(this).val();
  
