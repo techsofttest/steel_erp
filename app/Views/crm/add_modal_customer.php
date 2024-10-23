@@ -662,10 +662,6 @@
          
         $('.account_head_clz').on('change', function() {
           
-            if($(this).val()==""){
-                return false;
-            }
-
             var id = $(this).val();
  
             $.ajax({
@@ -678,10 +674,16 @@
  
                 success:function(data)
                 {   
+
+                    if(data!='')
+
+                    {
+
                     var data = JSON.parse(data);
                     
                     $(".account_id").val(data.account_id);
                     
+                    }
                      
                 }
  
