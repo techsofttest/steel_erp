@@ -1146,10 +1146,10 @@
 
 <div class="modal fade" id="paymentModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
-		<form  class="Dashboard-form class" id="">
+		<form  class="Dashboard-form class" id="pv_advance_add_form">
 			<div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#AddPurchaseVoucher" aria-label="Close"></button>
                 </div>
 
 				<div class="modal-body">
@@ -1167,24 +1167,14 @@
                                         <td>Date</td>
                                         <td>Payment Ref</td>
                                         <td>Amount</td>
-                                        <td>Adjust</td>
-                                        <td>Tick</td>
+                                        <!--<td>Adjust</td>-->
                                     </tr>
                                                             
                                                            
                                 </thead>
                                                         
-                                <tbody  class="travelerinfo">
-                                    <tr class="" id="">
-                                            
-                                        <td class="">1</td>
-                                        <td><input type="text" name="" value="" class="form-control"  readonly></td>
-                                        <td><input type="text" name="" value="" class="form-control" readonly></td>
-                                        <td><input type="number" name="" value=""  class="form-control" readonly></td>
-                                        <td><input type="number" name="" value=""  class="form-control" readonly></td>
-                                        <td><input type="checkbox" name=""  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
-                                        
-                                    </tr>
+                                <tbody  class="travelerinfo" id="pv_advance_row">
+                                    
                                 </tbody>
 
 
@@ -1202,8 +1192,7 @@
 
                 <div class="modal-footer justify-content-center">
                     
-                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
-                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+                    <!--<button type="submit" class="btn btn btn-success">Save</button>-->
 
                 </div>
 
@@ -1265,11 +1254,20 @@
                             method: "POST",
                             data: $(currentForm).serialize(),
                             success: function(data) {
+
+                                var data = JSON.parse(data);
                                 
                                 $('#AddPurchaseVoucher').modal('hide');
 
+                                if(data.po_advance_status==true)
+                                {
+
                                 $('#paymentModal').modal('show');
+
+                                $('#pv_advance_row').html(data.po_advance_row);
                             
+                                }
+
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
                             
                                 datatable.ajax.reload(null, false);
@@ -1307,6 +1305,43 @@
 
 
         /*#####*/
+
+
+
+
+        // ADD ADVANCE TO TABLE
+
+
+
+        $('#pv_advance_add_form').submit(function(e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Procurement/PurchaseVoucher/AddAdvance",
+
+                method: "POST",
+
+                data : $(this).serialize(),
+
+                success: function(data) {
+
+                    alertify.success('Data Updated Successfully').delay(8).dismissOthers();
+
+                    datatable.ajax.reload(null, false);
+                }
+
+
+            });
+            });
+
+
+
+
+
+
+        /* ########## */
 
         
 
@@ -2340,6 +2375,10 @@
 
 
 
+        
+
+
+
 
         /*delete section start*/
 
@@ -2383,8 +2422,6 @@
 
 
         /*delete section end*/
-
-
 
 
 
@@ -2434,6 +2471,9 @@
 
 
 /*checkbox section end*/
+
+
+
 
 
 

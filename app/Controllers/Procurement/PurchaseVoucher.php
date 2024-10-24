@@ -157,6 +157,8 @@ class PurchaseVoucher extends BaseController
     {   
         
 
+        $purchase_order = "";
+
         if(empty($this->request->getPost('purchase_voucher_id')))
         {   
             $uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
@@ -202,7 +204,7 @@ class PurchaseVoucher extends BaseController
 
             $data['purchase_voucher_id'] = $purchase_voucher;
 
-            $this->common_model->singleRow('pro_material_received_note',array('mrn_id' => $purchase_voucher));
+            $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $purchase_voucher));
 
             /*$material_received = $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $material_received_id));
 
@@ -262,7 +264,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_contact_person'  => $this->request->getPost('purchase_contact_person'),
 
-                'pv_purchase_order'  => $this->request->getPost('purchase_order'),
+                'pv_purchase_order'  => $purchase_order = $this->request->getPost('purchase_order'),
 
                 'pv_vendor_inv'      => $this->request->getPost('purchase_vendor'),
 
@@ -348,12 +350,154 @@ class PurchaseVoucher extends BaseController
         }
 
 
-        $data['purchase_order'] = $this->request->getPost('purchase_order');
+        //$data['purchase_order'] = $this->request->getPost('purchase_order');
+
+        //$purchase_order_row = $this->common_model->SingleRow('');
+
+        $purchase_order_joins =array(
+
+            array(
+            
+            'table' =>'pro_purchase_order',
+
+            'pk' => 'po_id',
+
+            'fk' => 'pa_purchase_order',
+
+            )
+            ,
+            array(
+
+            'table' => 'accounts_payment_debit',
+
+            'pk' => 'pd_id',
+
+            'fk' => 'pa_debit_id',
+
+            ),
+
+            array(
+
+            'table' => 'accounts_payments',
+
+            'pk' => 'pay_id',
+
+            'table2' => 'accounts_payment_debit',
+
+            'fk' => 'pd_payment',
+
+            ),
+
+        );
+
+        $purchase_order_row = $this->common_model->FetchWhereJoin('accounts_payment_advances',array('pa_purchase_order' => $purchase_order),$purchase_order_joins);
+
+
+        if(!empty($purchase_order_row))
+        {
+
+        $data['po_advance_status'] = true;
+
+        $data['po_advance_row'] ="";
+
+        $p=1;
+
+        foreach($purchase_order_row as $p_o_r)
+        {
+
+            $data['po_advance_row'] .='
+            
+            <tr>
+
+            <input type="hidden" name="po_advance_id[]" value="'.$p_o_r->pa_id.'">
+
+            <input type="hidden" name="pv_id[]" value="'.$purchase_voucher.'">
+
+            <td>'.$p++.'</td>
+            
+            <td>
+            
+            '.date("d-F-Y",strtotime($p_o_r->pay_date)).'
+            
+            </td>
+
+            <td>'.$p_o_r->pay_ref_no.'</td>
+
+            <td>'.format_currency($p_o_r->pa_advance_amount).'</td>
+
+            <!--<td><input type="number" step="0.01" class="form-control" name="po_adjust_amount[]"></td>-->
+
+            </tr>
+            
+            ';
+
+
+        }
+
+
+        }
+
+        else
+        {
+
+        $data['po_advance_status'] = false;
+
+        }
+
 
         echo json_encode($data);
   
 
     }
+
+
+
+
+
+    //Add ADVANCE 
+
+
+    public function AddAdvance()
+    {
+
+        if($_POST){
+
+
+            for($i=0;$i<count($_POST['po_advance_id']);$i++)
+            {
+
+                $insert_data['pva_pv_id'] = $_POST['pv_id'][$i];
+
+                $insert_data['pva_pay_advance_id'] = $_POST['po_advance_id'][$i];
+
+                $insert_data['pva_amount'] = $_POST['po_adjust_amount'][$i];
+
+                
+
+                $check_advance = $this->common_model->SingleRow('pro_purchase_voucher',array('pva_pay_advance_id'=> $insert_data['pva_pay_advance_id'],'pva_pv_id' =>$insert_data['pva_pv_id']));
+
+                if(empty($check_advance))
+                {
+
+                $this->common_model->InsertData('pro_purchase_voucher_adjusted',$insert_data);
+
+                }
+                else
+                {
+                
+                $this->common_model->EditData(array('pva_id' => $check_advance->pva_id),$insert_data,'pro_purchase_voucher_adjusted');
+
+                }
+            
+
+            }
+
+
+        }
+
+    }
+
+
 
 
     public function View(){
@@ -818,6 +962,9 @@ class PurchaseVoucher extends BaseController
 
 
     public function FetchPayment(){
+
+        if($_POST)
+        {
         
         $purchase_id  = $this->request->getPost('ID');
 
@@ -848,6 +995,8 @@ class PurchaseVoucher extends BaseController
         $data['mr_reff'] = $purchases->mr_reffer_no;
        
         echo json_encode($data);
+
+        }
         
     }
 

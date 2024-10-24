@@ -22,7 +22,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Receipt</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Payment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -40,165 +40,141 @@
                                     <div class="row align-items-end">
 
 
-                                        <div class="col-col-md-2 col-lg-2">
-                                            <div>
-                                                <label for="basiInput" class="form-label">Reference Number</label>
-                                                <input type="text" id="p_ref_view" class="form-control" value="" disabled>
-                                            </div>
-                                        </div>
+
+                                        <table class="table table-bordered">
 
 
-                                        <div class="col-col-md-2 col-lg-2">
-                                            <div>
-                                                <label for="basiInput" class="form-label">Date</label>
-                                                <input type="text" id="p_date_view" class="form-control" value="" disabled>
-                                            </div>
-                                        </div>
+                                            <tbody id="view_receipt_body">
 
-
-                                        <div class="col-col-md-2 col-lg-2">
-
-                                            <div>
-
-                                                <label for="basiInput" class="form-label">Credit Account</label>
-
-                                                <input type="text" id="p_credit_acc_view" class="form-control" value="" disabled>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="col-col-md-2 col-lg-2">
-
-                                            <div>
-
-                                                <label for="basiInput" class="form-label">Payment Method</label>
-
-                                                <input type="text" id="p_pay_method_view" class="form-control" value="" disabled>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
-                                            <div>
-                                                <label for="basiInput" class="form-label">Cheque Number</label>
-                                                <input type="text" name="r_cheque_no" class="form-control" required>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
-                                            <div>
-                                                <label for="basiInput" class="form-label">Cheque Date</label>
-                                                <input type="text" name="r_cheque_date" class="form-control datepicker" required readonly>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
-                                            <div>
-                                                <label for="basiInput" class="form-label">Cheque Copy</label>
-                                                <input type="file" name="r_cheque_copy" class="form-control" required>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-col-md-2 col-lg-2">
-
-                                            <div>
-
-                                                <label for="basiInput" class="form-label">Bank</label>
-
-                                                <input type="text" id="p_bank_view" class="form-control" value="" disabled>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="col-col-md-2 col-lg-2">
-
-                                            <div>
-
-                                                <label for="basiInput" class="form-label">Debit Account</label>
-
-                                                <input type="text" id="p_debit_acc_view" class="form-control" disabled>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <h3 class="my-2 text-center">Invoices</h3>
-
-                                        <div class="col-col-md-12 col-lg-12">
-
-                                            <table class="table table-bordered" style="overflow-y:scroll;">
-
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sl No</th>
-                                                        <th>Account</th>
-                                                        <th>Remarks</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody id="invoice_sec_view">
-
-
-                                                </tbody>
 
                                                 <tr>
 
-                                                    <td colspan="3" align="right">Total</td>
 
-                                                    <td id="total_amount_view" style="font-size: 17px;font-weight: 600;"></td>
+                                                    <td>Reference</td>
 
-                                                    <input type="hidden" name="p_amount" value="">
+                                                    <th id="view_reference"></th>
+
+
+                                                    <td>Payment Method</td>
+
+                                                    <th id="view_payment_method"></th>
+
 
                                                 </tr>
 
 
-                                            </table>
+
+                                                <tr>
+
+                                                    <td>Debit Account</td>
+
+                                                    <th id="view_debit_account"></th>
+
+                                                </tr>
 
 
+
+                                                <tr>
+
+                                                    <td>Date</td>
+
+                                                    <th id="view_date"></th>
+
+
+                                                    <td>Bank</td>
+
+
+                                                    <th id="view_bank"></th>
+
+
+                                                </tr>
+                                               
+
+                                                <tr class="view_cheque_sec">
+
+                                                    <td>Cheque Date</td>
+
+                                                    <th id="view_cheque_date"></th>
+
+                                                    <td>Cheque File</td>
+
+                                                    <th id="view_cheque_file">
+
+                                                    </th>
+
+                                                </tr>
+
+
+
+
+                                            </tbody>
+
+                            <tr>
+
+                        <th colspan="4" style="text-align: center;font-size: 15px;">Invoices</th>
+
+                            </tr>
+
+
+                                            <tbody>
+
+
+                                                <tr>
+
+                                                    <th>Sl No</th>
+
+                                                    <th>Debit Account</th>
+
+                                                    <th>Amount</th>
+
+                                                    <th>Narration</th>
+
+                                                </tr>
+
+                                            </tbody>
+
+                                            <tbody id="view_payment_invoices">
+
+
+                                            </tbody>
+
+
+                                        </table>
+
+
+                                        <div class="col-lg-12 text-center">
+
+                                        <p><b>Total : <span id="total_payment_amount_view"></span></b></p>
 
                                         </div>
 
 
-
                                     </div>
-                                    <!--end row-->
+
+
 
                                 </div>
+                                <!--end row-->
 
                             </div>
+
                         </div>
                     </div>
-
-                    <!--end col-->
                 </div>
 
+                <!--end col-->
             </div>
-
 
         </div>
 
 
     </div>
+
+
+</div>
 </div>
 
-
-
 <!-- ######### -->
-
 
 
 
@@ -294,7 +270,7 @@
                                                     <div class="col-lg-2">
 
 
-                                                        <button type="button" class="w-100" id="add_pvadvance_btn">Advance</button>
+                                                        <button type="button" class="w-100" id="add_poadvance_btn">Advance</button>
 
                                                         <button id="fifo_add" class="w-100" type="button">FIFO</button>
 
@@ -699,18 +675,34 @@
 
 
 
-                                            <div style="float: right;">
-                                                <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                    <tr>
-                                                        <td><button>Print</button></td>
-                                                        <td><button>Email</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><button type="submit" name="main_submit">Save</button></td>
-                                                        <td><button>PDF</button></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
+                                            <div class="row">
+
+
+<div class="col-lg-12 text-center">
+
+
+    <div style="">
+        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+            <!--
+            <tr>
+                <td><button class="submit_btn">Print</button></td>
+                <td><button class="submit_btn">Email</button></td>
+            </tr>
+            -->
+            <tr>
+
+                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <!--<td><button class="submit_btn">PDF</button></td>-->
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+
+</div>
 
 
 
@@ -751,11 +743,11 @@
     <!-- View Modal -->
 
 
-    <div class="modal fade" id="AddPVAdvanceModal" aria-hidden="true">
+    <div class="modal fade" id="AddPOAdvanceModal" aria-hidden="true">
 
         <div class="modal-dialog modal-xl">
 
-            <form class="" id="add_pv_advance_form">
+            <form class="" id="add_po_advance_form">
 
                 <div class="modal-content">
                     <div class="modal-header">
@@ -787,9 +779,7 @@
                                                                 <th>Purchase Order</th>
                                                                 <th>LPO Ref</th>
                                                                 <th>Amount</th>
-                                                                <th>Payments</th>
-                                                                <th>Tick</th>
-                                                                <th></th>
+                                                                <th>Payment</th>
                                                             </tr>
                                                         </thead>
 
@@ -798,22 +788,6 @@
 
 
                                                         </tbody>
-
-
-                                                        <tr>
-
-                                                            <td colspan="6">
-
-                                                                <div class="col-lg-12 text-center">
-
-                                                                    <a class="lpo_add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-
-                                                                </div>
-
-                                                            </td>
-
-                                                        </tr>
-
 
 
                                                     </table>
@@ -1310,7 +1284,7 @@
 
 <div class="modal fade" id="EditInvoiceModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <form method="POST" class="Dashboard-form class" id="invoices_add">
+        <form method="POST" class="Dashboard-form class" id="invoices_edit">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
@@ -1599,13 +1573,14 @@
 
 
 
-        /*account head modal start*/
         $("body").on('click', '.view_btn', function() {
+
+
             var id = $(this).data('id');
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Accounts/Payments/Edit",
+                url: "<?php echo base_url(); ?>Accounts/Payments/View",
 
                 method: "POST",
 
@@ -1619,38 +1594,25 @@
 
                         var data = JSON.parse(data);
 
-                        $('#uid_edit').val(data.pay.pay_ref_no);
+                        $('#view_reference').html(data.pay.pay_ref_no);
 
-                        $('#p_id_edit').val(data.pay.pay_id);
+                        $('#view_date').html(FormatDate(data.pay.pay_date));
 
-                        $('#p_credit_account_edit').val(data.pay.ca_name);
+                        $('#view_payment_method').html(data.pay.rm_name);
 
-                        $('#p_method_edit').val(data.pay.pay_method);
+                        $('#view_debit_account').html(data.pay.ca_name);
 
-                        $('#p_date_edit').val(data.pay.pay_date);
+                        $('#view_payment_invoices').html(data.invoices);
 
-                        $('#p_bank_edit').val(data.pay.pay_bank);
-
-                        $('#total_amount_edit').html(data.pay.pay_amount);
-
-                        $('#sel_invoices_edit').html(data.debit);
-
-                        $("#EditModal :input").prop("disabled", true);
-
-                        $('#EditModal .btn-close').prop("disabled", false);
-
-                        $('#EditModal .cheque_file_edit_sec').addClass("d-none");
-
-                        $('#EditModal .submit_btn').hide();
-
-                        $('#EditModal .edit_invoice').hide();
-
-                        $('#EditModal .view_linked').hide();
-
-                        $('#EditModal .edit_add_debit').hide();
+                        if (data.pay.pay_method == "2") {
+                            $('#view_bank').html('-');
+                        } else {
+                            $('#view_bank').html(data.pay.bank_name);
+                        }
 
 
-                        $('#EditModal').modal('show');
+                        $('#ViewModal').modal('show');
+
 
                     } else {
                         alertify.error('Something went wrong!').delay(8).dismissOthers();
@@ -1719,6 +1681,11 @@
             }
 
 
+            var checkValueInterval = setInterval(function() {
+                if ($('#added_id').val() !== '') {
+                    clearInterval(checkValueInterval);
+
+
             var pid = $('#added_id').val();
 
             var id = c_account.val(); //Customer_ID
@@ -1764,6 +1731,15 @@
 
                     $('body #fifo_add').data('total', credit_amount);
 
+                    $('body #add_poadvance_btn').data('vendor', data.vendor_id);
+
+                    $('body #add_poadvance_btn').attr('data-vendor',data.vendor_id);
+
+                    $('body #add_poadvance_btn').data('debitid', data.pd_id);
+
+                    $('body #add_poadvance_btn').attr('data-debitid',data.pd_id);
+
+
                     $('#InvoicesModal').modal('show');
 
                     $('.invoice_total').html(credit_amount);
@@ -1776,6 +1752,12 @@
 
 
             });
+
+
+        } else {
+                    //console.log('No'); // Logging for debugging purposes
+                }
+            }, 100);
 
 
         });
@@ -2437,15 +2419,15 @@
 
             e.preventDefault();
 
-            var total = parseInt($('#fifo_add').data('total')) || 0;
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
 
-            var invoice_total = 0;
+            var invoice_total = 0.00;
 
             $('.invoice_receipt_amount').each(function() {
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseInt(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
 
             })
 
@@ -2453,7 +2435,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.so_receipt_amount').val()) || 0;
 
             })
 
@@ -3147,35 +3129,36 @@
 
 
 
-        $('body').on('click', '#add_pvadvance_btn', function() {
+        $('body').on('click', '#add_poadvance_btn', function() {
 
-            var vendor_id = $(this).val();
+            var vendor_id = $(this).data('vendor');
 
-            parent = $(this).closest('.invoice_row');
+            var debit_id = $(this).data('debitid');
+
+            //parent = $(this).closest('.invoice_row');
 
             //var parent = $(this).closest('.invoice_row');
 
             $.ajax({
 
-                url: "<?php echo base_url(); ?>Accounts/Payments/FetchPVAdvanceAdd",
+                url: "<?php echo base_url(); ?>Accounts/Payments/FetchPOAdvance",
 
                 method: "POST",
 
                 data: {
-                    vendor: vendor_id
+                    vendor: vendor_id,
+                    d_id : debit_id
                 },
 
                 success: function(data) {
 
                     var data = JSON.parse(data);
 
-                    if (data != "") {
-                        parent.find('.credit_amount').attr('data-max', data);
-                    } else {
-                        parent.find('.credit_amount').attr('data-max', 0);
-                    }
+                    $('#InvoicesModal').modal('hide');
 
-                    $('#invoices_sec').html(data.invoices);
+                    $('#AddPOAdvanceModal').modal('show');
+
+                    $('#purchase_order_add').html(data.po_rows);
 
                 }
 
@@ -3185,6 +3168,40 @@
 
 
         });
+
+
+
+
+        $("body").on('submit', '#add_po_advance_form', function(e) {
+
+                    e.preventDefault();
+
+                    $('#add_po_advance_form').serialize();
+
+                    $.ajax({
+
+                        url: "<?php echo base_url(); ?>Accounts/Payments/AddPoAdvance",
+
+                        method: "POST",
+
+                        data: $(this).serialize(),
+
+                        success: function(data) {
+
+                            alertify.success('Saved!').delay(3).dismissOthers();
+
+                            $('#AddPOAdvanceModal').modal('hide');
+
+                            alertify.success('Saved!').delay(3).dismissOthers();
+
+                            $('#InvoicesModal').modal('show');
+
+                        }
+
+                    });
+
+
+                    });
 
 
 
