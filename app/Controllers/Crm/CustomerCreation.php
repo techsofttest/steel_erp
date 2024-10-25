@@ -326,7 +326,8 @@ class CustomerCreation extends BaseController
                
                 $previousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_attach_cr;
                
-                if (file_exists($previousImagePath)) {
+                //if (file_exists($previousImagePath)) {
+                if (!empty($customer_creation->cc_attach_cr)) {
                     unlink($previousImagePath);
                 }
             }
@@ -349,7 +350,7 @@ class CustomerCreation extends BaseController
                
                 $estPreviousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_est_id_attach;
                
-                if (file_exists($estPreviousImagePath)) {
+                if (!empty($customer_creation->cc_est_id_attach)) {
                     unlink($estPreviousImagePath);
                 }
             }
@@ -371,7 +372,7 @@ class CustomerCreation extends BaseController
                
                 $qidPreviousImagePath = 'uploads/CustomerCreation/' .$customer_creation->cc_qid_attach;
                
-                if (file_exists($qidPreviousImagePath)) {
+                if (!empty($customer_creation->cc_qid_attach)) {
                     unlink($qidPreviousImagePath);
                 }
             }

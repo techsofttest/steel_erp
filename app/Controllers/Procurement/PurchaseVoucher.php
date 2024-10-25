@@ -206,6 +206,8 @@ class PurchaseVoucher extends BaseController
 
             $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $purchase_voucher));
 
+            $data['purchase_order'] = $purchase_order;
+
             /*$material_received = $this->common_model->SingleRow('pro_material_received_note',array('mrn_id' => $material_received_id));
 
             $data['purchase_id'] =  $material_received->mrn_purchase_order;
@@ -346,6 +348,8 @@ class PurchaseVoucher extends BaseController
             $data['purchase_id'] = "";
 
             $data['mrn_reff_id'] = "";
+
+            $data['purchase_order'] = "";
   
         }
 
@@ -626,7 +630,7 @@ class PurchaseVoucher extends BaseController
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
-            <td style="width:15%"><a href="javascript:void(0)" class="delete delete-color product_delete_data" data-id="'.$pur_vou_prod->pvp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
+            <td style="width:0%"><a href="javascript:void(0)" style="display:none" class="delete delete-color product_delete_data" data-id="'.$pur_vou_prod->pvp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
             </tr>
             ';
             $i++; 
@@ -781,7 +785,8 @@ class PurchaseVoucher extends BaseController
     {   
         
         $purchase_order = $this->common_model->SingleRow('pro_purchase_order',array('po_id' => $this->request->getPost('ID')));
- 
+        
+        
        /* $joins = array(
             
             array(
@@ -903,9 +908,9 @@ class PurchaseVoucher extends BaseController
                                             </td>
                                             <td><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty" readonly required></td>
                                             <td><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control" required readonly></td>
-                                            <td><input type="text" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate" required ></td>
-                                            <td><input type="text" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount" required ></td>
-                                            <td><input type="text" name="pvp_amount[]" value="'.$product->rnp_amount.'"  class="form-control add_prod_amount" required readonly></td>
+                                            <td><input type="number" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate" required ></td>
+                                            <td><input type="number" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount" required ></td>
+                                            <td><input type="amount" name="pvp_amount[]" value="'.$product->rnp_amount.'"  class="form-control add_prod_amount" required readonly></td>
                                             <input type="hidden" name="rnp_id[]" value="'.$product->rnp_id.'">
                                             <input type="hidden" name="material_received_id[]" value="'.$product->rnp_material_received_note.'">
                                         </tr>';

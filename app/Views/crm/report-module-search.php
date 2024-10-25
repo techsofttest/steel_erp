@@ -11,7 +11,7 @@
    
     <!--header section start-->
 
-    <?php echo view('includes/header');?>
+    <?php echo view('includes/report_header');?>
      
     <!--header section end-->
     
@@ -49,6 +49,15 @@
             background: blueviolet;
             border: blueviolet;
         }
+        .page-content{
+            padding:5px
+        }
+        .main-content
+        {
+            margin:15px !important;
+        }
+
+
     </style>
      
  
@@ -61,7 +70,7 @@
     <!-- ============================================================== -->
     <div class="main-content">
 
-        <div class="page-content">
+        <div class="page-content" >
                 
             <div class="container-fluid">
 
@@ -113,7 +122,7 @@
             
     <!--footer section start-->
 
-    <?php echo view('includes/footer');?> 
+    <?php //echo view('includes/footer');?> 
 
     <!--footer section end-->
 	

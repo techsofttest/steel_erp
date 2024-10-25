@@ -661,6 +661,11 @@ class SalesQuotation extends BaseController
 
     public function ContactPerson()
     {
+        if(empty($this->request->getPost('ID')))
+        {
+            return "false"; exit();
+        }
+        
         $cond = array('contact_customer_creation' => $this->request->getPost('ID'));
 
        

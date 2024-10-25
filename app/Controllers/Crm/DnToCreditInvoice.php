@@ -305,7 +305,7 @@ class DnToCreditInvoice extends BaseController
                                                             <td  width='100px' height='90px'>{$del_prod->product_details}</td>
                                                             <td  width='100px' height='90px'>{$del_prod->dpd_current_qty}</td>
                                                             <td  align='right' width='100px' height='90px'>{$sales_rate}</td>
-                                                            <td align='right' width='100px' height='90px'>{$sales_discount}</td>
+                                                            <td align='right' width='100px' height='90px'>{$sales_discount}%</td>
                                                             <td align='right' width='100px' height='90px'>{$sales_amount}</td>
                                                         </tr>";
                                                         $delivery_prod  =  $del_prod->dpd_total_amount +  $delivery_prod;
@@ -331,7 +331,7 @@ class DnToCreditInvoice extends BaseController
                                                                   if(!empty($credit_inv->invoices_product)){
                                                                     $pdf_data .= "<td width='100px'>----</td>";
                                                                   }
-                                                                  $invoice_amount =  $inv_prod->ipd_amount + $invoice_amount;
+                                                                  
                                                     $pdf_data .= "</tr>";
                                                     $j++;
                                                 }
@@ -343,6 +343,8 @@ class DnToCreditInvoice extends BaseController
 
                                                         $pdf_data .="<tr class='invoice-row' style='background: unset;border-bottom: hidden !important;'>
                                                             
+                                                        <td width='100px' height='90px'></td>
+                                                        <td width='100px' height='90px'>{$del_prod->dpd_total_amount}</td>
                                                             
                                                         </tr>";
 
@@ -353,6 +355,11 @@ class DnToCreditInvoice extends BaseController
                                         $pdf_data .="</table>"; 
                                     }
                                 $pdf_data .="</td>
+
+
+                              
+
+                               
 
 
 
@@ -400,7 +407,7 @@ class DnToCreditInvoice extends BaseController
         ]);
 
 
-            $mpdf->SetTitle('Delivery Note / Invoice Analysis'); // Set the title
+            $mpdf->SetTitle('Delivery Note to Credit Invoice Report'); // Set the title
 
             $delivery_prod = format_currency($delivery_prod);
 
@@ -456,7 +463,7 @@ class DnToCreditInvoice extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Delivery Note / Invoice Analysis</h3></td>
+            <td align="right"><h3>Delivery Note to Credit Invoice Report</h3></td>
         
             </tr>
         
@@ -516,7 +523,7 @@ class DnToCreditInvoice extends BaseController
                 <td style="border-top: 2px solid;" align="right">'.$delivery_prod.'</td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
+                
                 
             
             </tr> 

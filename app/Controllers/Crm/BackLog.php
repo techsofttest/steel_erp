@@ -180,7 +180,16 @@ class BackLog extends BaseController
             $invoice_total = 0;
             $balance_total = 0;
             foreach($sales_orders as $sales_order){
-                
+
+                $delivery_amount = array_sum(array_column($sales_order->sales_delivery,'dn_total_amount'));
+
+                if (!empty($sales_order->sales_delivery)) {
+                   $balance =  $sales_order->so_amount_total - $delivery_amount;
+                   
+                }
+
+                if($balance!="0"){
+
                 $total_amount = format_currency($sales_order->so_amount_total);
 
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
@@ -193,16 +202,16 @@ class BackLog extends BaseController
                                 <td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
                                 <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
-                                <td style='border-top: 2px solid' align='right'>{$dicount_amountss}</td>
+                               
                                 <td style='border-top: 2px solid' align='right'>{$total_amount}</td>";
                                 
                                 $sales_total = $sales_order->so_amount_total + $sales_total;
                                 
-                                $delivery_amount = 0;
+                                //$delivery_amount = 0;
 
                                 foreach($sales_order->sales_delivery as $del){
 
-                                    $delivery_amount =  $del->dn_total_amount + $delivery_amount;
+                                   // $delivery_amount =  $del->dn_total_amount + $delivery_amount;
 
                                     $delivered_total = $delivery_amount + $delivered_total;
                                 }
@@ -240,7 +249,7 @@ class BackLog extends BaseController
 
                                 if(!empty($sales_order->sales_delivery)){
                                     
-                                    $balance =  $sales_order->so_amount_total - $delivery_amount;
+                                    /*$balance =  $sales_order->so_amount_total - $delivery_amount;*/
 
                                     $balance_total = $balance + $balance_total;
 
@@ -255,6 +264,8 @@ class BackLog extends BaseController
                                
 
                 $pdf_data .="</tr>";
+            }
+            
             }
 
             if(empty($from_date) && empty($to_date))
@@ -382,7 +393,7 @@ class BackLog extends BaseController
         
             <th align="left">Sales Executive</th>
 
-            <th align="left">Discount</th>
+          
         
             <th align="center">Amount</th>
 
@@ -406,7 +417,7 @@ class BackLog extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
+                
                 <td style="border-top: 2px solid;" align="right">'.$sales_total.'</td>
                 <td style="border-top: 2px solid;" align="right">'.$delivered_total.'</td>
                 <td style="border-top: 2px solid;" align="right">'.$invoice_total.'</td>

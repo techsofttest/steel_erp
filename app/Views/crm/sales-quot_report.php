@@ -300,7 +300,7 @@
 
                                                             <td style="white-space: nowrap" class="text-end">
                                                                 <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
-                                                                    <?php echo format_currency($quot_prod->qpd_discount); ?><br>
+                                                                    <?php echo format_currency($quot_prod->qpd_discount); ?>%<br>
                                                                 <?php } ?>
                                                             </td>
 

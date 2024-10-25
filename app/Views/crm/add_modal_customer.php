@@ -679,9 +679,9 @@
 
                     {
 
-                    var data = JSON.parse(data);
-                    
-                    $(".account_id").val(data.account_id);
+                        var data = JSON.parse(data);
+                        
+                        $(".account_id").val(data.account_id);
                     
                     }
                      

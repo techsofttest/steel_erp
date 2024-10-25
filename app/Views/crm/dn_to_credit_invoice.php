@@ -299,7 +299,7 @@
                                                                             <td width="500px" class="responsive"><?php echo $del_prod->product_details; ?></td>
                                                                             <td width="100px" class="responsive text-center"><?php echo $del_prod->dpd_current_qty; ?></td>
                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_rate); ?></td>
-                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?></td>
+                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?>%</td>
                                                                             <?php $total_amount1 = $del_prod->dpd_total_amount + $total_amount1; ?>
                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
                                                                         </tr>

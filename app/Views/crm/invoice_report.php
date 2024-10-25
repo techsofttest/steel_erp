@@ -313,7 +313,7 @@
                                                                             <td width="500px" class="rotate"><?php echo $sal_prods->product_details; ?></td>
                                                                             <td width="100px" class="rotate text-center"><?php echo $sal_prods->spd_quantity; ?></td>
                                                                             <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_rate); ?></td>
-                                                                            <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_discount); ?></td>
+                                                                            <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_discount); ?>%</td>
                                                                             <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_amount); ?></td>
                                                                            
                                                                         </tr>

@@ -351,7 +351,7 @@ class DeliveryNoteReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$discount_amount}</td>";
+                    $pdf_data .= "'>{$discount_amount}%</td>";
 
                     
                     

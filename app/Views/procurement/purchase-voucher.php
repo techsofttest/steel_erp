@@ -969,7 +969,7 @@
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
                                                                 <td>Amount</td>
-                                                                <td>Action</td>
+                                                                
 
 
 
@@ -1576,7 +1576,7 @@
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
-            $('.product-more2').show();
+            $('.add_product2').show();
             $('.hidden_purchase_voucher_id').val("");
            
             $(".purchase_order").val("").trigger( "change" );
@@ -1690,7 +1690,7 @@
 
                             var purchase_id = data.purchase_order;
 
-                            //console.log(purchase_id);
+                            console.log(purchase_id);
 
                             $('#AddPurchaseVoucher').modal('hide');
 
@@ -1807,6 +1807,47 @@
         /*####*/
 
 
+               /**delete section start**/
+
+       $("body").on('click', '.product_delete', function(){ 
+
+            var id = $(this).data('id');
+
+            var rowToDelete = $(this).closest('tr');
+
+            /*$.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteProdDet",
+
+                method : "POST",
+
+                data:{ID: id},
+
+                success:function(data)
+                { */  
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        TotalAmount();
+                        deleteSlno();
+                        
+                        //EditProdTotal();
+                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    }); 
+
+                
+            // }
+
+
+            // });
+
+        });
+
+
+
+/**delete section end**/
+
+
 
         /*calculation section start*/
 
@@ -1847,7 +1888,7 @@
 
         function TotalAmount()
         {
-
+            
             var total= 0;
 
             $('body .add_prod_amount').each(function()
@@ -2108,14 +2149,12 @@
             
             //$(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]' required=''><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='text' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='text' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]' required=''><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 
             }
 
-           
-           
-        
+          
             //slno();
 
             //InitProductSelect2();
@@ -2126,43 +2165,7 @@
        /******/
 
 
-       /**delete section start**/
 
-       $("body").on('click', '.product_delete', function(){ 
-
-            var id = $(this).data('id');
-
-            var rowToDelete = $(this).closest('tr');
-
-            /*$.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesOrder/DeleteProdDet",
-
-                method : "POST",
-
-                data:{ID: id},
-
-                success:function(data)
-                { */  
-                    
-                    rowToDelete.fadeOut(500, function() {
-                        $(this).remove();
-                        deleteSlno();
-                        EditProdTotal()
-                        alertify.success('Data Delete Successfully').delay(3).dismissOthers();
-                    }); 
-
-                
-               // }
-
-
-           // });
-
-        });
-
-
-
-       /**delete section end**/
 
 
        /*edit product delete section start*/

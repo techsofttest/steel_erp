@@ -311,6 +311,11 @@ class SalesOrderToDn extends BaseController
             $product_price = 0;
             $product_diff  = 0;
             foreach($sales_orders as $sales_order){
+
+                $delivered_total_amt = array_sum(array_column($sales_order->sales_deliverys,'dn_total_amount'));
+                                
+                $delivered_total_amt =  format_currency($delivered_total_amt);
+
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
                 $pdf_data .= "<tr>
                                 <td style='border-top: 2px solid'>{$new_date}</td>
@@ -333,7 +338,7 @@ class SalesOrderToDn extends BaseController
                                                             <td width='100px'>{$sales_prod->product_details}</td>
                                                             <td width='50px'  align='right'>{$sales_prod->spd_quantity}</td>
                                                             <td width='100px' align='right'>{$format_rate}</td>
-                                                            <td width='100px'  align='right'>{$format_discount}</td>
+                                                            <td width='100px'  align='right'>{$format_discount}%</td>
                                                             <td  width='100px' align='right'>{$format_amount}</td>
                                                             
                                             </tr>";
@@ -341,60 +346,14 @@ class SalesOrderToDn extends BaseController
                                         } 
                                     $pdf_data .= "</table>
                                 </td>
-                                <td colspan='1' align='left' class='p-0' style='border-top: 2px solid'>";
-                                   if(!empty($sales_order->sales_deliverys)){
-                                    $pdf_data .="<table>"; 
-                                    foreach($sales_order->sales_deliverys as $sales_del){
-                                        $j=1;
-                                        foreach($sales_del->sales_delivery_prod as $del_prod){
-                                            $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
-                                                if($j==1){
-                                                    $pdf_data .="<td width='100px' align='right'>{$sales_del->dn_reffer_no}</td>";
-                                                }
-                                                else{
-                                                    $pdf_data .="<td width='100px' align='right'></td>";  
-                                                }
-                                                    
-                                            $pdf_data .="
-                                                        
-                                                         
-                                            
-                                            </tr>"; 
 
-                                            $j++;
+                                
+                              
+                                
+                                <td colspan='1' align='right' class='p-0' style='border-top: 2px solid'>{$delivered_total_amt}</td>";
+                                  
 
-                                            $product_price = $del_prod->dpd_total_amount + $product_price;
-                                        }
-                                    }
-                                    $pdf_data .="</table>";
-                                   }
-
-                                    if(!empty($sales_order->sales_cash_invoice)){
-                                        $pdf_data .="<table>";
-                                            foreach($sales_order->sales_cash_invoice as $sales_cash){
-                                                $k=1;
-                                                foreach($sales_cash->cash_product as $cash_prod){ 
-                                                $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
-                                                    if($k==1){
-                                                        $pdf_data .="<td width='100px' align='right'>{$sales_cash->ci_reffer_no}</td>";
-                                                    }else{
-                                                        $pdf_data .="<td width='100px'  align='right'></td>";
-                                                    }
-                                                    $pdf_data .="
-                                                                
-                                                               
-
-                                                            </tr>";
-                                                    
-                                               
-                                            $k ++;
-                                            
-                                            $product_price = $cash_prod->cipd_amount + $product_price;
-                                        } }
-                                        $pdf_data .="</table>";
-                                    }
-
-                                $pdf_data .="</td>
+                                $pdf_data .="
 
                                 <td style='border-top: 2px solid'>";
                                     if(empty($sales_order->sales_deliverys) && empty($sales_order->sales_cash_invoice)){
@@ -560,7 +519,7 @@ class SalesOrderToDn extends BaseController
 
             <th align="right" width="100px">Amount</th>
 
-            <th align="right" width="100px">Delivery Note / Cash Invoice</th>
+            <th align="right" width="100px">Delivered</th>
 
             <th align="right" width="100px">Difference</th>
 

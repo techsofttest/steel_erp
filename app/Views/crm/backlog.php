@@ -187,7 +187,7 @@
                                                     <th>Customer</th>
                                                     <th class="text-center">Lpo Ref</th>
                                                     <th class="text-center">Sales Executive</th>
-                                                    <th class="text-center">Discount</th>
+                                                   
                                                     <th class="text-end">Amount</th>
                                                     <th class="text-end">Delivered</th>
                                                     <th class="text-end">Invoiced</th>
@@ -203,7 +203,16 @@
                                                 if (!empty($sales_orders)) {
                                                     $i = 1;
                                                     foreach ($sales_orders as $sales_order) {
+                                                        
+                                                        $delivery_amount = array_sum(array_column($sales_order->sales_delivery,'dn_total_amount'));
 
+                                                         if (!empty($sales_order->sales_delivery)) {
+                                                            $balance =  $sales_order->so_amount_total - $delivery_amount;
+                                                         }
+
+                                                         if($balance!=0){
+
+                                                       // echo $delivery_amount;  exit();
                                                 ?>
 
                                                         <tr>
@@ -214,7 +223,7 @@
                                                             <td><?php echo $sales_order->cc_customer_name; ?></td>
                                                             <td class="text-center"><?php echo $sales_order->so_lpo; ?></td>
                                                             <td class="text-center"><?php echo $sales_order->se_name; ?></td>
-                                                            <td class="text-center"><?php echo format_currency($sales_order->spd_discount); ?></td>
+                                                            
                                                             <?php
                                                             $total_amount = $sales_order->so_amount_total + $total_amount;
                                                             ?>
@@ -222,11 +231,11 @@
 
                                                             <?php
 
-                                                            $delivery_amount = 0;
+                                                            /*$delivery_amount = 0;
 
                                                             foreach ($sales_order->sales_delivery as $del) {
                                                                 $delivery_amount =  $del->dn_total_amount + $delivery_amount;
-                                                            }
+                                                            }*/
 
                                                             if (!empty($sales_order->sales_delivery)) {
 
@@ -267,7 +276,7 @@
 
 
                                                             <?php if (!empty($sales_order->sales_delivery)) {
-                                                                $balance =  $sales_order->so_amount_total - $delivery_amount;
+                                                                //$balance =  $sales_order->so_amount_total - $delivery_amount;
                                                             ?>
 
                                                                 <td class="text-end"><?php echo format_currency($balance); ?></td>
@@ -282,7 +291,11 @@
 
                                                         </tr>
 
-                                                    <?php $i++;
+                                                    
+
+
+
+                                                    <?php $i++; }
                                                     } ?>
 
 

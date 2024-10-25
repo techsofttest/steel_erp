@@ -361,7 +361,7 @@ class SalesQuotReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$single_discount}</td>";
+                    $pdf_data .= "'>{$single_discount}%</td>";
 
                     $pdf_data .= "<td align='right' style='";
                      

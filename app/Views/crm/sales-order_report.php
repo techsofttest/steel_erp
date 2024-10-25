@@ -312,7 +312,7 @@
 
                                                         <td style="white-space: nowrap">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo format_currency($sales_prod->spd_discount);?></br>
+                                                                <?php echo format_currency($sales_prod->spd_discount);?>%</br>
                                                             <?php } ?>
                                                         </td>
 

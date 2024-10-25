@@ -278,7 +278,7 @@
 
                                                             <td class="text-end">
                                                                 <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo format_currency($delv_prod->dpd_prod_dicount); ?><br>
+                                                                    <?php echo format_currency($delv_prod->dpd_prod_dicount); ?>%<br>
                                                                 <?php } ?>
                                                             </td>
 

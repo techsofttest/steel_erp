@@ -214,7 +214,7 @@
                                                     <th width="100px" class="text-end">Rate</th>
                                                     <th width="100px" class="text-end">Discount</th>
                                                     <th width="100px" class="text-end">Amount</th>
-                                                    <th width="100px" class="text-end">Delivery Note/ Cash Invoice</th>
+                                                    <th width="100px" class="text-end">Delivered</th>
                                                     <!--<th width="100px">Product</th>
                                                     <th width="100px">Quantity</th>
                                                     <th width="100px">Rate</th>
@@ -253,7 +253,7 @@
                                                                             <td class="rotate" width="500px"><?php echo $sales_prod->product_details; ?></td>
                                                                             <td class="rotate text-center" width="100px"><?php echo $sales_prod->spd_quantity; ?></td>
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_rate); ?></td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_discount); ?></td>
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_discount); ?>%</td>
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_amount); ?></td>
                                                                             <?php
                                                                             $total_amount1 = $sales_prod->spd_amount +  $total_amount1;
@@ -265,68 +265,74 @@
 
 
 
-                                                            <td colspan="1" align="left" class="p-0">
+                                                            <td class="rotate text-end"  align="right" class="p-0">
+                                                                   
+                                                                <?php
+
+                                                                    $delivered_total_amt = array_sum(array_column($sales_order->sales_deliverys,'dn_total_amount'));
+                                                                    echo format_currency($delivered_total_amt);
+                                                                ?> 
 
                                                                 <!--***delivery note section start**-->
 
-                                                                <?php if (!empty($sales_order->sales_deliverys)) { ?>
+                                                                <!--<?php //if (!empty($sales_order->sales_deliverys)) { ?>
                                                                     <table>
-                                                                        <?php foreach ($sales_order->sales_deliverys as $sales_del) {
-                                                                            $j = 1;
-                                                                            foreach ($sales_del->sales_delivery_prod as $del_prod) {
+                                                                        <?php //foreach ($sales_order->sales_deliverys as $sales_del) {
+                                                                            //$j = 1;
+                                                                            //foreach ($sales_del->sales_delivery_prod as $del_prod) {
                                                                         ?>
                                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                    <?php if ($j == 1) { ?>
-                                                                                        <td width="100px" class="rotate text-end"><?php echo $sales_del->dn_reffer_no; ?></td>
-                                                                                    <?php } else { ?>
+                                                                                    <?php //if ($j == 1) { ?>
+                                                                                        <td width="100px" class="rotate text-end"><?php //echo $sales_del->dn_reffer_no; ?></td>
+                                                                                    <?php //} else { ?>
                                                                                         <td width="100px"></td>
-                                                                                    <?php } ?>
-                                                                                    <!--<td width="100px"><?php //echo $del_prod->product_details;
+                                                                                    <?php //} ?>
+                                                                                    <td width="100px"><?php //echo $del_prod->product_details;
                                                                                                             ?></td>
                                                                             <td width="100px"><?php //echo $del_prod->dpd_current_qty;
                                                                                                 ?></td>
                                                                             <td width="100px"><?php //echo $del_prod->dpd_prod_rate;
                                                                                                 ?></td>
                                                                             <td width="100px"><?php //echo $del_prod->dpd_total_amount;
-                                                                                                ?></td>-->
+                                                                                                ?></td>
                                                                                 </tr>
-                                                                        <?php $j++;
-                                                                            }
-                                                                        } ?>
+                                                                        <?php //$j++;
+                                                                           // }
+                                                                       // } ?>
                                                                     </table>
-                                                                <?php } ?>
+                                                                <?php //} ?>-->
 
                                                                 <!--*****-->
 
 
                                                                 <!--**cash invoice start**-->
 
-                                                                <?php if (!empty($sales_order->sales_cash_invoice)) { ?>
+                                                                <!--<?php //if (!empty($sales_order->sales_cash_invoice)) { ?>
                                                                     <table>
-                                                                        <?php foreach ($sales_order->sales_cash_invoice as $sales_cash) {
-                                                                            $k = 1;
-                                                                            foreach ($sales_cash->cash_product as $cash_prod) {
+                                                                        <?php //foreach ($sales_order->sales_cash_invoice as $sales_cash) {
+                                                                            //$k = 1;
+                                                                            //foreach ($sales_cash->cash_product as $cash_prod) {
                                                                         ?>
                                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                    <?php if ($k == 1) { ?>
-                                                                                        <td width="100px" class="rotate text-end"><?php echo $sales_cash->ci_reffer_no; ?></td>
-                                                                                    <?php } else { ?>
+                                                                                    <?php //if ($k == 1) { ?>
+                                                                                        <td width="100px" class="rotate text-end"><?php //echo $sales_cash->ci_reffer_no; ?></td>
+                                                                                    <?php //} else { ?>
                                                                                         <td width="100px"></td>
-                                                                                    <?php } ?>
-                                                                                    <!--<td width="100px"><?php //echo $cash_prod->product_details;
+                                                                                    <?php //} ?>
+                                                                                    <td width="100px"><?php //echo $cash_prod->product_details;
                                                                                                             ?></td>
                                                                         <td width="100px"><?php //echo $cash_prod->cipd_qtn;
                                                                                             ?></td>
                                                                         <td width="100px"><?php //echo $cash_prod->cipd_rate;
                                                                                             ?></td>
                                                                         <td width="100px"><?php //echo $cash_prod->cipd_amount;
-                                                                                            ?></td>-->
+                                                                                            ?></td>
                                                                                 </tr>
-                                                                        <?php $k++;
-                                                                            }
-                                                                        } ?>
+                                                                        <?php //$k++;
+                                                                           // }
+                                                                        //} ?>
                                                                     </table>
-                                                                <?php } ?>
+                                                                <?php //} ?>-->
 
                                                                 <!--****-->
 
