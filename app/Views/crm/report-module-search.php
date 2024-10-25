@@ -54,7 +54,12 @@
         }
         .main-content
         {
-            margin:15px !important;
+        margin:10px 5px !important;
+        }
+
+        .card {
+        max-height: 85vh;
+        margin-bottom: 0px;
         }
 
 
