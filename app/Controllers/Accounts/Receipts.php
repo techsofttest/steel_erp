@@ -4,8 +4,6 @@ namespace App\Controllers\Accounts;
 
 use App\Controllers\BaseController;
 
-use NumberToWords\NumberToWords;
-
 
 class Receipts extends BaseController
 { 
@@ -37,7 +35,7 @@ class Receipts extends BaseController
         //$mpdf->debug = true; simply true
         ##For Getting Only Logged In Admin Added Records
 
-        $cond = array('company_id' => session()->get('admin_company'));
+        $cond = array();
 
         ## Total number of records without filtering
        
@@ -80,7 +78,9 @@ class Receipts extends BaseController
         $i=1;
         foreach($records as $record ){
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/Receipts/Print/'.$record->r_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "r_id"=>$i,
@@ -2651,6 +2651,30 @@ class Receipts extends BaseController
    
     $receipt = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
 
+
+    if ($receipt->r_method == "2") {
+        $bank_name = "-";
+    }
+
+    else
+    {
+        $bank_name = $receipt->bank_name;
+    }
+
+
+    $cheque_date = "-";
+
+    $cheque_no = "-";
+
+    if ($receipt->r_method == "1") {
+
+        $cheque_date = date('d-F-Y',strtotime($receipt->r_cheque_date));
+
+        $cheque_no =$receipt->r_cheque_no;
+
+    }
+
+
     $invoice_cond = array('ri_receipt' => $receipt->r_id);
 
     $invoice_joins = array(
@@ -2667,8 +2691,11 @@ class Receipts extends BaseController
 
     $inv_ser = 0;
 
+    $invoice_datas = array();
+
     foreach($invoices as $invoice)
     {
+
 
     $inv_ser++;
 
@@ -2685,19 +2712,19 @@ class Receipts extends BaseController
             'pk' => 'ci_id',
             'fk' => 'rid_invoice',
             ),
-   
+
        );
+
+    
 
     $invoice_datas = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',array('rid_receipt_invoice'=>$invoice->ri_id),$inv_data_join);
 
     }
 
-
-    $total_amount = NumberToWords::transformNumber('en',$receipt->r_total); // outputs "fifty dollars ninety nine cents"
+    $total_amount = $receipt->r_amount;
    
     $joins_inv = array(
            
-    
     );
    
     $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
@@ -2708,34 +2735,62 @@ class Receipts extends BaseController
     $first = true;
 
     
-    foreach($invoices as $inv)
+    foreach($invoice_datas as $inv)
     {
 
     if($first == true)
     {
         //$cus_name = $inv->cc_customer_name;
-        $cus_name ="Test";
+        $cus_name = $invoice->ca_name;
     }
     else
     {
         $cus_name="";
     }
 
+    $inv_refer = "";
+
+    $inv_date = "";
+
+    $inv_amount = "";
+
+    if(!empty($inv->ci_reffer_no))
+    {
+
+        $inv_refer = $inv->ci_reffer_no;
+
+        $inv_date = $inv->ci_date;
+
+        $inv_amount = $inv->cci_total_amount;
+
+    
+
+    }
+    else if(!empty($inv->cci_reffer_no))
+    {
+
+        $inv_refer = $inv->cci_reffer_no;
+
+        $inv_date = $inv->cci_date;
+
+    }
+
+
     $invoice_sec .="
     
     <tr>
 
-    <td align='center'>{$cus_name}</td>
+    <td align='left'>{$cus_name}</td>
 
-    <td align='center'></td>
+    <td align='center'>{$inv_refer}</td>
 
-    <td align='center'>".date('d-m-Y',strtotime("12-10-2024"))."</td>
+    <td align='center'>".date('d-M-Y',strtotime($inv_date))."</td>
 
-    <td align='right'>10000.00</td>
+    <td align='right'></td>
 
-    <td align='center'>15-01-2024</td>
+    <td align='center'>-</td>
 
-    <td align='right'>15000.00</td>
+    <td align='right'>".format_currency($inv->rid_receipt)."</td>
     
     </tr>
 
@@ -2782,8 +2837,8 @@ class Receipts extends BaseController
     }
 
     th, td {
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         padding-left: 5px;
         padding-right: 5px;
       }
@@ -2820,97 +2875,210 @@ class Receipts extends BaseController
     </table>
 
 
-    <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+    <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;overflow:wrap">
 
-    <tr>
+
+    <tr width="100%">
     
-    <td width="50%">
+    <td width="120px" style="">
     
-    Reference : '.$receipt->r_ref_no.'
+    Reference :   
     
     </td>
+
+
+    <td align="left" width="120px" style="text-align:left">
     
-        
-    <td width="50%" align="right">
-    
-    Received By : '.$receipt->rm_name.'
+    '.$receipt->r_ref_no.'
 
     </td>
+
+
+    <td></td>
+
+    <td></td>
+
     
+    <td width="120px" align="left">
+    
+    Received By : 
+
+    </td>
+
+
+    <td width="120px">
+
+    '.$receipt->rm_name.'
+
+    
+    </td>
+
+
+
     </tr>
 
-
-    <tr>
-    
-    <td width="50%">
-    
-    Date : '.date('d-F-Y',strtotime($receipt->r_date)).'
-    
-    </td>
-    
-        
-    <td width="50%" align="right">
-    
-    Cheque : 90289
-
-    </td>
-    
-    </tr>
-
-
-    <tr>
-    
-    <td width="50%">
-    
-    Debit Account : '.$receipt->ca_name.'
-    
-    </td>
-    
-        
-    <td width="50%" align="right">
-    
-    Date : 10-02-2923
-
-    </td>
-    
-    </tr>
-
-
-    <tr>
-    
-    <td width="50%">
-    
-    Receipt No : '.$receipt->r_number.'
-    
-    </td>
-    
-        
-    <td width="50%" align="right">
-    
-    Bank : '.$receipt->bank_name.'
-
-    </td>
-    
-    </tr>
 
 
 
     <tr>
     
-    <td width="50%">
+    <td width="120px">
     
-    Division No : RV-2020-0418
+    Date : 
+    
+    </td>
+
+
+    <td width="120px">
+
+    '.date('d-F-Y',strtotime($receipt->r_date)).'
+
+    </td>
+
+
+    <td></td>
+
+    <td></td>
+
+    
+    <td width="120px">
+    
+    Cheque : 
+
+    </td>
+
+
+    <td width="120px">
+
+    '.$cheque_no.'
+
+    </td>
+
+
+
+
+    </tr>
+
+
+    
+
+    <tr>
+    
+    <td >
+    
+    Debit Account : 
+    
+    </td>
+
+
+    <td>
+    
+    '.$receipt->ca_name.'
     
     </td>
     
+
+    <td></td>
+
+    <td></td>
+
         
-    <td width="50%" align="right">
+    <td  align="left">
     
-    Collected By : '.$receipt->col_name.'
+    Date :
+
+    </td>
+
+    <td>
     
+    '.$cheque_date.'
+
+    </td>
+    
+    
+    </tr>
+
+
+
+    <tr>
+
+
+    <td >
+    
+    Receipt No : 
+    
+    </td>
+
+
+    <td>
+    
+    '.$receipt->r_number.'
+
+    </td>
+
+
+    <td></td>
+
+    <td></td>
+    
+        
+    <td align="left">
+    
+    Bank : 
+
+    </td>
+
+
+    <td>
+    
+    '.$bank_name.'
+
+    </td>
+
+
+    
+    </tr>
+
+
+    
+
+    <tr>
+    
+    <td >
+    
+    Division No : 
+    
+    </td>
+
+    <td>
+    
+    Al Fuzail
+    
+    </td>
+
+
+    <td></td>
+    <td></td>
+    
+        
+    <td align="left">
+    
+    Collected By : 
+    
+    </td>
+
+    
+    <td>
+    
+    '.$receipt->col_name.'
+
     </td>
     
     </tr>
+
+   
+
+  
 
 
     
@@ -2944,20 +3112,44 @@ class Receipts extends BaseController
 
     <tr style="padding-top:20px;">
     
-    <td colspan="5">Reallocation</td>
+   
+    <td align="left">Reallocation</td>
 
-    <td>9000.00</td>
+    <td align="center"></td>
+
+    <td align="center"></td>
+
+    <td align="right"></td>
+
+    <td align="center"></td>
+
+    <td align="right">0.00</td>
+
     
     </tr>
 
 
-    <tr style="padding-top:20px;">
-    
-    <td colspan="5">Discount</td>
 
-    <td>9000.00</td>
+     <tr style="padding-top:20px;">
+    
+   
+    <td align="left">Discount</td>
+
+    <td align="center"></td>
+
+    <td align="center"></td>
+
+    <td align="right"></td>
+
+    <td align="center"></td>
+
+    <td align="right">0.00</td>
+
     
     </tr>
+
+
+    
 
     </table>
 
@@ -2969,9 +3161,9 @@ class Receipts extends BaseController
     
     <tr>
     
-    <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+    <td colpsan="5" align="center"><b>Amount : '.currency_to_words($total_amount).'</b></td>
 
-    <td colspan="1" align="left" style="text-align:right;"><b>'.$receipt->r_amount.'</b></td>
+    <td colspan="1" align="right" style="text-align:right;"><b>'.format_currency($receipt->r_amount).'</b></td>
 
     </tr>
 
@@ -2982,13 +3174,13 @@ class Receipts extends BaseController
     
     <tr>
 
-    <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+    <td width="25%" align="center" style="padding-right:60px;">Prepared by : (print)</td>
 
-    <th width="25%" style="padding-right:60px;">Received by:</th>
+    <td width="25%" align="center" style="padding-right:60px;">Received by:</td>
 
-    <th width="25%" style="padding-right:60px;">Finance Manager</th>
+    <td width="25%" align="center" style="padding-right:60px;">Finance Manager</td>
 
-    <th width="25%" style="padding-right:60px;">CEO</th>
+    <td width="25%" align="center" style="padding-right:60px;">CEO</td>
 
     </tr>
 
@@ -2998,9 +3190,39 @@ class Receipts extends BaseController
     ';
 
     $mpdf->falseBoldWeight = 0;
+
+
     $mpdf->WriteHTML($html);
     $mpdf->SetFooter($footer);
+
     $this->response->setHeader('Content-Type', 'application/pdf');
+
+
+    // Output the PDF inline to a variable
+    /*
+    $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
+
+    // Encode the PDF content to base64
+    $pdfBase64 = base64_encode($pdfContent);
+
+    // Create a data URI for the PDF
+    $dataUri = 'data:application/pdf;base64,' . $pdfBase64;
+
+    // Output a JavaScript snippet to open the PDF in a new tab and print it
+    echo "
+    <script>
+        var pdfWindow = window.open('about:blank');
+        pdfWindow.document.write('<iframe src=\"{$dataUri}\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
+        pdfWindow.document.close();
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
+    </script>
+";
+
+    */
+
+
     $mpdf->Output();
 
     }

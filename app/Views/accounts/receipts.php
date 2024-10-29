@@ -402,33 +402,22 @@
                                             <div class="row">
 
 
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12 text-center">
 
 
-
-
-
-
-
-                                                </div>
-
-
-
-
-
-
-                                                <div class="col-lg-6">
-
-
-                                                    <div style="float: right;">
+                                                    <div style="">
                                                         <table class="table table-bordered table-striped enq_tab_submit menu">
+
+                                                            <!--
                                                             <tr>
                                                                 <td><button class="submit_btn">Print</button></td>
                                                                 <td><button class="submit_btn">Email</button></td>
                                                             </tr>
+                                                            -->
                                                             <tr>
-                                                                <td><button class="submit_btn" name="main_submit" type="submit">Save</button></td>
-                                                                <td><button class="submit_btn">PDF</button></td>
+
+                                                                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                                                                <!--<td><button class="submit_btn">PDF</button></td>-->
                                                             </tr>
                                                         </table>
                                                     </div>
@@ -616,7 +605,8 @@
 
 
 
-<!-- ADD SALES ORDER ADVANCE MODAL START -->
+<!-- ADD Sales ORDER ADVANCE MODAL START -->
+
 
 
 
@@ -624,77 +614,102 @@
 
 <div class="modal fade" id="AddSOAdvanceModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-
-        <form class="" id="add_sales_order_advance_form">
-
+        <form method="POST" class="Dashboard-form class" id="add_sales_order_advance_form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>
-                    <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
+                    <h5 class="modal-title">Select Invoices</h5>
+                    <button type="button" class="btn-close" data-bs-target="#InvoicesModal" data-bs-toggle="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
+                    <input type="hidden" name="credit_id" value="">
 
                     <div class="row">
 
 
                         <div class="col-lg-12">
+
                             <div class="card">
 
                                 <div class="card-body">
+
                                     <div class="live-preview">
 
                                         <div class="row align-items-end">
 
-
                                             <div class="col-col-md-12 col-lg-12">
 
-                                                <table class="table table-bordered" style="overflow-y:scroll;">
+                                                <div class="row align-items-center">
 
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Sl No</th>
-                                                            <th>Sales Order</th>
-                                                            <th>Customer</th>
-                                                            <th>Amount</th>
-                                                            <th>Receipt</th>
-                                                            <th>Tick</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
+                                                    <div class="col-lg-10">
+
+                                                        <table class="table table-bordered" id="">
 
 
-                                                    <tbody id="so_adv_body">
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>Sl No</th>
+                                                                    <th>Invoice No</th>
+                                                                    <th>LPO Ref</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Payment</th>
+                                                                    <th>Tick</th>
+
+                                                                </tr>
+                                                                
+                                                            </thead>
 
 
-                                                    </tbody>
+                                                            <tbody id="so_adv_body">
 
 
-
-                                                    <tr>
-
-                                                        <td>Total Receipt</td>
-
-                                                        <td class="invoice_total"></td>
-
-                                                        <td>Adjusted</td>
-
-                                                        <td class="invoice_adjusted"></td>
-
-
-                                                        <td>Balance</td>
-
-                                                        <td class="invoice_balance"></td>
-
-                                                    </tr>
+                                                            </tbody>
 
 
 
-                                                </table>
+                                                            <tr>
+
+                                                                <td>Total Receipt</td>
+
+                                                                <td class="invoice_total"></td>
+
+                                                                <td>Adjusted</td>
+
+                                                                <td class="invoice_adjusted"></td>
+
+
+                                                                <td>Balance</td>
+
+                                                                <td class="invoice_balance"></td>
+
+                                                            </tr>
+
+                                                        </table>
+
+
+
+                                                    </div>
+
+
+
+                                                    <div class="col-lg-2">
+
+                                                        <button class="w-100" type="submit">Save</button>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
 
 
 
                                             </div>
+
 
 
 
@@ -712,16 +727,12 @@
 
                 </div>
 
-
-                <div class="modal-footer justify-content-center">
-
-                    <button type="submit" class="btn btn btn-success">Save</button>
-
-                </div>
-
+                <!-- <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
+                <button type="submit" class="btn btn btn-success">Add</button>
+            </div> -->
 
             </div>
-
         </form>
 
     </div>
@@ -729,7 +740,7 @@
 
 
 
-<!-- ADD SALES ORDER ADVANCE MODAL END -->
+<!-- ADD Sales ORDER ADVANCE MODAL END -->
 
 
 
@@ -3091,9 +3102,10 @@
 
                             $('#view_cheque_no').html(data.rc.r_cheque_no);
 
-                            $('#view_cheque_date').html(data.rc.cheque_date);
+                            $('#view_cheque_date').html(data.rc.r_cheque_date);
 
                         } else {
+                            
                             $('.view_cheque_sec').addClass("d-none");
 
                         }
@@ -3111,7 +3123,6 @@
                         $('#total_receipt_amount_view').html(data.rc.r_amount);
 
                         //$('#total_amount_edit').html(data.rc.r_amount);
-
 
 
                         $('#ViewModal').modal('show');
@@ -4035,6 +4046,8 @@
 
             $('.credit_account_select2').val('').trigger('change');
 
+            $('select[name=r_method]').trigger('change');
+
             $('#total_amount_val').val('0.00');
 
             $('.invoice_row').not(':first').remove();
@@ -4951,6 +4964,20 @@
 
 
 
+    $('body').on('click','.print_color',function(e){
+    
+    id = $(this).attr('data-id');
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()?>Accounts/Receipts/Print/'+id, '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+    });
+    
 
 
 
@@ -5008,6 +5035,9 @@
 
 
 
+
+
+
     document.addEventListener("DOMContentLoaded", function(event) {
 
         function isDataTableRequest(ajaxSettings) {
@@ -5043,9 +5073,16 @@
 
 
         $(document).ajaxError(function() {
-            //alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+            alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
         });
 
 
     });
+</script>
+
+
+
+<script>
+
+
 </script>
