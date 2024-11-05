@@ -42,6 +42,8 @@
 
         }
 
+       
+
     </style>
     
        
@@ -581,7 +583,7 @@
 
 
 
-                        <div class="row align-items-center mb-2 bank_sec_add">
+                        <div class="row align-items-center mb-2 bank_sec_add" style="display:none;">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -599,7 +601,7 @@
 
 
 
-                        <div class="row align-items-center mb-2 bank_sec_add">
+                        <div class="row align-items-center mb-2 bank_sec_add" style="display:none;">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -646,6 +648,79 @@
                         <div class="col-col-md-9 col-lg-9">
 
                         <input type="text"  name="budgeted_air_ticket" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Vacation Taken</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="number"  name="vacation_taken" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Air Ticket Due From</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="date" onclick="this.showPicker();" name="air_ticket_due_from" class="form-control" required>
+
+                        </div>
+
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Vacation Pay Due From</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="date" onclick="this.showPicker();" name="vacation_pay_due_from" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Indemnity Advance</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="number" step="0.01" name="indemnity_advance" class="form-control" required>
 
                         </div>
 
@@ -1129,6 +1204,41 @@
 
 
             </tr>
+
+
+
+
+
+            <tr>
+
+            <th>Vacation Taken</th>
+
+            <td colspan="2" id="view_vacation_taken"></td>
+
+
+            <th>Air Ticket Due From</th>
+
+            <td colspan="2" id="view_air_ticket_due_from"></td>
+
+
+            </tr>
+
+
+
+            <tr>
+
+            <th>Vacation Pay Due From</th>
+
+            <td colspan="2" id="view_vacation_pay_due_from"></td>
+
+            <th>Indemnity Advance</th>
+
+            <td colspan="2" id="view_indemnity_advance"></td>
+
+            </tr>
+
+
+
 
 
            <tr>
@@ -1805,7 +1915,7 @@
 
 
 
-                        <div class="row align-items-center mb-2 edit_bank_sec">
+                        <div class="row align-items-center mb-2 edit_bank_sec" style="display:none">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -1823,7 +1933,7 @@
 
 
 
-                        <div class="row align-items-center mb-2 edit_bank_sec">
+                        <div class="row align-items-center mb-2 edit_bank_sec" style="display:none">
 
                         <div class="col-col-md-3 col-lg-3">
 
@@ -1877,6 +1987,74 @@
 
 
 
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Vacation Taken</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input id="vacation_taken_edit" type="text"  name="vacation_taken" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Air Ticket Due From</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input id="air_ticket_due_edit" type="date" onclick="this.showPicker();"  name="air_ticket_due_from" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Vacation Pay Due From</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input id="vacation_pay_due_edit"type="date" onclick="this.showPicker();"  name="vacation_pay_due_from" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Indemnity Advance</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input id="indemnity_advance_edit" type="text"  name="indemnity_advance" class="form-control" required>
+
+                        </div>
+
+                        </div>
 
 
                     </div>
@@ -2274,7 +2452,7 @@
 
         $('#mop_add').change(function(){
 
-            if($(this).val()=="2")
+            if($(this).val()!="1")
                 {
                 $('.bank_sec_add').show();
                 }
@@ -2282,6 +2460,21 @@
                 {
                 $('.bank_sec_add').hide();
             } 
+
+        })
+
+
+
+        $('#mop_edit').change(function(){
+
+        if($(this).val()!="1")
+            {
+            $('.edit_bank_sec').show();
+            }
+            else
+            {
+            $('.edit_bank_sec').hide();
+        } 
 
         })
 
@@ -2531,18 +2724,33 @@
 
                     $('#mop_edit').val(data.emp.emp_mode_of_payment);
 
-                    if(data.emp.emp_mode_of_payment==2)
+                    if(data.emp.emp_mode_of_payment!=1)
                     {
                     $('.edit_bank_sec').show();
-                    }
-                    else
-                    {
-                    $('.edit_bank_sec').hide();
-                    }
 
                     $('#account_no_edit').val(data.emp.emp_account_number);
 
                     $('#bank_edit').val(data.emp.emp_bank);
+
+                    }
+                    else
+                    {
+                    $('.edit_bank_sec').hide();
+
+                    $('#account_no_edit').val('');
+
+                    $('#bank_edit').val('');
+
+                    }
+
+                    $('#vacation_taken_edit').val(data.emp.emp_vacation_taken);
+
+                    $('#air_ticket_due_edit').val(data.emp.emp_air_ticket_due_from);
+
+                    $('#vacation_pay_due_edit').val(data.emp.emp_vacation_pay_due_from);
+
+                    $('#indemnity_advance_edit').val(data.emp.emp_indemnity_advance);
+
 
                     $('#air_ticket_per_year_edit').val(data.emp.emp_air_ticket_per_year);
 
@@ -2661,29 +2869,57 @@
 
                         //Salary 
 
-                        $('#view_basic_salary').html(data.employee.emp_basic_salary);
+                        $('#view_basic_salary').html(formatNumber(data.employee.emp_basic_salary));
 
                         $('#view_mop').html(data.employee.mop_title);
 
                         $('#view_hra').html(data.employee.emp_house_rent_allow);
 
-                        $('#view_account_no').html(data.employee.emp_account_number);
 
-                        $('#view_transport_allow').html(data.employee.emp_transport_allow);
+                        if(data.employee.mop_id!=1)
+
+                        {
+
+                        $('#view_account_no').html(data.employee.emp_account_number);
 
                         $('#view_bank').html(data.employee.emp_bank);
 
-                        $('#view_tel_allow').html(data.employee.emp_tel_allow);
+                        }
+                        else
+                        {
+                        
+                        $('#view_account_no').html('-');
 
-                        $('#view_food_allowance').html(data.employee.emp_food_allow);
+                        $('#view_bank').html('-');
 
-                        $('#view_budgeted_ticket_amount').html(data.employee.emp_budgeted_ticket_amount);
+                        }
+
+
+                        $('#view_transport_allow').html(formatNumber(data.employee.emp_transport_allow));
+
+                        
+
+                        $('#view_tel_allow').html(formatNumber(data.employee.emp_tel_allow));
+
+                        $('#view_food_allowance').html(formatNumber(data.employee.emp_food_allow));
+
+                        $('#view_budgeted_ticket_amount').html(formatNumber(data.employee.emp_budgeted_ticket_amount));
 
                         $('#view_air_ticket').html(data.employee.emp_air_ticket_per_year);
 
-                        $('#view_other_allowance').html(data.employee.emp_other_allow);
+                        $('#view_other_allowance').html(formatNumber(data.employee.emp_other_allow));
 
-                        $('#view_total_salary').html(data.employee.emp_total_salary);
+                        $('#view_vacation_taken').html(data.employee.emp_vacation_taken);
+
+                        $('#view_air_ticket_due_from').html(data.employee.emp_air_ticket_due_from);
+
+                        $('#view_vacation_pay_due_from').html(data.employee.emp_vacation_pay_due_from);
+
+                        $('#view_indemnity_advance').html(formatNumber(data.employee.emp_indemnity_advance));
+
+                        $('#view_total_salary').html(formatNumber(data.employee.emp_total_salary));
+
+
 
                         //
 
@@ -3037,6 +3273,38 @@
 
      
     });
+
+
+
+
+
+    function formatNumber(num) {
+    // Convert number to string
+    let numStr = num.toString();
+
+    // Split into integer and decimal parts (if any)
+    let parts = numStr.split(".");
+    let integerPart = parts[0];
+    let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+    // Use regex to format the integer part
+    let lastThreeDigits = integerPart.slice(-3);
+    let otherDigits = integerPart.slice(0, -3);
+
+    if (otherDigits) {
+        lastThreeDigits = ',' + lastThreeDigits;
+    }
+
+    // Insert commas in the rest of the number
+    let formattedInteger = otherDigits.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThreeDigits;
+
+    return formattedInteger + decimalPart;
+}
+
+// Example usage
+let formattedNumber = formatNumber(100000);
+console.log(formattedNumber); // Output: "1,00,000"
+
 
 
 

@@ -192,10 +192,9 @@
                               
                                 <button class="excel_button report_button">Excel</button>
 
-                                <form method="POST" action="" target="_blank">
-                                    <input type="hidden" name="excel" value="1">
-                                    <button class="print_button report_button" type="submit">Print</button>
-                                </form>
+                                
+                                    <button class="print_button report_button" type="button">Print</button>
+                               
 
                              
                                 <button id="email_button" class="email_button report_button" type="button">Email</button>
@@ -681,6 +680,25 @@ function fnExcelReport(table, fileName) {
     $("tbody > tr[data-level='0']").hide();
     return (sa);
 }
+
+
+
+
+
+$('body').on('click','.print_button',function(e){
+    
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/PLAccount?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+    });
+
+
 
 
     });

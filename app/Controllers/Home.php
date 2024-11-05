@@ -36,6 +36,46 @@ class Home extends BaseController
 
     public function index()
     {
+
+
+        if( (!empty($_GET['action'])) && ($_GET['action']=="search"))
+        {
+
+        $year = $_GET['ac_year'];
+
+        $month = $_GET['ac_month'];
+
+        // Ensure the month is a two-digit format
+        if (strlen($month) < 2) {
+            $month = '0' . $month;
+        }
+
+        // Create the start and end dates for the specified month and year
+        $month_date_from = date("Y-m-01", strtotime("$year-$month-01"));
+        $month_date_to = date("Y-m-t", strtotime("$year-$month-01"));
+
+        // Create the start and end dates for the specified year
+        $year_date_from = date("Y-01-01", strtotime("$year-01-01"));
+        $year_date_to = date("Y-12-t", strtotime("$year-12-01"));
+
+        }
+
+        else
+        {
+
+            $today = date('Y-m-d');
+
+            $month_date_from = date("Y-m-01", strtotime($today));
+    
+            $month_date_to = date("Y-m-t", strtotime($today));
+    
+            
+            $year_date_from = date("Y-01-01", strtotime($today));
+    
+            $year_date_to = date("Y-12-t", strtotime($today));
+
+        }
+
   
         $this->dash_model = new \App\Models\DashboardModel();
 
@@ -43,19 +83,40 @@ class Home extends BaseController
 
         $data['customers']=$this->common_model->FetchAllOrderLimit('crm_customer_creation','cc_id','desc',5,0);
 
-        $data['sales_count'] = $this->common_model->CountWhere('crm_sales_orders',array());
+
+
+        $data['sales_orders_month'] = $this->dash_model->SumWhereDates('crm_sales_orders','so_amount_total',array(),'so_date',$month_date_from,$month_date_to);
+
+        $data['sales_orders_year'] = $this->dash_model->SumWhereDates('crm_sales_orders','so_amount_total',array(),'so_date',$year_date_from,$year_date_to);
+
+
+        $data['delivery_month'] = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$month_date_from,$month_date_to);;
+
+        $data['delivery_year'] = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$year_date_from,$year_date_to);
+
+
+        $data['sales_month'] = $this->dash_model->InvoiceTotals($month_date_from,$month_date_to);
+
+        $data['sales_year'] = $this->dash_model->InvoiceTotals($year_date_from,$year_date_to);
+
 
         $data['customers_count'] = $this->common_model->CountWhere('crm_customer_creation',array());
 
         $data['enquiry_count'] = $this->common_model->CountWhere('crm_enquiry',array());
 
-        $data['receipts_today'] = $this->dash_model->ReceiptTotalToday();
 
-        $data['sales_orders_today'] = $this->dash_model->SalesOrdersToday();
+        //FetchAllOrderLimit($table,$order_key,$order,$end,$start)
 
-        $data['purchase_orders_today'] = $this->dash_model->PurchaseOrdersToday();
+       // $data['pfa_quotations'] = $this->common_model->FetchAllOrderLimit('crm_quotation_details','qd_id','desc',5,0);
 
-        $data['employee_count'] = $this->common_model->CountWhere('hr_employees',array());
+
+       $data['pfa_quotations'] = $this->dash_model->PFAQuotation();
+
+       $data['pfa_delivery'] = $this->dash_model->PFADelivery();
+
+       //$data['pfa_delivery'] = array();
+
+       $data['pfa_delivery_due'] = $this->dash_model->PFADeliveryDue();
 
         return view('index',$data);
 

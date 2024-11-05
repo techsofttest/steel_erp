@@ -1,9 +1,13 @@
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
+
+
 <!-- App favicon -->
 <link rel="shortcut icon" href="<?php echo base_url(); ?>public/assets/images/favicon.png">
 
 <!-- jsvectormap css -->
+    <!--
 <link href="<?php echo base_url(); ?>public/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    -->
 
 <!--Swiper slider css-->
 <!--
@@ -18,7 +22,9 @@
 <!-- Bootstrap Css -->
 <link href="<?php echo base_url(); ?>public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
+
 <link href="<?php echo base_url(); ?>public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
 <!-- App Css-->
 <link href="<?php echo base_url(); ?>public/assets/css/app.min.css" rel="stylesheet" type="text/css" />
 <!-- custom Css-->

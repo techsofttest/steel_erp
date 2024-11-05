@@ -233,25 +233,36 @@ class TimeSheets extends BaseController
           <input type="hidden" name="employee" value="'.$employee.'">
         ';
 
-        foreach($daytypes as $dt)
-        {
-
-        $select ="";
-        if($dt->dt_id=="1")
-        {
-        //$select="selected";
-        }
         
-
-        $daytype_select .= '<option '.$select.' value="'.$dt->dt_id.'">'.$dt->dt_name.'</option>';
-
-        }
 
         foreach($list as $date)
         {
 
+        $daytype_select ="";
+
+            foreach($daytypes as $dt)
+            {
+
+            $select ="";
+            if( ($dt->dt_id=="1") && ($date["day"] != "Fri"))
+            {
+            $select="selected";
+            }
+            else if(( $dt->dt_id=="6") && ($date["day"] == "Fri"))
+            {
+
+            $select="selected";
+
+            }
+            
+
+            $daytype_select .= '<option '.$select.' value="'.$dt->dt_id.'">'.$dt->dt_name.'</option>';
+
+            }
+
 
         // Test Mode
+        /*
         $data['table1'] .='
 
             <tr class="day_row">
@@ -290,12 +301,12 @@ class TimeSheets extends BaseController
 
                         </tr>
 
-                        ';
+                        '; */
 
 
                         $data['table'] .='
 
-                        <tr class="day_row">
+                        <tr class="day_row '.$date["date"].'">
 
                         <td width="15%">'.$date["date"].'</td>
 
@@ -317,17 +328,17 @@ class TimeSheets extends BaseController
                         
                         </td>
 
-                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" onclick="this.showPicker();" type="time" required></td>
+                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text" oninput="formatTime(this)"   required ></td>
 
-                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" onclick="this.showPicker();" type="time" required></td>
+                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
 
-                        <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required></td>
+                        <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required readonly></td>
 
-                        <td width="10%"><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]"></td>
+                        <td width="10%"><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]" readonly></td>
 
-                        <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" ></td>
+                        <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" readonly></td>
 
-                        <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" ></td>
+                        <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" readonly></td>
 
                         </tr>
 
@@ -435,14 +446,15 @@ class TimeSheets extends BaseController
             }
 
 
-            if(($check['td_daytype'] == 1))
+            if(($check['td_daytype'] == 1) || ($check['td_daytype'] == 2) || ($check['td_daytype'] == 6))
             {
 
             if((empty($check['td_time_in'])) || (empty($check['td_time_out'])) || (empty($check['td_total_hours'])) )
             {
 
                 $data['status']=0;
-                $data['msg'] ="Fill all days to continue!";
+                $data['row'] = $this->request->getPost('date')[$d];
+                $data['msg'] ="Enter data for ".date('d M Y',strtotime($check['td_date']))."!";
                 echo json_encode($data);
                 exit;
 
@@ -453,7 +465,8 @@ class TimeSheets extends BaseController
             {
             
                 $data['status']=0;
-                $data['msg'] ="Fill all days to continue!";
+                $data['row'] = $this->request->getPost('date')[$d];
+                $data['msg'] ="Enter data for ".date('d M Y',strtotime($check['td_date']))."!";
                 echo json_encode($data);
                 exit;
 

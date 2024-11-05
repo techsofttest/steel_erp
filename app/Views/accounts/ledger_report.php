@@ -45,6 +45,40 @@
             background: green;
             border: green;
         }
+
+
+
+        /* Report Full Page No Scroll */
+
+        header
+        {
+
+        display:none;
+
+        }
+
+        footer
+        {
+
+        display:none;
+
+        }
+
+        .page-content
+        {
+
+        padding:5px 0px;
+
+        }
+
+        .main-content
+        {
+            margin:15px !important;
+        }
+
+
+        /* #### */
+
     </style>
 
 
@@ -81,7 +115,7 @@
                         <!--sales rout report modal start-->
                         <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET" class="Dashboard-form class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">General Ledger</h5>
@@ -321,7 +355,7 @@
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit" data-bs-dismiss="modal">View</button></td>
+                                                                            <td><button type="submit" data-bs-toggle="modal" aria-label="Close">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             
@@ -391,10 +425,10 @@
 
                                             <button id="btnExport" class="excel_button report_button" type="submit">Excel</button>
                                        
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
-                                            <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1"> -->
+                                            <button class="print_button report_button" type="button">Print</button>
+                                        <!-- </form> -->
 
                                         
                                             
@@ -403,13 +437,13 @@
                                         
                                         <?php } ?>
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="submit" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     
                                     
                                     </div><!-- end card header -->
 
                                     <div class="card-body">
-                                        <table id="DataTable" class="ReportTable table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable1" class="ReportTable table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
                                                 <tr>
@@ -434,7 +468,7 @@
                                             }
                                             else
                                             {
-                                            $balance=10000;
+                                            $balance=0;
                                             }
 
                                             ?>
@@ -453,60 +487,19 @@
                                             </tr>
 
 
-                                            <?php 
-
-                                            /*
-
-                                            $total_credit=0;
-
-                                            foreach($payments as $pay){ ?>
-
-                                            <tr>
-                                          
-                                            <td><?php echo date('d-m-Y',strtotime($pay->pay_date)); ?></td>
-                                            <td><?= $pay->pay_ref_no; ?></td>
-                                            <td>Payment</td>
-                                            <td><?= $pay->cc_customer_name; ?></td>
-                                            <td>---</td>
-                                            <td><?= $pay->pay_amount; ?></td>
-                                            <td><?= $balance = $balance+$pay->pay_amount; ?></td>
-
-                                            </tr>
-
-                                            <?php 
-                                            $total_credit = $total_credit+$pay->pay_amount;
-
-                                        } ?>
-
-
-
-                                            <?php 
-                                            $total_debit=0;
-                                            foreach($receipts as $rec){ ?>
-
-                                            <tr>
-                                           
-                                            <td><?php echo date('d-m-Y',strtotime($rec->r_date)); ?></td>
-                                            <td><?= $rec->r_ref_no; ?></td>
-                                            <td>Receipt</td>
-                                            <td><?= $rec->cc_customer_name; ?></td>
-                                            <td><?= $rec->r_amount; ?></td>
-                                            <td>---</td>
-                                            <td><?= $balance = $balance-$rec->r_amount; ?></td>
-
-
-                                            </tr>
-
-                                            <?php 
-                                            $total_debit = $total_debit+$rec->r_amount;
-                                            } */ ?>
-
 
 
                                             <?php 
                                             $total_credit=0;
                                             $total_debit=0;
-                                            foreach($vouchers as $vc){ ?>
+                                            foreach($vouchers as $vc){ 
+                                                
+                                            //if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
+
+                                            //if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
+
+                                                
+                                            ?>
 
 
                                             <tr>
@@ -561,21 +554,22 @@
 
                                             <td class="currency_format1 text-end">
 
-                                               <?php if($vc->debit_amount !="") { 
+                                               <?php if($vc->debit_amount !="" && $vc->debit_amount>0) { 
 
                                                 echo  format_currency($vc->debit_amount);
 
-                                                $vc->debit_amount === "" ? 0.00 : $vc->debit_amount;
+                                                $vc->debit_amount === "" ? "" : $vc->debit_amount;
 
                                                 $total_debit = (float)$total_debit+(float)$vc->debit_amount;
 
                                                } else if($vc->credit_amount<0) {
+                                                
+                                                echo  format_currency(abs($vc->credit_amount)); 
 
-                                                echo  format_currency($vc->credit_amount); 
+                                                $vc->credit_amount === "" ? "" : $vc->credit_amount;
 
-                                                $vc->credit_amount === "" ? 0.00 : $vc->credit_amount;
+                                                $total_debit=(float)$total_debit+(float)abs($vc->credit_amount);
 
-                                                $total_debit=(float)$total_debit+(float)$vc->credit_amount;
                                                 
                                                } ?>
                                             
@@ -584,12 +578,20 @@
                                             <td class="currency_format1 text-end"> 
                                                 
                                                <?php if($vc->credit_amount !="" && $vc->credit_amount>0) { 
+
                                                 echo  format_currency($vc->credit_amount); 
+
                                                 $total_credit=$total_credit+$vc->credit_amount;
                                                 
-                                               } else {?>
+                                               } else if($vc->debit_amount<0) {
                                                 
-                                               <?php } ?></td>
+                                                echo  format_currency(abs($vc->debit_amount));
+
+                                                $vc->debit_amount === "" ? "" : $vc->debit_amount;
+
+                                                $total_credit = (float)$total_credit+(float)abs($vc->debit_amount);
+
+                                                } ?></td>
 
                                             <td class="currency_format1 text-end">
                                             
@@ -597,14 +599,14 @@
                                                 
                                                 if(!empty($vc->debit_amount))
                                                 {
-                                                $vc->debit_amount === "" ? 0.00 : $vc->debit_amount;
+                                                $vc->debit_amount === "" ? "" : $vc->debit_amount;
                                                 
                                                 $balance = (float)$balance+(float)$vc->debit_amount;
                                                 
                                                 }
                                                 else
                                                 {
-                                                $vc->credit_amount === "" ? 0.00 : $vc->credit_amount;
+                                                $vc->credit_amount === "" ? "" : $vc->credit_amount;
                                                 $balance = (float)$balance-(float)$vc->credit_amount; 
                                                 }
 
@@ -634,7 +636,7 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><b></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_debit); ?></b></td>
                                             <td class="text-end"><b ><?= format_currency($total_credit); ?></b></td> 
                                             
                                             <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
@@ -1062,6 +1064,22 @@ document.getElementById("email_button").addEventListener("click", function() {
             alertify.error("Error in copying table: ", err);
     }
 });
+
+
+
+
+$('body').on('click','.print_button',function(e){
+    
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/Ledger?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+    });
 
 
 

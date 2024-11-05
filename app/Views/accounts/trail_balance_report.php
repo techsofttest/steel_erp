@@ -195,7 +195,9 @@
                                 <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Trial Balance Report <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
                                 
                                 
-                                <?php if(!empty($_GET)) { ?>
+                                <?php if( (!empty($_GET)) ) { ?>
+
+
 
                                 <form method="POST"  target="_blank">
                                     <input type="hidden" name="pdf" value="1">
@@ -206,10 +208,9 @@
                                
                                     <button id="excel_btn_export" class="excel_button report_button" >Excel</button>
                                 
-                                <form method="POST" action="" target="_blank">
-                                    <input type="hidden" name="excel" value="1">
-                                    <button class="print_button report_button" type="submit">Print</button>
-                                </form>
+                                
+                                    <button class="print_button report_button" type="button">Print</button>
+                                
 
                                 
                                 <button id="email_button" class="email_button report_button" type="button">Email</button>
@@ -647,6 +648,25 @@ function fnExcelReport(table, fileName) {
 }
 
 
+
+
+$('body').on('click','.print_button',function(e){
+    
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/TrialBalance?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+    });
+
+
+
+
+
     });
 
 </script>
@@ -686,6 +706,11 @@ document.getElementById("email_button").addEventListener("click", function() {
             alertify.error("Error in copying table: ", err);
     }
 });
+
+
+
+
+
 
 </script>
 

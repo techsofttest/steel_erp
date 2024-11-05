@@ -259,11 +259,11 @@
                                                                 <div style="float: right;">
                                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                         <tr>
-                                                                            <td><a href="<?= base_url(); ?>Accounts/Reports/Ledger">Clear</a></td>
+                                                                        <td><a href="<?= base_url(); ?>Accounts/Reports/Ledger">Clear</a></td>
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit">View</button></td>
+                                                                            <td><button type="submit" data-bs-dismiss="modal" aria-label="Close">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             

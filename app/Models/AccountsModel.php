@@ -311,7 +311,7 @@ class AccountsModel extends Model
 
             ->where('accounts_charts_of_accounts.ca_id', $cid)
 
-            ->where('so_pay_status !=', 2)
+            ->where('so_deliver_flag',0)
 
             ->groupStart()
 
