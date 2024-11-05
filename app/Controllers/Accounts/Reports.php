@@ -10,6 +10,7 @@ class Reports extends BaseController
 
     //view page
 
+    
     public function Ledger()
     {   
 
@@ -71,12 +72,19 @@ class Reports extends BaseController
 
         $account = "";
 
-        if($filter_type=="Account")
+        $account_name = "";
+
+        if($filter_type=="Account" && !empty($this->request->getGet('filter_account')))
         {
 
         $account = $this->request->getGet('filter_account');
 
         $data['account_name'] = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $account),array())->ca_name;
+
+        if(!empty($data['account_name']))
+        {
+        $account_name = $data['account_name'];
+        }
 
         }
 
@@ -101,7 +109,7 @@ class Reports extends BaseController
         }
         else
         {
-            $data['open_balance'] =0;
+            $data['open_balance'] = 0;
         }
         
         //$start_date = date('Y-m-d',strtotime('01-01-2024'));
@@ -117,13 +125,19 @@ class Reports extends BaseController
 
         //$data['open_balance'] =$this->report_model->FetchGlOpenBalance($start_date,$end_date,$account_head,$account_type,$account,$time_frame);
 
+
+       //$data['vouchers']=$this->report_model->FetchGLTransactions($start_date,$end_date,$account_head,$account_type,$account,$time_frame,$range_from,$range_to);
+
+        
+
+
         $data['vouchers']=$this->report_model->FetchGLTransactions($start_date,$end_date,$account_head,$account_type,$account,$time_frame,$range_from,$range_to);
 
-
+       
         
         //Gen PDF
 
-         if(!empty($_POST['pdf']))
+        if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
         {
         
                 if(!empty($data['vouchers']))
@@ -138,6 +152,11 @@ class Reports extends BaseController
 
                     foreach($data['vouchers'] as $vc)
                     {   
+
+                        if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
+
+                        if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
+
                         $q=1;
 
                         $border="border-top: 2px solid";
@@ -146,15 +165,15 @@ class Reports extends BaseController
 
                         $total_credit = $total_credit + $vc->credit_amount;
         
-                        $new_date = date('d-F-Y',strtotime($vc->transaction_date));
+                        $new_date = date('d-M-Y',strtotime($vc->transaction_date));
         
-                        $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+                        $pdf_data .= "<tr align='center'><td >{$new_date}</td>";
 
-                        $pdf_data .= "<td style='border-top: 2px solid'>{$vc->reference}</td>";
+                        $pdf_data .= "<td align='center'>{$vc->reference}</td>";
 
-                        $pdf_data .= "<td style='border-top: 2px solid'>{$vc->voucher_type}</td>";
+                        $pdf_data .= "<td align='center'>{$vc->voucher_type}</td>";
         
-                        $pdf_data .= "<td style='border-top: 2px solid'>{$vc->account_name}</td>";
+                        $pdf_data .= "<td >{$vc->account_name}</td>";
 
 
                     
@@ -166,11 +185,15 @@ class Reports extends BaseController
 
                         $balance = $balance+$vc->debit_amount; 
 
+                        $total_debit = $total_debit+$vc->debit_amount;
+
                         } else if($vc->credit_amount<0) {
 
                         $debit_am = format_currency($vc->credit_amount); 
 
-                        $balance = $balance-$vc->credit_amount; 
+                        $balance = $balance-$vc->credit_amount;
+
+                        $total_debit = $total_debit+$vc->credit_amount;
                             
                         }
                         else
@@ -178,12 +201,16 @@ class Reports extends BaseController
                         $debit_am="";
                         }
 
-                        $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$debit_am}</td>";
+                        $pdf_data .= "<td align='right' >{$debit_am}</td>";
 
 
                         if($vc->credit_amount !="" && $vc->credit_amount>0) {
 
                             $credit_am = format_currency($vc->credit_amount);
+
+                            $balance = $balance-$vc->credit_amount; 
+
+                            $total_credit = $total_credit+$vc->credit_amount;
 
                         } else {
 
@@ -191,9 +218,9 @@ class Reports extends BaseController
 
                         }
         
-                        $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$credit_am}</td>";
+                        $pdf_data .= "<td align='right'>{$credit_am}</td>";
                         
-                        $pdf_data .= "<td style='border-top: 2px solid' align='right'>".format_currency($balance)."</td>";
+                        $pdf_data .= "<td  align='right'>(".format_currency($balance).")</td>";
                         
                         $pdf_data .="</tr>";
                        
@@ -212,18 +239,18 @@ class Reports extends BaseController
         
                     
         
-                    $title = "GLR";
+                    $title = "General Ledger Report ".date('d-M-Y')."";
         
                     $mpdf = new \Mpdf\Mpdf(
         
                         [
-                            'format' => 'A3', // Set page size to A3
-                            'margin_left' => 15,
-                            'margin_right' => 15,
-                            'margin_top' => 16,
-                            'margin_bottom' => 16,
-                            'margin_header' => 9,
-                            'margin_footer' => 9,
+                            'format' => 'A4', // Set page size to A3
+                            'margin_left' => 5,
+                            'margin_right' => 5,
+                            'margin_top' => 10,
+                            'margin_bottom' => 10,
+                            'margin_header' => 5,
+                            'margin_footer' => 5,
                         ]
                     );
         
@@ -235,10 +262,10 @@ class Reports extends BaseController
                 
                     <style>
                     th, td {
-                        padding-top: 10px;
-                        padding-bottom: 10px;
-                        padding-left: 5px;
-                        padding-right: 5px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        padding-left: 10px;
+                        padding-right: 10px;
                         font-size: 12px;
                     }
                     p{
@@ -265,7 +292,7 @@ class Reports extends BaseController
                 
                     <td>
                 
-                    <h3>Al Fuzail Engineering Services WLL</h3>
+                    <h2>Al Fuzail Engineering Services WLL</h2>
                     <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
@@ -278,40 +305,59 @@ class Reports extends BaseController
                 
                 
                 
-                    <table width="100%" style="margin-top:10px;">
+                    <table width="100%" style="margin-top:5px;">
                     
                 
                     <tr width="100%">
-                    <td align="right"><h3>General Ledger Report</h3></td>
+
+                    <td width="100%" colspan="5" align="right"><h2>General Ledger</h2></td>
                 
-                    <hr>
+                    <hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">
 
                     </tr>
 
 
                     <tr width="100%">
 
-                    <td>
-                    Account : Mashreq Bank
+                    <td width="15%">
+                    Account : 
                     </td>
 
-
-                    </tr>
-
-
-                    <tr width="100%">
-
                     <td>
-                    Period : '.$dates.'
+
+                    '.$account_name.'
+
                     </td>
 
                     </tr>
 
 
+
                     <tr width="100%">
 
+                    <td width="15%">
+                    Period :
+                    </td>
+
+                    <td >
+                    
+                    '.$dates.'
+
+                    </td>
+
+                    </tr>
+
+
+                    <tr width="100%">
+
+                    <td width="15%">
+                    Division :    
+                    </td>
+
                     <td>
-                    Division : Al Fuzail
+                    
+                    Al Fuzail
+
                     </td>
 
                     </tr>
@@ -322,24 +368,24 @@ class Reports extends BaseController
                     </table>
                    
                 
-                    <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                    <table  width="100%" style="margin-top:1px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
                     
                 
                     <tr>
                     
-                    <th align="left">Date</th>
+                    <td align="center">Date</td>
                 
-                    <th align="left">Voucher No</th>
+                    <td align="center">Voucher No</td>
                 
-                    <th align="left">Voucher Type</th>
+                    <td align="center">Voucher Type</td>
                 
-                    <th align="left">Related Account</th>
+                    <td align="left">Related Account</td>
                 
-                    <th align="right">Debit Amt</th>
+                    <td align="right">Debit Amt</td>
         
-                    <th align="right">Credit Amt</th>
+                    <td align="right">Credit Amt</td>
         
-                    <th align="right">Balance</th>
+                    <td align="right">Balance</td>
         
                     </tr>
 
@@ -355,7 +401,7 @@ class Reports extends BaseController
                 
                     <td align="left" style="border-top: 2px solid"></td>
                 
-                    <td align="left" style="border-top: 2px solid"><b>Opening Balance</b></td>
+                    <td align="left" style="border-top: 2px solid">Beginning Balance</td>
                 
                     <td align="right" style="border-top: 2px solid"></td>
         
@@ -365,6 +411,7 @@ class Reports extends BaseController
                     
                     
                     </tr>
+                    
 
 
 
@@ -375,10 +422,10 @@ class Reports extends BaseController
                         <td style="border-top: 2px solid;"></td>
                         <td style="border-top: 2px solid;"></td>
                         <td style="border-top: 2px solid;"></td>
-                        <td style="border-top: 2px solid;"></td>
-                        <td align="right" style="border-top: 2px solid;"></td>
-                        <td align="right" style="border-top: 2px solid;"></td>
-                        <td align="right" style="border-top: 2px solid;">'.format_currency($balance).'</td>
+                        <td style="border-top: 2px solid;"><b>Ending Balance</b></td>
+                        <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_debit).'</b></td>
+                        <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_credit).'</b></td>
+                        <td align="right" style="border-top: 2px solid;"><b>'.format_currency($balance).'</b></td>
                         
                     </tr>    
                    
@@ -395,8 +442,12 @@ class Reports extends BaseController
                     $mpdf->WriteHTML($html);
                    
                    // $mpdf->SetFooter($footer);
+
                     $this->response->setHeader('Content-Type', 'application/pdf');
+
                     $mpdf->Output($title . '.pdf', 'I');
+
+                    exit();
                 
                 }
         
@@ -469,7 +520,7 @@ class Reports extends BaseController
 
         $data['vouchers'] = $this->report_model->SOAVouchers($start_date,$end_date,$account);
 
-        $data['post_dated_cheques'] = $this->report_model->SOAPostDatedCheques($start_date,$end_date,$account);
+        //$data['post_dated_cheques'] = $this->report_model->SOAPostDatedCheques($start_date,$end_date,$account);
 
         $account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $account))->ca_name;
 
@@ -945,7 +996,7 @@ class Reports extends BaseController
 
 
 
-        if($_POST)
+        if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
         {
 
 
@@ -975,7 +1026,7 @@ class Reports extends BaseController
                    $pdf_data .="";
 
     
-                    $pdf_data .= "<tr><td style='border-top: 2px solid'>{$account->ca_name}</td>";
+                    $pdf_data .= "<tr><td >{$account->ca_name}</td>";
 
                     if(empty ($account->start_balance))
                     {
@@ -986,15 +1037,15 @@ class Reports extends BaseController
                     $start_balance = $account->start_balance;
                     }
 
-                    $pdf_data .= "<td style='border-top: 2px solid;' align='right'>{$start_balance}</td>";
+                    $pdf_data .= "<td  align='right'>{$start_balance}</td>";
     
-                    $pdf_data .= "<td style='border-top: 2px solid' align='right'>".format_currency($account->total_debit)."</td>";
+                    $pdf_data .= "<td  align='right'>".format_currency($account->total_debit)."</td>";
 
-                    $pdf_data .= "<td style='border-top: 2px solid' align='right'>".format_currency($account->total_credit)."</td>";
+                    $pdf_data .= "<td  align='right'>".format_currency($account->total_credit)."</td>";
 
-                    $pdf_data .= "<td style='border-top: 2px solid' align='right'>".$account->net_change."</td>";
+                    $pdf_data .= "<td  align='right'>".$account->net_change."</td>";
 
-                    $pdf_data .= "<td style='border-top: 2px solid' align='right'>".$account->balance   ."</td>";
+                    $pdf_data .= "<td  align='right'>".$account->balance   ."</td>";
 
                     $pdf_data .="</tr>";
                    
@@ -1028,18 +1079,18 @@ class Reports extends BaseController
 
                 
     
-                $title = "GLR";
+                $title = "Trial Balance Report ".date('d-M-Y')."";
     
                 $mpdf = new \Mpdf\Mpdf(
     
                     [
-                        'format' => 'A3', // Set page size to A3
-                        'margin_left' => 15,
-                        'margin_right' => 15,
-                        'margin_top' => 16,
-                        'margin_bottom' => 16,
-                        'margin_header' => 9,
-                        'margin_footer' => 9,
+                        'format' => 'A4', // Set page size to A3
+                        'margin_left' => 5,
+                        'margin_right' => 5,
+                        'margin_top' => 10,
+                        'margin_bottom' => 10,
+                        'margin_header' => 5,
+                        'margin_footer' => 5,
                     ]
                 );
     
@@ -1051,8 +1102,8 @@ class Reports extends BaseController
             
                 <style>
                 th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
                     padding-left: 5px;
                     padding-right: 5px;
                     font-size: 12px;
@@ -1081,7 +1132,7 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
+                <h2>Al Fuzail Engineering Services WLL</h2>
                 <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
                 <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
@@ -1094,31 +1145,38 @@ class Reports extends BaseController
             
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:5px;">
                 
             
                 <tr width="100%">
-                <td align="right"><h3>Trial Balance Report</h3></td>
+
+                <td colspan="5" align="right">
+                <h2>Trial Balance</h2>
+                </td>
             
-                <hr>
+                <hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">
 
                 </tr>
 
 
                 <tr width="100%">
 
-                <td>
-                Period : '.$dates.'
+                <td width="15%">
+                Period : 
                 </td>
+
+                <td>'.$dates.'</td>
 
                 </tr>
 
 
                 <tr width="100%">
 
-                <td>
-                Division : Al Fuzail
+                <td width="15%">
+                Division :
                 </td>
+
+                <td align="left">Al Fuzail</td>
 
                 </tr>
 
@@ -1131,17 +1189,17 @@ class Reports extends BaseController
             
                 <tr>
                 
-                <th align="right">Account</th>
+                <td align="right" style="border-bottom: 1px solid">Account</td>
             
-                <th align="right">Begining Balance</th>
+                <td align="right" style="border-bottom: 1px solid">Begining Balance</td>
             
-                <th align="right">Debit Change</th>
+                <td align="right" style="border-bottom: 1px solid">Debit Change</td>
             
-                <th align="right">Credit Change</th>
+                <td align="right" style="border-bottom: 1px solid">Credit Change</td>
             
-                <th align="right">Net Change</th>
+                <td align="right" style="border-bottom: 1px solid">Net Change</td>
     
-                <th align="right">Ending Balance</th>
+                <td align="right" style="border-bottom: 1px solid">Ending Balance</td>
     
                 </tr>
 
@@ -1180,6 +1238,8 @@ class Reports extends BaseController
                 $this->response->setHeader('Content-Type', 'application/pdf');
 
                 $mpdf->Output($title . '.pdf', 'I');
+
+                exit();
 
                 
             
@@ -1282,7 +1342,7 @@ class Reports extends BaseController
 
         $data['content'] = view('accounts/pl_account_report',$data);
 
-        if(!empty($_POST['pdf']))
+        if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
         {
 
 
@@ -1326,14 +1386,14 @@ class Reports extends BaseController
 
                                             </tr>
 
-                                            <tr style='border-top: 2px solid'>
+                                            <tr style=''>
 
-                                            <th style='border-top: 2px solid'><b style='font-size:18px;'>".$ah->ah_account_name."</b></th>
+                                            <th style=''><b style='font-size:11px;text-decoration:underline'>".$ah->ah_account_name."</b></th>
                                            
-                                            <td style='border-top: 2px solid'></td>
-                                            <td style='border-top: 2px solid'></td>
-                                            <td style='border-top: 2px solid'></td>
-                                            <td style='border-top: 2px solid'></td>
+                                            <td style=''></td>
+                                            <td style=''></td>
+                                            <td style=''></td>
+                                            <td style=''></td>
                                             
                                             </tr>";
 
@@ -1362,9 +1422,9 @@ class Reports extends BaseController
 
                  
 
-                    $pdf_data .= "<tr style='border-top: 2px solid'>
+                    $pdf_data .= "<tr style=''>
 
-                                <td style='border-top: 2px solid'>".$ca->ca_name."</td>";
+                                <td style=''>".$ca->ca_name."</td>";
                                 
 
                                 if(isset($ca->tran_total))
@@ -1376,10 +1436,10 @@ class Reports extends BaseController
                                     $ca_tran_total=0;
                                 }
 
-                                $pdf_data .= "<td style='border-top: 2px solid' align='right'>".$ca_tran_total."</td>
-                                <td style='border-top: 2px solid'align='right'>".$fm_perc." %</td>
-                                <td style='border-top: 2px solid' align='right'>".$ca->ytd_total."</td>
-                                <td style='border-top: 2px solid' align='right'>".$perc." %</td>
+                                $pdf_data .= "<td style='' align='right'>".$ca_tran_total."</td>
+                                <td style='' align='right'>".$fm_perc." %</td>
+                                <td style='' align='right'>".$ca->ytd_total."</td>
+                                <td style='' align='right'>".$perc." %</td>
                                 </tr>";
 
                                 $total_perc = $total_perc+$perc;
@@ -1387,8 +1447,8 @@ class Reports extends BaseController
 
                             }
 
-                            $pdf_data .=' <tr style="border-top: 2px solid">
-                                        <th style="border-top: 2px solid" align="right"><b style="font-size:13px;">Total '.$ah->ah_account_name.'</b></th>
+                            $pdf_data .=' <tr style="">
+                                        <th style="border-top: 2px solid" align="center"><b style="font-size:11px;">Total '.$ah->ah_account_name.'</b></th>
                                         <td style="border-top: 2px solid" align="right">'. $total_first_month.'</td>
                                         <td style="border-top: 2px solid" align="right">'.$total_fm_perc.' %</td>
                                         <td style="border-top: 2px solid" align="right">'.$total_ytd.'</td>
@@ -1404,7 +1464,7 @@ class Reports extends BaseController
                 }
                 else
                 {
-                   $dates = date('d-F-Y',strtotime($date_from)) . " to " . date('d-F-Y',strtotime($date_to));
+                   $dates = date('d M Y',strtotime($date_from)) . " to " . date('d M Y',strtotime($date_to));
                 }
 
 
@@ -1429,13 +1489,13 @@ class Reports extends BaseController
                 $mpdf = new \Mpdf\Mpdf(
     
                     [
-                        'format' => 'A3', // Set page size to A3
-                        'margin_left' => 15,
-                        'margin_right' => 15,
-                        'margin_top' => 16,
-                        'margin_bottom' => 16,
-                        'margin_header' => 9,
-                        'margin_footer' => 9,
+                        'format' => 'A4', // Set page size to A3
+                        'margin_left' => 5,
+                        'margin_right' => 5,
+                        'margin_top' => 10,
+                        'margin_bottom' => 10,
+                        'margin_header' => 5,
+                        'margin_footer' => 5,
                     ]
                 );
 
@@ -1453,8 +1513,8 @@ class Reports extends BaseController
             
                 <style>
                 th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
                     padding-left: 5px;
                     padding-right: 5px;
                     font-size: 12px;
@@ -1482,7 +1542,7 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
+                <h2>Al Fuzail Engineering Services WLL</h2>
                 <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
                 <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
@@ -1495,30 +1555,37 @@ class Reports extends BaseController
             
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:2px;">
                 
             
                 <tr width="100%">
-                <td align="right"><h3>Profit Loss Accounts Report</h3></td>
+
+                <td align="right" colspan="5"><h2>Income Statement</h2></td>
             
-                <hr>
+                <hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">
 
                 </tr>
 
 
                 <tr width="100%">
 
-                <td>
-                Period : '.$dates.'
+                <td width="15%">
+                Period :
                 </td>
 
+                <td> '.$dates.'</td>
+
                 </tr>
 
 
                 <tr width="100%">
 
+                <td width="15%">
+                Division : 
+                </td>
+
                 <td>
-                Division : Al Fuzail
+                Al Fuzail
                 </td>
 
                 </tr>
@@ -1532,15 +1599,15 @@ class Reports extends BaseController
             
                 <tr>
                 
-                <th align="right">Description</th>
+                <td align="center" style="border-bottom:1px solid;">Description</td>
             
-                <th align="right"></th>
+                <td align="right" style="border-bottom:1px solid;"></td>
             
-                <th align="right"></th>
+                <td align="right" style="border-bottom:1px solid;"></td>
             
-                <th align="right">Year To date</th>
+                <td align="right" style="border-bottom:1px solid;">Year To date</td>
     
-                <th align="right"></th>
+                <td align="right" style="border-bottom:1px solid;"></td>
 
                 
     
@@ -1639,7 +1706,7 @@ class Reports extends BaseController
     $data['all_accounts'] = $this->report_model->RPSummery($filter_account,$start_date);
 
 
-    if(!empty($_POST['pdf']))
+    if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
     {
 
 
@@ -1761,13 +1828,13 @@ class Reports extends BaseController
             $mpdf = new \Mpdf\Mpdf(
 
                 [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
+                    'format' => 'A4', // Set page size to A3
+                    'margin_left' => 5,
+                    'margin_right' => 5,
+                    'margin_top' => 10,
+                    'margin_bottom' => 10,
+                    'margin_header' => 5,
+                    'margin_footer' => 5,
                 ]
             );
 
@@ -1779,12 +1846,12 @@ class Reports extends BaseController
             }
             else
             {
-               $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+               $dates = date('d M Y',strtotime($start_date));
             }
 
          
 
-            $mpdf->SetTitle('Receivables Payables Report'); // Set the title
+            $mpdf->SetTitle('Receivables Payables Summery'); // Set the title
 
             $html ='
         
@@ -1794,8 +1861,8 @@ class Reports extends BaseController
             border-top: 1px solid rgba(100,100,100, .3);
             }
             th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
+                padding-top: 5px;
+                padding-bottom: 5px;
                 padding-left: 5px;
                 padding-right: 5px;
                 font-size: 12px;
@@ -1823,7 +1890,7 @@ class Reports extends BaseController
         
             <td>
         
-            <h3>Al Fuzail Engineering Services WLL</h3>
+            <h2>Al Fuzail Engineering Services WLL</h2>
             <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
             <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
             
@@ -1840,17 +1907,23 @@ class Reports extends BaseController
             
         
             <tr width="100%">
-            <td align="right"><h3>Receivables Payables Report</h3></td>
+            <td align="right" colspan="5"><h2>Receivables / Payables Summery</h2></td>
         
-            <hr>
+           <hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">
 
             </tr>
 
 
             <tr width="100%">
 
-            <td>
-            Period : '.$date_pdf.'
+            <td width="15%">
+            Period : 
+            </td>
+
+            <td >
+            
+            '.$dates.'
+
             </td>
 
             </tr>
@@ -1858,9 +1931,17 @@ class Reports extends BaseController
 
             <tr width="100%">
 
-            <td>
-            Division : Al Fuzail
+            <td width="15%">
+            Division : 
             </td>
+
+            <td>
+            
+            Al Fuzail
+
+            </td>
+
+
 
             </tr>
 
@@ -1874,17 +1955,17 @@ class Reports extends BaseController
             <tr>
             
           
-            <th align="left">Name Of Customer</th>
+            <td align="center">Name Of Customer</td>
         
-            <th align="right">Amount</th>
+            <td align="right">Amount</td>
 
-            <th align="right">0-30 Days</th>
+            <td align="right">0-30 Days</td>
 
-            <th align="right">31-60 Days</th>
+            <td align="right">31-60 Days</td>
 
-            <th align="right">61-90 Days</th>
+            <td align="right">61-90 Days</td>
 
-            <th align="right">Above 90 Days</th>
+            <td align="right">Above 90 Days</td>
 
             </tr>
 
@@ -1920,6 +2001,8 @@ class Reports extends BaseController
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+
+            exit;
 
     }
 
@@ -2013,7 +2096,7 @@ class Reports extends BaseController
         //Fetch Next Balance Sheet For Validation
 
 
-        if(!empty($_POST['pdf']))
+        if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
         {
 
             $pdf_data ="";
@@ -2022,11 +2105,11 @@ class Reports extends BaseController
 
             $pdf_data .='<tr>
 
-                <td style="'.$border.'"><b>' .$ah->ah_account_name.'</b></td>
+                <td style="text-decoration:underline" align="center"><b>' .$ah->ah_account_name.'</b></td>
 
-                <td style="'.$border.'"> </td>
+                <td style=""> </td>
 
-                <td style="'.$border.'"></td>
+                <td style=""></td>
                 
                 </tr>';
 
@@ -2054,11 +2137,11 @@ class Reports extends BaseController
 
                     <tr>
 
-                    <td  style="'.$border.'">'.$ca->ca_name.'</td>
+                    <td  style="">'.$ca->ca_name.'</td>
 
-                    <td  style="'.$border.'">'.format_currency($ca->balance).'</td>
+                    <td align="right" style="">'.format_currency($ca->balance).'</td>
 
-                    <td  style="'.$border.'">'.number_format($perc,2).' %</td>
+                    <td align="right" style="">'.number_format($perc,2).' %</td>
 
 
                     </tr>';
@@ -2074,9 +2157,9 @@ class Reports extends BaseController
 
                 <td align="center" style="'.$border.'">Total '.$ah->ah_account_name.'</td>
 
-                <td style="'.$border.'">'.format_currency($total_bal).'</td>
+                <td style="'.$border.'" align="right">'.format_currency($total_bal).'</td>
 
-                <td style="'.$border.'">'.number_format($total_perc,2).' %</td>
+                <td style="'.$border.'"  align="right">'.number_format($total_perc,2).' %</td>
 
                 </tr>
 
@@ -2100,18 +2183,18 @@ class Reports extends BaseController
     
                 
     
-                $title = "GLR";
+                $title = "Balance Sheet Report ".date('d M Y')."";
     
                 $mpdf = new \Mpdf\Mpdf(
     
                     [
-                        'format' => 'A3', // Set page size to A3
-                        'margin_left' => 15,
-                        'margin_right' => 15,
-                        'margin_top' => 16,
-                        'margin_bottom' => 16,
-                        'margin_header' => 9,
-                        'margin_footer' => 9,
+                        'format' => 'A4', // Set page size to A3
+                        'margin_left' => 5,
+                        'margin_right' => 5,
+                        'margin_top' => 10,
+                        'margin_bottom' => 10,
+                        'margin_header' => 5,
+                        'margin_footer' => 5,
                     ]
                 );
 
@@ -2134,8 +2217,8 @@ class Reports extends BaseController
             
                 <style>
                 th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
                     padding-left: 5px;
                     padding-right: 5px;
                     font-size: 12px;
@@ -2163,7 +2246,7 @@ class Reports extends BaseController
             
                 <td>
             
-                <h3>Al Fuzail Engineering Services WLL</h3>
+                <h2>Al Fuzail Engineering Services WLL</h2>
                 <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
                 <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                 
@@ -2176,31 +2259,44 @@ class Reports extends BaseController
             
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:2px;">
                 
             
                 <tr width="100%">
-                <td align="right"><h3>Balance Sheet Report</h3></td>
+
+                <td colspan="5" align="right"><h2>Balance Sheet</h2></td>
             
-                <hr>
+                <hr style="height:3px;border:none;color:#333;background-color:#333;margin-top:0">
 
                 </tr>
 
 
                 <tr width="100%">
 
+                <td width="15%">
+                Period : 
+                </td>
+
                 <td>
-                Period : '.$dates.'
+                
+                '.$dates.'
+
                 </td>
 
                 </tr>
 
 
+
                 <tr width="100%">
 
-                <td>
-                Division : Al Fuzail
+                <td width="15%">
+                Division : 
                 </td>
+
+                <td>
+                Al Fuzail
+                </td>
+
 
                 </tr>
 
@@ -2212,13 +2308,12 @@ class Reports extends BaseController
                 
             
                 <tr>
-                
               
-                <th align="">Assets</th>
+                <td align="center" style="border-bottom:1px solid">Assets</td>
             
-                <th align="">Amount</th>
+                <td align="center" style="border-bottom:1px solid">Amount</td>
     
-                <th align="">%</th>
+                <td align="right" style="border-bottom:1px solid">%</td>
 
     
                 </tr>
@@ -2254,6 +2349,8 @@ class Reports extends BaseController
                // $mpdf->SetFooter($footer);
                 $this->response->setHeader('Content-Type', 'application/pdf');
                 $mpdf->Output($title . '.pdf', 'I');
+
+                exit();
 
 
         }

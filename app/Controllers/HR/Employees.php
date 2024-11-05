@@ -135,7 +135,7 @@ class Employees extends BaseController
 
         $insert_data['emp_division'] = $this->request->getPost('division');
 
-
+        
         if ($_FILES['photo']['name'] !== '') {
             $attachment_name = $this->uploadFile($insert_data['emp_uid'],'photo','uploads/Employees');
             $insert_data['emp_picture'] = $attachment_name;
@@ -165,16 +165,17 @@ class Employees extends BaseController
 
         }
 
+        $coa_data['ca_name'] = $insert_data['emp_name'];
 
-        // $r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $coa_data['ca_account_type'] = $insert_data['emp_account_head'];
 
-        // $cond = array('r_id' => $id);
+        $coa_data['ca_customer'] = $id;
 
-        // $update_data['r_ref_no'] = $r_ref_no;
+        $coa_data['ca_account_id'] = $this->request->getPost('account_id');
 
-        // $this->common_model->EditData($update_data,$cond,'accounts_receipts');
+        $coa_data['ca_type'] = "EMPLOYEE";
 
-
+        $this->common_model->InsertData('accounts_charts_of_accounts',$coa_data);
 
         echo $id;
 
@@ -207,6 +208,18 @@ class Employees extends BaseController
             $update_data['emp_bank'] = $this->request->getPost('bank_name');
             $update_data['emp_air_ticket_per_year'] = $this->request->getPost('air_ticket_per_year');
             $update_data['emp_budgeted_ticket_amount'] = $this->request->getPost('budgeted_air_ticket');
+
+            
+            $update_data['emp_vacation_taken'] = $this->request->getPost('vacation_taken');
+
+            if(!empty($this->request->getPost('air_ticket_due_from')))
+            $update_data['emp_air_ticket_due_from'] = date('Y-m-d',strtotime($this->request->getPost('air_ticket_due_from')));
+
+            if(!empty($this->request->getPost('vacation_pay_due_from')))
+            $update_data['emp_vacation_pay_due_from']= date('Y-m-d',strtotime($this->request->getPost('vacation_pay_due_from')));
+
+            $update_data['emp_indemnity_advance']= $this->request->getPost('indemnity_advance');
+
 
             $emp_cond = array('emp_id' => $id);
 
@@ -302,7 +315,7 @@ class Employees extends BaseController
         public function Update()
         {    
 
-        $cond = array('emp_id' => $this->request->getPost('emp_id'));
+        $cond = array('emp_id' => $id = $this->request->getPost('emp_id'));
 
         $insert_data['emp_uid'] = $this->request->getPost('employee_id');
 
@@ -325,9 +338,17 @@ class Employees extends BaseController
             $attachment_name = $this->uploadFile($insert_data['emp_uid'],'photo','uploads/Employees');
             $insert_data['emp_picture'] = $attachment_name;
         }
-        
+
+
+        $coa_data['ca_name'] = $insert_data['emp_name'];
+
+        $cond_coa['ca_customer'] = $id;
+
+        $cond_coa['ca_type'] ="EMPLOYEE";
         
         $this->common_model->EditData($insert_data,$cond,'hr_employees');
+
+        $this->common_model->EditData($coa_data,$cond_coa,'accounts_charts_of_accounts');
 
     }
 
@@ -358,6 +379,17 @@ class Employees extends BaseController
             $update_data['emp_bank'] = $this->request->getPost('bank_name');
             $update_data['emp_air_ticket_per_year'] = $this->request->getPost('air_ticket_per_year');
             $update_data['emp_budgeted_ticket_amount'] = $this->request->getPost('budgeted_air_ticket');
+
+            $update_data['emp_vacation_taken'] = $this->request->getPost('vacation_taken');
+
+            if(!empty($this->request->getPost('air_ticket_due_from')))
+            $update_data['emp_air_ticket_due_from'] = date('Y-m-d',strtotime($this->request->getPost('air_ticket_due_from')));
+
+            if(!empty($this->request->getPost('vacation_pay_due_from')))
+            $update_data['emp_vacation_pay_due_from']= date('Y-m-d',strtotime($this->request->getPost('vacation_pay_due_from')));
+
+            $update_data['emp_indemnity_advance']= $this->request->getPost('indemnity_advance');
+            
 
             $emp_cond = array('emp_id' => $id);
 
@@ -450,7 +482,11 @@ class Employees extends BaseController
 
     $data['employee']->emp_doj = date('d-F-Y',strtotime($data['employee']->emp_date_of_join));
 
-    //$data['employee'];
+    if(!empty($data['employee']->emp_air_ticket_due_from))
+    $data['employee']->emp_air_ticket_due_from = date('d-F-Y',strtotime($data['employee']->emp_air_ticket_due_from));
+
+    if(!empty($data['employee']->emp_vacation_pay_due_from))
+    $data['employee']->emp_vacation_pay_due_from = date('d-F-Y',strtotime($data['employee']->emp_vacation_pay_due_from));
 
     echo json_encode($data);
 

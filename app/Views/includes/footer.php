@@ -84,7 +84,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js"></script>
    
+
+    
+    <!--
     <script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
+    -->
+
 
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
@@ -430,10 +435,23 @@
 
             }); 
 
+
+            //Disable modal on backdrop click
+
+            $('.modal').modal({
+                        backdrop: 'static',
+                        keyboard: true, 
+                        show: true
+            }); 
+
+
+
+
         });
 
 
-        /*
+         /*
+        
         document.addEventListener("DOMContentLoaded", function(event) { 
 
             function isDataTableRequest(ajaxSettings) {
@@ -471,11 +489,22 @@
             $(document).ajaxError(function(){
                 alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
             });
-            
 
         });
 
         */
+
+
+
+        $(document).ready(function() {
+        $.datepicker.setDefaults({
+            //maxDate: new Date(2023, 2, 18) 
+        });
+        });
+
+
+
+        
 
         
    

@@ -858,17 +858,9 @@ class Payments extends BaseController
 
         $data['pay'] = $this->common_model->SingleRowJoin('accounts_payments', $cond, $joins);
 
-        $joins_inv = array(
+        $data['pay']->total_amount = format_currency($data['pay']->pay_amount);
 
-            array(
-                'table' => 'crm_proforma_invoices',
-                'pk' => 'pf_id',
-                'fk' => 'pi_invoice',
-            ),
-
-        );
-
-
+       
 
         $joins_inv = array(
            
@@ -876,7 +868,9 @@ class Payments extends BaseController
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
                 'fk' => 'pd_debit_account',
-            )
+            ),
+
+            
 
         );
 
@@ -886,7 +880,7 @@ class Payments extends BaseController
 
         $first = true;
 
-
+        $isl=1;
         foreach ($invoices as $inv) {
 
             $invoice_sec .="";
@@ -897,20 +891,78 @@ class Payments extends BaseController
                     'table' => 'pro_purchase_voucher',
                     'pk' => 'pv_id',
                     'fk' => 'pdi_invoice',
-                )
+                ),
+
+                array(
+
+                    'table' => 'accounts_payment_debit',
+
+                    'pk' => 'pd_id',
+
+                    'fk' => 'pdi_debit_id',
+
+                ),
+
+
 
             );
 
             $linked_voucher = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices', array('pdi_debit_id' => $inv->pd_id), $joins_voucher);
 
             
+
+            $data['invoices'] .="
+
+            <tr>
+            
+            <td>{$isl}</td>
+
+            <td>{$inv->ca_name}</td>
+
+            <td>{$inv->pd_payment_amount}</td>
+
+            <td>{$inv->pd_remarks}</td>
+            
+            </tr>
+            
+            ";
+
+            $isl++;
+
+            $o=1;
+
+            if(!empty($linked_voucher))
+            {
+
+                $data['invoices'] .= "<tr>
+            
+                <th>Linked</th>
+    
+                <td></td>
+    
+                <td></td>
+    
+                <td></td>
+                
+                </tr>";
+
+            }
+
             foreach($linked_voucher as $lv){
                 
             $data['invoices'] .= "<tr>
             
-            <td>1</td>
+            <td></td>
+
+            <td>{$inv->ca_name}</td>
+
+            <td>{$inv->pd_payment_amount}</td>
+
+            <td>{$inv->pd_remarks}</td>
             
             </tr>";
+
+            $o++;
 
             }
 
@@ -1947,7 +1999,13 @@ class Payments extends BaseController
 
             $insert_data['pa_advance_amount'] = $this->request->getPost('advance_amount')[$i];
 
+            if($insert_data['pa_advance_amount']>0)
+
+            {
+
             $id = $this->common_model->InsertData('accounts_payment_advances', $insert_data);
+
+            }
 
             }
 

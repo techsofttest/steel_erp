@@ -59,7 +59,7 @@ class PettyCashVoucher extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color view_btn" data-id="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn d-none" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color view_btn" data-id="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "pcv_id"=>$i,
@@ -711,8 +711,9 @@ class PettyCashVoucher extends BaseController
 
 
 
-    public function Print(){
+    public function Print($id=""){
 
+        if($id=="")
         $id = 1;
     
         $cond = array('pcv_id' => $id);
@@ -725,7 +726,7 @@ class PettyCashVoucher extends BaseController
     
         $pcv = $this->common_model->SingleRowJoin('accounts_petty_cash_voucher',$cond,$joins);
     
-        $total_amount = NumberToWords::transformNumber('en',$pcv->pcv_total); // outputs "fifty dollars ninety nine cents"
+        $total_amount = 25000.00;
     
     
         $joins_inv = array(
@@ -743,51 +744,38 @@ class PettyCashVoucher extends BaseController
                 'fk' => 'pci_debit_account',
                 ),
     
-    
         );
     
         $orders = $this->common_model->FetchWhereJoin('accounts_petty_cash_debits',array('pci_voucher_id'=>$id),$joins_inv);
     
     
         $orders_sec ="";
-    
-        foreach($orders as $order)
+
+
+        for($i=0;$i<=4;$i++)
         {
-    
-        $sales_order ="None";
-    
-        if($order->ji_sales_order_id!=0)
-        {
-        $sales_order = $order->so_order_no;
-        }
-    
-        if($order->ji_debit>0)
-        {
-        $debit =$order->ji_debit;
-        }
-    
-        if($order->ji_credit>0)
-        {
-        $credit = $order->ji_credit;
-        }
-    
-        $orders_sec .='<tr>
+
+
+        $orders_sec .='
         
-        <td>'.$sales_order.'</td>
-    
-        <td>'.$order->ca_account_id.'</td>
+            <tr style="border-bottom:3px solid;">
+            
+            <td align="left">None</td>
         
-        <td>'.$order->ji_narration.'</td>
-    
-        <td>'.$debit.'</td>
-    
-        <td>'.$credit.'</td>
-    
-        </tr>';
-    
-    
+            <td align="left">4500</td>
+        
+            <td align="left">Cost - Fabrication</td>
+        
+            <td align="right">12,000.00</td>
+        
+            </tr>
+        
+        ';
+
+
         }
     
+        
     
     
             $mpdf = new \Mpdf\Mpdf([
@@ -832,7 +820,7 @@ class PettyCashVoucher extends BaseController
         
             <tr width="100%">
             
-            <td align="right"><h3>Journal Voucher</h3></td>
+            <td align="right"><h3>Petty Cash Voucher</h3></td>
         
             </tr>
         
@@ -845,7 +833,7 @@ class PettyCashVoucher extends BaseController
             
             <td width="50%">
             
-            Reference : '.$jv->jv_voucher_no.'
+            Reference : PCV00001
             
             </td>
             
@@ -857,7 +845,7 @@ class PettyCashVoucher extends BaseController
             
             <td width="50%">
             
-            Date : '.date('d-m-Y',strtotime($jv->jv_date)).'
+            Date : '.date('d-m-Y',strtotime("20-10-2024")).'
             
             </td>
             
@@ -895,9 +883,7 @@ class PettyCashVoucher extends BaseController
         
             <th align="left">Account Description</th>
         
-            <th align="left">Debit</th>
-        
-            <th align="left">Credit</th>
+            <th align="left">Amount</th>
         
             </tr>
         
@@ -917,14 +903,16 @@ class PettyCashVoucher extends BaseController
             $footer = '
     
             <table width="100%">
+
             
             <tr>
             
-            <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+            <td colpsan="5" align="left"><b>Amount : '.currency_to_words($total_amount).'</b></td>
         
-            <td colspan="1" align="left" style="text-align:right;"><b>'.$jv->jv_total.'</b></td>
+            <td colspan="1" align="right" style="text-align:right;"><b>'.format_currency($total_amount).'</b></td>
         
             </tr>
+
         
             </table>
         
@@ -933,13 +921,13 @@ class PettyCashVoucher extends BaseController
             
             <tr>
         
-            <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+            <td width="25%" style="padding-right:60px;">Prepared by : (print)</th>
         
-            <th width="25%" style="padding-right:60px;">Received by:</th>
+            <td width="25%" style="padding-right:60px;">Received by:</td>
         
-            <th width="25%" style="padding-right:60px;">Finance Manager</th>
+            <td width="25%" style="padding-right:60px;">Finance Manager</td>
         
-            <th width="25%" style="padding-right:60px;">CEO</th>
+            <td width="25%" style="padding-right:60px;">CEO</td>
         
             </tr>
         

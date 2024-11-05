@@ -66,9 +66,14 @@
 
                                                 <tr>
 
-                                                    <td>Debit Account</td>
+                                                    <td>Credit Account</td>
 
                                                     <th id="view_debit_account"></th>
+
+                                                    <td class="view_cheque_sec">Cheque No</td>
+
+                                                    <th class="view_cheque_sec" id="view_cheque_no"></th>
+
 
                                                 </tr>
 
@@ -1604,11 +1609,37 @@
 
                         $('#view_payment_invoices').html(data.invoices);
 
+
+                        if (data.pay.pay_method == "1") {
+
+                        $('.view_cheque_sec').removeClass("d-none");
+
+                        if ((data.pay.pay_cheque_copy != "") && (data.pay.pay_cheque_copy != null) ) {
+                            
+                            $('#view_cheque_file').html('<a href="<?= base_url(); ?>uploads/Payments/' + data.pay.pay_cheque_copy + '" target="_blank">View </a>');
+                        } else {
+                            $('#view_cheque_file').html("-");
+                        }
+
+                        $('#view_cheque_no').html(data.pay.pay_cheque_no);
+
+                        $('#view_cheque_date').html(data.pay.pay_cheque_date);
+
+                        } else {
+
+                        $('.view_cheque_sec').addClass("d-none");
+
+                        }
+                        
+
                         if (data.pay.pay_method == "2") {
                             $('#view_bank').html('-');
                         } else {
                             $('#view_bank').html(data.pay.bank_name);
                         }
+
+                        $('#total_payment_amount_view').html(data.pay.total_amount);
+
 
 
                         $('#ViewModal').modal('show');

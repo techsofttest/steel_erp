@@ -2033,7 +2033,8 @@
 
                             if(data.status==0)
                             {
-                             alertify.error(data.msg).delay(3).dismissOthers();    
+                             $("#menudiv")[0].scrollIntoView()
+                             alertify.error(data.msg).delay(3).dismissOthers();
                              return false;
                             }
                        
@@ -2181,8 +2182,6 @@
                     $('#normal_ot_edit').val(data.ts.normal_ot_edit);
 
                     $('#friday_ot_edit').val(data.ts.ts_friday_ot);
-
-
 
                     
                     $('#EditModal').modal('show');
@@ -2417,64 +2416,6 @@
 
 
 
-      
-        $("body").on('input', '.time_to1', function(){ 
-
-        var parent = $(this).closest('.day_row');
-
-        var time1 = parent.find(".time_from").val().split(':');
-        
-        var time2 = parent.find(".time_to").val().split(':');
-
-        var hours1 = parseInt(time1[0], 10), 
-             hours2 = parseInt(time2[0], 10),
-             mins1 = parseInt(time1[1], 10),
-             mins2 = parseInt(time2[1], 10);
-
-        /*
-         var hours = hours2 - hours1, mins = 0;
-         if(hours < 0) hours = 24 + hours;
-         if(mins2 >= mins1) {
-             mins = mins2 - mins1;
-         }
-         else {
-             mins = (mins2 + 60) - mins1;
-             hours--;
-         }
-         mins = mins / 60; // take percentage in 60
-         hours += mins;
-         hours = hours.toFixed(2);
-         //$(".Hours").val(hours);
-         */
-
-       // Get the values of time_from and time_to inputs
-        var timeFrom = parent.find(".time_from").val();
-        var timeTo = parent.find(".time_to").val();
-
-        // Parse the time values into hours and minutes
-        var fromHours = parseInt(timeFrom.split(':')[0]);
-        var fromMinutes = parseInt(timeFrom.split(':')[1]);
-        var toHours = parseInt(timeTo.split(':')[0]);
-        var toMinutes = parseInt(timeTo.split(':')[1]);
-
-        // Calculate the difference in minutes
-        var diffMinutes = (toHours * 60 + toMinutes) - (fromHours * 60 + fromMinutes);
-
-        // Convert minutes difference into hours and remaining minutes
-        var hours = Math.floor(diffMinutes / 60);
-        var minutes = diffMinutes % 60;
-
-        var formattedHours = hours + (minutes / 60);
-
-        // Display the total hours and minutes in the .total_hours input
-        parent.find('.total_hours').val(formattedHours.toFixed(2));
-
-         //console.log(hours);
-
-        });
-
-
-
         $("body").on('input change', '.time_to', function(){
 
             var parent = $(this).closest('.day_row');
@@ -2483,7 +2424,11 @@
 
             var time2 = parent.find(".time_to").val().split(':');
 
+            var daytype = parent.find(".day_type").val();
+
             var elem = parent.find('.total_hours');
+
+            var selected = parent.find(".day_type").children(':selected').text();
 
             let hours;
             let minute;
@@ -2624,6 +2569,51 @@
             }
         }
 
+        var total_hours = elem.val();
+
+        if(total_hours>5)
+        {
+
+        var total_hours = total_hours-1;
+
+        elem.val(total_hours);
+
+        }
+
+
+        if((total_hours>8) && (selected=="Working Day"))
+        {
+
+        var ot = parseFloat(total_hours-8)||0.00;
+
+        parent.find('.normal_hours').val('8.00');
+
+        parent.find('.normal_ot').val(ot).trigger('change');
+
+        parent.find('.friday_ot').val(0).trigger('change');
+
+        }
+
+        else if((selected=="Friday") || (selected=="Public Holiday"))
+        {
+
+        parent.find('.normal_hours').val('0').trigger('change');
+
+        parent.find('.normal_ot').val('0').trigger('change');
+
+        parent.find('.friday_ot').val(total_hours).trigger('change');
+
+        }
+
+        else{
+
+        parent.find('.normal_hours').val(total_hours);
+
+        parent.find('.normal_ot').val('').trigger('change');
+
+        parent.find('.friday_ot').val('').trigger('change');    
+
+        }
 
 
         });
@@ -2651,47 +2641,57 @@
 
             leave_amount = 0;
 
+
             parent.find('.time_from').val('').trigger('change');
 
             parent.find('.time_to').val('').trigger('change');
 
-            if($(this).val()=="1")
+            parent.find('.total_hours').val('').trigger('change');
+
+            parent.find('.normal_hours').val('').trigger('change');
+
+            parent.find('.friday_ot').val('').trigger('change');
+            
+
+            var selected = $(this).children(':selected').text();
+
+            if( (selected=="Friday") || (selected=="Working Day") || (selected=="Public Holiday"))
             {
 
-            parent.find('input').attr('required',true);
+            //parent.find('input').attr('required',true);
 
             parent.find('.time_from').removeAttr('readonly');
 
             parent.find('.time_to').removeAttr('readonly');
 
 
-            parent.find('.total_hours').removeAttr('readonly');
+            //parent.find('.total_hours').removeAttr('readonly');
 
-            parent.find('.normal_hours').removeAttr('readonly');
+            //parent.find('.normal_hours').removeAttr('readonly');
 
-            parent.find('.normal_ot').removeAttr('readonly');
+            //parent.find('.normal_ot').removeAttr('readonly');
 
-            parent.find('.friday_ot').removeAttr('readonly');
+            //parent.find('.friday_ot').removeAttr('readonly');
 
 
             }   
             else
             {
 
-            parent.find('input').removeAttr('required');
+            //parent.find('input').removeAttr('required');
 
             parent.find('.time_from').attr('readonly',true);
 
             parent.find('.time_to').attr('readonly',true);
 
 
-            parent.find('.total_hours').attr('readonly',true);
+            //parent.find('.total_hours').attr('readonly',true);
 
-            parent.find('.normal_hours').attr('readonly',true);
+            //parent.find('.normal_hours').attr('readonly',true);
 
-            parent.find('.normal_ot').attr('readonly',true);
+            //parent.find('.normal_ot').attr('readonly',true);
 
-            parent.find('.friday_ot').attr('readonly',true);
+            //parent.find('.friday_ot').attr('readonly',true);
 
 
             parent.find('.total_hours').val(0);
@@ -2858,9 +2858,9 @@
          if(total_hours<1)
          {
 
-        alertify.error('Enter total hours first!').delay(3).dismissOthers();
+        //alertify.error('Enter total hours first!').delay(3).dismissOthers();
         
-        parent.find('.total_hours').focus();
+        //parent.find('.total_hours').focus();
 
         $(this).val('');
 
@@ -2887,6 +2887,9 @@
               $(this).val('');
               return false;
             }
+
+
+           
             
 
          }
@@ -2929,7 +2932,9 @@
 
         });
         
-        var total_normal_ot_salary = total_normal_ot*hourly_salary;
+        var total_normal_ot_salary = total_normal_ot*hourly_salary; 
+
+
 
         $('#total_normal_ot_salary').val(total_normal_ot_salary.toFixed(2));
 
@@ -2959,6 +2964,7 @@
         total_hours_month+=parseFloat($(this).val())||0;
 
         });
+        
 
 
         //Paid Leave
@@ -2980,6 +2986,23 @@
 
 
 
+        /*
+
+        $("body").on('change', '.total_hours', function(){
+            
+        var parent = $(this).closest('.day_row');
+
+        var total = $(this).val();
+
+        });
+
+        */
+
+
+
+
+
+
 
         
 
@@ -2991,6 +3014,62 @@
 
 </script>
 
+<script>
+
+
+function formatTime(timeInput) {
+    let intValidNum = timeInput.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+
+    // Handle hours input
+    if (intValidNum.length === 2) {
+        if (parseInt(intValidNum) < 24) {
+            timeInput.value = intValidNum + ":"; // Add colon for valid hour
+            return;
+        } else if (parseInt(intValidNum) === 24) {
+            timeInput.value = "00:"; // Reset to 00: for 24
+            return;
+        } else {
+            timeInput.value = ""; // Reset for invalid hour
+            return;
+        }
+    }
+
+    // Handle minutes input
+    if (intValidNum.length === 5) {
+        const minutes = intValidNum.slice(2, 4);
+        if (parseInt(minutes) < 60) {
+            return; // Valid input, do nothing
+        } else {
+            timeInput.value = timeInput.value.slice(0, 3) + ":"; // Reset minutes to HH:
+            return;
+        }
+    }
+
+    // Handle input longer than expected
+    if (intValidNum.length > 5) {
+        timeInput.value = timeInput.value.slice(0, 5); // Keep only HH:MM
+    }
+}
+
+
+
+
+
+/*
+function validateTime(input) {
+    const timePattern = /^(?:[01]\d|2[0-3]):[0-5]\d$/; // Regex for HH:MM format
+    if (!timePattern.test(input.value)) {
+        alert("Invalid time format. Please enter time in HH:MM format (24-hour clock).");
+        input.value = ""; // Clear invalid input
+        input.focus(); // Set focus back to the input
+    }
+}
+    */
+
+
+
+
+</script>
 
 
 	

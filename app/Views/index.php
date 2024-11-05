@@ -10,6 +10,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="description" />
     <meta content="" name="author" />
+
+
+
+
+    <style>
+
+
+        .counter-value
+        {
+            font-size: 50px;
+        }
+
+        .counter-title
+        {
+
+            font-size:13px;
+
+        }
+
+        .card {
+            margin-bottom: 5px !important;
+            margin-top: 5px !important;
+        }
+
+        .card-body
+        {
+            padding:1px 15px !important;
+        }
+
+        .form-card
+        {
+            background-color: #dddfdf !important;
+        }
+
+
+    </style>
     
        
     <!--header section start-->
@@ -47,184 +83,520 @@
                                 
                                 <!--end row-->
 								 <div class="row project-wrapper">
+
+
                         <div class="col-xxl-8">
+
+                            
+
                             <div class="row">
-                                <div class="col-xl-4">
-                                    <div class="card card-animate">
-                                        <div class="card-body" style="background: #405189;">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm flex-shrink-0">
-                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-2 fs-2">
-                                                        <i data-feather="briefcase" class="text-primary"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="flex-grow-1 overflow-hidden ms-3">
-                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Sales</p>
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $sales_count; ?>">0</span></h4>
-                                                        <!-- <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>5.02 %</span> -->
-                                                    </div>
-                                                    <p class="text-white text-truncate mb-0"></p>
-                                                </div>
+
+
+
+                                    <form method="GET">
+
+
+                                <div class="col-xl-12">
+
+                                    
+                                    <div class="">
+
+                                        <div class="card-body p-2" style="">
+
+                                        <div class="row">
+
+
+
+                                        <div class="col-xl-5">
+
+
+                                        <div class="row align-items-end">
+
+                                            <div class="col-4">
+                                            <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Accounting Year</label>
                                             </div>
+
+                                            <div class="col-6">
+
+
+                                            <select class="form-control" name="ac_year" id="">
+
+                                                <!--<option value="2023">2023</option>-->
+
+                                                <option value="2024" Selected>2024</option>
+                                               
+                                                </select>
+
+
+                                            </div>
+
+                                            </div>  
+
+                                        </div>
+
+
+
+
+                                    <div class="col-xl-2">
+
+
+                                    <div class="row align-items-end justify-content-center">
+
+                                       
+                                        <div class="col-12">
+
+                                        <button class="btn btn-danger" name="action" value="save" type="submit" onclick="return confirm('Change accounting period & year?\nNo transactions can be posted prior to the accounting period!');">Save</button>
+
+
+                                        </div>
+
+                                        </div>  
+
+                                    </div>
+
+
+
+
+                                <div class="col-xl-5">  
+
+                                    
+                                    <div class="row align-items-end">
+
+                                    <div class="col-3">
+                                    <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">User</label>
+                                    </div>
+
+                                    <div class="col-9">
+                                    
+                                    <?php echo !empty(session()->get('admin_name')) ? session()->get('admin_name') : "Admin" ?>
+
+                                    </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                        </div>
+                                           
+
                                         </div><!-- end card body -->
                                     </div>
                                 </div><!-- end col -->
 
-                                <div class="col-xl-4">
-                                    <div class="card card-animate">
-                                        <div class="card-body" style="background: cadetblue;">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm flex-shrink-0">
-                                                    <span class="avatar-title bg-warning-subtle text-warning rounded-2 fs-2">
-                                                        <i data-feather="user" class="text-warning"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <p class="text-uppercase fw-medium text-white mb-3">Customers</p>
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $customers_count; ?>">0</span></h4>
-                                                        <!-- <span class="badge bg-success-subtle text-success fs-12"><i class="ri-arrow-up-s-line fs-13 align-middle me-1"></i>3.58 %</span> -->
-                                                    </div>
-                                                    <p class="text-muted mb-0"></p>
-                                                </div>
+
+
+
+
+                                <div class="col-xl-12">
+
+
+                                    
+                                    <div class="">
+                                        <div class="card-body p-2" style="">
+
+                                        <div class="row">
+
+                                        <div class="col-xl-5">
+
+
+                                        <div class="row align-items-end">
+
+                                            <div class="col-4">
+                                            <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Accounting Period</label>
                                             </div>
+
+                                            <div class="col-6">
+
+
+                                            <select class="form-control" name="ac_month" id="months">
+                                                <option value="">Select a month</option>
+                                                <?php
+                                                $months = [
+                                                    "January", "February", "March", "April",
+                                                    "May", "June", "July", "August",
+                                                    "September", "October", "November", "December"
+                                                ];
+                                                
+                                                foreach ($months as $index => $month) {
+                                                    
+                                                    if(empty($_GET['ac_month']) && $month==date('F')) 
+                                                    { 
+                                                    $sel ="selected"; 
+                                                    }
+                                                    else if(!empty($_GET['ac_month']) && $_GET['ac_month']==$index+1)
+                                                    {
+                                                    $sel ="selected"; 
+                                                    }
+                                                    else{ 
+                                                    $sel=""; 
+                                                    }
+
+                                                    echo '<option value="' . ($index + 1) . '" '.$sel.'>' . $month . '</option>';
+                                                
+                                                }
+                                                ?>
+                                                </select>
+
+
+                                            </div>
+
+                                            </div>  
+
+                                        </div>
+
+
+
+
+                                        <div class="col-xl-2">
+
+
+                                        <div class="row align-items-end justify-content-center">
+
+                                        
+                                            <div class="col-12">
+
+                                            <button class="btn btn-success" name="action" value="search" type="submit">Search</button>
+
+
+                                            </div>
+
+                                            </div>  
+
+                                        </div>
+
+
+
+                                        <div class="col-xl-5">
+
+                                          
+                                           <div class="row align-items-end">
+
+                                            <div class="col-3">
+                                            <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Date</label>
+                                            </div>
+
+                                            <div class="col-9">
+                                            
+                                            <?php echo date('d-F-Y'); ?>
+
+                                            </select>
+                                            </div>
+
+                                            </div>
+
+                                        </div>
+
+
+
+                                        </div>
+                                           
+
                                         </div><!-- end card body -->
                                     </div>
                                 </div><!-- end col -->
 
-                                <div class="col-xl-4">
-                                    <div class="card card-animate">
-                                        <div class="card-body" style="background: darkslategray;">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm flex-shrink-0">
-                                                    <span class="avatar-title bg-info-subtle text-info rounded-2 fs-2">
-                                                        <i data-feather="clock" class="text-info"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="flex-grow-1 overflow-hidden ms-3">
-                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Enquiries</p>
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value text-white" data-target="<?= $enquiry_count; ?>">0</span></h4>
-                                                        <!-- <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>10.35 %</span> -->
-                                                    </div>
-                                                    <p class="text-muted text-truncate mb-0"></p>
-                                                </div>
-                                            </div>
-                                        </div><!-- end card body -->
-                                    </div>
-                                </div><!-- end col -->
+
+                                </form>
+
+                              
+
+
+                                         
+
+
+
+
+
                             </div><!-- end row -->
 
-                                <div class="row">
-                                    <div class="col-xl-3 col-md-6">
-                                        <!-- card -->
-                                        <div class="card card-animate">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Receipt Total Today</p>
-                                                    </div>
-                                                   
-                                                </div>
-                                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                                    <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $receipts_today; ?>">0</span> AED</h4>
-                                                        <a href="<?php echo base_url(); ?>Accounts/Receipts" class="text-decoration-underline">View All</a>
-                                                    </div>
-                                                    <div class="avatar-sm flex-shrink-0">
-                                                        <span class="avatar-title bg-success-subtle rounded fs-3">
-                                                            <i class="bx bx-dollar-circle text-success"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div><!-- end card body -->
-                                        </div><!-- end card -->
-                                    </div><!-- end col -->
 
-                                    <div class="col-xl-3 col-md-6">
-                                        <!-- card -->
-                                        <div class="card card-animate">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Sales Order Total Today</p>
-                                                    </div>
-                                                  
-                                                </div>
-                                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                                    <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $sales_orders_today; ?>">0</span> AED</h4>
-                                                        <a href="<?php echo base_url(); ?>CRM/SalesOrder" class="text-decoration-underline">View all </a>
-                                                    </div>
-                                                    <div class="avatar-sm flex-shrink-0">
-                                                        <span class="avatar-title bg-info-subtle rounded fs-3">
-                                                            <i class="bx bx-shopping-bag text-info"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div><!-- end card body -->
-                                        </div><!-- end card -->
-                                    </div><!-- end col -->
 
-                                    <div class="col-xl-3 col-md-6">
-                                        <!-- card -->
-                                        <div class="card card-animate">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Purchase Order Total Today</p>
-                                                    </div>
-                                                   
-                                                </div>
-                                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                                    <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $purchase_orders_today; ?>">0</span> AED</h4>
-                                                        <a href="<?php echo base_url(); ?>Procurement/PurchaseOrder" class="text-decoration-underline">View All</a>
-                                                    </div>
-                                                    <div class="avatar-sm flex-shrink-0">
-                                                        <span class="avatar-title bg-warning-subtle rounded fs-3">
-                                                            <i class="bx bx-user-circle text-warning"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div><!-- end card body -->
-                                        </div><!-- end card -->
-                                    </div><!-- end col -->
+            <!-- ROW 1 -->
 
-                                    <div class="col-xl-3 col-md-6">
-                                        <!-- card -->
-                                        <div class="card card-animate">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Employees</p>
-                                                    </div>
-                                                 
-                                                </div>
-                                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                                    <div>
-                                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="<?php echo $employee_count; ?>">0</span> </h4>
-                                                        <a href="<?php echo base_url(); ?>HR/Employees" class="text-decoration-underline">View All</a> 
-                                                    </div>
-                                                    <div class="avatar-sm flex-shrink-0">
-                                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                                            <i class="bx bx-wallet text-primary"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div><!-- end card body -->
-                                        </div><!-- end card -->
-                                    </div><!-- end col -->
-                                </div> <!-- end row-->
+                            <div class="row">
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: cadetblue;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-line-chart-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Current Month Orders</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo $sales_orders_month; ?>">0</span></h4>
+                
+            </div>
+
+
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: #405189;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-line-chart-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Year To Date Orders</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo $sales_orders_year; ?>">0</span></h4>
+                
+            </div>
+
+            
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+
+</div>
+
+
+
+
+
+
+<!-- ROW 2 -->
+
+<div class="row">
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: cadetblue;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-truck-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Current Month Delivery</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo $delivery_month; ?>">0</span></h4>
+                
+            </div>
+
+
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: #405189;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-truck-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Year To Date Delivery</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo $delivery_year; ?>">0</span></h4>
+                
+            </div>
+
+            
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+
+</div>
+
+
+<!-- ##### -->
+
+
+
+
+
+
+
+
+<!-- ROW 3 -->
+
+<div class="row">
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: cadetblue;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-box-3-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Current Month Sales</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo max($sales_month,0); ?>">0</span></h4>
+                
+            </div>
+
+
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+<div class="col-xl-6 col-md-6">
+<!-- card -->
+<div class="card card-animate">
+
+<a href="javascript:void(0);" class="text-decoration-none">
+
+    <div class="card-body py-1" style="background: #405189;">
+
+
+
+        <div class="d-flex align-items-center justify-content-between">
+
+
+           
+        <span class="d-flex align-items-center justify-content-center avatar-sm bg-success-subtle rounded fs-3"> <i class="ri-box-3-line"></i> </span>
+
+
+        <p class="text-uppercase fw-medium text-white text-truncate mb-0 counter-title">Year To Date Sales</p>
+           
+            <div>
+
+                <h4 class="fs-22 fw-semibold ff-secondary m-0 text-white"><span class="counter-value" data-target="<?php echo max($sales_year,0); ?>">0</span></h4>
+                
+            </div>
+
+            
+           
+        </div>
+    </div><!-- end card body -->
+
+
+    </a>
+
+</div><!-- end card -->
+</div><!-- end col -->
+
+
+
+</div>
+
+
+<!-- ##### -->
+
+
+
+
+
+
+
+
+           
+                    
+
 
                                
 
                                 <div class="row">
-                                    <div class="col-xl-12">
+
+
+                                    <div class="col-xl-6">
                                         <div class="card">
                                             <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-0 flex-grow-1">New Customers</h4>
+                                                <h4 class="card-title mb-0 flex-grow-1">Pending For Action - Quotation</h4>
                                                
                                             </div><!-- end card header -->
 
@@ -237,15 +609,12 @@
 
                                                             <tr>
 
-                                                            <th>Name</th>
+                                                            <th>Date</th>
 
-                                                            <th>Email</th>
+                                                            <th>Customer</th>
 
-                                                            <th>Term</th>
+                                                            <th>Enquiry Ref</th>
 
-                                                            <th>Period</th>
-
-                                                            <th>Days</th>
 
                                                             </tr>
 
@@ -254,29 +623,27 @@
 
                                                         <tbody>
 
-                                                            <?php foreach($customers as $customer) { ?>
+                                                            <?php 
+                                                            if(!empty($pfa_quotations)){
+                                                            foreach($pfa_quotations as $qs) { ?>
                                                             <tr>
                                                                 <td>
                                                                 <div class="d-flex align-items-center">
                                                                         <div class="flex-shrink-0 me-2">
-                                                                   <?php echo $customer->cc_customer_name; ?>
+                                                                   <?php echo date('d-F-Y',strtotime($qs->enquiry_date)); ?>
+                                                                </div>
                                                             </div>
-                                                            </div>
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo $customer->cc_email; ?>
+                                                                    <?php echo $qs->cc_customer_name; ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo $customer->cc_credit_term; ?>
+                                                                    <?php echo $qs->enquiry_reff; ?>
                                                                 </td>
-                                                                <td>
-                                                                   <?php echo $customer->cc_credit_period; ?>
-                                                                </td>
-                                                                <td>
-                                                                <?php echo $customer->cc_credit_limit; ?>
-                                                                </td>
+
+
                                                             </tr>
-                                                            <?php } ?>
+                                                            <?php } } ?>
                                                            
                                                         </tbody>
                                                     </table>
@@ -291,10 +658,10 @@
 
 
 
-                                    <div class="col-xl-12">
+                                    <div class="col-xl-6">
                                         <div class="card">
                                             <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-0 flex-grow-1">New Products</h4>
+                                                <h4 class="card-title mb-0 flex-grow-1">Pending For Action - Delivery</h4>
                                                
                                             </div><!-- end card header -->
 
@@ -307,12 +674,13 @@
 
                                                             <tr>
 
-                                                            <th>Code</th>
+                                                            <th>Sales Order</th>
 
-                                                            <th>Details</th>
+                                                            <th>Customer</th>
 
-                                                            <th>Added On</th>
-                                                           
+                                                            <th>LPO Ref</th>
+
+
                                                             </tr>
 
                                                         </thead>
@@ -320,23 +688,53 @@
 
                                                         <tbody>
 
-                                                            <?php foreach($products as $product) { ?>
+                                                            <?php 
+                                                            if(!empty($pfa_delivery))
+                                                            {
+                                                            foreach($pfa_delivery as $dn) { ?>
                                                             <tr>
                                                                 <td>
-                                                                   <?php echo $product->product_code; ?>
+                                                                <div class="d-flex align-items-center">
+                                                                        <div class="flex-shrink-0 me-2">
+                                                                   <?php echo $dn->so_reffer_no; ?>
+                                                            </div>
+                                                            </div>
                                                                 </td>
-
                                                                 <td>
-                                                                    <?php echo $product->product_details; ?>
+                                                                    <?php echo $dn->cc_customer_name; ?>
                                                                 </td>
-
                                                                 <td>
-                                                                   <?php echo date('d-m-Y',strtotime($product->product_added_date)); ?>
+                                                                    <?php echo $dn->so_lpo; ?>
                                                                 </td>
-                                                               
-                                                            </tr>
-                                                            <?php } ?>
-                                                           
+                                                                
+                                                            </tr>   
+                                                            <?php } } ?>
+
+
+                                                            <?php 
+                                                            if(!empty($pfa_delivery_due))
+                                                            {
+                                                            foreach($pfa_delivery_due as $dn) { ?>
+                                                            <tr>
+                                                                <td>
+                                                                <div class="d-flex align-items-center">
+                                                                        <div class="flex-shrink-0 me-2">
+                                                                   <?php echo $dn->so_reffer_no; ?>
+                                                            </div>
+                                                            </div>
+                                                                </td>
+                                                                <td>
+                                                                    <?php echo $dn->cc_customer_name; ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php echo $dn->so_lpo; ?>
+                                                                </td>
+                                                                
+                                                            </tr>   
+                                                            <?php } } ?>
+
+
+                                                          
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -345,6 +743,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                 
 
                                    
 

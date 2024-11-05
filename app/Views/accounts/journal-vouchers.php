@@ -107,13 +107,13 @@
                                     <tbody id="sel_invoices">
 
 
-                                    <tr class="so_row">
+                                    <tr class="so_row so_row_add">
 
                                         <th class="sl_no">1</th>
                                         
-                                        <th>
+                                        <th class="so_select2_parent_add">
 
-                                        <select name="jv_sale_invoice[]" class="form-control so_select_add">
+                                        <select name="jv_sale_invoice[]" class="form-control so_select_add so_select2_add">
 
                                         <option value="0">None</option>
 
@@ -128,18 +128,10 @@
                                         </th>
 
 
-                                        <th> 
+                                        <th class="select2_parent"> 
                                             
-                                        <select name="jv_account[]" class="form-control">
+                                        <select name="jv_account[]" class="form-control account_select2" required>
 
-                                        <option value="">Select Account</option>
-
-                                        <?php foreach($accounts as $account){ ?>
-
-                                        <option value="<?php echo $account->ca_id; ?>"><?= $account->ca_name; ?></option>
-
-                                        <?php } ?>
-                                        
                                         </select>
 
                                         </th>
@@ -197,22 +189,34 @@
                         </div>
 
 
-                        <div>
+                        <div class="row">
 
-                        <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><button type="submit">Save</button></td>
-                                                            <td><button>PDF</button></td>
-                                                        </tr>
-                                                    </table>
-                         </div>
 
-                        </div>
+<div class="col-lg-12 text-center">
+
+
+    <div style="">
+        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+            <!--
+            <tr>
+                <td><button class="submit_btn">Print</button></td>
+                <td><button class="submit_btn">Email</button></td>
+            </tr>
+            -->
+            <tr>
+
+                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <!--<td><button class="submit_btn">PDF</button></td>-->
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+
+</div>
 
 
                         
@@ -473,7 +477,7 @@
 
                             </div>
 
-                        </div>
+                    </div>
 
 
 
@@ -618,11 +622,8 @@
 
 <!--Edit modal section end-->
 
+ 
 
-
-
-<script src="<?php echo base_url(); ?>public/assets/js/jquery.num2words.js"></script>
-            
 
 <script>
 
@@ -668,10 +669,25 @@
 
             $clone.insertAfter('.so_row:last');
 
+            $clone.find(".account_select2").val('');
+
+            $clone.find(".account_select2").removeAttr('data-select2-id');
+
+            $clone.find('.select2').remove();
+
+            $clone.find(".so_select2_add").val('');
+
+            $clone.find(".so_select2_add").removeAttr('data-select2-id');
+
             $('.so_row:last').find('.so_select_add').focus();
             
-
 			}
+
+            SOSelect2();
+
+            InitAccountsSelect2('.account_select2', '.select2_parent');
+
+
 
 	    });
 
@@ -874,15 +890,6 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
 
 
-
-
-
-
-
-
-
-
-
         $("body").on('keyup', '.debit_amount', function(){ 
 
         totalCalcutate();    
@@ -909,7 +916,7 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
         var sub_tot = $(this).val();
 
-        d_total += parseInt(sub_tot)||0;
+        d_total += parseFloat(sub_tot)||0;
 
         });
 
@@ -919,7 +926,7 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
         var sub_tot = $(this).val();
 
-        c_total += parseInt(sub_tot)||0;
+        c_total += parseFloat(sub_tot)||0;
 
         });
 
@@ -1183,128 +1190,6 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
 
 
-        /* If Cheque  */
-        
-
-        $('select[name=p_method]').change(function(){
-
-            if($(this).children(':selected').text()=="Cheque")
-            {
-            $('.cheque_sec').fadeIn(200);
-            }
-            else
-            {
-            $('.cheque_sec').fadeOut(200);
-            }
-
-        });
-
-
-        /* ### */
-
-
-
-        /* Show Invoices after reference */
-
-
-        $('input[name=amount]').focusout(function(){
-
-
-            $('#AddModal').modal('hide');
-            $('#InvoicesModal').modal('show');
-
-
-        });
-
-
-        /* ### */
-
-
-
-
-
-        /* Fetch Invoices */
-
-     
-        $("body").on('click', '.add_invoices', function(){ 
-            
-            var id = 1;
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Accounts/Payments/FetchInvoices",
-
-                method : "POST",
-
-                data: {id: id},
-
-                dataType: "json",
-
-                success:function(data)
-                {
-
-                    //console.log(data);
-                    $('#invoices_sec').hide().html(data).fadeIn(200);
-
-                }
-
-
-            });
-
-        });
-
-        /*##*/
-
-
-$("body").on('submit', '#invoices_add', function(e){ 
-
-e.preventDefault();
-
-$('#sel_invoices').html('');
-
-var form = $(this);
-
-var tbody =  $('#sel_invoices');
-
-$.ajax({
-
-url : "<?php echo base_url(); ?>Accounts/Payments/SelectedInvoices",
-
-method : "POST",
-
-data: form.serialize(),
-
-success:function(data)
-{
-
-var data = JSON.parse(data);
-
-$.each(data.html, function(key,value) {
-
-tbody.append('<tr><td>'+value.invoice_id+'</td><td>'+value.account+'</td><td>'+value.date+'</td><td><input class="form-control" name="" type="text"></td><td>'+value.amount+'</td></tr>');
-
-}); 
-
-$('#total_amount').html(data.total);
-
-$('input[name=p_amount]').val(data.total);
-
-}
-
-});
-
-$('#AddModal').modal('show');
-
-$('#InvoicesModal').modal('hide');
-
-
-});
-
-
-
-
-
-
 
 $('.add_model_btn').click(function(){
 
@@ -1325,6 +1210,100 @@ $('#uid').val(data);
 });
 
 });
+
+
+
+                        function SOSelect2(){
+                        $('.so_select2_add').select2({
+                        placeholder: "Select Sales Order",
+                        theme: "default form-control-",
+                        dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
+                        ajax: {
+                            url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                            dataType: 'json',
+                            delay: 250,
+                            cache: false,
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            data: function(params) {
+                                return {
+                                    term: params.term,
+                                    page: params.page || 1,
+                                };
+                            },
+                            processResults: function(data, params) {
+
+                                var page = params.page || 1;
+                                return {
+                                    results: $.map(data.result, function(item) {
+                                        return {
+                                            id: item.so_id,
+                                            text: item.so_reffer_no
+                                        }
+                                    }),
+                                    pagination: {
+                                        more: (page * 10) <= data.total_count
+                                    }
+                                };
+                            },
+                        }
+                    });
+                    
+                }
+                SOSelect2();
+
+                
+
+
+
+
+
+
+
+
+
+                        /* Accounts Init Select 2 */
+
+                function InitAccountsSelect2(classname, parent) {
+
+                    $('body ' + classname + ':last').select2({
+                        placeholder: "Select Account",
+                        theme: "default form-control-",
+                        dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
+                        ajax: {
+                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                            dataType: 'json',
+                            delay: 250,
+                            cache: false,
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            data: function(params) {
+                                return {
+                                    term: params.term,
+                                    page: params.page || 1,
+                                };
+                            },
+                            processResults: function(data, params) {
+
+                                var page = params.page || 1;
+                                return {
+                                    results: $.map(data.result, function(item) {
+                                        return {
+                                            id: item.ca_id,
+                                            text: item.ca_name
+                                        }
+                                    }),
+                                    pagination: {
+                                        more: (page * 10) <= data.total_count
+                                    }
+                                };
+                            },
+                        }
+                    })
+                    }
+
+                    InitAccountsSelect2('.account_select2', '.select2_parent');
+
 
 
 

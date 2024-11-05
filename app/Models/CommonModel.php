@@ -301,6 +301,26 @@ class CommonModel extends Model
 
 
 
+    public function FetchWhereArrayLimit($table,$order_key,$order,$where,$end,$start)
+    {
+        
+        $query = $this->db->table($table);
+
+        $query->select('*');
+        
+        if($where!="")
+        {
+        $query->where($where);
+        }
+
+        $query->limit($end,$start)->orderBy($order_key,$order);
+
+        return $query->get()->getResult(); 
+
+    }
+
+
+
     //Fetch All 
 
     public function FetchAll($table)

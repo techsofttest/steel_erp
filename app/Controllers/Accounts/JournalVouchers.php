@@ -58,7 +58,7 @@ class JournalVouchers extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/JournalVouchers/Print/'.$record->jv_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="delete delete-color delete_btn d-none" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "jv_id"=>$i,
@@ -536,11 +536,27 @@ class JournalVouchers extends BaseController
 
 
 
+    public function FetchSalesOrders()
+    {
+
+    $data['result'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','asc');
+
+    $data['total_count'] = count($data['result']);
+
+    echo json_encode($data);
+
+    }
 
 
 
-    public function Print(){
 
+
+
+
+
+    public function Print($id=""){
+
+    if($id=="")
     $id = 27;
 
     $cond = array('jv_id' => $id);
@@ -555,7 +571,7 @@ class JournalVouchers extends BaseController
 
     //$total_amount = NumberToWords::transformNumber('en',$jv->jv_total); // outputs "fifty dollars ninety nine cents"
 
-    $total_amount = 10000;
+    $total_amount = $jv->jv_debit_total;
 
     $joins_inv = array(
 
@@ -611,9 +627,9 @@ class JournalVouchers extends BaseController
     
     <td>'.$order->ji_narration.'</td>
 
-    <td>'.$debit.'</td>
+    <td align="right">'.format_currency((float)$debit).'</td>
 
-    <td>'.$credit.'</td>
+    <td align="right">'.format_currency((float)$credit).'</td>
 
     </tr>';
 
@@ -633,16 +649,18 @@ class JournalVouchers extends BaseController
     
         <style>
         th, td {
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             padding-left: 5px;
             padding-right: 5px;
           }
 
-        .border-bottom tr
+        table.border-bottom td
         {
-        border-bottom:1px solid;
+        border-bottom:1px solid !important;
         }
+
+
 
         </style>
     
@@ -677,7 +695,7 @@ class JournalVouchers extends BaseController
         </table>
     
     
-        <table  width="100%" style="margin-top:2px;border-top:3px solid;border-bottom:3px solid;">
+        <table  width="100%" style="margin-top:1px;border-top:2px solid;border-bottom:1px solid;">
     
         <tr>
         
@@ -725,17 +743,17 @@ class JournalVouchers extends BaseController
         <table  width="100%" style="margin-top:2px;">
         
     
-        <tr class="border-bottom" style="border-bottom:3px solid;">
+        <tr class="border-bottom">
         
-        <td align="left">Sales Order No</td>
+        <td align="left" style="border-bottom:1px solid !important;">Sales Order No</td>
     
-        <td align="left">Account No</td>
+        <td align="left" style="border-bottom:1px solid !important;">Account No</td>
     
-        <td align="left">Account Description</td>
+        <td align="left" style="border-bottom:1px solid !important;">Account Description</td>
     
-        <td align="left">Debit</td>
+        <td align="left" style="border-bottom:1px solid !important;">Debit</td>
     
-        <td align="left">Credit</td>
+        <td align="left" style="border-bottom:1px solid !important;">Credit</td>
     
         </tr>
     
@@ -758,9 +776,9 @@ class JournalVouchers extends BaseController
         
         <tr>
         
-        <td colpsan="5" align="left"><b>Amount : Qatari Riyals '.$total_amount.' Only</b></td>
+        <td colpsan="5" align="center"><b>Amount : '.currency_to_words($total_amount).'</b></td>
     
-        <td colspan="1" align="left" style="text-align:right;"><b>'.$total_amount.'</b></td>
+        <td colspan="1" align="right" style="text-align:right;"><b>'.format_currency($total_amount).'</b></td>
     
         </tr>
     
@@ -771,13 +789,13 @@ class JournalVouchers extends BaseController
         
         <tr>
     
-        <th width="25%" style="padding-right:60px;">Prepared by : (print)</th>
+        <td width="25%" style="padding-right:60px;">Prepared by : (print)</td>
     
-        <th width="25%" style="padding-right:60px;">Received by:</th>
+        <td width="25%" style="padding-right:60px;">Received by:</td>
     
-        <th width="25%" style="padding-right:60px;">Finance Manager</th>
+        <td width="25%" style="padding-right:60px;">Finance Manager</td>
     
-        <th width="25%" style="padding-right:60px;">CEO</th>
+        <td width="25%" style="padding-right:60px;">CEO</td>
     
         </tr>
     

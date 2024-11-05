@@ -336,7 +336,7 @@ class ChartsOfAccounts extends BaseController
 
     //Common For Select 2 Dropdown
 
-    public function FetchAccounts()
+    public function FetchAccounts($where="")
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -344,8 +344,10 @@ class ChartsOfAccounts extends BaseController
         $resultCount = 10;
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
+
+        $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_charts_of_accounts','ca_name','asc',$where,$end,$start);
       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+        //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
 
         $data['total_count'] = count($data['result']);
 

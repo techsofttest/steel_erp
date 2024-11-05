@@ -305,7 +305,7 @@
 </div>
 
 
-<div class="col-lg-12 text-center">
+<div class="col-lg-12 mb-4 text-center">
                                     
     <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
 
@@ -313,20 +313,32 @@
 
 
 
-                                <div>
+                                <div class="row">
 
-                                <div style="float: right;">
-                                                            <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                <tr>
-                                                                    <td><button>Print</button></td>
-                                                                    <td><button>Email</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><button type="submit">Save</button></td>
-                                                                    <td><button>PDF</button></td>
-                                                                </tr>
-                                                            </table>
+
+                                <div class="col-lg-12 text-center">
+
+
+                                    <div style="">
+                                        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+                                            <!--
+                                            <tr>
+                                                <td><button class="submit_btn">Print</button></td>
+                                                <td><button class="submit_btn">Email</button></td>
+                                            </tr>
+                                            -->
+                                            <tr>
+
+                                                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                                                <!--<td><button class="submit_btn">PDF</button></td>-->
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
                                 </div>
+
 
                                 </div>
 
