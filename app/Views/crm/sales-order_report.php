@@ -310,7 +310,7 @@
                                                            
                                                         </td>
 
-                                                        <td style="white-space: nowrap">
+                                                        <td style="white-space: nowrap" class="text-end">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo format_currency($sales_prod->spd_discount);?>%</br>
                                                             <?php } ?>
@@ -340,13 +340,13 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                    
-                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
                                                 </tr>
 
                                             </tbody>

@@ -176,7 +176,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select name="qd_enq_ref"  id="" class="form-select qd_enquiry_reference_clz input_length"></select>
+                                                                        <select name="qd_enq_ref"  id="" class="form-select qd_enquiry_reference_clz  input_length"></select>
                                                                     </div>
 
                                                                 </div> 
@@ -1444,7 +1444,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date"  class="form-control datepicker view_btn_date" readonly>
+                                                                        <input type="text" name="qd_date"  class="form-control  view_btn_date" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -2405,9 +2405,11 @@
 
                             var responseData = JSON.parse(data);
 
-                            $('.vew_ref').val(responseData.date);
+                            $('.vew_ref').val(responseData.reffer_no);
 
-                            $('.view_date').val(responseData.reffer_no);
+                          
+
+                            $('.view_date').val(responseData.date);
 
                             $('.view_cust').val(responseData.customer);
 
@@ -2426,8 +2428,6 @@
                             $('.view_project').val(responseData.project);
 
                             $('.print_pdf_btn').html(responseData.print_pdf_btn);
-
-                            console.log(responseData.print_pdf_btn);
 
                             $('.product-more4').html(responseData.view_product);
 
@@ -2633,8 +2633,12 @@
             $('.droup_customer_id').val('').trigger('change');
 
             $('.qd_enquiry_reference_clz').val('').trigger('change');
+
+            $('.qd_enquiry_reference_clz option[value!=""]').remove();
             
             $('.contact_person_clz').val('').trigger('change');
+
+            $('.contact_person_clz option[value!=""]').remove();
 
             $('.delivery_term_clz').val('').trigger('change');
 
@@ -2945,50 +2949,54 @@
             $(".enq_remove").remove();
 
             var id = $(this).val();
-
+            
             var cust_id = $('#customer_id').val();
 
-            $.ajax({
+            if(id!=null){
 
-                url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchProject",
+                $.ajax({
 
-                method : "POST",
+                    url : "<?php echo base_url(); ?>Crm/SalesQuotation/FetchProject",
 
-                data: {
+                    method : "POST",
+
+                    data: {
+                        
+                        ID: id,
+                        custID: cust_id,
+                    },
+
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+
+                        $(".project_clz").val(data.enquiry_project);
+
+                        $(".product-more2").append(data.product_detail);
+
+                        $(".contact_person_clz").html(data.customer_person);
+                        
+                        if(data.enquiry_project!== null)
+                        {
+                            $('.project_clz').removeClass("error"); 
+                        }
                     
-                    ID: id,
-                    custID: cust_id,
-                },
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                        if(data.customer_person!== null)
+                        {
+                            $('.contact_person_clz').removeClass("error"); 
+                        }
+                        
+                        slno();
+                        
+                        reName();
 
-                    $(".project_clz").val(data.enquiry_project);
-
-                    $(".product-more2").append(data.product_detail);
-
-                    $(".contact_person_clz").html(data.customer_person);
-                    
-                    if(data.enquiry_project!== null)
-                    {
-                        $('.project_clz').removeClass("error"); 
                     }
-                   
-
-                    if(data.customer_person!== null)
-                    {
-                        $('.contact_person_clz').removeClass("error"); 
-                    }
-                    
-                    slno();
-                    
-                    reName();
-
-                }
 
 
-            });
+                });
+
+            }
 
         });
 
@@ -4432,7 +4440,49 @@
             Percentage()
          
         }
+        
 
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+function isDataTableRequest(ajaxSettings) {
+    // Check for DataTables-specific URL or any other pattern
+    return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+}
+
+function isSelect2Request(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+}
+
+
+function isSelect2Search(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+}
+
+
+$(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeIn(300);
+    }
+});
+
+
+$(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeOut(300);
+    }
+});
+
+
+
+$(document).ajaxError(function() {
+    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+});
+
+
+});
+     
 
       
         

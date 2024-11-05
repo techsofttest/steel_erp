@@ -303,7 +303,7 @@ class DnToCreditInvoice extends BaseController
 
                                             $pdf_data .="<tr  class='product-row'>
                                                             <td  width='100px' height='90px'>{$del_prod->product_details}</td>
-                                                            <td  width='100px' height='90px'>{$del_prod->dpd_current_qty}</td>
+                                                            <td  width='100px' align='center' height='90px'>{$del_prod->dpd_current_qty}</td>
                                                             <td  align='right' width='100px' height='90px'>{$sales_rate}</td>
                                                             <td align='right' width='100px' height='90px'>{$sales_discount}%</td>
                                                             <td align='right' width='100px' height='90px'>{$sales_amount}</td>
@@ -486,17 +486,17 @@ class DnToCreditInvoice extends BaseController
             
                 <th align="left" width="100px">LPO Ref</th>
             
-                <th align="center">Amount</th>
+                <th align="right">Amount</th>
 
                 <th align="left">Product</th>
 
-                <th align="left">Quantity</th>
+                <th align="center">Quantity</th>
 
-                <th align="center" width="100px">Rate</th>
+                <th align="right" width="100px">Rate</th>
 
-                <th align="center" width="100px">Discount</th>
+                <th align="right" width="100px">Discount</th>
 
-                <th align="center" width="100px">Amount</th>
+                <th align="right" width="100px">Amount</th>
 
                 <th align="left" width="100px">Invoice Ref</th>
 
@@ -515,12 +515,12 @@ class DnToCreditInvoice extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$delivery_prod.'</td>
+                <td style="border-top: 2px solid;"><b>'.$delivery_prod.'</b></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$delivery_prod.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$delivery_prod.'</b></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 

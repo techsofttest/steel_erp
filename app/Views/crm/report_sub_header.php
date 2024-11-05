@@ -28,6 +28,7 @@
     border: blueviolet;
 }
 
+
 </style>
 
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>

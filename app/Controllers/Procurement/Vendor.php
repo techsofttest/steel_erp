@@ -785,6 +785,8 @@ class Vendor extends BaseController
 
         $id = $this->request->getPost('ID');
 
+        
+
         $official_doc = $this->common_model->SingleRow('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
         
         if(!empty($official_doc->ven_cr_attach)){
@@ -829,6 +831,8 @@ class Vendor extends BaseController
             $coa_cond['ca_customer'] = $id;
 
             $coa_cond['ca_type'] = "VENDOR";
+
+            
 
             $this->common_model->DeleteData('accounts_charts_of_accounts',$coa_cond);
         

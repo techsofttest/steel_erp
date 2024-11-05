@@ -511,10 +511,10 @@ class SalesQuotAnalysisReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$total_quot_amount.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$total_quot_amount.'</b></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$sales_amount.'</td>
-                <td style="border-top: 2px solid;" align="right">'.$sales_diff_amount.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$sales_amount.'</b></td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$sales_diff_amount.'</b></td>
             
             </tr>   
            

@@ -162,6 +162,7 @@
                                                     <!--<th>Delivery Note Ref.</th>-->
                                                     <th>Sales Order Ref.</th>
                                                     <th>LPO Ref.</th>
+                                                    <th>Sales Executive</th>
                                                     <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
@@ -170,42 +171,101 @@
                                                
                                             <?php 
                                                $total_amount = 0 ;
-                                                if(!empty($delivery_data))
+                                               $cash_amount = 0;
+                                               $credit_amount = 0;
+                                               $sales_return = 0;
+                                                if(!empty($sales_data))
                                                 {   
                                                    
                                                     $i =1;
 
-                                                    foreach($delivery_data as $del_note){?> 
+                                                    foreach($sales_data as $sale_data){?> 
                                                     <tr>
                                                         <td class="height_class"><?php echo $i;?></td>
-                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($del_note->dn_date));?></td>
+                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($sale_data->so_date));?></td>
                                                         <td colspan="1" align="left" class="p-0" style="height:100%">
                                                            
-                                                            <?php if(!empty($del_note->credit_invoice) || !empty($del_note->performa_invoice)){ ?> 
+                                                            <?php if(!empty($sale_data->credit_invoice) ){ ?> 
                                                                <table>
-                                                                    <?php foreach($del_note->credit_invoice as $cred_inv){?>
+                                                                    <?php foreach($sale_data->credit_invoice as $cred_inv){?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_so=<?php echo $cred_inv->cci_id;?>" target="_blank"><?php echo $cred_inv->cci_reffer_no;?></a></td>
+                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_crn=<?php echo $cred_inv->cci_id;?>" target="_blank"><?php echo $cred_inv->cci_reffer_no;?></a></td>
                                                                         </tr>
                                                                     <?php } ?>
-                                                                    <?php foreach($del_note->performa_invoice as $per_inv){?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/ProFormaInvoice?view_so=<?php echo $per_inv->pf_id;?>" target="_blank"><?php echo $per_inv->pf_reffer_no;?></a></td>
-                                                                        </tr> 
-                                                                    <?php } ?>
+                                                                    
                                                                </table>  
                                                             <?php } ?>
+
+                                                            <?php if(!empty($sale_data->cash_invoice) ){ ?> 
+                                                               <table>
+                                                                    <?php foreach($sale_data->cash_invoice as $cash_inv){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CashInvoice?view_cash=<?php echo $cash_inv->ci_id;?>" target="_blank"><?php echo $cash_inv->ci_reffer_no;?></a></td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    
+                                                               </table>  
+                                                            <?php } ?>
+
+
+                                                            <?php if(!empty($sale_data->sales_return) ){ ?> 
+                                                               <table>
+                                                                    <?php foreach($sale_data->sales_return as $sales_ret){?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/SalesReturn?view_rut=<?php echo $sales_ret->sr_id ;?>" target="_blank"><?php echo $sales_ret->sr_reffer_no;?></a></td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    
+                                                               </table>  
+                                                            <?php } ?>
+
+
+
                                                           
                                                         </td>
-                                                        <td class="height_class"><?php echo $del_note->cc_customer_name;?></td>
+                                                        <td class="height_class"><?php echo $sale_data->cc_customer_name;?></td>
                                                         <!--<td class="height_class"><?php //echo $del_note->dn_reffer_no;?></td>-->
-                                                        <td class="height_class"><?php echo $del_note->so_reffer_no;?></td>
-                                                        <td class="height_class"><?php echo $del_note->so_lpo;?></td>
-                                                       
-                                                        <td class="height_class text-end"><?php echo format_currency($del_note->dn_total_amount);?></td>
+                                                        <td class="height_class"><?php echo $sale_data->so_reffer_no;?></td>
+                                                        <td class="height_class"><?php echo $sale_data->so_lpo;?></td>
+                                                        <td class="height_class"><?php echo $sale_data->se_name;?></td>
+                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
+                                                            <?php if(!empty($sale_data->credit_invoice) ){ ?> 
+                                                            <table>
+                                                                <?php foreach($sale_data->credit_invoice as $cred_inv){?> 
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                        <td width="100px" class="text-end"><?php echo $cred_inv->cci_total_amount;?></td>
+
+                                                                    
+                                                                    </tr>
+                                                                <?php $credit_amount = $cred_inv->cci_total_amount + $credit_amount;} ?>
+                                                            </table>
+                                                            <?php } ?>
+
+                                                            <?php if(!empty($sale_data->cash_invoice) ){ ?> 
+                                                            <table>
+                                                                <?php foreach($sale_data->cash_invoice as $cash_inv){?> 
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                        <td width="100px" class="text-end"><?php echo $cash_inv->ci_total_amount;?></td>
+                                                                    </tr>
+                                                                <?php $cash_amount = $cash_inv->ci_total_amount + $cash_amount; } ?>
+                                                            </table>
+                                                            <?php } ?>
+
+                                                            <?php if(!empty($sale_data->sales_return) ){ ?> 
+                                                            <table>
+                                                                <?php foreach($sale_data->sales_return as $sales_ret){?> 
+                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                                        <td width="100px" class="text-end">-<?php echo $sales_ret->sr_total;?></td>
+                                                                    </tr>
+                                                                <?php $sales_return = $sales_ret->sr_total + $sales_return;} ?>
+                                                            </table>
+                                                            <?php } ?>
+
+                                                        </td>
+                                                        <!--<td class="height_class text-end">fdgdfgd</td>-->
                                                         
                                                         <?php 
-                                                           $total_amount = $del_note->dn_total_amount +   $total_amount;
+                                                           $total_amount = $credit_amount + $cash_amount - $sales_return;
                                                         ?>
 
                                                     </tr>
@@ -220,7 +280,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount);?></td>
+                                                    <td></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount);?></b></td>
                                                    
                                                     
                                                  

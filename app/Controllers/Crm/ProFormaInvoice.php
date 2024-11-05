@@ -63,7 +63,7 @@ class ProFormaInvoice extends BaseController
         $i=1;
         foreach($records as $record ){
             
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'" style="display:none;"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
             <a href="'.base_url().'Crm/ProFormaInvoice/Pdf/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
@@ -200,6 +200,8 @@ class ProFormaInvoice extends BaseController
 
         $customer = $this->common_model->SingleRow('crm_customer_creation',$cond2);
         
+        
+
         $data['payment_terms'] = $customer->cc_credit_term;
 
 
@@ -500,7 +502,7 @@ class ProFormaInvoice extends BaseController
                
                 $previousImagePath = 'uploads/ProformaInvoice/' .$proforma->pf_file;
                
-                if (file_exists($previousImagePath)) 
+                if (!empty($proforma->pf_file)) 
                 {
                     unlink($previousImagePath);
                 }
@@ -603,7 +605,7 @@ class ProFormaInvoice extends BaseController
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no">'.$i.'</td>
                                             <td style="width:34%">
-                                                <select class="form-select" name="pp_product_det['.$j.']" required>';
+                                                <select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
                                                 
                                                 foreach($products as $prod){
 

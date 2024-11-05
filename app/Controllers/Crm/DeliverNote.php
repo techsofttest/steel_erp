@@ -58,7 +58,7 @@ class DeliverNote extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'" style="display:none;"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->dn_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->dn_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->dn_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
             <a href="'.base_url().'Crm/DeliverNote/Pdf/'.$record->dn_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
             ';
            
@@ -183,202 +183,245 @@ class DeliverNote extends BaseController
     Public function Add()
     {   
         $data['print'] = "";
-
+        
+        
         if(empty($this->request->getPost('dn_id')))
         {
-            $uid = $this->common_model->FetchNextId('crm_delivery_note',"DN");
-
-            $insert_data = [
-
-                'dn_reffer_no'        => $uid,
-
-                'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
-
-                'dn_customer'         => $this->request->getPost('dn_customer'),
-
-                'dn_sales_order_num'  => $this->request->getPost('dn_sales_order_num'),
-
-                'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
-
-                'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
-
-                'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
-
-                'dn_project'          => $this->request->getPost('dn_project'),
-
-                'dn_added_by'         => 0,
-
-                'dn_added_date'       => date('Y-m-d'),
-
-            ];
             
-           
+            //$uid = $this->common_model->FetchNextId('crm_delivery_note',"DN");
 
-            if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') {
+            $delivery_note_data = $this->common_model->FetchWhere('crm_delivery_note',array('dn_reffer_no' => $this->request->getPost('dn_reffer_no')));
+
+            if(empty($delivery_note_data))
+            {
+
+                $insert_data = [
+
+                    'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
+
+                    'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
+
+                    'dn_customer'         => $this->request->getPost('dn_customer'),
+
+                    'dn_sales_order_num'  => $this->request->getPost('dn_sales_order_num'),
+
+                    'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
+
+                    'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
+
+                    'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
+
+                    'dn_project'          => $this->request->getPost('dn_project'),
+
+                    'dn_added_by'         => 0,
+
+                    'dn_added_date'       => date('Y-m-d'),
+
+                ];
                 
-                // Upload the new image
-                $attachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
             
-                // Update the data with the new image filename
-                $insert_data['dn_file'] = $attachFileName;
 
+                if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') {
+                    
+                    // Upload the new image
+                    $attachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
                 
+                    // Update the data with the new image filename
+                    $insert_data['dn_file'] = $attachFileName;
+
+                    
+                }
+
+                $delivery_id = $this->common_model->InsertData('crm_delivery_note',$insert_data);
+
+                $data['status'] = "true" ;
+
+                $delivery = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' => $delivery_id));
+
+                $data['sales_order'] = $delivery->dn_sales_order_num;
+
+                $data['delivery_id'] = $delivery_id;
             }
+            else
+            {
 
-            $delivery_id = $this->common_model->InsertData('crm_delivery_note',$insert_data);
+                $data['status'] = "false";
+            } 
         }
         else
         {   
+            //$sales_datas = $this->common_model->CheckTwiceCond('crm_delivery_note',array('dn_reffer_no' => $this->request->getPost('dn_reffer_no')),array('dn_id' => $this->request->getPost('dn_id')));
             
+            $sales_datas = $this->common_model->CheckDataWhere('crm_delivery_note','dn_reffer_no',trim($this->request->getPost('dn_reffer_no')),trim($this->request->getPost('dn_id')),'dn_id');
            
-            $update_data = [
+            if(empty($sales_datas))
+            {
 
-                'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
+                $update_data = [
 
-                'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
+                    'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
 
-                'dn_customer'         => $this->request->getPost('dn_customer'),
+                    'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
 
-                'dn_sales_order_num'  => $this->request->getPost('dn_sales_order_num'),
+                    'dn_customer'         => $this->request->getPost('dn_customer'),
 
-                'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
+                    'dn_sales_order_num'  => $this->request->getPost('dn_sales_order_num'),
 
-                'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
+                    'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
 
-                'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
+                    'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
 
-                'dn_project'          => $this->request->getPost('dn_project'),
+                    'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
 
-            ];
-            
-            if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') {
+                    'dn_project'          => $this->request->getPost('dn_project'),
+
+                ];
                 
-                // Upload the new image
-                $attachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
+                if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') {
+                    
+                    // Upload the new image
+                    $attachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
+                
+                    // Update the data with the new image filename
+                    $update_data['dn_file'] = $attachFileName;
+                }
+
             
-                // Update the data with the new image filename
-                $update_data['dn_file'] = $attachFileName;
+
+                $this->common_model->EditData($update_data, array('dn_id' => $this->request->getPost('dn_id')), 'crm_delivery_note');
+                
+                $delivery_id = $this->request->getPost('dn_id');
+
+                
+
+                $delivery = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' => $delivery_id));
+
+                $data['sales_order'] = $delivery->dn_sales_order_num;
+
+                $data['delivery_id'] = $delivery_id;
+
+                if(!empty($_POST['dpd_prod_det']))
+		        {    
+                    $count =  count($_POST['dpd_prod_det']);
+                
+                    if($count!=0)
+                    {  
+                        for($j=0;$j<=$count-1;$j++)
+                        {
+                            $delivery_qty = $_POST['dpd_delivery_qty'][$j]; 
+
+                            $current_qty = $_POST['dpd_current_qty'][$j];
+
+                            //$sales_prod_id = $_POST['sales_prod_id'];
+
+                            $new_deli_qty =  $delivery_qty + $current_qty;
+                            
+                            $insert_data  	= array(  
+                                
+                                'dpd_prod_det'     =>  $_POST['dpd_prod_det'][$j],
+                                'dpd_unit'         =>  $_POST['dpd_unit'][$j],
+                                'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
+                                'dpd_so_id'        =>  $_POST['sales_prod_id'][$j],
+                                'dpd_total_amount' =>  $_POST['product_total'][$j],
+                                'dpd_prod_rate'    =>  $_POST['dpd_rate_qty'][$j],
+                                'dpd_prod_dicount' =>  $_POST['dicount'][$j],
+                                'dpd_delivery_qty' =>  $new_deli_qty,
+                                'dpd_current_qty'  =>  $current_qty,
+                                'dpd_delivery_id'  =>  $delivery_id,
+                                
+                            );
+
+                        
+                            
+
+                            $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
+
+                        
+
+                            $cond = array('spd_id' => $_POST['sales_prod_id'][$j]); 
+
+                            $sales_prod1 = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+
+
+                            /**/
+                        
+                            $total_amount_update = array('dn_total_amount' => $_POST['total_prod_amount']);
+
+                            $this->common_model->EditData($total_amount_update,array('dn_id' => $delivery_id),'crm_delivery_note');
+                            
+                            /**/
+
+                            
+
+                            $delivery_note_qty = $sales_prod1->spd_delivery_note + $current_qty;
+
+                            $update_data =  array('spd_delivered_qty' => $new_deli_qty,'spd_delivery_note' =>$delivery_note_qty);
+                            
+
+                            $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
+
+
+                            $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+                            
+                            if($sales_prod->spd_quantity == $sales_prod->spd_delivered_qty)
+                            {
+                                $cond2 = array('spd_id' => $_POST['sales_prod_id'][$j]);
+
+                                $update_data2 = array('spd_deliver_flag'=>1);
+
+                                $this->common_model->EditData($update_data2,$cond2,'crm_sales_product_details');
+                            }
+                            
+                            $cond3 = array('spd_sales_order'=>$sales_prod->spd_sales_order);
+
+                            $prod_detail = $this->common_model->FetchWhere('crm_sales_product_details',$cond3);
+
+                            $prod_detail_flag = $this->common_model->FetchProdData('crm_sales_product_details',$cond3,array('spd_deliver_flag'=>1));
+
+                            if(count($prod_detail) == count($prod_detail_flag))
+                            {
+                                $cond4 = array('so_id' => $sales_prod->spd_sales_order);
+
+                                $update_data4 = array('so_deliver_flag'=>1,);
+
+                                $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
+                            }
+                            
+                            $update_data5 = array('so_credit_status'=>0,);
+
+                            $this->common_model->EditData($update_data5,array('so_id' => $sales_prod->spd_sales_order),'crm_sales_orders');
+                            
+                            if(!empty($_POST['print_btn']))
+                            {
+                            
+                                $data['print'] =  base_url() . 'Crm/DeliverNote/Pdf/' . urlencode($delivery_id);
+
+                            }
+                        
+                        } 
+                    }
+
+                   
+		        }
+
+                $data['status'] = "true" ;
+
             }
+            else
+            {
 
-           
+                $data['status'] = "false";
+            } 
 
-            $this->common_model->EditData($update_data, array('dn_id' => $this->request->getPost('dn_id')), 'crm_delivery_note');
+
             
-            $delivery_id = $this->request->getPost('dn_id');
             
         }
        
-        $delivery = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' => $delivery_id));
-
         
-        $data['sales_order'] = $delivery->dn_sales_order_num;
-
-        $data['delivery_id'] = $delivery_id;
         
        
-        if(!empty($_POST['dpd_prod_det']))
-		{    
-            $count =  count($_POST['dpd_prod_det']);
-                
-            if($count!=0)
-            {  
-                for($j=0;$j<=$count-1;$j++)
-                {
-                    $delivery_qty = $_POST['dpd_delivery_qty'][$j]; 
-
-                    $current_qty = $_POST['dpd_current_qty'][$j];
-
-                    //$sales_prod_id = $_POST['sales_prod_id'];
-
-                    $new_deli_qty =  $delivery_qty + $current_qty;
-                    
-                    $insert_data  	= array(  
-                        
-                        'dpd_prod_det'     =>  $_POST['dpd_prod_det'][$j],
-                        'dpd_unit'         =>  $_POST['dpd_unit'][$j],
-                        'dpd_order_qty'    =>  $_POST['dpd_order_qty'][$j],
-                        'dpd_so_id'        =>  $_POST['sales_prod_id'][$j],
-                        'dpd_total_amount' =>  $_POST['product_total'][$j],
-                        'dpd_prod_rate'    =>  $_POST['dpd_rate_qty'][$j],
-                        'dpd_prod_dicount' =>  $_POST['dicount'][$j],
-                        'dpd_delivery_qty' =>  $new_deli_qty,
-                        'dpd_current_qty'  =>  $current_qty,
-                        'dpd_delivery_id'  =>  $delivery_id,
-                        
-                    );
-
-                   
-                    
-
-                    $this->common_model->InsertData('crm_delivery_product_details',$insert_data);
-
-                   
-
-                    $cond = array('spd_id' => $_POST['sales_prod_id'][$j]); 
-
-                    $sales_prod1 = $this->common_model->SingleRow('crm_sales_product_details',$cond);
-
-
-                    /**/
-                   
-                    $total_amount_update = array('dn_total_amount' => $_POST['total_prod_amount']);
-
-                    $this->common_model->EditData($total_amount_update,array('dn_id' => $delivery_id),'crm_delivery_note');
-                     
-                    /**/
-
-                    
-
-                    $delivery_note_qty = $sales_prod1->spd_delivery_note + $current_qty;
-
-                    $update_data =  array('spd_delivered_qty' => $new_deli_qty,'spd_delivery_note' =>$delivery_note_qty);
-                    
-
-                    $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
-
-
-                    $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond);
-                    
-                    if($sales_prod->spd_quantity == $sales_prod->spd_delivered_qty)
-                    {
-                        $cond2 = array('spd_id' => $_POST['sales_prod_id'][$j]);
-
-                        $update_data2 = array('spd_deliver_flag'=>1);
-
-                        $this->common_model->EditData($update_data2,$cond2,'crm_sales_product_details');
-                    }
-                    
-                    $cond3 = array('spd_sales_order'=>$sales_prod->spd_sales_order);
-
-                    $prod_detail = $this->common_model->FetchWhere('crm_sales_product_details',$cond3);
-
-                    $prod_detail_flag = $this->common_model->FetchProdData('crm_sales_product_details',$cond3,array('spd_deliver_flag'=>1));
-
-                    if(count($prod_detail) == count($prod_detail_flag))
-                    {
-                        $cond4 = array('so_id' => $sales_prod->spd_sales_order);
-
-                        $update_data4 = array('so_deliver_flag'=>1,);
-
-                        $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
-                    }
-                    
-                    $update_data5 = array('so_credit_status'=>0,);
-
-                    $this->common_model->EditData($update_data5,array('so_id' => $sales_prod->spd_sales_order),'crm_sales_orders');
-                    
-                    if(!empty($_POST['print_btn']))
-                    {
-                       
-                        $data['print'] =  base_url() . 'Crm/DeliverNote/Pdf/' . urlencode($delivery_id);
-
-                    }
-                  
-                } 
-            }
-
-                   
-		}
+        
 
         echo json_encode($data);
 
@@ -610,47 +653,64 @@ class DeliverNote extends BaseController
 
         $delivery_note = $this->common_model->SingleRow('crm_delivery_note',$cond);
 
-        $update_data = [
-
-            'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
-
-            'dn_customer'         => $this->request->getPost('dn_customer'),
-
-            'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
-
-            'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
-
-            'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
-
-            'dn_project'          => $this->request->getPost('dn_project'),
-
-        ];
-
-
-
-        if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') 
-        {
-            
-               
-            if($this->request->getFile('dn_file') != '' )
-            { 
-               
-                $previousImagePath = 'uploads/DeliveryNote/' .$delivery_note->dn_file;
-               
-                if (file_exists($previousImagePath)) 
-                {
-                    unlink($previousImagePath);
-                }
-            }
-            
-            // Upload the new image
-            $AttachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
+       
+        $sales_datas = $this->common_model->CheckDataWhere('crm_delivery_note','dn_reffer_no',$this->request->getPost('dn_reffer_no'),$this->request->getPost('dn_id'),'dn_id');
         
-            // Update the data with the new image filename
-            $update_data['dn_file'] = $AttachFileName;
+        if(empty($sales_datas)){
+
+            $update_data = [
+                
+                'dn_reffer_no'        => $this->request->getPost('dn_reffer_no'),
+
+                'dn_date'             => date('Y-m-d',strtotime($this->request->getPost('dn_date'))),
+
+                'dn_customer'         => $this->request->getPost('dn_customer'),
+
+                'dn_lpo_reference'    => $this->request->getPost('dn_lpo_reference'),
+
+                'dn_conact_person'    => $this->request->getPost('dn_conact_person'),
+
+                'dn_payment_terms'    => $this->request->getPost('dn_payment_terms'),
+
+                'dn_project'          => $this->request->getPost('dn_project'),
+
+            ];
+
+
+
+            if (isset($_FILES['dn_file']) && $_FILES['dn_file']['name'] !== '') 
+            {
+                
+                
+                if($this->request->getFile('dn_file') != '' )
+                { 
+                
+                    $previousImagePath = 'uploads/DeliveryNote/' .$delivery_note->dn_file;
+                
+                    if (!empty($delivery_note->dn_file)) 
+                    {
+                        unlink($previousImagePath);
+                    }
+                }
+                
+                // Upload the new image
+                $AttachFileName = $this->uploadFile('dn_file', 'uploads/DeliveryNote');
+            
+                // Update the data with the new image filename
+                $update_data['dn_file'] = $AttachFileName;
+            }
+
+            $this->common_model->EditData($update_data, array('dn_id' => $this->request->getPost('dn_id')), 'crm_delivery_note');
+
+            $data['status'] = "true";
+
+        }
+        else{
+
+            $data['status'] = "false";
         }
 
-        $this->common_model->EditData($update_data, array('dn_id' => $this->request->getPost('dn_id')), 'crm_delivery_note');
+        echo json_encode($data);
     }
 
     //delete account head

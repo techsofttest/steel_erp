@@ -1580,6 +1580,7 @@
             $('.hidden_purchase_voucher_id').val("");
            
             $(".purchase_order").val("").trigger( "change" );
+            $('.add_prod_row').remove();
 
             $.ajax({
 

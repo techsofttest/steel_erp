@@ -538,15 +538,15 @@ class SalesOrderToDn extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$sales_product.'</td>
+                <td style="border-top: 2px solid;"><b>'.$sales_product.'</b></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$sales_product.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$sales_product.'</b></td>
                 <td style="border-top: 2px solid;" ></td>
                  
-                <td style="border-top: 2px solid;" align="right">'.$product_diff.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$product_diff.'</b></td>
             
             </tr> 
 

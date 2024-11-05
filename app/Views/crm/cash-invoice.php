@@ -79,7 +79,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="ci_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -998,7 +998,7 @@
                                                 <label for="basiInput" class="form-label">Referance</label>
                                             </div>
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ci_reffer_no"  class="form-control edit_reff" readonly>
+                                                <input type="text" name="ci_reffer_no"  class="form-control edit_reff">
                                             </div>
                                         </div> 
 
@@ -1392,7 +1392,7 @@
                     // Submit the form for the current tab
                     if($('#add_form1').attr('data-product')=="true")
                     {   
-                        $('.once_form_submit').attr('disabled', true); // Disable this input.
+                        //$('.once_form_submit').attr('disabled', true); // Disable this input.
 
                         $.ajax({
                             url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
@@ -1404,34 +1404,41 @@
                                 
                                 var data = JSON.parse(data);
 
-                                $('#add_form1')[0].reset();
+                                if(data.status === "true"){
 
-                                //$('select').empty();
+                                    $('#add_form1')[0].reset();
 
-                                $('.cash_invoice_remove').remove();
+                                    //$('select').empty();
 
-                                //$('.cash_invoice_remove').val('').trigger('change');
+                                    $('.cash_invoice_remove').remove();
 
-                                $('#CashInvoice').modal('hide');
+                                    //$('.cash_invoice_remove').val('').trigger('change');
 
-                                $('.adjustment_table').html(data.adjustment_data);
+                                    $('#CashInvoice').modal('hide');
 
-                                $('.customer_id').val('').trigger('change');
+                                    $('.adjustment_table').html(data.adjustment_data);
 
-                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                    $('.customer_id').val('').trigger('change');
 
-                                checkedIds.length = 0;
+                                    alertify.success('Data Added Successfully').delay(3).dismissOthers();
 
-                                datatable.ajax.reload(null, false);
+                                    checkedIds.length = 0;
 
-                                if(data.print!="")
-                                {
-                                    window.open(data.print, '_blank');
-                                }
+                                    datatable.ajax.reload(null, false);
 
-                                if(data.advance_status === "true")
-                                {
-                                    $('#SaveModal').modal('show');
+                                    if(data.print!="")
+                                    {
+                                        window.open(data.print, '_blank');
+                                    }
+
+                                    if(data.advance_status === "true")
+                                    {
+                                        $('#SaveModal').modal('show');
+                                    }
+
+                                }else{
+
+                                    alertify.error('Duplicate Reffer Number').delay(3).dismissOthers();
                                 }
                             
                             }
@@ -1510,7 +1517,7 @@
 
                     "initComplete": function() {
 
-                        var dataId = '<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>';
+                        var dataId = '<?php echo isset($_GET['view_cash']) ? $_GET['view_cash'] : ''; ?>';
 
                         $('#Datatable').dataTable().fnFilter(dataId);
 
@@ -1518,7 +1525,7 @@
 
                     "drawCallback": function() {
 
-                        $('.view_btn[data-id="<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>"]').trigger('click');
+                        $('.view_btn[data-id="<?php echo isset($_GET['view_cash']) ? $_GET['view_cash'] : ''; ?>"]').trigger('click');
 
                     }
     
@@ -1536,32 +1543,35 @@
         $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
+
+            if(id!=null){
    
-            //Fetch Contact Person
-            $.ajax({
+                //Fetch Contact Person
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/SalesOrder",
+                    url : "<?php echo base_url(); ?>Crm/CashInvoice/SalesOrder",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {ID: id},
+                    data: {ID: id},
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    $(".sales_order_add_clz").html(data.sales_order);
+                        $(".sales_order_add_clz").html(data.sales_order);
 
-                    $(".cont_person").html(data.contact_details);
+                        $(".cont_person").html(data.contact_details);
 
-                    $(".payment_terms").val(data.credit_term);
+                        $(".payment_terms").val(data.credit_term);
 
-                    $(".payment_terms").removeClass("error");
+                        $(".payment_terms").removeClass("error");
 
-                }
+                    }
 
 
-            });
+                });
+            }
 
         });
 
@@ -1846,7 +1856,7 @@
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
                
-                $(".cust_more_modal").addClass("disabled-span");
+                
             
                 $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CashInvoice/Add",
@@ -1858,37 +1868,49 @@
 
                             var data = JSON.parse(data);
 
-                            var id = data.sales_order;
-
-                            var cash_invoice = data.cash_invoice;
-                         
-                            $('.hidden_cash_invoice').val(cash_invoice);
-  
-                            $('#SelectProduct').modal('show');
-
-                            $('#CashInvoice').modal('hide');
-
-                            $('#add_form1').attr('data-product','true');
-
-                            $.ajax({
-
-                                url : "<?php echo base_url(); ?>Crm/CashInvoice/AddProduct",
-
-                                method : "POST",
-
-                                data: {ID: id,cashInvoice: cash_invoice},
+                            if(data.status === "true")
+                            {
+                                $(".cust_more_modal").addClass("disabled-span");
                                 
-                                success:function(data)
-                                {   
-                                    var data = JSON.parse(data);
-                                    
-                                    $(".select_prod_add").html(data.product_detail);
-                                    
-                                    //console.log(data.product_detail);
+                                var id = data.sales_order;
 
-                                }   
+                                var cash_invoice = data.cash_invoice;
+                            
+                                $('.hidden_cash_invoice').val(cash_invoice);
+    
+                                $('#SelectProduct').modal('show');
 
-                            });
+                                $('#CashInvoice').modal('hide');
+
+                                $('#add_form1').attr('data-product','true');
+
+                                $.ajax({
+
+                                    url : "<?php echo base_url(); ?>Crm/CashInvoice/AddProduct",
+
+                                    method : "POST",
+
+                                    data: {ID: id,cashInvoice: cash_invoice},
+                                    
+                                    success:function(data)
+                                    {   
+                                        var data = JSON.parse(data);
+                                        
+                                        $(".select_prod_add").html(data.product_detail);
+                                        
+                                        //console.log(data.product_detail);
+
+                                    }   
+
+                                });
+
+                            }
+                            else{
+
+                                alertify.error('Duplicate Reffer Number').delay(3).dismissOthers();
+
+
+                            }
 
                            
                             
@@ -2184,59 +2206,63 @@
             $('#EditCashInvoice').modal('show');
     
             var id = $(this).data('id'); 
+
+            if(id!=null){
     
-            $.ajax({
-    
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
-    
-                method : "POST",
-    
-                data: {ID: id},
-    
-                success:function(data)
-                {
-    
-                    var data = JSON.parse(data);
+                $.ajax({
+        
+                    url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
+        
+                    method : "POST",
+        
+                    data: {ID: id},
+        
+                    success:function(data)
+                    {
+        
+                        var data = JSON.parse(data);
+                        
+                        $('.edit_reff').val(data.reffer_no);
+        
+                        $('.edit_date').val(data.date);
+        
+                        $('.edit_customer').html(data.customer);
+        
+                        $('.edit_sales_order').html(data.sales_order);
+        
+                        $('.edit_lpo_reff').val(data.lpo_reff);
+        
+                        $('.edit_contact_person').html(data.contact_person);
+        
+                        $('.edit_payment_terms').val(data.payment_term);
+        
+                        $('.edit_project').val(data.project);
+
+                        $('.edit_project').val(data.project);
+
+        
+                        /*$('.view_credit_account').val(data.credit_account);
+        
+                        $('.view_image_table').html(data.image_table)*/;
+
+                        $('.edit_product').html(data.prod_details);
+
+                        $('.edit_cash_invoice_id').val(data.cash_invoice_id);
+
+                        $('.edit_charts_account').html(data.charts_of_account);
+
+                        $('.add_more_class').html(data.add_more);
+
+                        $('.edit_total_amount').html(data.total_amount);
+                        
+                        //console.log(data.prod_details);
+        
                     
-                    $('.edit_reff').val(data.reffer_no);
-    
-                    $('.edit_date').val(data.date);
-    
-                    $('.edit_customer').html(data.customer);
-    
-                    $('.edit_sales_order').html(data.sales_order);
-    
-                    $('.edit_lpo_reff').val(data.lpo_reff);
-    
-                    $('.edit_contact_person').html(data.contact_person);
-    
-                    $('.edit_payment_terms').val(data.payment_term);
-    
-                    $('.edit_project').val(data.project);
+                    }
+        
+                });
 
-                    $('.edit_project').val(data.project);
-
-    
-                    /*$('.view_credit_account').val(data.credit_account);
-    
-                    $('.view_image_table').html(data.image_table)*/;
-
-                    $('.edit_product').html(data.prod_details);
-
-                    $('.edit_cash_invoice_id').val(data.cash_invoice_id);
-
-                    $('.edit_charts_account').html(data.charts_of_account);
-
-                    $('.add_more_class').html(data.add_more);
-
-                    $('.edit_total_amount').html(data.total_amount);
-                    
-                    //console.log(data.prod_details);
-    
-                
-                }
-    
-            });
+            }
     
             
         });
@@ -2247,51 +2273,55 @@
             $('#EditCashInvoice').modal('show');
     
             var id = $(this).data('id'); 
-    
-            $.ajax({
-    
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
-    
-                method : "POST",
-    
-                data: {ID: id},
-    
-                success:function(data)
-                {
-    
-                    var data = JSON.parse(data);
-                    
-                    $('.edit_reff').val(data.reffer_no);
-    
-                    $('.edit_date').val(data.date);
-    
-                    $('.edit_customer').html(data.customer);
-    
-                    $('.edit_sales_order').html(data.sales_order);
-    
-                    $('.edit_lpo_reff').val(data.lpo_reff);
-    
-                    $('.edit_contact_person').html(data.contact_person);
-    
-                    $('.edit_payment_terms').val(data.payment_term);
-    
-                    $('.edit_project').val(data.project);
 
-                    $('.edit_project').val(data.project);
+            if(id!=null){
+    
+                $.ajax({
+        
+                    url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
+        
+                    method : "POST",
+        
+                    data: {ID: id},
+        
+                    success:function(data)
+                    {
+        
+                        var data = JSON.parse(data);
+                        
+                        $('.edit_reff').val(data.reffer_no);
+        
+                        $('.edit_date').val(data.date);
+        
+                        $('.edit_customer').html(data.customer);
+        
+                        $('.edit_sales_order').html(data.sales_order);
+        
+                        $('.edit_lpo_reff').val(data.lpo_reff);
+        
+                        $('.edit_contact_person').html(data.contact_person);
+        
+                        $('.edit_payment_terms').val(data.payment_term);
+        
+                        $('.edit_project').val(data.project);
 
-    
-                    /*$('.view_credit_account').val(data.credit_account);
-    
-                    $('.view_product').html(data.prod_details);
-    
-                    $('.view_image_table').html(data.image_table)*/;
+                        $('.edit_project').val(data.project);
+
+        
+                        /*$('.view_credit_account').val(data.credit_account);
+        
+                        $('.view_product').html(data.prod_details);
+        
+                        $('.view_image_table').html(data.image_table)*/;
+                        
+                        //console.log(data.sales_orders);
+        
                     
-                    //console.log(data.sales_orders);
-    
-                
-                }
-    
-            });
+                    }
+        
+                });
+
+            }
     
             
         });
@@ -2322,12 +2352,20 @@
                             processData: false, // Don't process the data
                             contentType: false, // Don't set content type
                             success: function(data) {
-                        
-                                $('#EditCashInvoice').modal('hide');
+                                
+                                var data = JSON.parse(data);
 
-                                alertify.success('Data update Successfully').delay(3).dismissOthers();
+                                if(data.status === "true")
+                                {
+                                    $('#EditCashInvoice').modal('hide');
 
-                                datatable.ajax.reload(null, false);
+                                    alertify.success('Data update Successfully').delay(3).dismissOthers();
+
+                                    datatable.ajax.reload(null, false);
+                                }
+                                else{
+                                    alertify.error('Duplicate Reference Number').delay(3).dismissOthers();
+                                }
                             
                             }
                         });
@@ -2574,6 +2612,52 @@
 
 
     /*checkbox section end*/
+
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+
+function isDataTableRequest(ajaxSettings) {
+    // Check for DataTables-specific URL or any other pattern
+    return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+}
+
+function isSelect2Request(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+}
+
+
+function isSelect2Search(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+}
+
+
+$(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeIn(300);
+    }
+});
+
+
+$(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeOut(300);
+    }
+});
+
+
+
+$(document).ajaxError(function() {
+    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+});
+
+
+});
+
+
+
+
 
 
     

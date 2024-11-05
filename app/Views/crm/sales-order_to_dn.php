@@ -228,8 +228,12 @@
                                                 $total_amount = 0;
                                                 $total_amount1 = 0;
                                                 $total_amount2 = 0;
+                                                $delivery_amount = 0;
                                                 if (!empty($sales_orders)) {
                                                     $i = 1;
+                                                      
+                                                   
+
                                                     foreach ($sales_orders as $sales_order) {
 
                                                 ?>
@@ -246,7 +250,7 @@
 
                                                             <?php $total_amount = $sales_order->so_amount_total + $total_amount; ?>
 
-                                                            <td colspan="5" align="left" class="p-0">
+                                                            <td colspan="7" align="left" class="p-0">
                                                                 <table>
                                                                     <?php foreach ($sales_order->sales_products as $sales_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
@@ -255,6 +259,27 @@
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_rate); ?></td>
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_discount); ?>%</td>
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_amount); ?></td>
+
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->totaldelivered); ?></td>
+                                                                             
+                                                                            <?php
+                                                                              
+                                                                              $final_amount = $sales_prod->spd_amount -  $sales_prod->totaldelivered;
+
+                                                                              $total_amount2 = $final_amount + $total_amount2;
+                                                                            
+                                                                             if(!empty($final_amount)){
+                                                                            ?>
+                                                                            
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($final_amount)?></td>
+
+                                                                            <?php } else{?> 
+                                                                                <td class="rotate text-end" width="100px">0.00</td>    
+                                                                            <?php } ?>
+
+
+                                                                           
+
                                                                             <?php
                                                                             $total_amount1 = $sales_prod->spd_amount +  $total_amount1;
                                                                             ?>
@@ -264,107 +289,10 @@
                                                             </td>
 
 
-
-                                                            <td class="rotate text-end"  align="right" class="p-0">
-                                                                   
-                                                                <?php
-
-                                                                    $delivered_total_amt = array_sum(array_column($sales_order->sales_deliverys,'dn_total_amount'));
-                                                                    echo format_currency($delivered_total_amt);
-                                                                ?> 
-
-                                                                <!--***delivery note section start**-->
-
-                                                                <!--<?php //if (!empty($sales_order->sales_deliverys)) { ?>
-                                                                    <table>
-                                                                        <?php //foreach ($sales_order->sales_deliverys as $sales_del) {
-                                                                            //$j = 1;
-                                                                            //foreach ($sales_del->sales_delivery_prod as $del_prod) {
-                                                                        ?>
-                                                                                <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                    <?php //if ($j == 1) { ?>
-                                                                                        <td width="100px" class="rotate text-end"><?php //echo $sales_del->dn_reffer_no; ?></td>
-                                                                                    <?php //} else { ?>
-                                                                                        <td width="100px"></td>
-                                                                                    <?php //} ?>
-                                                                                    <td width="100px"><?php //echo $del_prod->product_details;
-                                                                                                            ?></td>
-                                                                            <td width="100px"><?php //echo $del_prod->dpd_current_qty;
-                                                                                                ?></td>
-                                                                            <td width="100px"><?php //echo $del_prod->dpd_prod_rate;
-                                                                                                ?></td>
-                                                                            <td width="100px"><?php //echo $del_prod->dpd_total_amount;
-                                                                                                ?></td>
-                                                                                </tr>
-                                                                        <?php //$j++;
-                                                                           // }
-                                                                       // } ?>
-                                                                    </table>
-                                                                <?php //} ?>-->
-
-                                                                <!--*****-->
+                                                           
 
 
-                                                                <!--**cash invoice start**-->
-
-                                                                <!--<?php //if (!empty($sales_order->sales_cash_invoice)) { ?>
-                                                                    <table>
-                                                                        <?php //foreach ($sales_order->sales_cash_invoice as $sales_cash) {
-                                                                            //$k = 1;
-                                                                            //foreach ($sales_cash->cash_product as $cash_prod) {
-                                                                        ?>
-                                                                                <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                    <?php //if ($k == 1) { ?>
-                                                                                        <td width="100px" class="rotate text-end"><?php //echo $sales_cash->ci_reffer_no; ?></td>
-                                                                                    <?php //} else { ?>
-                                                                                        <td width="100px"></td>
-                                                                                    <?php //} ?>
-                                                                                    <td width="100px"><?php //echo $cash_prod->product_details;
-                                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $cash_prod->cipd_qtn;
-                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $cash_prod->cipd_rate;
-                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $cash_prod->cipd_amount;
-                                                                                            ?></td>
-                                                                                </tr>
-                                                                        <?php //$k++;
-                                                                           // }
-                                                                        //} ?>
-                                                                    </table>
-                                                                <?php //} ?>-->
-
-                                                                <!--****-->
-
-
-
-                                                            </td>
-
-
-                                                            <td>
-                                                                <?php if (empty($sales_order->sales_deliverys) && empty($sales_order->sales_cash_invoice)) { ?>
-                                                                    <table>
-                                                                        <?php foreach ($sales_order->sales_products as $sales_prod) {
-
-                                                                            $total_amount2 = $sales_prod->spd_amount +  $total_amount2;
-
-                                                                        ?>
-                                                                            <tr style="background: unset;border-bottom: hidden !important;">
-
-                                                                                <td width="100px" class="rotate text-end"><?php echo format_currency($sales_prod->spd_amount); ?></td>
-
-                                                                            </tr>
-                                                                        <?php } ?>
-                                                                    </table>
-                                                                <?php } else { ?>
-                                                                    <table>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;">
-                                                                            <td class="rotate text-end">00.0</td>
-                                                                        </tr>
-                                                                    </table>
-                                                                <?php } ?>
-                                                            </td>
-
+                                                          
 
 
 
@@ -377,6 +305,10 @@
                                                 <?php   } ?>
 
 
+                                               
+                                                
+                                                
+
                                                 <tr>
                                                     <td>Total</td>
                                                     <td></td>
@@ -384,14 +316,14 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount2); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount2); ?></b></td>
 
 
                                                 </tr>

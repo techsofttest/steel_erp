@@ -84,7 +84,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -717,7 +717,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="" class="form-control edit_reff"  readonly>
+                                                                        <input type="text" name="dn_reffer_no" id="" class="form-control edit_reff" >
                                                                     </div>
 
                                                                 </div> 
@@ -1225,41 +1225,51 @@
                             data: formData,
                             processData: false, // Don't process the data
                             contentType: false, // Don't set content type
-                        // data: $(currentForm).serialize(),
+                            // data: $(currentForm).serialize(),
                             success: function(data) {
                                 
                                 var data = JSON.parse(data);
 
-                                $('#add_form1')[0].reset();
-
-                            // $('.delivery_note_remove').remove();
-                            
-                                $('body').find('.delivery_note_remove').remove();
-
-                                $('.prod_checkmark').prop('checked', false); // Unchecks it
-
-                                $('.sales_order_add_clz').val('').trigger('change');
-
-                                $('.cont_person').val('').trigger('change');
-
-                                $('.customer_id').val('').trigger('change');
-
-                                $('.hidden_delivery_id').val("");
-                            
-                                $('#DeliverNote').modal('hide');
-
-                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
-
-                                datatable.ajax.reload(null, false);
-
-                                $('.modal-backdrop').remove();
-
-                                //console.log(data.print);
-
-                                if(data.print!="")
+                                if(data.status === "true")
                                 {
-                                    window.open(data.print, '_blank');
+
+                                    $('#add_form1')[0].reset();
+
+                                    $('body').find('.delivery_note_remove').remove();
+
+                                    $('.prod_checkmark').prop('checked', false); // Unchecks it
+
+                                    $('.sales_order_add_clz').val('').trigger('change');
+
+                                    $('.cont_person').val('').trigger('change');
+
+                                    $('.customer_id').val('').trigger('change');
+
+                                    $('.hidden_delivery_id').val("");
+                                
+                                    $('#DeliverNote').modal('hide');
+
+                                    alertify.success('Data Added Successfully').delay(3).dismissOthers();
+
+                                    datatable.ajax.reload(null, false);
+
+                                    $('.modal-backdrop').remove();
+
+                                    if(data.print!="")
+                                    {
+                                        window.open(data.print, '_blank');
+                                        
+                                    }
+
+                                }else{
+
+                                    alertify.error('Data Added Successfully').delay(3).dismissOthers();
+
                                 }
+
+                                
+
+                                
                         
                             }
                         });
@@ -1364,32 +1374,36 @@
         $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
+
+            if(id!=null){
             
-            //Fetch Contact Person
-            $.ajax({
+                //Fetch Contact Person
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/DeliverNote/SalesOrder",
+                    url : "<?php echo base_url(); ?>Crm/DeliverNote/SalesOrder",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {ID: id},
+                    data: {ID: id},
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    $(".sales_order_add_clz").html(data.sales_order);
+                        $(".sales_order_add_clz").html(data.sales_order);
 
-                    $(".cont_person").html(data.contact_person);
+                        $(".cont_person").html(data.contact_person);
 
-                    $(".payment_term_clz").val(data.payment_term);
+                        $(".payment_term_clz").val(data.payment_term);
 
-                    $(".payment_term_clz").removeClass("error")
-                   
-                }
+                        $(".payment_term_clz").removeClass("error")
+                    
+                    }
 
 
-            });
+                });
+
+            }
 
 
 
@@ -1410,51 +1424,55 @@
 
             var cust_id = $('.customer_id').val();
 
+            if(id && cust_id){
            
-            //Fetch Contact Person
-            $.ajax({
+                //Fetch Contact Person
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/DeliverNote/FetchSalesData",
+                    url : "<?php echo base_url(); ?>Crm/DeliverNote/FetchSalesData",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {ID: id,
-                       custID : cust_id,
-                },
-                
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                     
-                    $(".lpo_ref").val(data.so_lpo);
-
-                    $(".cont_person").html(data.contact_person);
-
-                    $(".project_clz").val(data.so_project);
-
-                     
-                    if(data.so_lpo!=null)
-                    {
-                        $('.lpo_ref').removeClass("error");
-                    }
+                    data: {ID: id,
+                        custID : cust_id,
+                    },
                     
-                    if(data.contact_person!=null)
-                    {
-                        $('.cont_person').removeClass("error");
-                    }
+
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+                        
+                        $(".lpo_ref").val(data.so_lpo);
+
+                        $(".cont_person").html(data.contact_person);
+
+                        $(".project_clz").val(data.so_project);
+
+                        
+                        if(data.so_lpo!=null)
+                        {
+                            $('.lpo_ref').removeClass("error");
+                        }
+                        
+                        if(data.contact_person!=null)
+                        {
+                            $('.cont_person').removeClass("error");
+                        }
+                        
+                        if(data.so_project!=null)
+                        {
+                            $('.project_clz').removeClass("error");
+                        }
+
+                        slno();
                     
-                    if(data.so_project!=null)
-                    {
-                        $('.project_clz').removeClass("error");
                     }
 
-                    slno();
-                  
-                }
 
+                });
 
-            });
+            }
+
 
         });
         /**/
@@ -1770,7 +1788,7 @@
             var image = $('.image_file').prop('files')[0]; // Get the file from input field
             formData.append('image', image); // Append the file to FormData object
 
-            $(".cust_more_modal").addClass("disabled-span");
+            
 
             $.ajax({
                         url: "<?php echo base_url(); ?>Crm/DeliverNote/Add",
@@ -1782,36 +1800,46 @@
 
                             var data = JSON.parse(data);
 
-                            var id = data.sales_order;
+                            if(data.status === "true")
+                            {   
+                                $(".cust_more_modal").addClass("disabled-span");
 
-                            var delivery_id = data.delivery_id;
+                                var id = data.sales_order;
 
+                                var delivery_id = data.delivery_id;
 
-                           $('.hidden_delivery_id').val(delivery_id);
-  
-                            $('#SelectProduct').modal('show');
+                                $('.hidden_delivery_id').val(delivery_id);
+    
+                                $('#SelectProduct').modal('show');
 
-                            $('#DeliverNote').modal('hide');
+                                $('#DeliverNote').modal('hide');
 
-                            $('#add_form1').attr('data-salesorder','true');
+                                $('#add_form1').attr('data-salesorder','true');
 
-                            $.ajax({
+                                $.ajax({
 
-                                url : "<?php echo base_url(); ?>Crm/DeliverNote/AddProduct",
+                                    url : "<?php echo base_url(); ?>Crm/DeliverNote/AddProduct",
 
-                                method : "POST",
+                                    method : "POST",
 
-                                data: {ID: id},
-                                
-                                success:function(data)
-                                {   
-                                    var data = JSON.parse(data);
+                                    data: {ID: id},
                                     
-                                    $(".select_prod_add").html(data.product_detail);
+                                    success:function(data)
+                                    {   
+                                        var data = JSON.parse(data);
+                                        
+                                        $(".select_prod_add").html(data.product_detail);
 
-                                }   
+                                    }   
 
-                            });
+                                });
+
+                            }
+                            else
+                            {
+                                alertify.error('Duplicate Reference Number').delay(3).dismissOthers();
+
+                            }
 
                            
                             
@@ -2111,11 +2139,19 @@
                         processData: false, // Don't process the data
                         contentType: false, // Don't set content type
                         success: function(data) {
-                          
-                            $('#EditDeliveryNote').modal('hide');
+                            
+                            var data = JSON.parse(data);
 
-                            alertify.success('Data Update Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null, false);
+                            if(data.status === "true"){
+                                
+                                $('#EditDeliveryNote').modal('hide');
+                                alertify.success('Data Update Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload(null, false);
+
+                            }
+                            else{
+                                alertify.error('Duplicate Reffer Number').delay(3).dismissOthers(); 
+                            }
                        
                         }
                     });
@@ -2494,8 +2530,51 @@
     /*checkbox section end*/
 
 
+    document.addEventListener("DOMContentLoaded", function(event) {
+
+        function isDataTableRequest(ajaxSettings) {
+            // Check for DataTables-specific URL or any other pattern
+            return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+        }
+
+        function isSelect2Request(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+        }
 
 
+        function isSelect2Search(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+        }
+
+
+        $(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+            if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                $("#overlay").fadeIn(300);
+            }
+        });
+
+
+        $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+            if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                $("#overlay").fadeOut(300);
+            }
+        });
+
+
+
+        $(document).ajaxError(function() {
+            alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+        });
+
+
+    });
+    
+
+
+
+  
 
 
 

@@ -63,7 +63,7 @@ class CashInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  style="display:none;"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
             <a href="'.base_url().'Crm/CashInvoice/Pdf/'.$record->ci_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
             ';
            
@@ -199,252 +199,280 @@ class CashInvoice extends BaseController
        
         if(empty($this->request->getPost('ci_id')))
         {
-            $uid = $this->common_model->FetchNextId('crm_cash_invoice',"CIN");
+            //$uid = $this->common_model->FetchNextId('crm_cash_invoice',"CIN");
 
-            $insert_data = [
+            $cash_invoice_data = $this->common_model->FetchWhere('crm_cash_invoice',array('ci_reffer_no' => $this->request->getPost('ci_reffer_no')));
 
-                'ci_reffer_no'       => $uid,
+            if(empty($cash_invoice_data))
+            {
 
-                'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
+                $insert_data = [
 
-                'ci_customer'        => $this->request->getPost('ci_customer'),
+                    'ci_reffer_no'       => $this->request->getPost('ci_reffer_no'),
 
-                'ci_sales_order'     => $this->request->getPost('ci_sales_order'),
+                    'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
 
-                'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
+                    'ci_customer'        => $this->request->getPost('ci_customer'),
 
-                'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
+                    'ci_sales_order'     => $this->request->getPost('ci_sales_order'),
 
-                'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
+                    'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
 
-                'ci_project'         => $this->request->getPost('ci_project'),
+                    'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
 
-                'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
+                    'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
 
-                'ci_addded_by'       => 0,
+                    'ci_project'         => $this->request->getPost('ci_project'),
 
-                'ci_added_date'      => date('Y-m-d'),
+                    'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
 
-                'ci_paid_status'     => 0,
+                    'ci_addded_by'       => 0,
 
-            ];
+                    'ci_added_date'      => date('Y-m-d'),
 
-            if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
-                    
-                // Upload the new image
-                $attachFileName = $this->uploadFile('ci_file', 'uploads/CashInvoice');
+                    'ci_paid_status'     => 0,
+
+                ];
+
+                if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
+                        
+                    // Upload the new image
+                    $attachFileName = $this->uploadFile('ci_file', 'uploads/CashInvoice');
+
+                
+                    // Update the data with the new image filename
+                    $insert_data['ci_file'] = $attachFileName;
+        
+                }
 
             
-                // Update the data with the new image filename
-                $insert_data['ci_file'] = $attachFileName;
-    
+
+                $cash_invoice_id = $this->common_model->InsertData('crm_cash_invoice',$insert_data);
+
+                $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+                
+                $data['sales_order'] = $cash_invoice->ci_sales_order;
+
+                $data["cash_invoice"] = $cash_invoice_id;
+
+                $data['status']  = "true";
+
             }
+            else{
 
-          
-
-            $cash_invoice_id = $this->common_model->InsertData('crm_cash_invoice',$insert_data);
-            
-            
+                $data['status']  = "false";
+            }
             
            
 
         }
         else
-        {
-            $update_data = [
-
-                'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
-
-                'ci_customer'        => $this->request->getPost('ci_customer'),
-
-                'ci_sales_order'     => $this->request->getPost('ci_sales_order'),
-
-                'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
-
-                'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
-
-                'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
-
-                'ci_project'         => $this->request->getPost('ci_project'),
-
-                'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
-
-                'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
-
-            ];
-
-            if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
-                
-                // Upload the new image
-                $attachFileName = $this->uploadFile('ci_file', 'uploads/CashInvoice');
+        {   
+            $cash_invoice_data = $this->common_model->CheckDataWhere('crm_cash_invoice','ci_reffer_no',trim($this->request->getPost('ci_reffer_no')),trim($this->request->getPost('ci_id')),'ci_id');
             
-                // Update the data with the new image filename
-                $update_data['ci_file'] = $attachFileName;
-            }
+            if(empty($cash_invoice_data)){
 
-            $this->common_model->EditData($update_data, array('ci_id' => $this->request->getPost('ci_id')), 'crm_cash_invoice');
-            
-            $cash_invoice_id = $this->request->getPost('ci_id');
+                $update_data = [
 
-            $cash_invoicess = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+                    'ci_reffer_no'       => $this->request->getPost('ci_reffer_no'),
 
-            //Add To Transactions
-    
-            $credit_trans_data['tran_reference'] = $cash_invoicess->ci_reffer_no;
+                    'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
 
-            $credit_trans_data['tran_account'] = $cash_invoicess->ci_credit_account;
+                    'ci_customer'        => $this->request->getPost('ci_customer'),
 
-            $credit_trans_data['tran_credit'] = $cash_invoicess->ci_total_amount;
+                    'ci_sales_order'     => $this->request->getPost('ci_sales_order'),
 
-            $credit_trans_data['tran_type'] = "Cash Invoice";
+                    'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
 
-            $this->common_model->InsertData('master_transactions',$credit_trans_data);
+                    'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
 
-        }
+                    'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
 
-        $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+                    'ci_project'         => $this->request->getPost('ci_project'),
 
-        $data['sales_order'] = $cash_invoice->ci_sales_order;
+                    'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
 
-        $data["cash_invoice"] = $cash_invoice_id ;
+                    'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
 
-        
-        
-      
+                ];
 
-       // print_r($cash_invoice_id); exit();
-
-      
-        
-
-        if(!empty($_POST['cipd_unit']))
-		{
-            $count =  count($_POST['cipd_unit']);
+                if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
+                    
+                    // Upload the new image
+                    $attachFileName = $this->uploadFile('ci_file', 'uploads/CashInvoice');
                 
-            if($count!=0)
-            {  
-                for($j=0;$j<=$count-1;$j++)
+                    // Update the data with the new image filename
+                    $update_data['ci_file'] = $attachFileName;
+                }
+
+                $this->common_model->EditData($update_data, array('ci_id' => $this->request->getPost('ci_id')), 'crm_cash_invoice');
+                
+                $cash_invoice_id = $this->request->getPost('ci_id');
+
+                $cash_invoicess = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+
+                //Add To Transactions
+        
+                $credit_trans_data['tran_reference'] = $cash_invoicess->ci_reffer_no;
+
+                $credit_trans_data['tran_account'] = $cash_invoicess->ci_credit_account;
+
+                $credit_trans_data['tran_credit'] = $cash_invoicess->ci_total_amount;
+
+                $credit_trans_data['tran_type'] = "Cash Invoice";
+
+                $this->common_model->InsertData('master_transactions',$credit_trans_data);
+
+
+                $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+
+                $data['sales_order'] = $cash_invoice->ci_sales_order;
+
+                $data["cash_invoice"] = $cash_invoice_id;
+
+
+                if(!empty($_POST['cipd_unit']))
                 {
+                    $count =  count($_POST['cipd_unit']);
                         
-                    $product_data  	= array(  
+                    if($count!=0)
+                    {  
+                        for($j=0;$j<=$count-1;$j++)
+                        {
+                                
+                            $product_data  	= array(  
+                                
+                                'cipd_prod_det'      =>  $_POST['cipd_prod_det'][$j],
+                                'cipd_unit'          =>  $_POST['cipd_unit'][$j],
+                                'cipd_qtn'           =>  $_POST['cipd_qtn'][$j],
+                                'cipd_rate'          =>  $_POST['cipd_rate'][$j],
+                                'cipd_discount'      =>  $_POST['cipd_discount'][$j],
+                                'cipd_amount'        =>  $_POST['cipd_amount'][$j],
+                                'cipd_sales_prod'    =>  $_POST['cipd_sales_prod'][$j],
+                                'cipd_cash_invoice'  =>  $cash_invoice_id,
+                                
+                            
+                                
+                            );
+
+        
+                            $product_insert = $this->common_model->InsertData('crm_cash_invoice_prod_det',$product_data);
+        
                         
-                        'cipd_prod_det'      =>  $_POST['cipd_prod_det'][$j],
-                        'cipd_unit'          =>  $_POST['cipd_unit'][$j],
-                        'cipd_qtn'           =>  $_POST['cipd_qtn'][$j],
-                        'cipd_rate'          =>  $_POST['cipd_rate'][$j],
-                        'cipd_discount'      =>  $_POST['cipd_discount'][$j],
-                        'cipd_amount'        =>  $_POST['cipd_amount'][$j],
-                        'cipd_sales_prod'    =>  $_POST['cipd_sales_prod'][$j],
-                        'cipd_cash_invoice'  =>  $cash_invoice_id,
-                        
-                       
-                        
-                    );
-
-                    $product_insert = $this->common_model->InsertData('crm_cash_invoice_prod_det',$product_data);
-
-                   
-
-                    $this->common_model->EditData(array('cipd_reffer_no'=>"CINP00".$product_insert),array('cipd_id' => $product_insert),'crm_cash_invoice_prod_det');
- 
-
-                    //$update_data =  array('spd_delivered_qty' => $_POST['cipd_qtn'][$j]);
-
-                    
-                    $cond = array('spd_id' => $_POST['cipd_sales_prod'][$j]); 
-                    
-                    $sales_prod_old = $this->common_model->SingleRow('crm_sales_product_details',$cond);
-
-                    $cash_invoice = $sales_prod_old->spd_cash_invoice + $_POST['cipd_qtn'][$j];
-                    
-                    $new_delivery_qty = $sales_prod_old->spd_delivered_qty + $_POST['cipd_qtn'][$j];
-
-                    $update_data =  array('spd_delivered_qty' => $new_delivery_qty,'spd_cash_invoice' => $cash_invoice);
-
-                    $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
-
-                    $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond);
-
-                    if($sales_prod->spd_quantity == $sales_prod->spd_delivered_qty)
-                    {
-                        $cond2 = array('spd_id' => $_POST['cipd_sales_prod'][$j]);
-
-                        $update_data2 = array('spd_deliver_flag'=>1);
-
-                        $this->common_model->EditData($update_data2,$cond2,'crm_sales_product_details');
+        
+                            $this->common_model->EditData(array('cipd_reffer_no'=>"CINP00".$product_insert),array('cipd_id' => $product_insert),'crm_cash_invoice_prod_det');
+        
+        
+                            //$update_data =  array('spd_delivered_qty' => $_POST['cipd_qtn'][$j]);
+        
+                            
+                            $cond = array('spd_id' => $_POST['cipd_sales_prod'][$j]); 
+                            
+                            $sales_prod_old = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+        
+                            $cash_invoice = $sales_prod_old->spd_cash_invoice + $_POST['cipd_qtn'][$j];
+                            
+                            $new_delivery_qty = $sales_prod_old->spd_delivered_qty + $_POST['cipd_qtn'][$j];
+        
+                            $update_data =  array('spd_delivered_qty' => $new_delivery_qty,'spd_cash_invoice' => $cash_invoice);
+        
+                            $this->common_model->EditData($update_data,$cond,'crm_sales_product_details');
+        
+                            $sales_prod = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+        
+                            if($sales_prod->spd_quantity == $sales_prod->spd_delivered_qty)
+                            {
+                                $cond2 = array('spd_id' => $_POST['cipd_sales_prod'][$j]);
+        
+                                $update_data2 = array('spd_deliver_flag'=>1);
+        
+                                $this->common_model->EditData($update_data2,$cond2,'crm_sales_product_details');
+                            }
+        
+                            $cond3 = array('spd_sales_order'=>$sales_prod->spd_sales_order);
+        
+                            $prod_detail = $this->common_model->FetchWhere('crm_sales_product_details',$cond3);
+        
+                            $prod_detail_flag = $this->common_model->FetchProdData('crm_sales_product_details',$cond3,array('spd_deliver_flag'=>1));
+                            
+                            if(count($prod_detail) == count($prod_detail_flag))
+                            {
+                                $cond4 = array('so_id' => $sales_prod->spd_sales_order);
+        
+                                $update_data4 = array('so_deliver_flag'=>1);
+        
+                                $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
+                            }
+        
+                            $pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]));
+                            
+                            $pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]),array('spd_deliver_flag' => 1));
+                            
+                            if(count($pod_data1) == count($pod_data2))
+                            {
+                                $update_data3 = array('so_credit_status' => 1);
+        
+                                $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order_id'][$j]),'crm_sales_orders');
+                            }
+        
+                        } 
                     }
-
-                    $cond3 = array('spd_sales_order'=>$sales_prod->spd_sales_order);
-
-                    $prod_detail = $this->common_model->FetchWhere('crm_sales_product_details',$cond3);
-
-                    $prod_detail_flag = $this->common_model->FetchProdData('crm_sales_product_details',$cond3,array('spd_deliver_flag'=>1));
                     
-                    if(count($prod_detail) == count($prod_detail_flag))
+                    $cash_inv_data = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
+        
+                    $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $cash_inv_data->ci_customer));
+                    
+                    $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
+                    
+                    if(!empty($_POST['print_btn']))
                     {
-                        $cond4 = array('so_id' => $sales_prod->spd_sales_order);
-
-                        $update_data4 = array('so_deliver_flag'=>1);
-
-                        $this->common_model->EditData($update_data4,$cond4,'crm_sales_orders');
+                        
+                        $data['print'] =  base_url() . 'Crm/CashInvoice/Pdf/' . urlencode($cash_invoice_id);
+        
                     }
-
-                    $pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]));
-                    
-                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order_id'][$j]),array('spd_deliver_flag' => 1));
-                    
-                    if(count($pod_data1) == count($pod_data2))
-                    {
-                        $update_data3 = array('so_credit_status' => 1);
-
-                        $this->common_model->EditData($update_data3,array('so_id' => $_POST['sales_order_id'][$j]),'crm_sales_orders');
-                    }
-  
-                } 
-            }
-            
-            $cash_inv_data = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $cash_invoice_id));
-
-            $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $cash_inv_data->ci_customer));
-            
-            $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
-            
-            if(!empty($_POST['print_btn']))
-            {
+        
                 
-                $data['print'] =  base_url() . 'Crm/CashInvoice/Pdf/' . urlencode($cash_invoice_id);
+        
+                    $data['adjustment_data'] = "";
+                    
+                    if(!empty($receipts))
+                    {
+                        foreach($receipts as $receipt)
+                        {
+                            $data['adjustment_data'] .= "
+                            <tr>
+                                <td>1</td>
+                                <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
+                                <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
+                                <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                                <td><input type='text' name='' value='' class='form-control' required></td>
+                                <td><input type='checkbox' name='' value='' class='' required></td>
+                            </tr>
+                            ";
+                        }
+        
+                        $data['advance_status'] ="true"; 
+                    }
+                    else
+                    {
+                        $data['advance_status'] ="false"; 
+                    }
+            
+                }
+
+                $data['status'] = "true";
 
             }
 
            
+            else{
 
-            $data['adjustment_data'] = "";
+                $data['status'] = "false";
+            }
             
-            if(!empty($receipts))
-            {
-                foreach($receipts as $receipt)
-                {
-                    $data['adjustment_data'] .= "
-                    <tr>
-                        <td>1</td>
-                        <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
-                        <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
-                        <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
-                        <td><input type='text' name='' value='' class='form-control' required></td>
-                        <td><input type='checkbox' name='' value='' class='' required></td>
-                    </tr>
-                    ";
-                }
 
-                $data['advance_status'] ="true"; 
-            }
-            else
-            {
-                $data['advance_status'] ="false"; 
-            }
-       
-		}
-
+        }
+        
 
         echo json_encode($data);
 
@@ -507,6 +535,8 @@ class CashInvoice extends BaseController
 
         $data['credit_account'] = $cash_invoice->ca_name;
 
+        $total_amount = format_currency($cash_invoice->ci_total_amount);
+
         $data['total_amount'] = '<tr>
             <td></td>
             <td></td>
@@ -514,7 +544,7 @@ class CashInvoice extends BaseController
             <td></td>
             <td></td>
             <td>Total</td>
-            <td><input type="text" value="'.$cash_invoice->ci_total_amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$total_amount.'" class="form-control " readonly></td>
             
         </tr> ';
 
@@ -538,15 +568,21 @@ class CashInvoice extends BaseController
 
         $data['prod_details']= "";
         foreach($product_details_data as $prod_det)
-        {
+        {   
+            $rate = format_currency($prod_det->cipd_rate);
+
+            $discount = format_currency($prod_det->cipd_discount);
+
+            $amount  = format_currency($prod_det->cipd_amount);
+
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
             <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_discount.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$rate.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$discount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$amount.'" class="form-control " readonly></td>
             </tr>'; 
              $i++;
         }
@@ -653,45 +689,40 @@ class CashInvoice extends BaseController
     // update account head 
     public function Update()
     {    
-        /*$cond = array('at_id' => $this->request->getPost('account_id'));
-        
-        $update_data = $this->request->getPost(); 
-
-        // Check if the 'account_id' key exists before unsetting it
-        if (array_key_exists('account_id', $update_data)) 
+        $cash_invoice_data = $this->common_model->CheckDataWhere('crm_cash_invoice','ci_reffer_no',trim($this->request->getPost('ci_reffer_no')),trim($this->request->getPost('ci_id')),'ci_id');
+         
+        if(empty($cash_invoice_data))
         {
-             unset($update_data['account_id']);
-        }       
+        
+            $update_data = [
+                
+                'ci_reffer_no'       => $this->request->getPost('ci_reffer_no'),
 
-        $update_data['at_added_by'] = 0; 
+                'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
 
-        $update_data['at_modify_date'] = date('Y-m-d'); 
+                'ci_customer'        => $this->request->getPost('ci_customer'),
 
+                'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
 
+                'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
 
-        $this->common_model->EditData($update_data,$cond,'accounts_account_types');*/
+                'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
 
-        //$cond = array('ci_id' => $this->request->getPost('ci_id'));
+                'ci_project'         => $this->request->getPost('ci_project'),
 
-       // $delivery_note = $this->common_model->SingleRow('crm_cash_invoice',$cond);
+            ];
 
-        $update_data = [
+            $this->common_model->EditData($update_data, array('ci_id' => $this->request->getPost('ci_id')), 'crm_cash_invoice');
 
-            'ci_date'            => date('Y-m-d',strtotime($this->request->getPost('ci_date'))),
+            $data['status'] = "true";
+        }
+        else{
+          
+            $data['status'] = "false";
 
-            'ci_customer'        => $this->request->getPost('ci_customer'),
+        }
 
-            'ci_lpo_reff'        => $this->request->getPost('ci_lpo_reff'),
-
-            'ci_contact_person'  => $this->request->getPost('ci_contact_person'),
-
-            'ci_payment_term'    => $this->request->getPost('ci_payment_term'),
-
-            'ci_project'         => $this->request->getPost('ci_project'),
-
-        ];
-
-        $this->common_model->EditData($update_data, array('ci_id' => $this->request->getPost('ci_id')), 'crm_cash_invoice');
+        echo json_encode($data);
 
 
        
@@ -1178,7 +1209,8 @@ class CashInvoice extends BaseController
             $data['credit_account']  = $cash_invoice->ca_name;
 
             $data['cash_invoice_id'] = $cash_invoice->ci_id;
-
+             
+            $total_amount = format_currency($cash_invoice->ci_total_amount);
 
             $data['total_amount'] = '<tr>
                 <td></td>
@@ -1187,7 +1219,7 @@ class CashInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td class=""><input type="text" value="'.$cash_invoice->ci_total_amount.'" class="form-control " readonly></td>
+                <td class=""><input type="text" value="'.$total_amount.'" class="form-control " readonly></td>
                 
             </tr> ';
 
@@ -1295,15 +1327,21 @@ class CashInvoice extends BaseController
     
             $data['prod_details']= "";
             foreach($product_details_data as $prod_det)
-            {
+            {   
+                $rate = format_currency($prod_det->cipd_rate);
+
+                $discount = format_currency($prod_det->cipd_discount);
+
+                $amount = format_currency($prod_det->cipd_amount);
+
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
                 <td>'.$i.'</td>
                 <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
                 <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->cipd_rate.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->cipd_discount.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->cipd_amount.'" class="form-control " readonly></td>
+                <td><input type="text" value="'.$rate.'" class="form-control " readonly></td>
+                <td style="width:10px"><input type="text" value="'.$discount.'" class="form-control " readonly></td>
+                <td><input type="text" value="'.$amount.'" class="form-control " readonly></td>
                 <td style="width:15%"><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
                 <input type="hidden" value="'.$prod_det->cipd_cash_invoice.'" class="edit_ci_prod_id">
                 <input type="hidden" value="'.$prod_det->cipd_id.'" class="hidden_cash_prod_id">

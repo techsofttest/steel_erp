@@ -420,6 +420,9 @@
                                                     <th>References</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+                                                    <th>Sales Order</th>
+                                                    <th>Invoice No</th>
+                                                    <th>Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -739,7 +742,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name=""  class="form-control view_credit_account" required>
+                                                <input type="text" name=""  class="form-control view_credit_account" required readonly>
                                                 
                                             </div>
 
@@ -1178,7 +1181,7 @@
                                         <td>Rate</td>
                                         <td>Discount</td>
                                         <td>Amount</td>
-                                        <td>Action</td>
+                                        <!--<td>Action</td>->(action all ready done - remove comment)-->
                                         
                                     </tr>
                                     
@@ -1513,13 +1516,16 @@
                 { data: 'sr_reffer_no' },
                 { data: 'sr_date'},
                 { data: 'sr_customer'},
+                { data: 'sr_sales_order'},
+                { data: 'sr_invoice'},
+                { data: 'sr_total'},
                 { data: 'action'},
                 
                ],
 
                 "initComplete": function() {
 
-                    var dataId = '<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>';
+                    var dataId = '<?php echo isset($_GET['view_rut']) ? $_GET['view_rut'] : ''; ?>';
 
                     $('#Datatable').dataTable().fnFilter(dataId);
 
@@ -1527,7 +1533,7 @@
 
                 "drawCallback": function() {
 
-                    $('.view_btn[data-id="<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>"]').trigger('click');
+                    $('.view_btn[data-id="<?php echo isset($_GET['view_rut']) ? $_GET['view_rut'] : ''; ?>"]').trigger('click');
 
                 }
     
@@ -1543,30 +1549,34 @@
         $("body").on('change', '.customer_id', function(){ 
 
             var id = $(this).val();
+
+            if(id!=null){
  
-            //Fetch Contact Person
-            $.ajax({
+                //Fetch Contact Person
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/SalesReturn/SalesOrder",
+                    url : "<?php echo base_url(); ?>Crm/SalesReturn/SalesOrder",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {ID: id},
+                    data: {ID: id},
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    $(".sales_order_add_clz").html(data.invoice_no);
+                        $(".sales_order_add_clz").html(data.invoice_no);
 
-                    $(".cont_person").html(data.contact_person);
+                        $(".cont_person").html(data.contact_person);
 
-                    $(".payment_term_clz").val(data.payment_term);
+                        $(".payment_term_clz").val(data.payment_term);
 
-                }
+                    }
 
 
-            });
+                });
+
+            }
 
         });
 
@@ -2418,60 +2428,64 @@
             $('#EditSalesReturn').modal('show');
     
             var id = $(this).data('id'); 
+
+            if(id!=null){
     
-            $.ajax({
-    
-                url : "<?php echo base_url(); ?>Crm/SalesReturn/Edit",
-    
-                method : "POST",
-    
-                data: {ID: id},
-    
-                success:function(data)
-                {
-    
-                    var data = JSON.parse(data);
+                $.ajax({
+        
+                    url : "<?php echo base_url(); ?>Crm/SalesReturn/Edit",
+        
+                    method : "POST",
+        
+                    data: {ID: id},
+        
+                    success:function(data)
+                    {
+        
+                        var data = JSON.parse(data);
+                        
+                        $('.edit_reff').val(data.reffer_no);
+        
+                        $('.edit_date').val(data.date);
+        
+                        $('.edit_customer').html(data.customer);
+        
+                        $('.edit_sales_order').val(data.invoice_no);
+
+                        $('.edit_lpo_reff').val(data.lpo_reff);
+        
+                        $('.edit_contact_person').html(data.contact_person);
+
                     
-                    $('.edit_reff').val(data.reffer_no);
-    
-                    $('.edit_date').val(data.date);
-    
-                    $('.edit_customer').html(data.customer);
-    
-                    $('.edit_sales_order').val(data.invoice_no);
+                        $('.edit_payment_terms').val(data.payment_term);
+        
+                        $('.edit_project').val(data.project);
 
-                    $('.edit_lpo_reff').val(data.lpo_reff);
-    
-                    $('.edit_contact_person').html(data.contact_person);
+                        $('.edit_project').val(data.project);
 
-                   
-                    $('.edit_payment_terms').val(data.payment_term);
-    
-                    $('.edit_project').val(data.project);
+        
+                        /*$('.view_credit_account').val(data.credit_account);
+        
+                        $('.view_image_table').html(data.image_table)*/;
 
-                    $('.edit_project').val(data.project);
+                        $('.edit_product').html(data.prod_details);
 
-    
-                    /*$('.view_credit_account').val(data.credit_account);
-    
-                    $('.view_image_table').html(data.image_table)*/;
+                        $('.edit_cash_invoice_id').val(data.cash_invoice_id);
 
-                    $('.edit_product').html(data.prod_details);
+                        $('.edit_charts_account').val(data.credit_account);
 
-                    $('.edit_cash_invoice_id').val(data.cash_invoice_id);
+                        //console.log(data.credit_account);
 
-                    $('.edit_charts_account').val(data.credit_account);
+                    // $('.edit_charts_account').html(data.charts_of_account);
 
-                    //console.log(data.credit_account);
-
-                   // $('.edit_charts_account').html(data.charts_of_account);
-
-                    $('.add_more_class').html(data.add_more);
+                        $('.add_more_class').html(data.add_more);
+                        
                     
-                
-                }
-    
-            });
+                    }
+        
+                });
+
+            }
     
             
         });
@@ -2482,39 +2496,43 @@
             $('#EditSalesReturn').modal('show');
     
             var id = $(this).data('id'); 
-    
-            $.ajax({
-    
-                url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
-    
-                method : "POST",
-    
-                data: {ID: id},
-    
-                success:function(data)
-                {
-    
-                    var data = JSON.parse(data);
-                    
-                    $('.edit_reff').val(data.reffer_no);
-    
-                    $('.edit_date').val(data.date);
-    
-                    $('.edit_customer').html(data.customer);
-    
-                    $('.edit_sales_order').html(data.sales_order);
-    
-                    $('.edit_lpo_reff').val(data.lpo_reff);
-    
-                    $('.edit_contact_person').html(data.contact_person);
-    
-                    $('.edit_payment_terms').val(data.payment_term);
-    
-                    $('.edit_project').val(data.project);
 
-                }
+            if(id!=null){
     
-            });
+                $.ajax({
+        
+                    url : "<?php echo base_url(); ?>Crm/CashInvoice/Edit",
+        
+                    method : "POST",
+        
+                    data: {ID: id},
+        
+                    success:function(data)
+                    {
+        
+                        var data = JSON.parse(data);
+                        
+                        $('.edit_reff').val(data.reffer_no);
+        
+                        $('.edit_date').val(data.date);
+        
+                        $('.edit_customer').html(data.customer);
+        
+                        $('.edit_sales_order').html(data.sales_order);
+        
+                        $('.edit_lpo_reff').val(data.lpo_reff);
+        
+                        $('.edit_contact_person').html(data.contact_person);
+        
+                        $('.edit_payment_terms').val(data.payment_term);
+        
+                        $('.edit_project').val(data.project);
+
+                    }
+        
+                });
+
+            }
     
             
         });
@@ -2785,6 +2803,10 @@
 
 
     /*checkbox section end*/
+
+
+
+
 
 
 

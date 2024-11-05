@@ -1484,58 +1484,62 @@
             var id = $(this).val();
 
             var cus_id = $('.customer_clz_id').val()
+
+            if(id && cus_id!=null){
             
-            $.ajax({
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/SalesOrder",
+                    url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/SalesOrder",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {
-                        ID: id,
-                        cusID: cus_id,
-                    },
+                    data: {
+                            ID: id,
+                            cusID: cus_id,
+                        },
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    //console.log(data.contact_person);
+                        //console.log(data.contact_person);
 
-                    $(".delivery_term").val(data.so_delivery_term);
+                        $(".delivery_term").val(data.so_delivery_term);
 
-                    $(".project_clz").val(data.so_project);
+                        $(".project_clz").val(data.so_project);
 
-                    $(".contact_person_clz").html(data.contact_person);
+                        $(".contact_person_clz").html(data.contact_person);
 
-                    $(".sales_excutive_clz").html(data.sales_executive);
+                        $(".sales_excutive_clz").html(data.sales_executive);
 
-                    $(".lpo_reff").val(data.so_lpo);
+                        $(".lpo_reff").val(data.so_lpo);
 
-                    $(".product-more2").append(data.sales_order_contact);
+                        $(".product-more2").append(data.sales_order_contact);
 
-                    $(".delivery_term").removeClass("error");
+                        $(".delivery_term").removeClass("error");
 
-                    $(".project_clz").removeClass("error");
+                        $(".project_clz").removeClass("error");
 
-                    $(".lpo_reff").removeClass("error");
+                        $(".lpo_reff").removeClass("error");
 
-                    $(".sales_excutive_clz").removeClass("error");
+                        $(".sales_excutive_clz").removeClass("error");
 
-                    $(".contact_person_clz").removeClass("error");
+                        $(".contact_person_clz").removeClass("error");
 
-                    slno();
+                        slno();
 
-                    reName();
+                        reName();
 
-                    TotalAmount();
+                        TotalAmount();
 
-                 
                     
-                }
+                        
+                    }
 
 
-            });
+                });
+
+            }
             
             
         });
@@ -1612,35 +1616,38 @@
         });
         /*###*/
 
-        $("body").on('change', '#customer_id', function(){ 
+       /* $("body").on('change', '#customer_id', function(){ 
 
             var id = $(this).val();
            
 
+            if(id!=null){ 
 
-            //Fetch Contact Person
-            $.ajax({
+                //Fetch Contact Person
+                $.ajax({
 
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
+                url : "<?php //echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
 
-            method : "POST",
+                method : "POST",
 
-            data: {ID: id},
+                data: {ID: id},
 
-            success:function(data)
-            {   
-                var data = JSON.parse(data);
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
 
-                $("#contact_person_id").html(data.customer_name);
-                
-            }
+                  
+                    
+                }
 
-            });
+                });
+
+            } 
 
 
 
 
-        });
+        });*/
 
 
         /*customer droup drown search*/
@@ -1687,32 +1694,37 @@
         $('.customer_clz_id').change(function(){
 
             var id = $(this).val();
+             
+            if(id!=null){
+
+                $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
+
+                method : "POST",
+
+                data : {id:id},
+
+                success:function(data)
+                {
+                    var data = JSON.parse(data);
+
+                    $('.sales_order_add_clz').html(data.orders);
+
+                    $('.contact_person_clz').html(data.contact_person);
+
+                    $('.payment_term_clz').val(data.payment_terms);
+
+                    $('.payment_term_clz').removeClass("error"); 
+
+                    $("#contact_person_id").html(data.customer_name);
+
+                }
 
 
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchOrders",
-
-            method : "POST",
-
-            data : {id:id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
-
-                $('.sales_order_add_clz').html(data.orders);
-
-                $('.contact_person_clz').html(data.contact_person);
-
-                $('.payment_term_clz').val(data.payment_terms);
-
-                $('.payment_term_clz').removeClass("error"); 
+                });
 
             }
-
-
-            });
 
 
         });
@@ -1851,7 +1863,7 @@
     
             pp++;
             
-            $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td style='width:20%'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
         }
 
@@ -1880,7 +1892,7 @@
 
         $('body .performa_row_lenght').each(function() {
             
-            $(this).closest('.performa_row_lenght').find('.add_prod').attr('name', 'pp_product_det['+jj+']');
+            $(this).closest('.performa_row_lenght').find('.add_prod2').attr('name', 'pp_product_det['+jj+']');
 
             $(this).closest('.performa_row_lenght').find('.unit_clz_id').attr('name', 'pp_unit['+jj+']');
 
@@ -2830,6 +2842,52 @@
 
             $('.edit_current_claim_value').val(discountAmount);
         } 
+
+
+    
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+            function isDataTableRequest(ajaxSettings) {
+                // Check for DataTables-specific URL or any other pattern
+                return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+            }
+
+            function isSelect2Request(ajaxSettings) {
+                // Check for specific data or parameters in Select2 requests
+                return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+            }
+
+
+            function isSelect2Search(ajaxSettings) {
+                // Check for specific data or parameters in Select2 requests
+                return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+            }
+
+
+            $(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+                if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                    $("#overlay").fadeIn(300);
+                }
+            });
+
+
+            $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+                if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                    $("#overlay").fadeOut(300);
+                }
+            });
+
+
+
+            $(document).ajaxError(function() {
+                alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+            });
+            
+
+        });
+
+
+    		
 
 
 

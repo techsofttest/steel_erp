@@ -49,6 +49,11 @@ class CreditInvoice extends BaseController
                 'pk'    => 'cc_id',
                 'fk'    => 'cci_customer',
             ),
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'cci_sales_order',
+            ),
            
         );
         ## Fetch records
@@ -58,7 +63,7 @@ class CreditInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'" style="display:none;" data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
             <a href="'.base_url().'Crm/CreditInvoice/Pdf/'.$record->cci_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
@@ -68,6 +73,7 @@ class CreditInvoice extends BaseController
               'cci_reffer_no'     => $record->cci_reffer_no,
               'cci_date'          => date('d-M-Y',strtotime($record->cci_date)),
               'cci_customer'      => $record->cc_customer_name,
+              'cci_sales_order'   => $record->so_reffer_no,
               'cci_total_amount'  => $record->cci_total_amount,
               'cci_paid_amount'   => $record->cci_paid_amount,
               'action'            => $action,
@@ -171,38 +177,44 @@ class CreditInvoice extends BaseController
          
         if(empty($this->request->getPost('cci_id')))
         {   
-            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
+            //$uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
+            
+           // $credit_invoices = $this->common_model->FetchWhere('steel_accounts_receipts',array('cci_reffer_no' => $this->request->getPost('cci_reffer_no')));
+
+            //if(empty($credit_invoices))
+            //{
+                $insert_data = [
+
+                    'cci_reffer_no'      => $uid,
         
+                    'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
+        
+                    'cci_customer'       => $this->request->getPost('cci_customer'),
+        
+                    'cci_sales_order'    => $this->request->getPost('cci_sales_order'),
+        
+                    'cci_lpo_reff'       => $this->request->getPost('cci_lpo_reff'),
+        
+                    'cci_contact_person' => $this->request->getPost('cci_contact_person'),
+        
+                    'cci_payment_term'   => $this->request->getPost('cci_payment_term'),
+        
+                    'cci_project'        => $this->request->getPost('cci_project'),
+        
+                    'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
+        
+                    'cci_credit_account' => $this->request->getPost('ci_credit_account'),
+        
+                    'cci_added_by'       => 0,
+        
+                    'cci_added_date'   => date('Y-m-d'),
+        
+                ];
 
-            $insert_data = [
+                $credit_invoice_id = $this->common_model->InsertData('crm_credit_invoice',$insert_data);
+            //}
 
-                'cci_reffer_no'      => $uid,
-    
-                'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
-    
-                'cci_customer'       => $this->request->getPost('cci_customer'),
-    
-                'cci_sales_order'    => $this->request->getPost('cci_sales_order'),
-    
-                'cci_lpo_reff'       => $this->request->getPost('cci_lpo_reff'),
-    
-                'cci_contact_person' => $this->request->getPost('cci_contact_person'),
-    
-                'cci_payment_term'   => $this->request->getPost('cci_payment_term'),
-    
-                'cci_project'        => $this->request->getPost('cci_project'),
-    
-                'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
-    
-                'cci_credit_account' => $this->request->getPost('ci_credit_account'),
-    
-                'cci_added_by'       => 0,
-    
-                'cci_added_date'   => date('Y-m-d'),
-     
-            ];
 
-            $credit_invoice_id = $this->common_model->InsertData('crm_credit_invoice',$insert_data);
         }
         else
         {

@@ -386,12 +386,12 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
                                                     <td></td>
                                                     <td></td>
 

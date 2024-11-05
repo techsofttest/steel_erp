@@ -134,7 +134,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_fax" id="cc_fax" class="form-control" required>
+                                                <input type="text" name="cc_fax" id="cc_fax" class="form-control">
                                             </div>
 
                                         </div>

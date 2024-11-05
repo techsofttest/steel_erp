@@ -353,7 +353,7 @@ class SalesQuotReport extends BaseController
                     }
                     $pdf_data .= "'>{$single_rate}</td>";
 
-                    $pdf_data .= "<td align='center' style='";
+                    $pdf_data .= "<td align='right' style='";
 
                     $single_discount = format_currency($prod_del->qpd_discount);
                     
@@ -553,12 +553,12 @@ class SalesQuotReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.format_currency($total_amount).'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.format_currency($total_amount).'</b></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.format_currency($total_amount).'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.format_currency($total_amount).'</b></td>
                 
             </tr>    
            

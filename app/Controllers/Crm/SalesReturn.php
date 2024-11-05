@@ -49,11 +49,11 @@ class SalesReturn extends BaseController
                 'pk'    => 'cc_id',
                 'fk'    => 'sr_customer',
             ),
-            /*array(
+            array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
                 'fk'    => 'sr_sales_order',
-            ),*/
+            ),
            
         );
         ## Fetch records
@@ -63,13 +63,16 @@ class SalesReturn extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" style="display:none;" data-toggle="tooltip" data-id="'.$record->sr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->sr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
             $data[] = array( 
               'sr_id'           => $i,
               'sr_reffer_no'    => $record->sr_reffer_no,
               'sr_date'         => date('d-M-Y',strtotime($record->sr_date)),
               'sr_customer'     => $record->cc_customer_name,
+              'sr_sales_order'  => $record->so_reffer_no,
+              'sr_invoice'      => $record->sr_invoice,
+              'sr_total'        => $record->sr_total,
               'action'          => $action,
             );
 
@@ -213,6 +216,8 @@ class SalesReturn extends BaseController
 
                 'sr_credit_account'  => $this->request->getPost('sr_credit_account'),
 
+                'sr_sales_order'  => $this->request->getPost('sales_order'),
+
                 'sr_added_by'        => 0,
 
                 'sr_added_date'      => date('Y-m-d'),
@@ -256,6 +261,8 @@ class SalesReturn extends BaseController
                 'sr_project'         => $this->request->getPost('sr_project'),
 
                 'sr_credit_account'  => $this->request->getPost('sr_credit_account'),
+
+                'sr_sales_order'  => $this->request->getPost('sales_order'),
 
                 'sr_total'           => $this->request->getPost('sr_total'),
 
@@ -845,6 +852,8 @@ class SalesReturn extends BaseController
 
                 $data['sales_order'] = $cash_invoice->ci_sales_order;
 
+                
+
                 //$data['contact_detail'] = ""; 
 
                 $data['debit_account'] = $cash_invoice->ca_name;
@@ -880,6 +889,7 @@ class SalesReturn extends BaseController
                 $data['ci_payment_term'] = $credit_invoice->cci_payment_term;
 
                 $data['sales_order'] = $credit_invoice->cci_sales_order;
+                
 
                 $data['debit_account'] = $credit_invoice->ca_name;
 
@@ -1308,13 +1318,16 @@ class SalesReturn extends BaseController
                 <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
-                <td style="width: 15%;">
-                    <a href="javascript:void(0)" class="edit edit-color product_edit" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                    <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-id="349" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
-                </td>
+               
                 </tr>'; 
                  $i++;
             }
+
+             //action link (edit and delete)
+            /*<td style="width: 15%;">
+            <a href="javascript:void(0)" style="display:none" class="edit edit-color product_edit" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-placement="top" title="edit"  data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+            <a href="javascript:void(0)" style="display:none" class="delete delete-color product_delete" data-id="'.$prod_det->srp_id.'" data-toggle="tooltip" data-id="349" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            </td>*/
     
     
         

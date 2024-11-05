@@ -418,10 +418,10 @@ class BackLog extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 
-                <td style="border-top: 2px solid;" align="right">'.$sales_total.'</td>
-                <td style="border-top: 2px solid;" align="right">'.$delivered_total.'</td>
-                <td style="border-top: 2px solid;" align="right">'.$invoice_total.'</td>
-                <td style="border-top: 2px solid;" align="right">'.$balance_total.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$sales_total.'</b></td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$delivered_total.'</b></td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$invoice_total.'</b></td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$balance_total.'</b></td>
                
                 
                 

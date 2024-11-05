@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'" style="display:none;"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="'.base_url().'Crm/SalesOrder/Pdf/'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="javascript:void(0)" data-id="'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
              
             if(!empty($record->so_edit_reff_no))
             {
@@ -181,11 +181,15 @@ class SalesOrder extends BaseController
         }
         
 
-        $uid = $this->common_model->FetchNextId('crm_sales_orders',"SO");
+        //$uid = $this->common_model->FetchNextId('crm_sales_orders',"SO");
+
+        $sales_datas = $this->common_model->FetchWhere('crm_sales_orders',array('so_reffer_no' => $this->request->getPost('so_reffer_no')));
+        
+        if(empty($sales_datas)){
 
         $insert_data = [
 
-            'so_reffer_no'              => $uid,
+            'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
 
             'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
 
@@ -288,14 +292,23 @@ class SalesOrder extends BaseController
                         $return['print'] =  base_url() . 'Crm/SalesOrder/Pdf/' . urlencode($sales_order_id);
 
                     }
-                    
                    
             
                 } 
             }
         }
+
+        $return['status'] = "true";
         
-         echo json_encode($return);
+        
+        }
+        else
+        {
+            $return['status'] = "false";
+        }
+
+        echo json_encode($return);
+
         /*####*/
 
     }
@@ -557,49 +570,61 @@ class SalesOrder extends BaseController
     {   
         $cond = array('so_id' => $this->request->getPost('so_id'));
 
-        /*$sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
+        $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
         
-        $sales_flag = ++$sales_order->so_edit_flag;
+        /*$sales_flag = ++$sales_order->so_edit_flag;
         
         $output = $this->request->getPost('so_reffer_no') . "-REV-" ."0". $sales_flag;*/
 
-
-       $update_data = [
-
-        'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
-
-        'so_customer'               => $this->request->getPost('so_customer'),
-
-        'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
-
-        'so_lpo'                    => $this->request->getPost('so_lpo'),
-
-        'so_sales_executive'        => $this->request->getPost('so_sales_executive'),
-
-        'so_contact_person'         => $this->request->getPost('so_contact_person'),
-
-        'so_payment_term'           => $this->request->getPost('so_payment_term'),
-
-        'so_delivery_term'          => date('Y-m-d',strtotime($this->request->getPost('so_delivery_term'))),
-
-        'so_project'                => $this->request->getPost('so_project'),
-
-        //'so_edit_flag'              => $sales_flag,
-
-        //'so_edit_reff_no'           => $output,
-
+        //$sales_datas = $this->common_model->CheckTwiceCond('crm_sales_orders',array('so_reffer_no' => $this->request->getPost('so_reffer_no')),array('so_id' => $this->request->getPost('so_id')));
+       
+        //$sales_datas = $this->common_model->CheckDataWhere('crm_sales_orders','so_reffer_no',array('so_reffer_no' => $this->request->getPost('so_reffer_no')),$this->request->getPost('so_id'),'so_id');
         
-        ];
+        
+        $sales_datas = $this->common_model->CheckDataWhere('crm_sales_orders','so_reffer_no',trim($this->request->getPost('so_reffer_no')),trim($this->request->getPost('so_id')),'so_id');
+       
+       
+        //print_r( $sales_datas); exit();
+
+        if(empty($sales_datas)){
+
+            $update_data = [
+                 
+                'so_reffer_no'              => $this->request->getPost('so_reffer_no'),
+
+                'so_date'                   => date('Y-m-d',strtotime($this->request->getPost('so_date'))),
+
+                'so_customer'               => $this->request->getPost('so_customer'),
+
+                'so_quotation_ref'          => $this->request->getPost('so_quotation_ref'),
+
+                'so_lpo'                    => $this->request->getPost('so_lpo'),
+
+                'so_sales_executive'        => $this->request->getPost('so_sales_executive'),
+
+                'so_contact_person'         => $this->request->getPost('so_contact_person'),
+
+                'so_payment_term'           => $this->request->getPost('so_payment_term'),
+
+                'so_delivery_term'          => date('Y-m-d',strtotime($this->request->getPost('so_delivery_term'))),
+
+                'so_project'                => $this->request->getPost('so_project'),
+
+                //'so_edit_flag'              => $sales_flag,
+
+                //'so_edit_reff_no'           => $output,
+
+                
+                ];
 
             // Handle file upload
             if (isset($_FILES['so_file']) && $_FILES['so_file']['name'] !== '') {
-                
-                
+               
                 if($this->request->getFile('so_file') != '' ){ 
                 
                     $previousImagePath = 'uploads/SalesOrder/' .$sales_order->so_file;
                 
-                    if (file_exists($previousImagePath)) {
+                    if (!empty($sales_order->so_file)) { 
                         unlink($previousImagePath);
                     }
                 }
@@ -611,7 +636,17 @@ class SalesOrder extends BaseController
                 $update_data['so_file'] = $AttachFileName;
             }
 
-        $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
+            $this->common_model->EditData($update_data,$cond,'crm_sales_orders');
+
+            $data["status"] = "true";
+
+        }else{
+            
+            $data["status"] = "false";
+
+        }
+
+        echo json_encode($data);
        
     }
 
@@ -626,10 +661,12 @@ class SalesOrder extends BaseController
         $delivery_note = $this->common_model->SingleRow('crm_delivery_note',array('dn_sales_order_num' => $this->request->getPost('ID')));
         
         $cash_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_sales_order' => $this->request->getPost('ID')));
+
+        $performa_invoice = $this->common_model->SingleRow('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
         
         
 
-        if((empty($delivery_note)) && (empty($cash_invoice)))
+        if((empty($delivery_note)) && (empty($cash_invoice)) && (empty($performa_invoice)))
         {
             //change status in quotation and product table
            
@@ -657,7 +694,7 @@ class SalesOrder extends BaseController
 
             //pro-forma invoice
             
-            $proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+            /*$proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
 
             foreach($proforma_data as $proforma)
             {
@@ -666,7 +703,7 @@ class SalesOrder extends BaseController
                 $this->common_model->DeleteData('crm_proforma_product',$cond2);
             }
   
-            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
+            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));*/
               
             //delete sales order
 
@@ -1036,7 +1073,7 @@ class SalesOrder extends BaseController
                                 </table>';
 
             }
-            else
+            /*else
             {
                 $data['image_table']='<div class="row row_align mb-4">
                                             <div class="col-lg-3">
@@ -1047,7 +1084,7 @@ class SalesOrder extends BaseController
                                             </div>
                                         </div>
                 ';
-            }
+            }*/
 
 
 

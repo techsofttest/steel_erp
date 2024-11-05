@@ -225,7 +225,7 @@
                                                             <td class="text-center"><?php echo $sales_order->se_name; ?></td>
                                                             
                                                             <?php
-                                                            $total_amount = $sales_order->so_amount_total + $total_amount;
+                                                            
                                                             ?>
                                                             <td class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
 
@@ -238,10 +238,13 @@
                                                             }*/
 
                                                             if (!empty($sales_order->sales_delivery)) {
-
+                                                                 
+                                                                $total_amount = $delivery_amount + $total_amount;
                                                             ?>
 
                                                                 <td class="text-end"><?php echo format_currency($delivery_amount); ?></td>
+
+                                                                
 
                                                             <?php } else { ?>
                                                                 <td class="text-end">00.0</td>
@@ -309,7 +312,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

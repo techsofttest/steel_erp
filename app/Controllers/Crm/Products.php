@@ -186,7 +186,6 @@ class Products extends BaseController
 
         $product_name = $this->common_model->CheckDataWhere('crm_products','product_details',trim($update_data['product_details']),trim($this->request->getPost('product_id')),'product_id');
        
-      
 
         // Check if the 'account_id' key exists before unsetting it
         if (array_key_exists('product_id', $update_data)) 

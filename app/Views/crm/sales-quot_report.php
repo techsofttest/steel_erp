@@ -327,12 +327,12 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td class="text-end"><?php echo format_currency($total); ?></td>
+                                                        <td class="text-end"><b><?php echo format_currency($total); ?></b></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td class="text-end"><?php echo format_currency($total1); ?></td>
+                                                        <td class="text-end"><b><?php echo format_currency($total1); ?></b></td>
                                                     </tr>
 
                                                 <?php   } ?>

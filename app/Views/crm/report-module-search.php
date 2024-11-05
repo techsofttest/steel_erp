@@ -52,15 +52,44 @@
         .page-content{
             padding:5px
         }
-        .main-content
-        {
-        margin:10px 5px !important;
+        .main-content{
+            margin:10px 5px !important;
         }
 
         .card {
-        max-height: 85vh;
-        margin-bottom: 0px;
+            max-height: 85vh;
+            margin-bottom: 0px;
         }
+
+        .page-content{
+            padding:0px;
+            height: 100vh;
+        }
+        .main-content{
+            margin:0px 0px !important;
+            height: 100vh;
+        }
+
+        .card {
+            max-height: 100vh;
+            margin-bottom: 0px;
+        }
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
+            height: 100vh;
+        }
+        .text-muted{
+            height: 100vh;
+        }
+        .card-body{
+            padding: 0px 0px
+        }
+        /*.row>*{
+            padding-right: 0px;
+            padding-left: 0px;
+            margin-top: 0;
+        
+        }*/
+
 
 
     </style>

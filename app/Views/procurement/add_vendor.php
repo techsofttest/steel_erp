@@ -679,25 +679,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       var id = $(this).val();
 
-       $.ajax({
+      if(id!=null){
 
-           url : "<?php echo base_url(); ?>Procurement/Vendor/Code",
+            $.ajax({
 
-           method : "POST",
+            url : "<?php echo base_url(); ?>Procurement/Vendor/Code",
 
-           data: {ID: id},
+            method : "POST",
 
-           success:function(data)
-           {   
-               var data = JSON.parse(data);
-              
-              $(".account_id").val(data.account_id);
-              
-               
-           }
+            data: {ID: id},
+
+            success:function(data)
+            {   
+                var data = JSON.parse(data);
+                
+                $(".account_id").val(data.account_id);
+                
+                
+            }
 
 
-       });
+            });
+        
+        }    
      
        
     });
@@ -870,6 +874,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
    
 
 });
+
+
+/*document.addEventListener("DOMContentLoaded", function(event) {
+
+    function isDataTableRequest(ajaxSettings) {
+        // Check for DataTables-specific URL or any other pattern
+        return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+    }
+
+    function isSelect2Request(ajaxSettings) {
+        // Check for specific data or parameters in Select2 requests
+        return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+    }
+
+
+    function isSelect2Search(ajaxSettings) {
+        // Check for specific data or parameters in Select2 requests
+        return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+    }
+
+
+    $(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+        if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+            $("#overlay").fadeIn(300);
+        }
+    });
+
+
+    $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+        if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+            $("#overlay").fadeOut(300);
+        }
+    });
+
+
+
+    $(document).ajaxError(function() {
+        alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+    });
+
+
+});*/
 
 
 </script>

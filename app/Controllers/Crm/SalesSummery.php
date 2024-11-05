@@ -90,32 +90,35 @@ class SalesSummery extends BaseController
         }
 
 
-        /*if(!empty($_GET['sales_executive']))
+        if(!empty($_GET['sales_executive']))
         {
             $data2 = $_GET['sales_executive'];
         }
         else
         {
             $data2 = "";
-        }*/
+        }
 
         $joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
-                'fk'    => 'dn_customer',
+                'fk'    => 'so_customer',
             ),
             array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'dn_sales_order_num',
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
+                'fk'    => 'so_sales_executive',
             ),
 
         );
 
         
-        $data['delivery_data'] = $this->crm_modal->sales_summery($from_date,'dn_date',$to_date,'',$data1,'dn_customer','','','','','','','crm_delivery_note',$joins,'dn_reffer_no');
+        //$data['delivery_data'] = $this->crm_modal->sales_summery($from_date,'dn_date',$to_date,'',$data1,'dn_customer','','','','','','','crm_delivery_note',$joins,'dn_reffer_no');
         
+        $data['sales_data'] = $this->crm_modal->sales_summery($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_sales_executive','','','','','crm_sales_orders',$joins,'so_reffer_no');
+        
+
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         if(!empty($from_date))

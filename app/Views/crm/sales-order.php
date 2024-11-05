@@ -85,7 +85,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control input_length" required >
                                                                     </div>
 
                                                                 </div> 
@@ -489,7 +489,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="" value="" class="form-control edit_reff" required readonly>
+                                                                        <input type="text" name="so_reffer_no" id="" value="" class="form-control edit_reff" required >
                                                                     </div>
 
                                                                 </div> 
@@ -1479,6 +1479,12 @@
                             {
                                 window.open(data.print, '_blank');
                             }
+
+                            if(data.status === "false")
+                            {
+                                alertify.error('Duplicate Reffer Number').delay(3).dismissOthers();
+
+                            }
                            
                         }
                     });
@@ -1742,34 +1748,40 @@
 
 
         $("body").on('change', '#customer_id', function(){ 
+            
             var id = $(this).val();
+
+            if(id!=null){
            
-            $.ajax({
+                $.ajax({
 
-                url : "<?php echo base_url(); ?>Crm/SalesOrder/ContactPerson",
+                    url : "<?php echo base_url(); ?>Crm/SalesOrder/ContactPerson",
 
-                method : "POST",
+                    method : "POST",
 
-                data: {ID: id},
+                    data: {ID: id},
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    $(".contact_person_clz").html(data.customer_name);
+                        $(".contact_person_clz").html(data.customer_name);
 
-                    $(".quotation_ref").html(data.quotation_det);
+                        $(".quotation_ref").html(data.quotation_det);
 
-                    $(".payment_term").val(data.credit_term);
+                        $(".payment_term").val(data.credit_term);
 
-                    if(data.credit_term!==null)
-                    {
-                        $('.payment_term').removeClass("error")
+                        if(data.credit_term!==null)
+                        {
+                            $('.payment_term').removeClass("error")
+                        }
+                    
                     }
-                   
-                }
 
-            });
+                });
+            }
+
+
         });
 
 
@@ -1784,54 +1796,61 @@
            
             var quot_id = $('#customer_id').val();
 
-            $.ajax({
+            if(id!=null &&  quot_id!=null){
 
-                url : "<?php echo base_url(); ?>Crm/SalesOrder/QuotationRef",
+                $.ajax({
 
-                method : "POST",
+                    url : "<?php echo base_url(); ?>Crm/SalesOrder/QuotationRef",
 
-                data:{
-                    ID: id,
-                    quotID: quot_id
-                },
+                    method : "POST",
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
+                    data:{
+                        ID: id,
+                        quotID: quot_id
+                    },
 
-                   
-                   
-                    $(".contact_person_clz").html(data.contact_person);
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
 
-                    $(".sales_executive_clz").html(data.qd_sales_executive);
+                    
+                    
+                        $(".contact_person_clz").html(data.contact_person);
 
-                    $(".project").val(data.qd_project);
+                        $(".sales_executive_clz").html(data.qd_sales_executive);
 
-                    $(".product-more2").append(data.prod_details);
+                        $(".project").val(data.qd_project);
 
-                    if(data.qd_project!=null)
-                    {
-                        $('.project').removeClass("error")
+                        $(".product-more2").append(data.prod_details);
+
+                        if(data.qd_project!=null)
+                        {
+                            $('.project').removeClass("error")
+                        }
+
+                        if(data.contact_person!=null)
+                        {
+                            $('.contact_person_clz').removeClass("error")
+                        }
+
+                        if(data.qd_sales_executive!=null)
+                        {
+                            $('.sales_executive_clz').removeClass("error")
+                        }
+
+                        slno2();
+
+                        reName();
+
                     }
 
-                    if(data.contact_person!=null)
-                    {
-                        $('.contact_person_clz').removeClass("error")
-                    }
 
-                    if(data.qd_sales_executive!=null)
-                    {
-                        $('.sales_executive_clz').removeClass("error")
-                    }
+                });
 
-                    slno2();
-
-                    reName();
-
-                }
+            }
 
 
-            });
+
         });
 
 
@@ -2429,13 +2448,23 @@
                         contentType: false, // Don't set content type
                         //data: $(currentForm).serialize(),
                         success: function(data) {
-                         
-                           
-                            $('#EditSalesOrder').modal('hide');
+                            
+                            var data = JSON.parse(data);
+                            
+                            if(data.status === "true"){
+                               
+                            
+                                $('#EditSalesOrder').modal('hide');
 
-                            alertify.success('Data update Successfully').delay(3).dismissOthers();
+                                alertify.success('Data update Successfully').delay(3).dismissOthers();
 
-                            datatable.ajax.reload(null, false);
+                                datatable.ajax.reload(null, false);
+
+                            }
+                            else{
+
+                                alertify.error('Duplicate Reffer Number').delay(3).dismissOthers();
+                            }
                            
                             
                         }
@@ -2884,6 +2913,52 @@
 
        
     });
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+
+function isDataTableRequest(ajaxSettings) {
+    // Check for DataTables-specific URL or any other pattern
+    return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+}
+
+function isSelect2Request(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+}
+
+
+function isSelect2Search(ajaxSettings) {
+    // Check for specific data or parameters in Select2 requests
+    return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+}
+
+
+$(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeIn(300);
+    }
+});
+
+
+$(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+        $("#overlay").fadeOut(300);
+    }
+});
+
+
+
+$(document).ajaxError(function() {
+    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+});
+
+
+});
+
+
+
+    
+
 
 
 

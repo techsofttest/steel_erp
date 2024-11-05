@@ -252,48 +252,29 @@
                                                             <?php $total_amount =  $del_note->dn_total_amount + $total_amount; ?>
                                                             <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($del_note->dn_total_amount); ?></td>
 
-                                                            <td>
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo $delv_prod->product_details; ?><br>
-                                                                <?php } ?>
+                                                            <!------------->
+
+                                                            <td colspan="6" align="left" class="p-0">
+                                                                <table>
+                                                                    <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+                                                                           
+                                                                            <td class="rotate" width="500px"><?php echo $delv_prod->product_details; ?></td>
+                                                                            <td class="rotate text-center" width="100px"><?php echo $delv_prod->dpd_order_qty; ?></td>
+                                                                            <td class="rotate text-center" width="100px"><?php echo $delv_prod->dpd_delivery_qty; ?></td>
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_prod_rate); ?></td>
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_prod_dicount); ?>%</td>
+                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_total_amount); ?></td>
+                                                                             
+                                                                            <?php    $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1; ?>
+				
+			                                                            </tr>
+                                                                    <?php } ?>
+                                                                </table>
                                                             </td>
 
-                                                            <td class="text-center">
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo $delv_prod->dpd_current_qty; ?><br>
-                                                                <?php } ?>
-                                                            </td>
-
-                                                            <td class="text-center">
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo $delv_prod->dpd_delivery_qty; ?><br>
-                                                                <?php } ?>
-                                                            </td>
-
-                                                            <td class="text-end">
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo format_currency($delv_prod->dpd_prod_rate); ?><br>
-                                                                <?php } ?>
-                                                            </td>
-
-                                                            <td class="text-end">
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
-                                                                    <?php echo format_currency($delv_prod->dpd_prod_dicount); ?>%<br>
-                                                                <?php } ?>
-                                                            </td>
-
-
-                                                            <td class="text-end">
-                                                                <?php foreach ($del_note->delivery_product as $delv_prod) {
-
-                                                                    $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1;
-
-                                                                ?>
-                                                                    <?php echo format_currency($delv_prod->dpd_total_amount); ?><br>
-                                                                <?php } ?>
-                                                            </td>
-
-
+                                                            <!-------------->
+                                                          
 
                                                         </tr>
 
@@ -308,13 +289,13 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php echo format_currency($total_amount1); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
 
 
 

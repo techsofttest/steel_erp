@@ -202,17 +202,17 @@ class CrmReportModel extends Model
                 'pk'    => 'product_id',
                 'fk'    => 'spd_product_details',
             ),
+           
+
         );
 
         $i = 0;
         foreach ($result as $res) {
             $cond_user = [$second_col => $res->so_id];
 
-            $result[$i]->sales_products = $this->FetchWhereJoin($second_table,$cond_user,$joins1);
+            $result[$i]->sales_products = $this->FetchProdSales($second_table,$cond_user,$joins1);
 
-            $result[$i]->sales_deliverys = $this->FetchDeliver('crm_delivery_note',array('dn_sales_order_num' => $res->so_id));
             
-            $result[$i]->sales_cash_invoice = $this->FetchCash('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
             
             $i++;
         }
@@ -220,62 +220,71 @@ class CrmReportModel extends Model
         return $result;
 
     }
+
+
+    public function FetchProdSales($table,$cond,$joins){
+         
+        $query = $this->db->table($table);
+
+        if(!empty($joins))
+
+        foreach($joins as $join)
+        {
+            $table2 = $table;
+            if(!empty($join['table2']))
+            {
+            $table2 = $join['table2'];
+            }
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
+        }
+
+        $query->where($cond);
+
+        //$query->groupBy($table. '.' . 'spd_product_details');
     
-    public function FetchDeliver($table,$cond)
-    {
-        $query = $this->db->table($table)
-        ->where($cond);
-        //$query->groupBy('crm_delivery_note.dn_id');
-        //->get();
+        $result = $query->get()->getResult();
+        $j=0;   
+        foreach($result as $prod){
+
+        $sales_prod_id = $prod->spd_id;
+ 
+        $result[$j]->cashinvoice = $this->FetchTotalAmount('crm_cash_invoice_prod_det','cipd_amount',array('cipd_sales_prod' =>$sales_prod_id));
+        
        
-        //return $query->getResult();
-        //$results = $query->getResult();
+        $result[$j]->deliverynote = $this->FetchTotalAmount('crm_delivery_product_details','dpd_total_amount',array('dpd_so_id' =>$sales_prod_id));
+        
+        $result[$j]->totaldelivered = $result[$j]->deliverynote + $result[$j]->cashinvoice;
 
-        $results = $query->get()->getResult();
+        $j++;
 
-        $joins2 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'dpd_prod_det',
-            ),
-        );
-
-        $i=0;
-        foreach($results as $result){
-          $cond_user = ['dpd_delivery_id' => $result->dn_id];
-          $results[$i]->sales_delivery_prod = $this->FetchWhereJoin('crm_delivery_product_details',$cond_user,$joins2);
-          $i++;
         }
         
-        return $results;
+
+	    return $result;
+
     }
 
-    public function FetchCash($table,$cond)
-    {
-        $query = $this->db->table($table)
-        ->where($cond)
-        ->get();
-       
-        $results = $query->getResult();
 
-        $joins3 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'cipd_prod_det',
-            ),
-        );
+    public function FetchTotalAmount($table,$column,$cond){
 
-        $i=0;
-        foreach($results as $result){
-          $cond_user = ['cipd_cash_invoice' => $result->ci_id];
-          $results[$i]->cash_product = $this->FetchWhereJoin('crm_cash_invoice_prod_det',$cond_user,$joins3);
-          $i++;
+        $query = $this->db->table($table);
+
+        $query->selectSum($column);
+
+        if($cond !="")
+        {
+        $query->where($cond);
         }
-        
-        return $results;
+
+        $result = $query->get()->getRow()->$column;
+
+        return $result;
     }
+
+    
+    
+
+  
 
     /**/
 
@@ -823,7 +832,7 @@ class CrmReportModel extends Model
 
     /*sales summer report*/
 
-    public function sales_summery($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col,$data4,$data4_col,$table,$joins,$group_by_col)
+    /*public function sales_summery($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col,$data4,$data4_col,$table,$joins,$group_by_col)
     {
         $query = $this->db->table($table)
         ->select('*');
@@ -886,6 +895,81 @@ class CrmReportModel extends Model
             $result[$i]->credit_invoice    = $this->FetchWhere('crm_credit_invoice',array('cci_delivery_id' => $res->dn_id));
 
             $result[$i]->performa_invoice  = $this->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $res->dn_sales_order_num));
+            
+          
+            
+            $i++;
+        }
+
+        return $result;
+    }*/
+
+
+
+    public function sales_summery($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col,$data4,$data4_col,$table,$joins,$group_by_col)
+    {
+        $query = $this->db->table($table)
+        ->select('*');
+        
+        if(!empty($joins))
+        {
+            foreach($joins as $join) 
+            {
+                $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+            }
+        }
+
+        if (!empty($from_date)) {
+           
+            $query->where($from_date_col.' >=', $from_date);
+        }
+
+        if (!empty($to_date)) {
+           
+            $query->where($from_date_col . ' <=', $to_date);
+        }
+
+        if (!empty($data1)) {
+            $query->like($data1_col, $data1);
+        }
+
+        if (!empty($data2)) {
+            $query->like($data2_col, $data2);
+        }
+
+        if (!empty($data3)) {
+            $query->like($data3_col, $data3);
+        }
+
+        if (!empty($data4)) {
+            $query->like($data4_col, $data4);
+        }
+
+        if(!empty($join))
+        {
+            $query->groupBy($table. '.' . $group_by_col);
+
+        }
+
+        $result = $query->get()->getResult();
+
+        /*$joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'dpd_prod_det',
+            ),
+        );*/
+
+        $i = 0;
+
+        foreach ($result as $res) {
+           
+            $result[$i]->credit_invoice  = $this->FetchWhere('crm_credit_invoice',array('cci_sales_order' => $res->so_id));
+
+            $result[$i]->cash_invoice    = $this->FetchWhere('crm_cash_invoice',array('ci_sales_order' => $res->so_id));
+
+            $result[$i]->sales_return    = $this->FetchWhere('crm_sales_return',array('sr_sales_order' => $res->so_id));
             
           
             

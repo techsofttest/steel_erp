@@ -838,25 +838,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       var id = $(this).val();
 
-       $.ajax({
+      if(id!=null){
 
-           url : "<?php echo base_url(); ?>Procurement/Vendor/Code",
+        $.ajax({
 
-           method : "POST",
+            url : "<?php echo base_url(); ?>Procurement/Vendor/Code",
 
-           data: {ID: id},
+            method : "POST",
 
-           success:function(data)
-           {   
-               var data = JSON.parse(data);
-              
-              $(".account_id").val(data.account_id);
-              
-               
-           }
+            data: {ID: id},
+
+            success:function(data)
+            {   
+                var data = JSON.parse(data);
+                
+                $(".account_id").val(data.account_id);
+                
+                
+            }
 
 
-       });
+        });
+
+       }
      
        
     });

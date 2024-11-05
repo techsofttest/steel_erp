@@ -500,7 +500,7 @@ class SalesOrderSummeryReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;" align="right"><b>'.$total_amount.'</b></td>
                 
                 
             </tr>    

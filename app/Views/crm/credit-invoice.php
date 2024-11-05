@@ -82,7 +82,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -452,6 +452,7 @@
                                                     <th>Invoice No.</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
+                                                    <th>Sales Order</th>
                                                     <th>Total Amount</th>
                                                     <th>Paid Amount</th>
                                                     <th>Actions</th>
@@ -995,7 +996,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="" class="form-control view_date" required>
+                                                <input type="text" name="" class="form-control view_date" required readonly>
                                             </div>
 
                                         </div> 
@@ -1018,7 +1019,7 @@
                                             <div class="col-col-md-9 col-lg-9">
                                                 
                                                 <!--<select class="form-select view_customer" name="" required></select>-->
-                                                <input type="text" name="" class="form-control view_customer" required>
+                                                <input type="text" name="" class="form-control view_customer" required readonly>
                                         
                                                 
                                             </div>
@@ -1050,7 +1051,7 @@
 
                                                 </select>--->
 
-                                                <input type="text" name="" class="form-control view_sales_order" required>
+                                                <input type="text" name="" class="form-control view_sales_order" required readonly>
                                                 
                                             </div>
 
@@ -1074,7 +1075,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name=""  class="form-control view_credit_account" required>
+                                                <input type="text" name=""  class="form-control view_credit_account" required readonly>
 
                                             </div>
 
@@ -1105,7 +1106,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name="" class="form-control view_lpo_reff" required>
+                                                <input type="text" name="" class="form-control view_lpo_reff" required readonly>
 
                                             </div>
                                         </div> 
@@ -1129,7 +1130,7 @@
                                                 
                                             
                                            
-                                            <input type="text" name="" class="form-control view_contact_person" required>
+                                            <input type="text" name="" class="form-control view_contact_person" required readonly>
                                             
                                             
                                         </div>
@@ -1153,7 +1154,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="" class="form-control view_payment_term" required>
+                                                <input type="text" name="" class="form-control view_payment_term" required readonly>
                                             </div>
 
                                         </div> 
@@ -1175,7 +1176,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name=""  class="form-control view_project" required>
+                                                <input type="text" name=""  class="form-control view_project" required readonly>
                                             </div>
 
                                         </div> 
@@ -1522,6 +1523,7 @@
                 { data: 'cci_reffer_no'},
                 { data: 'cci_date'},
                 { data: 'cci_customer'},
+                { data: 'cci_sales_order'},
                 { data: 'cci_total_amount'},
                 { data: 'cci_paid_amount'},
                 { data: 'action'},
@@ -1530,7 +1532,7 @@
 
                "initComplete": function () {
 
-                    var dataId = '<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>';
+                    var dataId = '<?php echo isset($_GET['view_crn']) ? $_GET['view_crn'] : ''; ?>';
 
                     $('#DataTable').dataTable().fnFilter(dataId);
 
@@ -1538,7 +1540,7 @@
 
                 "drawCallback": function() {
 
-                $('.view_btn[data-id="<?php echo isset($_GET['view']) ? $_GET['view'] : ''; ?>"]').trigger('click');
+                $('.view_btn[data-id="<?php echo isset($_GET['view_crn']) ? $_GET['view_crn'] : ''; ?>"]').trigger('click');
 
                 }
     
@@ -2173,7 +2175,7 @@
 
             var id = $(this).data('id');
 
-            $('#EditCreditInvoice').modal('show')
+            
 
             $.ajax({
 
@@ -2213,6 +2215,8 @@
                     $('.edit_charts_account').html(data.charts_account);
                     
                     $('.edit_total_amount').html(data.total_amount);
+
+                    $('#EditCreditInvoice').modal('show')
                    
 
                    // $('.edit_image_table').html(data.image_table);
@@ -2289,7 +2293,7 @@
 
             var id = $(this).data('id');
 
-            $('#ViewCreditInvoice').modal('show')
+            
 
             $.ajax({
 
@@ -2336,6 +2340,8 @@
                     $('.edit_charts_account').html(data.charts_account);
 
                     console.log(data.charts_account);*/
+
+                    $('#ViewCreditInvoice').modal('show')
 
                 }
 
@@ -2537,6 +2543,9 @@ function handleCheckboxChange(checkbox)
 
 
 /*checkbox section end*/
+
+
+
 
 
 

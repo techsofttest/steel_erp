@@ -318,14 +318,14 @@ class DeliveryNoteReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='center' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
                     $pdf_data .= "'>{$prod_del->dpd_current_qty}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='center' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
@@ -513,7 +513,7 @@ class DeliveryNoteReport extends BaseController
 
             <th align="left" width="95px">Qty Delivered</th>
 
-            <th align="right">Rate</th>
+            <th align="center">Rate</th>
 
             <th align="right">Discount</th>
             
@@ -531,13 +531,13 @@ class DeliveryNoteReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"><b>'.$total_amount.'</b></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;" ></td>
-                <td style="border-top: 2px solid;">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;"><b>'.$total_amount.'</b></td>
                 
             </tr>    
            
