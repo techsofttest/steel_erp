@@ -515,6 +515,15 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>".format_currency($prod_del->pop_discount)."</td>";
+
+
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
@@ -522,6 +531,8 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>".format_currency($prod_del->pop_amount)."</td>";
                     $pop_amt += $prod_del->pop_amount;
+
+                   
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
@@ -532,20 +543,20 @@ class LPO_MRNReport extends BaseController
                     $pdf_data .= "'></td>";
 
 
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
+                    // $pdf_data .= "<td style='text-align:right;";
+                    // if ($q == 1) {
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>" . format_currency(($prod_del->rnp_current_delivery ?? 0)) . "</td>";
+                    //     $pdf_data .= $border;
+                    // }
+                    // $pdf_data .= "'>" . format_currency(($prod_del->rnp_current_delivery ?? 0)) . "</td>";
 
 
-                    $pdf_data .= "<td style='text-align:right;";
-                    if ($q == 1) {
+                    // $pdf_data .= "<td style='text-align:right;";
+                    // if ($q == 1) {
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
+                    //     $pdf_data .= $border;
+                    // }
+                    // $pdf_data .= "'>".format_currency($prod_del->pop_rate)."</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
@@ -694,15 +705,15 @@ class LPO_MRNReport extends BaseController
 
             <th align="right">Rate</th>
 
+            <th align="right">Discount</th>
+
             <th align="right">Amount</th>
 
             <th align="left">MRN Ref</th>
 
             <th align="right">Quantity</th>
         
-            <th align="right">Rate</th>
-            
-            <th align="right">Amount</th>
+        
 
             <th align="right">Difference</th>
 
@@ -720,10 +731,10 @@ class LPO_MRNReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
+                <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid; text-align:right;">' .format_currency( $pop_amt) . '</td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
+             
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($rnp_amt) . '</td>
                 <td style="border-top: 2px solid; text-align:right;">' . format_currency($diff_amt) . '</td>
                 

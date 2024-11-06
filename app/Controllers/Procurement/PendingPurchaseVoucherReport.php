@@ -174,7 +174,7 @@ class PendingPurchaseVoucherReport extends BaseController
             array(
                 'table' => 'pro_purchase_voucher',
                 'pk'    => 'pv_purchase_order',
-                'fk'    => 'po_reffer_no',
+                'fk'    => 'po_id',
             ),
 
 
