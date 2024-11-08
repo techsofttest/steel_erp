@@ -261,7 +261,7 @@
                                                     <th class="no-sort text-center" style="width:60px">Sl no</th>
                                                     <th class="text-center">Date</th>
                                                     <th class="text-center">MRN Ref</th>
-                                                    <thclass="text-center">Vendor</th>
+                                                    <th class="text-center">Vendor</th>
                                                     <th class="text-center">Purchase Order Ref</th>
                                                     <th class="text-center">Sales Order Ref</th>
                                                     <th class="text-center">Vendor DN Ref</th>

@@ -267,10 +267,11 @@
                                                     <th>Product</th>
                                                     <th class="text-end">Quantity</th>
                                                     <th class="text-end">Rate</th>
+                                                    <th class="text-end">Discount</th>
                                                     <th class="text-end">Amount</th>
                                                     <th>MRN Ref</th>
-                                                    <th class="text-end">Quantity</th>
-                                                    <th class="text-end">Rate</th>
+                                                    <!-- <th class="text-end">Quantity</th>
+                                                    <th class="text-end">Rate</th> -->
                                                     <th class="text-end">Amount</th>
                                                     <th class="text-end">Difference</th>
                                                 </tr>
@@ -315,6 +316,10 @@
                                                                     <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
+                                                                <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_discount); ?><br>
+                                                                <?php } ?></td>
+
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $mr_amount += $orders->pop_amount;
                                                                                         echo format_currency($orders->pop_amount); ?><br>
@@ -324,13 +329,13 @@
                                                                 <?php echo $pur_order->mrn_reffer; ?><br>
                                                             </td>
 
-                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                            <!-- <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
                                                                 <?php } ?></td>
 
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php echo format_currency($orders->pop_rate); ?><br>
-                                                                <?php } ?></td>
+                                                                <?php } ?></td> -->
 
                                                             <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
                                                                     <?php $po_amount += $orders->rnp_amount;
@@ -356,10 +361,11 @@
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
+                                                    <th></th>
                                                     <th class="text-end"><?php echo format_currency($mr_amount); ?></th>
                                                     <th></th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <!-- <th></th>
+                                                    <th></th> -->
                                                     <th class="text-end"><?php echo format_currency($po_amount); ?></th>
                                                     <th class="text-end"><?php echo format_currency($difference); ?></th>
                                                 <?php   } ?>
