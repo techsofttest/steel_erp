@@ -12,6 +12,32 @@ class HRModel extends Model
     protected $db;
 
 
+
+    public function FetchWhereLimit($table,$order_key,$order,$term,$end,$start,$cond)
+    {
+
+        $query = $this->db
+        ->table($table);
+        $query->select('*');
+
+        if($cond !="")
+        {
+
+        $query->where($cond);
+
+        }
+
+        $query->like($order_key,$term)
+        ->limit($end,$start)->orderBy($order_key, $order);
+        
+        $result = $query->get()->getResult();
+
+        return $result;
+
+
+    }
+
+
     public function FetchTimesheets($month,$year,$joins)
     {
         $query= $this->db->table('hr_timesheets')

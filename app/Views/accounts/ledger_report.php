@@ -48,9 +48,10 @@
 
 
 
-        /* Report Full Page No Scroll */
+        
+         /* Report Full Page No Scroll */
 
-        header
+	 header
         {
 
         display:none;
@@ -78,6 +79,9 @@
 
 
         /* #### */
+
+
+       
 
     </style>
 
@@ -487,27 +491,102 @@
                                             </tr>
 
 
-
-
                                             <?php 
                                             $total_credit=0;
                                             $total_debit=0;
+                                            $year="";
+                                            $year_change=false;
+                                            $counter=0;
+                                            $account_heading = "";
                                             foreach($vouchers as $vc){ 
                                                 
-                                            //if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
+                                            if( ($year!="" && $year!=date('Y',strtotime($vc->transaction_date))) && $counter!=0)
+                                            {
+                                            $year=date('Y',strtotime($vc->transaction_date));
+                                            $year_change=true;
+                                            }
+                                            $year = date('Y',strtotime($vc->transaction_date));
 
-                                            //if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
 
-                                                
+                                            if($vc->voucher_type=="Journal Voucher")
+                                            {
+                                            if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
+                                            if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
+                                            }
+
+                                            $counter++;
+                                            ?>
+
+                                            <?php if($year_change==true){ ?>
+
+
+                                            <tr class="no-sort">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end"><b>Ending Balance</b></td>
+                                            <td class="text-end"><b ></b></td> 
+                                            
+                                            <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
+                                            </tr>
+
+
+                                            <tr class="no-sort">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end"><b>Opening Balance</b></td>
+                                            <td class="text-end"><b ></b></td> 
+                                            
+                                            <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
+                                            </tr>
+
+
+                                            <?php 
+                                            $year_change=false;
+                                            } 
+                                            ?>
+
+
+                                            <?php
+
+                                            if($account_heading != $vc->account_name)
+                                            {
+                                           
+                                            if(empty($_GET['filter_account'])){
+
+                                          
+                                            ?>
+
+
+                                            <tr class="no-sort">
+                                            <td><b style="font-size:23px;"><?= $vc->account_name ?></b></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end"></td>
+                                            <td class="text-end"></td> 
+                                            
+                                            <td class="text-end"></td>
+                                            </tr>
+
+
+                                            <?php 
+                                            $account_heading = $vc->account_name;
+                                            } 
+                                            }
+                                            
                                             ?>
 
 
                                             <tr>
                                            
-                                            <td><?php echo date('d-F-Y',strtotime($vc->transaction_date)); ?></td>
+                                            <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
 
                                             <td>
-                                            <?php if(($vc->voucher_type=="Receipt") || ($vc->voucher_type=="Receipt Invoice")){
+                                            <?php if(($vc->voucher_type=="Receipt")){
                                              $href="Accounts/Receipts";
                                              } 
                                              else if($vc->voucher_type=="Cash Invoice")
@@ -539,14 +618,7 @@
 
                                             <td>
 
-                                            <?php /* if($vc->debit_amount !="") { 
-                                                echo  "Receipt";
-                                               } else {
-                                                echo "Payment";
-                                               } */ ?>
-
                                                <?= $vc->voucher_type; ?>
-
 
                                             </td>
 

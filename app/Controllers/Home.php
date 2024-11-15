@@ -90,9 +90,18 @@ class Home extends BaseController
         $data['sales_orders_year'] = $this->dash_model->SumWhereDates('crm_sales_orders','so_amount_total',array(),'so_date',$year_date_from,$year_date_to);
 
 
-        $data['delivery_month'] = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$month_date_from,$month_date_to);;
+        $delivery_month_total = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$month_date_from,$month_date_to);
 
-        $data['delivery_year'] = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$year_date_from,$year_date_to);
+        $cash_month_total = $this->dash_model->SumWhereDates('crm_cash_invoice','ci_total_amount',array(),'ci_date',$month_date_from,$month_date_to);
+
+        $data['delivery_month'] = $delivery_month_total+$cash_month_total;
+
+
+        $delivery_year_total = $this->dash_model->SumWhereDates('crm_delivery_note','dn_total_amount',array(),'dn_date',$year_date_from,$year_date_to);
+
+        $cash_year_total = $this->dash_model->SumWhereDates('crm_cash_invoice','ci_total_amount',array(),'ci_date',$year_date_from,$year_date_to);
+
+        $data['delivery_year'] = $delivery_year_total+$cash_year_total;
 
 
         $data['sales_month'] = $this->dash_model->InvoiceTotals($month_date_from,$month_date_to);

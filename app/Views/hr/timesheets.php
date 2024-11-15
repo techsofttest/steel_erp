@@ -169,11 +169,195 @@
                         </tbody>
 
 
+
+                        
+                        <tfoot>
+
+
+                        <tr>
+
+                           <th>Working Days</th>
+                           
+                           <td id="working_days_view"></td>
+
+
+                           <th>Basic Salary</th>
+                           
+                           <td id="basic_salary_view" align="right"></td>
+
+
+                           <th>Leave</th>
+                           
+                           <td id="total_leave_deduction_view" align="right"></td>
+                           
+
+                        </tr>
+
+
+                        <tr>
+
+                           <th>Public Holiday</th>
+                           
+                           <td id="public_holidays_view"></td>
+
+
+                           <th>House Rent Allowance</th>
+                           
+                           <td id="hra_view" align="right"></td>
+
+
+                           <th>Unpaid Leave</th>
+                           
+                           <td id="total_unpaid_leave_deduction_view" align="right"></td>
+                           
+
+                        </tr>
+
+
+
+                        <tr>
+
+                        <th>Leave</th>
+
+                        <td id="leave_view"></td>
+
+
+                        <th>Transportation Allowance</th>
+
+                        <td id="transportation_allow_view" align="right"></td>
+
+
+                        <th>Vacation</th>
+
+                        <td id="total_vacation_deduction_view" align="right"></td>
+
+
+                        </tr>
+
+
+
+
+                        <tr>
+
+                        <th>Unpaid Leave</th>
+
+                        <td id="unpaid_leave_view"></td>
+
+
+                        <th>Telephone Allowance</th>
+
+                        <td id="telephone_allow_view" align="right"></td>
+
+
+                        <th>Medical Leave</th>
+
+                        <td id="total_medical_leave_deduction_view" align="right">0.00</td>
+
+
+                        </tr>
+
+
+
+
+                        <tr>
+
+                        <th>Vacation</th>
+
+                        <td id="vacation_view"></td>
+
+
+                        <th>Food Allowance</th>
+
+                        <td id="food_allowance_view" align="right"></td>
+
+
+                        <th>Normal OT</th>
+
+                        <td id="total_normal_ot_salary_view" align="right"></td>
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+                        <th>Medical Leave</th>
+
+                        <td id="medical_leave_view"></td>
+
+
+                        <th>Other Allowance</th>
+
+                        <td id="other_allowance_view" align="right"></td>
+
+
+                        <th>Friday OT</th>
+
+                        <td id="total_friday_to_salary_view" align="right"></td>
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+                        <th>Normal OT</th>
+
+                        <td id="normal_ot_view"></td>
+
+
+                        <th>Hourly Salary</th>
+
+                        <td id="hourly_salary_view" align="right"></td>
+
+
+                        <th>Basic Salary</th>
+
+                        <td id="total_basic_salary_view" align="right"></td>
+
+
+                        </tr>
+
+
+
+
+                        <tr>
+
+                        <th>Friday OT</th>
+
+                        <td id="friday_ot_view"></td>
+
+
+                        <th>Total Salary</th>
+
+                        <td id="monthly_salary_view" align="right"></td>
+
+
+                        <th>Salary (Selected Month)</th>
+
+                        <td id="total_month_salary_view" align="right"></td>
+
+
+                        </tr>
+
+
+
+
+
+
+
+                        </tfoot>
+
+
                             
 
                     </table>
 
 
+
+                    <?php /*
 
                     <div class="col-lg-6">
 
@@ -404,6 +588,25 @@
 
 
 
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Basic Salary</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_basic_salary_view" type="number"  name="" class="form-control" step=".01" min="0" readonly>
+
+</div>
+
+</div>
+
+
+
+
 
 <div class="row align-items-center mb-2">
 
@@ -427,6 +630,10 @@
 
 
 </div>
+
+*/
+
+?>
 
 
                         
@@ -492,6 +699,7 @@
 
                     <form  class="Dashboard-form class add_form" data-empid="" id="add_form">
                     <input class="added_id" type="hidden" name="emp_id" value="" autocomplete="off">
+                    <input class="ts_id_add_model" type="hidden" name="ts_id" autocomplete="off">
             
                     <div class="row align-items-start form_sec" id="employee_sec">
 
@@ -532,9 +740,19 @@
                        
                     <select class="form-select " name="month"  required>
                     
-                    <?php foreach($months as $key=>$month){ ?>
-                    <option value="<?= $key ?>"><?= $month ?></option>
-                    <?php } ?>
+
+                    <?php // Get the current month
+                        $currentMonth = (int)date('n'); // 'n' returns the current month number (1 to 12)
+
+                        // Get the previous month
+                        $previousMonth = $currentMonth - 1; ?>
+                                        
+
+                    <option value="<?= $previousMonth ?>"><?= $months[$previousMonth] ?></option>
+
+                    <option value="<?= $currentMonth ?>" selected><?= $months[$currentMonth] ?></option>
+                    
+                    
 
                     </select>
                         
@@ -546,7 +764,7 @@
                     <select class="form-select " name="year"  required>
 
 
-                    <?php for($m=2000;$m<=date('Y');$m++){ ?>
+                    <?php for($m=date('Y');$m<=date('Y');$m++){ ?>
 
                     <option value="<?= $m ?>" <?php if($m==date('Y')) { echo "selected"; }  ?>><?= $m ?></option>
 
@@ -603,11 +821,12 @@
 
 
 
-
                     
                     <form  class="Dashboard-form class add_form" data-empid="" id="timesheet_add_form">
 
                     <input class="" id="timesheet_emp_id" type="hidden" name="emp_id" value="" autocomplete="off">
+
+                    <input class="ts_id_add_model" type="hidden" name="ts_id" autocomplete="off">
 
                     <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
 
@@ -719,6 +938,23 @@
     <div class="col-col-md-9 col-lg-9">
 
     <input id="unpaid_leave" type="number" value="0"  name="total_unpaid_leaves" class="form-control" step=".01" min="0" required readonly>
+
+    </div>
+
+    </div>
+
+
+    <div class="row align-items-center mb-2">
+
+    <div class="col-col-md-3 col-lg-3">
+
+    <label for="basiInput" class="form-label">Vacation</label>
+
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+    <input id="vacation" type="number" value="0"  name="total_vacation" class="form-control" step=".01" min="0" required readonly>
 
     </div>
 
@@ -978,11 +1214,30 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="" type="number"  name="total_unpaid_leave_salary" class="form-control" step=".01" min="0"  readonly>
+<input id="total_unpaid_leave_deduction" type="number"  name="total_unpaid_leave_salary" class="form-control" step=".01" min="0"  readonly>
 
 </div>
 
 </div>
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Vacation</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_vacation_deduction" type="number"  name="total_vacation_salary" class="form-control" step=".01" min="0"  readonly>
+
+</div>
+
+</div>
+
 
 
 
@@ -1034,6 +1289,24 @@
 <div class="col-col-md-9 col-lg-9">
 
 <input id="total_friday_ot_salary" type="number"  name="total_friday_ot_salary" class="form-control" step=".01" min="0"  readonly>
+
+</div>
+
+</div>
+
+
+
+<div class="row align-items-center mb-2">
+
+<div class="col-col-md-3 col-lg-3">
+
+<label for="basiInput" class="form-label">Basic Salary</label>
+
+</div>
+
+<div class="col-col-md-9 col-lg-9">
+
+<input id="total_basic_salary" type="number"  name="total_month_basic_salary" class="form-control" step=".01" min="0" readonly>
 
 </div>
 
@@ -2033,7 +2306,7 @@
 
                             if(data.status==0)
                             {
-                             $("#menudiv")[0].scrollIntoView()
+                             //$("#menudiv")[0].scrollIntoView()
                              alertify.error(data.msg).delay(3).dismissOthers();
                              return false;
                             }
@@ -2074,9 +2347,13 @@
 
                             $('#unpaid_leave').val(0);
 
+                            $('#vacation').val(0);
+
                             $('#medical_leave').val(0);
 
+                            $('#normal_ot').val(0);
 
+                            $('#friday_ot').val(0);
 
                             datatable.ajax.reload( null, false)
 
@@ -2165,26 +2442,34 @@
                 {   
                     if(data)
                     {
+
                     var data = JSON.parse(data);
 
-                    $('#month_days_row_edit').html(data.month_table);
+                    $('.ts_id_add_model').val(id);
 
-                    $('#working_days_edit').val(data.ts.ts_working_days);
+                    $('#month_days_row').html(data.table);
 
-                    $('#public_holiday_edit').val(data.ts.ts_public_holidays);
+                    $('#timesheet_sec').show();
+                    
 
-                    $('#leave_edit').val(data.ts.ts_leave);
+                    $('#working_days').val(data.ts.ts_working_days);
 
-                    $('#unpaid_leave_edit').val(data.ts.ts_unpaid_leave);
+                    $('#public_holiday').val(data.ts.ts_public_holidays);
 
-                    $('#medical_leave_edit').val(data.ts.ts_medical_leave);
+                    $('#leave').val(data.ts.ts_leave);
 
-                    $('#normal_ot_edit').val(data.ts.normal_ot_edit);
+                    $('#unpaid_leave').val(data.ts.ts_unpaid_leave);
 
-                    $('#friday_ot_edit').val(data.ts.ts_friday_ot);
+                    $('#medical_leave').val(data.ts.ts_medical_leave);
+
+                    $('#vacation').val(data.ts.ts_vacation);
+
+                    $('#normal_ot').val(data.ts.normal_ot_edit);
+
+                    $('#friday_ot').val(data.ts.ts_friday_ot);
 
                     
-                    $('#EditModal').modal('show');
+                    $('#AddModal').modal('show');
 
                     }
                     
@@ -2225,30 +2510,64 @@
 
                     $('#days_row').html(data.ts_days);
 
-                    $('#working_days_view').val(data.ts.ts_working_days);
 
-                    $('#public_holidays_view').val(data.ts.ts_public_holidays);
 
-                    $('#leave_view').val(data.ts.ts_leave);
+                    //
 
-                    $('#unpaid_leave_view').val(data.ts.ts_unpaid_leave);
+                    $('#working_days_view').html(data.ts.ts_working_days);
 
-                    $('#medical_leave_view').val(data.ts.ts_medical_leave);
+                    $('#public_holidays_view').html(data.ts.ts_public_holidays);
 
-                    $('#normal_ot_view').val(data.ts.ts_normal_ot);
+                    $('#leave_view').html(data.ts.ts_leave);
 
-                    $('#friday_ot_view').val(data.ts.ts_friday_ot);
+                    $('#unpaid_leave_view').html(data.ts.ts_unpaid_leave);
+
+                    $('#vacation_view').html(data.ts.ts_vacation);
+
+                    $('#medical_leave_view').html(data.ts.ts_medical_leave);
+
+                    $('#normal_ot_view').html(data.ts.ts_normal_ot);
+
+                    $('#friday_ot_view').html(data.ts.ts_friday_ot);
+
 
 
                     //Salary
 
-                    $('#leave_total_amount_view').val(data.ts.ts_cur_month_leave);
+                    $('#basic_salary_view').html(data.ts.ts_basic_salary);
 
-                    $('#total_normal_ot_salary_view').val(data.ts.ts_cur_month_normal_ot);
+                    $('#hra_view').html(data.ts.ts_house_rent_allowance);
 
-                    $('#total_friday_ot_salary_view').val(data.ts.ts_cur_month_friday_ot);
+                    $('#transportation_allow_view').html(data.ts.ts_transportation_allowance);
 
-                    $('#total_month_salary_view').val(data.ts.ts_cur_month_salary);
+                    $('#telephone_allow_view').html(data.ts.ts_telephone_allowance);
+
+                    $('#food_allowance_view').html(data.ts.ts_food_allowance);
+
+                    $('#other_allowance_view').html(data.ts.ts_other_allowance);
+
+                    $('#hourly_salary_view').html((parseInt(data.ts.ts_monthly_salary)/30/8).toFixed(2))
+
+                    $('#monthly_salary_view').html(data.ts.ts_monthly_salary);
+
+
+
+
+                    $('#total_leave_deduction_view').html(data.ts.ts_cur_month_leave);
+
+                    $('#total_unpaid_leave_deduction_view').html(data.ts.ts_cur_month_unpaid_leave);
+
+                    $('#total_vacation_deduction_view').html(data.ts.ts_current_month_vacation);
+
+                    $('#total_medical_leave_deduction_view').html('0.00');
+
+                    $('#total_normal_ot_salary_view').html(data.ts.ts_cur_month_normal_ot);
+
+                    $('#total_friday_to_salary_view').html(data.ts.ts_cur_month_friday_ot);
+
+                    $('#total_basic_salary_view').html(data.ts.ts_cur_month_basic_salary);
+
+                    $('#total_month_salary_view').html(data.ts.ts_cur_month_salary);
 
 
 
@@ -2373,6 +2692,14 @@
 
             $('.add_form')[0].reset();
 
+            $('#month_days_row').html('');
+
+            $('.add_te').val('').trigger('change');
+
+            $('#timesheet_sec input').val('');
+
+            $('#timesheet_sec').hide();
+
            
 
             });
@@ -2416,9 +2743,16 @@
 
 
 
-        $("body").on('input change', '.time_to', function(){
+        $("body").on('input change', '.time_to,.time_from', function(){
 
             var parent = $(this).closest('.day_row');
+
+            if(parent.find('.time_to').val()=="" || parent.find('.time_to').val().length!=5 || parent.find('.time_from').val().length!=5)
+            {
+             
+            return false;
+                
+            }
 
             var time1 = parent.find(".time_from").val().split(':');
 
@@ -2430,14 +2764,41 @@
 
             var selected = parent.find(".day_type").children(':selected').text();
 
-            let hours;
-            let minute;
+            //let hours;
+            
+            //let minute;
+
+
+         var hours1 = parseInt(time1[0], 10), 
+             hours2 = parseInt(time2[0], 10),
+             mins1 = parseInt(time1[1], 10),
+             mins2 = parseInt(time2[1], 10);
+         var hours = hours2 - hours1, mins = 0;
+         if(hours <= 0) hours = 24 + hours;
+         if(mins2 >= mins1) {
+             mins = mins2 - mins1;
+         }
+         else {
+             mins = (mins2 + 60) - mins1;
+             hours--;
+         }
+         mins = mins / 60; // take percentage in 60
+         hours += mins;
+         total_hours = hours.toFixed(2);
+
+         elem.val(total_hours);
+
+
+
+
+            <?php /*
 
         if (parseInt(time1[0]) < parseInt(time2[0]) && parseInt(time1[1]) < parseInt(time2[1])) {
 
             //As for the addition, the subtraction is carried out separately, column by column.
-            hours = parseInt(time2[0]) - parseInt(time1[0]);
-            minute =   parseInt(time2[1]) - parseInt(time1[1]);
+            hours = parseFloat(time2[0]) - parseFloat(time1[0]);
+            
+            minute =   parseFloat(time2[1]) - parseFloat(time1[1]);
 
             // alert(time1[0]);
 
@@ -2458,7 +2819,7 @@
                 _minute = minute;
             }
 
-            elem.val(_hours +'.'+ _minute +'')
+            elem.val(parseFloat(_hours)||0 +'.'+ parseFloat(_minute )||0 +'');
 
 
         }else if (parseInt(time2[0]) > parseInt(time1[0])) {
@@ -2466,13 +2827,13 @@
 
                 // As before we subtract column by column ... and we realize that it's impossible because our minute in second hour is greater than our minute in first hour
                 // We will transform 1 hour in 60 minutes
-                let _hours = parseInt(time2[0]) - 1;
-                let _minute = parseInt(time2[1]) + 60;
+                let _hours = parseFloat(time2[0]) - 1;
+                let _minute = parseFloat(time2[1]) + 60;
                 let final_hours = '';
                 let final_min = '';
 
-                hours = _hours - parseInt(time1[0]);
-                minute = _minute - parseInt(time1[1]);
+                hours = _hours - parseFloat(time1[0]);
+                minute = _minute - parseFloat(time1[1]);
 
                 if (hours < 10) {
                     final_hours = '0' + hours;
@@ -2486,10 +2847,13 @@
                     final_min = minute;
                 }
                 elem.val(final_hours + '.' + final_min)
+
             }
 
-            if (parseInt(time2[1]) === parseInt(time1[1])) {
-                hours = parseInt(time2[0]) - parseInt(time1[0]);
+            if (parseFloat(time2[1]) === parseFloat(time1[1])) {
+
+
+                hours = parseFloat(time2[0]) - parseFloat(time1[0]);
                 let final_hours = '';
 
                 if (hours < 10) {
@@ -2499,14 +2863,16 @@
                 }
 
                 elem.val(final_hours + '.' + '00')
+
+                
             }
 
-        }else if (parseInt(time1[0]) > parseInt(time2[0])) {
-            let first_hour_only_hour = parseInt(time1[0]);
-            let second_hour_only_hour = parseInt(time2[0]);
+        }else if (parseFloat(time1[0]) > parseFloat(time2[0])) {
+            let first_hour_only_hour = parseFloat(time1[0]);
+            let second_hour_only_hour = parseFloat(time2[0]);
 
-            let first_hour_only_min = parseInt(time1[1]);
-            let second_hour_only_min = parseInt(time2[1]);
+            let first_hour_only_min = parseFloat(time1[1]);
+            let second_hour_only_min = parseFloat(time2[1]);
 
             let tmp_hour = 24 - first_hour_only_hour;
             let tmp_ttl_hour = tmp_hour + second_hour_only_hour;
@@ -2519,7 +2885,7 @@
             let _min = '';
 
             if (tmp_ttl_min > 59) {
-                tmp_new_hour = parseInt(tmp_ttl_min/60);
+                tmp_new_hour = parseFloat(tmp_ttl_min/60);
                 tmp_new_min_mod = tmp_ttl_min%60;
 
                 tmp_ttl_hour += tmp_new_hour;
@@ -2540,11 +2906,13 @@
             }
 
             elem.val(_hours + '.' + _min)
-        } else if (parseInt(time1[0]) === parseInt(time2[0])) {
+
+
+        } else if (parseFloat(time1[0]) === parseFloat(time2[0])) {
             hours = '00';
             let minute = 0;
-            if (parseInt(time1[1]) < parseInt(time2[1])) {
-                minute = parseInt(time2[1]) - parseInt(time1[1]);
+            if (parseFloat(time1[1]) < parseFloat(time2[1])) {
+                minute = parseFloat(time2[1])||00 - parseFloat(time1[1])||00;
             }
 
             if (minute < 10) {
@@ -2552,9 +2920,9 @@
             } else  {
                 elem.val(hours + '.' + minute)
             }
-        }else if (parseInt(time1[0]) === 0 && parseInt(time1[1]) === 0) {
-            hours = parseInt(time2[0]);
-            minute = parseInt(time2[1]);
+        }else if (parseFloat(time1[0]) === 0 && parseFloat(time1[1]) === 0) {
+            hours = parseFloat(time2[0]);
+            minute = parseFloat(time2[1]);
 
             if (hours === 0) {
                 elem.val('00.' + minute)
@@ -2569,12 +2937,16 @@
             }
         }
 
-        var total_hours = elem.val();
+        */ ?>
+
+        //let total_hours = elem.val();
+
+        //console.log(total_minute);
 
         if(total_hours>5)
         {
 
-        var total_hours = total_hours-1;
+        total_hours = total_hours-1;
 
         elem.val(total_hours);
 
@@ -2584,7 +2956,9 @@
         if((total_hours>8) && (selected=="Working Day"))
         {
 
-        var ot = parseFloat(total_hours-8)||0.00;
+        let ot = parseFloat(total_hours-8)||0.00;
+
+        ot = ot.toFixed(2);
 
         parent.find('.normal_hours').val('8.00');
 
@@ -2636,6 +3010,8 @@
             unpaid_leave = 0;
 
             working_days = 0;
+
+            vacation_days = 0; 
 
             per_day_salary = $('#add_total_salary').val()/30;
 
@@ -2709,12 +3085,13 @@
 
             $('body .day_type').each(function(i, obj) {
 
-                if($(this).val()== 1)
+
+
+                if($(this).val()== 1 || $(this).val()== 6)
                 {
-                
+
                 working_days++;
 
-         
                 //$(this).children("option").filter(":selected").text();
 
                 }
@@ -2726,6 +3103,17 @@
 
                 }
 
+
+                
+
+                if($(this).val() ==7)
+                {
+                vacation_days++;
+                }
+
+
+
+
                 if($(this).val() ==2)
                 {
                 public_holidays++;
@@ -2736,9 +3124,9 @@
                 
                 leave++;
 
-                leave_amount = leave_amount+=per_day_salary;
+                //leave_amount = leave_amount+=per_day_salary;
 
-                $('#leave_total_amount').val(leave_amount.toFixed(2));
+                //$('#leave_total_amount').val(leave_amount.toFixed(2));
 
 
                 }
@@ -2770,6 +3158,8 @@
 
             $('#medical_leave').val(medical_leave);
 
+            $('#vacation').val(vacation_days);
+
             salary_calc();
 
 
@@ -2799,7 +3189,7 @@
 
             });
 
-            $('#normal_ot').val(total_normal_ot_days);
+            $('#normal_ot').val(total_normal_ot_hours.toFixed(2));
 
             //salary_calc();
 
@@ -2828,7 +3218,7 @@
 
         });
 
-        $('#friday_ot').val(total_friday_ot_days);
+        $('#friday_ot').val(total_friday_ot_hours.toFixed(2));
 
         //salary_calc();
 
@@ -2908,6 +3298,8 @@
         function salary_calc()
         {
 
+        var basic_salary = parseFloat($('#emp_basic_salary').val())||0;
+
         var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
 
         var total_normal_ot = 0;
@@ -2922,7 +3314,63 @@
 
         var total_unpaid_leave=0;
 
+        var total_vacation = 0;
+
         var total_medical_leave = 0;
+
+        var normal_total_monthly = 0;
+
+
+
+        //Leave Calcuation Start
+
+
+        total_leave = $('#leave').val();
+
+        var total_leave_deduction = basic_salary/30*total_leave;
+
+        $('#leave_total_amount').val(total_leave_deduction.toFixed(2));
+
+        //Leave Calculation End
+
+
+
+        //Medical Leave default 0
+        $('input[name=total_medical_leave_salary]').val(0);
+
+
+
+
+        //Unpaid Leave Calculation Start
+
+
+        var total_unpaid_leave = $('#unpaid_leave').val();
+
+        var total_unpaid_leave_deduction = basic_salary/30*total_unpaid_leave*1.5;
+
+        $('#total_unpaid_leave_deduction').val(total_unpaid_leave_deduction.toFixed(2));
+
+
+        //Unpaid Leave Calculation End
+
+
+
+
+         //Vacation Calculation Start
+
+      
+        var total_vacation = $('#vacation').val();
+
+        var total_vacation_deduction = basic_salary/30*total_vacation;
+
+        $('#total_vacation_deduction').val(total_vacation_deduction.toFixed(2));
+
+
+        //Vacation Calculation End
+
+
+
+
 
         //Normal Ot Calculation Start
 
@@ -2932,13 +3380,13 @@
 
         });
         
-        var total_normal_ot_salary = total_normal_ot*hourly_salary; 
-
+        var total_normal_ot_salary = basic_salary/30/8*1.25*total_normal_ot; 
 
 
         $('#total_normal_ot_salary').val(total_normal_ot_salary.toFixed(2));
 
         //Normal OT Calculation End
+
 
 
         //Friday OT Calcualation Start
@@ -2949,7 +3397,7 @@
 
         });
 
-        total_friday_ot_salary = total_friday_ot*hourly_salary;
+        total_friday_ot_salary = basic_salary/30/8*1.50*total_friday_ot;
 
         $('#total_friday_ot_salary').val(total_friday_ot_salary.toFixed(2));
 
@@ -2957,24 +3405,25 @@
 
 
 
-         //Calculate Total Salary Start
+        //Calculate Total Salary Start
 
-        $('.total_hours').each(function(){
+        
 
-        total_hours_month+=parseFloat($(this).val())||0;
+        $('.normal_hours').each(function(){
+
+        normal_total_monthly+=parseFloat($(this).val())||0;
 
         });
         
 
+        //Normal Total
 
-        //Paid Leave
+        var month_total_salary = hourly_salary*normal_total_monthly;
 
-        total_paid_leave = parseFloat($('#leave_total_amount').val())||0;
+        $('#total_basic_salary').val(month_total_salary.toFixed(2));
 
 
-        total_salary_month = total_hours_month*hourly_salary;
-
-        total_salary_month = total_paid_leave+total_salary_month;
+        var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary;
 
 
         $('#total_month_salary').val(total_salary_month.toFixed(2));
@@ -3065,6 +3514,52 @@ function validateTime(input) {
     }
 }
     */
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function(event) { 
+
+function isDataTableRequest(ajaxSettings) {
+// Check for DataTables-specific URL or any other pattern
+return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+}
+
+function isSelect2Request(ajaxSettings) {
+// Check for specific data or parameters in Select2 requests
+return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+}
+
+
+function isSelect2Search(ajaxSettings) {
+// Check for specific data or parameters in Select2 requests
+return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+}
+
+
+$(document).ajaxSend(function(event, jqXHR, ajaxSettings){
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings)) ) {
+    $("#overlay").fadeIn(300);
+    }
+});
+
+
+$(document).ajaxComplete(function(event, jqXHR, ajaxSettings){
+    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings))  && (!isSelect2Search(ajaxSettings)) ) {
+    $("#overlay").fadeOut(300);
+    }
+});
+
+
+
+$(document).ajaxError(function(){
+    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+});
+
+});
+
+
+
 
 
 

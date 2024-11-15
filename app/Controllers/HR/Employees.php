@@ -135,6 +135,8 @@ class Employees extends BaseController
 
         $insert_data['emp_division'] = $this->request->getPost('division');
 
+        $insert_data['emp_status'] = $this->request->getPost('status');
+
         
         if ($_FILES['photo']['name'] !== '') {
             $attachment_name = $this->uploadFile($insert_data['emp_uid'],'photo','uploads/Employees');
@@ -220,6 +222,7 @@ class Employees extends BaseController
 
             $update_data['emp_indemnity_advance']= $this->request->getPost('indemnity_advance');
 
+            $update_data['emp_id_charges_deduction']= $this->request->getPost('id_charges_deduction');
 
             $emp_cond = array('emp_id' => $id);
 
@@ -506,6 +509,11 @@ class Employees extends BaseController
         $cond = array('emp_id' => $this->request->getPost('id'));
 
         $this->common_model->DeleteData('hr_employees',$cond);
+
+        $coa_cond = array('ca_customer' => $this->request->getPost('id'),'ca_type' => 'EMPLOYEE');
+
+        $this->common_model->DeleteData('accounts_charts_of_accounts',$coa_cond);
+
       
     }
 

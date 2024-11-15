@@ -1,3 +1,5 @@
+
+ 
  <!--header section start-->
 
  <?php 
@@ -5,7 +7,47 @@
  {
  echo view('accounts/reports_sub_header');
  }
- ?>
+ else{
+    ?>
+   
+   <style>
+   
+       
+   /* Report Full Page No Scroll */
+   
+   header
+   {
+   
+   display:none;
+   
+   }
+   
+   footer
+   {
+   
+   display:none;
+   
+   }
+   
+   .page-content
+   {
+   
+   padding:5px 0px;
+   
+   }
+   
+   .main-content
+   {
+      margin:15px !important;
+   }
+   
+   
+   /* #### */
+   
+   
+   </style>
+   
+    <?php } ?>
 
 <!--header section end-->
 
@@ -218,25 +260,380 @@
 
                                                 <tr>
 
-                                                    <th>Description</th>
-                                                    <th><?= $month_year ?></th>
-                                                    <th>%</th>
-                                                    <th>Year To Date</th>
-                                                    <th>%</th>
+                                                    <th width="60%" class="text-center">Description</th>
+                                                    <th width="10%" class="text-end"><?= $month_year ?></th>
+                                                    <th width="10%" class="text-end">%</th>
+                                                    <th width="10%" class="text-end">Year To Date</th>
+                                                    <th width="10%" class="text-end">%</th>
                                                     
                                                 </tr>
 
                                             </thead>
                                             
 
-                                            <tbody class="tbody_data">
+                                            <tbody class="tbody_data <?php if(empty($_GET)){ echo "d-none"; } ?>">
+
+
+                                            <?php
+                                            
+
+                                            $revenue_accounts=[];
+
+                                            foreach($accounts as $account)
+                                            {
+
+                                                if($account->at_name=="Income")
+                                                {
+
+                                                    $revenue_accounts[]=$account;  
+
+                                                }
+
+                                            }
+
+
+                                            $cos_accounts = [];
+
+                                            foreach($accounts as $account)
+                                            {
+
+                                                if($account->at_name=="Cost of Sales")
+                                                {
+
+                                                    $revenue_accounts[]=$account;  
+
+                                                }
+
+                                            }
+
+
+                                            $expense_accounts = [];
+
+                                            foreach($accounts as $account)
+                                            {
+
+                                                if($account->at_name=="Expenses")
+                                                {
+
+                                                    $expense_accounts[]=$account;  
+
+                                                }
+
+                                            }
+
+                                            
+                                            ?>
+
+
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                            <th align="center" style="text-align:center;text-decoration:underline"><b style="font-size:14px;">Revenues</b></th>
+                                           
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                            </tr>
+
+
+                                            <?php $total_revenue_month = array_sum(array_column($revenue_accounts,'ending_balance_month')); ?>
+                                            <?php $total_revenue_year = array_sum(array_column($revenue_accounts,'ending_balance_year')); ?>
+                                            <?php foreach($revenue_accounts as $ra){ 
+                                                
+                                            $month_perc=0.00;
+
+                                            if($total_revenue_month != 0)
+                                            $month_perc = $ra->ending_balance_month/$total_revenue_month*100;
+
+                                            $year_perc=0.00;
+
+                                            if($total_revenue_year != 0)
+                                            $year_perc = $ra->ending_balance_year/$total_revenue_year*100;
+
+                                            ?>
+
+                                            <tr>
+
+                                            <th><?= $ra->ca_name; ?></th>
+                                           
+                                            <td align="right"><?= format_currency($ra->ending_balance_month) ?></td>
+                                            <td align="right"><?= number_format($month_perc,2) ?></td>
+                                            <td align="right"><?= format_currency($ra->ending_balance_year) ?></td>
+                                            <td align="right"><?= number_format($year_perc,2) ?></td>
+                                            
+                                            </tr>
+
+                                            <?php } ?>
+
+
+                                            <tr>
+
+                                            <th align="center" style="text-align:center"><b style="font-size:14px;">Total Revenues</b></th>
+
+                                            <td class="text-end"><b><?= format_currency($total_revenue_month); ?></b></td>
+                                            <td class="text-end"><b>100.00</b></td>
+                                            <td class="text-end"><b><?= format_currency($total_revenue_year) ?></b></td>
+                                            <td class="text-end"><b>100.00</b></td>
+
+                                            </tr>
+
+
+
+
+
+                                            <!-- COST OF SALES START -->
+
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                            <th align="center"  style="text-align:center;text-decoration:underline"><b style="font-size:14px;">Cost Of Sales</b></th>
+                                           
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                            </tr>
+
+                                            <?php $total_cos_month = array_sum(array_column($cos_accounts,'ending_balance_month')); ?>
+                                            <?php $total_cos_year = array_sum(array_column($cos_accounts,'ending_balance_year')); ?>
+
+                                            <?php foreach($cos_accounts as $cosa){ ?>
 
                                             <?php 
+                                                $month_perc=0.00;
+
+                                                if($total_cos_month != 0)
+                                                $month_perc = $cosa->ending_balance_month/$total_cos_month*100;
+
+                                                $year_perc=0.00;
+
+                                                if($total_cos_year != 0)
+                                                $year_perc = $cosa->ending_balance_year/$total_cos_year*100;
+
+                                            ?>
+
+                                            <tr>
+                                            <th class=""><?= $cosa->ca_name; ?></th>
+                                           
+                                            <td align="right"><?= format_currency($cosa->ending_balance_month) ?></td>
+                                            <td align="right"><?= number_format($month_perc,2) ?></td>
+                                            <td align="right"><?= format_currency($cosa->ending_balance_year) ?></td>
+                                            <td align="right"><?= number_format($year_perc,2) ?></td>
+                                            
+                                            </tr>
+
+                                            <?php } ?>
+
+
+                                            <tr>
+
+                                            <th align="center" style="text-align:center"><b style="font-size:14px;">Total Cost Of Sales</b></th>
+
+                                            <td class="text-end"><b><?= format_currency($total_cos_month); ?></b></td>
+
+                                            <?php 
+                                            $total_cos_month_perc=0.00;
+                                            if($total_cos_month!=0 && $total_revenue_month!=0)
+                                            $total_cos_month_perc = $total_cos_month/$total_revenue_month*100;
+                                            ?>
+                                            <td class="text-end"><b><?= number_format($total_cos_month_perc,2) ?></b></td>
+
+                                            <td class="text-end"><b><?= format_currency($total_cos_year); ?></b></td>
+
+                                            <?php 
+                                            $total_cos_year_perc=0.00;
+                                            if($total_cos_year!=0 && $total_revenue_year!=0)
+                                            $total_cos_year_perc = $total_cos_year/$total_revenue_year*100; 
+                                            
+                                            ?>
+
+                                            <td class="text-end"><b><?= number_format($total_cos_year_perc,2); ?></b></td>
+
+                                            </tr>
+
+                                            <!-- COST OF SALES END -->
+
+
+                                            <tr>
+
+                                            <th align="center" style="text-align:center"><b style="font-size:14px;">Gross Profit</b></th>
+
+                                            <?php 
+                                            
+                                            $gross_profit_month = $total_revenue_month-$total_cos_month; 
+                                            
+                                            $gross_profit_year = $total_revenue_year-$total_cos_year;
+
+                                            ?>
+
+                                            <?php 
+                                            $gross_perc_month = 0.00;
+
+                                            if($total_revenue_month != 0 && $total_revenue_month!=0)
+                                            $gross_perc_month = $gross_profit_month/$total_revenue_month*100; 
+
+                                            $gross_perc_year = 0.00;
+
+                                            if($total_revenue_year != 0 && $total_revenue_year!=0)
+                                            $gross_perc_year = $gross_profit_year/$total_revenue_year*100;
+                                            
+                                            ?>
+
+                                            <td class="text-end"><b><?= format_currency($gross_profit_month) ?></b></td>
+
+                                            <td class="text-end"><b><?= number_format($gross_perc_month,2) ?></b></td>
+                                            
+                                            <td class="text-end"><b><?= format_currency($gross_profit_year) ?></b></td>
+
+                                            <td class="text-end"><b><?= number_format($gross_perc_year,2) ?></b></td>
+
+                                            </tr>
+
+
+
+
+
+                                            <!-- EXPENSES START -->
+
+
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                            <th align="center"  style="text-align:center;text-decoration:underline"><b style="font-size:14px;">Expenses</b></th>
+                                           
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                            </tr>
+
+                                            <?php $total_expense_month = array_sum(array_column($expense_accounts,'ending_balance_month')); ?>
+                                            <?php $total_expense_year = array_sum(array_column($expense_accounts,'ending_balance_year')); ?>
+
+                                            <?php foreach($expense_accounts as $ea){ ?>
+
+                                            <?php 
+                                                $month_perc=0.00;
+
+                                                if($total_expense_month != 0)
+                                                $month_perc = $ea->ending_balance_month/$total_expense_month*100;
+
+                                                $year_perc=0.00;
+
+                                                if($total_expense_year != 0)
+                                                $year_perc = $ea->ending_balance_year/$total_expense_year*100;
+
+                                            ?>
+
+                                            <tr>
+                                            <th class=""><?= $ea->ca_name; ?></th>
+                                           
+                                            <td align="right"><?= format_currency($ea->ending_balance_month) ?></td>
+                                            <td align="right"><?= number_format($month_perc,2) ?></td>
+                                            <td align="right"><?= format_currency($ea->ending_balance_year) ?></td>
+                                            <td align="right"><?= number_format($year_perc,2) ?></td>
+                                            
+                                            </tr>
+
+                                            <?php } ?>
+
+
+                                            <tr>
+
+                                            <th align="center" style="text-align:center"><b style="font-size:14px;">Total Expenses</b></th>
+
+                                            <td class="text-end"><b><?= format_currency($total_expense_month); ?></b></td>
+
+                                            <?php 
+                                            $total_expense_month_perc=0.00;
+                                            if($total_expense_month!=0 && $total_revenue_month!=0)
+                                            $total_expense_month_perc = $total_expense_month/$total_revenue_month*100;
+                                            ?>
+                                            <td class="text-end"><b><?= number_format($total_expense_month_perc,2) ?></b></td>
+
+                                            <td class="text-end"><b><?= format_currency($total_expense_year); ?></b></td>
+
+                                            <?php 
+                                            $total_expense_year_perc=0.00;
+                                            if($total_expense_year!=0 && $total_revenue_year!=0)
+                                            $total_expense_year_perc = $total_expense_year/$total_revenue_year*100; 
+                                            
+                                            ?>
+
+                                            <td class="text-end"><b><?= number_format($total_expense_year_perc,2); ?></b></td>
+
+                                            </tr>
+
+
+
+                                          
+
+
+                                            <!-- EXPENSES END -->
+
+                                            <?php
+                                            
+                                            $net_profit_month = $total_expense_month-$gross_profit_month;
+
+
+                                            $net_profit_month_perc= $total_expense_month_perc-$gross_perc_month;
+
+
+                                            $net_profit_year=$total_expense_year-$gross_profit_year;
+
+                                            $net_profit_year_perc=$total_expense_year_perc-$gross_perc_year;
+
+
+                                            ?>
+
+
+                                            <tr>
+                                            <th align="center"  style="text-align:center;"><b style="font-size:14px;">Net Profit</b></th>
+                                            <td class="text-end"><b>(<?= format_currency($net_profit_month); ?></b>)</td>
+                                            <td class="text-end"><b>(<?= number_format($net_profit_month_perc,2) ?>)</b></td>
+                                            <td class="text-end"><b>(<?= format_currency($net_profit_year) ?>)</b></td>
+                                            <td class="text-end"><b>(<?= number_format($net_profit_year_perc,2)?>)</b></td>
+                                            </tr>
+
+
+
+                                            <?php 
+
+                                            /*
 
                                             $total_credit=0;
 
                                             $grand_total_ytd = 0;
 
+                                            
                                             foreach($account_heads as $ah)
                                             { 
                                             $total_ytd = number_format(0,2); 
@@ -331,7 +728,7 @@
 
                                             <?php 
                                             
-                                        } ?>
+                                        } */ ?>
 
 
 

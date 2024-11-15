@@ -1,3 +1,7 @@
+
+
+</style>
+ 
  <!--header section start-->
 
  <?php 
@@ -5,7 +9,47 @@
  {
  echo view('accounts/reports_sub_header');
  }
- ?>
+ else{
+    ?>
+   
+   <style>
+   
+       
+   /* Report Full Page No Scroll */
+   
+   header
+   {
+   
+   display:none;
+   
+   }
+   
+   footer
+   {
+   
+   display:none;
+   
+   }
+   
+   .page-content
+   {
+   
+   padding:5px 0px;
+   
+   }
+   
+   .main-content
+   {
+      margin:15px !important;
+   }
+   
+   
+   /* #### */
+   
+   
+   </style>
+   
+    <?php } ?>
 
 <!--header section end-->
 
@@ -420,6 +464,47 @@
         }
 
         });
+
+
+        $('#filter_range').change(function(){
+
+            var val = $(this).val();
+
+            if(val !="Range")
+            {
+            $('.datepicker').attr('disabled',true);
+
+            if(val=="LastYear")
+            {
+                var date = new Date();
+                var firstDay = new Date(date.getFullYear()-1, 0, 1); // First day of current year
+                var lastDay = new Date(date.getFullYear()-1, 11, 31);
+
+                $('input[name=start_date]').val(FormatDate(firstDay));
+                $('input[name=end_date]').val(FormatDate(lastDay));
+
+            }
+            else if(val=="CurrentYear")
+            {
+                var date = new Date();
+                var firstDay = new Date(date.getFullYear(), 0, 1); // First day of current year
+                var lastDay = new Date(date.getFullYear(), 11, 31);
+
+                $('input[name=start_date]').val(FormatDate(firstDay));
+                $('input[name=end_date]').val(FormatDate(lastDay));
+            }
+
+            }
+            
+            if(val=="Range")
+            {
+                $('input[name=start_date]').val('');
+                $('input[name=end_date]').val('');
+            }
+
+
+
+            });
 
        
         

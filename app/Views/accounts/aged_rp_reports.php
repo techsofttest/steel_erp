@@ -4,8 +4,46 @@
  {
  echo view('accounts/reports_sub_header');
  }
- ?>
-
+ else{
+    ?>
+   
+   <style>
+   
+       
+   /* Report Full Page No Scroll */
+   
+   header
+   {
+   
+   display:none;
+   
+   }
+   
+   footer
+   {
+   
+   display:none;
+   
+   }
+   
+   .page-content
+   {
+   
+   padding:5px 0px;
+   
+   }
+   
+   .main-content
+   {
+      margin:15px !important;
+   }
+   
+   
+   /* #### */
+   
+   </style>
+   
+    <?php } ?>
 <!--header section end-->
 
 
@@ -214,7 +252,7 @@
                                                                     <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Receivable <input type="checkbox" name="" value="">
+                                                                    Receivable <input type="radio" name="ac_type" value="r">
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
@@ -228,7 +266,7 @@
                                                                    
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Payable <input type="checkbox" name="" value="">
+                                                                    Payable <input type="radio" name="ac_type" value="p">
                                                                     </div>  
 
                                                                     <div class="col-lg-6 text-center">
@@ -242,7 +280,7 @@
                                                                     <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Both <input type="checkbox" name="" value="">
+                                                                    Both <input type="radio" name="ac_type" value="b">
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
@@ -343,6 +381,7 @@
                                             $total_debit=number_format(0,2);
 
                                             foreach($transactions as $trn){ ?>
+
 
                                             <tr>
 
