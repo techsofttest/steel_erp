@@ -1,3 +1,6 @@
+
+
+
 <!--header section start-->
 
   <?php 
@@ -5,8 +8,47 @@
  {
  echo view('accounts/reports_sub_header');
  }
- ?>
-
+ else{
+    ?>
+   
+   <style>
+   
+       
+   /* Report Full Page No Scroll */
+   
+   header
+   {
+   
+   display:none;
+   
+   }
+   
+   footer
+   {
+   
+   display:none;
+   
+   }
+   
+   .page-content
+   {
+   
+   padding:5px 0px;
+   
+   }
+   
+   .main-content
+   {
+      margin:15px !important;
+   }
+   
+   
+   /* #### */
+   
+   
+   </style>
+   
+    <?php } ?>
 <!--header section end-->
 
 
@@ -61,7 +103,7 @@
                                                                         <td>Date</td>
 
                                                                         <td>
-                                                                        <input class="form-control datepicker" type="text"  name="start_date" readonly/>
+                                                                        <input class="form-control datepicker" type="text"  name="start_date" readonly required/>
                                                                         </td>
 
 
@@ -104,11 +146,11 @@
                                                                      <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Receivable <input type="checkbox" name="receivable" value="1">
+                                                                    Receivable <input type="radio" name="type" value="receivable" required>
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Payable <input type="checkbox" name="payable" value="1">
+                                                                    Payable <input type="radio" name="type" value="payable">
                                                                     </div>                                                  
 
                                                                     </div>
@@ -125,7 +167,7 @@
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit">View</button></td>
+                                                                            <td><button type="submit" data-bs-dismiss="modal">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             
@@ -232,13 +274,13 @@
                                                 
                                             $grand_total = 0;
 
-                                            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
+                                            //$grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
 
                                             ?>
 
                                            <tr> 
 
-                                                <td><?= $ac->cc_customer_name; ?></td>
+                                                <td><?= $ac->ca_name; ?></td>
                                                 <td><?php echo $grand_total; ?></td>
                                                 <td><?php echo empty($ac->ThirtyDays) ? "---" : $ac->ThirtyDays; ?></td>
                                                 <td><?php echo empty($ac->SixtyDays) ? "---" : $ac->SixtyDays; ?></td>
@@ -315,8 +357,8 @@
         </div>
                     
                     
-    </div>
-                    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     
                         
 </div>

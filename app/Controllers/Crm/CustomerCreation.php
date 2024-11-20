@@ -288,6 +288,10 @@ class CustomerCreation extends BaseController
 
         $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
 
+        $coa_data['ca_name'] = $this->request->getPost('cc_customer_name');
+
+        $this->common_model->EditData($coa_data,array('ca_customer' => $this->request->getPost('cc_id'),'ca_type' => 'CUSTOMER'),'accounts_charts_of_accounts');
+
         $data['customer_creation_id'] = $this->request->getPost('cc_id');
        
 
@@ -756,7 +760,7 @@ class CustomerCreation extends BaseController
         $qsales_order = $this->common_model->FetchWhere('crm_sales_orders',$cond4);
 
 
-        $coa_cond = array('ca_customer' => $customer_id);
+        $coa_cond = array('ca_customer' => $customer_id,'ca_type' => 'CUSTOMER');
 
         $charts_of_account = $this->common_model->SingleRow('accounts_charts_of_accounts',$coa_cond);
 

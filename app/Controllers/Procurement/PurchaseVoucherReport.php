@@ -228,6 +228,12 @@ class PurchaseVoucherReport extends BaseController
                 'pk'    => 'product_details',
                 'fk'    => 'pvp_prod_dec',
             ),
+
+            array(
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'pvp_mat_rec_id',
+            ),
         );
 
         //$data['quotation_data'] = $this->pro_model->CheckData($from_date,'mr_date',$to_date,'',$data1,'	mrp_sales_order',$data2,'mrp_product_desc','','','','','pro_material_requisition_prod',$joins,'mrp_id',$joins1,'mrp_mr_id','pro_material_requisition_prod');  
@@ -239,17 +245,26 @@ class PurchaseVoucherReport extends BaseController
         $new_order = [];
 
         foreach ($data['purchase_order'] as $orders) {
+            // Fetch the MRN record, handle the case where no record is found
+            $pvs = $this->common_model->SingleRow('pro_material_received_note', ['mrn_id' => $orders->pvp_mat_rec_id]);
+            if (!$pvs) {
+                // Handle error, maybe skip or set default values
+                $pvs = (object) [];
+            }
         
-            // Fetch the MRN record
-            $pvs = $this->common_model->SingleRow('pro_material_received_note', ['mrn_id' => $orders->pv_mrn]);
-
-            // $pvps = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_purchase_order' => $orders->po_reffer_no]);
+            // Fetch the purchase order details, handle the case where no record is found
+            $pvps = $this->common_model->SingleRow('pro_purchase_order', ['po_id' => $orders->pv_purchase_order]);
+            if (!$pvps) {
+                // Handle error, maybe skip or set default values
+                $pvps = (object) [];
+            }
         
             // Merge the $orders and $mrns arrays, then cast the result back to an object
-            $new_order[] = (object) array_merge((array)$orders, (array)$pvs);
+            $new_order[] = (object) array_merge((array)$orders, (array)$pvs, (array)$pvps);
         }
         
         $data['purchase_order'] = $new_order;
+        
 
         // echo '<pre>';
         // print_r($data['purchase_order']); 
@@ -346,11 +361,11 @@ class PurchaseVoucherReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pv_purchase_order}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->po_reffer_no ?? '')."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->mrn_reffer ?? '')."</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->mrn_reffer ?? '')."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
+                // $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
 
 
                 
@@ -366,9 +381,7 @@ class PurchaseVoucherReport extends BaseController
 
                         $pdf_data .="<tr>";
 
-                        $pdf_data .= "<tr><td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
+                     
 
                         $pdf_data .= "<td style=''></td>";
                         $pdf_data .= "<td style=''></td>";
@@ -381,7 +394,24 @@ class PurchaseVoucherReport extends BaseController
                     }
 
                     
-                   
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
+                    $pdf_data .= "'>{$prod_del->mrn_reffer}</td>";
+
+                    $pdf_data .= "<td style='";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                        $pdf_data .= "'>" . format_currency($order_data->pv_total) . "</td>";
+                    } else {
+                        $pdf_data .= "'></td>";
+                    }
+
+
+
 
                     $pdf_data .= "<td style='";
                     if ($q == 1) {

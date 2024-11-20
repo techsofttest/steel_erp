@@ -248,9 +248,14 @@
                                                                                     } ?>
                                                             </td>
 
-                                                            <td class="text-center"><?php echo $pur_vouc->pv_purchase_order; ?></td>
+                                                            <td class="text-center"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
 
-                                                            <td class="text-center"><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td>
+                                                            <!-- <td class="text-center"><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td> -->
+
+                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                                    <?php echo $orders->mrn_reffer; ?><br>
+                                                                <?php } ?></td>
+
 
                                                             <td class="text-end"><?php echo format_currency($pur_vouc->pv_total);
                                                                                     $total += $pur_vouc->pv_total; ?> </td>

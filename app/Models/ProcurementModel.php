@@ -805,83 +805,75 @@ class ProcurementModel extends Model
         return $result;
     }
 
-
-    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col,  $table, $joins, $group_by_col, $joins1)
+    public function PendingVoucherCheckData($from_date, $from_date_col, $to_date, $to_date_col, $data1, $data1_col, $data2, $data2_col, $data3, $data3_col, $data4, $data4_col, $table, $joins, $group_by_col, $joins1)
     {
-        $query = $this->db->table($table)
-            ->select('*');
+        $query = $this->db->table($table)->select('*');
+        
         // Join additional tables if specified
         if (!empty($joins)) {
             foreach ($joins as $join) {
-                $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+                if (isset($join['table'], $join['pk'], $join['fk'])) {
+                    $query->join($join['table'], $join['table'] . '.' . $join['pk'] . ' = ' . $table . '.' . $join['fk'], 'left');
+                }
             }
         }
-
+        
+        // Check if `pv_status` column exists in `pro_purchase_voucher` table
+        $fields = $this->db->getFieldData('pro_purchase_voucher');
+        $hasPvStatus = array_search('pv_status', array_column($fields, 'name')) !== false;
+        
+        // Filter for `pv_status` values 0, 1 or NULL if the column exists
+        if ($hasPvStatus) {
+            $query->groupStart()
+                ->whereIn('pro_purchase_voucher.pv_status', ['0', '1'])
+                ->orWhere('pro_purchase_voucher.pv_status', null)  // Include records where pv_status is NULL
+                ->groupEnd();
+        }
+    
+        // Apply date filters
         if (!empty($from_date)) {
-
             $query->where($from_date_col . ' >=', $from_date);
         }
-
+    
         if (!empty($to_date)) {
-
-            $query->where($from_date_col . ' <=', $to_date);
+            $query->where($to_date_col . ' <=', $to_date);
         }
-
+    
+        // Apply additional filters
         if (!empty($data1)) {
             $query->like($data1_col, $data1);
         }
-
+    
         if (!empty($data2)) {
             $query->like($data2_col, $data2);
         }
-
+    
         if (!empty($data3)) {
             $query->where($data3_col, $data3);
         }
-
+    
         if (!empty($data4)) {
             $query->like($data4_col, $data4);
         }
-
-        // if (!empty($data5)) {
-        //     $query->like($data5_col, $data5);
-        // }
-
-
-        if (!empty($join) && $group_by_col != '') {
+    
+        // Group by clause
+        if (!empty($group_by_col)) {
             $query->groupBy($table . '.' . $group_by_col);
         }
-
-        // $query->whereIn('pv_status', [0,1]);
-
+    
         $result = $query->get()->getResult();
-
-        // Get the last executed query
-        //echo $this->db->getLastQuery();
-
-        //return $result;
-
-        // $i = 0;
-        // foreach ($result as $res) {
+    
+        // Loop through results to fetch related data if necessary
+        // foreach ($result as $index => $res) {
         //     $cond_user = ['pvp_reffer_id' => $res->pvp_reffer_id];
-        
-        //     // Create the query using the Query Builder
-        //     $query = $this->db->table($table)->where($cond_user); 
-        
-        //     // Echo the compiled select query without executing it
-
-        //     $result[$i]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
-
-        //     // echo $this->db->getLastQuery();  // Will show the query without executing it
-        //     // exit;
-
-        //     $i++;
+        //     $result[$index]->product_orders = $this->FetchWhereJoin($table, $cond_user, $joins1);
         // }
-        
-        
+    
         return $result;
     }
+    
 
+    
 
         //Fetch All By Order
 

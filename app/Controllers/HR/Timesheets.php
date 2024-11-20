@@ -67,7 +67,7 @@ class TimeSheets extends BaseController
 
         $monthName = date('F', mktime(0, 0, 0, $record->ts_month, 10)); // March
 
-        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <!--<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>--> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "ts_id"=>$i,
@@ -110,6 +110,8 @@ class TimeSheets extends BaseController
 
          public function FetchEmployees()
          {
+
+            $this->hr_model = new \App\Models\HRModel();
      
              $page= !empty($_GET['page']) ? $_GET['page'] : 0;
              $term = !empty($_GET['term']) ? $_GET['term'] : "";
@@ -117,7 +119,7 @@ class TimeSheets extends BaseController
              $end = ($page - 1) * $resultCount;       
              $start = $end + $resultCount;
            
-             $data['result'] = $this->common_model->FetchAllLimit('hr_employees','emp_name','asc',$term,$start,$end);
+             $data['result'] = $this->hr_model->FetchWhereLimit('hr_employees','emp_name','asc',$term,$start,$end,array('emp_status' => 'Active'));
      
              $data['total_count'] =count($data['result']);
      
@@ -141,6 +143,7 @@ class TimeSheets extends BaseController
 
         $data['mops'] = $this->common_model->FetchAllOrder('hr_mode_of_pay','mop_title','asc');
 
+        
         $data['months'] = array(
         1 => "January",
         2 => "February",
@@ -203,7 +206,7 @@ class TimeSheets extends BaseController
 
         $data['emp_det'] = $this->common_model->SingleRowJoin('hr_employees',$cond=array('emp_id' => $employee),$joins=array());
 
-        $data['day_salary'] = $data['emp_det']->emp_total_salary/30;
+        $data['day_salary'] = $data['emp_det']->emp_basic_salary/30;
 
         $data['hour_salary'] = number_format($data['day_salary']/8,2,'.'," ");
 
@@ -250,15 +253,22 @@ class TimeSheets extends BaseController
             }
             else if(( $dt->dt_id=="6") && ($date["day"] == "Fri"))
             {
-
             $select="selected";
-
             }
-            
 
             $daytype_select .= '<option '.$select.' value="'.$dt->dt_id.'">'.$dt->dt_name.'</option>';
 
             }
+
+            $required="";
+
+            if($date["day"] != "Fri")
+            {
+
+            $required="required";
+
+            }
+
 
 
         // Test Mode
@@ -328,9 +338,11 @@ class TimeSheets extends BaseController
                         
                         </td>
 
-                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text" oninput="formatTime(this)"   required ></td>
+                        <!-- <input placeholder="HH" style="width:40%;display:inline-block" class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text"   required > : <input placeholder="MM" style="width:40%;display:inline-block" class="form-control time_from" name="time_from[]" value="" maxlength="5" type="text" required > -->
 
-                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
+                        <td width="10%"><input class="form-control time_from" name="time_from[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
+
+                        <td width="10%"><input class="form-control time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
 
                         <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required readonly></td>
 
@@ -371,8 +383,13 @@ class TimeSheets extends BaseController
     // add account head
     Public function Add()
     {   
+        /*
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
 
-        //print_r($_POST);
+        exit;
+        */
 
         //Insert into timesheet main
 
@@ -446,7 +463,7 @@ class TimeSheets extends BaseController
             }
 
 
-            if(($check['td_daytype'] == 1) || ($check['td_daytype'] == 2) || ($check['td_daytype'] == 6))
+            if(($check['td_daytype'] == 1))
             {
 
             if((empty($check['td_time_in'])) || (empty($check['td_time_out'])) || (empty($check['td_total_hours'])) )
@@ -461,7 +478,7 @@ class TimeSheets extends BaseController
             }
 
 
-            if((empty($check['td_normal_hours'])) )
+            if(($check['td_daytype'] == 1) && (empty($check['td_normal_hours'])) )
             {
             
                 $data['status']=0;
@@ -495,6 +512,8 @@ class TimeSheets extends BaseController
 
         $insert_data['ts_medical_leave'] = $this->request->getPost('total_medical_leaves');
 
+        $insert_data['ts_vacation'] = $this->request->getPost('total_vacation');
+
         $insert_data['ts_normal_ot'] = $this->request->getPost('total_normal_ot');
 
         $insert_data['ts_friday_ot'] = $this->request->getPost('total_friday_ot');
@@ -516,11 +535,21 @@ class TimeSheets extends BaseController
 
         $insert_data['ts_cur_month_leave'] = $this->request->getPost('total_leave_salary');
 
+
+        $insert_data['ts_cur_month_unpaid_leave'] = $this->request->getPost('total_unpaid_leave_salary');
+        
+        $insert_data['ts_current_month_vacation'] = $this->request->getPost('total_vacation_salary');
+        
+
         $insert_data['ts_cur_month_normal_ot'] = $this->request->getPost('total_normal_ot_salary');
 
         $insert_data['ts_cur_month_friday_ot'] = $this->request->getPost('total_friday_ot_salary');
 
+        $insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('total_month_basic_salary');
+
         $insert_data['ts_cur_month_salary'] = $this->request->getPost('total_month_salary');
+
+        
 
 
         $ts_id = $this->common_model->InsertData('hr_timesheets',$insert_data);
@@ -581,14 +610,13 @@ class TimeSheets extends BaseController
     $data['ts'] = $this->hr_model->FetchSingleTimesheet($id);
 
 
-    $data['month_table'] ="";
+    $data['table'] ="";
 
 
     $daytypes = $this->common_model->FetchAllOrder('hr_daytypes','dt_name','asc');
-
+    
     $daytype_select="";
 
-    
 
     foreach($data['ts']->days as $day)
     {
@@ -605,46 +633,46 @@ class TimeSheets extends BaseController
     
     }
 
-    $data['month_table'] .='
 
-        <tr class="day_row">
+    $data['table'] .='
 
-        <td>'.date('d-M-Y',strtotime($day->td_date)).'</td>
+    <tr class="day_row '.$day->td_date.'">
 
-        <td>'.$day->td_day.'</td>
+    <td width="15%">'.date('d M Y',strtotime($day->td_date)).'</td>
 
-        <td>
+    <td width="10%">'.$day->td_day.'</td>
 
-        <input type="hidden" name="date[]" value="'.date('d-M-Y',strtotime($day->td_date)).'">
+    <td width="15%">
 
-        <input type="hidden" name="day[]" value="'.$day->td_day.'">
+    <input type="hidden" name="date[]" value="'.$day->td_date.'">
 
-        <select class="day_type form-control" name="day_type[]" required>
-        
-        <option value="">Select Day Type</option>
+    <input type="hidden" name="day[]" value="'.$day->td_day.'">
 
-        '.$daytype_select.'
+    <select class="day_type form-control" name="day_type[]" required>
+    
+    <option value="">Select Day Type</option>
 
-        </select>
-        
-        </td>
+    '.$daytype_select.'
 
-        <td><input class="form-control time_from" name="time_from[]" value="'.$day->td_time_in.'" onclick="this.showPicker();" type="time" required></td>
+    </select>
+    
+    </td>
 
-        <td><input class="form-control time_to" name="time_to[]" value="'.$day->td_time_out.'" onclick="this.showPicker();" type="time" required></td>
+    <td width="10%"><input class="form-control time_from" name="time_from[]" value="'.$day->td_time_in.'" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
 
-        <td><input class="form-control total_hours" name="total_hours[]" value="'.$day->td_total_hours.'" type="text" required></td>
+    <td width="10%"><input class="form-control time_to" name="time_to[]" value="'.$day->td_time_out.'" type="text" maxlength="5"  oninput="formatTime(this)" required ></td>
 
-        <td><input class="form-control normal_hours" type="number" value="'.$day->td_normal_hours.'" name="normal_hours[]"></td>
+    <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="'.$day->td_total_hours.'" type="text" required readonly></td>
 
-        <td><input class="form-control normal_ot" type="number" name="normal_ot[]" value="'.$day->td_normal_ot.'" ></td>
+    <td width="10%"><input class="form-control normal_hours" type="number" value="'.$day->td_normal_hours.'" name="normal_hours[]" readonly></td>
 
-        <td><input class="form-control friday_ot" type="number" name="friday_ot[]" value="'.$day->td_friday_ot.'" ></td>
+    <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="'.$day->td_normal_hours.'" readonly></td>
 
-        </tr>
+    <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="'.$day->td_normal_hours.'" readonly></td>
 
-        ';
+    </tr>
 
+    ';
 
 
     }
@@ -694,7 +722,7 @@ class TimeSheets extends BaseController
 
            $ti="-";
            $to="-";
-           if($ts->td_daytype==1)
+           if($ts->td_daytype==1 || $ts->td_daytype==2 || $ts->td_daytype==6)
            {
             $ti = date('h:i a',strtotime($ts->td_time_in));
             $to  = date('h:i a',strtotime($ts->td_time_out));
@@ -713,13 +741,13 @@ class TimeSheets extends BaseController
 
            <td>'.$to.'</td>
 
-           <td>'.(empty($ts->td_total_hours) ? "-" : $ts->td_total_hours).'</td>
+           <td align="right">'.( (empty($ts->td_total_hours) || $ts->td_total_hours==0.00) ? "-" : $ts->td_total_hours).'</td>
 
-           <td>'.(empty($ts->td_normal_hours) ? "-" : $ts->td_normal_hours).'</td>
+           <td align="right">'.( (empty($ts->td_normal_hours) || $ts->td_normal_hours==0.00)  ? "-" : $ts->td_normal_hours).'</td>
 
-           <td>'.(empty($ts->td_normal_ot) ? "-" : $ts->td_normal_ot).'</td>
+           <td align="right">'.( (empty($ts->td_normal_ot) || $ts->td_normal_ot==0.00 ) ? "-" : $ts->td_normal_ot).'</td>
 
-           <td>'.(empty($ts->td_friday_ot) ? "-" : $ts->td_friday_ot).'</td>
+           <td align="right">'.( (empty($ts->td_friday_ot) || $ts->td_friday_ot==0.00 )? "-" : $ts->td_friday_ot).'</td>
 
            </tr>
            ';
@@ -748,13 +776,13 @@ class TimeSheets extends BaseController
 
            <td></td>
 
-           <td><b>'.$total_hours.'</b></td>
+           <td align="right"><b>'.$total_hours.'</b></td>
 
-           <td><b>'.$total_normal_hours.'</b></td>
+           <td align="right"><b>'.$total_normal_hours.'</b></td>
 
-           <td><b>'.$total_normal_ot.'</b></td>
+           <td align="right"><b>'.$total_normal_ot.'</b></td>
 
-           <td><b>'.$total_friday_ot.'</b></td>
+           <td align="right"><b>'.$total_friday_ot.'</b></td>
 
            </tr>
            ';

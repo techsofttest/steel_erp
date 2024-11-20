@@ -231,7 +231,7 @@ class DepreciationCalculation extends BaseController
 
         $cond = ['cfs_account_head' => $acchead];
         // Fetching fixed assets with the same condition
-        $assets = $this->common_model->FetchWhereOrder('pro_create_fixed_asset', $cond, 'cfs_id', 'desc');
+        $assets = $this->pro_model->FetchWhereOrder('pro_create_fixed_asset', $cond, 'cfs_id', 'desc');
 
         // Prepare the HTML for fixed assets rows
         $fixed_asset = '';

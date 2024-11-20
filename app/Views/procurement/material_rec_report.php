@@ -228,6 +228,7 @@
                                                     <th>Product</th>
                                                     <th class="text-end">Quantity</th>
                                                     <th class="text-end">Rate</th>
+                                                    <th class="text-end">Discount</th>
                                                     <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
@@ -272,6 +273,10 @@
                                                                     <?php echo format_currency($orders->pop_rate); ?><br>
                                                                 <?php } ?></td>
 
+                                                                <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                    <?php echo format_currency($orders->pop_discount); ?><br>
+                                                                <?php } ?></td>
+
                                                             <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
                                                                     <?php echo format_currency($orders->rnp_amount);
                                                                                         $mr_total += $orders->rnp_amount ?><br>
@@ -289,6 +294,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th class="text-end"><?php echo format_currency($total); ?></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

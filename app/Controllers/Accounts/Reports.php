@@ -522,7 +522,11 @@ class Reports extends BaseController
 
         //$data['post_dated_cheques'] = $this->report_model->SOAPostDatedCheques($start_date,$end_date,$account);
 
+
+        if(!empty($account))
         $account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $account))->ca_name;
+
+
 
         //$data['payments'] = $this->report_model->SOAPayments($start_date,$end_date,$account);
 
@@ -807,7 +811,10 @@ class Reports extends BaseController
         else
         {
 
-        $data['vouchers'] = array();
+        
+        $data['vouchers']['vouchers'] = array();
+            
+        $data['vouchers']['pdc'] = array();
 
         $data['post_dated_cheques'] = array();
 
@@ -1337,7 +1344,7 @@ class Reports extends BaseController
         $data['month_year'] ="";
         }
 
-        $data['account_heads'] = $this->report_model->FetchPLAccount($date_from,$date_to);
+        $data['accounts'] = $this->report_model->FetchPLAccount($time_frame,$date_from,$date_to);
 
 
         $data['content'] = view('accounts/pl_account_report',$data);
@@ -1665,7 +1672,7 @@ class Reports extends BaseController
 
         $data['month_year'] = "";
 
-        $data['account_heads'] = array();
+        $data['accounts'] = array();
 
         $data['content'] = view('accounts/pl_account_report',$data);
 
@@ -1703,7 +1710,9 @@ class Reports extends BaseController
 
     $filter_account = $this->request->getGet('filter_account');
 
-    $data['all_accounts'] = $this->report_model->RPSummery($filter_account,$start_date);
+    $filter_type = $this->request->getGet('type');
+
+    $data['all_accounts'] = $this->report_model->RPSummery($filter_account,$start_date,$filter_type);
 
 
     if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 

@@ -383,6 +383,14 @@ class PurchaseOrderReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_discount))."</td>";
+
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
                     $pdf_data .= "'>".(format_currency($prod_del->pop_amount))."</td>";
                     $pop_total += $prod_del->pop_amount;
 
@@ -522,6 +530,8 @@ class PurchaseOrderReport extends BaseController
 
             <th align="right">Rate</th>
 
+             <th align="right">Discount</th>
+
             <th align="right">Amount</th>
         
             
@@ -536,6 +546,7 @@ class PurchaseOrderReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;text-align:right">'.format_currency($total_amount).'</td>
+                <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>

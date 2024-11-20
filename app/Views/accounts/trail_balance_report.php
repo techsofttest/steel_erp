@@ -1,3 +1,5 @@
+
+ 
  <!--header section start-->
 
  <?php 
@@ -5,7 +7,47 @@
  {
  echo view('accounts/reports_sub_header');
  }
+ else{
  ?>
+
+<style>
+
+    
+/* Report Full Page No Scroll */
+
+header
+{
+
+display:none;
+
+}
+
+footer
+{
+
+display:none;
+
+}
+
+.page-content
+{
+
+padding:5px 0px;
+
+}
+
+.main-content
+{
+   margin:15px !important;
+}
+
+
+/* #### */
+
+
+</style>
+
+ <?php } ?>
 
 <!--header section end-->
 
@@ -235,11 +277,11 @@
                                                 <tr>
 
                                                     <th>Account</th>
-                                                    <th>Beginning Balance</th>
-                                                    <th>Debit Change</th>
-                                                    <th>Credit Change</th>
-                                                    <th>Net Change</th>
-                                                    <th>Ending Balance</th>
+                                                    <th align="right" style="text-align:right;">Beginning Balance</th>
+                                                    <th align="right" style="text-align:right;">Debit Change</th>
+                                                    <th align="right" style="text-align:right;">Credit Change</th>
+                                                    <th align="right" style="text-align:right;">Net Change</th>
+                                                    <th align="right" style="text-align:right;">Ending Balance</th>
                                                     
                                                 </tr>
 
@@ -255,32 +297,36 @@
                                             $total_deb=number_format(0,2);
 
                                             $total_cred=number_format(0,2);
+                    
 
                                             foreach($c_accounts as $account){ ?>
 
+
+
                                             <?php 
-                                            if( ($account->balance==0) && (!empty($_GET['zero'])))
-                                            {
+                                            // if( ($account->ending_balance==0) && (!empty($_GET['zero'])))
+                                            // {
                                             $total_deb = $total_deb+ $account->total_debit;
                                             $total_cred = $total_cred + $account->total_credit;
                                             ?>
                                             <tr>
 
                                             <td><?= $account->ca_name; ?></td>
-                                            <td><?php echo empty ($account->start_balance) ? "0.00"  : $account->start_balance; ?></td>
-                                            <td><?= $account->total_debit; ?></td>
-                                            <td><?= $account->total_credit; ?></td>
-                                            <td><?= $account->net_change; ?></td>
-                                            <td><?= $account->balance; ?></td>
+                                            <td align="right"><?php echo empty ($account->start_balance) ? "0.00"  : $account->start_balance; ?></td>
+                                            <td align="right"><?= format_currency($account->total_debit); ?></td>
+                                            <td align="right"><?= format_currency($account->total_credit); ?></td>
+                                            <td align="right"><?= format_currency($account->net_change); ?></td>
+                                            <td align="right"><?= format_currency($account->ending_balance); ?></td>
                                             
                                             </tr>
 
                                             <?php
-                                            }
+                                            // }
                                             ?>
 
-                                            <?php if( ($account->balance>0) )
-                                            { 
+                                            <?php 
+                                            /* if( ($account->ending_balance>0) )
+                                             { 
                                             $total_deb = $total_deb+ $account->total_debit;
                                             $total_cred = $total_cred + $account->total_credit; 
                                             ?>
@@ -288,15 +334,15 @@
                                             <tr>
 
                                             <td><?= $account->ca_name; ?></td>
-                                            <td><?php echo empty ($account->start_balance) ? "0.00"  : $account->start_balance; ?></td>
-                                            <td><?= $account->total_debit; ?></td>
-                                            <td><?= $account->total_credit; ?></td>
-                                            <td><?= $account->net_change; ?></td>
-                                            <td><?= $account->balance; ?></td>
+                                            <td><?php echo empty ($account->start_balance) ? "0.00"  : format_currency($account->start_balance); ?></td>
+                                            <td align="right"><?= format_currency($account->total_debit); ?></td>
+                                            <td align="right"><?= format_currency($account->total_credit); ?></td>
+                                            <td align="right"><?= format_currency($account->net_change); ?></td>
+                                            <td align="right"><?= format_currency($account->ending_balance); ?></td>
 
                                             </tr>
 
-                                            <?php } ?>
+                                            <?php } */ ?>
 
                                             <?php 
                                             
@@ -315,11 +361,11 @@
 
 
                                             <td><b style="font-size:20px;">Total</b></td>
-                                            <td><b>(0.00)</b></td>
-                                            <td><b><?= $total_deb; ?></b></td>
-                                            <td><b><?= $total_cred; ?></b></td>
-                                            <td><b>0.00</b></td>
-                                            <td><b>0.00</b></td>
+                                            <td style="text-align:right;"><b>(0.00)</b></td>
+                                            <td align="right" style="text-align:right;"><b><?= format_currency($total_deb); ?></b></td>
+                                            <td align="right" style="text-align:right;"><b><?= format_currency($total_cred); ?></b></td>
+                                            <td style="text-align:right;"><b>0.00</b></td>
+                                            <td style="text-align:right;"><b>0.00</b></td>
 
 
                                           

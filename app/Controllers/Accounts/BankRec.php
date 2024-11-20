@@ -920,38 +920,51 @@ class BankRec extends BaseController
     
     $date = $this->request->getPost('add_date');
 
-    $return['account'] = $this->common_model->FetchBRAccount($id,$date);
+    //$return['account'] = $this->common_model->FetchBRAccount($id,$date);
+
+
+    $return['account']=$this->report_model->FetchGLTransactions($start_date="",$date="",$account_head="",$account_type="",$account=$id,$time_frame="",$range_from="",$range_to="");
 
     $return['transactions'] = "";
+
+    $return['total_credit'] = array_sum(array_column($return['account'],'credit_amount'));
+
+    $return['total_debit'] = array_sum(array_column($return['account'],'debit_amount'));
+
+    $return['gl_balance'] = $return['total_debit']-$return['total_credit'];
+
 
     $t=1;
     $cb=0;
 
-    foreach($return['account']['transactions'] as $tr)
+    foreach($return['account'] as $tr)
     {
+    
+    $debit_amount = format_currency($tr->debit_amount) ?: "";
+
         
     $return['transactions'] .=  '<tr class="tran_row">
 
         <td>'.$t.'</td>
 
-        <td>'.date('d-F-Y',strtotime("$tr->tran_datetime")).'</td>
+        <td></td>
 
-        <td>'.$tr->tran_reference.'</td>
+        <td>'.$tr->reference.'</td>
 
-        <td>'.$tr->ca_name.'</td>
+        <td>'.$tr->account_name.'</td>
 
-        <td>'.$tr->tran_debit.'</td>
+        <td align="right">'.$debit_amount.'</td>
 
-        <td>'.$tr->tran_credit.'</td>
+        <td align="right">'.format_currency($tr->credit_amount).'</td>
 
         <td class="status"><span class="btn btn-warning">Outstanding</span></td>
 
         <td>
-        <input type="hidden" name="complete_tran_id[]" value="'.$tr->tran_id.'">
+        <input type="hidden" name="complete_tran_id[]" value="'.$tr->id.'">
         <input class="status_tick" type="checkbox" name="complete_check['.$cb.']">
         </td>
 
-        <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly></td>
+        <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly disabled></td>
        
         </tr>';
 

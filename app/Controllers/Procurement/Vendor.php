@@ -617,7 +617,7 @@ class Vendor extends BaseController
 
         $charts_of_account = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $this->request->getPost('ven_id')),array('ca_type' => 'VENDOR'));
         
-        $this->common_model->EditData(array('ca_name' => $this->request->getPost('ven_name')),array('ca_id' => $charts_of_account->ca_id),'accounts_charts_of_accounts');
+        $this->common_model->EditData(array('ca_name' => $this->request->getPost('ven_name')),array('ca_customer' => $this->request->getPost('ven_id'),'ca_type' => 'VENDOR'),'accounts_charts_of_accounts');
 
         
     }

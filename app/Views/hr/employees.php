@@ -369,6 +369,36 @@
 
 
 
+
+                <div class="row align-items-center mb-2">
+
+                    <div class="col-col-md-3 col-lg-3">
+
+                    <label for="basiInput" class="form-label">Status</label>
+
+                    </div>
+
+                    <div class="col-col-md-9 col-lg-9">
+
+                    <select class="form-control" name="status" required>
+
+                    <option value="">Select Status</option>
+
+                    <option value="Active">Active</option>
+
+                    <option value="Resigned">Resigned</option>
+
+                    <option value="Terminated">Terminated</option>
+
+                    </select>
+
+                    </div>
+
+                </div>
+
+
+
+
                   
 
                     </div>
@@ -725,6 +755,28 @@
                         </div>
 
                         </div>
+
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">ID Charges Deduction</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input type="number" step="0.01" name="id_charges_deduction" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+
+                        
 
 
 
@@ -1693,6 +1745,36 @@
                 <option value="<?= $division->div_id; ?>"><?= $division->div_name; ?></option>
 
                 <?php } ?>
+
+                </select>
+
+                </div>
+
+                </div>
+
+
+
+                <div class="row align-items-center mb-2">
+
+                <div class="col-col-md-3 col-lg-3">
+
+                <label for="basiInput" class="form-label">Status</label>
+
+                </div>
+
+                <div class="col-col-md-9 col-lg-9">
+
+                <select class="form-control" id="emp_status_edit" name="status" required>
+
+                <option value="">Select Status</option>
+
+                <option value="Active">Active</option>
+
+                <option value="Resigned">Resigned</option>
+
+                <option value="Terminated">Terminated</option>
+
+                
 
                 </select>
 

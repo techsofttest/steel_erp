@@ -4,8 +4,6 @@ namespace App\Controllers\HR;
 
 use App\Controllers\BaseController;
 
-use NumberToWords\NumberToWords;
-
 
 class Payroll extends BaseController
 {

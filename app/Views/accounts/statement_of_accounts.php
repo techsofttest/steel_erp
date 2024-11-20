@@ -1,11 +1,50 @@
-<!--header section start-->
-
 <?php 
  if(empty($_GET))
  {
  echo view('accounts/reports_sub_header');
  }
- ?>
+ else{
+    ?>
+   
+   <style>
+   
+       
+   /* Report Full Page No Scroll */
+   
+   header
+   {
+   
+   display:none;
+   
+   }
+   
+   footer
+   {
+   
+   display:none;
+   
+   }
+   
+   .page-content
+   {
+   
+   padding:5px 0px;
+   
+   }
+   
+   .main-content
+   {
+      margin:15px !important;
+   }
+   
+   
+   /* #### */
+   
+   
+   </style>
+   
+    <?php } ?>
+
 
 <!--header section end-->
 
@@ -168,7 +207,7 @@
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit">View</button></td>
+                                                                            <td><button type="submit" data-bs-dismiss="modal">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             
@@ -234,16 +273,17 @@
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="" class="table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
 
                                                 <tr>
                                                     <th>Voucher Number</th>
                                                     <th>Date</th>
-                                                    <th>Debit Amount</th>
-                                                    <th>Credit Amount</th>
-                                                    <th>Balance</th>
+                                                    <th>Purchase Order</th>
+                                                    <th class="text-end">Debit Amount</th>
+                                                    <th class="text-end">Credit Amount</th>
+                                                    <th class="text-end">Balance</th>
                                                 </tr>
 
                                             </thead>
@@ -252,116 +292,269 @@
                                             
                                             <tbody class="tbody_data">
 
+                                                <?php
 
-
-
-                                            <?php
-                                              
-                                            
-                                            $balance =0;
-
-                                            $total_credit=number_format(0,2);
-
-                                            $total_debit=number_format(0,2);
-
-                                            foreach($vouchers as $vc){ ?>
-
-                                                <tr>
-                                                
-                                                <td><?= $vc->reference; ?></td>
-                                                
-                                                <td><?php echo date('d-m-Y',strtotime($vc->voucher_date)); ?></td>
-                                                
-                                                <td><?php if(!empty($vc->debit_amount)) { echo $vc->debit_amount;  } else{ echo "---"; } ?></td>
-                                                
-                                                <td><?php if(!empty($vc->credit_amount)) { echo $vc->credit_amount;  } else{ echo "---"; } ?></td>
-                                                
-                                                <td>
-                                                
-                                                <?php 
-
-                                                if(!empty($vc->debit_amount))
+                                                if(!empty($open_balance))
                                                 {
-                                                echo $balance = $balance-$vc->debit_amount;  
+                                                $balance=$open_balance;
                                                 }
                                                 else
                                                 {
-                                                echo $balance = $balance+$vc->credit_amount;    
+                                                $balance=0;
                                                 }
 
                                                 ?>
+
+
+                                                <tr>
+
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-end"><b>Opening Balance</b></td>
+                                                <td class="text-end"><?= format_currency($balance); ?></td>
+
+                                                </tr>
+
+
+                                                <?php 
+                                                $total_credit=0;
+                                                $total_debit=0;
+                                                $year="";
+                                                $year_change=false;
+                                                $counter=0;
+                                                $account_heading = "";
+
+                                                
+                                                foreach($vouchers['vouchers'] as $vc){ 
+                                                    
+                                                if( ($year!="" && $year!=date('Y',strtotime($vc->transaction_date))) && $counter!=0)
+                                                {
+                                                $year=date('Y',strtotime($vc->transaction_date));
+                                                $year_change=true;
+                                                }
+                                                $year = date('Y',strtotime($vc->transaction_date));
+
+
+                                                if($vc->voucher_type=="Journal Voucher")
+                                                {
+                                                if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
+                                                if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
+                                                }
+
+
+                                                $counter++;
+                                                ?>
+
+                                                <?php if($year_change==true){ ?>
+
+
+                                                <tr class="no-sort">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                
+                                                <td class="text-end"><b>Ending Balance</b></td>
+                                                <td class="text-end"><b ></b></td> 
+
+                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
+                                                </tr>
+
+
+                                                <tr class="no-sort">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-end"><b>Opening Balance</b></td>
+                                                <td class="text-end"><b ></b></td> 
+
+                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
+                                                </tr>
+
+
+                                                <?php 
+                                                $year_change=false;
+                                                } 
+                                                ?>
+
+
+                                                <?php
+
+                                                if($account_heading != $vc->account_name)
+                                                {
+
+                                                if(empty($_GET['filter_account'])){
+
+
+                                                ?>
+
+
+                                                <tr class="no-sort">
+                                                <td><b style="font-size:23px;"><?= $vc->account_name ?></b></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-end"></td>
+                                                <td class="text-end"></td> 
+
+                                                <td class="text-end"></td>
+                                                </tr>
+
+
+                                                <?php 
+                                                $account_heading = $vc->account_name;
+                                                } 
+                                                }
+
+                                                ?>
+
+
+                                                <tr>
+
+                                                <td>
+                                                <?php if(($vc->voucher_type=="Receipt")){
+                                                $href="Accounts/Receipts";
+                                                } 
+                                                else if($vc->voucher_type=="Cash Invoice")
+                                                {
+                                                $href="Crm/CashInvoice";
+                                                }
+                                                else if($vc->voucher_type=="Credit Invoice")
+                                                {
+                                                $href="Crm/CreditInvoice";
+                                                }
+                                                else if($vc->voucher_type=="Payment")
+                                                {
+                                                $href="Accounts/Payments";
+                                                }
+                                                else if($vc->voucher_type=="Sales Return")
+                                                {
+                                                $href="Crm/SalesReturn";
+                                                }
+                                                else if($vc->voucher_type=="Purchase Voucher")
+                                                {
+                                                 $href="Procurement/PurchaseVoucher";   
+                                                }
+                                                else
+                                                {
+                                                $href="";
+                                                }
+                                                ?>
+                                                <a target="_blank" href="<?= base_url(); ?><?= $href ?>?view=<?= $vc->id; ?>">
+                                                <?= $vc->reference; ?>
+                                                </a>
+
+                                                </td>
+
+
+                                                <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
+
+                                                
+                                                <td>
+                                                    <?php
+                                                     
+                                                     if($vc->voucher_type=="Purchase Voucher")
+                                                     //echo $vc->pv_purchase_order;
+                                                     
+                                                     
+                                                     ?>
                                                 
                                                 </td>
 
+
+                                                <td class="currency_format1 text-end">
+
+                                                <?php if($vc->debit_amount !="" && $vc->debit_amount>0) { 
+
+                                                    echo  format_currency($vc->debit_amount);
+
+                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
+
+                                                    $total_debit = (float)$total_debit+(float)$vc->debit_amount;
+
+                                                } else if($vc->credit_amount<0) {
+                                                    
+                                                    echo  format_currency(abs($vc->credit_amount)); 
+
+                                                    $vc->credit_amount === "" ? "" : $vc->credit_amount;
+
+                                                    $total_debit=(float)$total_debit+(float)abs($vc->credit_amount);
+
+                                                    
+                                                } ?>
+
+                                                </td>
+
+                                                <td class="currency_format1 text-end"> 
+                                                    
+                                                <?php if($vc->credit_amount !="" && $vc->credit_amount>0) { 
+
+                                                    echo  format_currency($vc->credit_amount); 
+
+                                                    $total_credit=$total_credit+$vc->credit_amount;
+                                                    
+                                                } else if($vc->debit_amount<0) {
+                                                    
+                                                    echo  format_currency(abs($vc->debit_amount));
+
+                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
+
+                                                    $total_credit = (float)$total_credit+(float)abs($vc->debit_amount);
+
+                                                    } ?></td>
+
+                                                <td class="currency_format1 text-end">
+
+                                                <?php
+                                                    
+                                                    if(!empty($vc->debit_amount))
+                                                    {
+                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
+                                                    
+                                                    $balance = (float)$balance+(float)$vc->debit_amount;
+                                                    
+                                                    }
+                                                    else
+                                                    {
+                                                    $vc->credit_amount === "" ? "" : $vc->credit_amount;
+                                                    $balance = (float)$balance-(float)$vc->credit_amount; 
+                                                    }
+
+                                                    echo format_currency($balance);
+
+                                                ?>
+                                                
+
+                                                </td>
+
+
                                                 </tr>
-    
-                                                <?php 
-                                                $total_credit = $total_credit+$vc->credit_amount;
-
-                                                $total_debit = $total_debit+$vc->debit_amount;
-
-                                                } 
-                                            ?>
 
 
-                                            <?php
-
-                                            /*
-                                            foreach($payments as $pay){ ?>
-
-                                            <tr>
-                                            <td><?= $pay->pay_ref_no; ?></td>
-                                            <td><?php echo date('d-m-Y',strtotime($pay->pay_date)); ?></td>
-                                            <td>---</td>
-                                            <td><?= $pay->pay_amount; ?></td>
-                                            <td><?php echo $balance = $pay->pay_amount+$balance;  ?></td>
-                                            </tr>
-
-                                            <?php 
-                                            $total_credit = $total_credit+$pay->pay_amount;
-                                            } 
-                                            ?>
-
-
-                                            <?php 
-                                            $total_debit=number_format(0,2);
-                                            foreach($receipts as $rec){ ?>
-
-                                            <tr>
-                                            <td><?= $rec->r_ref_no; ?></td>
-                                            <td><?php echo date('d-m-Y',strtotime($rec->r_date)); ?></td>
-                                            <td><?= $rec->r_amount; ?></td>
-                                            <td>---</td>
-                                            <td><?php echo $balance = $balance-$rec->r_amount; ?></td>
-                                            </tr>
-
-                                            <?php 
-                                            $total_debit = $total_debit+$rec->r_amount;
-                                            } 
-
-                                            */
-                                            
-                                            ?>
-
-                                            
-
-
-                                            </tbody>
+                                                <?php }  ?>
 
 
 
-                                            <tfoot>
+                                                </tbody>
 
-                                            <tr class="no-sort">
-                                           
-                                            <td></td>
-                                            <td></td>
-                                            <td><b><?= $total_debit; ?></b></td>
-                                            <td><b><?= $total_credit; ?></b></td>
-                                            <td></td>
-                                            </tr>
 
-                                            </tfoot>
+
+                                                <tfoot>
+
+                                                <tr class="no-sort">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+
+                                                <td class="text-end"><b><?= format_currency($total_debit); ?></b></td>
+
+                                                <td class="text-end"><b ><?= format_currency($total_credit); ?></b></td> 
+
+                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
+                                                </tr>
+
+                                                </tfoot>
+
 
 
 
@@ -369,7 +562,12 @@
 
 
 
+                            
+
                             <table class="table table-bordered">
+
+
+                             <?php if(!empty($_GET['pdc'])) { ?>
 
                                 <thead>
 
@@ -385,40 +583,100 @@
 
                                     <th>Bank</th>
 
-                                    <th>Amount</th>
+                                    <th class="text-end">Amount</th>
 
-                                </tr>
+                                </tr> 
 
                                 </thead>
 
-
-
                                 <tbody>
 
+                                <?php
 
-                                <?php foreach($post_dated_cheques as $pdc){?>
+                                
+                                foreach($vouchers['pdc'] as $pdatecheque){
 
-                                <tr>
+                                ?>
 
-                                    <td><?= $pdc->r_ref_no; ?></td>
 
-                                    <td><?= date('d-m-Y',strtotime($pdc->r_date)); ?></td>
+                                <tr class="">
 
-                                    <td><?= $pdc->r_cheque_no; ?></td>
+                                    <th></th>
 
-                                    <td><?= date('d-m-Y',strtotime($pdc->r_cheque_date)); ?></td>
+                                    <th></th>
 
-                                    <td><?= $pdc->bank_name ?></td>
+                                    <th></th>
 
-                                    <td><?= $pdc->r_amount; ?></td>
+                                    <th></th>
+
+                                    <th></th>
+
+                                    <th class="text-end"></th>
 
                                 </tr>
 
-                                <?php } ?>
-
                                 </tbody>
 
+                               <?php
+
+                               }
+                               
+                               ?>
+
+
+
+                                    <?php
+                                    
+                                    $total_due = $balance - array_sum(array_column($vouchers['pdc'],'amount'));
+
+                                    $total_due = format_currency($total_due);
+
+
+                                    ?>
+
+
+                                <?php } 
+
+                                else
+                                {
+
+                                $total_due = format_currency($balance);
+
+                                }
+                                
+                                
+                                ?>
+
+
+
+                                    <tr class="">
+
+
+                                    <th></th>
+
+                                    <th></th>
+
+                                    <th></th>
+
+                                    <th></th>
+
+                                    <th></th>
+
+                                    <th class="text-end"><b><?= $total_due ?></b></th>
+
+
+
+                                    </tr>
+
+
+
+
+                                
+
+
                                 </table>
+
+                               
 
 
 

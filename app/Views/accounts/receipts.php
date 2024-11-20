@@ -1995,7 +1995,7 @@
 
             $('#total_amount_val').val(total);
 
-            var resultQuotation = numberToWords.toWords(total);
+            //var resultQuotation = numberToWords.toWords(total);
 
         });
 
@@ -2091,7 +2091,7 @@
 
         /* ## */
 
-        $(document).on('input change', '.invoice_receipt_amount', function(event) {
+        $(document).on('input change', '#invoices_sec .invoice_receipt_amount', function(event) {
             // Debugging: Check if the function is called and with correct element
        
 
@@ -4846,7 +4846,7 @@
 
             $('#total_amount_val').val(total);
 
-            var resultQuotation = numberToWords.toWords(total);
+            //var resultQuotation = numberToWords.toWords(total);
 
         });
 
@@ -5024,11 +5024,11 @@
 
         $('#total_amount_val').val(total);
 
-        var resultQuotation = numberToWords.toWords(total);
+        //var resultQuotation = numberToWords.toWords(total);
 
-        $(".amount_in_words_add .amount_in_words_edit").text(resultQuotation);
+        //$(".amount_in_words_add .amount_in_words_edit").text(resultQuotation);
 
-        $(".amount_in_words_val").val(resultQuotation);
+        //$(".amount_in_words_val").val(resultQuotation);
 
 
     }
