@@ -17,8 +17,9 @@
   display: block; overflow-x: scroll;
 }
 #DataTable td{
-    line-height:2.3;
+    line-height:1.8;
 }
+
 </style>
 
 
@@ -226,7 +227,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-15%">Sales Order Reports <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
@@ -251,22 +252,22 @@
                                         
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;max-height:80vh">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap" >Date</th>
                                                     <th class="text-center" style="white-space: nowrap">Sales Order Ref</th>
-                                                    <th style="white-space: nowrap">Customer</th>
+                                                    <th style="white-space: nowrap" class="text-center">Customer</th>
                                                     <th class="text-center" style="white-space: nowrap">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap">Sales Executive</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
+                                                    <th style="width:70%" class="text-center">Product</th>
                                                     <th class="text-center" style="white-space: nowrap">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th style="white-space: nowrap" class="text-center">Rate</th>
+                                                    <th style="white-space: nowrap" class="text-center">Discount</th>
+                                                    <th style="white-space: nowrap" class="text-center">Amount</th>
                                                 </tr>
                                             </thead>
                                             

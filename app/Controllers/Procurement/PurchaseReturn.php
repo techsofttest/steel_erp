@@ -555,9 +555,7 @@ class PurchaseReturn extends BaseController
     {   
       
         $purchase_voucher = $this->pro_model->FetchWhereNotIn('pro_purchase_voucher',array('pv_vendor_name' => $this->request->getPost('ID')),'pv_status','2');
-         
-      
-
+       
         $data['vendor_inv'] ="";
 
         $data['vendor_inv'] ='<option value="" selected disabled>Vendor Inv Ref</option>';

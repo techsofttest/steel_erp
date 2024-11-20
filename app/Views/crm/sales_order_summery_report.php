@@ -1,3 +1,9 @@
+<style>
+
+
+
+</style>
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -181,7 +187,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%"> Sales Order Summery Reports <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -206,14 +212,14 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="overflow-x:scroll;max-height:80vh">
+                                    <div class="card-body" style="overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort text-center" style="width:60px">Sl no</th>
                                                     <th class="text-center">Date</th>
                                                     <th class="text-center">Sales Order Ref</th>
-                                                    <th>Customer</th>
+                                                    <th class="text-center">Customer</th>
                                                     <th class="text-center">LPO Ref</th>
                                                     <th class="text-center">Sales Executive</th>
                                                     <th class="text-end">Amount</th>

@@ -15,9 +15,9 @@ class SalesReturnReport extends BaseController
     //view page
     public function index()
     {   
-        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('`executives_sales_executive`','se_id','desc');
+        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
         
         $data['content'] = view('crm/sales_return_report',$data);
 
@@ -85,19 +85,7 @@ class SalesReturnReport extends BaseController
             
         }
 
-        //fetch delivery note ref
-
-        /*$joins1 =  array();
-
-        $delivery_notes = $this->common_model->FetchWhereUniqueJoin('crm_delivery_note',$cond,$joins1,'dn_reffer_no');
         
-        $data['delivier_note'] ='<option value="" selected disabled>Select Delivery Note</option>';
-
-        foreach($delivery_notes as $delivery_note)
-        {
-            $data['delivier_note'] .='<option value='.$delivery_note->dn_id.'>'.$delivery_note->dn_reffer_no.'</option>';
-            
-        }*/
 
         
         //fetch product
@@ -138,64 +126,68 @@ class SalesReturnReport extends BaseController
     //fetch data
     public function GetData()
     {
-        $from_date       = date('Y-m-d',strtotime($this->request->getPost('form_date')));
-
-        $to_date         = date('Y-m-d',strtotime($this->request->getPost('to_date')));
-
-        $customer        = trim($this->request->getPost('customer_clz'));
-
-        $sales_order    = trim($this->request->getPost('sales_order'));
-
-        $product        = trim($this->request->getPost('product'));
-
        
-        $joins = array(
-            array(
-                'table' => 'crm_credit_invoice_prod_det',
-                'pk'    => 'ipd_credit_invoice',
-                'fk'    => 'cci_id',
-            ),
-           
-
-        );
-
-      
-        $invoice_report = $this->common_model->CheckDate($from_date,'cci_date',$to_date,'',$customer,'cci_customer','','',$product,'ipd_prod_detl',$sales_order,'cci_sales_order','crm_credit_invoice',$joins,'cci_id');
-        
-       
-
-        $data['product_data'] =""; 
-
-       if(!empty($invoice_report)){
-
-            $data['status'] ="true";
-
-            
-            
-            $i=1;
-            foreach($invoice_report as $inv_report)
-            {   
-                
-                $data['product_data'] .='<tr>
-                <td>'.$i.'</td>
-                <td>'.$inv_report->cci_reffer_no.'</td>
-                <td>'.$inv_report->cci_date.'</td>
-                </tr>';
-                $i++; 
-            }
+        if(!empty($_GET['form_date']))
+        {
+            $from_date = $_GET['form_date'];
         }
         else
         {
-            $data['status'] ="False";
+            $from_date = "";
         }
+
+        if(!empty($_GET['to_date']))
+        {
+            $to_date = $_GET['to_date'];
+        }
+        else
+        {
+            $to_date = "";
+        }
+
+        if(!empty($_GET['customer']))
+        {
+            $customer = $_GET['customer'];
+        }
+        else
+        {
+            $customer = "";
+        }
+
+        if(!empty($_GET['sales_order']))
+        {
+            $sales_order = $_GET['sales_order'];
+        }
+        else
+        {
+            $sales_order = "";
+        }
+
+        if(!empty($_GET['product']))
+        {
+            $product = $_GET['product'];
+        }
+        else
+        {
+            $product = "";
+        }
+
+        
+        $data['invoice_reports'] = $this->crm_modal->return_report($from_date,'sr_date',$to_date,'',$customer,'sr_customer',$sales_order,'sr_sales_order',$product,'srp_prod_det');  
+        
+        $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['content'] = view('crm/sales_return_report',$data);
+
+        return view('crm/report-module-search',$data);
+
 
         echo json_encode($data);
        
       
     }
-
-
-
 
 
 

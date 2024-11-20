@@ -33,6 +33,10 @@
     /* #DataTable td{
         line-height:2.3
     } */
+    
+    #DataTable td {
+        line-height: 1.7
+    }
 
     @media(max-width:575px) {
         .card-title {
@@ -152,13 +156,15 @@
 
                                                                             <tr>
                                                                                 <td>Product</td>
-                                                                                <td><select class="form-select value='<?php echo $product; ?>' product_clz" name="product">
+                                                                                <td>
+                                                                                    <select class="form-select value='<?php echo $product; ?>' product_clz" name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
                                                                                         <?php foreach($Products as $prod){?> 
-                                                                                            <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details; ?></option>
+                                                                                        <option value="<?php echo $prod->product_id?>"><?php echo $prod->product_details; ?></option>
                                                                                         <?php } ?>
                                                                                         
-                                                                                    </select></td>
+                                                                                    </select>
+                                                                                </td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -220,7 +226,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-18%"> Sales Quotation Reports <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -245,7 +251,7 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;max-height:80vh">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
@@ -629,5 +635,24 @@ document.getElementById("email_button").addEventListener("click", function() {
 });
 
 
+
+</script>
+
+<script>
+
+
+
+$('body').on('click','.print_button',function(e){
+    
+    // Open the PDF generation script in a new window
+
+    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/Ledger?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+
+    // Automatically print when the PDF is loaded
+    pdfWindow.onload = function() {
+        pdfWindow.print();
+    };
+
+});
 
 </script>

@@ -228,9 +228,10 @@ class DnToCreditInvoice extends BaseController
 
       
 
-        $data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det','crm_delivery_note',$joins,'dn_reffer_no');
-        
-       //$data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det','crm_delivery_note',$joins,'dn_reffer_no',$joins1,'crm_delivery_product_details','dpd_prod_det');  
+        //$data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det','crm_delivery_note',$joins,'dn_reffer_no');
+       
+        $data['delivery_data'] = $this->crm_modal->dn_to_credit_invoice($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id',$data4,'dpd_prod_det');
+      
        
        if(!empty($from_date))
        {

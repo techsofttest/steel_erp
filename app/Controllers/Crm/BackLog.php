@@ -136,8 +136,13 @@ class BackLog extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
-        $data['sales_orders'] = $this->crm_modal->FetchBacklog($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no','','','','','crm_sales_orders',$joins,'so_reffer_no');  
+        //$data['sales_orders'] = $this->crm_modal->FetchBacklog($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no','','','','','crm_sales_orders',$joins,'so_reffer_no');  
         
+
+        $data['backlogs'] = $this->crm_modal->FetchBacklog($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no');  
+        
+        
+
         if(!empty($from_date))
         {
             $data['from_dates'] = date('d-M-Y',strtotime($from_date));

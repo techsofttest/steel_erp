@@ -3,11 +3,11 @@
 .divcontainer {
   overflow-x: scroll;
   overflow-y: auto;
-  transform: rotateX(180deg);
+  /*transform: rotateX(180deg);*/
 }
 
 .divcontainer table {
-  transform: rotateX(180deg);
+ /* transform: rotateX(180deg);*/
 }
 
 .table-responsive {
@@ -145,25 +145,45 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Sales Summery Report <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesSummery" class="btn btn-primary py-1">Search</button>
-                                    </div><!-- end card header -->
-                                    <div class="card-body">
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">Sales Summer Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
+
+                                        <form method="POST" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit" class="pdf_button report_button">PDF</button>
+                                        </form>
+
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="excel_button report_button" type="submit">Excel</button>
+                                        <!-- </form> -->
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
+
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+                                    </div>
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Invoice Ref.</th>
-                                                    <th>Customer</th>
-                                                    <!--<th>Delivery Note Ref.</th>-->
-                                                    <th>Sales Order Ref.</th>
-                                                    <th>LPO Ref.</th>
-                                                    <th>Sales Executive</th>
-                                                    <th class="text-end">Amount</th>
+                                                    <th class="no-sort text-center"  style="width:50px">Sl no</th>
+                                                    <th class="text-center" style="width:100px">Date</th>
+                                                    <th class="text-center" style="width:200px">Invoice Ref.</th>
+                                                    <th class="text-center" style="width:700px">Customer</th>
+                                                    <th class="text-center" style="width:200px">Sales Order Ref.</th>
+                                                    <th class="text-center" style="width:200px">LPO Ref.</th>
+                                                    <th class="text-center" style="width:200px">Sales Executive</th>
+                                                    <th class="text-center" width="50px">Amount</th>
                                                 </tr>
                                             </thead>
                                             
@@ -171,9 +191,7 @@
                                                
                                             <?php 
                                                $total_amount = 0 ;
-                                               $cash_amount = 0;
-                                               $credit_amount = 0;
-                                               $sales_return = 0;
+                                             
                                                 if(!empty($sales_data))
                                                 {   
                                                    
@@ -181,93 +199,39 @@
 
                                                     foreach($sales_data as $sale_data){?> 
                                                     <tr>
-                                                        <td class="height_class"><?php echo $i;?></td>
-                                                        <td class="height_class"><?php echo date('d-M-Y',strtotime($sale_data->so_date));?></td>
-                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
-                                                           
-                                                            <?php if(!empty($sale_data->credit_invoice) ){ ?> 
-                                                               <table>
-                                                                    <?php foreach($sale_data->credit_invoice as $cred_inv){?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_crn=<?php echo $cred_inv->cci_id;?>" target="_blank"><?php echo $cred_inv->cci_reffer_no;?></a></td>
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                    
-                                                               </table>  
-                                                            <?php } ?>
+                                                        <td class="height_class text-center" style="width:50px" ><?php echo $i; ?></td>
+                                                        <td class="height_class text-center" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                        <?php
+                                                            if($sale_data->link == "cash invoice"){
+                                                              
+                                                                $href="Crm/CashInvoice";
 
-                                                            <?php if(!empty($sale_data->cash_invoice) ){ ?> 
-                                                               <table>
-                                                                    <?php foreach($sale_data->cash_invoice as $cash_inv){?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/CashInvoice?view_cash=<?php echo $cash_inv->ci_id;?>" target="_blank"><?php echo $cash_inv->ci_reffer_no;?></a></td>
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                    
-                                                               </table>  
-                                                            <?php } ?>
+                                                                $view = "view_cash";
 
+                                                            }
+                                                            else if($sale_data->link == "credit invoice"){
+                                                                  
+                                                                $href="Crm/CreditInvoice";
 
-                                                            <?php if(!empty($sale_data->sales_return) ){ ?> 
-                                                               <table>
-                                                                    <?php foreach($sale_data->sales_return as $sales_ret){?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td width="100px"><a href="<?php echo base_url();?>Crm/SalesReturn?view_rut=<?php echo $sales_ret->sr_id ;?>" target="_blank"><?php echo $sales_ret->sr_reffer_no;?></a></td>
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                    
-                                                               </table>  
-                                                            <?php } ?>
+                                                                $view = "view_crn";
+                                                            }
+                                                            else{
 
+                                                                $href="";
 
+                                                                $view = "";
+                                                            }
 
-                                                          
-                                                        </td>
-                                                        <td class="height_class"><?php echo $sale_data->cc_customer_name;?></td>
-                                                        <!--<td class="height_class"><?php //echo $del_note->dn_reffer_no;?></td>-->
-                                                        <td class="height_class"><?php echo $sale_data->so_reffer_no;?></td>
-                                                        <td class="height_class"><?php echo $sale_data->so_lpo;?></td>
-                                                        <td class="height_class"><?php echo $sale_data->se_name;?></td>
-                                                        <td colspan="1" align="left" class="p-0" style="height:100%">
-                                                            <?php if(!empty($sale_data->credit_invoice) ){ ?> 
-                                                            <table>
-                                                                <?php foreach($sale_data->credit_invoice as $cred_inv){?> 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                        <td width="100px" class="text-end"><?php echo $cred_inv->cci_total_amount;?></td>
-
-                                                                    
-                                                                    </tr>
-                                                                <?php $credit_amount = $cred_inv->cci_total_amount + $credit_amount;} ?>
-                                                            </table>
-                                                            <?php } ?>
-
-                                                            <?php if(!empty($sale_data->cash_invoice) ){ ?> 
-                                                            <table>
-                                                                <?php foreach($sale_data->cash_invoice as $cash_inv){?> 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                        <td width="100px" class="text-end"><?php echo $cash_inv->ci_total_amount;?></td>
-                                                                    </tr>
-                                                                <?php $cash_amount = $cash_inv->ci_total_amount + $cash_amount; } ?>
-                                                            </table>
-                                                            <?php } ?>
-
-                                                            <?php if(!empty($sale_data->sales_return) ){ ?> 
-                                                            <table>
-                                                                <?php foreach($sale_data->sales_return as $sales_ret){?> 
-                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                        <td width="100px" class="text-end">-<?php echo $sales_ret->sr_total;?></td>
-                                                                    </tr>
-                                                                <?php $sales_return = $sales_ret->sr_total + $sales_return;} ?>
-                                                            </table>
-                                                            <?php } ?>
-
-                                                        </td>
-                                                        <!--<td class="height_class text-end">fdgdfgd</td>-->
-                                                        
-                                                        <?php 
-                                                           $total_amount = $credit_amount + $cash_amount - $sales_return;
                                                         ?>
-
+                                                        <td  class="p-0 text-center" style="height:100%,width:200px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                        <td class="height_class" style="width:700px"><?php echo $sale_data->customer_name; ?></td>
+                                                        <td class="height_class text-center" style="width:200px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sale_data->sales_order_id; ?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
+                                                        <td class="height_class text-center" style="width:200px"><?php echo $sale_data->sales_lpo; ?></td>
+                                                        <td class="height_class text-center" style="width:200px"><?php echo $sale_data->sales_exec; ?></td>
+                                                        <td class="height_class text-end" width="50px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                        
+                                                        <?php $total_amount =  $sale_data->amount + $total_amount; ?>
+                                                    
                                                     </tr>
         
                                                     
@@ -282,9 +246,6 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="text-end"><b><?php echo format_currency($total_amount);?></b></td>
-                                                   
-                                                    
-                                                 
                                                 </tr>
 
                                             </tbody>

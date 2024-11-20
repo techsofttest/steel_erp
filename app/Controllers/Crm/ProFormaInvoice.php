@@ -64,7 +64,7 @@ class ProFormaInvoice extends BaseController
         foreach($records as $record ){
             
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="'.base_url().'Crm/ProFormaInvoice/Pdf/'.$record->pf_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
            
@@ -292,7 +292,9 @@ class ProFormaInvoice extends BaseController
 
                     if(!empty($_POST['print_btn']))
                     {
-                        $return['print'] =  base_url() . 'Crm/ProFormaInvoice/Pdf/' . urlencode($sales_order_id);
+                        //$return['print'] =  base_url() . 'Crm/ProFormaInvoice/Pdf/' . urlencode($sales_order_id);
+
+                        $return['print'] =  $sales_order_id;
                     }
                     
                   

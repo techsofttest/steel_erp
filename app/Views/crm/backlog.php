@@ -1,3 +1,26 @@
+<style>
+
+.divcontainer {
+  overflow-x: scroll;
+  overflow-y: auto;
+  /*transform: rotateX(180deg);*/
+}
+
+.divcontainer table {
+ /* transform: rotateX(180deg);*/
+}
+
+.table-responsive {
+  width: 100%;
+  display: block overflow-x: scroll;
+}
+
+
+</style>
+
+
+
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -177,7 +200,7 @@
 
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="max-height:80vh; overflow-x:scroll">
+                                    <div class="card-body table-responsive divcontainer"  overflow-x:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
@@ -199,126 +222,169 @@
                                             <tbody class="tbody_data">
 
                                                 <?php
-                                                $total_amount = 0;
-                                                if (!empty($sales_orders)) {
+                                               
+                                                if (!empty($backlogs)) {
                                                     $i = 1;
-                                                    foreach ($sales_orders as $sales_order) {
+                                                    $delivered = 0;
+                                                    $delivered_total = 0;
+                                                    $invoiced = 0;
+                                                    $invoiced_total = 0;
+                                                    $balance_amount  = 0; 
+                                                    $balance_total_amount  = 0;
+                                                    $sales_amount_total = 0; 
+                                                    foreach ($backlogs as $backlog) { 
                                                         
-                                                        $delivery_amount = array_sum(array_column($sales_order->sales_delivery,'dn_total_amount'));
+                                                        $delivery_array_sum = array_sum(array_column($backlog->delivery_note,'dn_total_amount'));
 
-                                                         if (!empty($sales_order->sales_delivery)) {
-                                                            $balance =  $sales_order->so_amount_total - $delivery_amount;
-                                                         }
+                                                        $cash_array_sum = array_sum(array_column($backlog->cash_invoiced,'ci_total_amount'));
+                                                        
+                                                        $delivered_array_total = $delivery_array_sum + $cash_array_sum;
 
-                                                         if($balance!=0){
+                                                        $balance_amount =  $backlog->so_amount_total - $delivered_array_total;
 
-                                                       // echo $delivery_amount;  exit();
-                                                ?>
+                                                        if($balance_amount!=0){
+                                                    ?> 
+                                                    <tr>
 
-                                                        <tr>
+                                                        <td class="text-center"><?php echo $i; ?></td>
+                                                        <td class="text-center"><?php echo date('d-M-Y', strtotime($backlog->so_date)); ?></td>
+                                                        <td class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $backlog->so_id; ?>" target="_blank"><?php echo $backlog->so_reffer_no; ?></a></td>
+                                                        <td><?php echo $backlog->cc_customer_name; ?></td>
+                                                        <td class="text-center"><?php echo $backlog->so_lpo; ?></td>
+                                                        <td class="text-center"><?php echo $backlog->se_name; ?></td>
+                                                        <td class="text-end"><?php echo $backlog->so_amount_total; ?></td>
+                                                        
+                                                        <?php  $sales_amount_total = $backlog->so_amount_total + $sales_amount_total;?>
 
-                                                            <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo date('d-M-Y', strtotime($sales_order->so_date)); ?></td>
-                                                            <td class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id; ?>" target="_blank"><?php echo $sales_order->so_reffer_no; ?></a></td>
-                                                            <td><?php echo $sales_order->cc_customer_name; ?></td>
-                                                            <td class="text-center"><?php echo $sales_order->so_lpo; ?></td>
-                                                            <td class="text-center"><?php echo $sales_order->se_name; ?></td>
+
+                                                        
+                                                        <!---delivered coloum calculation--->
+
+                                                        <?php    if(!empty($backlog->delivery_note)){ 
                                                             
-                                                            <?php
+                                                            $delivered_amount = 0;
                                                             
-                                                            ?>
-                                                            <td class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
-
-                                                            <?php
-
-                                                            /*$delivery_amount = 0;
-
-                                                            foreach ($sales_order->sales_delivery as $del) {
-                                                                $delivery_amount =  $del->dn_total_amount + $delivery_amount;
-                                                            }*/
-
-                                                            if (!empty($sales_order->sales_delivery)) {
-                                                                 
-                                                                $total_amount = $delivery_amount + $total_amount;
-                                                            ?>
-
-                                                                <td class="text-end"><?php echo format_currency($delivery_amount); ?></td>
-
+                                                            foreach($backlog->delivery_note as $delivery){
+                                                           
+                                                                $delivered_amount = $delivery->dn_total_amount + $delivered_amount;
                                                                 
-
-                                                            <?php } else { ?>
-                                                                <td class="text-end">00.0</td>
-                                                            <?php }
-
-                                                            $invoiced_amount = 0;
-
-                                                            $invoiced_amount1 = 0;
-
-                                                            foreach ($sales_order->cash_invoiced as $cash_inv) {
-                                                                $invoiced_amount =  $cash_inv->ci_total_amount + $invoiced_amount;
                                                             }
+                                                        }else{
+                                                           
+                                                            $delivered_amount = 0; 
+                                                        }
 
-                                                            foreach ($sales_order->credit_invoiced as $credit_inv) {
-                                                                $invoiced_amount1 =  $credit_inv->cci_total_amount + $invoiced_amount;
-                                                            }
+                                                        $cash_amount = 0;
+                                                        if(!empty($backlog->cash_invoiced)){
+                                                            
+                                                            foreach($backlog->cash_invoiced as $cash_inv){
+                                                            
+                                                                $cash_amount = $cash_inv->ci_total_amount + $cash_amount;
+                                                            } 
+                                                        
+                                                        }
+                                                        else{
 
-                                                            if (!empty($sales_order->cash_invoiced)) {
-                                                            ?>
-                                                                <td class="text-end"><?php echo format_currency($invoiced_amount); ?></td>
-                                                            <?php
-                                                            } elseif (!empty($sales_order->credit_invoiced)) {
-                                                            ?>
-                                                                <td class="text-end"><?php echo format_currency($invoiced_amount1); ?></td>
-                                                            <?php
-                                                            } else {
-                                                            ?>
-                                                                <td class="text-end">00.0</td>
-                                                            <?php
-                                                            }
-                                                            ?>
+                                                            $cash_amount = 0; 
+                                                        }
+                                                        
+                                                        $delivered =  $delivered_amount + $cash_amount;
 
+                                                       
 
-                                                            <?php if (!empty($sales_order->sales_delivery)) {
-                                                                //$balance =  $sales_order->so_amount_total - $delivery_amount;
-                                                            ?>
+                                                        $delivered_total = $delivered + $delivered_total;
+                                                        
+                                                        ?> 
 
-                                                                <td class="text-end"><?php echo format_currency($balance); ?></td>
+                                                        <td class="text-end"><?php echo format_currency($delivered); ?></td>
+                                                        
 
-                                                            <?php } else { ?>
-                                                                <td class="text-end">00.0</td>
-                                                            <?php } ?>
-
-
-
+                                                        <!--------------->
 
 
-                                                        </tr>
+
+
+                                                        <!----invoiced coloum calculation--->
+                                                        <?php
+                                                        $cash_amount1 = 0;
+                                                        if(!empty($backlog->cash_invoiced)){
+                                                            
+                                                            foreach($backlog->cash_invoiced as $cash_inv){
+                                                            
+                                                                $cash_amount1 = $cash_inv->ci_total_amount + $cash_amount1;
+                                                            } 
+                                                        
+                                                        }
+                                                        else{
+
+                                                            $cash_amount1 = 0; 
+                                                        }
+
+                                                        $credit_amount = 0;
+
+                                                        if(!empty($backlog->credit_invoiced)){
+                                                            
+                                                            foreach($backlog->credit_invoiced as $credit_inv){
+                                                            
+                                                                $credit_amount = $credit_inv->cci_total_amount + $credit_amount;
+                                                            } 
+                                                        
+                                                        }
+                                                        else{
+
+                                                            $credit_amount = 0; 
+                                                        }
+
+                                                        $invoiced =  $cash_amount1 + $credit_amount;
+
+                                                        $invoiced_total = $invoiced + $invoiced_total;
+
+
+                                                        ?>
+
+                                                        <td class="text-end"><?php echo format_currency($invoiced); ?></td>
+
+                                                        <!-------------->
+
+
+
+
+                                                        <!----balance coloum calculation---->
+
+                                                        <td class="text-end"><?php echo format_currency($balance_amount); ?></td>
+
+
+                                                        <?php $balance_total_amount = $balance_amount + $balance_total_amount; ?>
+
+                                                        <!--------->
+
+
+                                                            
+                                                    </tr>
 
                                                     
 
+                                                    <?php $i++; }  } ?> 
+
+                                                    <tr>
+                                                        <td>Total</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-end"><b><?php echo format_currency($sales_amount_total); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($delivered_total); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($invoiced_total); ?></b></td>
+                                                        <td class="text-end"><b><?php echo format_currency($balance_total_amount); ?></b></td>
+                                                    </tr>
+
+                                                    <?php } ?>
 
 
-                                                    <?php $i++; }
-                                                    } ?>
+                                                
 
-
-                                                <?php   } ?>
-
-                                                <tr>
-                                                    <td>Total</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-
-
-
+                                               
                                                 </tr>
 
                                             </tbody>

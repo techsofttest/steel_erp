@@ -195,53 +195,32 @@ class InvoiceReport extends BaseController
 
         if(!empty($_GET['customer']))
         {
-            $data1 = $_GET['customer'];
+            $customer = $_GET['customer'];
         }
         else
         {
-            $data1 = "";
+            $customer = "";
         }
 
         if(!empty($_GET['sales_order']))
         {
-            $data2 = $_GET['sales_order'];
+            $sales_order = $_GET['sales_order'];
         }
         else
         {
-            $data2 = "";
+            $sales_order = "";
         }
 
 
         if(!empty($_GET['product']))
         {
-            $data3 = $_GET['product'];
+            $product = $_GET['product'];
         }
         else
         {
-            $data3 = "";
+            $product = "";
         }
 
-
-       
-
-
-        /*$joins = array(
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'dn_customer',
-            ),
-            array(
-                'table' => 'crm_sales_orders',
-                'pk'    => 'so_id',
-                'fk'    => 'dn_sales_order_num',
-            ),
-
-        );*/
-
-        
-       //$data['delivery_data'] = $this->crm_modal->invoice_report($from_date,'dn_date',$to_date,'',$data1,'dn_customer',$data2,'dn_sales_order_num',$data3,'dn_id','','','crm_delivery_note',$joins,'dn_reffer_no');
-       
        $joins = array(
         
             array(
@@ -258,7 +237,9 @@ class InvoiceReport extends BaseController
 
         );
 
-       $data['sales_orders'] = $this->crm_modal->invoice_report($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'spd_product_details','','','crm_sales_orders',$joins,'so_reffer_no');
+       //$data['sales_orders'] = $this->crm_modal->invoice_report($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'spd_product_details','','','crm_sales_orders','so_reffer_no');
+        
+       $data['sales_orders'] = $this->crm_modal->invoice_report($from_date,$to_date,$customer,$sales_order,$product);
         
       
 

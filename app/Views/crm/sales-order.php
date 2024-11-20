@@ -1477,7 +1477,12 @@
 
                             if(data.print!="")
                             {
-                                window.open(data.print, '_blank');
+                                //window.open(data.print, '_blank');
+                                id = data.print;
+                                var pdfWindow = window.open('<?= base_url()?>Crm/SalesOrder/Pdf/'+id, '_blank');
+                                pdfWindow.onload = function() {
+                                    pdfWindow.print();
+                                };
                             }
 
                             if(data.status === "false")
@@ -1935,6 +1940,13 @@
                 $(this).closest('.sales_row_leng').find('.discount_clz_id').attr('name', 'spd_discount['+jj+']');
   
                 $(this).closest('.sales_row_leng').find('.amount_clz_id').attr('name', 'spd_amount['+jj+']');
+
+                $(this).closest('.sales_row_leng').find('.quot_prod_id_clz').attr('name', 'quot_prod_id['+jj+']');
+
+                $(this).closest('.sales_row_leng').find('.quot_prod_id_clz').attr('name', 'quot_prod_id['+jj+']');
+
+                $(this).closest('.sales_row_leng').find('.quotation_id_clz').attr('name', 'quotation_id['+jj+']');
+  
   
                 jj++;
   
@@ -2907,6 +2919,20 @@
         });
 
         /*view section end*/
+
+        $('body').on('click','.print_color',function(e){
+    
+            id = $(this).attr('data-id');
+            // Open the PDF generation script in a new window
+
+            var pdfWindow = window.open('<?= base_url()?>Crm/SalesOrder/Pdf/'+id, '_blank');
+
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
+
+        });
 
 
 

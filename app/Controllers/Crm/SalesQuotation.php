@@ -66,7 +66,7 @@ class SalesQuotation extends BaseController
         $i=1;
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$record->qd_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            <a href="javascript:void(0)"  data-id="'.$record->qd_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
            
@@ -376,7 +376,8 @@ class SalesQuotation extends BaseController
 
 
         $data['print_pdf_btn'] = '<a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$quotation_details->qd_id.'" class="btn btn btn-success print_pdf_btn" target="_blank">Print</a>';
-
+         
+        $data['print_pdf_btn'] = '<a href="javascript:void(0)" data-id="'.$quotation_details->qd_id.'" class="btn btn btn-success  print_color" >Print</a>';
 
         $cond2 = array('qpd_quotation_details'=>$quotation);
 
@@ -1811,9 +1812,12 @@ class SalesQuotation extends BaseController
             
 
             $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',array('qd_id'=>$id),$join);
-            
+
+           
+
             $date = date('d-M-Y',strtotime($quotation_details->qd_date));
 
+           
             $title = 'SQ- '.$quotation_details->qd_reffer_no;
 
             //$mpdf = new \Mpdf\Mpdf();

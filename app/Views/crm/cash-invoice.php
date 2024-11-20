@@ -2554,7 +2554,22 @@
            datatable.ajax.reload(null,false);
    
        });
-   
+       
+       
+       $('body').on('click','.print_color',function(e){
+    
+            id = $(this).attr('data-id');
+            // Open the PDF generation script in a new window
+
+            var pdfWindow = window.open('<?= base_url()?>Crm/CashInvoice/Pdf/'+id, '_blank');
+
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
+
+        });
+
 
 
     

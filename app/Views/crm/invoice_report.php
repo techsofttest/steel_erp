@@ -164,7 +164,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">Invoice Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -191,23 +191,23 @@
 
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll; max-height:80vh">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref.</th>
-                                                    <th style="white-space: nowrap;width:500px">Customer</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:120px">Delivery Note Ref.</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Delivery Note Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:120px">Sales Order Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Lpo Ref.</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
-                                                    <th style="width:500px">Product</th>
-                                                    <th width="100px" class="text-center">Quantity</th>
-                                                    <th width="100px" class="text-end">Rate</th>
-                                                    <th width="100px" class="text-end">Discount</th>
-                                                    <th width="100px" class="text-end">Amount</th>
+                                                    <th style="white-space: nowrap;width:90px" class="text-center">Amount</th>
+                                                    <th class="text-center" style="width:500px">Product</th>
+                                                    <th width="80px" class="text-center">Quantity</th>
+                                                    <th width="80px" class="text-center">Rate</th>
+                                                    <th width="80px" class="text-center">Discount</th>
+                                                    <th width="80px" class="text-center">Amount</th>
 
                                                 </tr>
                                             </thead>
@@ -215,125 +215,69 @@
                                             <tbody class="tbody_data">
 
                                                 <?php
-                                                $total_amount = 0;
-                                                $total_amount1 = 0;
+                                                $sales_total = 0;
+                                                $invoice_total = 0;
                                                 if (!empty($sales_orders)) {
-
-                                                    $i = 1;
-
-                                                    foreach ($sales_orders as $sal_ord) { ?> 
-                                                        
+                                                    if(!empty($sales_orders))
+                                                    {   
+                                                       
+                                                        $i =1;
+    
+                                                        foreach($sales_orders as $sale_data){?> 
                                                         <tr>
-                                                            <td class="height_class text-center"><?php echo $i; ?></td>
-                                                            <td class="height_class text-center"><?php echo date('d-M-Y', strtotime($sal_ord->so_date)); ?></td>
+                                                            <td class="height_class" style="width:40px"><?php echo $i; ?></td>
+                                                            <td class="height_class" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                            <?php
+                                                            if($sale_data->link == "cash invoice"){
+                                                              
+                                                                $href="Crm/CashInvoice";
 
-                                                            <td colspan="1" align="left" class="p-0" style="height:100%">
+                                                                $view = "view_cash";
+
+                                                            }
+                                                            else if($sale_data->link == "credit invoice"){
+                                                                  
+                                                                $href="Crm/CreditInvoice";
+
+                                                                $view = "view_crn";
+                                                            }
+                                                            else{
+
+                                                                $href="";
+
+                                                                $view = "";
+                                                            }
+
+                                                            ?>
+                                                            <td  class="p-0" style="height:100%,width:100px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                            <td class="height_class" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
+                                                            <td class="height_class" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
+                                                            <td class="height_class" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
+                                                            <td class="height_class" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
+                                                            <td class="height_class text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                            <td class="height_class" style="width:500px"><?php echo $sale_data->product; ?></td>
+                                                            <td class="height_class text-center" style="width:80px"><?php echo $sale_data->quantity; ?></td>
+                                                            <td class="height_class text-end" style="width:80px"><?php echo $sale_data->rate; ?></td>
+                                                            <td class="height_class text-end" style="width:80px"><?php echo $sale_data->discount; ?>%</td>
+                                                            <td class="height_class text-end" style="width:80px"><?php echo format_currency($sale_data->prod_amount); ?></td>
+
                                                             
-                                                                <table>
-                                                                    
-                                                                   
-                                                                    <?php if (!empty($sal_ord->credit_invoice)) { ?>
-                                                                        
-                                                                    <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
+                                                            <?php 
 
-                                                                        <?php  foreach ($sal_ord->credit_invoice as $cred_inv) { ?>
-                                                                            <td width="100px" class="rotate"><a href="<?php echo base_url(); ?>Crm/CreditInvoice?view_so=<?php echo $cred_inv->cci_id; ?>" target="_blank"><?php echo $cred_inv->cci_reffer_no; ?></a></td></br>
-                                                                        <?php } ?>
+                                                            $invoice_total =  $sale_data->prod_amount + $invoice_total; 
 
-                                                                    </tr> 
-
-                                                                  <?php   } ?>
+                                                            $sales_total =  $sale_data->amount + $sales_total; 
 
 
-
-                                                                    <?php if (!empty($sal_ord->cash_invoice)) {  ?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                    <?php foreach ($sal_ord->cash_invoice as $cash_inv) { ?>
-                                                                    <td width="100px" class="rotate"><a href="<?php echo base_url(); ?>Crm/CreditInvoice?view_so=<?php echo $cash_inv->ci_id ; ?>" target="_blank"><?php echo $cash_inv->ci_reffer_no; ?></a></td>
-                                                                    <?php } ?>
-
-                                                                    </tr>
-
-                                                                   <?php } ?>
-
-                                                                    
-                                                                    
-                                                                    
-                                                                </table>
-
-                                                            
-                                                            </td>
-
-                                                            <td class="height_class"><?php echo $sal_ord->cc_customer_name; ?></td>
-
-                                                            <td colspan="1" align="left" class="p-0" style="height:100%">
-                                                            
-                                                                <table>
-                                                                    
-                                                                
-                                                                    <?php if (!empty($sal_ord->delivery_note)) { ?>
-                                                                        
-                                                                    
-                                                            
-                                                                        <?php  foreach ($sal_ord->delivery_note as $del_note) { ?>
-                                                                            <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                            <td class="height_class text-center"><?php echo $del_note->dn_reffer_no; ?></td>
-                                                                            </tr> 
-                                                                        <?php } ?>
-                                                            
-                                                                    
-                                                            
-                                                                    <?php   } else{?> 
-                                                                    
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                            
-                                                                       
-                                                                            <td class="height_class text-center">----</td>
-                                                                        
-                                                            
-                                                                    </tr> 
-                                                                    
-                                                                    <?php } ?>
-                                                            
-                                                             
-                                                                    
-                                                                </table>
-                                                            </td>
-
-                                                            <td class="height_class text-center"><?php echo $sal_ord->so_reffer_no; ?></td>
-
-                                                            <td class="height_class text-center"><?php echo $sal_ord->so_lpo; ?></td>
-
-                                                            <td class="height_class text-center"><?php echo $sal_ord->so_amount_total; ?></td>
-
-                                                            <td colspan="5" align="left" class="p-0">
-                                                                <table>
-                                                                    <?php foreach ($sal_ord->sales_products as $sal_prods) { ?>
-                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
-                                                                            <td width="500px" class="rotate"><?php echo $sal_prods->product_details; ?></td>
-                                                                            <td width="100px" class="rotate text-center"><?php echo $sal_prods->spd_quantity; ?></td>
-                                                                            <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_rate); ?></td>
-                                                                            <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_discount); ?>%</td>
-                                                                            <td width="100px" class="rotate text-end"><?php echo format_currency($sal_prods->spd_amount); ?></td>
-                                                                           
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </table>
-
-                                                            </td>
-
-                                                           
-
-                                                        </tr>
-
+                                                            ?>
                                                         
-                                                    
-                                                    <?php  $i++; }
-                                                    
+                                                        </tr>
+            
+                                                        
+                                                    <?php  $i++; }  }  }?>
+    
 
-                                                }  ?>
-
-                                                <!--<tr>
+                                                <tr>
                                                     <td>Total</td>
                                                     <td></td>
                                                     <td></td>
@@ -341,16 +285,16 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php //echo format_currency($total_amount); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($sales_total); ?></b></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><?php //echo format_currency($total_amount1); ?></td>
+                                                    <td class="text-end"><b><?php echo format_currency($invoice_total); ?></b></td>
 
 
 
-                                                </tr>--->
+                                                </tr>
 
 
                                             </tbody>

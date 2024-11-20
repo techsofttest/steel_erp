@@ -2241,7 +2241,7 @@
 
                 <div class="modal-footer justify-content-center">
                     <a href="javascript:void(0)" class="btn btn btn-success   quotation_close_modal" data-bs-dismiss="modal">Finish</a>
-                    <span class="print_pdf_btn"><a href="" class="btn btn btn-success " >Print</a></span>
+                    <span class="print_pdf_btn"><a href="javascript:void(0)" data-id="" class="btn btn btn-success  print_color" >Print</a></span>
                 </div>
 
 
@@ -4339,7 +4339,24 @@
              
             window.location.replace("<?php echo base_url();?>Crm/SalesQuotation");
 
-        })
+        });
+
+
+
+        $('body').on('click','.print_color',function(e){
+    
+            id = $(this).attr('data-id');
+            // Open the PDF generation script in a new window
+
+            var pdfWindow = window.open('<?= base_url()?>Crm/SalesQuotation/Pdf/'+id, '_blank');
+
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
+
+        });
+
 
 
        
@@ -4440,6 +4457,7 @@
             Percentage()
          
         }
+
         
 
         document.addEventListener("DOMContentLoaded", function(event) {

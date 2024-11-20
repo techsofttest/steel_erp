@@ -20,7 +20,7 @@
     }
 
     #DataTable tbody td {
-        padding: 5px 12px;
+        line-height: 1.0;
     }
 </style>
 
@@ -217,7 +217,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Delivery Note to Credit Invoice Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -244,28 +244,25 @@
 
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#DnToCreditInvoice" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll; max-height:80vh">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:100px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:200px">Delivery Note Number</th>
-                                                    <th style="white-space: nowrap;width:500px">Customer</th>
+                                                    
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:130px">Delivery Note</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
-                                                    <th style="white-space: nowrap;width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Quantity</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:500px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Rate</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Discount</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
-                                                    <!--<th width="100px">Product</th>
-                                                    <th width="100px">Quantity</th>
-                                                    <th width="100px">Rate</th>
-                                                    <th width="100px">Amount</th>--->
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Difference</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-center">Difference</th>
 
                                                 </tr>
                                             </thead>
@@ -273,104 +270,93 @@
                                             <tbody class="tbody_data">
 
                                                 <?php
-                                                $total_amount = 0;
-                                                $total_amount1 = 0;
+                                                $delivery_total = 0;
+                                                $delivery_prod_total = 0;
+                                                $diff_total= 0;
+                                                $del_diff =0;
+                                                $del_diff_total =0;
+                                                $diff_sum = 0;
                                                 if (!empty($delivery_data)) {
 
                                                     $i = 1;
 
                                                     foreach ($delivery_data as $del_note) { ?>
                                                         <tr>
-                                                            <td class="height_class text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="height_class text-center" style="white-space: nowrap;width:100px"><?php echo date('d-M-Y', strtotime($del_note->dn_date)); ?></td>
-                                                            <td class="height_class text-center" style="white-space: nowrap;width:200px"><a href="<?php echo base_url(); ?>Crm/DeliverNote?view_so=<?php echo $del_note->dn_id; ?>" target="_blank"><?php echo $del_note->dn_reffer_no; ?></a></td>
-                                                            <td class="height_class" style="white-space: nowrap;width:500px"><?php echo $del_note->cc_customer_name; ?></td>
-                                                            <td class="height_class text-center" style="white-space: nowrap;width:100px"><?php echo $del_note->so_reffer_no; ?></td>
+                                                            <td class="height_class text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="height_class text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($del_note->dn_date)); ?></td>
+                                                            <td class="height_class text-center" style="white-space: nowrap;width:130px"><a href="<?php echo base_url(); ?>Crm/DeliverNote?view_so=<?php echo $del_note->dn_id; ?>" target="_blank"><?php echo $del_note->dn_reffer_no; ?></a></td>
+                                                            <td class="height_class" style="white-space: nowrap;width:300px"><?php echo $del_note->cc_customer_name; ?></td>
+                                                            <td class="height_class text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $del_note->so_id;?>" target="_blank"><?php echo $del_note->so_reffer_no; ?></a></td>
                                                             <td class="height_class text-center" style="white-space: nowrap;width:100px"><?php echo $del_note->dn_lpo_reference; ?></td>
-                                                            <?php $total_amount  = $del_note->dn_total_amount + $total_amount ?>
-                                                            <td class="height_class text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($del_note->dn_total_amount); ?></td>
+                                                            <?php $delivery_total  = $del_note->dn_total_amount + $delivery_total ?>
+                                                            <td class="height_class text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($del_note->dn_total_amount); ?></td>
 
-
-
-                                                            <td colspan="5" align="left" class="p-0 ">
+                                                            
+                                                            <td colspan="7" align="left" class="p-0 ">
                                                                 <table>
-                                                                    <?php foreach ($del_note->delivery_products as $del_prod) { ?>
+                                                                    <?php  $difference = 0;   foreach ($del_note->delivery_products as $del_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
                                                                             <td width="500px" class="responsive"><?php echo $del_prod->product_details; ?></td>
-                                                                            <td width="100px" class="responsive text-center"><?php echo $del_prod->dpd_current_qty; ?></td>
-                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_rate); ?></td>
-                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?>%</td>
-                                                                            <?php $total_amount1 = $del_prod->dpd_total_amount + $total_amount1; ?>
-                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
+                                                                            <td width="80px" class="responsive text-center"><?php echo $del_prod->dpd_current_qty; ?></td>
+                                                                            <td width="80px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_rate); ?></td>
+                                                                            <td width="80px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?>%</td>
+                                                                            <?php $delivery_prod_total = $del_prod->dpd_total_amount + $delivery_prod_total; ?>
+                                                                            <td width="80px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
+                                                                            
+
+                                                                            <td colspan="2" align="left" class="p-0 ">
+                                                                                <table>
+                                                                                    <?php 
+                                                                                        if(!empty($del_prod->invoices)){
+                                                                                        foreach ($del_prod->invoices as $invoice) { ?>
+                                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                                            <td width="100px" class="responsive text-center"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_crn=<?php echo $invoice->cci_id;?>" target="_blank"><?php echo $invoice->cci_reffer_no; ?></a></td>
+                                                                                            
+                                                                                               <?php $difference = $del_prod->dpd_total_amount - $invoice->ipd_amount;
+                                                                                               
+                                                                                                    $diff_total =  $difference +  $diff_total;
+                                                                                               
+                                                                                               ?>
+                                                                                               
+
+                                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($difference); ?></td>
+                                                                                        
+                                                                                        </tr>
+                                                                                    <?php } } else{?> 
+                                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                                            
+                                                                                            <td width="100px" class="responsive text-center"></td>
+                                                                                            <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
+                                                                                            
+                                                                                            <?php  
+                                                                                            
+                                                                                                $del_diff = $del_prod->dpd_total_amount; 
+
+
+                                                                                                $del_diff_total = $del_diff +  $del_diff_total;
+
+                    
+                                                                                            ?>
+                                                                                       
+
+                                                                                        </tr>
+
+                                                                                       
+                                                                                        
+                                                                                    <?php } ?>
+                                                                                </table>
+                                                                           </td>
+
+                                                                            <?php $diff_sum = $diff_total + $del_diff_total; ?>
+
+
                                                                         </tr>
                                                                     <?php } ?>
                                                                 </table>
                                                             </td>
 
 
-                                                            <td colspan="3" align="left" class="p-0" style="height:100%">
-                                                                <?php if (!empty($del_note->credit_invoices)) { ?>
-
-                                                                    <table>
-
-                                                                        <?php foreach ($del_note->credit_invoices as $credit_inv) {
-                                                                            $j = 1;
-                                                                            foreach ($credit_inv->invoices_product as $inv_prod) {
-                                                                        ?>
-                                                                                <tr style="background: unset;border-bottom: hidden !important;" class="invoice-row">
-                                                                                    <?php if ($j == 1) { ?>
-                                                                                        <td width="100px" class="responsive text-center"><?php echo $credit_inv->cci_reffer_no; ?></td>
-                                                                                    <?php } else { ?>
-                                                                                        <td width="100px"></td>
-                                                                                    <?php } ?>
-                                                                                    <!--<td width="100px"><?php //echo $credit_inv->ipd_discount;
-                                                                                                            ?></td>-->
-                                                                                    <!--<td width="100px"><?php //echo $inv_prod->product_details;
-                                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $inv_prod->ipd_quantity;
-                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $inv_prod->ipd_rate;
-                                                                                            ?></td>
-                                                                        <td width="100px"><?php //echo $inv_prod->ipd_amount;
-                                                                                            ?></td>-->
-
-                                                                                    <?php if (!empty($credit_inv->invoices_product)) {  ?>
-
-                                                                                        <td width="100px" class="text-end responsive">00.0</td>
-
-                                                                                    <?php  } ?>
-
-
-
-                                                                                </tr>
-                                                                        <?php $j++;
-                                                                            }
-                                                                        } ?>
-
-
-                                                                    </table>
-
-                                                                <?php } else { ?>
-                                                                    <table>
-                                                                        <?php foreach ($del_note->delivery_products as $del_prod) { ?>
-                                                                            <tr class="invoice-row" style="background: unset;border-bottom: hidden !important;">
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td valign="" class="text-end responsive" width="100px"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
-                                                                            </tr>
-                                                                        <?php } ?>
-                                                                    </table>
-                                                                <?php } ?>
-                                                            </td>
-
-
-
-
-
-
+                                                            
 
                                                         </tr>
 
@@ -386,17 +372,30 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td class="text-end"><b><?php echo format_currency($delivery_total); ?></b></td>
+                                                    <td colspan="7" align="left" class="p-0 ">
+                                                        <table>
+                                                            <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                <td width="500px" class="responsive"></td>
+                                                                <td width="100px" class="responsive text-center"></td>
+                                                                <td width="100px" class="responsive text-end"></td>
+                                                                <td width="100px" class="responsive text-end"></td>
+                                                                <td width="100px" class="responsive text-end"><b><?php echo format_currency($delivery_prod_total); ?></b></td>
+                                                                <td colspan="2" align="left" class="p-0 ">
+                                                                    <table>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
+                                                                            <td width="100px" class="responsive text-center"></td>
+                                                                            <td width="100px" class="responsive text-end"><b><?php echo format_currency($diff_sum); ?></b></td>
+                                                                        </tr>
+                                                                                    
+                                                                    </table>
+                                                                </td>
 
-
-
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    
+                                                   
                                                 </tr>
 
 

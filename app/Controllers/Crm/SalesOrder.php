@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="javascript:void(0)" data-id="'.$record->so_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="javascript:void(0)" data-id="'.$record->so_id.'"  class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
              
             if(!empty($record->so_edit_reff_no))
             {
@@ -234,6 +234,9 @@ class SalesOrder extends BaseController
         if(!empty($_POST['spd_unit']))
         {
             $count =  count($_POST['spd_unit']);
+
+           
+                
             
             if($count!=0)
             {  
@@ -260,7 +263,9 @@ class SalesOrder extends BaseController
                         'spd_sales_order'       =>  $sales_order_id,
     
                     );
-                
+
+                    
+                    
                     $id = $this->common_model->InsertData('crm_sales_product_details',$prod_data);
 
                     if(!empty($_POST['quot_prod_id'][$j]))
@@ -289,7 +294,9 @@ class SalesOrder extends BaseController
                     if(!empty($_POST['print_btn']))
                     {
                        
-                        $return['print'] =  base_url() . 'Crm/SalesOrder/Pdf/' . urlencode($sales_order_id);
+                       // $return['print'] =  base_url() . 'Crm/SalesOrder/Pdf/' . urlencode($sales_order_id);
+
+                       $return['print'] =  $sales_order_id;
 
                     }
                    
@@ -433,8 +440,8 @@ class SalesOrder extends BaseController
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id" required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  class="form-control discount_clz_id" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id" readonly></td>
-            <input type="hidden" name="quot_prod_id['.$si.']" value="'.$prod_det->qpd_id.'">
-            <input type="hidden" name="quotation_id['.$si.']" value="'.$prod_det->qpd_quotation_details.'">
+            <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
+            <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">
             <td class="row_remove remove-btnpp" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
             </tr>'; 
             $i++;
@@ -1505,7 +1512,8 @@ class SalesOrder extends BaseController
             }
             
             </style>
-        
+
+           
            
             <table>
         

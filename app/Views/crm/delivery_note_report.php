@@ -16,7 +16,7 @@
     }
 
     #DataTable td {
-        line-height: 2.3
+        line-height: 1.0
     }
 </style>
 
@@ -186,7 +186,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-17%">Delivery Note Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -213,23 +213,23 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#DeliveryNoteReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll; max-height:80vh">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space:nowrap; width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
+                                                    <th class="no-sort text-center" style="white-space:nowrap; width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Delivery Note Ref</th>
-                                                    <th style="white-space: nowrap;width:500px">Customer Name</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Lpo Ref</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
-                                                    <th style="white-space: nowrap;width:500px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px" >Qty Ordered</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px" >Qty Delivered</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Lpo Ref</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
+                                                    <th class="text-center"style="white-space: nowrap;width:500px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px" >Qty Ordered</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px" >Qty Delivered</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Rate</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Discount</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
 
                                                 </tr>
                                             </thead>
@@ -243,14 +243,14 @@
                                                     foreach ($delivery_note as $del_note) { ?>
                                                         <tr>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $del_note->dn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $del_note->dn_date; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/DeliverNote?view_so=<?php echo $del_note->dn_id; ?>" target="_blank"><?php echo $del_note->dn_reffer_no; ?></a></td>
-                                                            <td style="white-space: nowrap;width:500px"><?php echo $del_note->cc_customer_name; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $del_note->so_reffer_no; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $del_note->dn_lpo_reference; ?></td>
+                                                            <td style="white-space: nowrap;width:300px"><?php echo $del_note->cc_customer_name; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $del_note->so_id; ?>" target="_blank"><?php echo $del_note->so_reffer_no; ?></a></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $del_note->dn_lpo_reference; ?></td>
                                                             <?php $total_amount =  $del_note->dn_total_amount + $total_amount; ?>
-                                                            <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($del_note->dn_total_amount); ?></td>
+                                                            <td style="white-space: nowrap;width:80px" class="text-end"><?php echo format_currency($del_note->dn_total_amount); ?></td>
 
                                                             <!------------->
 
@@ -260,11 +260,11 @@
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
                                                                            
                                                                             <td class="rotate" width="500px"><?php echo $delv_prod->product_details; ?></td>
-                                                                            <td class="rotate text-center" width="100px"><?php echo $delv_prod->dpd_order_qty; ?></td>
-                                                                            <td class="rotate text-center" width="100px"><?php echo $delv_prod->dpd_delivery_qty; ?></td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_prod_rate); ?></td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_prod_dicount); ?>%</td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($delv_prod->dpd_total_amount); ?></td>
+                                                                            <td class="rotate text-center" width="80px"><?php echo $delv_prod->dpd_order_qty; ?></td>
+                                                                            <td class="rotate text-center" width="80px"><?php echo $delv_prod->dpd_current_qty; ?></td>
+                                                                            <td class="rotate text-end" width="80px"><?php echo format_currency($delv_prod->dpd_prod_rate); ?></td>
+                                                                            <td class="rotate text-end" width="80px"><?php echo format_currency($delv_prod->dpd_prod_dicount); ?>%</td>
+                                                                            <td class="rotate text-end" width="80px"><?php echo format_currency($delv_prod->dpd_total_amount); ?></td>
                                                                              
                                                                             <?php    $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1; ?>
 				

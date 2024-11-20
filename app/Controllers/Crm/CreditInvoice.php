@@ -64,7 +64,7 @@ class CreditInvoice extends BaseController
         $i=1;
         foreach($records as $record ){
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="'.base_url().'Crm/CreditInvoice/Pdf/'.$record->cci_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            <a href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
 
             ';
            
@@ -177,7 +177,7 @@ class CreditInvoice extends BaseController
          
         if(empty($this->request->getPost('cci_id')))
         {   
-            //$uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
+            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
             
            // $credit_invoices = $this->common_model->FetchWhere('steel_accounts_receipts',array('cci_reffer_no' => $this->request->getPost('cci_reffer_no')));
 
@@ -281,7 +281,8 @@ class CreditInvoice extends BaseController
             {  
                 for($j=0;$j<=$count-1;$j++)
                 {
-                        
+                    $delivery_note = $this->common_model->SingleRow('crm_delivery_note',array('dn_reffer_no' => $_POST['ipd_delivery'][$j]));
+                    
                     $contact_detail  	= array(  
 
                         'ipd_prod_detl'        =>  $_POST['ipd_prod_detl'][$j],
@@ -293,6 +294,7 @@ class CreditInvoice extends BaseController
                         'ipd_prod_id'          =>  $_POST['sales_order_product'][$j],
                         'ipd_delivery_prod_id' =>  $_POST['delivery_prod_id'][$j],
                         'ipd_credit_invoice'   =>  $credit_invoice_id,
+                        'ipd_delivery_id'      =>  $delivery_note->dn_id,
     
                     );
                 
@@ -310,17 +312,16 @@ class CreditInvoice extends BaseController
                     $update_data1 = array('dpd_invoice_flag' => 1);
 
                     $this->common_model->EditData($update_data1,$cond,'crm_delivery_product_details');
-
-                  
+    
                     //$pod_data1 = $this->common_model->FetchWhere('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]));
                     
                     //$pod_data2 = $this->common_model->CheckTwiceCond1('crm_sales_product_details',array('spd_sales_order' => $_POST['sales_order'][$j]),array('spd_deliver_flag' => 1));
                         
                     $delivery_data = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' => $_POST['delivery_prod_id'][$j]));
                    
-                    $pod_data1 = $this->common_model->FetchWhere('crm_delivery_product_details',array('dpd_so_id' => $delivery_data->dpd_so_id));
+                    $pod_data1 = $this->common_model->FetchWhere('crm_delivery_product_details',array('dpd_sales_ref_id' => $delivery_data->dpd_sales_ref_id));
                     
-                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_delivery_product_details',array('dpd_so_id' => $delivery_data->dpd_so_id),array('dpd_invoice_flag' => 1));
+                    $pod_data2 = $this->common_model->CheckTwiceCond1('crm_delivery_product_details',array('dpd_sales_ref_id' => $delivery_data->dpd_sales_ref_id),array('dpd_invoice_flag' => 1));
                    
                     if(count($pod_data1) == count($pod_data2))
                     {
@@ -347,7 +348,9 @@ class CreditInvoice extends BaseController
             if(!empty($_POST['print_btn']))
             {
                 
-                $data['print'] =  base_url() . 'Crm/CreditInvoice/Pdf/' . urlencode($credit_invoice_id);
+                //$data['print'] =  base_url() . 'Crm/CreditInvoice/Pdf/' . urlencode($credit_invoice_id);
+
+                $data['print'] =  $credit_invoice_id;
 
             }
 
@@ -528,6 +531,7 @@ class CreditInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>Total</td>
                 <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
                 
@@ -541,6 +545,11 @@ class CreditInvoice extends BaseController
                     'pk'    => 'product_id',
                     'fk'    => 'ipd_prod_detl',
                 ),
+                array(
+                    'table' => 'crm_delivery_note',
+                    'pk'    => 'dn_id',
+                    'fk'    => 'ipd_delivery_id',
+                ),
     
             );
 
@@ -552,6 +561,7 @@ class CreditInvoice extends BaseController
             foreach($delivery_prod_details as $delivery_prod){
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
+                                                <td>'.$delivery_prod->dn_reffer_no.'</td>
                                                 <td>'.$delivery_prod->product_details.'</td>
                                                 <td>'.$delivery_prod->ipd_unit.'</td>
                                                 <td>'.$delivery_prod->ipd_quantity.'</td>
@@ -955,6 +965,7 @@ class CreditInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>Total</td>
                 <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
                 
@@ -1033,6 +1044,11 @@ class CreditInvoice extends BaseController
                     'pk'    => 'product_id',
                     'fk'    => 'ipd_prod_detl',
                 ),
+                array(
+                    'table' => 'crm_delivery_note',
+                    'pk'    => 'dn_id',
+                    'fk'    => 'ipd_delivery_id',
+                ),
     
             );
 
@@ -1046,6 +1062,7 @@ class CreditInvoice extends BaseController
             foreach($delivery_prod_details as $delivery_prod){
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
+                                                <td>'.$delivery_prod->dn_reffer_no.'</td>
                                                 <td>'.$delivery_prod->product_details.'</td>
                                                 <td>'.$delivery_prod->ipd_unit.'</td>
                                                 <td>'.$delivery_prod->ipd_quantity.'</td>
@@ -1150,7 +1167,7 @@ class CreditInvoice extends BaseController
                     $amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
 
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
-                                                    <td class="si_no">'.$sales_det->dn_reffer_no.'</td>
+                                                    <td class="si_no"><input type="text" name="ipd_delivery[]" value ="'.$sales_det->dn_reffer_no.'" class="form-control" readonly></td>
                                                     <td style="width:40%">
                                                         <select class="form-select ser_product_det" name="ipd_prod_detl[]" required>';
                                                             foreach($products as $prod){

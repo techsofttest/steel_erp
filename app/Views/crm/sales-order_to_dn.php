@@ -18,6 +18,9 @@
     .rotate {
         /* transform: rotateX(180deg); */
     }
+    #DataTable td {
+        line-height: 1.1;
+    }
 </style>
 
 
@@ -198,28 +201,20 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderToDn" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll; max-height:80vh;">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th style="white-space: nowrap;width:500px">Customer Name</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
-                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
-                                                    <th width="500px">Product</th>
-                                                    <th class="text-center" width="100px" class="text-end">Quantity</th>
-                                                    <th width="100px" class="text-end">Rate</th>
-                                                    <th width="100px" class="text-end">Discount</th>
-                                                    <th width="100px" class="text-end">Amount</th>
-                                                    <th width="100px" class="text-end">Delivered</th>
-                                                    <!--<th width="100px">Product</th>
-                                                    <th width="100px">Quantity</th>
-                                                    <th width="100px">Rate</th>
-                                                    <th width="100px">Amount</th>--->
-                                                    <th width="100px" class="text-end">Difference</th>
+                                                    <th class="text-center"style="white-space: nowrap;width:300px">Customer Name</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Sales Executive</th>
+                                                    <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
+                                                    <th width="500px" class="text-center">Product</th>
+                                                    <th width="80px" class="text-center">Delivered</th>
+                                                    <th width="80px" class="text-center">Difference</th>
                                                 </tr>
                                             </thead>
 
@@ -240,26 +235,22 @@
 
                                                         <tr>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo date('d-M-Y', strtotime($sales_order->so_date)); ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($sales_order->so_date)); ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id; ?>" target="_blank"><?php echo $sales_order->so_reffer_no; ?></a></td>
-                                                            <td style="white-space: nowrap;width:500px"><?php echo $sales_order->cc_customer_name; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name; ?></td>
-                                                            <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
+                                                            <td style="white-space: nowrap;width:300px"><?php echo $sales_order->cc_customer_name; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $sales_order->so_lpo; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $sales_order->se_name; ?></td>
+                                                            <td style="white-space: nowrap;width:80px" class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
 
                                                             <?php $total_amount = $sales_order->so_amount_total + $total_amount; ?>
 
-                                                            <td colspan="7" align="left" class="p-0">
+                                                            <td colspan="3" align="left" class="p-0">
                                                                 <table>
                                                                     <?php foreach ($sales_order->sales_products as $sales_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="rotate" width="500px"><?php echo $sales_prod->product_details; ?></td>
-                                                                            <td class="rotate text-center" width="100px"><?php echo $sales_prod->spd_quantity; ?></td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_rate); ?></td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_discount); ?>%</td>
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->spd_amount); ?></td>
-
+                                                                           
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->totaldelivered); ?></td>
                                                                              
                                                                             <?php
@@ -271,10 +262,10 @@
                                                                              if(!empty($final_amount)){
                                                                             ?>
                                                                             
-                                                                            <td class="rotate text-end" width="100px"><?php echo format_currency($final_amount)?></td>
+                                                                            <td class="rotate text-end" width="80px"><?php echo format_currency($final_amount)?></td>
 
                                                                             <?php } else{?> 
-                                                                                <td class="rotate text-end" width="100px">0.00</td>    
+                                                                                <td class="rotate text-end" width="80px">0.00</td>    
                                                                             <?php } ?>
 
 
@@ -319,10 +310,9 @@
                                                     <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($total_amount1); ?></b></td>
-                                                    <td></td>
+                                                   
+                                                    
+                                                   
                                                     <td class="text-end"><b><?php echo format_currency($total_amount2); ?></b></td>
 
 

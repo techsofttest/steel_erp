@@ -1463,7 +1463,18 @@
 
                             if(data.print!="")
                             {
-                                window.open(data.print, '_blank');
+                                //window.open(data.print, '_blank');
+
+                                id = data.print;
+                                // Open the PDF generation script in a new window
+
+                                var pdfWindow = window.open('<?= base_url()?>Crm/ProFormaInvoice/Pdf/'+id, '_blank');
+
+                                // Automatically print when the PDF is loaded
+                                pdfWindow.onload = function() {
+                                    pdfWindow.print();
+                                };
+
                             }
                             
                         }
@@ -1829,13 +1840,15 @@
 
            $('.amount_total').val(total);
 
-           var resultSalesOrder= numberToWords.toWords(total);
+           //var resultSalesOrder= numberToWords.toWords(total);
 
-            $(".performa_amount_in_word").text(resultSalesOrder);
+           // $(".performa_amount_in_word").text(resultSalesOrder);
 
-            $(".performa_amount_in_word_val").val(resultSalesOrder);
-            
-            currentClaim()
+           // $(".performa_amount_in_word_val").val(resultSalesOrder);
+                
+            //currentClaim()
+
+           
         }
 
         /*total amount calculation end*/
@@ -2792,6 +2805,21 @@
 
         });
           
+    });
+
+    
+    $('body').on('click','.print_color',function(e){
+    
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>Crm/ProFormaInvoice/Pdf/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
+
     });
 
     

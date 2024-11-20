@@ -17,7 +17,9 @@ class SalesQuotAnalysisReport extends BaseController
     {   
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
-        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['sales_executive_data'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         $data['content'] = view('crm/sales-quot-analysis-report',$data);
 
@@ -175,39 +177,15 @@ class SalesQuotAnalysisReport extends BaseController
         }
         
 
-        $joins = array(
-            
-            array(
-                'table' => 'crm_quotation_product_details',
-                'pk'    => 'qpd_quotation_details',
-                'fk'    => 'qd_id ',
-            ),
-            array(
-                'table' => 'crm_customer_creation',
-                'pk'    => 'cc_id',
-                'fk'    => 'qd_customer',
-            ),
-            array(
-                'table' => 'executives_sales_executive',
-                'pk'    => 'se_id',
-                'fk'    => 'qd_sales_executive',
-            ),
-           
-           
+      
 
-        );
-
-
-        $joins1 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'qpd_product_description',
-            ),
-        );
-
-        $data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
+        //$data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
         
+
+        $data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description');  
+        
+
+
         if(!empty($from_date))
         {
             $data['from_dates'] = date('d-M-Y',strtotime($from_date));
@@ -232,8 +210,15 @@ class SalesQuotAnalysisReport extends BaseController
             $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
         }
 
+        $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        
+        $data['sales_executive_data'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
        
         $data['content'] = view('crm/sales-quot-analysis-report',$data);
+
+      
 
         return view('crm/report-module-search',$data);
         
@@ -511,10 +496,10 @@ class SalesQuotAnalysisReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$total_quot_amount.'</b></td>
+                <td style="border-top: 2px solid;" align="right">'.$total_quot_amount.'</td>
                 <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$sales_amount.'</b></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$sales_diff_amount.'</b></td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_amount.'</td>
+                <td style="border-top: 2px solid;" align="right">'.$sales_diff_amount.'</td>
             
             </tr>   
            

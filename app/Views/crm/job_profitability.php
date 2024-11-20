@@ -148,7 +148,7 @@
                                             
                                             <tbody class="tbody_data">
                                             <?php
-                                                $total_amount = 0 ;
+                                                $total_amount_sum =0;
                                                 if(!empty($sales_orders))
                                                 {
                                                     $i=1;
@@ -170,6 +170,7 @@
                                                         $cash_total = 0;
                                                         $credit_total = 0;
                                                         $sales_return = 0;
+                                                        $total_amount = 0 ;
                                                         foreach($sales_order->cash_invoices as $cash_invoice){
                                                         
                                                             $cash_total = $cash_invoice->ci_total_amount + $cash_total;
@@ -181,11 +182,15 @@
                                                             $credit_total = $credit_inv->cci_total_amount + $credit_total;
                                                         }
 
-
-                                                           
+                  
                                                         
                                                         ?>
+                                                        
+                                                        <?php $total_amount = $cash_total + $credit_total;
 
+                                                            $total_amount_sum  = $total_amount + $total_amount_sum;
+                                                        
+                                                        ?>
                                                         <td class="text-end"><?php echo format_currency($cash_total + $credit_total); ?></td>
 
 
@@ -195,7 +200,16 @@
                                                     </tr>
                                                         
                                                     <?php  $i++; }?> 
-
+                                                    
+                                                    <tr>
+                                                        <td>Total</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-end"><b><?php echo format_currency($total_amount_sum); ?></b></td>
+                                                    </tr>
                                                     
                                                 <?php   } ?>
                                             </tbody>
