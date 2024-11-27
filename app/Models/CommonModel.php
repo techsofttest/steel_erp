@@ -611,7 +611,7 @@ class CommonModel extends Model
 
         $id = $row->Auto_increment;
 
-        $uid = $prefix.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $uid = $prefix.str_pad($id, 5, '0', STR_PAD_LEFT);
 
         return $uid;
 
