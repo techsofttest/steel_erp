@@ -236,7 +236,7 @@ class Receipts extends BaseController
 
         //$r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $r_ref_no = $this->common_model->FetchNextId('accounts_receipts',"RV-{$this->data['accounting_year']}-");
+        $r_ref_no = $this->FetchReference("r");
 
         $cond = array('r_id' => $id);
 
@@ -2819,12 +2819,17 @@ class Receipts extends BaseController
 
 
 
-    public function FetchReference()
+    public function FetchReference($type="e")
     {
 
     $uid = $this->common_model->FetchNextId('accounts_receipts',"RV-{$this->data['accounting_year']}-");
 
+    if($type=="e")
     echo $uid;
+    else
+    {
+    return $uid;
+    }
 
     }
 
