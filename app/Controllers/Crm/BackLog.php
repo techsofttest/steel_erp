@@ -15,7 +15,8 @@ class BackLog extends BaseController
     //view page
     public function index()
     {   
-        
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
         $data['content'] = view('crm/backlog',$data);
@@ -162,10 +163,12 @@ class BackLog extends BaseController
             $data['to_dates'] = "";
         }
 
-        if(!empty($_POST['pdf']))
+        if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
         {   
-            $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
+            $this->Pdf($data['backlogs'],$data['from_dates'],$data['to_dates']);
         }
+
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
         
         $data['content'] = view('crm/backlog',$data);
  
@@ -174,102 +177,142 @@ class BackLog extends BaseController
     }
 
 
-    public function Pdf($sales_orders,$from_date,$to_date)
+    public function Pdf($backlogs,$from_date,$to_date)
     {   
         
-        if(!empty($sales_orders))
+        if(!empty($backlogs))
         {   
             $pdf_data = "";
-            $sales_total = 0;
+            $delivered = 0;
             $delivered_total = 0;
-            $invoice_total = 0;
-            $balance_total = 0;
-            foreach($sales_orders as $sales_order){
+            $invoiced = 0;
+            $invoiced_total = 0;
+            $balance_amount  = 0; 
+            $balance_total_amount  = 0;
+            $sales_amount_total = 0; 
+            foreach($backlogs as $backlog){
 
-                $delivery_amount = array_sum(array_column($sales_order->sales_delivery,'dn_total_amount'));
+                $delivery_array_sum = array_sum(array_column($backlog->delivery_note,'dn_total_amount'));
 
-                if (!empty($sales_order->sales_delivery)) {
-                   $balance =  $sales_order->so_amount_total - $delivery_amount;
-                   
+                $cash_array_sum = array_sum(array_column($backlog->cash_invoiced,'ci_total_amount'));
+                
+                $delivered_array_total = $delivery_array_sum + $cash_array_sum;
+
+                $balance_amount =  $backlog->so_amount_total - $delivered_array_total;
+
+                $new_date = date('d-M-Y',strtotime($backlog->so_date));
+
+                if($balance_amount!=0){
+                    
+                    $pdf_data .="<tr>
+                                    <td style='border-top: 2px solid' width='40px' align='center'>{$new_date}</td>
+                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->so_reffer_no}</td>
+                                    <td style='border-top: 2px solid' width='100px'>{$backlog->cc_customer_name}</td>
+                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->so_lpo}</td>
+                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->se_name}</td>
+                                    <td style='border-top: 2px solid' width='100px' align='right'>".format_currency($backlog->so_amount_total)."</td> ";
+                                    
+                                    $sales_amount_total = $backlog->so_amount_total + $sales_amount_total;
+                                    
+                                    /*delivered coloum calculation*/
+                                    if(!empty($backlog->delivery_note)){ 
+                                                            
+                                        $delivered_amount = 0;
+                                        
+                                        foreach($backlog->delivery_note as $delivery){
+                                       
+                                            $delivered_amount = $delivery->dn_total_amount + $delivered_amount;
+                                            
+                                        }
+
+                                    }else{
+                                       
+                                            $delivered_amount = 0; 
+                                    }
+
+                                    $cash_amount = 0;
+                                    if(!empty($backlog->cash_invoiced)){
+                                        
+                                        foreach($backlog->cash_invoiced as $cash_inv){
+                                        
+                                            $cash_amount = $cash_inv->ci_total_amount + $cash_amount;
+                                        } 
+                                    
+                                    }
+                                    else{
+
+                                        $cash_amount = 0; 
+                                    }
+
+                                    $delivered =  $delivered_amount + $cash_amount;
+
+                                    $delivered_total = $delivered + $delivered_total;
+
+                                    $pdf_data .="<td  width='100px' style='border-top: 2px solid' align='right'>".format_currency($delivered)."</td>";
+
+                                    /*delivered coloum calculation end*/
+
+
+
+                                    /*invoiced coloum calculation start*/
+
+                                    $cash_amount1 = 0;
+                                    if(!empty($backlog->cash_invoiced)){
+                                        
+                                        foreach($backlog->cash_invoiced as $cash_inv){
+                                        
+                                            $cash_amount1 = $cash_inv->ci_total_amount + $cash_amount1;
+                                        } 
+                                    
+                                    }
+                                    else{
+
+                                        $cash_amount1 = 0; 
+                                    }
+
+                                    $credit_amount = 0;
+
+                                    if(!empty($backlog->credit_invoiced)){
+                                        
+                                        foreach($backlog->credit_invoiced as $credit_inv){
+                                        
+                                            $credit_amount = $credit_inv->cci_total_amount + $credit_amount;
+                                        } 
+                                    
+                                    }
+                                    else{
+
+                                        $credit_amount = 0; 
+                                    }
+
+                                    $invoiced =  $cash_amount1 + $credit_amount;
+
+                                    $invoiced_total = $invoiced + $invoiced_total;
+
+                                    $pdf_data .="<td class='text-end' width='100px' style='border-top: 2px solid' align='right'>".format_currency($invoiced)."</td>";
+
+
+
+
+                                    /*invoiced coloum calculation end*/
+
+
+                                    /*balance coloum calculation start*/
+
+                                    $pdf_data .="<td  width='100px' style='border-top: 2px solid' align='right'>".format_currency($balance_amount)."</td>";
+
+                                    $balance_total_amount = $balance_amount + $balance_total_amount;
+
+
+                                    /*balance coloum calculation end*/
+                
+                    
+                    $pdf_data .="</tr>";
+
                 }
 
-                if($balance!="0"){
 
-                $total_amount = format_currency($sales_order->so_amount_total);
-
-                $new_date = date('d-m-Y', strtotime($sales_order->so_date));
-                
-                $dicount_amountss = format_currency($sales_order->spd_discount);
-
-                $pdf_data .="<tr>
-                                <td style='border-top: 2px solid'>{$new_date}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->so_reffer_no}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>
-                                <td style='border-top: 2px solid'>{$sales_order->se_name}</td>
-                               
-                                <td style='border-top: 2px solid' align='right'>{$total_amount}</td>";
-                                
-                                $sales_total = $sales_order->so_amount_total + $sales_total;
-                                
-                                //$delivery_amount = 0;
-
-                                foreach($sales_order->sales_delivery as $del){
-
-                                   // $delivery_amount =  $del->dn_total_amount + $delivery_amount;
-
-                                    $delivered_total = $delivery_amount + $delivered_total;
-                                }
-
-                                if(!empty($sales_order->sales_delivery)){ 
-                                    
-                                    $delivery_amountss = format_currency($delivery_amount);
-
-                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$delivery_amountss}</td>";
-
-                                } else{
-                                    $pdf_data .="<td style='border-top: 2px solid' align='center'>---</td>";
-                                }
-
-                                $invoiced_amount = 0;
-
-                                
-                                foreach($sales_order->cash_invoiced as $cash_inv)
-                                {
-                                    $invoiced_amount =  $cash_inv->ci_total_amount + $invoiced_amount;
-
-                                    $invoice_total =  $invoiced_amount + $invoice_total;
-                                }
-
-                                if(!empty($sales_order->cash_invoiced)){
-                                    
-                                    $invoiced_amountss = format_currency($invoiced_amount);
-
-                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$invoiced_amountss}</td>";
-
-                                } else{
-
-                                    $pdf_data .="<td style='border-top: 2px solid' align='center'>----</td>";
-                                }
-
-                                if(!empty($sales_order->sales_delivery)){
-                                    
-                                    /*$balance =  $sales_order->so_amount_total - $delivery_amount;*/
-
-                                    $balance_total = $balance + $balance_total;
-
-                                    $balancess = format_currency($balance);
-                                    
-                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>{$balancess}</td>";
-
-                                } else{
-
-                                    $pdf_data .="<td style='border-top: 2px solid' align='right'>----</td>";
-                                }
-                               
-
-                $pdf_data .="</tr>";
-            }
+               
             
             }
 
@@ -315,14 +358,7 @@ class BackLog extends BaseController
 
             $mpdf->SetTitle('Backlog'); // Set the title
 
-            $sales_total = format_currency($sales_total);
-
-            $delivered_total = format_currency($delivered_total);
-
-            $invoice_total = format_currency($invoice_total);
-
-            $balance_total = format_currency($balance_total);
-
+           
             $html ='
         
             <style>
@@ -388,25 +424,23 @@ class BackLog extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="center" width="40px">Date</th>
         
-            <th align="left">Sales Order</th>
+            <th align="center" width="100px">Sales Order</th>
         
-            <th align="left">Customer</th>
+            <th align="center" width="100px">Customer</th>
 
-            <th align="left">LPO Ref</th>
+            <th align="center" width="100px">LPO Ref</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="center" width="100px">Sales Executive</th>
 
-          
-        
-            <th align="center">Amount</th>
+            <th align="center" width="100px">Amount</th>
 
-            <th align="center">Delivered</th>
+            <th align="center" width="100px">Delivered</th>
 
-            <th align="center">Invoiced</th>
+            <th align="center" width="100px">Invoiced</th>
 
-            <th align="center">Balance</th>
+            <th align="center" width="100px">Balance</th>
  
             
             </tr>
@@ -414,25 +448,33 @@ class BackLog extends BaseController
              
             '.$pdf_data.'
 
-
-            <tr>
+             <tr>
             
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                
-                <td style="border-top: 2px solid;" align="right"><b>'.$sales_total.'</b></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$delivered_total.'</b></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$invoice_total.'</b></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$balance_total.'</b></td>
-               
-                
-                
+                <td align="center" width="40px" style="border-top: 2px solid"></td>
+            
+                <td align="center" width="100px" style="border-top: 2px solid"></td>
+            
+                <td align="center" width="100px" style="border-top: 2px solid"></td>
+
+                <td align="center" width="100px" style="border-top: 2px solid"></td>
+            
+                <td align="center" width="100px" style="border-top: 2px solid"></td>
+
+                <td align="right" width="100px" style="border-top: 2px solid"><b>'.format_currency($sales_amount_total).'</b></td>
+
+                <td align="right" width="100px" style="border-top: 2px solid"><b>'.format_currency($delivered_total).'</b></td>
+
+                <td align="right" width="100px" style="border-top: 2px solid"><b>'.format_currency($invoiced_total).'</b></td>
+
+                <td align="right" width="100px" style="border-top: 2px solid"><b>'.format_currency($balance_total_amount).'</b></td>
+ 
             
             </tr>
 
+
+
+           
+          
 
             
            

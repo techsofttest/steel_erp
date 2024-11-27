@@ -282,10 +282,12 @@ class SalesOrderSummeryReport extends BaseController
         }
 
 
-        if(!empty($_POST['pdf']))
+        if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
         {   
             $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
         }
+
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 

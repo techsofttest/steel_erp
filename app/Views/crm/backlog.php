@@ -104,9 +104,16 @@
 
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" value="<?php echo $customer; ?>" name="customer">
+                                                                                <td>
+                                                                                    <select class="form-select droup_customer  customer_clz" value="<?php echo $customer; ?>" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
-                                                                                    </select></td>
+                                                                                        				
+                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
+                                                                                        <?php } ?>
+
+                                                                                    </select>
+                                                                                </td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -190,10 +197,10 @@
 
                                         <button class="excel_button report_button" type="submit">Excel</button>
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
+                                        <!--<form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">-->
                                             <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                        <!--</form>-->
 
                                         <button class="email_button report_button" type="submit" id="email_button">Email</button>
 
@@ -252,7 +259,7 @@
                                                         <td><?php echo $backlog->cc_customer_name; ?></td>
                                                         <td class="text-center"><?php echo $backlog->so_lpo; ?></td>
                                                         <td class="text-center"><?php echo $backlog->se_name; ?></td>
-                                                        <td class="text-end"><?php echo $backlog->so_amount_total; ?></td>
+                                                        <td class="text-end"><?php echo format_currency($backlog->so_amount_total); ?></td>
                                                         
                                                         <?php  $sales_amount_total = $backlog->so_amount_total + $sales_amount_total;?>
 
@@ -439,44 +446,20 @@
         <?php endif; ?>
         /*modal open end*/
 
-
-        /* customer droup drown */
-        $(".droup_customer").select2({
-            placeholder: "Select Customer",
-            theme: "default form-control- customer_width",
-            dropdownParent: $('#backLog'),
-
-            ajax: {
-                url: "<?= base_url(); ?>Crm/BackLog/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.cc_id,
-                                text: item.cc_customer_name
-                            }
-                        }),
-                        pagination: {
-                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },
-            }
-        })
-        /**/
+        
+        /*print button section start*/
+        $('body').on('click','.print_button',function(e){
+              
+              // Open the PDF generation script in a new window
+              var pdfWindow = window.open('<?= base_url()."Crm/BackLog/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+  
+              // Automatically print when the PDF is loaded
+              pdfWindow.onload = function() {
+                  pdfWindow.print();
+              };
+  
+        });
+      
 
         /*form submit start*/
 

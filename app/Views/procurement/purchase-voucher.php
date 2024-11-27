@@ -179,9 +179,9 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <!--<select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>-->
+                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>
                                                                         
-                                                                        <input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>
+                                                                        <!--<input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>-->
 
                                                                     </div>
 
@@ -2048,7 +2048,8 @@
                     var data = JSON.parse(data);
 
                     $('.add_contact_person').html(data.condact_data);
-                  
+
+                    $('.add_payment_term').val(data.payment_term);
                 }
 
             });
@@ -2114,11 +2115,11 @@
                 
                     var data = JSON.parse(data);
 
-                    $('.add_payment_term').val(data.payment_term);
+                  
 
                     //$('.delivery_note_clz').val(data.delivery_date);
 
-                    $('.add_contact_person').val(data.contact_person);
+                    
 
                     $('.mr_ref').val(data.mr_reff);
 
@@ -2150,7 +2151,7 @@
             
             //$(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]' required=''><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 
             }

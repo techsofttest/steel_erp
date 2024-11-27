@@ -74,7 +74,15 @@
                                                                             
                                                                             <tr>
                                                                                 <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer"><option value="" selected disabled>Select Customer</option></select></td>
+                                                                                <td>
+                                                                                    <select class="form-select droup_customer  customer_clz" name="customer">
+                                                                                        <option value="" selected disabled>Select Customer</option>
+                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
+                                                                                        <?php } ?>
+
+                                                                                    </select>
+                                                                                </td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -150,20 +158,21 @@
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">Sales Summer Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
 
-                                        <form method="POST" target="_blank">
+                                        <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
+
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
                                         <button class="excel_button report_button" type="submit">Excel</button>
                                         <!-- </form> -->
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
+                                        <!--<form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">-->
                                             <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                        <!--</form>-->
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
@@ -184,6 +193,7 @@
                                                     <th class="text-center" style="width:200px">LPO Ref.</th>
                                                     <th class="text-center" style="width:200px">Sales Executive</th>
                                                     <th class="text-center" width="50px">Amount</th>
+
                                                 </tr>
                                             </thead>
                                             
@@ -191,6 +201,8 @@
                                                
                                             <?php 
                                                $total_amount = 0 ;
+
+                                               $total_amount1 = 0 ;
                                              
                                                 if(!empty($sales_data))
                                                 {   
@@ -215,6 +227,12 @@
 
                                                                 $view = "view_crn";
                                                             }
+                                                            else if($sale_data->link == "sales return"){
+
+                                                                $href="Crm/SalesReturn";
+
+                                                                $view = "view_rut";
+                                                            }
                                                             else{
 
                                                                 $href="";
@@ -222,15 +240,36 @@
                                                                 $view = "";
                                                             }
 
+                                                          
+
                                                         ?>
                                                         <td  class="p-0 text-center" style="height:100%,width:200px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
                                                         <td class="height_class" style="width:700px"><?php echo $sale_data->customer_name; ?></td>
                                                         <td class="height_class text-center" style="width:200px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sale_data->sales_order_id; ?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
                                                         <td class="height_class text-center" style="width:200px"><?php echo $sale_data->sales_lpo; ?></td>
                                                         <td class="height_class text-center" style="width:200px"><?php echo $sale_data->sales_exec; ?></td>
-                                                        <td class="height_class text-end" width="50px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                        <?php if($sale_data->amount_check == "sales return"){ ?> 
+                                                             
+                                                           
+                                                            
+                                                            <td class="height_class text-end" width="50px">-<?php echo format_currency($sale_data->amount); ?></td>
+
+                                                            <?php   $total_amount =    $total_amount -  $sale_data->amount; ?>
+
+
+                                                        <?php } else{ ?> 
+
+                                                           
+
+                                                            <td class="height_class text-end" width="50px"><?php echo format_currency($sale_data->amount); ?></td>
+
+                                                            <?php   $total_amount =   $sale_data->amount +  $total_amount; ?>
+                                                           
+                                                            
+                                                        <?php } ?>
                                                         
-                                                        <?php $total_amount =  $sale_data->amount + $total_amount; ?>
+                                                        
+                                                       
                                                     
                                                     </tr>
         
@@ -303,38 +342,22 @@
         /*modal open end*/
 
 
-        /* customer droup drown */
-         $(".droup_customer").select2({
-            placeholder: "Select Customer",
-            theme : "default form-control- customer_width",
-            dropdownParent: $('#SalesSummery'),
+        /*print button section start*/
+        $('body').on('click','.print_button',function(e){
+              
+              // Open the PDF generation script in a new window
+              var pdfWindow = window.open('<?= base_url()."Crm/SalesSummery/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+  
+              // Automatically print when the PDF is loaded
+              pdfWindow.onload = function() {
+                  pdfWindow.print();
+              };
+  
+          });
+          
 
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesSummery/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /**/
+
+        
 
 
         /*form submit start*/

@@ -233,9 +233,14 @@ class SalesQuotReport extends BaseController
 
        
 
-        if(!empty($_POST['pdf']))
+        if(!empty($_POST['pdf']) ||  (isset($_GET['action']) && $_GET['action'] == "Print"))
         {   
+            
+
             $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
+
+          
+
         }
         
         if(!empty($_POST['excel']))
@@ -243,17 +248,15 @@ class SalesQuotReport extends BaseController
             $this->Excel($data['quotation_data']);
         }
 
-        //$data['content'] = view('crm/sales-quot_report_search');
+        
 
-       // return view('crm/report-module',$data);
-
-      // return view('crm/sales-quot_report_search',$data);
+      $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
       $data['sales_executives'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
       $data['Products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-       $data['content'] = view('crm/sales-quot_report',$data);
+      $data['content'] = view('crm/sales-quot_report',$data);
 
        return view('crm/report-module-search',$data);
 

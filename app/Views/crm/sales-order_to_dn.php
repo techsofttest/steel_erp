@@ -81,6 +81,9 @@
                                                                                 <td>Customer</td>
                                                                                 <td><select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
+                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
+                                                                                        <?php } ?>
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -189,10 +192,10 @@
                                         <button class="excel_button report_button" type="submit">Excel</button>
                                         <!-- </form> -->
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
+                                        <!--<form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">-->
                                             <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                        <!--</form>-->
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
@@ -254,17 +257,20 @@
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->totaldelivered); ?></td>
                                                                              
                                                                             <?php
-                                                                              
+
+                                                                              $delivery_amount =  $sales_prod->totaldelivered + $delivery_amount;
+                                                                               
                                                                               $final_amount = $sales_prod->spd_amount -  $sales_prod->totaldelivered;
 
                                                                               $total_amount2 = $final_amount + $total_amount2;
                                                                             
                                                                              if(!empty($final_amount)){
+
                                                                             ?>
                                                                             
-                                                                            <td class="rotate text-end" width="80px"><?php echo format_currency($final_amount)?></td>
+                                                                                <td class="rotate text-end" width="80px"><?php echo format_currency($final_amount)?></td>
 
-                                                                            <?php } else{?> 
+                                                                            <?php } else{ ?> 
                                                                                 <td class="rotate text-end" width="80px">0.00</td>    
                                                                             <?php } ?>
 
@@ -279,11 +285,6 @@
                                                                 </table>
                                                             </td>
 
-
-                                                           
-
-
-                                                          
 
 
 
@@ -309,12 +310,8 @@
                                                     <td></td>
                                                     <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
                                                     <td></td>
-                                                    <td></td>
-                                                   
-                                                    
-                                                   
+                                                    <td class="text-end"><b><?php echo format_currency($delivery_amount);?></b></td>
                                                     <td class="text-end"><b><?php echo format_currency($total_amount2); ?></b></td>
-
 
                                                 </tr>
 
@@ -371,44 +368,19 @@
         <?php endif; ?>
         /*modal open end*/
 
-
-        /* customer droup drown */
-        $(".droup_customer").select2({
-            placeholder: "Select Customer",
-            theme: "default form-control- customer_width",
-            dropdownParent: $('#SalesOrderToDn'),
-
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesOrderToDn/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.cc_id,
-                                text: item.cc_customer_name
-                            }
-                        }),
-                        pagination: {
-                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },
-            }
-        })
-        /**/
+         /*print button section start*/
+        $('body').on('click','.print_button',function(e){
+              
+              // Open the PDF generation script in a new window
+              var pdfWindow = window.open('<?= base_url()."Crm/SalesOrderToDn/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+  
+              // Automatically print when the PDF is loaded
+              pdfWindow.onload = function() {
+                  pdfWindow.print();
+              };
+  
+          });
+        
 
         /*fetch  sales executive by  customer*/
 

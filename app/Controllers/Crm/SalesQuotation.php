@@ -1624,8 +1624,40 @@ class SalesQuotation extends BaseController
        $this->common_model->EditData($data,$cond2,'crm_quotation_details');
 
        
-        
 
+    }
+
+
+
+    public function CostVendor()
+    {    
+        $id = $this->request->getPost('ID');
+
+        $fetch_vendor = $this->common_model->FetchVendor($id);
+
+        $data['prod_details'] ="";
+        
+        $i =1; 
+        foreach($fetch_vendor as $fetch_ven){
+           
+            $data['prod_details'] .='<tr>
+            <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
+            <td colspan="2"><input type="text"  value="'.$fetch_ven->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$fetch_ven->ven_name.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$fetch_ven->po_date.'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.$fetch_ven->pop_rate.'" class="form-control" readonly></td>
+           
+            </tr>'; 
+
+        $i++;
+        
+        }
+
+
+        echo json_encode($data); 
+
+        
+       
     }
 
 

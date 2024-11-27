@@ -262,6 +262,14 @@ class InvoiceReport extends BaseController
             $data['to_dates'] = "";
         }
 
+
+        if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
+        {
+           $this->Pdf($data['sales_orders'],$data['from_dates'],$data['to_dates']);
+        }
+        
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
         $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
         $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
@@ -272,6 +280,247 @@ class InvoiceReport extends BaseController
         return view('crm/report-module-search',$data);
 
     }
+
+
+    public function Pdf($sales_orders,$from_date,$to_date)
+    {   
+        
+        if(!empty($sales_orders)){
+
+            $title = "SQR";
+
+            $sales_total = 0;
+            $invoice_total = 0;
+            $pdf_data ="";
+            foreach($sales_orders as $sale_data){
+                $new_date = date('d-M-Y',strtotime($sale_data->date));
+               
+                $pdf_data .="<tr>
+                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->reference}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->customer_name}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->delivery_reff}</td>
+                                <td style='border-top: 2px solid' width='120px'>{$sale_data->sales_order}</td>
+                                <td style='border-top: 2px solid' width='80px'>{$sale_data->sales_lpo}</td>
+                                <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->amount)."</td>
+                                <td style='border-top: 2px solid' width='100px'>{$sale_data->product}</td>
+                                <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->quantity}</td>
+                                <td style='border-top: 2px solid' width='8px' align='right'>{$sale_data->rate}</td>
+                                <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->discount}%</td>
+                                <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
+                               
+                                $invoice_total =  $sale_data->prod_amount + $invoice_total; 
+
+                                $sales_total =  $sale_data->amount + $sales_total;
+                              
+                          
+
+
+                $pdf_data .="</tr>";
+
+            }
+
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
+            }
+
+
+            
+           // $mpdf = new \Mpdf\Mpdf();
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $fontDirs = $defaultConfig['fontDir'];
+
+           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+           $fontData = $defaultFontConfig['fontdata'];
+
+
+           $mpdf = new \Mpdf\Mpdf([
+            'format' => 'Letter', // Custom page size in millimeters
+            'default_font_size' => 9, 
+            'margin_left' => 5, 
+            'margin_right' => 5,
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts'
+            ]),
+            'fontdata' => $fontData + [
+                'bentonsans' => [
+                  
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf',
+                ],
+            ],
+            'default_font' => 'bentonsans'
+            
+        ]);
+
+
+            $mpdf->SetTitle('Invoice Report'); // Set the title
+
+          
+
+            $html ='
+        
+            <style>
+            th, td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+        
+            <table>
+            
+            <tr>
+            
+            
+        
+            <td>
+        
+            <h3>Al Fuzail Engineering Services WLL</h3>
+            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+            
+            
+            </td>
+            
+            </tr>
+        
+            </table>
+        
+        
+        
+            <table width="100%" style="margin-top:10px;">
+            
+        
+            <tr width="100%">
+            <td>Period : '.$dates.'</td>
+            <td align="right"><h3>Invoice Report</h3></td>
+        
+            </tr>
+        
+            </table>
+
+           
+        
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            
+        
+            <tr>
+            
+                <th align="ceneter" width="40px">Date</th>
+            
+                <th align="ceneter" width="100px">Invoice Ref.</th>
+            
+                <th align="ceneter" width="100px">Customer</th>
+            
+                <th align="ceneter" width="100px">Delivery Note Ref.</th>
+            
+                <th align="ceneter" width="120px">Sales Order Ref.</th>
+
+                <th align="ceneter" width="80px">Lpo Ref.</th>
+
+                <th align="ceneter" width="80px">Amount</th>
+
+                <th align="ceneter" width="100px">Product</th>
+
+                <th align="ceneter" width="80px">Quantity</th>
+
+                <th align="ceneter" width="80px">Rate</th>
+
+                <th align="ceneter" width="80px">Discount</th>
+
+                <th align="ceneter" width="80px">Amount</th>
+
+
+                
+
+            
+            </tr>
+
+             
+            '.$pdf_data.'
+
+
+            <tr>
+
+                <td style="border-top: 2px solid;" width="40px">Total</td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="120px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+
+                <td style="border-top: 2px solid;" width="80px" align="right">'.format_currency($sales_total).'</b></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+                
+                <td style="border-top: 2px solid;" width="80px">'.format_currency($invoice_total).'</td>
+
+
+
+                
+            
+            </tr>
+
+
+
+           
+            
+            </table>
+
+
+        
+            ';
+        
+            //$footer = '';
+             
+            //echo $html; exit();
+            
+            $mpdf->WriteHTML($html);
+           // $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
+        }
+
+       
+    }
+   
+
+    
 
       
 

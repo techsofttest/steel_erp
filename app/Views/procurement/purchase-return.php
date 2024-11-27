@@ -546,8 +546,8 @@
 
                 <div class="modal-footer justify-content-center">
                     
-                    <input type="hidden" id="select_prod_id" name="select_prod_id" value="">                                
-                    <span class="btn btn btn-success prod_modal_submit">Save</span>
+                                               
+                    <span class="btn btn btn-success payment_modal_submit" data-bs-dismiss="modal" aria-label="Close">Save</span>
 
                 </div>
 

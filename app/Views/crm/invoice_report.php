@@ -81,6 +81,10 @@
                                                                                 <td>Customer</td>
                                                                                 <td><select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
+                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
+                                                                                        <?php } ?>
+
                                                                                     </select></td>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -179,10 +183,10 @@
                                         <button class="excel_button report_button" type="submit">Excel</button>
                                         <!-- </form> -->
 
-                                        <form method="POST" action="" target="_blank">
-                                            <input type="hidden" name="pdf" value="1">
+                                        <!--<form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">-->
                                             <button class="print_button report_button" type="submit">Print</button>
-                                        </form>
+                                        <!--</form>-->
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
@@ -217,16 +221,16 @@
                                                 <?php
                                                 $sales_total = 0;
                                                 $invoice_total = 0;
+                                                $reff_id = "";
                                                 if (!empty($sales_orders)) {
                                                     if(!empty($sales_orders))
                                                     {   
                                                        
                                                         $i =1;
-    
+                                                       
                                                         foreach($sales_orders as $sale_data){?> 
                                                         <tr>
-                                                            <td class="height_class" style="width:40px"><?php echo $i; ?></td>
-                                                            <td class="height_class" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                            
                                                             <?php
                                                             if($sale_data->link == "cash invoice"){
                                                               
@@ -248,33 +252,81 @@
                                                                 $view = "";
                                                             }
 
-                                                            ?>
-                                                            <td  class="p-0" style="height:100%,width:100px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
-                                                            <td class="height_class" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
-                                                            <td class="height_class" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
-                                                            <td class="height_class" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
-                                                            <td class="height_class" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
-                                                            <td class="height_class text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                          
+                                                            
+
+                                                            if($sale_data->reference == $reff_id){ ?>
+
+                                                                <td class="height_class" style="width:40px"></td>
+                                                                <td class="height_class" style="width:100px"></td>
+                                                                <td  class="p-0" style="height:100%,width:100px"></td>
+                                                                <td class="height_class" style="width:300px"></td>
+                                                                <td class="height_class" style="width:100px"></td>
+                                                                <td class="height_class" style="width:120px"></td>
+                                                                <td class="height_class" style="width:100px"></td>
+                                                                <td class="height_class text-end" style="width:100px"></td>
+                                                                
+                                                            <?php } else{ ?>
+                                                                <td class="height_class" style="width:40px"><?php echo $i; ?></td>
+                                                                <td class="height_class" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                                <td  class="p-0" style="height:100%,width:100px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                                <td class="height_class" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
+                                                                <td class="height_class" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
+                                                                <td class="height_class" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
+                                                                <td class="height_class" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
+                                                                <td class="height_class text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                                
+                                                                
+                                                            <?php } ?>
+                                                            
+                                                            
+                                                            
                                                             <td class="height_class" style="width:500px"><?php echo $sale_data->product; ?></td>
                                                             <td class="height_class text-center" style="width:80px"><?php echo $sale_data->quantity; ?></td>
                                                             <td class="height_class text-end" style="width:80px"><?php echo $sale_data->rate; ?></td>
                                                             <td class="height_class text-end" style="width:80px"><?php echo $sale_data->discount; ?>%</td>
-                                                            <td class="height_class text-end" style="width:80px"><?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                             
+                                                            <?php if($sale_data->amount_check == "sales return"){ ?> 
+                                                                
+                                                                <td class="height_class text-end" style="width:80px">-<?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                
+                                                                <?php $invoice_total =    $invoice_total - $sale_data->prod_amount; ?>  
+
+                                                            <?php } else{ ?> 
+                                                                 
+                                                                <td class="height_class text-end" style="width:80px"><?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                
+                                                                <?php $invoice_total =  $sale_data->prod_amount + $invoice_total; ?>  
+                                                                
+
+                                                            <?php } ?>
+
+                                                            
 
                                                             
                                                             <?php 
 
-                                                            $invoice_total =  $sale_data->prod_amount + $invoice_total; 
+                                                           
 
                                                             $sales_total =  $sale_data->amount + $sales_total; 
 
+                                                            if ($reff_id != $sale_data->reference)
+                                                            {
+                                                               
+                                                            $reff_id = $sale_data->reference;
+                                                            $i++;
+
+                                                            }
+
 
                                                             ?>
+
+                                                            
                                                         
                                                         </tr>
             
                                                         
-                                                    <?php  $i++; }  }  }?>
+                                                    <?php   }  }  }?>
     
 
                                                 <tr>
@@ -352,44 +404,18 @@
 
         /*modal open end*/
 
-
-        /* customer droup drown */
-        $(".droup_customer").select2({
-            placeholder: "Select Customer",
-            theme: "default form-control- customer_width",
-            dropdownParent: $('#InvoiceReport'),
-
-            ajax: {
-                url: "<?= base_url(); ?>Crm/InvoiceReport/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function(params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function(item) {
-                            return {
-                                id: item.cc_id,
-                                text: item.cc_customer_name
-                            }
-                        }),
-                        pagination: {
-                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },
-            }
-        })
-        /**/
+        /*print button section start*/
+        $('body').on('click','.print_button',function(e){
+              
+              // Open the PDF generation script in a new window
+              var pdfWindow = window.open('<?= base_url()."Crm/InvoiceReport/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+  
+              // Automatically print when the PDF is loaded
+              pdfWindow.onload = function() {
+                  pdfWindow.print();
+              };
+  
+        });
 
         /*fetch  sales executive by  customer*/
 

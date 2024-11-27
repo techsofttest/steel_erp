@@ -1542,7 +1542,21 @@ class CommonModel extends Model
     }
 
 
+    
+    public function FetchVendor($id){
+        $query = $this->db->table('pro_purchase_order')
+        ->select('*');
+        $query->join('pro_purchase_order_product','pro_purchase_order_product.pop_purchase_order = pro_purchase_order.po_id','left');
+        $query->join('crm_products','crm_products.product_id = pro_purchase_order_product.pop_prod_desc','left');
+        $query->join('pro_vendor','pro_vendor.ven_id = pro_purchase_order.po_vendor_name','left');
+        $query->where('pop_prod_desc',$id)
+        ->orderBy('pro_purchase_order_product.pop_id', 'DESC') // Add your column and direction (ASC or DESC)
+        ->limit(3); // Set the limit
+        $result = $query->get()->getResult();
+        //echo $this->db->getLastQuery(); exit();
+       return $result;
 
+    }
 
    
 

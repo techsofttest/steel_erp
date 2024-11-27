@@ -223,10 +223,12 @@ class DeliveryNoteReport extends BaseController
             $data['to_dates'] = "";
         }
 
-       if(!empty($_POST['pdf']))
+       if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
        {   
            $this->Pdf($data['delivery_note'],$data['from_dates'],$data['to_dates']);
        }
+
+       $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
        $data['sales_orders_data'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
@@ -242,7 +244,8 @@ class DeliveryNoteReport extends BaseController
 
     public function Pdf($delivery_note,$from_date,$to_date)
     {   
-       
+        $total_amount = 0;
+        $total_amount1 = 0;
         if(!empty($delivery_note))
         {   
             $pdf_data = "";
@@ -259,134 +262,63 @@ class DeliveryNoteReport extends BaseController
             );
 
             
-            $total_amount = 0;
+           
             foreach($delivery_note as $del_note)
             {   
-                $q=1;
-                $border="border-top: 2px solid";
-
-                $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',array('dpd_delivery_id'=>$del_note->dn_id),$joins1);
                 
-                $total_amount = $total_amount + $del_note->dn_total_amount;
-
-                $sales_amount = format_currency($del_note->dn_total_amount);
 
                 $new_date = date('d-m-Y',strtotime($del_note->dn_date));
 
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-
-                $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->dn_reffer_no}</td>";
-
-                $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->cc_customer_name}</td>";
+                $pdf_data .= "<tr>
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->so_reffer_no}</td>";
+                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$del_note->dn_lpo_reference}</td>";
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_reffer_no}</td>
 
-                $pdf_data .= "<td style='border-top: 2px solid' align='right'>{$sales_amount}</td>";
-                
-                
-                if($q!=1){
-                     
-                    $pdf_data .="</tr>";
-                }
-                foreach($product_details as $prod_del)
-                {
-                    if($q!=1){
+                                <td style='border-top: 2px solid' width='100px';>{$del_note->cc_customer_name}</td>
+                                
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->so_reffer_no}</td>
 
-                        $pdf_data .="<tr>";
+                                <td style='border-top: 2px solid' width='80px'>{$del_note->dn_lpo_reference}</td>";
 
-                        $pdf_data .= "<tr><td style=''></td>";
+                                $total_amount =  $del_note->dn_total_amount + $total_amount;
 
-                        $pdf_data .= "<td style=''></td>";
+                               
 
-                        $pdf_data .= "<td style=''></td>";
-                        
-                        $pdf_data .= "<td style=''></td>";
+                                $pdf_data .= "<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($del_note->dn_total_amount)."</td>
+                                
+                                <td colspan='6' align='left' class='p-0' style='border-top: 2px solid'>
+                                    <table>";
 
-                        $pdf_data .= "<td style=''></td>";
+                                    foreach($del_note->delivery_product as $delv_prod){
+                                        $pdf_data .="<tr>
 
-                        $pdf_data .= "<td style=''></td>";
-                    }
+                                                        <td width='200px'>{$delv_prod->product_details}</td>
+                                                        <td width='80px' align='center'>{$delv_prod->dpd_order_qty}</td>
+                                                        <td width='80px' align='center'>{$delv_prod->dpd_current_qty}</td>
+                                                        <td width='80px' align='right'>".format_currency($delv_prod->dpd_prod_rate)."</td>
+                                                        <td width='80px' align='center'>{$delv_prod->dpd_prod_dicount}</td>
+                                                        <td width='80px' align='right'>".format_currency($delv_prod->dpd_total_amount)."</td>";
 
-                    
+                                                        $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1;
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+                                        $pdf_data .=" </tr>";
+                                    }
+                                       
+                                    $pdf_data .= "</table>
 
-                    $pdf_data .= "<td align='center' style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->dpd_current_qty}</td>";
-
-                    $pdf_data .= "<td align='center' style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->dpd_delivery_qty}</td>";
-
-                    $pdf_data .= "<td align='right' style='";
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    
-                    $delivery_date = format_currency($prod_del->dpd_prod_rate);
-
-                    $pdf_data .= "'>{$delivery_date}</td>";
+                                </td>
+                                
+                                ";
 
 
-                    $pdf_data .= "<td align='right' style='";
-
-                    $discount_amount = format_currency($prod_del->dpd_prod_dicount);
-
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$discount_amount}%</td>";
-
-                    
-                    
-                    $pdf_data .= "<td align='right' style='";
-
-                    
-                    $delivery_amount = format_currency($prod_del->dpd_total_amount);
-
-                    if ($q == 1) {
-                    
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$delivery_amount}</td>";
-
-                    
-                    if($q!=1)
-                    {
-                        $pdf_data .="</tr>";
-                    }
-
-                    $q++;
-
-                }
-                
-                if($q==1)
-                {
-                    $pdf_data .="</tr>";
-                }
-
-               // $pdf_data .="</tr>";
-                 
+               
+                $pdf_data .="</tr>";
                 
                
                 
             }
+            
 
             if(empty($from_date) && empty($to_date))
             {
@@ -428,7 +360,7 @@ class DeliveryNoteReport extends BaseController
 
             $mpdf->SetTitle('Delivery Note Report'); // Set the title
 
-            $total_amount = format_currency($total_amount);
+           
 
             $html ='
         
@@ -495,30 +427,41 @@ class DeliveryNoteReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="left" width="40px">Date</th>
         
             <th align="left" width="100px">Delivery Note.</th>
         
-            <th align="left">Customer</th>
+            <th align="left" width="100px">Customer</th>
         
             <th align="left" width="100px">Sales Order </th>
         
-            <th align="left" width="70px">LPO Ref</th>
+            <th align="left" width="80px">LPO Ref</th>
 
-            <th align="right">Amount</th>
+            <th align="right" width="80px">Amount</th>
 
-            <th align="left">Product</th>
+            <th colspan="6" align="left" class="p-0">
 
-            <th align="left" width="90px">Qty Ordered</th>
+                <table>
+                    <tr>
 
-            <th align="left" width="95px">Qty Delivered</th>
+                        <th align="left" width="200px">Product</th>
 
-            <th align="center">Rate</th>
+                        <th align="left" width="80px">Qty Ordered</th>
 
-            <th align="right">Discount</th>
+                        <th align="left" width="80px">Qty Delivered</th>
+
+                        <th align="center" width="80px">Rate</th>
+
+                        <th align="right" width="80px">Discount</th>
+                        
+                        <th align="right" width="80px">Amount</th>
+                    
+                    </tr>
+                
+                </table>
             
-            <th align="right">Amount</th>
-        
+            </th>
+
             
             </tr>
 
@@ -526,20 +469,35 @@ class DeliveryNoteReport extends BaseController
             '.$pdf_data.'
 
             <tr>
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"><b>'.$total_amount.'</b></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" ></td>
-                <td style="border-top: 2px solid;"><b>'.$total_amount.'</b></td>
-                
-            </tr>    
+
+                <td style="border-top: 2px solid;" width="40px">Total</td>
+                <td style="border-top: 2px solid;" width="100px"></td>
+                <td style="border-top: 2px solid;" width="100px"></td>
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="80px"></td>
+                <td style="border-top: 2px solid;" width="80px" align="right">'.format_currency($total_amount).'</td>
+
+                <td colspan="6"  class="p-0" style="border-top: 2px solid">
+                    <table>
+                       <tr style="background: unset;border-bottom: hidden !important;">
+
+                            <td  width="200px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px" align="right">'.format_currency($total_amount1).'</td>
+                            
+
+                           
+                       
+                       </tr>
+                    
+                    </table>
+                </td>
+            
+            </tr>
            
             
             </table>

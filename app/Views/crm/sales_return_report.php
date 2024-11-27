@@ -103,6 +103,10 @@
                                                                                 <td>
                                                                                     <select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
+                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                            <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
+                                                                                        <?php } ?>
+
                                                                                     </select>
                                                                                 </td>
                                                                                 <td></td>
@@ -191,7 +195,24 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                      <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">Sales Return Report<?php if (!empty($form_date) && !empty($to_date)) { ?>(<?php echo $form_date; ?> To <?php echo $to_date; ?>)<?php } ?></h4>
+                                     <form method="POST" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button type="submit" class="pdf_button report_button">PDF</button>
+                                        </form>
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="excel_button report_button" type="submit">Excel</button>
+                                        <!-- </form> -->
 
+                                        <!--<form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">-->
+                                            <button class="print_button report_button" type="button">Print</button>
+                                        <!--</form>-->
+
+                                        <!-- <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="excel" value="1"> -->
+                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <!-- </form> -->
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
@@ -335,38 +356,18 @@
         /*modal open end*/
 
 
-        /* customer droup drown */
-        $(".droup_customer").select2({
-            placeholder: "Select Customer",
-            theme : "default form-control- customer_width",
-            dropdownParent: $('#SalesReturnReport'),
-
-            ajax: {
-                url: "<?= base_url(); ?>Crm/SalesReturnReport/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /**/
+      /*print button section start*/
+      $('body').on('click','.print_button',function(e){
+              
+              // Open the PDF generation script in a new window
+              var pdfWindow = window.open('<?= base_url()."Crm/SalesReturnReport/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+  
+              // Automatically print when the PDF is loaded
+              pdfWindow.onload = function() {
+                  pdfWindow.print();
+              };
+  
+          });
 
         /*fetch  sales executive by  customer*/   
 

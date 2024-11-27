@@ -496,7 +496,7 @@
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz" required></td>
                                                                 <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz" required></td>
-                                                                <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CostClick">Click</a></td>
+                                                                <td><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
                                                                 <td><input type="number" name="qc_rate[0]"  class="form-control cost_rate_clz" required></td>
                                                                 
                                                                 <td><input type="number" name="qc_amount[0]" class="form-control cost_amount_clz" readonly></td>
@@ -581,42 +581,21 @@
                                                 <!--table section start-->
                                                 <div class="mt-4">
                                                     <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo contact_tbody">
+                                                        <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td>Serial No.</td>
-                                                                <td>Cost Of Materials / Services</td>
+                                                                <td colspan="2">Cost Of Materials / Services</td>
                                                                 <td>Vendor</td>
                                                                 <td>Date</td>
                                                                 <td>Rate</td>
                                                                 
                                                             </tr>
-                                                            <tr>
-                                                                <td style="width: 10%;">1</td>
-                                                                <td><input type="text" value="Fab & Supply Of Drip Tray" class="form-control" readonly></td>
-                                                                   
-                                                                
-                                                                <td><input type="text" name="vendor[]" value="vendor1" class="form-control" readonly></td>
-                                                                <td><input type="text" name="date[]"  value="03-01-2024" class="form-control qtn_clz_id" readonly></td>
-                                                                
-                                                                <td><input type="number" name="qpd_rate[]" value="500" class="form-control rate_clz_id" readonly></td>
-                                                                
-                                                             
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td style="width: 10%;">2</td>
-                                                                <td><input type="text" value="MS Equal Angle 50mm X 50mm X 8.00mm X 6M" class="form-control" readonly></td>
-                                                                   
-                                                                
-                                                                <td><input type="text" name="vendor[]" value="vendor2" class="form-control" readonly></td>
-                                                                <td><input type="text" name="date[]"  value="04-01-2024" class="form-control qtn_clz_id" readonly></td>
-                                                                
-                                                                <td><input type="number" name="qpd_rate[]" value="1000" class="form-control rate_clz_id" readonly></td>
-                                                                
-                                                             
-                                                            </tr>
                                                            
-                                                        </tbody>
+
+                                                        </thead>
+
+                                                        <tbody  class="travelerinfo click_vendor_det"></tbody>
+				
                                                         
                                                     </table>
                                                 </div>
@@ -2343,6 +2322,7 @@
         /*#####*/
 
 
+       
 
     
         /*add section*/    
@@ -2382,6 +2362,7 @@
             });
         });
 
+        
 
         $(function() {
             var form = $('#add_form2');
@@ -2816,7 +2797,7 @@
             
             cc++;    
 
-                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' data-bs-toggle='modal' data-bs-target='#CostClick'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 InitSelect2();
             }
         });
@@ -4367,6 +4348,56 @@
 
 
     });
+
+
+  
+           
+    function costVendor() {
+        // 'this' refers to the clicked element
+        var $productcountSelect = $(this);
+
+        // Find the closest '.cost_cal_row' and the '.cost_product_det' within it
+        var $productSelectElement = $productcountSelect.closest('.cost_cal_row').find('.cost_product_det');
+
+        // Get the value of the '.cost_product_det' element
+        var product = $productSelectElement.val();
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/SalesQuotation/CostVendor",
+
+            method : "POST",
+
+            data: {ID: product},
+
+            success:function(data)
+            {
+                var responseData = JSON.parse(data);
+                if(responseData.prod_details == "" ){
+                    
+                    alertify.error('No PUrchase Order Created').delay(3).dismissOthers();
+                }
+                else{
+                    $(".click_vendor_det").html(responseData.prod_details);
+
+                    $('#CostClick').modal('show');
+
+                    $('#CostCalculation').modal('hide');
+
+                }
+
+            }
+
+        });
+
+        // Log the correct variable
+        //console.log($productSelectElement); // Logs the jQuery object for '.cost_product_det'
+        //console.log(product); // Logs the value of '.cost_product_det'
+    }
+
+   
+
+
       
     
   

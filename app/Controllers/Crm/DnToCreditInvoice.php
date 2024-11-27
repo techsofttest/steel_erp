@@ -253,10 +253,12 @@ class DnToCreditInvoice extends BaseController
        }
 
        
-       if(!empty($_POST['pdf']))
+       if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
        {
            $this->Pdf($data['delivery_data'],$data['from_dates'],$data['to_dates']);
        }
+
+       $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
        
        $data['delivery_note_data'] = $this->common_model->FetchAllOrder('crm_delivery_note','dn_id','desc');
 
@@ -279,83 +281,90 @@ class DnToCreditInvoice extends BaseController
 
             $title = "SQR";
 
-            $pdf_data = "";
-            $delivery_prod = 0;
-            $invoice_amount = 0;
-            $difference_amount = 0;
+            $delivery_total = 0;
+            $delivery_prod_total = 0;
+            $diff_total= 0;
+            $del_diff =0;
+            $del_diff_total =0;
+            $diff_sum = 0;
+            $pdf_data ="";
             foreach($delivery_data as $del_note){
                 $new_date = date('d-M-Y',strtotime($del_note->dn_date));
-                $total_sales_amount = format_currency($del_note->dn_total_amount);
+               
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid'>{$new_date}</td>
-                                <td style='border-top: 2px solid'>{$del_note->dn_reffer_no}</td>
-                                <td style='border-top: 2px solid'>{$del_note->cc_customer_name}</td>
-                                <td style='border-top: 2px solid'>{$del_note->so_reffer_no}</td>
-                                <td style='border-top: 2px solid'>{$del_note->dn_lpo_reference}</td>
-                                <td style='border-top: 2px solid'>{$total_sales_amount}</td>
-                                <td colspan='5' align='left' class='p-0' style='border-top: 2px solid'>
-                                    <table>";
-                                        foreach($del_note->delivery_products as $del_prod){
-                                            $sales_amount = format_currency($del_prod->dpd_total_amount);
+                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_reffer_no}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->cc_customer_name}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->so_reffer_no}</td>
+                                <td style='border-top: 2px solid' width='100px'>{$del_note->dn_lpo_reference}</td>";
+                                
+                                $delivery_total  = $del_note->dn_total_amount + $delivery_total;
+                               
+                                $pdf_data .="<td style='border-top: 2px solid' width='80px'>".format_currency($del_note->dn_total_amount)."</td>";
 
-                                            $sales_rate = format_currency($del_prod->dpd_prod_rate);
+                                $pdf_data .="<td colspan='7' align='left' class='p-0' style='border-top: 2px solid'>
+                                
+                                                <table>";
 
-                                            $sales_discount = format_currency($del_prod->dpd_prod_dicount);
+                                                foreach($del_note->delivery_products as $del_prod){
+                                                   
+                                                    $pdf_data .="<tr >
+                                                                    <td width='200px'>{$del_prod->product_details}</td>
+                                                                    <td width='80px' align='center'>{$del_prod->dpd_current_qty}</td>
+                                                                    <td width='80px' align='right'>{$del_prod->dpd_prod_rate}</td>
+                                                                    <td width='80px' align='center'>{$del_prod->dpd_prod_dicount}</td>
+                                                                    <td width='80px' align='right'>{$del_prod->dpd_total_amount}</td>";
+                                                                    
+                                                                    $delivery_prod_total = $del_prod->dpd_total_amount + $delivery_prod_total;
 
-                                            $pdf_data .="<tr  class='product-row'>
-                                                            <td  width='100px' height='90px'>{$del_prod->product_details}</td>
-                                                            <td  width='100px' align='center' height='90px'>{$del_prod->dpd_current_qty}</td>
-                                                            <td  align='right' width='100px' height='90px'>{$sales_rate}</td>
-                                                            <td align='right' width='100px' height='90px'>{$sales_discount}%</td>
-                                                            <td align='right' width='100px' height='90px'>{$sales_amount}</td>
-                                                        </tr>";
-                                                        $delivery_prod  =  $del_prod->dpd_total_amount +  $delivery_prod;
-                                        }
-                                    $pdf_data .="</table>
-                                </td>
+                                                                    $pdf_data .="<td colspan='2' align='left' class='p-0'>
+                                                                    
+                                                                                    <table>";
+                                                                                        if(!empty($del_prod->invoices)){
 
-                                <td colspan='6' align='left' class='p-0' style='border-top: 2px solid'>" ;
-                                    if(!empty($del_note->credit_invoices)){
-                                        $pdf_data .="<table>";
-                                            foreach($del_note->credit_invoices as $credit_inv){
-                                                $j=1;
-                                                foreach($credit_inv->invoices_product as $inv_prod){ 
+                                                                                            foreach ($del_prod->invoices as $invoice) {
 
-                                                    $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;' class='invoice-row'>";
-                                                        if($j==1){
-                                                            $pdf_data .="<td width='100px' height='90px'>{$credit_inv->cci_reffer_no}</td>";
-                                                        } else{
-                                                            $pdf_data .="<td width='100px' height='90px'></td>";
-                                                        }
+                                                                                                $pdf_data .="<tr>
+                                                                                                                <td width='100px' align='center'>{$invoice->cci_reffer_no}</td>";
+                                                                                                                
+                                                                                                                $difference = $del_prod->dpd_total_amount - $invoice->ipd_amount;
+                                                                                                                $diff_total =  $difference +  $diff_total;
 
-                                                    $pdf_data .= "";
-                                                                  if(!empty($credit_inv->invoices_product)){
-                                                                    $pdf_data .= "<td width='100px'>----</td>";
-                                                                  }
-                                                                  
-                                                    $pdf_data .= "</tr>";
-                                                    $j++;
+                                                                                                                $pdf_data .="<td width='100px' align='right'>{$difference}</td>";
+
+                                                                                                $pdf_data .="</tr>";
+
+                                                                                            }
+
+                                                                                        }
+                                                                                        else{
+
+                                                                                            $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
+                                                                                                               <td width='100px'></td>
+                                                                                                               <td width='100px' align='right'>".format_currency($del_prod->dpd_total_amount)."</td>";
+                                                                                                               
+                                                                                                               $del_diff = $del_prod->dpd_total_amount; 
+                                                                                                               
+                                                                                                               $del_diff_total = $del_diff +  $del_diff_total;
+
+                                                                                            $pdf_data.="</tr>"; 
+                                                                                        }
+                                                                                    $pdf_data .="</table>";
+                                                                            
+                                                                    
+                                                                    $pdf_data .="</td>";
+
+                                                                    $diff_sum = $diff_total + $del_diff_total;
+
+                                                    $pdf_data .="</tr>";
+
                                                 }
-                                            }
-                                        $pdf_data .="</table>";
-                                    } else{
-                                        $pdf_data .="<table>";
-                                                        foreach($del_note->delivery_products as $del_prod){
+                                                
+                                                $pdf_data .="</table>
+                                
+                                            </td>";
+                               
 
-                                                        $pdf_data .="<tr class='invoice-row' style='background: unset;border-bottom: hidden !important;'>
-                                                            
-                                                        <td width='100px' height='90px'></td>
-                                                        <td width='100px' height='90px'>{$del_prod->dpd_total_amount}</td>
-                                                            
-                                                        </tr>";
-
-                                                        $difference_amount = $del_prod->dpd_total_amount + $difference_amount;
-                                                         
-                                                        }
-
-                                        $pdf_data .="</table>"; 
-                                    }
-                                $pdf_data .="</td>
 
 
                               
@@ -364,7 +373,7 @@ class DnToCreditInvoice extends BaseController
 
 
 
-                            </tr>";
+                $pdf_data .="</tr>";
 
             }
 
@@ -410,7 +419,7 @@ class DnToCreditInvoice extends BaseController
 
             $mpdf->SetTitle('Delivery Note to Credit Invoice Report'); // Set the title
 
-            $delivery_prod = format_currency($delivery_prod);
+          
 
             $html ='
         
@@ -477,32 +486,54 @@ class DnToCreditInvoice extends BaseController
         
             <tr>
             
-                <th align="left">Date</th>
-
-                <th align="left" width="100px">Delivery Note</th>
-
-                <th align="left">Customer</th>
+                <th align="left" width="40px">Date</th>
             
-                <th align="left" width="100px">Sales Order </th>
+                <th align="left" width="100px">Delivery Note</th>
+            
+                <th align="left" width="100px">Customer</th>
+            
+                <th align="left" width="100px">Sales Order Ref</th>
             
                 <th align="left" width="100px">LPO Ref</th>
+
+                <th align="left" width="80px">Amount</th>
+
+                <th colspan="7">
+
+                    <table>
+
+                        <tr>
+                            <th align="left" width="200px">Product</th>
+
+                            <th align="center" width="80px">Quantity</th>
+
+                            <th align="center" width="80px">Rate</th>
+
+                            <th align="center" width="80px">Discount</th>
+
+                            <th align="center" width="80px">Amount</th>
+
+                            <th colspan="2">
+
+                                <table>
+
+                                    <tr>
+                                        <th align="center" width="100px">Invoice Ref</th>
+
+                                        <th align="center" width="100px">Difference</th>
+
+                                    </tr>
+
+                                </table>
+
+                            </th>
+
+                        </tr>
+
+                    </table>
+                </th>
+
             
-                <th align="right">Amount</th>
-
-                <th align="left">Product</th>
-
-                <th align="center">Quantity</th>
-
-                <th align="right" width="100px">Rate</th>
-
-                <th align="right" width="100px">Discount</th>
-
-                <th align="right" width="100px">Amount</th>
-
-                <th align="left" width="100px">Invoice Ref</th>
-
-                 <th align="left" width="100px">Difference</th>
-
             </tr>
 
              
@@ -510,24 +541,59 @@ class DnToCreditInvoice extends BaseController
 
 
             <tr>
-                
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"><b>'.$delivery_prod.'</b></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right"><b>'.$delivery_prod.'</b></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                
-                
+
+                <td style="border-top: 2px solid;" width="40px">Total</td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="100px"></td>
+
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($delivery_total).'</b></td>
+
+                <td colspan="7"  class="p-0" style="border-top: 2px solid">
+
+                    <table>
+
+                        <tr>
+
+                            <td  width="200px"></td>
+
+                            <td  width="80px"></td>
+
+                            <td  width="80px"></td>
+
+                            <td  width="80px" ></td>
+
+                            <td  width="80px" align="right" ><b>'.format_currency($delivery_prod_total).'</b></td>
+
+
+                            <td colspan="2"  class="p-0">
+
+                                <table>
+
+                                    <tr>
+
+                                        <td  width="100px" ></td>
+                                        <td  width="100px" align="right"><b>'.format_currency($diff_sum).'</b></td>
+                                       
+                                    
+                                    </tr>
+                                
+                                </table>
+                            
+                            </td>
+                       
+                        </tr>
+                    
+                    </table>
+
+                </td>
             
-            </tr> 
+            </tr>
 
 
 

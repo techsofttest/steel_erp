@@ -205,10 +205,12 @@ class SalesQuotAnalysisReport extends BaseController
             $data['to_dates'] = "";
         }
 
-        if(!empty($_POST['pdf']))
+        if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
         {
             $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
         }
+
+        $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['products_data'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
@@ -232,104 +234,108 @@ class SalesQuotAnalysisReport extends BaseController
         if(!empty($quotation_data))
         {   
             $pdf_data = "";
-            $total_quot_amount = 0;
-            $sales_amount = 0;
-            $sales_diff_amount = 0;
+            
+
+            $quot_prod_total = 0;
+            $sales_prod_total = 0;
+            $diff_total = 0;
+            $quot_diff_total = 0;
             foreach($quotation_data as $quot_data){
 
                 $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
             
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid' width='100'>{$quot_data->qd_reffer_no}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
-                $pdf_data .= "<td style='border-top: 2px solid' width='100'>{$quot_data->se_name}</td>";
-               
-                $pdf_data .= "<td colspan='5' align='left' class='p-0' style='border-top: 2px solid'><table>";
+                $pdf_data .= "  <tr>
+                                    <td style='border-top: 2px solid'  class='text-center' width='40px'>{$new_date}</td>
+                                    <td style='border-top: 2px solid'  class='text-center' width='100px'>{$quot_data->qd_reffer_no}</td>
+                                    <td style='border-top: 2px solid' width='200px'>{$quot_data->cc_customer_name}</td>
+                                    <td style='border-top: 2px solid' width='103px'>{$quot_data->se_name}</td>
 
-               
+                
+                                    <td colspan='8'  class='p-0' style='border-top: 2px solid'>
+                                        <table>";
+                                               foreach ($quot_data->quotation_product as $quot_prod) {
+                                                    
+                                                    $quot_rate = format_currency($quot_prod->qpd_rate);
 
-                foreach($quot_data->quotation_product as $quot_prod){
-                    $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
-                    $pdf_data .= "<td width='100px'>{$quot_prod->product_details}</td>";
-                    $pdf_data .= "<td width='100px' align='right'>{$quot_prod->qpd_quantity}</td>";
+                                                    $quot_amount = format_currency($quot_prod->qpd_amount);
 
-                    $rate = format_currency($quot_prod->qpd_rate);
+                                                    $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
+                                                                    <td class='rotate' width='300px'>{$quot_prod->product_details}</td>
+                                                                    <td class='rotate' width='80px' align='center'>{$quot_prod->qpd_quantity}</td>
+                                                                    <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
+                                                                    <td class='rotate '  width='80px' align='center'>{$quot_prod->qpd_discount}</td>
+                                                                    <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
 
-                    $amount = format_currency($quot_prod->qpd_amount);
+                                                                    $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
 
-                    $discount = format_currency($quot_prod->qpd_discount);
+                                                                    $pdf_data .="<td colspan='3'  class='p-0'>
+                                                                    
+                                                                                <table>";
 
-                    $pdf_data .= "<td width='100px' align='right'>{$rate}</td>";
-                    $pdf_data .= "<td width='100px' align='right'>{$discount}%</td>";
-                    $pdf_data .= "<td width='100px' align='right'>{$amount}</td>";
-                    $pdf_data .= "</tr>";
-                    
-                    $total_quot_amount = $quot_prod->qpd_amount + $total_quot_amount;
+                                                                                if(!empty($quot_prod->sales_orders)){ 
+                                                                                    
+                                                                                    foreach ($quot_prod->sales_orders as $sal_ord) { 
+                                                                                        
+                                                                                        $sales_amount = format_currency($sal_ord->spd_amount);
 
-                }
-            
-                $pdf_data .= "</table></td>";
-            
-                if(!empty($quot_data->sales_orders)){
-                    $pdf_data .= "<td colspan='2' align='right' class='p-0' style='border-top: 2px solid'><table>";
-            
-                    foreach($quot_data->sales_orders as $sal_ord){
-                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>";
-                        $pdf_data .= "<td width='100px'>{$sal_ord->so_reffer_no}</td>";
-            
-                        $so_pro_count = 1;
-                        if(!empty($sal_ord->sales_product)){
-                            foreach($sal_ord->sales_product as $sales_prod){
-                                if($so_pro_count == 1){
-                                   
-                                    $amount2 = format_currency($sales_prod->spd_amount);
+                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
+                                                                                                            
+                                                                                                        <td class='rotate' width='100px' align='center'>{$sal_ord->so_reffer_no}</td>
+                                                                                                        <td class='rotate' width='90px' align='right'>{$sales_amount}</td>";
 
-                                    $pdf_data .= "<td width='100px'>{$amount2}</td>";
+                                                                                                        $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount; 
+
+                                                                                                        $sales_prod_total = $sal_ord->spd_amount + $sales_prod_total;
+
+                                                                                                        $diff_total = $diff + $diff_total;
+
+                                                                                                        $diff = format_currency($diff);
+
+                                                                                                        $pdf_data .="<td class='rotate' width='90px' align='right'>{$diff}</td>";
+                                                                                                        
+                                                                                        
+                                                                                        $pdf_data .= "</tr>";
+
+                                                                                    } 
+                                                                                }else{
+
+                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
+
+                                                                                                          <td class='rotate' width='80px'></td>
+                                                                                                          <td class='rotate' width='90px'></td>
+                                                                                                          <td class='rotate' width='90px' align='right'>{$quot_prod->qpd_amount}</td>
+                                                                                        
+                                                                                        </tr>";
+
+                                                                                        $quot_diff_total  = $quot_prod->qpd_amount + $quot_diff_total; 
+
+
+                                                                                }
+
+                                                                                $final_diff_total = $diff_total + $quot_diff_total;
+
+
+                                                                    $pdf_data .="</table>
+
+                                                                                </td>
+                                                                                ";
+
+
+
+                                                    $pdf_data .=" </tr>"; 
+                                               }
+                                        $pdf_data .= "</table>
+                                        
                                     
-                                    $sales_amount = $sales_prod->spd_amount + $sales_amount;
+                                    </td>";
 
-                                    $pdf_data .= "</tr>";
-                                } else {
-                                    $amount2 = format_currency($sales_prod->spd_amount);
-                                    $pdf_data .= "<tr align='right' style='background: unset;border-bottom: hidden !important;'>";
-                                    $pdf_data .= "<td width='100px'></td>";
-                                    
-                                    
-                                    $pdf_data .= "<td width='100px'>{$amount2}</td>";
-                                    $pdf_data .= "</tr>";
-
-                                    $sales_amount = $sales_prod->spd_amount + $sales_amount;
-                                }
-                                $so_pro_count++;
-                            }
-                        } else {
-                            $pdf_data .= "</tr>";
-                        }
-                    }
             
-                    $pdf_data .= "</table></td>";
-                } else {
-                    $pdf_data .= "<td style='border-top: 2px solid'></td>
-                                  <td style='border-top: 2px solid'></td>
-                                
-                    ";
-                }
-
-                if(!empty($quot_data->sales_orders)){
-                    $pdf_data .= "<td align='right' style='border-top: 2px solid'>---</td>";  
-                }else{
-                    
-                    $formalt_amount = format_currency($quot_data->qpd_amount);
-                    
-                    $pdf_data .="<td align='right' style='border-top: 2px solid'>{$formalt_amount}</td>";
-
-                    $sales_diff_amount = $quot_data->qpd_amount + $sales_diff_amount;
-                    
-                   // $sales_diff_amount = format_currency($sales_diff_amount);
-                }
-            
-                $pdf_data .= "</tr>";
+                                $pdf_data .= "</tr>";
             }
+
+
+
+
             
             if(empty($from_date) && empty($to_dat))
             {
@@ -355,6 +361,7 @@ class SalesQuotAnalysisReport extends BaseController
 
            $mpdf = new \Mpdf\Mpdf([
             'format' => 'Letter', // Custom page size in millimeters
+            //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
@@ -381,12 +388,12 @@ class SalesQuotAnalysisReport extends BaseController
 
             $mpdf->SetTitle('Sales Quotation Report'); // Set the title
 
-            $sales_amount = format_currency($sales_amount);
+            //$sales_amount = format_currency($sales_amount);
             
-            $sales_diff_amount = format_currency($sales_diff_amount);
+            //$sales_diff_amount = format_currency($sales_diff_amount);
 
 
-            $total_quot_amount = format_currency($total_quot_amount);
+           // $total_quot_amount = format_currency($total_quot_amount);
 
             $html ='
         
@@ -454,29 +461,56 @@ class SalesQuotAnalysisReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="center" width="40px" style="border-top: 2px solid">Date</th>
         
-            <th align="left" width="100px">Quotation Ref.</th>
+            <th align="center" width="100px" style="border-top: 2px solid">Quotation Ref.</th>
         
-            <th align="left">Customer</th>
+            <th align="center" width="200px" style="border-top: 2px solid">Customer</th>
         
-            <th align="left" width="103px">Sales Executive</th>
+            <th align="center" width="103px" style="border-top: 2px solid">Sales Executive</th>
+
+            <th colspan="8"  class="p-0" style="border-top: 2px solid">
+
+                <table>
+                    
+                    <tr>
+
+                        <th align="center"  width="300px">Product</th>
+
+                        <th align="center" width="80px">Quantity</th>
+
+                        <th align="center" width="80px">Rate</th>
+
+                        <th align="center" width="80px">Discount</th>
+
+                        <th align="center" width="100px">Amount</th>
+
+                        <th colspan="3"  class="p-0">
+                            
+                            <table>
+
+                                <tr>
+
+                                   <th align="center" width="100px">Sales Order</th>
+
+                                <th align="center" width="90px">Amount</th>
+
+                                <th align="center" width="80px">Difference</th>
+            
+                                
+                                </tr>
+                            
+                            </table>
+
+                        </th>
+                    
+                    </tr>
+                
+                </table>
+            
+            </th>
         
-            <th align="left" width="100px">Product</th>
-
-            <th align="right" width="100px">Quantity</th>
-
-            <th align="right" width="100px">Rate</th>
-
-            <th align="right" width="100px">Discount</th>
-
-            <th align="right" width="100px">Amount</th>
-
-            <th align="right" width="100px">Sales Order</th>
-
-             <th align="right" width="100px">Amount</th>
-
-            <th align="right">Difference</th>
+            
 
             
 
@@ -488,27 +522,47 @@ class SalesQuotAnalysisReport extends BaseController
 
             <tr>
 
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$total_quot_amount.'</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;" align="right">'.$sales_amount.'</td>
-                <td style="border-top: 2px solid;" align="right">'.$sales_diff_amount.'</td>
+                <td style="border-top: 2px solid;" width="40px">Total</td>
+                <td style="border-top: 2px solid;" width="100px"></td>
+                <td style="border-top: 2px solid;" width="200px"></td>
+                <td style="border-top: 2px solid;" width="103px"></td>
+                <td colspan="8"  class="p-0" style="border-top: 2px solid">
+                    <table>
+                       <tr style="background: unset;border-bottom: hidden !important;">
+
+                            <td  width="300px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px" ></td>
+                            <td  width="100px" align="right"><b>'.$quot_prod_total.'</b></td>
+
+                            <td colspan="3"  class="p-0">
+                                <table>
+                                    <tr style="background: unset;border-bottom: hidden !important;">
+
+                                        <td  width="100px" ></td>
+                                        <td  width="90px" align="right"><b>'.$sales_prod_total.'</b></td>
+                                        <td  width="80px" align="right"><b>'.$final_diff_total.'</b></td>
+                                    
+                                    </tr>
+                                
+                                </table>
+                            
+                            </td>
+                       
+                       </tr>
+                    
+                    </table>
+                </td>
             
-            </tr>   
-           
+            </tr>
             
             </table>
 
 
         
             ';
+           // echo $html; exit();
         
             $mpdf->WriteHTML($html);
 

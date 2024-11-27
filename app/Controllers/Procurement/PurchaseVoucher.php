@@ -227,10 +227,18 @@ class PurchaseVoucher extends BaseController
                 
                     for($j=0;$j<=$count-1;$j++)
                     {
-                        
+                        if(!empty($_POST['pvp_sales_order'][$j])){
+
+                            $sales_data = $_POST['pvp_sales_order'][$j];
+                        } 
+                        else{
+
+                            $sales_data = "";
+                        }
+
                         $insert_data2 = array(                              
                             
-                            'pvp_sales_order'          =>  $_POST['pvp_sales_order'][$j],
+                            'pvp_sales_order'          =>  $sales_data,
                             'pvp_prod_dec'             =>  $_POST['pvp_product_desc'][$j],
                             'pvp_debit'                =>  $_POST['debit_account'][$j],
                             'pvp_qty'                  =>  $_POST['pvp_qty'][$j],
@@ -522,6 +530,13 @@ class PurchaseVoucher extends BaseController
                 'fk'    => 'pv_purchase_order',
             ),
 
+            array(
+                'table' => 'pro_contact',
+                'pk'    => 'pro_con_id',
+                'fk'    => 'pv_contact_person',
+            ),
+
+
         );
         
         $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')),$join);
@@ -532,7 +547,7 @@ class PurchaseVoucher extends BaseController
 
         $data['vendor_name']     = $purchase_voucher->ven_name;
 
-        $data['contact_person']  = $purchase_voucher->pv_contact_person;
+        $data['contact_person']  = $purchase_voucher->pro_con_person;
 
         $data['purchase_order']  = $purchase_voucher->po_reffer_no;
 
@@ -578,17 +593,19 @@ class PurchaseVoucher extends BaseController
             array(
                 'table' => 'pro_vendor',
                 'pk'    => 'ven_id',
-
-
                 'fk'    => 'pv_vendor_name',
             ),
-
-           
 
             array(
                 'table' => 'pro_purchase_order',
                 'pk'    => 'po_id',
                 'fk'    => 'pv_purchase_order',
+            ),
+
+            array(
+                'table' => 'pro_contact',
+                'pk'    => 'pro_con_id',
+                'fk'    => 'pv_contact_person',
             ),
 
         );
@@ -601,7 +618,7 @@ class PurchaseVoucher extends BaseController
 
         $data['vendor_name']     = $purchase_voucher->ven_name;
 
-        $data['contact_person']  = $purchase_voucher->pv_contact_person;
+        $data['contact_person']  = $purchase_voucher->pro_con_person;
 
         $data['purchase_order']  = $purchase_voucher->po_reffer_no;
 
@@ -708,6 +725,10 @@ class PurchaseVoucher extends BaseController
         
         $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
         
+        //payment term
+        $vendor = $this->common_model->SingleRow('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+        
+        $data['payment_term'] = $vendor->ven_credit_term;
        
 
         $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
@@ -991,11 +1012,11 @@ class PurchaseVoucher extends BaseController
 
         $purchases = $this->common_model->SingleRowJoin('pro_purchase_order',array('po_id' => $purchase_id),$joins);
 
-        $data['payment_term']   = $purchases->po_payment_term;
+       
 
         $data['delivery_date']  = $purchases->po_delivery_date;
 
-        $data['contact_person'] = $purchases->pro_con_person;
+       
 
         $data['mr_reff'] = $purchases->mr_reffer_no;
        

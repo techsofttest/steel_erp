@@ -37,19 +37,19 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
-            $query->like($data2_col, $data2);
+            $query->where($data2_col, $data2);
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
-            $query->like($data4_col, $data4);
+            $query->where($data4_col, $data4);
         }
 
         if(!empty($join))
@@ -60,13 +60,14 @@ class CrmReportModel extends Model
         
         
         $result = $query->get()->getResult();
+
+       
         
         //return $result;
 
-      
-
         $i = 0;
         foreach ($result as $res) {
+
             $cond_user = [$second_col => $res->qd_id];
             $result[$i]->quotation_product = $this->FetchWhereJoin($second_table, $cond_user,$joins1);
             $i++;
@@ -102,7 +103,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -110,11 +111,11 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
-            $query->like($data4_col, $data4);
+            $query->where($data4_col, $data4);
         }
 
         if(!empty($join))
@@ -168,7 +169,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -176,11 +177,11 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
-            $query->like($data4_col, $data4);
+            $query->where($data4_col, $data4);
         }
 
         if(!empty($join))
@@ -313,7 +314,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -321,11 +322,11 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
-            $query->like($data4_col, $data4);
+            $query->where($data4_col, $data4);
         }
 
         if(!empty($join))
@@ -494,15 +495,15 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
-            $query->like($data2_col, $data2);
+            $query->where($data2_col, $data2);
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         $result = $query->get()->getResult();
@@ -599,6 +600,12 @@ class CrmReportModel extends Model
 
         $query->join('crm_sales_orders','crm_sales_orders.so_id =crm_delivery_note.dn_sales_order_num','left');
 
+        if(!empty($data4)){
+           
+            $query->join('crm_delivery_product_details','crm_delivery_product_details.dpd_delivery_id = crm_delivery_note.dn_id','left');
+
+        }
+
         
         if (!empty($from_date)) {
            
@@ -611,7 +618,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -619,11 +626,11 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         if (!empty($data4)) {
-            $query->like($data4_col, $data4);
+            $query->where($data4_col, $data4);
         }
 
        
@@ -768,7 +775,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -982,7 +989,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data1)) {
-            $query->like($data1_col, $data1);
+            $query->where($data1_col, $data1);
         }
 
         if (!empty($data2)) {
@@ -990,7 +997,7 @@ class CrmReportModel extends Model
         }
 
         if (!empty($data3)) {
-            $query->like($data3_col, $data3);
+            $query->where($data3_col, $data3);
         }
 
         $result = $query->get()->getResult();
@@ -1031,6 +1038,8 @@ class CrmReportModel extends Model
         $cash_invoice_prod = "{$this->db->getPrefix()}crm_cash_invoice_prod_det";
         $credit_invoice_prod = "{$this->db->getPrefix()}crm_credit_invoice_prod_det";
         $products = "{$this->db->getPrefix()}crm_products";
+        $sales_return = "{$this->db->getPrefix()}crm_sales_return";
+        $sales_return_prod = "{$this->db->getPrefix()}crm_sales_return_prod_det";
 
 
         // Base query
@@ -1040,6 +1049,7 @@ class CrmReportModel extends Model
                 {$cash_invoice}.ci_reffer_no AS reference,
                 {$cash_invoice}.ci_id  AS reffer_id,
                 'cash invoice' as link,
+                'cash invoice' as amount_check,
                 {$customer_creation}.cc_customer_name as customer_name,
                 {$customer_creation}.cc_id  AS customer_id,
                 null as delivery_reff,
@@ -1066,13 +1076,14 @@ class CrmReportModel extends Model
             
             
             )
-            
+
             UNION ALL 
             (SELECT 
                 {$credit_invoice}.cci_date AS date,
                 {$credit_invoice}.cci_reffer_no AS reference,
                 {$credit_invoice}.cci_id  AS reffer_id,
                 'credit invoice' as link,
+                'credit invoice' as amount_check,
                 {$customer_creation}.cc_customer_name as customer_name,
                 {$customer_creation}.cc_id  AS customer_id,
                 {$delivery_note}.dn_reffer_no  as delivery_reff,
@@ -1098,6 +1109,40 @@ class CrmReportModel extends Model
                 ON {$credit_invoice_prod}.ipd_credit_invoice  = {$credit_invoice}.cci_id 
             LEFT JOIN {$products} 
                 ON {$products}.product_id  = {$credit_invoice_prod}.ipd_prod_detl
+            
+           
+            )
+            
+            UNION ALL 
+            (SELECT 
+                {$sales_return}.sr_date AS date,
+                {$sales_return}.sr_reffer_no AS reference,
+                {$sales_return}.sr_id   AS reffer_id,
+                'sales return' as link,
+                'sales return' as amount_check,
+                {$customer_creation}.cc_customer_name as customer_name,
+                {$customer_creation}.cc_id  AS customer_id,
+                null as delivery_reff,
+                null as delivery_id,
+                {$sales_order}.so_reffer_no as sales_order,
+                {$sales_order}.so_id as so_id,
+                {$sales_order}.so_lpo as sales_lpo,
+                {$products}.product_details  as product,
+                {$products}.product_id  as product_id,
+                {$sales_return_prod}.srp_quantity  as quantity,
+                {$sales_return_prod}.srp_rate  as rate,
+                {$sales_return_prod}.srp_discount  as discount,
+                {$sales_return_prod}.srp_amount  as prod_amount,
+                {$sales_return}.sr_total AS amount
+            FROM {$sales_return}
+            LEFT JOIN {$customer_creation} 
+                ON {$customer_creation}.cc_id = {$sales_return}.sr_customer
+            LEFT JOIN {$sales_order} 
+                ON {$sales_order}.so_id = {$sales_return}.sr_sales_order
+            LEFT JOIN {$sales_return_prod} 
+                ON {$sales_return_prod}.srp_sales_return  = {$sales_return}.sr_id  
+            LEFT JOIN {$products} 
+                ON {$products}.product_id  = {$sales_return_prod}.srp_prod_det
             
            
             )
@@ -1129,7 +1174,7 @@ class CrmReportModel extends Model
         
         if (!empty($product_data)) {
 
-            $conditions[] = "combined_results.product_id LIKE '%{$product_data}%'";
+            $conditions[] = "combined_results.product_id = '{$product_data}'";
         }
 
     
@@ -1140,7 +1185,7 @@ class CrmReportModel extends Model
         }
     
         // Order by date
-        $query .= " ORDER BY combined_results.date";
+        $query .= " ORDER BY combined_results.date,combined_results.reference";
     
         // Execute the query
         $result = $this->db->query($query)->getResult();
@@ -1159,6 +1204,7 @@ class CrmReportModel extends Model
         $customer_creation = "{$this->db->getPrefix()}crm_customer_creation";
         $sales_executive = "{$this->db->getPrefix()}executives_sales_executive";
         $sales_order = "{$this->db->getPrefix()}crm_sales_orders";
+        $sales_return = "{$this->db->getPrefix()}crm_sales_return";
     
         // Base query
         $query = "SELECT * FROM (
@@ -1167,6 +1213,7 @@ class CrmReportModel extends Model
                 {$cash_invoice}.ci_reffer_no AS reference,
                 {$cash_invoice}.ci_id AS reffer_id,
                 'cash invoice' as link,
+                'cash invoice' as amount_check,
                 {$customer_creation}.cc_customer_name as customer_name,
                 {$customer_creation}.cc_id  AS customer_id,
                 {$sales_order}.so_reffer_no as sales_order,
@@ -1183,12 +1230,13 @@ class CrmReportModel extends Model
             LEFT JOIN {$sales_executive} 
                 ON {$sales_executive}.se_id = {$sales_order}.so_sales_executive
             )
-            UNION ALL 
+             UNION ALL 
             (SELECT 
                 {$credit_invoice}.cci_date AS date,
                 {$credit_invoice}.cci_reffer_no AS reference,
                 {$credit_invoice}.cci_id  AS reffer_id,
                 'credit invoice' as link,
+                'credit invoice' as amount_check,
                 {$customer_creation}.cc_customer_name as customer_name,
                 {$customer_creation}.cc_id  AS customer_id,
                 {$sales_order}.so_reffer_no as sales_order,
@@ -1202,6 +1250,29 @@ class CrmReportModel extends Model
                 ON {$customer_creation}.cc_id = {$credit_invoice}.cci_customer
             LEFT JOIN {$sales_order} 
                 ON {$sales_order}.so_id = {$credit_invoice}.cci_sales_order
+            LEFT JOIN {$sales_executive} 
+                ON {$sales_executive}.se_id = {$sales_order}.so_sales_executive
+            )
+            UNION ALL 
+            (SELECT 
+                {$sales_return}.sr_date AS date,
+                {$sales_return}.sr_reffer_no AS reference,
+                {$sales_return}.sr_id   AS reffer_id,
+                'sales return' as link,
+                'sales return' as amount_check,
+                {$customer_creation}.cc_customer_name as customer_name,
+                {$customer_creation}.cc_id  AS customer_id,
+                {$sales_order}.so_reffer_no as sales_order,
+                {$sales_order}.so_id  as sales_order_id,
+                {$sales_order}.so_lpo as sales_lpo,
+                {$sales_executive}.se_name as sales_exec,
+                {$sales_executive}.se_id  as sales_exec_id,
+                {$sales_return}.sr_total AS amount
+            FROM {$sales_return}
+            LEFT JOIN {$customer_creation} 
+                ON {$customer_creation}.cc_id = {$sales_return}.sr_customer
+            LEFT JOIN {$sales_order} 
+                ON {$sales_order}.so_id = {$sales_return}.sr_sales_order
             LEFT JOIN {$sales_executive} 
                 ON {$sales_executive}.se_id = {$sales_order}.so_sales_executive
             )
