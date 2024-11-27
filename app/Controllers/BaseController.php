@@ -88,6 +88,8 @@ abstract class BaseController extends Controller
         $this->request = \Config\Services::request();
 
         $this->session = \Config\Services::session();
+
+        $this->data['accounting_year'] = 2024; 
         
 
     }

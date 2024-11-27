@@ -236,7 +236,7 @@ class Receipts extends BaseController
 
         //$r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $r_ref_no = $this->common_model->FetchNextId('accounts_receipts',"REC");
+        $r_ref_no = $this->common_model->FetchNextId('accounts_receipts',"RV-{$this->data['accounting_year']}-");
 
         $cond = array('r_id' => $id);
 
@@ -839,6 +839,7 @@ class Receipts extends BaseController
                 $so_status  = 1;
                 }
 
+
                 
                 if(empty($check_so))
                 {
@@ -870,6 +871,9 @@ class Receipts extends BaseController
 
         }
 
+
+        
+  
 
     }
 
@@ -1042,6 +1046,7 @@ class Receipts extends BaseController
 
         $data['rc'] = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
 
+
         $data['rc']->r_date = date('d-F-Y',strtotime($data['rc']->r_date));
 
         $invoice_cond = array('ri_receipt' => $data['rc']->r_id);
@@ -1058,10 +1063,11 @@ class Receipts extends BaseController
 
         $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',$invoice_cond,$invoice_joins);
 
+
+
         //$customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
         //$coa = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
-
 
         /*
 
@@ -1180,29 +1186,56 @@ class Receipts extends BaseController
             'pk' => 'ci_id',
             'fk' => 'rid_invoice',
             ),
-   
        );
 
     $invoice_datas = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',array('rid_receipt_invoice'=>$invoice->ri_id),$inv_data_join);
 
-    $data['invoices'] .="<tr><td>{$inv_ser}</td><td>{$invoice->ca_name}</td><td>".format_currency($invoice->ri_amount)."</td><td>{$invoice->ri_remarks}</td><td><a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a></td></tr>";
+
+    //Main Invoices
+
+    $data['invoices'] .="<tr>
+    <input type='hidden' name='rec_inv_id[]' value='".$invoice->ri_id."'>
+    <td>{$inv_ser}</td>
+    <td>{$invoice->ca_name}</td>
+    <td><input name='rec_inv_amount[]' type='text' value='".$invoice->ri_amount."' class='form-control'></td>
+    <td><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
+    <td><a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a></td>
+    </tr>";
+
+    
+
+    #ri_credit_account	
     
     if(!empty($invoice_datas))
     {
-       $data['invoices'] .='<th></th><th colspan="3" style="text-align: left;
-                            font-size: 13px;">Linked</th>';
+       //$data['invoices'] .='<th></th><th colspan="3" style="text-align: left;font-size: 13px;">Linked</th>';
     }
 
     foreach($invoice_datas as $inv_data)
     {
-        if($inv_data->rid_invoice_type=="cash_invoice")
-        {
-        $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td><td>{$inv_data->ci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td><td></td></tr>";
-        }
-        else
-        {
-        $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->cci_date))."</td><td>{$inv_data->cci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td><td></td></tr>";
-        }
+        // Initialize a common date variable
+        $invoiceDate = isset($inv_data->ci_date) ? $inv_data->ci_date : $inv_data->cci_date;
+        $refNumber = isset($inv_data->ci_reffer_no) ? $inv_data->ci_reffer_no : $inv_data->cci_reffer_no;
+
+        // Sanitize dynamic values for safer rendering
+        $ridId = htmlspecialchars($inv_data->rid_id, ENT_QUOTES, 'UTF-8');
+        $ridReceipt = htmlspecialchars($inv_data->rid_receipt, ENT_QUOTES, 'UTF-8');
+        $formattedDate = htmlspecialchars(date('d M Y', strtotime($invoiceDate)), ENT_QUOTES, 'UTF-8');
+        $refNumberEscaped = htmlspecialchars($refNumber, ENT_QUOTES, 'UTF-8');
+
+        // Build the table row
+        $data['invoices'] .= "
+        <tr>
+            <td class='text-end'><i class='ri-links-line'></i></td>
+            <td>{$formattedDate}</td>
+            <td>
+                <input type='hidden' name='linked_invoice_id[$invoice->ri_id][]' value='{$invoice->ri_id}'>
+                <input type='hidden' name='linked_receipt_id[$invoice->ri_id][]' value='{$ridId}'>
+                <input name='linked_receipt_amount[$invoice->ri_id][]' class='form-control' type='number' step='0.01' value='{$ridReceipt}'>
+            </td>
+            <td>{$refNumberEscaped}</td>
+            <td></td>
+        </tr>";
 
     }
 
@@ -1222,7 +1255,12 @@ class Receipts extends BaseController
     foreach($so_advances as $advance)
     {
 
-    $data['invoices'] .="<tr><td></td><td>Advance</td><td>".$advance->so_reffer_no."</td><td>".$advance->rso_receipt_amount."</td><td></td></tr>";
+    $data['invoices'] .="<tr>
+    <td></td>
+    <td>Advance</td>ed
+    <td>".$advance->so_reffer_no."</td>
+    
+    <td>".$advance->rso_receipt_amount."</td><td></td></tr>";
 
     }
 
@@ -1230,6 +1268,14 @@ class Receipts extends BaseController
 
 
         echo json_encode($data);
+
+    }
+
+    public function Deletenew(){
+
+
+    
+
 
     }
 
@@ -1402,7 +1448,107 @@ class Receipts extends BaseController
 
         $update_data['r_credit_account'] = $this->request->getPost('r_credit_account');
 
+
+        $update_data['r_amount'] = array_sum($_POST['rec_inv_amount']);
+
+
         $this->common_model->EditData($update_data,$cond,'accounts_receipts');
+
+
+        //Update Receipt Invoices
+
+
+        //Check Total Credit
+        
+
+
+        for($r=0;$r<(count($this->request->getPost('rec_inv_id')));$r++)
+        {
+
+            $update_invoice_data['ri_amount'] = $this->request->getPost('rec_inv_amount')[$r];
+
+            $update_invoice_cond['ri_id'] = $this->request->getPost('rec_inv_id')[$r];
+
+            if(count($this->request->getPost('linked_receipt_id')[$update_invoice_cond['ri_id']]))
+            $total_linked_invoice = array_sum($this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]);
+
+            if($total_linked_invoice!=$update_invoice_data['ri_amount'])
+            {
+
+                $return['status'] = 0;
+
+                $return['msg'] ="Total amount should be adjusted!";
+        
+                echo json_encode($return);
+        
+                exit;   
+
+            }
+
+
+            for($u=0;$u<(count($this->request->getPost('linked_receipt_id')[$update_invoice_cond['ri_id']]));$u++)
+            {
+
+                $update_invoice_data_cond = array('rid_id' => $this->request->getPost('linked_receipt_id')[$update_invoice_cond['ri_id']][$u]);
+
+                $old_invoice_data = $this->common_model->SingleRow('accounts_receipt_invoice_data',$update_invoice_data_cond);
+
+                $new_amount =  $this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']][$u];
+
+                $revert_invoice_amount = $old_invoice_data->rid_receipt;
+
+                //Update invoice table
+                if($old_invoice_data->rid_invoice_type=="cash_invoice")
+                {
+
+                $cash_invoice_cond = array('ci_id' => $old_invoice_data->rid_invoice);
+
+                $inv_row = $this->common_model->SingleRow('crm_cash_invoice',$cash_invoice_cond);
+
+                
+                $this->common_model->EditData(array('rid_receipt' => $new_amount),$update_invoice_data_cond,'accounts_receipt_invoice_data');
+
+                $all_linked_cond = array('rid_invoice_type' => 'cash_invoice','rid_invoice' => $old_invoice_data->rid_invoice);
+                $all_linked_invoices = $this->common_model->FetchWhere('accounts_receipt_invoice_data',$all_linked_cond); 
+
+                $update_cash_invoice_data['ci_paid_amount'] = array_sum(array_column($all_linked_invoices,'rid_receipt'));
+
+                $this->common_model->EditData($update_cash_invoice_data,$cash_invoice_cond,'crm_cash_invoice');
+
+                }
+
+                else if($old_invoice_data->rid_invoice_type=="credit_invoice")
+                {
+
+                $credit_invoice_cond = array('cci_id' => $old_invoice_data->rid_invoice);
+
+                $inv_row = $this->common_model->SingleRow('crm_credit_invoice',$cash_invoice_cond);
+
+                
+                $this->common_model->EditData(array('rid_receipt' => $new_amount),$update_invoice_data_cond,'accounts_receipt_invoice_data');
+
+                $all_linked_cond = array('rid_invoice_type' => 'credit_invoice','rid_invoice' => $old_invoice_data->rid_invoice);
+                $all_linked_invoices = $this->common_model->FetchWhere('accounts_receipt_invoice_data',$all_linked_cond); 
+
+                $update_credit_invoice_data['cci_paid_amount'] = array_sum(array_column($all_linked_invoices,'rid_receipt'));
+
+                $this->common_model->EditData($update_credit_invoice_data,$credit_invoice_cond,'crm_credit_invoice');
+
+
+                }
+
+
+            }
+
+            
+
+            $this->common_model->EditData($update_invoice_data,$update_invoice_cond,'accounts_receipt_invoices');
+
+        }
+
+
+
+
 
         $return['status'] =1;
 
@@ -1417,7 +1563,6 @@ class Receipts extends BaseController
     {
 
     $id = $this->request->getPost('r_id');
-
     $cond = array('r_id' => $id);
 
      ##Joins if any //Pass Joins as Multi dim array
@@ -1468,6 +1613,8 @@ class Receipts extends BaseController
 
     $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',$invoice_cond,$invoice_joins);
 
+   
+
     $data['invoices'] ="";
 
     $inv_ser = 0;
@@ -1495,26 +1642,60 @@ class Receipts extends BaseController
 
     $invoice_datas = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',array('rid_receipt_invoice'=>$invoice->ri_id),$inv_data_join);
 
-    $data['invoices'] .="<tr><td>{$inv_ser}</td><td>{$invoice->ca_name}</td><td>".format_currency($invoice->ri_amount)."</td><td>{$invoice->ri_remarks}</td></tr>";
+     $data['invoices'] .="<tr>
+    <td>{$inv_ser}</td>
+    <td>{$invoice->ca_name}</td>
+    <td>".format_currency($invoice->ri_amount)."</td>
+    <td>{$invoice->ri_remarks}</td>
+    </tr>";
+
+
+    /* Custom var */
+
+
+
+
+
+    /* Custp, wat */
+  
+
     
+    if(empty($data['invoices']))
+    {
+    
+    $data['msg'] = $mdf;
+
+    }
+
     if(!empty($invoice_datas))
     {
        $data['invoices'] .='<th></th><th colspan="3" style="text-align: left;
                             font-size: 13px;">Linked</th>';
     }
 
+
+
+
     foreach($invoice_datas as $inv_data)
     {
         if($inv_data->rid_invoice_type=="cash_invoice")
         {
-        $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td><td>{$inv_data->ci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
+        $data['invoices'] .="<tr>
+        <td></td>
+        <td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td>
+        <td>{$inv_data->ci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
         }
         else
         {
-        $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->cci_date))."</td><td>{$inv_data->cci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
+        $data['invoices'] .="<tr>
+        <td></td>
+        <td>".date('d M Y',strtotime($inv_data->cci_date))."</td>
+        <td>{$inv_data->cci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
         }
 
-    }
+    } 
+
+
 
 
     $so_advance_data_join = array(
@@ -1532,7 +1713,9 @@ class Receipts extends BaseController
     foreach($so_advances as $advance)
     {
 
-    $data['invoices'] .="<tr><td></td><td>Advance</td><td>".$advance->so_reffer_no."</td><td>".$advance->rso_receipt_amount."</td></tr>";
+    $data['invoices'] .="<tr>
+    <td></td>
+    <td>Advance</td><td>".$advance->so_reffer_no."</td><td>".$advance->rso_receipt_amount."</td></tr>";
 
     }
 
@@ -1688,8 +1871,8 @@ class Receipts extends BaseController
 
         
 
-        $cond_tran = array('tran_reference' => $receipt->r_ref_no);
-        $this->common_model->DeleteData('master_transactions',$cond_tran);
+        // $cond_tran = array('tran_reference' => $receipt->r_ref_no);
+        // $this->common_model->DeleteData('master_transactions',$cond_tran);
       
     }
 
@@ -1915,19 +2098,59 @@ class Receipts extends BaseController
            $data['invoices'] .='<th></th><th colspan="3" style="text-align: left;
                                 font-size: 13px;">Linked</th>';
         }
+
+
+        if(!empty($data_of_bank))
+        {
+
+            $bank_name="DBJ";
+
+        }
+        elseif($data_of_bank=="")
+        {
+        
+            $bank_name="No Bank Selected";
+            
+        }
+        else
+        {
+
+            $bank_name="Tha Bank";
+
+            $bank_aod = $os;
+
+        }
+
+
+
     
         foreach($invoice_datas as $inv_data)
         {
             if($inv_data->rid_invoice_type=="cash_invoice")
             {
-            $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td><td>{$inv_data->ci_reffer_no}</td><td>{$inv_data->rid_receipt}</td><td></td></tr>";
+            $data['invoices'] .="<tr>
+            <td></td>
+            <td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td>
+            <td>{$inv_data->ci_reffer_no}</td>
+            <td>{$inv_data->rid_receipt}</td>
+            <td></td>
+            </tr>";
             }
             else
             {
-            $data['invoices'] .="<tr><td></td><td>".date('d-F-Y',strtotime($inv_data->cci_date))."</td><td>{$inv_data->cci_reffer_no}</td><td>{$inv_data->rid_receipt}</td><td></td></tr>";
+            $data['invoices'] .="<tr>
+            <td></td>
+            <td>".date('d-F-Y',strtotime($inv_data->cci_date))."</td>
+            <td>{$inv_data->cci_reffer_no}</td>
+            <td>{$inv_data->rid_receipt}</td
+            ><td></td>
+            </tr>";
             }
     
         }
+
+
+         
     
     
         $so_advance_data_join = array(
@@ -2599,7 +2822,7 @@ class Receipts extends BaseController
     public function FetchReference()
     {
 
-    $uid = $this->common_model->FetchNextId('accounts_receipts',"REC");
+    $uid = $this->common_model->FetchNextId('accounts_receipts',"RV-{$this->data['accounting_year']}-");
 
     echo $uid;
 
