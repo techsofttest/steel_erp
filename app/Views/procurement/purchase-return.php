@@ -812,7 +812,7 @@
                                 <tbody>
                                     <tr>
                                         
-                                        <td colspan="6" class=""></td>
+                                        <td colspan="7" class=""></td>
                                         <td>Total</td>
                                         <td><input type="text" name="" class="view_total_prod form-control" readonly=""></td>
                                     </tr>
@@ -854,6 +854,283 @@
 
 <!--view modal end-->
 
+
+
+<!--edit modal start-->
+
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+        <form  class="Dashboard-form class" id="edit_form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Purchase Return</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="live-preview">
+                        
+                        <div class="row">
+                            
+                            <div class="col-lg-6">
+
+                                <div class="row">
+
+                                        
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Referance</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" id="" class="form-control edit_ref" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basiInput" class="form-label">Date</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="" class="form-control edit_date" readonly>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+                                    <!-- Single Row Start -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Name</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                            
+                                                <input type="text" name="" class="form-control edit_vendor_name" readonly>
+                                        
+                                            </select>
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+                                    
+
+                                    <!-- Single Row Start -->
+                                    
+                                    
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center -2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Vendor Inv Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control edit_vendor_inv_ref" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    
+                                    <!-- ### --> 
+
+
+                                    
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+
+                                <div class="row">
+                                    
+
+                                    
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Lpo Ref</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="edit_lpo_ref" class="form-control edit_lpo_ref" >
+                                            
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+                                    
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Contact Person</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                
+                                                <input type="text" name="" class="form-control edit_contact_person" readonly>
+                                                
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### -->
+
+                                    
+
+
+                                    <!-- Single Row Start -->
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Payment Term</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="edit_payment_term" class="form-control edit_payment_term" >
+                                            </div>
+
+                                        </div> 
+
+                                    </div>    
+
+                                    <!-- ### --> 
+
+
+
+
+                                </div>
+
+                            </div>
+                                                                    
+
+                        </div>
+
+
+                        <!--table section start-->
+                        <div class="mt-4">
+                            <table class="table table-bordered table-striped delTable">
+                                <thead class="travelerinfo contact_tbody">
+                                    <tr>
+                                        
+                                        <td>Serial No.</td>
+                                        <td>Sales Order</td>
+                                        <td>Product Description</td>
+                                        <td>Credit A/C</td>
+                                        <td>Qty</td>
+                                        <td>Unit</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</td>
+                                       
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                
+                                <tbody  class="travelerinfo edit_prod_data"></tbody>
+
+                                <tbody>
+                                    <tr>
+                                        
+                                        <td colspan="7" class=""></td>
+                                        <td>Total</td>
+                                        <td><input type="text" name="" class="edit_total_prod form-control" readonly=""></td>
+                                    </tr>
+
+                                </tbody>
+
+                                
+                            </table>
+                        </div>
+
+
+
+                        <!--<div class="row">
+                            <div class="col-lg-6">
+                                
+                                <div class="card-body view_image_table" style="float: inline-start;"></div>
+
+                                
+                            </div>
+                            <div class="col-lg-6"></div>
+                            
+                        </div>--->
+
+                        <!--table section end-->
+
+
+                    </div>  
+                        
+                    
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <input type="hidden" name="pr_id" class="edit_pr_id">
+                    <button class="btn btn btn-success" type="submit">Save</button>
+                </div>
+
+
+                
+            </div>
+        </form>
+
+	</div>
+</div>
+
+<!--edit modal end-->
 
 <script>
 
@@ -1181,6 +1458,7 @@
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
+            $('.hidden_purchase_return_id').val("");
 
             $.ajax({
 
@@ -1769,6 +2047,8 @@
 
                     $('.view_payment_term').val(data.payment_term);
 
+                    $('.view_total_prod').val(data.total_amount);
+
                     $('.view_prod_data').html(data.purchase_return);
 
                     $('#ViewModal').modal("show");
@@ -1781,6 +2061,134 @@
 
 
         /*view section end*/
+
+
+
+        /*edit section start*/
+        
+        $("body").on('click', '.edit_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/Edit",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+                                    
+                    $('.edit_ref').val(data.reffer_id);
+
+                    $('.edit_pr_id').val(data.pr_id);
+
+                    $('.edit_date').val(data.date);
+
+                    $('.edit_vendor_name').val(data.vendor_name);
+
+                    $('.edit_vendor_inv_ref').val(data.vendor_inv);
+
+                    $('.edit_lpo_ref').val(data.lpo);
+
+                    $('.edit_contact_person').val(data.contact_person);
+
+                    $('.edit_payment_term').val(data.payment_term);
+
+                    $('.edit_total_prod').val(data.total_amount);
+
+                    $('.edit_prod_data').html(data.purchase_return);
+
+                    $('#EditModal').modal("show");
+                    
+                }
+
+            });
+
+        });
+
+
+        $(function() {
+            var form = $('#edit_form');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    //if($('#purchase_form').attr('data_fill')=="true"){   
+
+                        // Submit the form for the current tab
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/Update",
+                            method: "POST",
+                            data: $(currentForm).serialize(),
+                            success: function(data) {
+                                
+                                $('#EditModal').modal('hide');
+                            
+                                alertify.success('Data Updated Successfully').delay(3).dismissOthers();
+                            
+                                datatable.ajax.reload(null, false);
+                             
+                            }
+                        });
+
+                }
+            });
+        });
+
+        /*edit section end*/
+
+
+
+        /*delete section start*/
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            
+            var id = $(this).data('id'); 
+
+            var rowToDelete = $(this).closest('tr');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/Delete",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {   
+                    
+                    rowToDelete.fadeOut(500, function() {
+                        $(this).remove();
+                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        datatable.ajax.reload(null,false);
+                    });
+                    
+                   
+
+                    
+                        
+
+                }
+
+            });
+
+        });
+
+        /*delete section end*/
 
 
 

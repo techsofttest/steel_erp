@@ -157,7 +157,7 @@ class SalesOrder extends BaseController
      
         $data['contacts'] = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
         
-        $data['sales_order_id'] = $this->common_model->FetchNextId('crm_sales_orders','SO');
+        
 
         $data['content'] = view('crm/sales-order',$data);
 
@@ -186,6 +186,8 @@ class SalesOrder extends BaseController
         $sales_datas = $this->common_model->FetchWhere('crm_sales_orders',array('so_reffer_no' => $this->request->getPost('so_reffer_no')));
         
         if(empty($sales_datas)){
+
+           
 
         $insert_data = [
 
@@ -1194,14 +1196,28 @@ class SalesOrder extends BaseController
     }
 
 
-    public function FetchReference()
+    /*public function FetchReference()
 	{
 
 		$uid = $this->common_model->FetchNextId('crm_sales_orders',"SO");
 	
 		echo $uid;
 
-	}
+	}*/
+
+    public function FetchReference($type="e")
+    {
+
+        $uid = $this->common_model->FetchNextId('crm_sales_orders',"SO-{$this->data['accounting_year']}-");
+
+        if($type=="e")
+            echo $uid;
+        else
+        {
+            return $uid;
+        }
+
+    }
 
 
     public function EditProduct()

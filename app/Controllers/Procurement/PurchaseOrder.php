@@ -59,7 +59,7 @@ class PurchaseOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->po_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" style="display:none;" data-toggle="tooltip" data-id="'.$record->po_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->po_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->po_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->po_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->po_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "po_id"         => $i,
@@ -119,8 +119,6 @@ class PurchaseOrder extends BaseController
        
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['material_requisition'] = $this->common_model->FetchNextId('pro_material_requisition','MR');
- 
         $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
@@ -130,6 +128,8 @@ class PurchaseOrder extends BaseController
         $data['material_reqisition'] = $this->common_model->FetchWhere('pro_material_requisition',$cond2);
 
         $data['content'] = view('procurement/purchase-order',$data);
+
+        
 
         return view('procurement/pro-module',$data);
 
@@ -344,13 +344,21 @@ class PurchaseOrder extends BaseController
     }
 
 
-    public function FetchReference()
+    /*public function FetchReference()
     {
     
         $data['uid'] = $this->common_model->FetchNextId('pro_purchase_order',"PO");
 
-        $cond2 = array('mr_pur_status' => 0);
+        
 
+       echo json_encode($data);
+    
+    }*/
+
+    public function FetchMR(){
+        
+        $cond2 = array('mr_pur_status' => 0);
+	 
         $material_reqisition = $this->common_model->FetchWhere('pro_material_requisition',$cond2);
 
         $data['mrn'] = "<option value='' selected disabled>Select MRN Ref</option>";
@@ -359,12 +367,38 @@ class PurchaseOrder extends BaseController
         {
             $data['mrn'] .="<option value='".$matetial_resq->mr_id."'>".$matetial_resq->mr_reffer_no."</option>";
         }
+		
+        //$data['uid'] =  $this->FetchReference("e");
 
-       // echo $uid;
+         return json_encode($data);
 
-       echo json_encode($data);
-    
     }
+
+
+    public function FetchReference($type="e")
+    {
+
+        $uid = $this->common_model->FetchNextId('pro_purchase_order',"PO-{$this->data['accounting_year']}-");
+
+        if($type=="e")
+            
+            echo $uid;
+
+        else
+        {
+            return $uid;
+        }
+
+       
+
+
+    }
+	
+
+
+
+
+
 
 
     public function FetchProduct()

@@ -38,6 +38,10 @@
     {
         width: 97%;
     }
+    .droup_color{
+
+        color: black;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -153,7 +157,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-8 col-lg-8 zero_padding">
-                                                                        <select class="form-select" name="enquiry_contact_person" id="contact_person_id"  required>
+                                                                        <select class="form-select " name="enquiry_contact_person" id="contact_person_id"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
@@ -195,10 +199,10 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select" name="enquiry_assign_to" required>
+                                                                    <select class="form-select " name="enquiry_assign_to" required>
                                                                         <option value="" selected disabled>Assigned To</option>
                                                                         <?php foreach($employees as $employ){?> 
-                                                                            <option value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
+                                                                            <option class="droup_color" value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
                                                                         <?php } ?>
                                                                 
                                                                      </select>

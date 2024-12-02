@@ -84,7 +84,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="<?php echo $delivery_note_id; ?>" class="form-control input_length" required>
+                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 

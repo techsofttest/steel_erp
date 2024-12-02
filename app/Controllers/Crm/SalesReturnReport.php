@@ -316,7 +316,7 @@ class SalesReturnReport extends BaseController
         ]);
 
 
-            $mpdf->SetTitle('Delivery Note to Credit Invoice Report'); // Set the title
+            $mpdf->SetTitle('Sales Return Report'); // Set the title
 
           
 
@@ -372,7 +372,7 @@ class SalesReturnReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Delivery Note to Credit Invoice Report</h3></td>
+            <td align="right"><h3>Sales Return Report</h3></td>
         
             </tr>
         

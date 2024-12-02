@@ -51,7 +51,7 @@
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="BackLog"){echo "active";}?>"  href="<?= base_url();?>Crm/BackLog" role="tab" aria-selected="false">Backlog </a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobProfitability"){echo "active";}?>"  href="<?= base_url();?>Crm/JobProfitability" role="tab" aria-selected="false">Job Profitability Report </a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobSummery"){echo "active";}?>"  href="<?= base_url();?>Crm/JobSummery" role="tab" aria-selected="false">Job Summery Report</a> </li>
-        
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="WorkProgress"){echo "active";}?>"  href="<?= base_url();?>Crm/WorkProgress" role="tab" aria-selected="false">Work In Progress</a> </li>
         </ul>
 			</div>
 		</div>

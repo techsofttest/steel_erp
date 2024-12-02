@@ -330,7 +330,7 @@ class Enquiry extends BaseController
 
         foreach($contact_details as $con_det)
         {
-            $data['customer_name'] .='<option value='.$con_det->contact_id.'';
+            $data['customer_name'] .='<option class="droup_color" value='.$con_det->contact_id.'';
            
             $data['customer_name'] .='>' .$con_det->contact_person. '</option>'; 
         }
@@ -581,7 +581,7 @@ class Enquiry extends BaseController
                     <select class="form-select" name="pd_product_detail" required>';
                             
                     foreach($products as $prod){
-                        $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                        $data['prod_details'] .='<option class="droup_color" value="'.$prod->product_id.'" '; 
                         if($prod->product_id == $prod_det->pd_product_detail){ $data['prod_details'] .= "selected"; }
                         $data['prod_details'] .='>'.$prod->product_details.'</option>';
                     }

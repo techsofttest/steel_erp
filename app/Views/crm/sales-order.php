@@ -85,7 +85,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="soid" value="<?php echo $sales_order_id;?>" class="form-control input_length" required >
+                                                                        <input type="text" name="so_reffer_no" id="soid" value="" class="form-control input_length" required >
                                                                     </div>
 
                                                                 </div> 

@@ -135,7 +135,9 @@ class PurchaseReturn extends BaseController
         
         if(empty($this->request->getPost('pr_id')))
         {   
-            $uid = $this->common_model->FetchNextId('pro_purchase_return',"PR");
+            
+
+            $uid = $this->FetchReference("r");
              
             $insert_data = [
 
@@ -198,20 +200,29 @@ class PurchaseReturn extends BaseController
             
             $this->common_model->EditData($updated_data, array('pr_id' => $this->request->getPost('pr_id')),'pro_purchase_return');
             
-            if(!empty($_POST['prp_sales_order']))
+            if(!empty($_POST['prp_debit']))
 		    {    
                 
-                $count =  count($_POST['prp_sales_order']);
+                $count =  count($_POST['prp_debit']);
                 
                 if($count!=0)
                 {  
                 
                     for($j=0;$j<=$count-1;$j++)
                     {
-                        
+                        if(!empty($_POST['prp_sales_order'][$j])){
+                             
+                            $sales_order = $_POST['prp_sales_order'][$j];
+
+                        }
+                        else{
+
+                            $sales_order = "";
+                        }
+
                         $insert_data  	= array(  
                             
-                            'prp_sales_order'         =>  $_POST['prp_sales_order'][$j],
+                            'prp_sales_order'         =>  $sales_order,
                             'prp_prod_desc'           =>  $_POST['prp_prod_desc'][$j],
                             'prp_debit'               =>  $_POST['prp_debit'][$j],
                             'prp_qty'                 =>  $_POST['prp_qty'][$j],
@@ -219,28 +230,41 @@ class PurchaseReturn extends BaseController
                             'prp_rate'                =>  $_POST['prp_rate'][$j],
                             'prp_discount'            =>  $_POST['prp_discount'][$j],
                             'prp_amount'              =>  $_POST['prp_amount'][$j],
+                            //'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
+                            //'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
                             'prp_purchase_return_id'  =>  $this->request->getPost('pr_id'),
                         );
 
-                        
+                       
                         $id = $this->common_model->InsertData('pro_purchase_return_prod',$insert_data);
 
                         $purchase_return_prod = $this->common_model->SingleRow('pro_purchase_return_prod',array('prp_id' => $id));
                         
                         $data['purchase_id'] = $purchase_return_prod->prp_purchase_return_id;
 
+                        
                         $purchase_return = $this->common_model->SingleRow('pro_purchase_return',array('pr_id' => $purchase_return_prod->prp_purchase_return_id));
                         
-                        $this->common_model->EditData(array('pr_id' => $purchase_return_prod->prp_purchase_return_id), array('pr_total_amount' => $_POST['pr_total_amount']),'pro_purchase_return');
-            
+                        $this->common_model->EditData(array('pr_total_amount' => $_POST['pr_total_amount']), array('pr_id' => $purchase_return_prod->prp_purchase_return_id),'pro_purchase_return');
+                        
+
+                        /*$this->common_model->EditData(array('pvp_status' => 1), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');
+                        
+                        $pur_vou1 = $this->common_model->FetchWhere('pro_purchase_voucher_prod' ,array('pvp_reffer_id' =>  $purchase_return_prod->prp_voucher_id));
+
+                        $pur_vou2 = $this->common_model->CheckTwiceCond1('pro_purchase_voucher_prod',array('pvp_reffer_id' => $purchase_return_prod->prp_voucher_id),array('pvp_status' =>1));
+                        
+                       
+
+                        if(count($pur_vou1) === count($pur_vou2)){
+
+                            $this->common_model->EditData(array('pv_flag_status' => 1), array('pv_id' => $purchase_return_prod->prp_voucher_id),'pro_purchase_voucher');
+                        }*/
+
                         $data['vendor_id'] = $purchase_return->pr_vendor_name;
                         
                         $data['mrn_reff_id'] = "";
-  
-
-                        
-
-                        
+            
                     } 
                 }
       
@@ -362,17 +386,25 @@ class PurchaseReturn extends BaseController
     }
 
 
-    
 
-
-    public function FetchReference()
+    public function FetchReference($type="e")
     {
-    
-        $uid = $this->common_model->FetchNextId('pro_purchase_return',"PR");
-    
-        echo $uid;
-    
+
+        $uid = $this->common_model->FetchNextId('pro_purchase_return',"PR-{$this->data['accounting_year']}-");
+
+        if($type=="e")
+        
+            echo $uid;
+
+        else
+        {
+            
+            return $uid;
+
+        }
+
     }
+	
 
 
     public function FetchProduct()
@@ -408,6 +440,7 @@ class PurchaseReturn extends BaseController
                                             <td><input type="text" name="" value="'.$prod->pvp_prod_dec.'" class="form-control"  readonly></td>
                                             <td><input type="number" name="" value="'.$prod->pvp_qty.'"  class="form-control order_qty" readonly></td>
                                             <td><input type="checkbox" name="" id="'.$prod->pvp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                            
                                           
                                         </tr>';
                                             $i++;
@@ -465,7 +498,8 @@ class PurchaseReturn extends BaseController
                                             <td><input type="text" name="prp_rate[]" value="'.$product->pvp_rate.'"  class="form-control add_prod_rate" required readonly></td>
                                             <td><input type="text" name="prp_discount[]" value="'.$product->pvp_discount.'"  class="form-control add_discount" required readonly></td>
                                             <td><input type="text" name="prp_amount[]" value="'.$product->pvp_amount.'"  class="form-control add_prod_amount" required readonly></td>
-                                           
+                                            <input type="hidden" name="prp_id[]" value="'.$product->pvp_id.'">
+                                             <input type="hidden" name="prp_voucher_id[]" value="'.$product->pvp_reffer_id.'">
                                         </tr>';
  
                                     
@@ -683,6 +717,8 @@ class PurchaseReturn extends BaseController
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
+        $data['total_amount']   = $purchase_return->pr_total_amount;
+
         /*$join =  array(
             
             array(
@@ -729,6 +765,103 @@ class PurchaseReturn extends BaseController
         echo json_encode($data);
 
 
+    }
+
+    public function Edit(){
+
+        $join =  array(
+            
+            array(
+                'table' => 'pro_vendor',
+                'pk'    => 'ven_id',
+                'fk'    => 'pr_vendor_name',
+            ),
+            array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'pr_vendor_inv',
+            ),
+
+        );
+
+
+        $purchase_return = $this->common_model->SingleRowJoin('pro_purchase_return', array('pr_id' => $this->request->getPost('ID')),$join);
+        
+        
+        $data['reffer_id']      = $purchase_return->pr_reffer_id;
+
+        $data['pr_id']          = $purchase_return->pr_id;
+
+        $data['date']           = date('d-M-Y',strtotime($purchase_return->pr_date));
+
+        $data['vendor_name']    = $purchase_return->ven_name;
+
+        $data['vendor_inv']     = $purchase_return->pv_vendor_inv;
+
+        $data['lpo']            = $purchase_return->pr_lpo;
+
+        $data['contact_person'] = $purchase_return->pr_contact_person;
+
+        $data['payment_term']   = $purchase_return->pr_payment_term;
+
+        $data['total_amount']   = $purchase_return->pr_total_amount;
+
+        $purchase_return_prod = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
+        
+        $i=1;
+
+        $data['purchase_return'] = '';
+
+        foreach($purchase_return_prod as $pur_return_prod)
+        {
+            $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
+            <td class="si_no1">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_amount.'" class="form-control" readonly></td>
+            </tr>
+            ';
+            $i++; 
+        }
+
+
+       
+
+        echo json_encode($data);
+
+    }
+
+
+    public function Update()
+    {
+      
+        $update_data = [
+
+            'pr_lpo'           => $this->request->getPost('edit_lpo_ref'),
+
+            'pr_payment_term'  => $this->request->getPost('edit_payment_term'),
+
+
+        ];
+        
+       
+        $this->common_model->EditData($update_data, array('pr_id' => $this->request->getPost('pr_id')), 'pro_purchase_return');
+        
+    }
+
+
+    public function Delete(){
+
+        $this->common_model->DeleteData('pro_purchase_return_prod', array('prp_purchase_return_id' => $this->request->getPost('ID')));
+
+        $this->common_model->DeleteData('pro_purchase_return', array('pr_id' => $this->request->getPost('ID')));
+        
+      
     }
  
 

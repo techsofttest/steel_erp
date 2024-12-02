@@ -1441,7 +1441,7 @@
 
         /*reset reff no*/
 
-        $('.add_mr_form').click(function(){
+        /*$('.add_mr_form').click(function(){
            
             $('#add_enquiry_form')[0].reset();
             $('.ser_product_det').val('').trigger('change');
@@ -1463,7 +1463,7 @@
 
             });
 
-        });
+        });*/
 
         /*####*/
 
@@ -1582,13 +1582,36 @@
 
                 success:function(data)
                 {
-                    var data = JSON.parse(data);
+                    //var data = JSON.parse(data);
+
+                    //console.log(data);
+              
                     
-                    $('#po_id').val(data.uid);
+                    $('#po_id').val(data);
 
-                    $('#po_mrn_reff_id').html(data.mrn);
+                    
+                        $.ajax({
 
-                    console.log(data.mrn);
+                            url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/FetchReference",
+
+                            method : "GET",
+
+                            success:function(data)
+                            {
+                                var data = JSON.parse(data);
+                                
+                               
+                                $('#po_mrn_reff_id').html(data.mrn);
+
+                                console.log(data.mrn);
+
+                            }
+
+                        });
+
+                    /*$('#po_mrn_reff_id').html(data.mrn);
+
+                    console.log(data.mrn);*/
 
                 }
                 
@@ -1643,27 +1666,31 @@
         $("body").on('change', '.add_vendor', function(){ 
 	        
             var id = $(this).val();
- 
-            $.ajax({
- 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/vendorFetch",
- 
-                method : "POST",
- 
-                data: {ID: id},
- 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-                 
-                    $('.add_payment_term').val(data.payment_term)
 
-                    $('.add_contact_person').html(data.condact_data)
-                   
-                }
+            if(id!=null){
+
+                $.ajax({
+    
+                    url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/vendorFetch",
+    
+                    method : "POST",
+    
+                    data: {ID: id},
+    
+                    success:function(data)
+                    {   
+                        var data = JSON.parse(data);
+                    
+                        $('.add_payment_term').val(data.payment_term)
+
+                        $('.add_contact_person').html(data.condact_data)
+                    
+                    }
+    
+    
+                });
+            }
  
- 
-            });
  
  
         });
@@ -2207,7 +2234,9 @@
         /*delete section start*/
 
         $("body").on('click', '.delete_btn', function(){ 
-
+            
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
+            
             var id = $(this).data('id'); 
 
             var rowToDelete = $(this).closest('tr');

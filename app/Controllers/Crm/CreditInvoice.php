@@ -114,7 +114,6 @@ class CreditInvoice extends BaseController
         
         $data['status_invoice'] = $this->common_model->FetchAllOrder('master_status_invoice','msi_id','desc');
 
-        $data['credit_invoice_id'] = $this->common_model->FetchNextId('crm_credit_invoice','CRN'); 
 
         $data['content'] = view('crm/credit-invoice',$data);
 
@@ -177,12 +176,14 @@ class CreditInvoice extends BaseController
          
         if(empty($this->request->getPost('cci_id')))
         {   
-            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
+            //$uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
             
            // $credit_invoices = $this->common_model->FetchWhere('steel_accounts_receipts',array('cci_reffer_no' => $this->request->getPost('cci_reffer_no')));
 
             //if(empty($credit_invoices))
             //{
+                $uid = $this->FetchReference("r");
+
                 $insert_data = [
 
                     'cci_reffer_no'      => $uid,
@@ -1197,12 +1198,18 @@ class CreditInvoice extends BaseController
 
 
 
-        public function FetchReference()
+       
+        public function FetchReference($type="e")
         {
     
-            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRN");
+            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRINV-{$this->data['accounting_year']}-");
         
-            echo $uid;
+            if($type=="e")
+                echo $uid;
+            else
+            {
+                return $uid;
+            }
     
         }
 

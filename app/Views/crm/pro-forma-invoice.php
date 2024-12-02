@@ -58,7 +58,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_reffer_no" id="pfid" value="<?php echo $performa_invoice_id;?>" class="form-control" required readonly>
+                                                                        <input type="text" name="pf_reffer_no" id="pfid" value="" class="form-control" required readonly>
                                                                     </div>
 
                                                                 </div> 

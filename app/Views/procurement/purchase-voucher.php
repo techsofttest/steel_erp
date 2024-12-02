@@ -1467,7 +1467,7 @@
 
         /*reset reff no*/
 
-        $('.add_mr_form').click(function(){
+        /*$('.add_mr_form').click(function(){
            
             $('#add_enquiry_form')[0].reset();
             $('.ser_product_det').val('').trigger('change');
@@ -1489,7 +1489,7 @@
 
             });
 
-        });
+        });*/
 
         /*####*/
 
@@ -1590,9 +1590,9 @@
 
                 success:function(data)
                 {
-                    var data = JSON.parse(data);
+                   
 
-                    $('#pv_id').val(data.uid);
+                    $('#pv_id').val(data);
 
                     //$('.select_purchase').html(data.pur_reff);
 
@@ -2034,25 +2034,29 @@
 
             var Id = $('.vendor_data').val();
 
-            $.ajax({
+            if(Id!=null ){
 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/ContactPerson",
+                $.ajax({
 
-                method : "POST",
+                    url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/ContactPerson",
 
-                data: {ID: Id},
+                    method : "POST",
 
-                success:function(data)
-                {
-                
-                    var data = JSON.parse(data);
+                    data: {ID: Id},
 
-                    $('.add_contact_person').html(data.condact_data);
+                    success:function(data)
+                    {
+                    
+                        var data = JSON.parse(data);
 
-                    $('.add_payment_term').val(data.payment_term);
-                }
+                        $('.add_contact_person').html(data.condact_data);
 
-            });
+                        $('.add_payment_term').val(data.payment_term);
+                    }
+
+                });
+
+            }
         });
        
        /*###*/
@@ -2102,31 +2106,35 @@
 
             var Id = $('.select_purchase').val();
 
-            $.ajax({
+            if(Id!=null ){
 
-                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPayment",
+                $.ajax({
 
-                method : "POST",
+                    url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchPayment",
 
-                data: {ID: Id},
+                    method : "POST",
 
-                success:function(data)
-                {
-                
-                    var data = JSON.parse(data);
+                    data: {ID: Id},
 
-                  
-
-                    //$('.delivery_note_clz').val(data.delivery_date);
+                    success:function(data)
+                    {
+                    
+                        var data = JSON.parse(data);
 
                     
 
-                    $('.mr_ref').val(data.mr_reff);
+                        //$('.delivery_note_clz').val(data.delivery_date);
 
-                    
-                }
+                        
 
-            });
+                        $('.mr_ref').val(data.mr_reff);
+
+                        
+                    }
+
+                });
+
+            }
         });
 
 
@@ -2476,6 +2484,48 @@
 
 
 /*checkbox section end*/
+
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+    function isDataTableRequest(ajaxSettings) {
+        // Check for DataTables-specific URL or any other pattern
+        return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+    }
+
+    function isSelect2Request(ajaxSettings) {
+        // Check for specific data or parameters in Select2 requests
+        return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+    }
+
+
+    function isSelect2Search(ajaxSettings) {
+        // Check for specific data or parameters in Select2 requests
+        return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+    }
+
+
+    $(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+        if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+            $("#overlay").fadeIn(300);
+        }
+    });
+
+
+    $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+        if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+            $("#overlay").fadeOut(300);
+        }
+    });
+
+
+
+    $(document).ajaxError(function() {
+        alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+    });
+
+
+});
 
 
 

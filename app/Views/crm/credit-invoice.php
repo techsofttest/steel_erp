@@ -82,7 +82,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_reffer_no" id="srid" value="<?php echo $credit_invoice_id; ?>" class="form-control input_length" required>
+                                                                        <input type="text" name="cci_reffer_no" id="srid" value="" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 

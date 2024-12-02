@@ -77,7 +77,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_reffer_no" id="mr_id" class="form-control" value="<?php echo $material_requisition; ?>" required readonly>
+                                                                        <input type="text" name="mr_reffer_no" id="mr_id" class="form-control" value="" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1613,6 +1613,8 @@
         /*delete section start*/
 
         $("body").on('click', '.delete_btn', function(){ 
+
+            if (!confirm('Are you absolutely sure you want to delete?')) return false;
 
             var id = $(this).data('id'); 
 

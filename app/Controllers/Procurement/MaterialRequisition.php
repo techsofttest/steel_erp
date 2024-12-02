@@ -53,8 +53,7 @@ class MaterialRequisition extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view print_color print_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-file-pdf-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "mr_id"         => $i,
@@ -115,8 +114,6 @@ class MaterialRequisition extends BaseController
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
 
-        $data['material_requisition'] = $this->common_model->FetchNextId('pro_material_requisition','MR');
-
         $cond = array('so_deliver_flag' => 0);
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
@@ -131,7 +128,8 @@ class MaterialRequisition extends BaseController
     // add account head
     public function Add()
     {   
-        $uid = $this->common_model->FetchNextId('pro_material_requisition',"MR");
+
+        $uid = $this->FetchReference("r");
         
         $insert_data = [
                 
@@ -191,14 +189,25 @@ class MaterialRequisition extends BaseController
     }
 
 
-    public function FetchReference()
+   
+    
+    public function FetchReference($type="e")
     {
-    
-        $uid = $this->common_model->FetchNextId('pro_material_requisition',"MR");
-    
-        echo $uid;
-    
+
+        $uid = $this->common_model->FetchNextId('pro_material_requisition',"MR-{$this->data['accounting_year']}-");
+
+        if($type=="e")
+
+            echo $uid;
+
+        else
+        {
+            return $uid;
+        }
+
     }
+	
+
 
     public function FetchProdDes(){
 

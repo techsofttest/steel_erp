@@ -349,12 +349,12 @@ class SalesOrderToDn extends BaseController
 
                                                                 $final_amount = format_currency($final_amount);
 
-                                                                $pdf_data .= "<td class='rotate align='right' width='80px' align='right'>{$final_amount}</td>";
+                                                                $pdf_data .= "<td class='rotate' align='right' width='80px' align='right'>{$final_amount}</td>";
 
 
                                                             } else{
 
-                                                                $pdf_data .= "<td class='rotate align='right' width='80px' align='right'>0.00</td> ";
+                                                                $pdf_data .= "<td class='rotate' align='right' width='80px' align='right'>0.00</td>";
 
                                                             }
 

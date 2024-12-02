@@ -134,7 +134,7 @@ class CashInvoice extends BaseController
         
         $data['cash_invoice']        = $this->common_model->FetchAllOrder('master_cash_invoice_status','cis_id ','desc');
         
-        $data['cash_invoice_id']     = $this->common_model->FetchNextId('crm_cash_invoice','CIN'); 
+       
 
         $data['content'] = view('crm/cash-invoice',$data);
 
@@ -1152,12 +1152,18 @@ class CashInvoice extends BaseController
         }
 
 
-        public function FetchReference()
+       
+        public function FetchReference($type="e")
         {
     
-            $uid = $this->common_model->FetchNextId('crm_cash_invoice',"CIN");
-        
-            echo $uid;
+            $uid = $this->common_model->FetchNextId('crm_cash_invoice',"CAINV-{$this->data['accounting_year']}-");
+    
+            if($type=="e")
+                echo $uid;
+            else
+            {
+                return $uid;
+            }
     
         }
 

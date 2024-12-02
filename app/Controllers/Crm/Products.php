@@ -213,11 +213,25 @@ class Products extends BaseController
 
     //delete account head
     public function Delete()
-    {
-        $cond = array('product_id' => $this->request->getPost('ID'));
+    {   
+        $product_detail = $this->common_model->SingleRow('crm_product_detail',array('pd_product_detail' => $this->request->getPost('ID')));
+
+        if(empty($product_detail)){
+            
+            $cond = array('product_id' => $this->request->getPost('ID'));
  
-        $this->common_model->DeleteData('crm_products',$cond);
-    
+            $this->common_model->DeleteData('crm_products',$cond);
+
+            $data['status'] = "true";
+
+        }else{
+            
+            $data['status'] = "false";
+
+        }
+
+        echo json_encode($data);
+
     }
 
 

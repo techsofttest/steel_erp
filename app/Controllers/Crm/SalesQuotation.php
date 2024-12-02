@@ -687,7 +687,9 @@ class SalesQuotation extends BaseController
         //new
        
 
-        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);		
+        $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond);
+        
+        
 
  
         $data['customer_person'] ="";
@@ -698,7 +700,7 @@ class SalesQuotation extends BaseController
         {
             
             
-            $data['customer_person'] .='<option value='.$con_det->contact_id.'>'.$con_det->contact_person.'</option>';
+            $data['customer_person'] .='<option class="droup_color" value='.$con_det->contact_id.'>'.$con_det->contact_person.'</option>';
         }
 
 
@@ -711,7 +713,7 @@ class SalesQuotation extends BaseController
 
         foreach($enquiry_customer as $enq_cust)
         {
-            $data['enquiry_customer'] .='<option value='.$enq_cust->enquiry_id.'';
+            $data['enquiry_customer'] .='<option class="droup_color" value='.$enq_cust->enquiry_id.'';
            
             $data['enquiry_customer'] .='>' .$enq_cust->enquiry_reff. '</option>'; 
         }
@@ -909,7 +911,7 @@ class SalesQuotation extends BaseController
                     <select class="form-select droup_product add_prod" name="qpd_product_description['.$k.']" required>';
                     
                         foreach($products as $prod){
-                            $data['product_detail'] .='<option value="'.$prod->product_id.'" '; 
+                            $data['product_detail'] .='<option class="droup_color" value="'.$prod->product_id.'" '; 
                             if($prod->product_id == $prod_det->pd_product_detail){ $data['product_detail'] .= "selected"; }
                             $data['product_detail'] .='>'.$prod->product_details.'</option>';
                         }
@@ -983,18 +985,7 @@ class SalesQuotation extends BaseController
         
         $data['customer_creation'] ="";
 
-        /*foreach($customer_creation as $cus_creation)
-        {
-            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"'; 
         
-            
-            if ($cus_creation->cc_id  == $quotation_details->qd_customer)
-            {
-                $data['customer_creation'] .= ' selected'; 
-            }
-        
-            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
-        }*/
 
 
         foreach($customer_creation as $cus_creation)
@@ -1147,7 +1138,7 @@ class SalesQuotation extends BaseController
             <td style="width:30%"><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_unit.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_qty.'" class="form-control" readonly></td>
-            <td><a href="javascript:void(0)">click</a></td>
+           
             <td><input type="text" value="'.$cost_prod->qc_rate.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_amount.'" class="form-control edit_cal_amount" readonly></td>
             <td style="width:15%">
@@ -1258,21 +1249,23 @@ class SalesQuotation extends BaseController
 
         $cost_cal = $this->common_model->SingleRowJoin('crm_quotation_cost_calculation',$cond,$joins);
 
+       
+
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['material'] ="";
 
         foreach($products as $prod)
         {
-            $data['material'] .= '<option value="' .$prod->product_id. '"'; 
+            $data['material'] .= '<option class="droup_color" value="' .$prod->product_id.'"'; 
         
             // Check if the current product head is selected
-            if ($prod->product_id  == $cost_cal->product_details)
+            if ($prod->product_id  == $cost_cal->qc_material)
             {
                 $data['material'] .= ' selected'; 
             }
         
-            $data['material'] .= '>' . $prod->	product_details . '</option>';
+            $data['material'] .= '>' . $prod->product_details . '</option>';
         }
 
         //$data['material'] = $cost_cal->product_details;
@@ -1444,7 +1437,7 @@ class SalesQuotation extends BaseController
             <td style="width:34%"><select class="form-select droup_product" name="qpd_product_description" required>';
                     
                 foreach($products as $prod){
-                    $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+                    $data['prod_details'] .='<option class="droup_color" value="'.$prod->product_id.'" '; 
                     if($prod->product_id == $prod_det->qpd_product_description){ $data['prod_details'] .= "selected"; }
                     $data['prod_details'] .='>'.$prod->product_details.'</option>';
                 }

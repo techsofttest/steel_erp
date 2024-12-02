@@ -177,17 +177,24 @@ class ProductHead extends BaseController
 
     //delete account head
     public function Delete()
-    {
-        $cond = array('ph_id' => $this->request->getPost('ID'));
- 
-        $this->common_model->DeleteData('crm_product_heads',$cond);
+    {  
+        $product_head = $this->common_model->SingleRow('crm_products',array('product_product_head' => $this->request->getPost('ID')));
 
-        //delete product
-
-        $cond2 = array('product_product_head' => $this->request->getPost('ID'));
-        
-        $this->common_model->DeleteData('crm_products',$cond2);
+        if(empty($product_head)){
+            
+            $cond = array('ph_id' => $this->request->getPost('ID'));
  
+            $this->common_model->DeleteData('crm_product_heads',$cond);
+
+            $data['status'] = "true";
+
+        }else{
+            
+            $data['status'] = "false";
+        }
+
+        echo json_encode($data);
+      
     }
 
 

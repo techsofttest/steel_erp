@@ -80,7 +80,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="sr_reffer_no" id="ciid" value="<?php echo $cash_invoice_id; ?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="sr_reffer_no" id="ciid" value="" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 

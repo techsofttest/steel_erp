@@ -63,7 +63,7 @@ class PurchaseVoucher extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  style="display:none;" data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
            
            $data[] = array( 
               "pv_id"             => $i,
@@ -161,7 +161,9 @@ class PurchaseVoucher extends BaseController
 
         if(empty($this->request->getPost('purchase_voucher_id')))
         {   
-            $uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
+            //$uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
+
+            $uid = $this->FetchReference("r");
 
             if(!empty($this->request->getPost('purchase_order')))
             {
@@ -769,37 +771,23 @@ class PurchaseVoucher extends BaseController
     
 
 
-    public function FetchReference()
+    
+
+
+    public function FetchReference($type="e")
     {
-    
-        $data['uid'] = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
 
-       /*$join =  array(
-            
-            array(
-                'table' => 'pro_purchase_order',
-                'pk'    => 'po_id',
-                'fk'    => 'mrn_purchase_order',
-            ),
+        $uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV-{$this->data['accounting_year']}-");
 
-         
-        );
-
-        $material_received  = $this->pro_model->PurchaseVoucher('pro_material_received_note',$join);        
-       
-        $data['pur_reff'] = "<option value='' selected disabled>Select Purchase Order</option>";
-
-        foreach($material_received as $mat_rec)
+        if($type=="e")
+            echo $uid;
+        else
         {
-            $data['pur_reff'] .="<option value='".$mat_rec->po_id."'>".$mat_rec->po_reffer_no."</option>";
-	
-        }*/
+            return $uid;
+        }
 
-        echo json_encode($data);
-    
-        //echo $uid;
-    
     }
+	
 
 
     public function FetchProduct()

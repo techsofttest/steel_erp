@@ -59,7 +59,10 @@
     {
         width: 93%;
     }
-   
+    .droup_color{
+
+        color: black !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -232,7 +235,7 @@
                                                                         <select class="form-select enqinput input_length2" name="qd_sales_executive" id="qd_sales_executive_id" required>
                                                                             <option value="" selected disabled>Sales Executive</option>
                                                                             <?php foreach($sales_executive as $sale_exc){?> 
-                                                                                <option value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
+                                                                                <option class="droup_color" value="<?php echo $sale_exc->se_id;?>"><?php echo $sale_exc->se_name;?></option>
                                                                             <?php } ?>
                                                                 
                                                                         </select>
@@ -490,7 +493,7 @@
                                                                     <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
                                                                         <?php foreach($products as $prod){?>
-                                                                            <option value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
+                                                                            <option class="droup_color" value="<?php echo $prod->product_id;?>"><?php echo $prod->product_details;?></option>
                                                                         <?php } ?>-
                                                                     </select>
                                                                 </td>
@@ -570,7 +573,7 @@
 			                        <div class="modal-content">
                                         <div class="modal-header">
                                             
-                                            <button type="button" class="btn-close close_sub_modal2"  aria-label="Close"></button>
+                                            <button type="button" class="btn-close close_sub_modal2"   aria-label="Close"></button>
                                         </div>
 
 				                        <div class="modal-body">
@@ -955,7 +958,6 @@
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td>Unit</td>
                                                                 <td>Qty</td>
-                                                                <td>Price Check</td>
                                                                 <td>Rate</td>
                                                                 <td>Amount</td>
                                                                 <td>Action</td>
@@ -1074,7 +1076,7 @@
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control edit_cost_unit" required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_cost_qty" required></td>
-                                                                <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CostClick">Click</a></td>
+                                                                <td><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
                                                                 <td><input type="number" name="qc_rate"  class="form-control edit_cost_rate" required></td>
                                                                 
                                                                 <td><input type="number" name="qc_amount" class="form-control edit_cost_amount" readonly></td>
@@ -1164,7 +1166,7 @@
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control " required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_add_qty" required></td>
-                                                                <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CostClick">Click</a></td>
+                                                                <td><a href="javascript:void(0)" onclick="editAddCostVendor.call(this)" >Click</a></td>
                                                                 <td><input type="number" name="qc_rate"  class="form-control edit_add_rate" required></td>
                                                                 
                                                                 <td><input type="number" name="qc_amount" class="form-control edit_add_amount" readonly></td>
@@ -2591,6 +2593,8 @@
                   
                     $(".contact_person_clz").html(data.customer_person);
 
+                   // console(data.customer_person); 
+
                     $("#qd_payment_term_id").val(data.cc_credit_term);
 
                     $(".qd_enquiry_reference_clz").html(data.enquiry_customer);
@@ -2676,7 +2680,9 @@
               
             pp++; 
 
-            $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+           // $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                
+                $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no' style='width: 10%;'>"+pp+"</td><td style='width: 40%'><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 			}
             
@@ -2797,7 +2803,7 @@
             
             cc++;    
 
-                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 InitSelect2();
             }
         });
@@ -2888,7 +2894,7 @@
         function InitProductSelect2(){
             $(".add_prod:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control-",
+                theme : "default form-control- droup_color",
                 dropdownParent: $($('.add_prod:last').closest('.prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
@@ -3071,16 +3077,32 @@
 
             $('#AddSalesQuotation').modal('show');
 
-           
 
         });
 
 
         $("body").on('click', '.close_sub_modal2', function(){ 
-	   
-            $('#CostClick').modal('hide');
+             
+            var typeValue = $('.close_sub_modal2').data('type');
 
-            $('#CostCalculation').modal('show');
+            if(typeValue == "add"){
+
+                $('#CostClick').modal('hide');
+
+                $('#CostCalculation').modal('show');
+
+            }
+
+            if(typeValue == "edit"){
+                
+                $('#CostClick').modal('hide');
+
+                $('#EditCostCalculation').modal('show');
+
+            }
+
+	   
+            
 
         });
 
@@ -4378,7 +4400,14 @@
                     alertify.error('No PUrchase Order Created').delay(3).dismissOthers();
                 }
                 else{
+
                     $(".click_vendor_det").html(responseData.prod_details);
+
+                   
+
+                    $('.close_sub_modal2').data('type', 'add');
+
+                    $('.close_sub_modal2').attr('data-type', 'add');
 
                     $('#CostClick').modal('show');
 
@@ -4390,10 +4419,105 @@
 
         });
 
-        // Log the correct variable
-        //console.log($productSelectElement); // Logs the jQuery object for '.cost_product_det'
-        //console.log(product); // Logs the value of '.cost_product_det'
+       
     }
+
+
+
+    function editcostVendor() {
+        // 'this' refers to the clicked element
+        var $productcountSelect = $(this);
+
+        // Find the closest '.cost_cal_row' and the '.cost_product_det' within it
+        var $productSelectElement = $productcountSelect.closest('.edit_cost_cal_row').find('.edit_cost_prod');
+
+        // Get the value of the '.cost_product_det' element
+        var product = $productSelectElement.val();
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/SalesQuotation/CostVendor",
+
+            method : "POST",
+
+            data: {ID: product},
+
+            success:function(data)
+            {
+                var responseData = JSON.parse(data);
+                if(responseData.prod_details == "" ){
+                    
+                    alertify.error('No PUrchase Order Created').delay(3).dismissOthers();
+                }
+                else{
+                    $(".click_vendor_det").html(responseData.prod_details);
+
+                    $('.close_sub_modal2').data('type', 'edit');
+
+                    $('.close_sub_modal2').attr('data-type', 'edit');
+
+                    $('#CostClick').modal('show');
+
+                    $('#EditCostCalculation').modal('hide');
+
+                }
+
+            }
+
+        });
+
+       
+    }
+
+
+
+    function editAddCostVendor() {
+        // 'this' refers to the clicked element
+        var $productcountSelect = $(this);
+
+        // Find the closest '.cost_cal_row' and the '.cost_product_det' within it
+        var $productSelectElement = $productcountSelect.closest('.edit_add_cost_cal_row').find('.edit_add_prod_desc');
+
+        // Get the value of the '.cost_product_det' element
+        var product = $productSelectElement.val();
+
+        $.ajax({
+
+            url : "<?php echo base_url(); ?>Crm/SalesQuotation/CostVendor",
+
+            method : "POST",
+
+            data: {ID: product},
+
+            success:function(data)
+            {
+                var responseData = JSON.parse(data);
+
+                if(responseData.prod_details == "" ){
+                    
+                    alertify.error('No PUrchase Order Created').delay(3).dismissOthers();
+                }
+                else{
+                    
+                    $(".click_vendor_det").html(responseData.prod_details);
+
+                    $('.close_sub_modal2').data('type', 'edit');
+
+                    $('.close_sub_modal2').attr('data-type', 'edit');
+
+                    $('#CostClick').modal('show');
+
+                    $('#EditAddCostCal').modal('hide');
+
+                }
+
+            }
+
+        });
+
+       
+    }
+
 
    
 

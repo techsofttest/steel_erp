@@ -331,10 +331,20 @@
                 data: {ID: id},
 
                 success:function(data)
-                {
-                    alertify.error('Data Deleted Successfully').delay(2).dismissOthers();
+                {   
+                    var data = JSON.parse(data);
+                      
+                    if(data.status === "true"){
+                        
+                        alertify.error('Data Deleted Successfully').delay(2).dismissOthers();
 
-                    datatable.ajax.reload(null,false);
+                        datatable.ajax.reload(null,false);
+
+                    }else{
+
+                        alertify.error('Data In Use. Can\'t Be Delete').delay(2).dismissOthers();
+                    } 
+                    
                 }
 
 

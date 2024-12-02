@@ -194,7 +194,7 @@
                             <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                     <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">Sales Return Report<?php if (!empty($form_date) && !empty($to_date)) { ?>(<?php echo $form_date; ?> To <?php echo $to_date; ?>)<?php } ?></h4>
+                                     <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Sales Return Report<?php if (!empty($form_date) && !empty($to_date)) { ?>(<?php echo $form_date; ?> To <?php echo $to_date; ?>)<?php } ?></h4>
                                      <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
@@ -215,25 +215,29 @@
                                         <!-- </form> -->
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
+
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+
+                                    <!--<div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
                                         
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">-->
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Return Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:130px">Sales Return Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Customer</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Invoice Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">LPO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Sales Executive</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
                                                     <th class="text-center" style="width:500px">Product</th>
-                                                    <th class="text-center" style="width:80px;white-space: nowrap">Quantity</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-center">Rate</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-center">Discount</th>
-                                                    <th style="width:100px;white-space: nowrap" class="text-center">Amount</th>
+                                                    <th class="text-center" style="width:100px;">Quantity</th>
+                                                    <th style="width:100px;" class="text-center">Rate</th>
+                                                    <th style="width:100px;" class="text-center">Discount</th>
+                                                    <th style="width:100px;" class="text-center">Amount</th>
                                                     
                                                 </tr>
                                             </thead>
@@ -249,12 +253,12 @@
                                                 <tr>	
                                                     <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $inv_rep->sr_date; ?></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesReturn?view_rut=<?php echo $inv_rep->sr_id; ?>" target="_blank"><?php echo $inv_rep->sr_reffer_no; ?></a></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:130px"><a href="<?php echo base_url(); ?>Crm/SalesReturn?view_rut=<?php echo $inv_rep->sr_id; ?>" target="_blank"><?php echo $inv_rep->sr_reffer_no; ?></a></td>
                                                     <td style="white-space: nowrap;width:300px"><?php echo $inv_rep->cc_customer_name; ?></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $inv_rep->sr_invoice; ?></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:80px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $inv_rep->so_id; ?>" target="_blank"><?php echo $inv_rep->so_reffer_no; ?></a></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $inv_rep->sr_lpo_reff; ?></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $inv_rep->se_name; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_invoice; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $inv_rep->so_id; ?>" target="_blank"><?php echo $inv_rep->so_reffer_no; ?></a></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_lpo_reff; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->se_name; ?></td>
                                                     <td class="text-end" style="white-space: nowrap;width:100px"><?php echo $inv_rep->so_amount_total; ?></td>
                                                     <?php 
                                                         
@@ -267,11 +271,11 @@
                                                                             
                                                             <tr style="background: unset;border-bottom: hidden !important;">
                                                                 
-                                                                <td  style="width:500px"><?php echo $ret_prod->product_details; ?> </td>
-                                                                <td class="text-center" style="width:80px;white-space: nowrap"><?php echo $ret_prod->srp_quantity; ?> </td>
-                                                                <td style="width:80px;white-space: nowrap" class="text-end"><?php echo format_currency($ret_prod->srp_rate); ?> </td>
-                                                                <td style="width:80px;white-space: nowrap" class="text-end"><?php echo format_currency($ret_prod->srp_discount); ?>% </td>
-                                                                <td style="width:100px;white-space: nowrap" class="text-end"><?php echo format_currency($ret_prod->srp_amount); ?> </td>
+                                                                <td  style="width:500px" ><?php echo $ret_prod->product_details; ?> </td>
+                                                                <td class="text-center" style="width:100px; "><?php echo $ret_prod->srp_quantity; ?> </td>
+                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_rate); ?> </td>
+                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_discount); ?>% </td>
+                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_amount); ?> </td>
                                                                 
                                                             </tr>
 

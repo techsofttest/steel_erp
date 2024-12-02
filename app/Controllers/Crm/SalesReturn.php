@@ -134,7 +134,7 @@ class SalesReturn extends BaseController
         
         $data['cash_invoice']        = $this->common_model->FetchAllOrder('master_cash_invoice_status','cis_id','desc');
         
-        $data['cash_invoice_id']     = $this->common_model->FetchNextId('crm_cash_invoice','SR'); 
+        
 
         $data['content'] = view('crm/sales-return',$data);
 
@@ -195,7 +195,10 @@ class SalesReturn extends BaseController
 
         if(empty($this->request->getPost('sr_id')))
         {
-            $uid = $this->common_model->FetchNextId('crm_sales_return',"SR");
+            //$uid = $this->common_model->FetchNextId('crm_sales_return',"SR");
+
+            $uid = $this->FetchReference("r");
+
 
             $insert_data = [
 
@@ -217,7 +220,7 @@ class SalesReturn extends BaseController
 
                 'sr_credit_account'  => $this->request->getPost('sr_credit_account'),
 
-                'sr_sales_order'  => $this->request->getPost('sales_order'),
+                'sr_sales_order'     => $this->request->getPost('sales_order'),
 
                 'sr_added_by'        => 0,
 
@@ -1180,14 +1183,22 @@ class SalesReturn extends BaseController
         }
 
 
-        public function FetchReference()
+        
+
+        public function FetchReference($type="e")
         {
     
-            $uid = $this->common_model->FetchNextId('crm_sales_return',"SR");
+            $uid = $this->common_model->FetchNextId('crm_sales_return',"SR-{$this->data['accounting_year']}-");
         
-            echo $uid;
+            if($type=="e")
+                echo $uid;
+            else
+            {
+                return $uid;
+            }
     
         }
+        
 
 
         public function Edit()
