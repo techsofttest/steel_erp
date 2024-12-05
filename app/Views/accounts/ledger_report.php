@@ -286,14 +286,14 @@
                                                                             <td>Date From</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly disabled/>
+                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly />
                                                                             </td>
 
 
                                                                             <td>Date To</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly disabled/>
+                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly />
                                                                             </td>
 
 
@@ -586,7 +586,7 @@
                                             <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
 
                                             <td>
-                                            <?php if(($vc->voucher_type=="Receipt")){
+                                             <?php if(($vc->voucher_type=="Receipt")){
                                              $href="Accounts/Receipts";
                                              } 
                                              else if($vc->voucher_type=="Cash Invoice")
@@ -1140,7 +1140,7 @@ document.getElementById("email_button").addEventListener("click", function() {
 
 
 
-$('body').on('click','.print_button',function(e){
+    $('body').on('click','.print_button',function(e){
     
     // Open the PDF generation script in a new window
 

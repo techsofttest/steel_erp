@@ -167,7 +167,7 @@ class PettyCashVoucher extends BaseController
 
         }
 
-        $pcv_no = 'PCV'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $pcv_no = $this->FetchReference('r');
         
         $cond = array('pcv_id' => $id);
 
@@ -221,12 +221,19 @@ class PettyCashVoucher extends BaseController
 
 
 
-    public function FetchReference()
+    public function FetchReference($type="e")
     {
 
-    $uid = $this->common_model->FetchNextId('accounts_petty_cash_voucher',"PCV");
+    $uid = $this->common_model->FetchNextId('accounts_petty_cash_voucher',"PCV-{$this->data['accounting_year']}-");
 
+    if($type=="e")
+    {
     echo $uid;
+    }
+    else
+    {
+    return $uid;
+    }
 
     }
 

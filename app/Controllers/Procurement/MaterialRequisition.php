@@ -86,7 +86,7 @@ class MaterialRequisition extends BaseController
 
 
     // search droup drown (product description)
-    /*public function FetchProdDes()
+    public function FetchProd()
     {
 
         $page= !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -101,7 +101,7 @@ class MaterialRequisition extends BaseController
 
         return json_encode($data);
 
-    }*/
+    }
       
     
 
@@ -275,7 +275,7 @@ class MaterialRequisition extends BaseController
             $data['sales_order'] .= '<tr class="" id="'.$mat_req->mrp_id.'">
             <td class="si_no1">'.$i.'</td>
             <td><input type="text" name="contact_person[]"  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
+            <td style="width:40%"><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name="contact_mobile[]"  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
             <td> <input type="email" name="contact_email[]" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
             </tr>
@@ -358,7 +358,7 @@ class MaterialRequisition extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$mat_req->mrp_id.'">
             <td class="si_no_edit">'.$i.'</td>
             <td><input type="text" name=""  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
             <td style="width:15%">

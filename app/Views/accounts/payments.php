@@ -590,7 +590,7 @@
                                                             <tr class="invoice_row">
 
 
-                                                                <td>
+                                                                <td width="5%">
 
                                                                     <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
 
@@ -599,7 +599,7 @@
                                                                 </td>
 
 
-                                                                <td>
+                                                                <td width="35%">
 
                                                                     <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
@@ -1132,24 +1132,6 @@
 
 
 
-                                            <div class="col-lg-12">
-
-                                                <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-
-                                                        <tr>
-                                                            <td><button class="submit_btn" type="submit">Update</button></td>
-                                                        </tr>
-
-                                                    </table>
-                                                </div>
-
-
-                                            </div>
-
-
-
-
                                             <input type="hidden" name="p_amount" class="form-control" value="">
 
 
@@ -1160,6 +1142,7 @@
 
                                                     <thead>
                                                         <tr>
+                                                            <th>Sl No</th>
                                                             <th>Debit Account</th>
                                                             <th>Amount</th>
                                                             <th>Narration</th>
@@ -1217,29 +1200,31 @@
 
 
                                                     </tbody>
+                                        
+                                
+                                        <tr>
+                                                <td colspan="1"></td>
 
+                                                <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
 
+                                                <td align="right" colspan="3">Total</td>
 
-
-
-
-
-
-                                                    <tr>
-
-                                                        <td colspan="1"></td>
-
-                                                        <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
-
-                                                        <td align="right" colspan="3">Total</td>
-
-                                                        <th id="total_amount_edit">0</th>
-
-
-                                                    </tr>
+                                                <th id="total_amount_edit">0</th>
+                                        </tr>
 
 
                                                 </table>
+
+
+                                            <div class="col-lg-12">
+
+                                            <div style="">
+                                                    <button class="submit_btn" type="submit">Update</button>
+                                            </div>
+
+                                            </div>
+
+
 
 
                                             </div>
@@ -1496,6 +1481,7 @@
                 url: "<?php echo base_url(); ?>Accounts/Payments/Edit",
 
                 method: "POST",
+                
 
                 data: {
                     id: id
@@ -1546,6 +1532,21 @@
                         }
 
 
+                        if (data.pay.pay_method = "2") {
+
+                        $('#EditModal .bank_sec_edit').addClass("d-none");
+
+                        $('#r_bank_edit').removeAttr("required");
+
+                        } else {
+
+                        $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+                        $('#r_bank_edit').attr("required", true);
+
+                        }
+
+
 
                         $('#p_date_edit').val(FormatDate(data.pay.pay_date));
 
@@ -1553,7 +1554,9 @@
 
                         $('#total_amount_edit').html(data.pay.pay_amount);
 
-                        $('#sel_invoices_edit').html(data.debit);
+                        //$('#sel_invoices_edit').html(data.debit);
+
+                        $('#sel_invoices_edit').html(data.invoices);
 
                         $('#EditModal').modal('show');
 
@@ -3269,7 +3272,7 @@
         $('#total_amount_val').val(total);
 
 
-        var resultQuotation = numberToWords.toWords(total);
+        var resultQuotation = total;
 
         $(".sales_quotation_amount_in_word").text(resultQuotation);
 

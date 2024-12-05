@@ -37,6 +37,55 @@ class Home extends BaseController
     public function index()
     {
 
+        $this->ap_model = new \App\Models\AccountPeriodModel();
+
+        if((!empty($_GET['action'])) && ($_GET['action']=="save"))
+        {
+
+        $new_year = $this->request->getGet('ac_year');
+
+        $new_month = $this->request->getGet('ac_month');
+
+        //Check if year is less
+        $current_period = $this->ap_model->CheckCurrentPeriod();
+
+        //If exists check if accounting period is greater
+        if(!empty($current_period->ap_year))
+        {
+
+        if($new_year<$current_period->ap_year)
+        {
+
+        $this->session->setFlashdata('error','Cannot set year prior to current accounting period');
+        return redirect()->to('Home');
+        exit;
+        
+        }
+
+        if($new_month<$current_period->ap_month)
+        {
+            
+        $this->session->setFlashdata('error','Cannot set year prior to current accounting period');
+        return redirect()->to('Home');
+        exit;
+
+        }
+
+
+        }
+
+        $update_year['ap_year'] = $new_year;
+        $update_year['ap_month'] = $new_month;
+        $update_year['ap_update_date'] = date('Y-m-d');
+
+        $this->common_model->EditData($update_year,array('ap_id' => 1),'master_accounting_period');
+
+        $this->session->setFlashdata('success','Accounting period changed!');
+
+        return redirect()->to('Home');
+        
+        }
+        
 
         if( (!empty($_GET['action'])) && ($_GET['action']=="search"))
         {
@@ -56,7 +105,7 @@ class Home extends BaseController
 
         // Create the start and end dates for the specified year
         $year_date_from = date("Y-01-01", strtotime("$year-01-01"));
-        $year_date_to = date("Y-12-t", strtotime("$year-12-01"));
+        $year_date_to = date("Y-m-t", strtotime("$year-$month-01"));
 
         }
 
@@ -135,9 +184,18 @@ class Home extends BaseController
 
 
 
+    public function LockAP()
+    {
+        
+
+    }
+
+
+
+
+
     public function ChangePassword()
     {
-
 
 
 

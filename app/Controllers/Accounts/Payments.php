@@ -165,7 +165,7 @@ class Payments extends BaseController
                 $id = $this->common_model->InsertData('accounts_payments', $insert_data);
 
                 // Generate reference number for new payment
-                $p_ref_no = 'PAY' . str_pad($id, 7, '0', STR_PAD_LEFT);
+                $p_ref_no = $this->FetchReference("r");
 
                 $cond = array('pay_id' => $id);
                 $update_data['pay_ref_no'] = $p_ref_no;
@@ -261,6 +261,32 @@ class Payments extends BaseController
 
         $debits = $this->common_model->FetchWhereJoin('accounts_payment_debit', $debit_cond, $debit_joins);
 
+
+        $data['invoices'] = "";
+
+
+        $inv_ser=0;
+
+        foreach($debits as $invoice)
+        {
+
+        $inv_ser++;
+
+        $data['invoices'] .="<tr>
+        <input type='hidden' name='pd_id[]' value='".$invoice->pd_id."'>
+        <td>{$inv_ser}</td>
+        <td>{$invoice->ca_name}</td>
+        <td><input name='pay_inv_amount[]' type='text' value='".$invoice->pd_payment_amount."' class='form-control'></td>
+        <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
+        <td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>
+        </tr>";
+
+        }
+
+
+
+
+
         $data['debit'] = "";
 
         $dd = '';
@@ -273,7 +299,7 @@ class Payments extends BaseController
 
         foreach ($debits as $debit) {
 
-            $data['debit'] .= '
+        $data['debit'] .= '
         <tr class="view_debit" id="view' . $debit->pd_id . '">
         <input type="hidden" id="debit_id_edit" name="debit_id" value="' . $debit->pd_id . '">
 
@@ -340,7 +366,6 @@ class Payments extends BaseController
         ';
         }
 
-
         echo json_encode($data);
     }
 
@@ -378,6 +403,21 @@ class Payments extends BaseController
         $update_data['pay_amount'] = $this->request->getPost('p_amount');
 
         $update_data['pay_bank'] = $this->request->getPost('p_bank');
+
+        for($in=0;$in<count($this->request->getPost('pd_id'));$in++)
+        {
+
+        $in_cond['pd_id'] = $this->request->getPost('pd_id')[$in];
+
+        $in_data['pd_payment_amount'] = $this->request->getPost('pay_inv_amount')[$in];
+
+        $in_data['pd_remarks'] = $this->request->getPost('pay_inv_notes')[$in];
+
+        $this->common_model->EditData($in_data, $in_cond, 'accounts_payment_debit');
+
+        }
+
+
 
         $this->common_model->EditData($update_data, $cond, 'accounts_payments');
     }
@@ -1302,12 +1342,18 @@ class Payments extends BaseController
 
 
 
-    public function FetchReference()
+    public function FetchReference($type="e")
     {
 
-        $uid = $this->common_model->FetchNextId('accounts_payments', "PAY");
-
+        $uid = $this->common_model->FetchNextId('accounts_payments', "BPV-{$this->data['accounting_year']}-");
+        if($type=="e")
+        {
         echo $uid;
+        }
+        else
+        {
+        return $uid;
+        }
     }
 
 

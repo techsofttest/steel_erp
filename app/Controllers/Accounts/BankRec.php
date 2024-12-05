@@ -46,6 +46,7 @@ class BankRec extends BaseController
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_bank_rec','br_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
+        
         $joins = array(
            
          
@@ -66,13 +67,13 @@ class BankRec extends BaseController
         $i=1;
         foreach($records as $record ){
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->br_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <!--<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>--> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->br_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "br_id"=>$i,
-              "add_date" =>  date('d-F-Y',strtotime($record->br_added_date)),
+              "add_date" =>  date('d M Y',strtotime($record->br_added_date)),
               "account" => $record->ca_name,
-              'br_date' => date('d-F-Y',strtotime($record->br_date)),
+              'br_date' => date('d M Y',strtotime($record->br_date)),
               'balance' => $record->br_bank_balance,
               "debit"=> $record->br_total_debit,
               "credit"=> $record->br_total_credit,
@@ -101,6 +102,24 @@ class BankRec extends BaseController
     } 
 
 
+    public function Dum()
+    {
+
+    $data['accounting_year'] = "This Year";
+
+
+    if($data != "That year")
+    {
+
+    $data ="Do That";
+
+    }
+
+
+    }
+
+
+
 
     //view page
 
@@ -123,7 +142,9 @@ class BankRec extends BaseController
 
         $data['content'] = view('accounts/bank_rec',$data);
 
+
         return view('accounts/accounts-module',$data);
+
 
     }
 
@@ -146,6 +167,64 @@ class BankRec extends BaseController
         $insert_data['br_unrec_diff'] = $this->request->getPost('rec_diff');
 
         $insert_data['br_account'] = $this->request->getPost('br_account');
+
+        $total_tran = count($this->request->getPost('complete_tran_id'));
+
+        if($total_tran==0)
+        {
+
+        $data['status'] = 0;
+
+        $data['msg'] = "Select invoices to add";
+
+        echo json_encode($data);
+
+        exit;
+
+        }
+
+
+        //Check date
+
+        $no_check = true;
+
+        for($t=0;$t<$total_tran;$t++)
+        {
+
+            if($this->request->getPost('complete_check')[$t]==1)
+            {
+
+                if(empty($this->request->getPost('complete_date')[$t]))
+                {
+
+                    $data['status'] = 0;
+
+                    $data['msg'] = "Add date for ".$this->request->getPost('reference')[$t]."";
+            
+                    echo json_encode($data);
+            
+                    exit;   
+
+                }
+
+            $no_check=false;
+                
+            }
+
+        }
+
+        if($no_check==true)
+        {
+            $data['status'] = 0;
+
+            $data['msg'] = "Select invoices!";
+    
+            echo json_encode($data);
+    
+            exit;
+
+        }
+
         
         if(empty($this->request->getPost('br_id')))
 
@@ -170,7 +249,6 @@ class BankRec extends BaseController
 
         }
 
-    
         $total_tran = count($this->request->getPost('complete_tran_id'));
 
         for($t=0;$t<$total_tran;$t++)
@@ -190,30 +268,44 @@ class BankRec extends BaseController
 
                 $trn_cond = array('tran_id' => $trn_id);
 
-                $this->common_model->EditData($trn_update,$trn_cond,'master_transactions');
+                //$this->common_model->EditData($trn_update,$trn_cond,'master_transactions');
 
 
                 //Fetch transaction
 
-                $tran_row = $this->common_model->SingleRow('master_transactions',$trn_cond);
+                //$tran_row = $this->common_model->SingleRow('master_transactions',$trn_cond);
 
                 $insert_brc['brc_rec_id'] = $id;
 
-                $insert_brc['brc_tran_id'] = $trn_id;
+                $insert_brc['brc_voucher_id'] = $trn_id;
 
-                $insert_brc['brc_reference'] = $tran_row->tran_reference;
+                $insert_brc['brc_reference'] = $this->request->getPost('reference')[$t];
 
-                $insert_brc['brc_clear_date'] = $trn_update['tran_rec_date'];
+                $insert_brc['brc_voucher_type'] = $this->request->getPost('voucher_type')[$t];
 
-                $check_brc_cond = array(
+                $insert_brc['brc_credit'] = $this->request->getPost('credit_amount')[$t];
 
-                    'brc_tran_id' => $trn_id,
+                $insert_brc['brc_debit'] = $this->request->getPost('debit_amount')[$t];
+
+                $insert_brc['brc_clear_date'] = date('Y-m-d',strtotime($trn_rec_date));
+
+
+
+                $this->common_model->InsertData('accounts_bank_rec_cleared',$insert_brc);
+
+
+                /*
+
+                 $check_brc_cond =  array(
+                
+                    'brc_rec_id' => $trn_id,
 
                     'brc_rec_id' => $id
                 );
 
                 $check_brc = $this->common_model->SingleRow('accounts_bank_rec_cleared',$check_brc_cond);
 
+               
                 if(!empty($check_brc))
                 {
 
@@ -228,9 +320,14 @@ class BankRec extends BaseController
                     $this->common_model->InsertData('accounts_bank_rec_cleared',$insert_brc);
 
                 }
+                
+                */
+
 
                 
             }
+
+            
 
 
 
@@ -271,8 +368,11 @@ class BankRec extends BaseController
         }
         }
         */
+
+        $data['status'] =1;
+
+        echo json_encode($data);
         
-        echo $id;
 
     }
 
@@ -443,88 +543,7 @@ class BankRec extends BaseController
     }
 
 
-
-
-
-
-    
-
-
-
-
-
-
-
-    public function FetchSalesOrders()
-    {
-
-    if($_POST)
-    {
-
-
-        $id = $this->request->getPost('so_id');
-
-        $joins = array(
-
-            array(
-                'table' => 'crm_customer_creation',
-                'pk' => 'cc_id',
-                'fk' => 'so_customer',
-                ), 
-
-        );
-    
-        $data = $this->common_model->SingleRowJoin('crm_sales_orders',array('so_id' => $id),$joins);
-
-        return json_encode($data);
-
-    }
-
-
-    }
-
-
-
-    public function AddAdvanceSalesOrder()
-    {
-
-
-        if($_POST)
-        {
-
-
-            for($i=0;$i<=count($this->request->getPost('so_select'));$i++)
-            {
-
-                if(!empty($this->request->getPost('so_select')[$i]))
-                {
-
-                    $so_id = $this->request->getPost('so_select')[$i];
-
-                    $so_receipt = $this->request->getPost('so_reciept')[$i];
-                    
-                    $update_cond['so_id'] = $so_id;
-
-                    $update_data['so_advance_paid'] = $so_receipt;
-
-                    $this->common_model->EditData($update_data,$update_cond,'crm_sales_orders');
-
-                }
-
-
-            }
-            
-
-        
-
-
-        }
-
-
-    }
-
-
-
+ 
 
 
 
@@ -582,7 +601,7 @@ class BankRec extends BaseController
 
                 <td class="status"><span class="btn btn-success">Cleared</span></td>
 
-                <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly disabled value="'.date("d-F-Y",strtotime($tr->brc_clear_date)).'"></td>
+                <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly value="'.date("d-F-Y",strtotime($tr->brc_clear_date)).'"></td>
             
                 </tr>';
 
@@ -712,95 +731,6 @@ class BankRec extends BaseController
 
 
 
-    public function DeleteCredit()
-    {
-
-        if($_POST)
-        {
-
-        $id = $this->request->getPost('id');
-
-        $cond_receipt = array('ri_id' => $id);
-
-
-        $invoice = $this->common_model->SingleRow('accounts_receipt_invoices',$cond_receipt);
-
-        $receipt_id = $invoice->ri_receipt;
-
-
-        $this->common_model->DeleteData('accounts_receipt_invoices',$cond_receipt);
-
-        $cond_data = array('rid_receipt_invoice' => $id);
-
-        $this->common_model->DeleteData('accounts_receipt_invoice_data',$cond_data);
-
-        
-
-        $all_credits = $this->common_model->FetchWhere('accounts_receipt_invoices',array('ri_receipt' => $receipt_id));
-
-        $total = 0;
-
-        foreach($all_credits as $credit)
-        {
-
-        $total = $total+=$credit->ri_amount;
-
-        }
-        
-
-        $receipt_data['r_amount'] = $total;
-
-        $receipt_cond['r_id'] = $receipt_id;
-
-        $this->common_model->EditData($receipt_data,$receipt_cond,'accounts_receipts');
-
-        $data['total'] = $total;
-
-        echo json_encode($data);
-
-        }
-
-
-    }
-
-
-
-
-    public function UpdateCreditDetails()
-    {
-
-        if($_POST)
-
-        {
-
-        $id = $this->request->getPost('c_id');
-
-        $cond = array('ri_id' => $id);
-
-        //$date = date('Y-m-d',strtotime($this->request->getPost('c_date')));
-
-        $credit_account = $this->request->getPost('c_account');
-
-        $amount = $this->request->getPost('c_amount');
-
-        $narration = $this->request->getPost('c_narration');
-
-
-        $update_data['ri_credit_account'] = $credit_account;
-
-        $update_data['ri_amount'] = $amount;
-
-        $update_data['ri_remarks'] = $narration;
-        
-        //$update_data['ri_date'] = $date;
-
-        $this->common_model->EditData($update_data,$cond,'accounts_receipt_invoices');
-
-        $this->FetchCreditData($id);
-
-        }
-
-    }
 
 
 
@@ -827,61 +757,55 @@ class BankRec extends BaseController
     public function View()
     {
 
-    $id = $this->request->getPost('id');
+    $id = $this->request->getPost('br_id');
 
-    $cond = array('r_id' => $id);
+    $cond = array('br_id' => $id);
 
      ##Joins if any //Pass Joins as Multi dim array
      $joins = array(
            
         array(
-        'table' => 'master_receipt_method',
-        'pk' => 'rm_id',
-        'fk' => 'r_method',
-        ),
-
-        array(
-        'table' => 'master_banks',
-        'pk' => 'bank_id',
-        'fk' => 'r_bank',
-        ),
-
-        array(
         'table' => 'accounts_charts_of_accounts',
         'pk' => 'ca_id',
-        'fk' => 'r_debit_account',
-        ),
-
-        array(
-        'table' => 'master_collectors',
-        'pk' => 'col_id',
-        'fk' => 'r_collected_by',
+        'fk' => 'br_account',
         ),
 
     );
 
-    $data['receipt'] = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
+    $data['br'] = $this->common_model->SingleRowJoin('accounts_bank_rec',$cond,$joins);
 
-    $joins_inv = array(
+    $data['rows'] = "";
 
-        array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
-            'fk' => 'ri_credit_account',
-            ),
-    
-    );
+    $cond_recon = array('brc_rec_id' => $id);
 
-    $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoices',array('ri_receipt'=>$id),$joins_inv);
+    $invoices = $this->common_model->FetchWhereJoin('accounts_bank_rec_cleared',$cond_recon,array());
 
-    $data['invoices'] ="";
+    //accounts_bank_rec_cleared
 
+    $i=1;
     foreach($invoices as $invoice)
     {
 
-    $data['invoices'] .="<tr><td></td><td>{$invoice->cc_customer_name}</td><td>{$invoice->ri_remarks}</td><td>{$invoice->ri_amount}</td></tr>";
+    $data['rows'].="<tr>";
+
+    $data['rows'] .='
+    <td>'.$i++.'</td>
+    
+    <td class="text-end">'.date('d M Y',strtotime($invoice->brc_clear_date)).'</td>
+   
+    <td class="text-end">'.$invoice->brc_reference.'</td>
+
+    <td class="text-end">'.format_currency($invoice->brc_debit).'</td>  
+
+    <td class="text-end">'.format_currency($invoice->brc_credit).'</td>
+
+    </tr>
+    
+    ';
+
     
     }
+
 
     echo json_encode($data);
 
@@ -899,16 +823,17 @@ class BankRec extends BaseController
     public function Delete()
     {
 
-        $cond = array('br_id' => $this->request->getPost('id'));
+        $cond = array('br_id' => $id = $this->request->getPost('id'));
 
         //$receipt = $this->common_model->SingleRow('accounts_receipts',$cond);
 
         $this->common_model->DeleteData('accounts_bank_rec',$cond);
- 
+
+        $cond_rec = array('brc_rec_id' => $id);
+
+        $this->common_model->DeleteData('accounts_bank_rec_cleared',$cond_rec);
+
     }
-
-
-
 
     public function AccountFetch()
     {
@@ -922,8 +847,41 @@ class BankRec extends BaseController
 
     //$return['account'] = $this->common_model->FetchBRAccount($id,$date);
 
+    $return['account_name'] = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $id))->ca_name;
 
-    $return['account']=$this->report_model->FetchGLTransactions($start_date="",$date="",$account_head="",$account_type="",$account=$id,$time_frame="",$range_from="",$range_to="");
+    $return['account'] = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account=$id,$time_frame="",$range_from="",$range_to="");
+
+    // print_r($return['account']);
+
+    // exit;
+
+    $keysToRemove = array();
+
+    foreach($return['account'] as $key=>$trn)
+    {
+
+    $check_cond['brc_voucher_id'] = $trn->id;
+
+    $check_cond['brc_voucher_type'] = $trn->voucher_type;
+
+    $br_clear = $this->common_model->SingleRow('accounts_bank_rec_cleared',$check_cond); 
+
+    if(!empty($br_clear))
+    {
+
+    $keysToRemove[] = $key;
+
+    }
+    
+    }
+
+    // Remove objects using the keys
+    foreach ($keysToRemove as $key) {
+        unset($return['account'][$key]);
+    }
+
+    $return['account'] = array_values($return['account']);
+
 
     $return['transactions'] = "";
 
@@ -942,29 +900,40 @@ class BankRec extends BaseController
     
     $debit_amount = format_currency($tr->debit_amount) ?: "";
 
+    
+
         
     $return['transactions'] .=  '<tr class="tran_row">
 
-        <td>'.$t.'</td>
+        <td>'.$t.'
+        <input type="hidden" name="voucher_type[]" value="'.$tr->voucher_type.'">
+        <input type="hidden" name="reference[]" value="'.$tr->reference.'">
+        </td>
 
-        <td></td>
+        <td>'.date('d M Y',strtotime($tr->transaction_date)).'</td>
 
         <td>'.$tr->reference.'</td>
 
         <td>'.$tr->account_name.'</td>
 
-        <td align="right">'.$debit_amount.'</td>
+        <td align="right">'.$debit_amount.'
+        <input type="hidden" name="debit_amount[]" value="'.$tr->debit_amount.'">
+        </td>
 
-        <td align="right">'.format_currency($tr->credit_amount).'</td>
+        <td align="right">'.format_currency($tr->credit_amount).'
+        <input type="hidden" name="credit_amount[]" value="'.$tr->credit_amount.'">
+        </td>
 
         <td class="status"><span class="btn btn-warning">Outstanding</span></td>
 
         <td>
         <input type="hidden" name="complete_tran_id[]" value="'.$tr->id.'">
-        <input class="status_tick" type="checkbox" name="complete_check['.$cb.']">
+        <input type="hidden" name="complete_check['.$cb.']" value="0" />
+        <input class="status_tick" type="checkbox" name="complete_check['.$cb.']" value="1">
         </td>
 
-        <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly disabled></td>
+
+        <td><input class="form-control datepicker" type="text" name="complete_date[]" readonly ></td>
        
         </tr>';
 
@@ -980,8 +949,6 @@ class BankRec extends BaseController
 
 
     }
-
-
 
 
 
@@ -1052,664 +1019,10 @@ class BankRec extends BaseController
 
 
 
-    public function FetchInvoices()
-    {
 
-    if($_POST)
-    {
 
-    $ac_id = $this->request->getPost('id');
 
-    $insert_data['ri_receipt'] = $this->request->getPost('rid');
 
-    $insert_data['ri_credit_account'] = $ac_id;
-
-    $insert_data['ri_amount'] = $this->request->getPost('camount');
-
-    $insert_data['ri_remarks'] = $this->request->getPost('cnarration');
-
-    //$insert_data['ri_date'] = date('Y-m-d',strtotime($this->request->getPost('cdate')));
-
-    $check_invoice = $this->common_model->SingleRow('accounts_receipt_invoices',array('ri_receipt' => $insert_data['ri_receipt'],'ri_credit_account' => $insert_data['ri_credit_account']));
-
-    if(empty($check_invoice))
-    {
-    $rid = $this->common_model->InsertData('accounts_receipt_invoices',$insert_data);
-    }
-
-    else
-    {
-
-    $update_cond = array('ri_id' => $check_invoice->ri_id);
-
-    $rid = $check_invoice->ri_id;
-
-    $this->common_model->EditData($insert_data,$update_cond,'accounts_receipt_invoices');
-
-    }
-
-    //$rid =1;
-
-    $joins = array(
-        array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
-            'fk' => 'ca_customer',
-            ),
-    );
-
-    //$customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $ac_id),$joins);
-
-    $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $ac_id),$joins);
-
-    //$cond = array('pf_customer' => $customer->cc_id);   
-
-    //$invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
-
-    $cond = array('ci_customer' => $customer->cc_id,'ci_paid_status' => 0);
-    
-    $invoices = $this->common_model->FetchWhere('crm_cash_invoice',$cond);
-   
-    $data['status']=0;
-
-    $data['invoices']="";
-
-    $data['invoices'] .='<input type="hidden" id="total_amount" value="'.$insert_data['ri_amount'].'">';
-
-    $sl =0; 
-    foreach($invoices as $inv)
-    {
-    $sl++;
-    $remaining_amount = $inv->ci_total_amount - $inv->ci_paid_amount;
-    $data['invoices'].='<tr id="'.$inv->ci_id.'">
-    <input type="hidden" name="receipt_id[]" value="'.$rid.'">
-    <input type="hidden" name="credit_account_invoice[]" value="'.$inv->ci_id.'">
-    <th>'.$sl.'</th>
-    <th>'.date('d-m-Y',strtotime($inv->ci_date)).'</th>
-    <th>'.$inv->ci_reffer_no.'</th>
-    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
-    <th>'.$remaining_amount.'
-    <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
-    </th>
-    <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" type="number" value="0"></th>
-    <th>
-    <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
-    </th>
-    </tr>';
-
-    $data['status']=1;
-
-    }
-
-    echo json_encode($data);
-
-    }
-
-
-    }
-
-
-
-    public function EditLinked()
-    {
-
-
-        if($_POST)
-        {
-
-        $id = $this->request->getPost('id'); 
-
-        $rid = $this->request->getPost('r_id');
-
-
-        $joins = array(
-           
-        );
-    
-        //$customer = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $id),$joins);
-
-        $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $id),$joins);
-
-        $cond = array('pf_customer' => $customer->ca_id);
-    
-        $invoices = $this->common_model->FetchWhere('crm_proforma_invoices',$cond);
-       
-        $data['status']=0;
-    
-        $data['invoices']="";
-    
-        $sl =0;
-        foreach($invoices as $inv)
-        {
-        $sl++;
-        $data['invoices'].='<tr id="'.$inv->pf_id.'">
-        <input type="hidden" name="receipt_id[]" value="'.$rid.'">
-        <input type="hidden" name="credit_account_invoice[]" value="'.$id.'">
-        <th>'.$sl.'</th>
-        <th>'.date('d-m-Y',strtotime($inv->pf_date)).'</th>
-        <th>'.$inv->pf_reffer_no.'</th>
-        <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->pf_lpo_ref.'" required></th>
-        <th>'.$inv->pf_total_amount.'</th>
-        <th><input class="form-control" name="inv_receipt_amount[]" type="number"></th>
-        <th><input type="checkbox" name="invoice_selected[]" value="'.$inv->pf_id.'"></th>
-        </tr>';
-    
-        $data['status']=1;
-    
-        }
-    
-        echo json_encode($data);
-
-        }
-
-
-
-
-    }
-
-
-
-
-    public function EditAddcredit()
-    {
-
-        if($_POST)
-        {
-
-        $insert_data['ri_receipt'] = $this->request->getPost('receipt_id');
-
-        //$insert_data['ri_date'] = date('Y-m-d',strtotime($this->request->getPost('credit_date')));
-
-        $insert_data['ri_credit_account'] = $this->request->getPost('credit_account');
-        
-        $insert_data['ri_amount'] = $this->request->getPost('credit_amount');
-        
-        $insert_data['ri_remarks'] = $this->request->getPost('narration');
-
-        $rid = $this->common_model->InsertData('accounts_receipt_invoices',$insert_data);
-
-        $this->FetchCreditData($rid,1);
-            
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-    public function EditPfInvoice()
-     {
-
-        $cond = array('rid_receipt_invoice' => $this->request->getPost('id'));
-
-        $joins = array(
-
-            array(
-            'table' => 'crm_proforma_invoices',
-            'pk' => 'pf_id',
-            'fk' => 'rid_invoice',
-            ),
-    
-        );
-
-
-        $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',$cond,$joins);
-       
-        $data['status']=0;
-    
-        $data['invoices']="";
-    
-        $sl =0;
-        foreach($invoices as $inv)
-        {
-        $sl++;
-
-        $data['invoices'].=
-        
-        '
-        <tr class="view_pf_invoice" id="edit_pf'.$inv->rid_id.'">
-
-        <input type="hidden" name="ri_id" value="'.$inv->rid_id.'">
-
-        <th>'.$sl.'</th>
-
-        <th>
-
-        <p class="">'.date('d-m-Y',strtotime($inv->pf_date)).'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">'.$inv->pf_reffer_no.'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">'.$inv->pf_lpo_ref.'</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->pf_lpo_ref.'">
-        
-        </th>
-        
-        <th>
-        
-        <p class="">'.$inv->pf_total_amount.'</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">'.$inv->rid_receipt.'</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->rid_receipt.'">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->rid_id.'">Edit</a>
-        
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-        </tr>'
-        
-        ;
-    
-        $data['status']=1;
-    
-        }
-    
-        echo json_encode($data);
-    
-
-    }
-
-
-
-    public function UpdatePfDetails()
-    {
-
-    $id = $this->request->getPost('id');
-
-    $cond = array('rid_id' => $id);
-
-    $update_data['rid_lpo_ref'] = $this->request->getPost('lpo_ref');
-
-    $update_data['rid_receipt'] = $this->request->getPost('receipt_amount');
-
-    $this->common_model->EditData($update_data,$cond,'accounts_receipt_invoice_data');
-
-    $this->FetchPfDetails($id);
-
-    }
-
-
-
-    public function FetchPfdetails($id)
-    {
-
-    $cond = array('rid_id' => $id);
-
-    $joins = array(
-
-        array(
-        'table' => 'crm_proforma_invoices',
-        'pk' => 'pf_id',
-        'fk' => 'rid_invoice',
-        ),
-
-    );
-
-    $inv = $this->common_model->SingleRowJoin('accounts_receipt_invoice_data',$cond,$joins);
-
-    $sl = 1;
-
-    $data['inv_id'] = $id ;
-
-    $data['invoices'] = "";
-
-    $data['invoices'].=
-        
-        '
-        <input type="hidden" name="ri_id" value="'.$inv->rid_id.'">
-
-        <th>'.$sl.'</th>
-
-        <th>
-
-        <p class="">'.date('d-m-Y',strtotime($inv->pf_date)).'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">'.$inv->pf_reffer_no.'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">'.$inv->rid_lpo_ref.'</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->rid_lpo_ref.'">
-        
-        </th>
-    
-        <th>
-        
-        <p class="">'.$inv->pf_total_amount.'</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">'.$inv->rid_receipt.'</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->rid_receipt.'">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->rid_id.'">Edit</a>
-        
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-       '
-        ;
-
-
-        echo json_encode($data);
-
-
-    }
-
-
-
-
-
-
-
-
-
-    public function FetchCreditData($id,$tr="")
-    {
-
-    $invoice_cond = array('ri_id' => $id); 
-
-    $data['inv_id'] =  $id;
-
-    $invoice_joins = array(
-        array(
-        'table' => 'accounts_charts_of_accounts',
-        'pk' => 'ca_id',
-        'fk' => 'ri_credit_account',
-        ),
-    );    
-
-    $invoice = $this->common_model->SingleRowJoin('accounts_receipt_invoices',$invoice_cond,$invoice_joins);
-
-
-    //Recalculate Total
-
-    $receipt_id = $invoice->ri_receipt;
-
-
-    $all_credits = $this->common_model->FetchWhere('accounts_receipt_invoices',array('ri_receipt' => $receipt_id));
-
-    $total = 0;
-
-    foreach($all_credits as $credit)
-    {
-
-    $total = $total+=$credit->ri_amount;
-
-    }
-
-    $receipt_data['r_amount'] = $total;
-
-    $receipt_cond['r_id'] = $receipt_id;
-
-    $this->common_model->EditData($receipt_data,$receipt_cond,'accounts_receipts');
-
-    $data['total'] = $total;
-
-    //
-
-
-
-    $customers = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
-
-    $dd='';
-
-    foreach($customers as $cus) { 
-
-       $dd.='<option value="'.$cus->ca_id.'">'.$cus->ca_name.'</option>';
-
-    }
-
-
-    $data['invoices'] ="";
-
-    if($tr!="")
-    {
-    $data['invoices'] ='<tr class="view_credit" id="view'.$invoice->ri_id.'">';  
-    }
-
-    $data['invoices'] .='
-   
-    <input type="hidden" name="credit_id" value="'.$invoice->ri_id.'">
-
-    <td>
-
-    
-
-    </td>
-
-    <td>
-
-    <p class="view">'.$invoice->ca_name.'</p>
-
-    <select style="display:none;" class="edit form-control" name="c_name">
-
-    <option value="'.$invoice->ca_id.'" selected hidden>'.$invoice->ca_name.'</option>
-
-    '.$dd.'
-    
-    </select>
-   
-    </td>
-
-
-    <td>
-    
-    <p class="view">'.$invoice->ri_amount.'</p>
-
-    <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$invoice->ri_amount.'">
-    
-    </td>
-
-
-    <td>
-
-     <p class="view">'.$invoice->ri_remarks.'</p>
-
-     <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$invoice->ri_remarks.'">
-    
-    </td>
-
-
-    <td>
-    
-    <div class="view">
-    
-    <!--<a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$invoice->ri_id.'">Edit</a>-->
-    
-    <a href="javascript:void(0);" class="edit_linked btn btn-warning" data-rid="'.$invoice->ri_id.'" data-id="'.$invoice->ca_id.'">Linked</a>
-   
-    <a href="javascript:void(0);" class="del_credit btn btn-danger" data-id="'.$invoice->ri_id.'">Delete</a>
-   
-    </div>
-
-    <div class="edit" style="display:none;">
-    
-    <button class="btn btn-success update_invoice_btn" data-id="'.$invoice->ri_id.'" type="button">Update</button>
-
-    <button class="btn btn-danger cancel_invoice_btn" data-id="'.$invoice->ri_id.'" type="button">Cancel</button>
-
-    </div>
-
-    </td>
-
-    ';
-
-    if($tr!="")
-    {
-    
-    $data['invoices'] .='</tr>';
-
-    }
-
-    echo json_encode($data); 
-
-    }
-
-
-
-
-
-
-
-    public function EditInvoice()
-    {
-
-  
-    $id = $this->request->getPost('inv_id');
-  
-    $joins =array(
-
-        array(
-            'table' => 'crm_customer_creation',
-            'pk' => 'cc_id',
-            'fk' => 'ri_credit_account',
-            ),
-
-    );
-
-    $cond = array('ri_id' => $id);
-
-    $data['ri'] = $this->common_model->SingleRowJoin('accounts_receipt_invoices',$cond,$joins);
-
-    echo json_encode($data);
-
-    }
-
-
-
-    public function UpdateInvoice()
-    {
-
-    $id = $this->request->getPost('receipt_id');
-
-    $cond = array('ri_id' => $id);
-
-    //$update_data['ri_date'] = $this->request->getPost('ri_date');
-
-    $update_data['ri_credit_account'] = $this->request->getPost('ri_credit_account');
-
-    $update_data['ri_amount'] = $this->request->getPost('ri_amount');
-
-    $update_data['ri_remarks'] = $this->request->getPost('ri_remarks');
-
-    $this->common_model->EditData($update_data,$cond,'accounts_receipt_invoices');
-    
-    }
-
-
-
-
-
-
-
-
-
-
-
-    public function SelectedInvoices()
-    {
-
-    if($_POST)
-    {
-
-    $data['total'] = 0;
-
-    foreach($this->request->getPost('invoice_selected') as $inv)
-    {
-
-    $invoice = $this->common_model->SingleRowArray('crm_proforma_invoices',array('pf_id' => $inv));
-
-    $data['html'][] = $invoice;
-
-    $data['total'] = $invoice['pf_total_amount']+$data['total'];
-
-    }
-
-   
-    echo json_encode($data);
-
-    }
-
-    }
-
-
-
-
-    public function FetchReference()
-    {
-
-    $uid = $this->common_model->FetchNextId('accounts_receipts',"REC");
-
-    echo $uid;
-
-    }
-
-
-    
 
 
     public function Print(){

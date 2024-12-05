@@ -311,7 +311,7 @@
                                                         <tr class="invoice_row">
 
 
-                                                            <td>
+                                                            <td width="5%">
 
 
                                                                 <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
@@ -321,7 +321,7 @@
                                                             </td>
 
 
-                                                            <td class="select2_parent">
+                                                            <td width="35%" class="select2_parent">
 
                                                                 <select class="form-control credit_account credit_account_select2" name="r_credit_account[]" data-max="">
 
@@ -870,6 +870,40 @@
 
 
 
+                                                    <div class="row align-items-center justify-content-start mb-2">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Collected By</label>
+
+                                                        </div>
+
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <select id="r_collected_by_edit" name="r_collected_by" class="form-control" required>
+
+                                                                <option value="">Select Collector</option>
+
+                                                                <?php
+                                                                foreach ($collectors as $col_add) {
+                                                                ?>
+
+                                                                    <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
+
+                                                                <?php } ?>
+
+                                                            </select>
+
+                                                        </div>
+
+
+                                                  
+
+                                                                </div>
+
+
+
                                             </div> <!-- Section 1 end -->
 
 
@@ -1018,94 +1052,6 @@
 
 
 
-                                            <div class="row">
-
-
-                                                <div class="col-lg-6 ps-0">
-
-
-                                                    <div class="row align-items-center justify-content-start mb-2">
-
-                                                        <div class="col-col-md-3 col-lg-3">
-
-                                                            <label for="basiInput" class="form-label">Collected By</label>
-
-                                                        </div>
-
-
-                                                        <div class="col-col-md-6 col-lg-6">
-
-                                                            <select id="r_collected_by_edit" name="r_collected_by" class="form-control" required>
-
-                                                                <option value="">Select Collector</option>
-
-                                                                <?php
-                                                                foreach ($collectors as $col_add) {
-                                                                ?>
-
-                                                                    <option value="<?php echo $col_add->col_id; ?>"><?php echo $col_add->col_name; ?></option>
-
-                                                                <?php } ?>
-
-                                                            </select>
-
-                                                        </div>
-
-
-                                                    </div>
-
-
-
-
-
-
-
-                                                    <!--
-                        <div class="row align-items-center justify-content-start mb-2 view_copy cheque_sec d-none">
-
-                        <div class="col-col-md-3 col-lg-3">
-                            <label for="basiInput" class="form-label">Cheque Copy</label>
-                        </div>
-
-                        <div class="col-col-md-6 col-lg-6" id="view_cheque_copy">
-                            
-                        </div>
-
-
-                        </div>
-                        -->
-
-
-
-
-                                                </div>
-
-
-
-
-
-
-                                                <div class="col-lg-6">
-
-
-                                                    <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-
-                                                            <tr>
-                                                                <td><button class="submit_btn" type="submit">Update</button></td>
-                                                            </tr>
-
-                                                        </table>
-                                                    </div>
-
-
-                                                </div>
-
-
-        </form>
-
-
-
 
         <div class="col-col-md-12 col-lg-12">
 
@@ -1226,6 +1172,24 @@
 
 
 
+                         <div class="col-lg-6">
+
+
+                                                    <div style="float: right;">
+                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+                                                            <tr>
+                                                                <td><button class="submit_btn" type="submit">Update</button></td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+
+
+
 </div>
 <!--end row-->
 
@@ -1245,6 +1209,11 @@
 
 
 </div>
+
+
+</form>
+
+
 
 </div>
 </div>
@@ -3779,6 +3748,7 @@
 
             var invoice_total = 0;
 
+            /*
             $('.invoice_receipt_amount').each(function() {
 
                 parent = $(this).closest('tr');
@@ -3794,6 +3764,7 @@
                 invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
 
             })
+
 
             if (invoice_total > total) {
 
@@ -3812,6 +3783,8 @@
 
             }
 
+            */
+
 
             $.ajax({
 
@@ -3827,7 +3800,7 @@
 
                     $('#InvoicesModal').modal('show');
 
-                    datatable.ajax.reload(null, false);
+                    //datatable.ajax.reload(null, false);
 
                 }
 
@@ -4416,6 +4389,7 @@
 
             })
 
+            /*
             $('#AddSOAdvanceModal .so_receipt_amount').each(function() {
 
                 parent = $(this).closest('tr');
@@ -4423,6 +4397,7 @@
                 invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
 
             })
+                */
 
             if (invoice_total > total) {
 

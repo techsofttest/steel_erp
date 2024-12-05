@@ -20,10 +20,10 @@
         border: 1px solid black;
         border: 1px solid #0000003b;
     }
-    span.select2.select_width
+    /*span.select2.select_width
     {
         width: 70% !important;
-    }
+    }*/
     .prod_add_more
     {
         position: absolute;
@@ -208,7 +208,7 @@
                                                                          <?php } ?>
                                                                     </select>
                                                                 </td>
-                                                                <td style="width:28%">
+                                                                <td style="width:40%">
                                                                
                                                                     <select class="form-select  ser_product_det" name="mrp_product_desc[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -878,7 +878,7 @@
                     "<?php endforeach; ?>" +
                     "</select>" +
                     "</td>" +
-                    "<td style='width: 28%;'>" +
+                    "<td style='width: 40%;'>" +
                     "<select class='form-select ser_product_det' name='mrp_product_desc["+jj+"]' required>" +
                     "<option value='' selected disabled>Select Product Description</option>" +
                     "<?php foreach($products as $prod): ?>" +
@@ -943,13 +943,13 @@
 
 
        /*Product Drop Down*/
-        /*function InitSelect2(){
+        function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
             theme : "default form-control- select_width",
             dropdownParent: $('#AddMaterialRequisition'),
             ajax: {
-                url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProdDes",
+                url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -976,7 +976,7 @@
         })
         }
 
-        InitSelect2();*/
+        InitSelect2();
 
         /*###*/
 

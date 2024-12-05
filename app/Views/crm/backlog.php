@@ -205,7 +205,7 @@
                                         <button class="email_button report_button" type="submit" id="email_button">Email</button>
 
 
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#backLog" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer"  overflow-x:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">

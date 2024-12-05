@@ -67,7 +67,7 @@ class TimeSheets extends BaseController
 
         $monthName = date('F', mktime(0, 0, 0, $record->ts_month, 10)); // March
 
-        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="d-none edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "ts_id"=>$i,
@@ -214,6 +214,10 @@ class TimeSheets extends BaseController
 
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
+        $max_hour_days = $this->getDaysExcluding($year,$month,'friday');
+
+        $data['max_normal_hours'] = $max_hour_days*8;
+        
         for($d=1; $d<=$days; $d++)
         {
         $time=mktime(12, 0, 0, $month, $d, $year);          
@@ -812,6 +816,30 @@ class TimeSheets extends BaseController
 
     }
 
+
+
+
+
+    function getDaysExcluding($year, $month, $excludedDay) {
+        // Define the number of days in the given month
+        $totalDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $count = 0;
+    
+    
+        // Loop through each day of the month
+        for ($day = 1; $day <= $totalDays; $day++) {
+            // Get the day of the week (0 for Sunday, 6 for Saturday)
+            $dateString = "$year-$month-$day";
+            $dayOfWeek = date('l', strtotime($dateString));
+    
+            // Check if the day is the excluded day
+            if ($dayOfWeek !== ucfirst($excludedDay)) {
+                $count++;
+            }
+        }
+    
+        return $count;
+    }
 
 
 

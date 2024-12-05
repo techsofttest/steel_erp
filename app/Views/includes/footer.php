@@ -219,7 +219,8 @@
 
         if(val !="Range")
         {
-        $('.datepicker').attr('disabled',true);
+
+        //$('.datepicker').attr('disabled',true);
 
         if(val=="Month")
             {
@@ -498,7 +499,7 @@
 
         $(document).ready(function() {
         $.datepicker.setDefaults({
-            //maxDate: new Date(2023, 2, 18) 
+            minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
         });
         });
 

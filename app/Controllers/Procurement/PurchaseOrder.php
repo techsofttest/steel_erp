@@ -485,7 +485,7 @@ class PurchaseOrder extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->mrp_id.'">
                                             <td class="si_no">'.$i.'</td>
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
+                                            <td style="width:40%;"><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control" readonly></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$product->mrp_qty.'"  class="form-control add_prod_qty" readonly></td>
                                             <td><input type="number" name="pop_rate[]" value=""  class="form-control add_prod_rate" required></td>
@@ -617,7 +617,7 @@ class PurchaseOrder extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
             <td class="si_no1">'.$i.'</td>
             <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
+            <td style="width:40%"><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
@@ -761,7 +761,7 @@ class PurchaseOrder extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
             <td class="si_no1 delete_sino">'.$i.'</td>
             <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>

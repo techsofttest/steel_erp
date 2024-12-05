@@ -558,8 +558,23 @@ class PurchaseVoucher extends BaseController
         $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
 
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
+
+        $data['total_amount']    = $purchase_voucher->pv_total;
+
         
-        $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
+
+        $join1 =  array(
+            
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'pvp_debit',
+            ),
+
+
+        );
+        
+        $purchase_voucher_product = $this->common_model->FetchWhereJoin('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')),$join1);
 
         $i=1;
 
@@ -570,9 +585,9 @@ class PurchaseVoucher extends BaseController
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td class="si_no1">'.$i.'</td>
             <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_debit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control" readonly></td>
+            <td style="width:7%"> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
@@ -631,8 +646,23 @@ class PurchaseVoucher extends BaseController
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
 
         $data['purchase_id']     = $purchase_voucher->pv_id;
+
+        $data['total_amount']     = $purchase_voucher->pv_total;
         
-        $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
+        
+        $join1 =  array(
+            
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'pvp_debit',
+            ),
+
+
+        );
+        
+        $purchase_voucher_product = $this->common_model->FetchWhereJoin('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')),$join1);
+
 
         $i=1;
 
@@ -642,8 +672,8 @@ class PurchaseVoucher extends BaseController
         {
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_debit.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
@@ -904,7 +934,7 @@ class PurchaseVoucher extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove prod_row quot_row_leng" id="'.$product->rnp_id.'">
                                             
                                             <td><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
+                                            <td style="width:30%"><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
                                             <td>
                                                <select class="form-select" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';

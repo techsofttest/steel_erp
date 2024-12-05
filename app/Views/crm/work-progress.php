@@ -77,7 +77,7 @@
                                                                             <tr>
                                                                                 <td>As on</td>
                                                                                 <td><input type="date" name="form_date" id="from_date_id" value="" onclick="this.showPicker();" class="form-control"></td>
-                                                                            
+                                                                                
                                                                             </tr>
 
 
@@ -146,64 +146,83 @@
                                         <button class="email_button report_button" type="submit" id="email_button">Email</button>
                                         <!-- </form> -->
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotAnalysisReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#WorkinProgress" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:100px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:20px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Voucher</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:500px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:500px">Vendor Invoice Reff</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:200px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor Invoice Reff</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Reff</th>
-                                                    <th class="text-center" style="width:500px">Amount</th>
+                                                    <th class="text-center" style="width:100px">Amount</th>
                             
 
                                                 </tr>
                                             </thead>
 
                                             <tbody class="tbody_data">
-                                                <?php
-                                                if (!empty($quotation_data)) {
+                                                <?php if (!empty($work_progress)) {  
                                                     $i = 1;
-                                                    $quot_prod_total = 0;
-                                                    $sales_prod_total = 0;
-                                                    $diff_total = 0;
-                                                    $quot_diff_total = 0;
-                                                    foreach ($quotation_data as $quot_data) { ?>
-                                                       
-                                                    <tr>
-                                                        
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $i; ?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:500px"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="_blank"><?php echo $quot_data->qd_reffer_no; ?></a></td>
-                                                        <td style="white-space: nowrap;width:500px"><?php echo $quot_data->cc_customer_name; ?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $quot_data->se_name; ?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:500px"><?php echo $quot_data->se_name; ?></td>
+                                                    $total_amount = 0; 
+                                                    foreach ($work_progress as $work_prog) { 
+                                                    // Check if all purchase_sales_order arrays are empty
+                                                    $hasData = false;
+                                                    foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) {
+                                                        if (!empty($pur_vou_prod->purchase_sales_order)) {
+                                                            $hasData = true;
+                                                            break;
+                                                        }
+                                                    }
 
-                                                    </tr>
+                                                    if (!$hasData) {
+                                                        // Skip this iteration if all purchase_sales_order are empty
+                                                        continue;
+                                                    }
+                                                ?>
+                                                <tr>
+                                                    <td class="text-center" style="white-space: nowrap;width:20px"><?php echo $i; ?></td>
+                                                    
+                                                    <td class="text-center" style="white-space: nowrap;width:100px">
+                                                        <a href="<?php echo base_url(); ?>Procurement/PurchaseVoucher?view_po=<?php echo $work_prog->pv_id; ?>" target="_blank">
+                                                            <?php echo $work_prog->pv_reffer_id; ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center" style="white-space: nowrap;width:200px"><?php echo $work_prog->ven_name; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:300px"><?php echo $work_prog->	pv_vendor_inv; ?></td>
+                                                    <td colspan="2" align="left" class="p-0">
+                                                        <table>
+                                                            <?php foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) { ?>
+                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                                    <?php if (!empty($pur_vou_prod->purchase_sales_order)) {
+                                                                        foreach ($pur_vou_prod->purchase_sales_order as $pur_sales_ord) { ?>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_sales_ord->so_reffer_no; ?></td>
+                                                                        <?php } ?>
+                                                                        <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($pur_vou_prod->pvp_amount); ?></td>
+                                                                    <?php     $total_amount = $pur_vou_prod->pvp_amount+ $total_amount; } ?>
+                                                                </tr>
+                                                            <?php } ?>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <?php 
+                                                    $i++; 
+                                                } ?>
+                                                <tr>
+                                                    <td align="center">Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                   
+                                                   
+                                                    
+                                                    <td class="text-end"><b><?php echo format_currency($total_amount); ?></b></td>
+                                                </tr>
+                                            <?php } ?>
 
-                                                    <?php $i++; } ?>
-
-                                                    <tr>
-                                                        <td align="center">Total</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-end"><b></b></td>
-                                                        <td></td>
-                                                        <td class="text-end"><b></b></td>
-                                                        <td class="text-end"><b></b></td>
-                                                     </tr>
-
-
-                                                <?php  }  ?>
 
                        
 
@@ -268,7 +287,7 @@
         $('body').on('click','.print_button',function(e){
               
             // Open the PDF generation script in a new window
-            var pdfWindow = window.open('<?= base_url()."Crm/SalesQuotAnalysisReport/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+            var pdfWindow = window.open('<?= base_url()."Crm/WorkProgress/GetData/?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
 
             // Automatically print when the PDF is loaded
             pdfWindow.onload = function() {
@@ -400,7 +419,7 @@
         $(document).ready(function() {
             $(".excel_button").click(
                 function() {
-                    tableToExcel('DataTable', 'Sales Quotation Analysis Report', 'Sales Quotation Analysis Report');
+                    tableToExcel('DataTable', 'Work In Progress', 'Work In Progress');
                 }
             );
         })

@@ -26,7 +26,7 @@
 
     <!--sidebar section end-->
 
-    
+                                                                                                                                                                                                                                                                                                                
     <!-- Vertical Overlay-->
     <div class="vertical-overlay"></div>
 

@@ -266,11 +266,13 @@ class DashboardModel extends Model
 
         $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_sales_orders.so_customer','left');
     
+        $query->orderBy('crm_sales_orders.so_id','asc');
+
         $query->groupBy('crm_sales_orders.so_id');
 
         $query->where('so_delivery_term<=',date('Y-m-d',strtotime('-1 day')));
 
-        $query->orderBy('so_id','asc');
+        
 
         $result = $query->get()->getResult();
 
@@ -294,9 +296,11 @@ class DashboardModel extends Model
 
         //$query->select('DISTINCT '.$this->db->getPrefix().'crm_sales_orders.so_id');
     
-        $query->groupBy('crm_sales_orders.so_id');
+        $query->select('crm_sales_orders.so_id, crm_sales_orders.*, crm_customer_creation.*');
 
-        $query->orderBy('so_id','asc');
+        $query->orderBy('crm_sales_orders.so_id','asc');
+
+        $query->groupBy('crm_sales_orders.so_id');
 
         $result = $query->get()->getResult();
 

@@ -245,13 +245,13 @@
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Quotation Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Customer Name</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Sales Executive</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
                                                     <th class="text-center" style="width:500px">Product</th>
                                                     <th class="text-center" style="width:80px;white-space: nowrap" >Quantity</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-center">Rate</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-center">Discount</th>
                                                     <th style="width:100px;white-space: nowrap" class="text-center">Amount</th>
-                                                    <th class="text-center" style="width:80px;white-space: nowrap">Sales Order</th>
+                                                    <th class="text-center" style="width:150px;white-space: nowrap">Sales Order</th>
                                                     <th style="width:90px;white-space: nowrap" class="text-center">Amount</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-center">Difference</th>
                                                 </tr>
@@ -272,7 +272,7 @@
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="_blank"><?php echo $quot_data->qd_reffer_no; ?></a></td>
                                                         <td style="white-space: nowrap;width:300px"><?php echo $quot_data->cc_customer_name; ?></td>
-                                                        <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $quot_data->se_name; ?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $quot_data->se_name; ?></td>
 
 
 
@@ -298,7 +298,7 @@
                                                                             <?php  if(!empty($quot_prod->sales_orders)){ foreach ($quot_prod->sales_orders as $sal_ord) { ?> 
                                                                                
                                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                    <td  class="rotate text-center" width="80px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sal_ord->so_id; ?>" target="_blank"><?php echo $sal_ord->so_reffer_no;?></a></td>
+                                                                                    <td  class="rotate text-center" width="150px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sal_ord->so_id; ?>" target="_blank"><?php echo $sal_ord->so_reffer_no;?></a></td>
                                                                                     <td class="rotate text-end" width="90"><?php echo format_currency($sal_ord->spd_amount); ?> </td>
                                                                                     
                                                                                     <?php 
@@ -353,6 +353,7 @@
                                                         <td></td>
                                                         <td class="text-end"><b><?php echo format_currency($sales_prod_total) ?></b></td>
                                                         <td class="text-end"><b><?php echo format_currency($final_diff_total) ?></b></td>
+                                                        
                                                      </tr>
 
 

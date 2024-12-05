@@ -1341,6 +1341,86 @@ class CrmReportModel extends Model
  
     }
 
+    public function PurchaseVoucher($from_date,$from_date_col){
+
+        $query = $this->db->table('pro_purchase_voucher')
+        
+        ->select('*');
+
+        $query->join('pro_vendor','pro_vendor.ven_id=pro_purchase_voucher.pv_vendor_name','left');
+
+        if (!empty($from_date)) {
+           
+            $query->where($from_date_col.' >=', $from_date)
+            ->where($from_date_col . ' <', date('Y-m-d', strtotime($from_date . ' +1 day'))); // Exclude records after the date
+        }
+        
+        
+        $result = $query->get()->getResult();
+
+        $i = 0;
+
+        foreach ($result as $res) {
+            
+            $result[$i]->purchase_voucher_prod   = $this->purchase_voucher_prod('pro_purchase_voucher_prod',array('pvp_reffer_id' => $res->pv_id));
+            
+            $i++;
+        }
+
+        return $result;
+
+    }
+
+
+    public function purchase_voucher_prod($table,$cond){
+         
+        $query = $this->db->table($table)
+        
+        ->where($cond);
+        
+        $results = $query->get()->getResult();
+           
+        $j = 0;
+
+        foreach($results as $res){
+
+            $results[$j]->purchase_sales_order   = $this->purchase_sales_order('crm_sales_orders',array('so_reffer_no' => $res->pvp_sales_order));
+            
+            $j++;
+
+        }
+        
+        
+        return $results;
+
+    }
+
+    public function purchase_sales_order($table,$cond){
+
+       $subQuery = $this->db->table('crm_delivery_note')
+
+        ->select('dn_sales_order_num');
+
+        $subQuery1 = $this->db->table('crm_cash_invoice')
+
+        ->select('ci_sales_order');
+        
+        $query = $this->db->table($table)
+        
+        ->where($cond);
+
+        $query->whereNotIn('crm_sales_orders.so_id', $subQuery);
+
+        $query->whereNotIn('crm_sales_orders.so_id', $subQuery1);
+
+        $results = $query->get()->getResult();
+
+       // echo $this->db->getLastQuery(); exit();
+
+        return $results;
+
+    }
+
 
    
 

@@ -38,7 +38,7 @@
       <div class="card-body">
         <ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
         
-          <li class="nav-item"><a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport"role="tab" aria-selected="true">Sales Quot Report </a></li>
+          <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotReport"role="tab" aria-selected="true">Sales Quot Report </a></li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesQuotAnalysisReport") {echo "active" ;} ?>"  href="<?= base_url(); ?>Crm/SalesQuotAnalysisReport" role="tab" aria-selected="false">Sales Quot Analysis Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderReport" role="tab" aria-selected="false">Sales Order Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="SalesOrderSummeryReport"){echo "active" ;}?>" href="<?= base_url();?>Crm/SalesOrderSummeryReport" role="tab" aria-selected="false">Sales Order Summery Report</a> </li>
@@ -52,6 +52,7 @@
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobProfitability"){echo "active";}?>"  href="<?= base_url();?>Crm/JobProfitability" role="tab" aria-selected="false">Job Profitability Report </a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="JobSummery"){echo "active";}?>"  href="<?= base_url();?>Crm/JobSummery" role="tab" aria-selected="false">Job Summery Report</a> </li>
           <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(3)=="WorkProgress"){echo "active";}?>"  href="<?= base_url();?>Crm/WorkProgress" role="tab" aria-selected="false">Work In Progress</a> </li>
+        
         </ul>
 			</div>
 		</div>

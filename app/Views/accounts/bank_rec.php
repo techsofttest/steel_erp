@@ -167,7 +167,7 @@
 
                     <div class="col-col-md-3 col-lg-3">
                            
-                            <label for="basiInput" class="form-label">Date</label>
+                           
 
                     </div>
 
@@ -190,6 +190,17 @@
 
                         </div>
 
+
+                        <!--
+                        <comment></comment>
+                        -->
+
+
+                        <!--
+                        Escape key here : eg
+                        -->
+
+                        
 
                         <div class="col-col-md-9 col-lg-9 select2_parent">
 
@@ -214,7 +225,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text" id="add_bank_balance"  name="bank_balance" class="form-control" required>
+                        <input autocomplete="off" type="number" step="0.01" id="add_bank_balance"  name="bank_balance" class="form-control" required>
 
                         </div>
 
@@ -352,13 +363,10 @@
 
                         <div style="float: right;">
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <tr>
-                                                            <td><button class="submit_btn">Print</button></td>
-                                                            <td><button class="submit_btn">Email</button></td>
-                                                        </tr>
+                                                      
                                                         <tr>
                                                             <td><button class="submit_btn" type="submit">Save</button></td>
-                                                            <td><button class="submit_btn">PDF</button></td>
+                                                           
                                                         </tr>
                                                     </table>
                          </div>
@@ -446,6 +454,179 @@
 </div>
 							
 <!--end Account  Head-->
+
+
+
+
+<!--View Modal section start-->
+
+<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">View Bank Reconcilitation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="row">
+
+
+
+                    <div class="col-lg-12">
+    
+
+
+
+                    <div class="card">
+       
+       <div class="card-body">
+
+           <div class="live-preview">
+           
+                   <div class="row align-items-start">
+
+
+
+
+                   <div class="col-col-md-12 col-lg-12">
+
+                   <table class="table table-striped">
+
+
+
+                   <tr>
+
+                <td width="25%">Account</td>
+
+                <td width="25%" id="view_account_name"></td>
+
+
+                <td width="25%">Total Debit</td>
+
+                <td  width="25%" id="view_total_debit"></td>
+
+                   </tr>
+
+
+                   <tr>
+
+                <td>Date</td>
+                <td id="view_date"></td>
+
+                <td>Total Credit</td>
+                <td id="view_total_credit"></td>
+
+                   </tr>
+
+
+                    <tr>
+
+                <td>GL Balance</td>
+
+
+                <td id="view_gl_balance"></td>
+
+
+                
+                <td>Unreconciled Difference</td>
+
+                <td id="view_unrec_diff"></td>
+
+                    </tr>
+
+
+                    <tr>
+
+                    <td>Bank Balance</td>
+
+                    <td id="view_bank_balance"></td>
+
+                    </tr>
+
+
+                   
+                   </table>
+
+
+                   </div>
+
+
+
+                  
+
+
+
+                       <div class="col-col-md-12 col-lg-12">
+
+
+                       <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                   <thead>
+                                       <tr>
+                                       <th>Sl No</th>
+                                       <th class="text-end">Clearance Date</th>
+                                       <th class="text-end">Reference</th>
+                                       <th class="text-end">Debit Amount</th>
+                                       <th class="text-end">Credit Amount</th>
+                                       
+                                       </tr>
+                                   </thead>
+
+
+                                   <tbody id="view_transactions_rows">
+
+
+                                   </tbody>
+
+                       </table>
+
+                       </div>
+
+
+                       
+                       
+                   </div>
+                   <!--end row-->
+               
+           </div>
+           
+       </div>
+   </div>
+   
+
+                    </div>
+
+
+
+
+
+
+                        <!--end col-->
+
+
+
+                    </div>
+                
+            </div>
+
+
+
+        </div>
+      
+
+    </div>
+</div>
+
+<!--View modal section end-->
+
+
+
+
+
+
+
+
 
 
 
@@ -753,13 +934,17 @@
 
         //Add Total rec Calculation
 
+        /*
         $("body").on('keyup', '#add_bank_balance', function(){ 
 
             var gl_balance = parseInt($('#add_gl_balance').val(),10);
 
-            var total_debits = parseInt($('#add_total_debit').val(),10);
+            //var total_debits = parseInt($('#add_total_debit').val(),10);
 
-            var total_credits = parseInt($('#add_total_credit').val(),10);
+            //var total_credits = parseInt($('#add_total_credit').val(),10);
+
+            
+
 
             var bank_balance = parseInt($(this).val(),10);
 
@@ -767,7 +952,64 @@
 
             $('#rec_diff').val(rec_diff);
 
+            //For total voicemail in eoof
+
+
         });
+        */
+
+
+
+
+        $(document).ready(function () {
+        // Function to recalculate totals
+        function calculateTotals() {
+        let totalDebit = 0;
+        let totalCredit = 0;
+
+        // Loop through each checked checkbox
+        $('.status_tick:not(:checked)').each(function () {
+            // Get the corresponding debit and credit amounts for the checked row
+            let debit = parseFloat($(this).closest('tr').find('input[name="debit_amount[]"]').val()) || 0;
+            let credit = parseFloat($(this).closest('tr').find('input[name="credit_amount[]"]').val()) || 0;
+
+            // Add to totals
+            totalDebit += debit;
+            totalCredit += credit;
+        });
+
+        var gl_balance = $('#add_gl_balance').val();
+
+        var bank_balance = $('#add_bank_balance').val();
+
+        //console.log('Gl Balance '+gl_balance+'');
+
+        //console.log('Bank Balance '+bank_balance+'');
+
+        var total_rec = totalDebit+totalCredit;
+
+        var gl_balance_calc = gl_balance-total_rec;
+
+        var rec_diff = bank_balance - gl_balance_calc;
+
+        $('#rec_diff').val(rec_diff);
+        
+        $('#rec_diff').css('background:red');
+
+        // Update the UI (replace #totalDebit and #totalCredit with your actual selectors)
+        //$('#totalDebit').text(totalDebit.toFixed(2));
+        //$('#totalCredit').text(totalCredit.toFixed(2));
+
+    }
+
+    // Attach the event listener to dynamically added checkboxes using event delegation
+    $(document).on('change input', '.status_tick,#add_bank_balance', function (e) {
+        calculateTotals();
+        });
+    });
+
+
+
 
 
 
@@ -803,14 +1045,14 @@
             {
             status_elem.html('<span class="btn btn-success">Cleared</span>');
             parent.find('.datepicker').attr('required',true);
-            parent.find('.datepicker').attr('disabled',false);
-            parent.find('.datepicker').attr('href',false);
+            //parent.find('.datepicker').attr('disabled',false);
+            //parent.find('.datepicker').attr('href',false);
             }
             else
             {
             status_elem.html('<span class="btn btn-warning">Outstanding</span>');   
             parent.find('.datepicker').removeAttr('required');
-            parent.find('.datepicker').attr('disabled',true);
+            //parent.find('.datepicker').attr('disabled',true);
             parent.find('.datepicker').val('');
             }
 
@@ -848,7 +1090,7 @@
 
                     var data = JSON.parse(data);
 
-                    $('#add_account_name').val(data.account.account);
+                    $('#add_account_name').val(data.account_name);
 
                     $('#add_gl_balance').val(data.gl_balance);
 
@@ -858,6 +1100,7 @@
 
                     $('#transactions_rows').html(data.transactions);
 
+                    
                     //console.log(data.account.account);
 
                     }
@@ -901,10 +1144,22 @@
                         success: function(data) 
                         {
 
+                            var data = JSON.parse(data);
+
+                            if(data.status==0)
+                            {
+                            alertify.error(data.msg).delay(3).dismissOthers();
+                            return false;
+                            }
+
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            $('#add_form').attr('data-submit','true');
-                            $('#add_form').attr('data-brid',data);
-                            $('#added_id').val(data);
+                            
+                            //$('#add_form').attr('data-submit','true');
+                            ///$('#add_form').attr('data-brid',data);
+                            //$('#added_id').val(data);
+
+                            $('#AddModal').modal('hide');
+
                             datatable.ajax.reload( null, false)
 
                         }
@@ -959,6 +1214,10 @@
 
                     $('#edit_bank_balance').val(data.br.br_bank_balance);
 
+                    //Do not edit bank balance
+                    //Why
+                    //Donot
+
                     $('#edit_total_debit').val(data.br.br_total_debit);
 
                     $('#edit_total_credit').val(data.br.br_total_credit);
@@ -1005,236 +1264,6 @@
 
 
 
-        /* Edit Invoice Start */
-
-        $("body").on('click', '.edit_invoice', function(){
-
-         var id = $(this).data('id'); 
-         
-         $('#view'+id+'').find('.edit').fadeIn(200);
-
-         $('#view'+id+'').find('.view').hide();
-
-         $('#ri_id_edit').val(id);
-        
-         $.ajax({
-
-            url : "<?php echo base_url(); ?>Accounts/Receipts/EditInvoice",
-
-            method : "POST",
-
-            data: {inv_id: id},
-
-            success:function(data)
-            {   
-                var data = JSON.parse(data);
-
-                $('#ri_date_edit').val(data.ri.ri_date);
-
-                $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
-
-                $('#ri_amount_edit').val(data.ri.ri_amount);
-
-                $('#ri_remarks_edit').val(data.ri.ri_remarks);
-
-            }
-
-        });
-
-        //$('#EditModal').modal('hide');
-
-        //$('#InvoiceEditModal').modal('show');
-
-        });
-
-
-
-
-        $("body").on('click', '.edit_invoice', function(){
-
-        var id = $(this).data('id'); 
-
-        });
-
-
-
-        $("body").on('click', '.del_credit', function(){
-
-        if( !confirm('Delete this credit?')) {
-             return false;
-        }
-
-        var id = $(this).data('id'); 
-
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/Receipts/DeleteCredit",
-
-        method : "POST",
-
-        data: {id: id},
-
-        success:function(data)
-        {   
-           
-        var data = JSON.parse(data);
-
-        $('#view'+id+'').fadeOut(300).remove();
-
-        $('#total_amount_edit').html(data.total);
-
-        alertify.error('Data Deleted Successfully').delay(3).dismissOthers();
-
-        }
-
-        });
-        
-
-        });
-
-
-
-
-
-        /* Edit Invoice End */
-
-
-
-
-
-        /* Sales Order  */
-
-        $("body").on('click', '.so_add_more', function(){
-
-            var cc = $('.so_row').length;
-
-			if(cc < 30){ 
-
-            cc++;
-           
-            var $clone =  $('.so_row:first').clone();
-
-            $clone.find("input").val("");
-
-            $clone.find("select").val("");
-
-            $clone.find(".so_slno").html(cc);
-
-            $clone.find(".so_del_elem").show();
-
-            $clone.find('.tick_check').prop('checked',false);
-
-            $clone.insertAfter('.so_row:last');
-
-			}
-
-	    });
-
-
-        $(document).on("click", ".so_del_elem", function() 
-        {
-            $(this).closest('.so_row').remove();
-            cc--;
-            //totalCalcutate();                                                                           
-            //grossCalculate();
-        });
-
-        /**/
-
-        function so_slno(){
-
-        var pp =1;
-
-        $('body .so_row').each(function() {
-
-        $(this).find('.so_slno').html('<td class="si_no">' + pp + '</td>');
-
-        pp++;
-
-        });
-
-        }
-
-
-        /* ### */
-
-
-
-
-
-
-
-
-        /*cost calculation add more*/
-
-        var max_fieldcost = 30;
-
-        var cc = $('.invoice_row').length;
-
-        $("body").on('click', '.add_more', function(){
-
-            var cc = $('.invoice_row').length;
-
-			if(cc < max_fieldcost){ 
-
-            //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
-          
-            var $clone =  $('.invoice_row:first').clone();
-
-            $clone.find("input").val("");
-
-            $clone.find(".credit_account_select2").val('');
-
-            $clone.find(".credit_account_select2").removeAttr('data-select2-id');
-
-            $clone.find('.select2').remove();
-
-
-            //$clone.find(".sl_no").html(cc);
-
-            $clone.find(".del_elem").show();
-
-            //$clone.find('.credit_sl_no').val(cc);
-
-            $clone.insertAfter('.invoice_row:last');
-
-            slno();
-
-			}
-
-            InitAccountsSelect2('.credit_account_select2','.invoice_row');
-
-	    });
-
-
-
-        $(document).on("click", ".del_elem", function() 
-        {
-            $(this).closest('.invoice_row').remove();
-            cc--;
-            //totalCalcutate();                                                                           
-            //grossCalculate();
-            slno();
-        });
-
-        /**/
-
-
-        function slno(){
-
-        var pp =1;
-
-        $('body .invoice_row').each(function() {
-
-        $(this).find('.credit_sl_no').val(pp);
-
-        pp++;
-
-        });
-
-        }
-
-
 
 
 
@@ -1245,89 +1274,44 @@
 
                 $.ajax({
 
-                    url : "<?php echo base_url(); ?>Accounts/Receipts/Edit",
+                    url : "<?php echo base_url(); ?>Accounts/BankRec/View",
 
                     method : "POST",
 
-                    data: {r_id: id},
+                    data: {br_id: id},
 
                     success:function(data)
                     {   
-                        if(data)
-                        {
+
                         var data = JSON.parse(data);
 
-                        $('#ruid_edit').val(data.rc.r_ref_no);
-
-                        $('#id_edit').val(data.rc.r_id);
-
-                        $('#r_date_edit').val(data.rc.r_date);
-
-                        console.log();
-
-                        $('#r_debit_account_edit').val(data.rc.ca_name);
-
-                        $('#r_no_edit').val(data.rc.r_number);
-
-                        $('#r_method_edit').val(data.rc.r_method);
-
-
-                        if(data.rc.r_method=="1")
+                        if(data)
                         {
-                    
-                        $('.cheque_sec').removeClass("d-none");
 
-                        $('.cheque_file_sec').removeClass("d-none");
-            
-                        $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
+                        $('#view_account_name').html(data.br.ca_name);
 
-                        $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
+                        $('#view_total_debit').html(data.br.br_total_debit);
 
-                        }
-                        else
-                        {
-                        $('.cheque_sec').addClass("d-none");
+                        $('#view_total_credit').html(data.br.br_total_credit);
 
-                        $('.cheque_file_sec').addClass("d-none");
+                        $('#view_date').html(data.br.br_date);
 
-                        }
+                        $('#view_unrec_diff').html(data.br.br_unrec_diff);
+                        
+                        $('#view_gl_balance').html(data.br.br_gl_balance);
 
+                        $('#view_bank_balance').html(data.br.br_bank_balance);
 
-                        $('#r_bank_edit').val(data.rc.r_bank);
-
-                        $('#r_collected_by_edit').val(data.rc.r_collected_by);
-
-                        $('#total_amount_edit').html(data.rc.r_amount);
-
-                        $('#sel_invoices_edit').html(data.invoices);
+                        $('#view_transactions_rows').html(data.rows);
 
 
-                        $("#EditModal :input").prop("disabled", true);
-
-                        $('#EditModal .btn-close').prop("disabled",false);
-
-                        $('#EditModal .cheque_file_edit_sec').addClass('d-none');
-
-                        $('#EditModal .submit_btn').hide();
-
-                        $('#EditModal .edit_invoice').hide();
-
-                        $('#EditModal .view_linked').hide();
-
-                        $('.edit_copy').css('display','none');
-
-                        $('.view_copy').css('display','flex');
-
-                        $('#EditModal .edit_add_credit').hide();
-
-
-                        $('#EditModal').modal('show');
-                    
                         }
                         else
                         {
                         alertify.error('Something went wrong!').delay(8).dismissOthers();  
                         }
+
+                        $('#ViewModal').modal('show');
                         
                     }
 
@@ -1404,47 +1388,6 @@
             
         });
         /*####*/
-
-
-
-
-        /*account head update*/
-        $(document).ready(function(){
-            $('#invoices_update').submit(function(e){
-
-                e.preventDefault();
-                
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Accounts/Receipts/UpdateInvoice",
-
-                    method : "POST",
-
-                    data : $('#invoices_update').serialize(),
-
-                    success:function(data)
-                    {
-                        
-                        $('#InvoiceEditModal').modal('hide');
-
-                        $('#EditModal').modal('show');
-
-                        alertify.success('Data Updated Successfully').delay(8).dismissOthers();
-
-                        datatable.ajax.reload( null, false );
-                    }
-
-
-                });
-            });
-        });
-        /*###*/
-
-
-
-
-
-
 
 
 
@@ -1572,26 +1515,6 @@
 
 
 
-        /* If Cheque  */
-
-        $('select[name=r_method]').change(function(){
-
-            if($(this).children(':selected').text()=="Cheque")
-            {
-            $('.cheque_sec').removeClass("d-none");
-            }
-            else
-            {
-            $('.cheque_sec').addClass("d-none");
-            }
-
-        });
-
-
-        /* ### */
-
-
-
 
 
         $('.add_model_btn').click(function(){
@@ -1629,29 +1552,12 @@
 
 
 
+        $(".datepicker").on("focus", function(event) {
+    event.preventDefault();
+});
 
-        
 
-        $('body').on('click','.tick_check',function(){
 
-            parent = $(this).closest('.so_row');
-
-            if($(this).prop('checked')==true)
-
-            {
-            total = parent.find('.so_amount_input').val();
-
-            parent.find('.so_receipt_input').val(total);
-            }
-
-            else
-            {
-            
-            parent.find('.so_receipt_input').val('0.00');
-
-            }
-
-        });
 
 
 

@@ -80,7 +80,7 @@ class Receipts extends BaseController
 
            //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/Receipts/Print/'.$record->r_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "r_id"=>$i,
@@ -150,6 +150,10 @@ class Receipts extends BaseController
     Public function Add()
     {   
 
+
+        // print_r($_POST); 
+
+        // exit;
 
         if(empty($this->request->getPost('r_credit_account')))
         {
@@ -272,6 +276,8 @@ class Receipts extends BaseController
         if(!empty($this->request->getPost('r_credit_account')))
         {
 
+            // Find the total of negative values
+            $negativeTotal = array_sum(array_filter($_POST['inv_amount'], fn($value) => $value < 0));
             
             for($i=0;$i<count($this->request->getPost('inv_amount'));$i++)
             {
@@ -284,6 +290,10 @@ class Receipts extends BaseController
 
                 $insert_inv_data['ri_credit_account'] = $_POST['r_credit_account'][$i];
 
+                if($_POST['inv_amount'][$i]>0)
+                {
+                $_POST['inv_amount'][$i] = $_POST['inv_amount'][$i] - abs($negativeTotal);
+                }
                 
                 $insert_inv_data['ri_amount'] = $_POST['inv_amount'][$i];
 
@@ -359,9 +369,6 @@ class Receipts extends BaseController
 
 
     //Main Receipt Add End
-
-
-
 
 
      //Fetch Invoice And Add Credit Start
@@ -1268,14 +1275,6 @@ class Receipts extends BaseController
 
 
         echo json_encode($data);
-
-    }
-
-    public function Deletenew(){
-
-
-    
-
 
     }
 

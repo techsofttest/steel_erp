@@ -700,6 +700,16 @@
 
                                                         <tbody class="travelerinfo view_prod_data"></tbody>
 
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td colspan="7" class=""></td>
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="" class=" form-control view_total_amount" readonly=""></td>
+                                                             </tr>
+                                                        
+                                                        </tbody>
+
 
 
 
@@ -979,6 +989,16 @@
                                                         </thead>
 
                                                         <tbody class="travelerinfo edit_prod_data"></tbody>
+
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td colspan="6" class=""></td>
+                                                                <td>Total</td>
+                                                                <td><input type="text" name="total_vou_amount" class=" form-control edit_total_amount" readonly="" ></td>
+                                                             </tr>
+                                                        
+                                                        </tbody>
 
 
 
@@ -1555,7 +1575,20 @@
                 { data: 'pv_date'},
                 { data: 'action'},
                 
-               ]
+               ],
+               "initComplete": function () {
+
+                    var dataId = '<?php echo isset($_GET['view_po']) ? $_GET['view_po'] : ''; ?>';
+
+                    $('#DataTable').dataTable().fnFilter(dataId);
+
+                },
+
+                "drawCallback": function() {
+
+                $('.view_btn[data-id="<?php echo isset($_GET['view_po']) ? $_GET['view_po'] : ''; ?>"]').trigger('click');
+
+                }
     
             });
         }
@@ -2280,6 +2313,8 @@
 
                     $('.view_prod_data').html(data.prod_desc);
 
+                    $('.view_total_amount').val(data.total_amount);
+
                     
 
                 }
@@ -2338,6 +2373,9 @@
                     $('.edit_prod_data').html(data.prod_desc);
 
                     $('.edit_purchase_id').val(data.purchase_id);
+
+                    $('.edit_total_amount').val(data.total_amount);
+
 
                 }
             });

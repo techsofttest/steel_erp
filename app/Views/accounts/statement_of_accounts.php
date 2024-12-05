@@ -293,7 +293,6 @@
                                             <tbody class="tbody_data">
 
                                                 <?php
-
                                                 if(!empty($open_balance))
                                                 {
                                                 $balance=$open_balance;

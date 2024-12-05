@@ -173,8 +173,8 @@ class SalesQuotation extends BaseController
     // add account head
     Public function Add()
     {   
-
-        $uid = $this->common_model->FetchNextId('crm_quotation_details',"SQ");
+        
+        $uid = $this->FetchReference("r");
        
         $insert_data = [
 
@@ -272,7 +272,7 @@ class SalesQuotation extends BaseController
   
     public function AddTab2()
     {   
-        
+       
 
         if(!empty($_POST['qc_material']))
         {
@@ -298,6 +298,8 @@ class SalesQuotation extends BaseController
                 
                     
                     $id = $this->common_model->InsertData('crm_quotation_cost_calculation',$insert_data);
+
+                   
             
                 } 
             }
@@ -414,17 +416,20 @@ class SalesQuotation extends BaseController
             foreach($product_details as $prod_det)
             {
 
-            $data['view_product'] .=  '<tr>
-                <td style="width: 10%;">'.$i.'</td>
-                <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-                <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
-                <td><input type="number" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
-                <td><input type="number"  value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
-                <td><input type="number" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
-                <td><input type="number"  value="'.$prod_det->qpd_amount.'" class="form-control" readonly></td>
-                
-            </tr>';
-            $i++;
+                $data['view_product'] .=  '<tr>
+                    <td style="width: 10%;">'.$i.'</td>
+                    <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+                    <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
+                    <td><input type="number" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
+                    <td><input type="number"  value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
+                    <td><input type="number" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
+                    <td><input type="number"  value="'.$prod_det->qpd_amount.'" class="form-control" readonly></td>
+                    
+                </tr>';
+                $i++;
+
+            }
+ 
 
 
             //cost calculation start
@@ -440,7 +445,7 @@ class SalesQuotation extends BaseController
     
             
             $cost_calculation_data = $this->common_model->FetchWhereJoin('crm_quotation_cost_calculation',array('qc_quotation_id' => $quotation),$joins2);
-            
+
             $j=1;
 
             $data['cost_details'] = "";
@@ -449,7 +454,7 @@ class SalesQuotation extends BaseController
             {
 
                 $data['cost_details'] .='<tr>
-                <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
+                <td><input type="text"  value="'.$j.'" class="form-control " readonly></td>
                 <td colspan="2"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
                 <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
                 <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
@@ -462,8 +467,7 @@ class SalesQuotation extends BaseController
             }
 
             //cost calculation end            
-        }
-
+       
         
         
   
@@ -1766,14 +1770,30 @@ class SalesQuotation extends BaseController
     }
 
 
-    public function FetchReference()
+    /*public function FetchReference()
 	{
 
 		$uid = $this->common_model->FetchNextId('crm_quotation_details',"SQ");
 	
 		echo $uid;
 
-	}
+	}*/
+
+
+
+    public function FetchReference($type="e")
+    {
+
+        $uid = $this->common_model->FetchNextId('crm_quotation_details',"SQ-{$this->data['accounting_year']}-");
+
+        if($type=="e")
+            echo $uid;
+        else
+        {
+            return $uid;
+        }
+
+    }
 
 
     public function Pdf($id)

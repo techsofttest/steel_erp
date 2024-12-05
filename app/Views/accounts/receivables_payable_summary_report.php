@@ -146,7 +146,7 @@
                                                                      <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Receivable <input type="radio" name="type" value="receivable" required>
+                                                                    Receivable <input type="radio" name="type" value="receivable">
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
@@ -243,12 +243,12 @@
                                             <thead>
 
                                                 <tr>
-                                                    <th>Name Of Customer</th>
-                                                    <th>Amount</th>
-                                                    <th>0-30 Days</th>
-                                                    <th>31-60 Days</th>
-                                                    <th>61-90 Days</th>
-                                                    <th>Above 90 Days</th>
+                                                    <th class="">Name Of Customer</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th class="text-end">0-30 Days</th>
+                                                    <th class="text-end">31-60 Days</th>
+                                                    <th class="text-end">61-90 Days</th>
+                                                    <th class="text-end">Above 90 Days</th>
                                                 </tr>
 
                                             </thead>
@@ -270,22 +270,23 @@
 
                                             $total_above = number_format(0,2);
 
-                                            foreach($all_accounts as $ac) {
-                                                
                                             $grand_total = 0;
 
-                                            //$grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
+                                            foreach($all_accounts as $ac) {
+                                                
+                                            
+                                            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
 
                                             ?>
 
-                                           <tr> 
+                                            <tr> 
 
                                                 <td><?= $ac->ca_name; ?></td>
-                                                <td><?php echo $grand_total; ?></td>
-                                                <td><?php echo empty($ac->ThirtyDays) ? "---" : $ac->ThirtyDays; ?></td>
-                                                <td><?php echo empty($ac->SixtyDays) ? "---" : $ac->SixtyDays; ?></td>
-                                                <td><?php echo empty($ac->NinetyDays) ? "---" : $ac->NinetyDays; ?></td>
-                                                <td><?php echo empty($ac->AboveNinetyDays) ? "---" : $ac->AboveNinetyDays; ?></td>
+                                                <td class="text-end"><?php echo empty($ac->Receivables) ? "---" : format_currency($ac->Receivables); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->ThirtyDays) ? "---" : format_currency($ac->ThirtyDays); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->SixtyDays) ? "---" : format_currency($ac->SixtyDays); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->NinetyDays) ? "---" : format_currency($ac->NinetyDays); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->AboveNinetyDays) ? "---" : format_currency($ac->AboveNinetyDays); ?></td>
 
                                             </tr>
 
@@ -318,11 +319,11 @@
                                             <tr class="no-sort">
                                            
                                             <td><b style="font-size:20px;">Total</b></td>
-                                            <td><b><?= $total_rec ?></b></td>
-                                            <td><b><?= $total_thirty ?></b></td>
-                                            <td><b><?= $total_sixty ?></b></td>
-                                            <td><b><?= $total_ninety ?></b></td>
-                                            <td><b><?= $total_above ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_rec) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_thirty) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_sixty) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_ninety) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($total_above) ?></b></td>
 
                                             </tfoot>
 

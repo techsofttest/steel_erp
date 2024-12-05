@@ -89,7 +89,14 @@ abstract class BaseController extends Controller
 
         $this->session = \Config\Services::session();
 
-        $this->data['accounting_year'] = 2024; 
+        $this->ap_model = new \App\Models\AccountPeriodModel();
+
+        $this->data['accounting_year'] = $this->ap_model->CheckCurrentPeriod()->ap_year; 
+
+        $this->data['accounting_month'] = $this->ap_model->CheckCurrentPeriod()->ap_month; 
+
+         // Share the data globally
+         \Config\Services::renderer()->setData($this->data);
         
 
     }

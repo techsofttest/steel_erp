@@ -504,7 +504,7 @@ class MaterialReceivedNote extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pop_id.'">
                                             <td class="si_no">'.$i.'</td>
                                             <td><input type="text" name="sales_order[]" value="'.$product->so_reffer_no.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="prod_desc[]" value="'.$product->product_details.'" class="form-control" readonly></td>
+                                            <td style="width:40%"><input type="text" name="prod_desc[]" value="'.$product->product_details.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->pop_unit.'" class="form-control" required></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$product->pop_qty.'"  class="form-control add_order_qty" readonly required></td>
                                             <td><input type="text" name="delivered_qty[]" value="'.$product->pop_delivered_order.'"  class="form-control add_delivery_qty" required readonly></td>
@@ -653,7 +653,7 @@ class MaterialReceivedNote extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
             <td class="si_no1">'.$i.'</td>
             <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td style="width:40%"><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
@@ -741,7 +741,7 @@ class MaterialReceivedNote extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
             <td class="si_no1">'.$i.'</td>
             <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>

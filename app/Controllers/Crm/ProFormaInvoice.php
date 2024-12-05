@@ -607,7 +607,7 @@ class ProFormaInvoice extends BaseController
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no">'.$i.'</td>
-                                            <td style="width:34%">
+                                            <td style="width:40%">
                                                 <select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
                                                 
                                                 foreach($products as $prod){

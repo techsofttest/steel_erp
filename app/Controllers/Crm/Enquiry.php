@@ -176,9 +176,7 @@ class Enquiry extends BaseController
     // add account head
     Public function Add()
     {   
-        //print_r($_POST); exit();
-
-            $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ");
+            $uid = $this->FetchReference("r");
             
             $insert_data = [
                     
@@ -680,13 +678,18 @@ class Enquiry extends BaseController
     }
 
 
-    
-    public function FetchReference()
+
+    public function FetchReference($type="e")
     {
 
-        $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ");
+        $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ-{$this->data['accounting_year']}-");
 
-        echo $uid;
+        if($type=="e")
+            echo $uid;
+        else
+        {
+            return $uid;
+        }
 
     }
 

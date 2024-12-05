@@ -19,7 +19,12 @@
 
         .counter-value
         {
-            font-size: 50px;
+            font-size: 25px;
+        }
+
+        .avatar-sm {
+            height: 2rem !important;
+            width: 2rem !important;
         }
 
         .counter-title
@@ -93,7 +98,7 @@
 
 
 
-                                    <form method="GET">
+                                <form method="GET" >
 
 
                                 <div class="col-xl-12">
@@ -108,27 +113,66 @@
 
 
                                         <div class="col-xl-5">
-
+                                            
 
                                         <div class="row align-items-end">
 
                                             <div class="col-4">
-                                            <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Accounting Year</label>
+                                            <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Accounting Period</label>
                                             </div>
 
-                                            <div class="col-6">
-
+                                            <div class="col-2">
 
                                             <select class="form-control" name="ac_year" id="">
 
                                                 <!--<option value="2023">2023</option>-->
 
-                                                <option value="2024" Selected>2024</option>
+                                                <option value="<?php echo $ap_year = $this->data['accounting_year']; ?>" Selected><?php echo $ap_year; ?></option>
                                                
-                                                </select>
+                                                <option value="<?php echo $ap_year+1; ?>"><?php echo $ap_year+1; ?></option>
+
+                                            </select>
 
 
                                             </div>
+
+
+                                            <div class="col-4">
+
+
+                                            <select class="form-control" name="ac_month" id="months">
+                                                <option value="">Select a month</option>
+                                                <?php
+                                                $months = [
+                                                    "January", "February", "March", "April",
+                                                    "May", "June", "July", "August",
+                                                    "September", "October", "November", "December"
+                                                ];
+                                                
+                                                foreach ($months as $index => $month) {
+                                                    
+                                                    if(empty($_GET['ac_month']) && $month==date('F')) 
+                                                    { 
+                                                    $sel ="selected"; 
+                                                    }
+                                                    else if(!empty($_GET['ac_month']) && $_GET['ac_month']==$index+1)
+                                                    {
+                                                    $sel ="selected"; 
+                                                    }
+                                                    else{ 
+                                                    $sel=""; 
+                                                    }
+
+                                                    echo '<option value="' . ($index + 1) . '" '.$sel.'>' . $month . '</option>';
+                                                
+                                                }
+                                                ?>
+                                                </select>
+                                                
+
+
+                                            </div>
+
 
                                             </div>  
 
@@ -139,18 +183,15 @@
 
                                     <div class="col-xl-2">
 
-
                                     <div class="row align-items-end justify-content-center">
 
-                                       
                                         <div class="col-12">
 
-                                        <button class="btn btn-danger" name="action" value="save" type="submit" onclick="return confirm('Change accounting period & year?\nNo transactions can be posted prior to the accounting period!');">Save</button>
-
+                                        <button style="width: 60%;" class="btn btn-danger" name="action" value="save" type="submit" onclick="return confirm('Change accounting period & year?\nNo transactions can be posted prior to the accounting period!');"><i class="ri-lock-fill"></i> Lock</button>
 
                                         </div>
 
-                                        </div>  
+                                    </div> 
 
                                     </div>
 
@@ -169,6 +210,21 @@
                                     <div class="col-9">
                                     
                                     <?php echo !empty(session()->get('admin_name')) ? session()->get('admin_name') : "Admin" ?>
+
+                                    </div>
+
+                                    </div>
+
+
+                                    <div class="row align-items-end">
+
+                                    <div class="col-3">
+                                    <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Period</label>
+                                    </div>
+
+                                    <div class="col-9">
+
+                                    <?php echo date("M Y",strtotime("{$this->data['accounting_year']}-{$this->data['accounting_month']}-1")); ?>
 
                                     </div>
 
@@ -258,7 +314,7 @@
                                         
                                             <div class="col-12">
 
-                                            <button class="btn btn-success" name="action" value="search" type="submit">Search</button>
+                                            <button style="width: 60%;" class="btn btn-success" name="action" value="search" type="submit"><i class="ri-search-line"></i> Search</button>
 
 
                                             </div>
@@ -603,7 +659,7 @@
 
                                             <div class="card-body">
                                                 <div class="table-responsive table-card m-1">
-                                                    <table class="table table-hover">
+                                                    <table style="max-height: 380px;" class="table table-hover">
 
 
                                                         <thead>
@@ -668,7 +724,7 @@
 
                                             <div class="card-body">
                                                 <div class="table-responsive table-card m-1">
-                                                    <table class="table table-hover">
+                                                    <table style="max-height: 380px;" class="table table-hover">
 
 
                                                         <thead>
@@ -939,8 +995,34 @@
             </script>
 
             <!--accoiunt type delete section end-->
-            
-	
+
+
+          
+                <?php
+                
+                if(session()->getFlashdata('error'))
+                {
+
+                ?>
+
+                <script>alertify.error('<?php echo session()->getFlashdata('error'); ?>').delay(5).dismissOthers();</script>
+
+                <?php } ?>
+
+
+
+                <?php
+                
+                if(session()->getFlashdata('success'))
+                {
+
+                ?>
+
+                <script>alertify.success('<?php echo session()->getFlashdata('success'); ?>').delay(5).dismissOthers();</script>
+
+                <?php } ?>
+
+
 	
 	
 </body>

@@ -213,7 +213,7 @@
                                             <input type="hidden" name="excel" value="1"> -->
                                             <button class="email_button report_button" type="submit" id="email_button">Email</button>
                                         <!-- </form> -->
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#InvoiceReport" class="btn btn-primary py-1">Search</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesReturnReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
 
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
@@ -348,15 +348,21 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function(event){  
 
         /*modal open start*/
 
-        $(window).on('load', function() {
-            $('#SalesReturnReport').modal('show');
-        });
-        
-        
+       
+        <?php if (empty($_GET)): ?>
+
+            $(window).on('load', function() {
+                $('#SalesReturnReport').modal('show');
+            });
+            
+
+        <?php endif; ?>
+
+
         /*modal open end*/
 
 
@@ -410,7 +416,98 @@
         
         /*####*/
 
-   
+
+        $(document).ready(function() {
+            $(".excel_button").click(
+                function() {
+                    tableToExcel('DataTable', 'Sales Return Report', 'Sales Return Report');
+                }
+            );
+        })
+
+        function getIEVersion()
+        // Returns the version of Windows Internet Explorer or a -1
+        // (indicating the use of another browser).
+        {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
+        }
+
+
+        function tableToExcel(table, sheetName, fileName) {
+
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+                return fnExcelReport(table, fileName);
+            }
+
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64Conversion = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                },
+                formatExcelData = function(s, c) {
+                    return s.replace(/{(\w+)}/g, function(m, p) {
+                        return c[p];
+                    })
+                }
+
+            $("tbody > tr[data-level='0']").show();
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            var ctx = {
+                worksheet: sheetName || 'Worksheet',
+                table: table.innerHTML
+            }
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
+            element.setAttribute('download', fileName);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+
+            $("tbody > tr[data-level='0']").hide();
+
+        }
+
+        function fnExcelReport(table, fileName) {
+
+            var tab_text = "<table border='2px'>";
+            var textRange;
+
+            if (!table.nodeType)
+                table = document.getElementById(table)
+
+            $("tbody > tr[data-level='0']").show();
+            tab_text = tab_text + table.innerHTML;
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
+            $("tbody > tr[data-level='0']").hide();
+            return (sa);
+
+        }
 
 
 
@@ -421,4 +518,38 @@
 
 
 
+</script>
+
+
+<script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
+
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
+
+                // Email subject and body message
+                var subject = encodeURIComponent("Invoice Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
+
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
+        }
+    });
 </script>

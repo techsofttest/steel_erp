@@ -20,8 +20,8 @@
 <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(4)=="RPSummery") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Accounts/Reports/RPSummery" >Accounts Receivable/Payable Summery</a> </li>
 <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(4)=="StatementOfAccounts") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Accounts/Reports/StatementOfAccounts">Statement Of Accounts</a> </li>
 <li class="nav-item"> <a class="nav-link <?php if($uri->getSegment(4)=="AgedRP") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Accounts/Reports/AgedRP" >Aged Receivables/Payables</a> </li>
-<li class="nav-item disabled"> <a class="nav-link" >Fixed Asset Schedule</a> </li>
-<li class="nav-item disabled"> <a class="nav-link" >Bank Reconciliation Statement</a> </li>
+<li class="nav-item disabled"> <a class="nav-link <?php if($uri->getSegment(4)=="FixedAsset") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Accounts/Reports/FixedAsset">Fixed Asset Schedule</a> </li>
+<li class="nav-item disabled"> <a class="nav-link <?php if($uri->getSegment(4)=="BankReconciliation") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Accounts/Reports/BankReconciliation">Bank Reconciliation Statement</a> </li>
 		                                 
 </ul>
 

@@ -1147,6 +1147,8 @@
 
 <input id="add_hourly_salary" type="number"  name="total_salary" class="form-control" min="0" readonly>
 
+<input id="add_max_hours" type="hidden" min="0" readonly>
+
 </div>
 
 </div>
@@ -2335,6 +2337,8 @@
                             $('#emp_other_allowance').val(data.emp_det.emp_other_allow);
 
                             $('#add_hourly_salary').val(data.hour_salary);
+
+                            $('#add_max_hours').val(data.max_normal_hours);
                             
                             $('#add_total_salary').val(data.emp_det.emp_total_salary);
 
@@ -2355,7 +2359,10 @@
 
                             $('#friday_ot').val(0);
 
-                            datatable.ajax.reload( null, false)
+
+                            $('body .day_type').trigger('change');
+
+                            //datatable.ajax.reload( null, false)
 
                         }
                        
@@ -3302,6 +3309,8 @@
 
         var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
 
+        var max_hours = parseFloat($('#add_max_hours').val())||0;
+
         var total_normal_ot = 0;
 
         var total_friday_ot= 0;
@@ -3319,6 +3328,19 @@
         var total_medical_leave = 0;
 
         var normal_total_monthly = 0;
+
+
+        //allowances
+
+        var emp_rent_allowance = parseFloat($('#emp_rent_allowance').val())||0;
+
+        var emp_transp_allowance = parseFloat($('#emp_transp_allowance').val())||0;
+
+        var emp_telephone_allowance = parseFloat($('#emp_telephone_allowance').val())||0;
+
+        var emp_food_allowance = parseFloat($('#emp_food_allowance').val())||0;
+
+        var emp_other_allowance = parseFloat($('#emp_other_allowance').val())||0;
 
 
 
@@ -3418,15 +3440,42 @@
 
         //Normal Total
 
-        var month_total_salary = hourly_salary*normal_total_monthly;
+        month_total_salary = 0;
+        
+        $('#total_basic_salary').val(0);
+
+        if(normal_total_monthly>0)
+
+        {
+
+        if( normal_total_monthly == max_hours)
+        {
+
+        month_total_salary = basic_salary;
+
+        $('#total_basic_salary').val(basic_salary.toFixed(2));
+
+        }
+
+        else
+        {
+
+        
+        var difference = max_hours-normal_total_monthly;
+
+        var month_total_salary = basic_salary-(difference*hourly_salary);
 
         $('#total_basic_salary').val(month_total_salary.toFixed(2));
 
+        }
 
-        var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary;
+        }
 
+
+        var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
 
         $('#total_month_salary').val(total_salary_month.toFixed(2));
+
 
         //Calculate Total Salary End
 
@@ -3446,16 +3495,6 @@
         });
 
         */
-
-
-
-
-
-
-
-        
-
-
     
     });
 

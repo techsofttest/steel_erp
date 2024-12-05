@@ -1,6 +1,4 @@
-
-
- <!--header section start-->
+<!--header section start-->
 
  <?php 
  if(empty($_GET))
@@ -8,46 +6,45 @@
  echo view('accounts/reports_sub_header');
  }
  else{
-    ?>
-   
-   <style>
-   
-       
-   /* Report Full Page No Scroll */
-   
-   header
-   {
-   
-   display:none;
-   
-   }
-   
-   footer
-   {
-   
-   display:none;
-   
-   }
-   
-   .page-content
-   {
-   
-   padding:5px 0px;
-   
-   }
-   
-   .main-content
-   {
-      margin:15px !important;
-   }
-   
-   
-   /* #### */
-   
-   
-   </style>
-   
-    <?php } ?>
+ ?>
+
+<style>
+    
+/* Report Full Page No Scroll */
+
+header
+{
+
+display:none;
+
+}
+
+footer
+{
+
+display:none;
+
+}
+
+.page-content
+{
+
+padding:5px 0px;
+
+}
+
+.main-content
+{
+   margin:15px !important;
+}
+
+
+/* #### */
+
+
+</style>
+
+ <?php } ?>
 
 <!--header section end-->
 
@@ -67,12 +64,12 @@
                         
                         
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="SearchModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="SalesQuotReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <form method="GET" onSubmit="return closeSearchModal();" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="class">
+                                <form method="GET" target="<?php if(empty($_GET)) { echo "_blank"; } ?>" class="Dashboard-form class">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Balance Sheet</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Fixed Asset Report</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -93,52 +90,93 @@
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
 
-                                                                            <tr>
 
-                                                                            <td>Time Frame</td>
+                                                                        <tr id="range_picker">
 
-                                                                            <td>
+                                                                        <td>Date</td>
 
-                                                                                <select class="form-control" id="filter_range" name="filter_timeframe" required>
+                                                                        <td>
+                                                                        <input class="form-control datepicker" type="text"  name="end_date" readonly/>
+                                                                        </td>
+
+                                                                        </tr>
+
+
+
+                                                                        <tr>
+                                                                                <td>Account Type</td>
+                                                                               
+                                                                                <td>
+
+                                                                                    <select class="form-control" name="filter_type" id="filter_type">
                                                                                         
-                                                                                        <option value="">Select Time</option>
+                                                                                        <option value="">Select Account Type</option>
 
-                                                                                        <option value="Range">Range</option>
-
-                                                                                        <option value="LastYear">Last Year</option>
-
-                                                                                        <option value="CurrentYear">Current Year</option>
+                                                                                        
                                                                                        
+                                                                                        <option value="Account_Head">Account Head</option>
+
+                                                                                        <option value="Account_Type">Account Type</option>
                                                                                         
-                                                                                </select>
+                                                                                    </select>
+
+                                                                                </td>
+                                                                            
+                                                                        </tr>
 
 
+
+
+                                                                            <tr id="Account_Head" style="display:none;">
+
+                                                                            <td>Account Head</td>
+
+                                                                            <td>
+
+                                                                            <select class="form-control" name="filter_account_head">
+
+                                                                            <option value="">Select Account Head</option>
+
+                                                                            <?php foreach($account_heads as $ah){ ?>
+
+                                                                            <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
+
+                                                                            <?php } ?>
+
+                                                                            </select>
 
                                                                             </td>
-
 
                                                                             </tr>
 
 
 
-                                                                            <tr id="range_picker">
+                                                                            <tr id="Account_Type" style="display:none;">
 
-
-                                                                            <td>Date From</td>
-
-                                                                            <td>
-                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly required/>
-                                                                            </td>
-
-
-                                                                            <td>Date To</td>
+                                                                            <td>Account Type</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly required/>
-                                                                            </td>
 
+                                                                            <select class="form-control" name="filter_account_type">
+
+                                                                            <option value="">Select Account Type</option>
+
+                                                                            <?php foreach($account_types as $account_type)
+                                                                            {
+                                                                            ?>
+                                                                            
+                                                                            <option value="<?php echo $account_type->at_id; ?>"><?php echo $account_type->at_name; ?></option>
+
+                                                                            <?php } ?>
+
+                                                                            </select>
+
+                                                                            </td>
 
                                                                             </tr>
+
+
+                                
                                                                             
                                                                         
                                                                         </thead>
@@ -146,16 +184,7 @@
                                                                     
                                                                     
                                                                      </table>
-
-
-
-                                                                     <div class="row my-2">
-                                                                        
-                                                                    <div class="col-lg-6 text-center">
-                                                                    Zero Balance <input type="checkbox" name="zero" value="1">
-                                                                    </div>                                                  
-
-                                                                    </div>
+                                                                   
 
 
 
@@ -166,11 +195,11 @@
                                                                 <div style="float: right;">
                                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                         <tr>
-                                                                            <td><a href="<?= base_url(); ?>Accounts/Reports/BalanceSheet">Clear</a></td>
+                                                                            <td><a href="<?= base_url(); ?>Accounts/Reports/TrialBalance">Clear</a></td>
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit" data-bbs-dismiss="modal" aria-label="Close">View</button></td>
+                                                                            <td><button type="submit" data-bs-dismiss="modal" aria-label="Close">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             
@@ -209,154 +238,122 @@
                             <div class="col-lg-12">
                                 <div class="card">
 
-
                                 <div class="card-header align-items-center d-flex">
 
-<h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Balance Sheet <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
-
-                
-                <?php if(!empty($_GET)) { ?>
-
-                <form method="POST" action="" target="_blank">
-                <input type="hidden" name="pdf" value="1">
-                <button type="submit"  class="pdf_button report_button" >PDF</button>
-                </form>
-
-                    <button class="excel_button report_button">Excel</button>
-
-               
-                    <button class="print_button report_button" type="button">Print</button>
-                
-                
-                    <button id="email_button" class="email_button report_button" type="submit">Email</button>
+                                <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;">View Fixed Asset Report <?php if(!empty($from_dates) && !empty($to_dates)){?>(<?php echo $from_dates;?> To <?php echo $to_dates;?>)<?php } ?></h4>
+                                
+                                
+                                <?php if( (!empty($_GET)) ) { ?>
 
 
-                <?php } ?>
 
-                <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SearchModal" class="btn btn-primary py-1">Search</button>
+                                <form method="POST"  target="_blank">
+                                    <input type="hidden" name="pdf" value="1">
+                                    <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                </form>
 
 
-                </div><!-- end card header -->
+                               
+                                    <button id="excel_btn_export" class="excel_button report_button" >Excel</button>
+                                
+                                
+                                    <button class="print_button report_button" type="button">Print</button>
+                                
 
-                                   
+                                
+                                <button id="email_button" class="email_button report_button" type="button">Email</button>
+                                
+                                <?php } ?>
+
+                                <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
+                                
+                            
+                            </div>
+                                
+                                <!-- end card header -->
+
 
 
                                     <div class="card-body">
-
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="" class="table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
 
                                                 <tr>
-
-                                                    <th>Assets</th>
-                                                    <th>Amount</th>
-                                                    <th>%</th>
-
+                                                  
+                                                    <th align="right" style="text-align:center;">Description</th>
+                                                    <th align="right" style="text-align:right;">Date Acquired</th>
+                                                    <th align="right" style="text-align:right;">Purchase Value</th>
+                                                    <th align="right" style="text-align:right;">Percentage</th>
+                                                    <th align="right" style="text-align:right;">Entitlement</th>
+                                                    <th align="right" style="text-align:right;">Depreciation</th>
+                                                    <th align="right" style="text-align:right;">Disaposal</th>
+                                                    <th align="right" style="text-align:right;">WDV</th>
+                                                    
                                                 </tr>
 
                                             </thead>
-
-
-
                                             
+
                                             <tbody class="tbody_data">
 
+                                                    <?php foreach($accounts as $account){ ?>
 
-                                            <?php foreach($account_heads as $ah){ ?>
+                                                     <tr>
 
-                                            <tr>
+                                                        <td colspan="8"><b><?php echo $account->ah_account_name; ?> </b></td>
+                                                        
 
-                                            <td align=""><b><?php echo $ah->ah_account_name; ?></b></td>
+                                                     </tr>   
 
-                                            <td> </td>
-
-                                            <td></td>
-
-                                            
-                                            </tr>
-
-
-                                            <?php 
-                                            $total_bal = number_format(0,2);
-                                            foreach($ah->Charts as $ca){ 
-                                            $total_bal = $ca->balance + $total_bal;
-                                            }
-                                            ?>
-
-
-                                                <?php 
-                                                $total_perc = 0;
-                                                foreach($ah->Charts as $ca){ 
-                                                
-                                                if($ca->balance>0)
-                                                {
-                                                $perc = ($ca->balance/$total_bal)*100;
-                                                } else
-                                                {
-                                                $perc=0;
-                                                }
-                                                $total_perc= $total_perc+$perc;
-                                                ?>
-
+                                                    <?php foreach($account->items as $it) { ?>
 
                                                     <tr>
-
-                                                    <td><?= $ca->ca_name; ?></td>
-
-                                                    <td><?= $ca->balance; ?></td>
-
-                                                    <td><?= number_format($perc,2); ?>%</td>
-
-
+                                                        <td><?= $it->cfs_description; ?></td>
+                                                        <td style="text-align:right;"><?= date('d M Y',strtotime($it->cfs_acquired_date)) ?></td>
+                                                        <td style="text-align:right;"><?php echo $it->dpc_amount; ?></td>
+                                                        <td style="text-align:right;"><?= $it->cfs_depreciation ?>%</td>
+                                                        <td style="text-align:right;"><?= $it->dpcd_entitlement ?></td>
+                                                        <td style="text-align:right;"><?= $it->dpc_depreciation; ?></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"><?php echo $it->dpc_amount; ?></td>
                                                     </tr>
 
-                                                    
+                                                    <?php } ?>
 
-                                                <?php
-                                            
-                                                
-                                                    
-                                               } ?>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                        <td style="text-align:right;"></td>
+                                                    </tr>
 
-
-                                                <tr>
-
-                                                <td align="center">Total <?php echo $ah->ah_account_name; ?></td>
-
-                                                <td><?= number_format($total_bal,2); ?></td>
-
-                                                <td><?= $total_perc ?>%</td>
-
-
-                                                </tr>
+                                                    <?php } ?>
 
 
 
-                                                <tr>
 
-                                                <td></td>
-
-                                                <td></td>
-
-                                                <td></td>
-
-                                                </tr>
-
-
-                                            <?php } ?>
-                                           
                                             </tbody>
-
 
 
 
                                             <tfoot>
 
                                             <tr class="no-sort">
+
                                             <td></td>
-                                            <td><b></b></td>
-                                            <td><b></b></td>
+                                            <td><b style="font-size:20px;"></b></td>
+                                            <td style="text-align:right;"><b></b></td>
+                                            <td align="right" style="text-align:right;"><b></b></td>
+                                            <td align="right" style="text-align:right;"><b></b></td>
+                                            <td style="text-align:right;"><b></b></td>
+                                            <td></td>
+                                            <td style="text-align:right;"><b></b></td>
+                                          
                                             </tr>
 
                                             </tfoot>
@@ -442,7 +439,7 @@
         $(window).on('load', function() {
             $('#SalesQuotReport').modal('show');
         });
-        <?php }  */?>
+        <?php } */ ?>
 
 
 
@@ -461,47 +458,6 @@
         }
 
         });
-
-
-        $('#filter_range').change(function(){
-
-            var val = $(this).val();
-
-            if(val !="Range")
-            {
-            $('.datepicker').attr('disabled',true);
-
-            if(val=="LastYear")
-            {
-                var date = new Date();
-                var firstDay = new Date(date.getFullYear()-1, 0, 1); // First day of current year
-                var lastDay = new Date(date.getFullYear()-1, 11, 31);
-
-                $('input[name=start_date]').val(FormatDate(firstDay));
-                $('input[name=end_date]').val(FormatDate(lastDay));
-
-            }
-            else if(val=="CurrentYear")
-            {
-                var date = new Date();
-                var firstDay = new Date(date.getFullYear(), 0, 1); // First day of current year
-                var lastDay = new Date(date.getFullYear(), 11, 31);
-
-                $('input[name=start_date]').val(FormatDate(firstDay));
-                $('input[name=end_date]').val(FormatDate(lastDay));
-            }
-
-            }
-            
-            if(val=="Range")
-            {
-                $('input[name=start_date]').val('');
-                $('input[name=end_date]').val('');
-            }
-
-
-
-            });
 
        
         
@@ -567,8 +523,6 @@
                     $('.executive_clz').html(data.quot_det);
                     
                     $('.product_clz').html(data.quot_prod);
-
-                    //
 
                 }
 
@@ -642,13 +596,15 @@
 
 
 
+
+
         
-$(document).ready(function(){
-$(".excel_button").click(
+    $(document).ready(function(){
+$("#excel_btn_export").click(
             function () {
-                tableToExcel('DataTable','Balance Sheet','Balance Sheet');
+                tableToExcel('DataTable','Trial Balance Report','Trial Balance Report');
             }            
- );
+        );
 })
 function getIEVersion()
 // Returns the version of Windows Internet Explorer or a -1
@@ -723,11 +679,13 @@ function fnExcelReport(table, fileName) {
 }
 
 
-    $('body').on('click','.print_button',function(e){
+
+
+$('body').on('click','.print_button',function(e){
     
     // Open the PDF generation script in a new window
 
-    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/BalanceSheet?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
+    var pdfWindow = window.open('<?= base_url()."Accounts/Reports/TrialBalance?".$_SERVER['QUERY_STRING']?>&action=Print', '_blank');
 
     // Automatically print when the PDF is loaded
     pdfWindow.onload = function() {
@@ -738,16 +696,16 @@ function fnExcelReport(table, fileName) {
 
 
 
+
+
     });
-
-
-
 
 </script>
 
 
-<script>
 
+
+<script>
 
 document.getElementById("email_button").addEventListener("click", function() {
     // Select the table element
@@ -764,7 +722,7 @@ document.getElementById("email_button").addEventListener("click", function() {
             alertify.success("Table copied to clipboard! Please paste it in the email composer.");
 
             // Email subject and body message
-            var subject = encodeURIComponent("General Ledger Report");
+            var subject = encodeURIComponent("Trial Balance Report");
             var body = encodeURIComponent("Please paste the copied table here:\n\n");
 
             // Open the email composer
@@ -783,19 +741,9 @@ document.getElementById("email_button").addEventListener("click", function() {
 
 
 
-function closeSearchModal()
-{
-
-$('#SearchModal').modal('hide');
-
-}
-
-
-
 
 
 </script>
-
 
 
 

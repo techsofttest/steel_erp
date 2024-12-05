@@ -376,14 +376,39 @@
                                                            
                                                         </thead>
                                                         
-                                                        <tbody  class="travelerinfo product-more2"></tbody>
-                                                        <!--<tbody>-->
+                                                        <tbody  class="travelerinfo product-more2">
+                                                              
+                                                           
+                                                        </tbody>
+
+                                                        <!--<tbody  class="travelerinfo">
+                                                              
+                                                            <tr class='prod_row quot_row_leng'>
+                                                                <td class='si_no' style='width: 10%;'>1</td>
+                                                                <td style='width: 40%'>
+                                                                    <select class='form-select add_prod add_prod_def' name='qpd_product_description[0]' >
+                                                                        <option value='' selected disabled>Select Product Description</option>
+                                                                            <?php //foreach($products as $prod){?>
+                                                                                <option value='<?php //echo $prod->product_id;?>'><?php //echo $prod->product_details;?></option><?php //} ?>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type='text' name='qpd_unit[0]' class='form-control unit_clz_id' ></td>
+                                                                <td><input type='number' name='qpd_quantity[0]' class='form-control qtn_clz_id' ></td>
+                                                                <td><input type='number' name='qpd_rate[0]' class='form-control rate_clz_id'></td>
+                                                                <td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount[0]' class='form-control discount_clz_id'></td>
+                                                                <td><input type='number' name='qpd_amount[0]' class='form-control amount_clz_id' readonly></td>
+                                                                <td class='' colspan='6'><div class='tecs'><span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span></div></td></tr>
+                                                            </tr>
+
+                                                        </tbody>--->
+
+                                                        <tbody>
                                                             <tr>
                                                                 <td colspan="8" align="center" class="tecs">
                                                                     <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
                                                                 </td>
                                                             </tr>
-                                                        <!--</tbody>--->
+                                                        </tbody>
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2"></td>
@@ -2177,11 +2202,11 @@
                                 <tbody  class="travelerinfo cost_data"></tbody>
 
                                  <!--<tbody>-->
-                                 <tr>
+                                 <!--<tr>
                                         <td colspan="8" align="center" class="tecs">
                                             <span class="add_icon add_product4"><i class="ri-add-circle-line"></i>Add </span>
                                         </td>
-                                    </tr>
+                                    </tr>--->
                                 <!--</tbody>--->
                                 <tbody>
                                     <tr>
@@ -2348,6 +2373,7 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
+                            
                             var responseData = JSON.parse(data);
                          
                             $(".quotation_hidden_id").val(responseData.quotation_id);
@@ -2356,7 +2382,12 @@
 
                             $('#CostCalculation').modal('show');
 
-                            $('.prod_row').remove();
+                            $('.prod_row_add').remove();
+
+                            $('.add_prod_def').val('').trigger('change');
+                            
+                            InitCostSelect();
+                           
                         
                         }
                     });
@@ -2389,8 +2420,6 @@
                             var responseData = JSON.parse(data);
 
                             $('.vew_ref').val(responseData.reffer_no);
-
-                          
 
                             $('.view_date').val(responseData.date);
 
@@ -2682,7 +2711,7 @@
 
            // $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no' style='width: 10%;'>"+pp+"</td><td style='width: 40%'><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no' style='width: 10%;'>"+pp+"</td><td style='width: 40%'><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 			}
             
@@ -2849,7 +2878,7 @@
 
         /*cost of materials selecet box section start*/
          
-        function InitSelect2(){
+        function InitCostSelect(){
             $(".cost_product_det:last").select2({
                 placeholder: "Select Product",
                 theme : "default form-control-",
@@ -2882,7 +2911,7 @@
             })
         }
 
-        InitSelect2();
+        InitCostSelect();
 
         /*####*/
 

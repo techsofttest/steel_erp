@@ -68,6 +68,7 @@
 
 
                             <li class="nav-item">
+                                
                                 <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
                                     <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
                                 </a>
@@ -75,7 +76,8 @@
                             </li>
 
 
-                             <li class="nav-item">
+                            <li class="nav-item">
+                                
                                 <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
                                     <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
                                 </a>
@@ -84,6 +86,7 @@
 
 
                             <li class="nav-item">
+                                
                                 <a class="nav-link menu-link <?php if($uri->getSegment(2)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
                                     <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
                                 </a>

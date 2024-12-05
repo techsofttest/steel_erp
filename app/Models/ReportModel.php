@@ -64,7 +64,18 @@ class ReportModel extends Model
         ->get();
         return $query->getResult();
 
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    }   
+    
+    
+    public function FetchWhereOrder($table,$cond,$order_col,$joins)
+    {
+        $query = $this->db->table($table)
+        ->where($cond)
+        ->orderBy($order_col,'asc')
+        ->get();
+        return $query->getResult();
+
+    }
 
 
 
@@ -259,102 +270,6 @@ class ReportModel extends Model
 
     $query = "";
 
-   
-    /*
-
-    $query = "(SELECT 
-                    {$receipt_table}.r_id AS id, 
-                    {$receipt_table}.r_ref_no AS reference, 
-                    {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
-                    {$receipt_table}.r_date AS transaction_date,
-                    {$receipt_table}.r_amount AS credit_amount,
-                    NULL AS debit_amount,
-                    'Receipt' as voucher_type,
-                    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
-                    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
-                FROM {$this->db->getPrefix()}accounts_receipts
-                LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$receipt_table}.r_debit_account
-                LEFT JOIN {$this->db->getPrefix()}crm_customer_creation ON {$this->db->getPrefix()}crm_customer_creation.cc_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer
-                LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
-                LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
-                ";
-
-                if(!empty($time_frame) || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to))
-                {
-            
-                    $query .= "WHERE ";
-            
-                }
-    //Documentations are for the weak.
-    if ($time_frame != "") {
-        if ($time_frame == "Range") {
-            if ($date_from != "") {
-                $query .= "{$receipt_table}.r_date >= '{$date_from}' ";
-            }
-
-            if ($date_to != "") {
-                if ($date_from != "") {
-                    $query .= "AND ";
-                }
-                $query .= "{$receipt_table}.r_date <= '{$date_to}' ";
-            }
-        } elseif ($time_frame == "Month") {
-            $query .= "YEAR({$receipt_table}.r_date) = YEAR(CURRENT_DATE()) AND MONTH({$receipt_table}.r_date) = MONTH(CURRENT_DATE()) ";
-        } elseif ($time_frame == "Year") {
-            $query .= "YEAR({$receipt_table}.r_date) = YEAR(CURRENT_DATE()) ";
-        }
-    }
-
-    if ($account_head != "") {
-        if ($time_frame != "") {
-            $query .= "AND ";
-        }
-        $query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
-    }
-
-    if ($account_type != "") {
-        if ($account_head != "" || $time_frame != "") {
-            $query .= "AND ";
-        }
-        $query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
-    }
-
-    if ($account != "") {
-        if ($account_head != "" || $account_type != "" || $time_frame != "") {
-            $query .= "AND ";
-        }
-        $query .= "{$receipt_table}.r_debit_account = {$account} ";
-    }
-
-    if($range_from !="")
-    {
-
-        if ($account_head != "" || $account_type != "" || $time_frame != "") {
-            $query .= "AND ";
-        }
-
-        $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id >= {$range_from} ";
-
-    }
-
-    if($range_to !="")
-    {
-    
-        if ($account_head != "" || $account_type != "" || $time_frame != "" || $range_from !="") {
-            $query .= "AND ";
-        }
-
-        $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_to} ";
-
-    }
-
-    */
-
-
-
-    //)
-    //UNION ALL 
-
     
     $query .= "
             (SELECT
@@ -454,10 +369,7 @@ class ReportModel extends Model
     $query .= ")";
 
 
-
     //Payment Debit
-
-                
 
             $query .= "UNION ALL
             (SELECT 
@@ -560,9 +472,6 @@ class ReportModel extends Model
         $query .="GROUP BY {$this->db->getPrefix()}accounts_payments.pay_id";
 
         $query .= ")";
-
-
-
    
         
 
@@ -1733,9 +1642,9 @@ $query .= "UNION ALL
 {$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS credit_amount,
 NULL AS debit_amount,
 'Receipt' as voucher_type,
-{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
-{$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
-FROM {$this->db->getPrefix()}accounts_receipts
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+    FROM {$this->db->getPrefix()}accounts_receipts
 LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt = {$receipt_table}.r_id 
 LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice = {$this->db->getPrefix()}accounts_receipt_invoices.ri_id
 LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$this->db->getPrefix()}accounts_receipts.r_debit_account
@@ -1744,11 +1653,12 @@ LEFT JOIN {$this->db->getPrefix()}crm_customer_creation ON {$this->db->getPrefix
 LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = credit_account_receipt.ca_account_type
 LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
 ";
+
 //
 //
 
 if(!empty($time_frame) || $account_type !="" || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to))
-{
+{   
 
 $query .= "WHERE ";
 
@@ -1819,9 +1729,128 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 }
 
+$query .="AND {$this->db->getPrefix()}accounts_receipt_invoices.ri_amount>1 ";
+
 $query .="GROUP BY {$this->db->getPrefix()}accounts_receipt_invoices.ri_id";
 
 $query .= ")";
+
+
+
+//Discount Receipt Fetch 
+
+$query .= "UNION ALL 
+(SELECT 
+{$receipt_table}.r_id AS id, 
+{$receipt_table}.r_ref_no AS reference, 
+{$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
+{$receipt_table}.r_date AS transaction_date,
+{$this->db->getPrefix()}accounts_receipt_invoices.ri_amount AS credit_amount,
+NULL AS debit_amount,
+'Receipt' as voucher_type,
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+    {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+    FROM {$this->db->getPrefix()}accounts_receipts
+LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt = {$receipt_table}.r_id 
+LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice = {$this->db->getPrefix()}accounts_receipt_invoices.ri_id
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$this->db->getPrefix()}accounts_receipts.r_debit_account
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS credit_account_receipt ON credit_account_receipt.ca_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_credit_account
+LEFT JOIN {$this->db->getPrefix()}crm_customer_creation ON {$this->db->getPrefix()}crm_customer_creation.cc_id = credit_account_receipt.ca_customer
+LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = credit_account_receipt.ca_account_type
+LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
+";
+
+//
+//
+
+if(!empty($time_frame) || $account_type !="" || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to))
+{   
+
+$query .= "WHERE ";
+
+}
+
+
+
+//Documentations are for the weak.
+if ($time_frame != "") {
+if ($time_frame == "Range") {
+if ($date_from != "") {
+$query .= "{$receipt_table}.r_date >= '{$date_from}' ";
+}
+
+if ($date_to != "") {
+if ($date_from != "") {
+$query .= "AND ";
+}
+$query .= "{$receipt_table}.r_date <= '{$date_to}' ";
+}
+} elseif ($time_frame == "Month") {
+$query .= "YEAR({$receipt_table}.r_date) = YEAR(CURRENT_DATE()) AND MONTH({$receipt_table}.r_date) = MONTH(CURRENT_DATE()) ";
+} elseif ($time_frame == "Year") {
+$query .= "YEAR({$receipt_table}.r_date) = YEAR(CURRENT_DATE()) ";
+}
+}
+
+if ($account_head != "") {
+if ($time_frame != "") {
+$query .= "AND ";
+}
+$query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
+}
+
+
+if ($account_type != "") {
+if ($account_head != "" || $time_frame != "") {
+$query .= "AND ";
+}
+$query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
+}
+
+if ($account != "") {
+if ($account_head != "" || $account_type != "" || $time_frame != "") {
+$query .= "AND ";
+}
+//$query .= "{$this->db->getPrefix()}accounts_receipt_invoices.ri_credit_account = {$account} ";
+$query .= "credit_account_receipt.ca_id = {$account} ";
+
+}
+
+if($range_from !="")
+{
+
+if ($account_head != "" || $account_type != "" || $time_frame != "") {
+$query .= "AND ";
+}
+
+$query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id >= {$range_from} ";
+
+}
+
+if($range_to !="")
+{
+
+if ($account_head != "" || $account_type != "" || $time_frame != "" || $range_from !="") {
+$query .= "AND ";
+}
+
+$query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_to} ";
+
+}
+
+$query .="AND {$this->db->getPrefix()}accounts_receipt_invoices.ri_amount<1 ";
+
+$query .="GROUP BY {$this->db->getPrefix()}accounts_receipt_invoices.ri_id";
+
+$query .= ")";
+
+
+
+//
+
+
+
+
 
 
 
@@ -1923,10 +1952,12 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 }
 
+$query .="AND {$this->db->getPrefix()}accounts_receipt_invoices.ri_amount>0 ";
+
 $query .="GROUP BY {$this->db->getPrefix()}accounts_receipt_invoices.ri_id";
 
 $query .= ")";
-
+ 
 
 //$account_head != "" || $account_type != ""
 
@@ -1940,7 +1971,6 @@ $query .= " ORDER BY transaction_date ASC,id ASC";
 
 
     //echo $query; exit;
-
     
     $result = $this->db->query($query)->getResult();
 
@@ -2416,9 +2446,19 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
 
 
-        public function AgedRPTransactions($date_from,$account_head,$account_type,$account)
+        public function AgedRPTransactions($date_to,$account_head,$account_type,$account)
         {   
 
+            
+        if(empty($date_to))
+        {
+
+        $date_to = date('Y-m-d');
+
+        }
+
+
+        /*
         $query = $this->db->table('accounts_charts_of_accounts');
 
         $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
@@ -2436,16 +2476,28 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         $query->orderBy('ca_name','asc');
 
         $result = $query->get()->getResult();
-        
 
+        */
+        
+        //$return = new \stdClass();
+
+
+        /*
         $i=0;
 
         foreach($result as $res)
         {
+        
+        */
 
+        $return = $this->FetchGLTransactions($date_from="",$date_to, $account_head="", $account_type="", $account, $time_frame="Range",$range_from="",$range_to="");
+  
+        /*
         $i++;
         }
+        */
 
+        return $return;
 
         }
 
@@ -3118,13 +3170,13 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
          $result[$i]->Receivables = $this->RPTotalDue($date,$res->ca_id); // $this->FetchSum('crm_cash_invoice','ci_total_amount',array('ci_customer' => $res->cc_id,'ci_paid_status' => 0,'ci_date<=' => $date));
 
-         $result[$i]->ThirtyDays = 0; //$this->RPDated($res->cc_id,$date,"0","30");
+         $result[$i]->ThirtyDays = $this->RPDueDated($res->ca_id,$date,"0","30");
 
-         $result[$i]->SixtyDays = 0; //$this->RPDated($res->cc_id,$date,"31","60");
+         $result[$i]->SixtyDays = $this->RPDueDated($res->ca_id,$date,"31","60");
 
-         $result[$i]->NinetyDays = 0; //$this->RPDated($res->cc_id,$date,"61","90");
+         $result[$i]->NinetyDays = $this->RPDueDated($res->ca_id,$date,"61","90");
 
-         $result[$i]->AboveNinetyDays = 0; //$this->RPDated($res->cc_id,$date,"90","above");
+         $result[$i]->AboveNinetyDays = $this->RPDueDated($res->ca_id,$date,"90","above");
 
         $i++;
 
@@ -3168,7 +3220,10 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         if($account!="")
         $query->where('accounts_charts_of_accounts.ca_id',$account);
 
-        //$query->where('pv_date<=',$end_date);
+        
+        if($date!="")
+        $query->where('pv_date<=',$date);
+
 
         $pv_due = $query->get()->getRow()->pv_due;
 
@@ -3192,7 +3247,8 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         //$query->where('ci_customer',$account);
 
-        //$query->where('ci_date<=',$end_date);
+        if($date!="")
+        $query->where('ci_date<=',$date);
 
         $ci_due = $query->get()->getRow()->ci_due;
 
@@ -3214,7 +3270,8 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         //$query->where('cci_customer',$account);
 
-        //$query->where('cci_date<=',$end_date);
+        if($date!="")
+        $query->where('cci_date<=',$date);
 
         $cr_due = $query->get()->getRow()->cr_due;
 
@@ -3224,6 +3281,120 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         return $total_due;
 
         }
+
+
+
+
+        //Dated Total 30,60,90 etc
+
+        public function RPDueDated($account,$date,$day_start,$day_end)
+        {
+
+        //Unpaid Purchase Voucher
+
+        if($day_end != "above")
+        {
+        $start_date = date('Y-m-d',strtotime($date.'-'.$day_end.'days'));
+        }
+
+        $end_date = date('Y-m-d',strtotime($date.'-'.$day_start.'days'));
+
+
+        $query = $this->db->table('pro_purchase_voucher');
+
+        $query->select('SUM(pv_total) - SUM(pv_paid) as pv_due');
+
+        //$query = $this->db->query('SELECT SUM(pv_total) - SUM(pv_paid) AS total_balance FROM '.$this->db->getPrefix().'pro_purchase_voucher');
+
+        //$result = $query->getRow();
+
+        //echo $result->total_balance; exit;
+
+
+        $query->join('pro_vendor','pro_vendor.ven_id=pro_purchase_voucher.pv_vendor_name','left');
+
+        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=pro_vendor.ven_id and accounts_charts_of_accounts,ca_type = "VENDOR"','left');
+
+        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+
+        if($account!="")    
+        $query->where('accounts_charts_of_accounts.ca_id',$account);
+
+        if($day_end != "above")
+        $query->where('pv_date>=',$start_date);
+
+
+       
+        $query->where('pv_date<=',$end_date);
+
+
+        $pv_due = $query->get()->getRow()->pv_due;
+
+        //echo $pv_due; exit;
+
+
+        //Unpaid Cash Invoices
+
+        $query = $this->db->table('crm_cash_invoice');
+
+        $query->select('SUM(ci_total_amount) - SUM(ci_paid_amount) as ci_due');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_cash_invoice.ci_customer','left');
+
+        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=crm_customer_creation.cc_id and accounts_charts_of_accounts,ca_type = "CUSTOMER"','left');
+
+        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+
+        if($account!="")
+        $query->where('accounts_charts_of_accounts.ca_id',$account);
+
+        //$query->where('ci_customer',$account);
+
+        if($day_end != "above")
+        $query->where('ci_date>=',$start_date);
+
+        $query->where('ci_date<=',$end_date);
+
+        $ci_due = $query->get()->getRow()->ci_due;
+
+            
+        //Unpaid Credit Invoices
+
+        $query = $this->db->table('crm_credit_invoice');
+
+        $query->select('SUM(cci_total_amount) - SUM(cci_paid_amount) as cr_due');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_credit_invoice.cci_customer','left');
+
+        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=crm_customer_creation.cc_id and accounts_charts_of_accounts,ca_type = "CUSTOMER"','left');
+
+        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+
+        if($account!="")
+        $query->where('accounts_charts_of_accounts.ca_id',$account);
+
+        //$query->where('cci_customer',$account);
+
+        if($day_end != "above")
+        $query->where('cci_date>=',$start_date);
+
+        $query->where('cci_date<=',$end_date);
+
+        $cr_due = $query->get()->getRow()->cr_due;
+
+        $total_due = $pv_due+$ci_due+$cr_due;
+
+
+        return $total_due;
+
+        }
+
+
+
+
+
+
+
 
 
 
@@ -3301,13 +3472,124 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
       }
 
 
-
       public function BankRec($id)
       {
 
-        //$query->
+      //$query->
 
       }
+
+
+      public function FetchBRLastEBalance($account,$date)
+      {
+
+        $query = $this->db->table('accounts_bank_rec');
+
+        $query->selectSum('br_unrec_diff');
+
+        $query->where('br_account',$account);
+
+        $query->where('br_date<=',$date);
+
+        $return = $query->get()->getRow();
+
+        if(!empty($return))
+        {
+            return $return->br_unrec_diff;
+        }
+        else
+        {
+            return 0;
+        }
+
+      }
+
+
+      public function FetchBRLastBBalance($account,$date)
+      {
+
+        $query = $this->db->table('accounts_bank_rec');
+
+        $query->select('br_bank_balance');
+
+        $query->where('br_account',$account);
+
+        $query->where('br_date<=',$date);
+
+        $query->orderBy('br_id','desc');
+
+        $return = $query->get()->getRow();
+
+        if(!empty($return))
+        {
+            return $return->br_bank_balance;
+        }
+        else
+        {
+            return 0;
+        }
+
+        //return $query->get()->getRow()->;
+
+      }
+
+
+
+
+      public function FetchFixedAssetDepreciation($id)
+      {
+
+      $query = $this->db->table('pro_depreciation_calculation');
+
+      $query->select('*');
+
+      $query->join('pro_depreciation_det','pro_depreciation_det.dpcd_depreciation_id=pro_depreciation_calculation.dpc_id','left');
+
+      $query->join('pro_create_fixed_asset','pro_create_fixed_asset.cfs_id=pro_depreciation_det.dpcd_asset_id','left');
+
+      $query->where('pro_depreciation_det.dpcd_asset_id',$id);
+
+      return $query->get()->getResult();
+
+      }
+
+
+
+      
+      public function FixedAssets($account_type,$date)
+      {
+
+        $query = $this->db->table('accounts_account_heads');
+
+        $query->select('*');
+
+        //$this->db->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+
+        $query->join('accounts_account_types','accounts_account_types.at_id=accounts_account_heads.ah_account_type','left');
+
+        $query->where('at_name',"Fixed Assets");
+
+        $result =  $query->get()->getResult();
+
+        $i=0;
+        foreach($result as $res)
+        {
+
+        $result[$i]->items = $this->FetchFixedAssetDepreciation($res->ah_id);
+
+        $i++;
+        
+        }
+
+        return $result;
+
+      }
+
+
+
+
+
+
 
      
 

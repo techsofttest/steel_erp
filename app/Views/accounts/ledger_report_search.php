@@ -190,14 +190,14 @@
                                                                             <td>Date From</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly disabled/>
+                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly />
                                                                             </td>
 
 
                                                                             <td>Date To</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly disabled/>
+                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly />
                                                                             </td>
 
 
@@ -586,7 +586,7 @@
 
         if(val !="Range")
         {
-        $('.datepicker').attr('disabled',true);
+        $('.datepicker').attr('readonly',true);
 
         /*
         if(val=="Month")
@@ -615,7 +615,7 @@
         }
         else
         {
-        $('.datepicker').attr('disabled',false);  
+        $('.datepicker').attr('readonly',false);  
 
         $('input[name=start_date]').val('');
         $('input[name=end_date]').val('');  
@@ -663,90 +663,6 @@
         })
         /**/
 
-        /*fetch  sales executive by  customer*/   
-
-        $("body").on('change', '.customer_clz', function(){ 
-
-
-            var id = $(this).val();
-
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotReport/FetchData",
-
-                method : "POST",
-
-                data:{ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-
-                    //console.log(data.prod_details);
-                    $('.executive_clz').html(data.quot_det);
-                    
-                    $('.product_clz').html(data.quot_prod);
-
-                }
-
-
-            });
-        });
-        
-        /*####*/
-
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_quot_report_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesQuotReport/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
-
-                            $("#SalesQuotReport").modal('hide');
-
-                            $('#sales_quot_report_form')[0].reset();
-
-                            $('.customer_clz').val('').trigger('change');
-
-                            $('.executive_clz').val('').trigger('change');
-
-                            $('.product_clz').val('').trigger('change');
-
-                            datatable.ajax.reload(null, false);
-
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-        /*####*/
 
 
 

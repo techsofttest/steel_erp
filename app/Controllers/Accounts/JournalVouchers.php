@@ -142,12 +142,19 @@ class JournalVouchers extends BaseController
 
 
 
-    public function FetchReference()
+    public function FetchReference($type="e")
     {
 
-    $uid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV");
+    $uid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
 
+    if($type=="e")
+    {
     echo $uid;
+    }
+    else
+    {
+    return $uid;
+    }
 
     }
 
@@ -202,7 +209,7 @@ class JournalVouchers extends BaseController
 
         }
 
-        $jv_no = 'JV'.str_pad($id, 7, '0', STR_PAD_LEFT);
+        $jv_no = $this->FetchReference("r");
         
         $cond = array('jv_id' => $id);
 

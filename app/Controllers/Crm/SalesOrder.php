@@ -673,9 +673,9 @@ class SalesOrder extends BaseController
 
         $performa_invoice = $this->common_model->SingleRow('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
         
-        
+        $material_requisition = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_sales_order' => $this->request->getPost('ID')));
 
-        if((empty($delivery_note)) && (empty($cash_invoice)) && (empty($performa_invoice)))
+        if((empty($delivery_note)) && (empty($cash_invoice)) && (empty($performa_invoice)  && (empty($material_requisition)) ))
         {
             //change status in quotation and product table
            
@@ -701,20 +701,6 @@ class SalesOrder extends BaseController
             }
             
 
-            //pro-forma invoice
-            
-            /*$proforma_data = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
-
-            foreach($proforma_data as $proforma)
-            {
-                $cond2 = array('pp_proforma' => $proforma->pf_id);
-
-                $this->common_model->DeleteData('crm_proforma_product',$cond2);
-            }
-  
-            $this->common_model->DeleteData('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));*/
-              
-            //delete sales order
 
             $this->common_model->DeleteData('crm_sales_orders',$cond);
 

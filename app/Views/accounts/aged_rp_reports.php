@@ -100,9 +100,9 @@
 
                                                                                     <select class="form-control" name="filter_type" id="filter_type">
                                                                                         
-                                                                                        <option>Select</option>
+                                                                                        <option value="">Select Account</option>
 
-                                                                                        <!--<option value="Account">Account</option>-->
+                                                                                        <option value="Account">Account</option>
                                                                                        
                                                                                         <option value="Account_Head">Account Head</option>
 
@@ -196,9 +196,6 @@
 
 
 
-
-
-
                                                                             <tr>
 
 
@@ -211,41 +208,11 @@
                                                                             </tr>
 
 
-
-
-
-                                                                        
-
-
-                                                                            <tr>
-
-                                                                            <td>GL Account</td>
-
-                                                                            <td>
-
-                                                                            <select class="form-control" name="filter_account">
-
-                                                                            <option value="">Select Account</option>
-                                                                            
-                                                                            <?php foreach($accounts as $account){ ?>
-
-                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
-
-                                                                            <?php } ?>
-
-                                                                            </select>
-
-                                                                            </td>
-
-
-                                                                            </tr>
-
                                                                         
                                                                         </thead>
                                                                      
                                                                     
-                                                                    
-                                                                     </table>
+                                                                    </table>
 
 
 
@@ -298,7 +265,7 @@
                                                                 <div style="float: right;">
                                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                                         <tr>
-                                                                            <td><a href="<?= base_url(); ?>Accounts/Reports/StatementOfAccounts">Clear</a></td>
+                                                                            <td><a href="<?= base_url(); ?>Accounts/Reports/RPSummery">Clear</a></td>
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
@@ -341,7 +308,32 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Aged Recievables & Payables</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1 text-center">View Aged Recievables & Payables</h4>
+
+
+                                        <?php if(!empty($_GET)) { ?>
+
+                                        <form method="POST" action="" target="_blank">
+                                        <input type="hidden" name="pdf" value="1">
+                                        <button type="submit"  class="pdf_button report_button" >PDF</button>
+                                        </form>
+
+                                        <button id="btnExport" class="excel_button report_button">Excel</button>
+
+
+                                        <form method="POST" action="" target="_blank">
+                                            <input type="hidden" name="pdf" value="1">
+                                            <button class="print_button report_button" type="submit">Print</button>
+                                        </form>
+
+
+                                        <button id="email_button" class="email_button report_button">Email</button>
+
+
+                                        <?php } ?>
+
+
+
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
@@ -353,10 +345,10 @@
                                                     <th>Voucher Number</th>
                                                     <th>Date</th>
                                                     <th>Purchase Order</th>
-                                                    <th>Debit Amount</th>
-                                                    <th>Credit Amount</th>
-                                                    <th>PDC Allocation</th>
-                                                    <th>Cum Balance</th>
+                                                    <th class="text-end">Debit Amount</th>
+                                                    <th class="text-end">Credit Amount</th>
+                                                    <th class="text-end">PDC Allocation</th>
+                                                    <th class="text-end">Cumi Balance</th>
                                                 </tr>
 
                                             </thead>
@@ -380,75 +372,77 @@
 
                                             $total_debit=number_format(0,2);
 
+
                                             foreach($transactions as $trn){ ?>
 
-
-                                            <tr>
-
-                                            <td><?= $trn->reference; ?></td>
-
-                                            <td><?php echo date('d-m-Y',strtotime($trn->transaction_date)); ?></td>
-
-                                            <td></td>
-
-                                            <td align="right"> 
-
-                                            <?php if($trn->debit_amount !="") { 
-                                            echo  $trn->debit_amount;
-                                            $total_debit = $total_debit-$trn->debit_amount;
-                                            $c_balance = $c_balance - $trn->debit_amount;
-                                            } else {?>
+                                                <tr>
+    
+                                                <td><?= $trn->reference; ?></td>
+    
+                                                <td><?php echo date('d M Y',strtotime($trn->transaction_date)); ?></td>
+    
+                                                <td></td>
+    
+                                                <td align="right" class="text-end"> 
+    
+                                                <?php if($trn->debit_amount !="") { 
+                                                echo  format_currency($trn->debit_amount);
+                                                $total_debit = $total_debit-$trn->debit_amount;
+                                                $c_balance = $c_balance - $trn->debit_amount;
+                                                } else {?>
+                                                    ---
+                                                <?php } ?>
+                                            
+                                                </td>
+    
+                                                <td align="right">
+    
+                                                <?php if($trn->credit_amount !="") { 
+                                                echo  format_currency($trn->credit_amount); 
+                                                $total_credit=$total_credit+$trn->credit_amount;
+                                                $c_balance = $c_balance + $trn->credit_amount;
+                                                } else {?>
                                                 ---
-                                            <?php } ?>
-                                        
-                                            </td>
-
-                                            <td align="right">
-
-                                            <?php if($trn->credit_amount !="") { 
-                                            echo  $trn->credit_amount; 
-                                            $total_credit=$total_credit+$trn->credit_amount;
-                                            $c_balance = $c_balance + $trn->credit_amount;
-                                            } else {?>
-                                            ---
-                                            <?php } ?>
-
-                                            </td>
-
-                                            <td align="right">
-
-                                            <?php 
-                                            if($trn->cheque==1)
-                                            {
-
-                                                if($trn->credit_amount !="") { 
-                                                    echo  $trn->credit_amount; 
-                                                    $pdc_total = $pdc_total + $trn->credit_amount;
-                                                }
-                                                else if($trn->debit_amount !="")
+                                                <?php } ?>
+    
+                                                </td>
+    
+                                                <td align="right">
+    
+                                                <?php 
+                                                /*
+                                                if($trn->cheque==1)
                                                 {
-                                                    echo  $trn->debit_amount;
-                                                    $pdc_total = $pdc_total + $trn->debit_amount;
+    
+                                                    if($trn->credit_amount !="") { 
+                                                        echo  $trn->credit_amount; 
+                                                        $pdc_total = $pdc_total + $trn->credit_amount;
+                                                    }
+                                                    else if($trn->debit_amount !="")
+                                                    {
+                                                        echo  $trn->debit_amount;
+                                                        $pdc_total = $pdc_total + $trn->debit_amount;
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "---";
+                                                    }
+    
                                                 }
-                                                else
-                                                {
-                                                    echo "---";
-                                                }
-
-                                            }
-
-                                            ?>
-
-
-                                            </td>
-
-                                            <td><?= $c_balance; ?></td>
-
-                                            </tr>
-
-                                            <?php 
-
-                                            } ?>
+                                                */
+                                                ?>
+    
+    
+                                                </td>
+    
+                                                <td class="text-end"><?= format_currency($c_balance); ?></td>
+    
+                                                </tr>
+    
+                                                <?php 
+    
+                                                } ?>
+                                            
 
 
                                             </tbody>
@@ -461,10 +455,10 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td align="right"><b style="text-align:right"><?= $total_debit; ?></b></td>
-                                            <td align="right"><b style="text-align:right"><?= $total_credit; ?></b></td>
-                                            <td align="right"><b style="text-align:right"><?= $pdc_total; ?></b></td>
-                                            <td align="right"><b style="text-align:right"><?= $c_balance; ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($total_debit); ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($total_credit); ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($pdc_total); ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($c_balance); ?></b></td>
                                             </tr>
 
                                             </tfoot>
@@ -618,11 +612,11 @@
 
         if(val !="Range")
         {
-        $('.datepicker').attr('disabled',true);
+        //$('.datepicker').attr('disabled',true);
         }
         else
         {
-        $('.datepicker').attr('disabled',false);    
+        //$('.datepicker').attr('disabled',false);    
         }
 
         });
@@ -667,91 +661,7 @@
         })
         /**/
 
-        /*fetch  sales executive by  customer*/   
-
-        $("body").on('change', '.customer_clz', function(){ 
-
-
-            var id = $(this).val();
-
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotReport/FetchData",
-
-                method : "POST",
-
-                data:{ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-
-                    //console.log(data.prod_details);
-                    $('.executive_clz').html(data.quot_det);
-                    
-                    $('.product_clz').html(data.quot_prod);
-
-                }
-
-
-            });
-        });
-        
-        /*####*/
-
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_quot_report_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesQuotReport/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
-
-                            $("#SalesQuotReport").modal('hide');
-
-                            $('#sales_quot_report_form')[0].reset();
-
-                            $('.customer_clz').val('').trigger('change');
-
-                            $('.executive_clz').val('').trigger('change');
-
-                            $('.product_clz').val('').trigger('change');
-
-                            datatable.ajax.reload(null, false);
-
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-        /*####*/
-
+   
 
 
         $('#DataTable').DataTable( {
@@ -854,6 +764,7 @@ function fnExcelReport(table, fileName) {
     $("tbody > tr[data-level='0']").hide();
     return (sa);
 
+    }
 
 
 
@@ -862,6 +773,9 @@ function fnExcelReport(table, fileName) {
 
 
     });
+
+
+
 
 
 

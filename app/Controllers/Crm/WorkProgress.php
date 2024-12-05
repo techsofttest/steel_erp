@@ -140,51 +140,8 @@ class WorkProgress extends BaseController
             $from_date = "";
         }
 
-        if(!empty($_GET['to_date']))
-        {
-            $to_date = $_GET['to_date'];
-        }
-        else
-        {
-            $to_date = "";
-        }
-
-        if(!empty($_GET['customer']))
-        {
-            $data1 = $_GET['customer'];
-        }
-        else
-        {
-            $data1 = "";
-        }
-
-        if(!empty($_GET['sales_executive']))
-        {
-            $data2 = $_GET['sales_executive'];
-        }
-        else
-        {
-            $data2 = "";
-        }
-
-        if(!empty($_GET['product']))
-        {
-            $data3 = $_GET['product'];
-        }
-        else
-        {
-            $data3 = "";
-        }
+        $data['work_progress'] = $this->crm_modal->PurchaseVoucher($from_date,'	pv_date');  
         
-
-      
-
-        //$data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description','','','crm_quotation_details',$joins,'qd_reffer_no',$joins1,'qpd_quotation_details','crm_quotation_product_details');  
-        
-
-        $data['quotation_data'] = $this->crm_modal->sales_quot_analysis($from_date,'qd_date',$to_date,'',$data1,'qd_customer',$data2,'qd_sales_executive',$data3,'qpd_product_description');  
-        
-
 
         if(!empty($from_date))
         {
@@ -196,18 +153,11 @@ class WorkProgress extends BaseController
         } 
         
 
-        if(!empty($to_date))
-        {
-            $data['to_dates'] = date('d-M-Y',strtotime($to_date));
-        }
-        else
-        {
-            $data['to_dates'] = "";
-        }
+     
 
         if(!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print"))
         {
-            $this->Pdf($data['quotation_data'],$data['from_dates'],$data['to_dates']);
+            $this->Pdf($data['work_progress'],$data['from_dates']);
         }
 
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
@@ -228,123 +178,84 @@ class WorkProgress extends BaseController
 
 
 
-    public function Pdf($quotation_data,$from_date,$to_date)
+    public function Pdf($work_progress,$from_date)
     {   
        
-        if(!empty($quotation_data))
+        if(!empty($work_progress))
         {   
             $pdf_data = "";
-            
+            $total_amount = 0; 
 
-            $quot_prod_total = 0;
-            $sales_prod_total = 0;
-            $diff_total = 0;
-            $quot_diff_total = 0;
-            foreach($quotation_data as $quot_data){
+            foreach($work_progress as $work_prog){
 
-                $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
-            
-                $pdf_data .= "  <tr>
-                                    <td style='border-top: 2px solid'  class='text-center' width='40px'>{$new_date}</td>
-                                    <td style='border-top: 2px solid'  class='text-center' width='100px'>{$quot_data->qd_reffer_no}</td>
-                                    <td style='border-top: 2px solid' width='200px'>{$quot_data->cc_customer_name}</td>
-                                    <td style='border-top: 2px solid' width='103px'>{$quot_data->se_name}</td>
+                $hasData = false;
+                foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) {
+                    if (!empty($pur_vou_prod->purchase_sales_order)) {
+                        $hasData = true;
+                        break;
+                    }
+                }
 
-                
-                                    <td colspan='8'  class='p-0' style='border-top: 2px solid'>
-                                        <table>";
-                                               foreach ($quot_data->quotation_product as $quot_prod) {
-                                                    
-                                                    $quot_rate = format_currency($quot_prod->qpd_rate);
+                if (!$hasData) {
+                    // Skip this iteration if all purchase_sales_order are empty
+                    continue;
+                }
 
-                                                    $quot_amount = format_currency($quot_prod->qpd_amount);
+                $pdf_data .="<tr>
+                                <td  style='width:150px;border-top: 2px solid' align='center'>{$work_prog->pv_reffer_id}</td>
+                                <td  style='width:200px;border-top: 2px solid' align='center'>{$work_prog->ven_name}</td>
+                                <td  style='width:200px;border-top: 2px solid' align='center'>{$work_prog->pv_vendor_inv}</td>
+                                <td colspan='2'  class='p-0' style='border-top: 2px solid'>
+                                    <table>";
 
-                                                    $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                    <td class='rotate' width='300px'>{$quot_prod->product_details}</td>
-                                                                    <td class='rotate' width='80px' align='center'>{$quot_prod->qpd_quantity}</td>
-                                                                    <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
-                                                                    <td class='rotate '  width='80px' align='center'>{$quot_prod->qpd_discount}</td>
-                                                                    <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
+                                        foreach ($work_prog->purchase_voucher_prod as $pur_vou_prod) {
+                                            
+                                            $pur_vou_amount = format_currency($pur_vou_prod->pvp_amount);
+                                            
+                                            $total_amount  = $pur_vou_prod->pvp_amount + $total_amount;
 
-                                                                    $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
+                                            $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>";
 
-                                                                    $pdf_data .="<td colspan='3'  class='p-0'>
-                                                                    
-                                                                                <table>";
+                                            if (!empty($pur_vou_prod->purchase_sales_order)) {
 
-                                                                                if(!empty($quot_prod->sales_orders)){ 
-                                                                                    
-                                                                                    foreach ($quot_prod->sales_orders as $sal_ord) { 
-                                                                                        
-                                                                                        $sales_amount = format_currency($sal_ord->spd_amount);
+                                                foreach ($pur_vou_prod->purchase_sales_order as $pur_sales_ord) {
+                                                            
+                                                    $pdf_data .="<td  style='width:150px' align='center'>{$pur_sales_ord->so_reffer_no}</td>";
+                                                
+                                                }
+                                                
+                                                $pdf_data .="<td  style='width:100px;' align='right'>{$pur_vou_amount}</td>";
+                                            }
 
-                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                                                            
-                                                                                                        <td class='rotate' width='100px' align='center'>{$sal_ord->so_reffer_no}</td>
-                                                                                                        <td class='rotate' width='90px' align='right'>{$sales_amount}</td>";
+                                            $pdf_data .="</tr>";
+                                        }
+                                
 
-                                                                                                        $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount; 
-
-                                                                                                        $sales_prod_total = $sal_ord->spd_amount + $sales_prod_total;
-
-                                                                                                        $diff_total = $diff + $diff_total;
-
-                                                                                                        $diff = format_currency($diff);
-
-                                                                                                        $pdf_data .="<td class='rotate' width='90px' align='right'>{$diff}</td>";
-                                                                                                        
-                                                                                        
-                                                                                        $pdf_data .= "</tr>";
-
-                                                                                    } 
-                                                                                }else{
-
-                                                                                        $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
-
-                                                                                                          <td class='rotate' width='80px'></td>
-                                                                                                          <td class='rotate' width='90px'></td>
-                                                                                                          <td class='rotate' width='90px' align='right'>{$quot_prod->qpd_amount}</td>
-                                                                                        
-                                                                                        </tr>";
-
-                                                                                        $quot_diff_total  = $quot_prod->qpd_amount + $quot_diff_total; 
-
-
-                                                                                }
-
-                                                                                $final_diff_total = $diff_total + $quot_diff_total;
-
-
-                                                                    $pdf_data .="</table>
-
-                                                                                </td>
-                                                                                ";
-
-
-
-                                                    $pdf_data .=" </tr>"; 
-                                               }
-                                        $pdf_data .= "</table>
-                                        
+                                    $pdf_data .= "</table>
                                     
-                                    </td>";
+                                </td>";
 
+                                
+                                
+
+                $pdf_data .="</tr>";
+                            
             
-                                $pdf_data .= "</tr>";
+                
             }
 
 
 
 
             
-            if(empty($from_date) && empty($to_dat))
+            if(empty($from_date)  )
             {
              
                $dates = "";
             }
             else
             {
-               $dates = $from_date . " to " . $to_date;
+               $dates = $from_date;
             }
 
             $title = "SQR";
@@ -386,7 +297,7 @@ class WorkProgress extends BaseController
 
             
 
-            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
+            $mpdf->SetTitle('Work In Progress'); // Set the title
 
             //$sales_amount = format_currency($sales_amount);
             
@@ -448,7 +359,7 @@ class WorkProgress extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Quotation Report</h3></td>
+            <td align="right"><h3>Work In Progress</h3></td>
         
             </tr>
         
@@ -461,55 +372,17 @@ class WorkProgress extends BaseController
         
             <tr>
             
-            <th align="center" width="40px" style="border-top: 2px solid">Date</th>
+            <th align="center" width="150px" style="border-top: 2px solid">Purchase Voucher</th>
         
-            <th align="center" width="100px" style="border-top: 2px solid">Quotation Ref.</th>
+            <th align="center" width="200px" style="border-top: 2px solid">Vendor</th>
         
-            <th align="center" width="200px" style="border-top: 2px solid">Customer</th>
+            <th align="center" width="200px" style="border-top: 2px solid">Vendor Invoice Reff</th>
         
-            <th align="center" width="103px" style="border-top: 2px solid">Sales Executive</th>
+            <th align="center" width="150px" style="border-top: 2px solid">Sales Order Reff</th>
 
-            <th colspan="8"  class="p-0" style="border-top: 2px solid">
+            <th align="center" width="100px" style="border-top: 2px solid">Amount</th>
 
-                <table>
-                    
-                    <tr>
-
-                        <th align="center"  width="300px">Product</th>
-
-                        <th align="center" width="80px">Quantity</th>
-
-                        <th align="center" width="80px">Rate</th>
-
-                        <th align="center" width="80px">Discount</th>
-
-                        <th align="center" width="100px">Amount</th>
-
-                        <th colspan="3"  class="p-0">
-                            
-                            <table>
-
-                                <tr>
-
-                                   <th align="center" width="100px">Sales Order</th>
-
-                                <th align="center" width="90px">Amount</th>
-
-                                <th align="center" width="80px">Difference</th>
-            
-                                
-                                </tr>
-                            
-                            </table>
-
-                        </th>
-                    
-                    </tr>
-                
-                </table>
-            
-            </th>
-        
+           
             
 
             
@@ -522,38 +395,24 @@ class WorkProgress extends BaseController
 
             <tr>
 
-                <td style="border-top: 2px solid;" width="40px">Total</td>
-                <td style="border-top: 2px solid;" width="100px"></td>
+                <td style="border-top: 2px solid;" width="150px">Total</td>
                 <td style="border-top: 2px solid;" width="200px"></td>
-                <td style="border-top: 2px solid;" width="103px"></td>
-                <td colspan="8"  class="p-0" style="border-top: 2px solid">
+                <td style="border-top: 2px solid;" width="200px"></td>
+                <td colspan="2"  class="p-0" style="border-top: 2px solid">
                     <table>
+                      
                        <tr style="background: unset;border-bottom: hidden !important;">
-
-                            <td  width="300px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px" ></td>
-                            <td  width="100px" align="right"><b>'.$quot_prod_total.'</b></td>
-
-                            <td colspan="3"  class="p-0">
-                                <table>
-                                    <tr style="background: unset;border-bottom: hidden !important;">
-
-                                        <td  width="100px" ></td>
-                                        <td  width="90px" align="right"><b>'.$sales_prod_total.'</b></td>
-                                        <td  width="80px" align="right"><b>'.$final_diff_total.'</b></td>
-                                    
-                                    </tr>
-                                
-                                </table>
-                            
-                            </td>
-                       
-                       </tr>
+                            <td style="" width="150px"></td>
+                            <td style="" align="right" width="100px">'.format_currency($total_amount).'</td>
+                    
+                        </tr>
                     
                     </table>
+                    
                 </td>
+                
+               
+                
             
             </tr>
             
@@ -562,7 +421,7 @@ class WorkProgress extends BaseController
 
         
             ';
-           // echo $html; exit();
+           //echo $html; exit();
         
             $mpdf->WriteHTML($html);
 
