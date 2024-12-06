@@ -13,7 +13,6 @@
 
 
 
-
     <style>
 
 
@@ -140,7 +139,7 @@
                                             <div class="col-4">
 
 
-                                            <select class="form-control" name="ac_month" id="months">
+                                            <select class="form-control" name="ap_month" id="months" required>
                                                 <option value="">Select a month</option>
                                                 <?php
                                                 $months = [
@@ -151,12 +150,11 @@
                                                 
                                                 foreach ($months as $index => $month) {
                                                     
-                                                    if(empty($_GET['ac_month']) && $month==date('F')) 
-                                                    { 
-                                                    $sel ="selected"; 
-                                                    }
-                                                    else if(!empty($_GET['ac_month']) && $_GET['ac_month']==$index+1)
+                                                    if($index>=$this->data['accounting_month']-1)
                                                     {
+
+                                                    if($index == $this->data['accounting_month']-1) 
+                                                    { 
                                                     $sel ="selected"; 
                                                     }
                                                     else{ 
@@ -164,6 +162,7 @@
                                                     }
 
                                                     echo '<option value="' . ($index + 1) . '" '.$sel.'>' . $month . '</option>';
+                                                    }
                                                 
                                                 }
                                                 ?>

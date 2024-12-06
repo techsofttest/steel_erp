@@ -81,7 +81,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" name="r_date" value="" class="form-control datepicker" required readonly>
+                                                        <input type="text" name="r_date" value="" class="form-control datepicker_ap" required readonly>
 
                                                     </div>
 
@@ -817,7 +817,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="r_date_edit" name="r_date" value="<?= date('d-F-Y'); ?>" class="form-control datepicker" required readonly>
+                                                        <input type="text" id="r_date_edit" name="r_date" value="<?= date('d-F-Y'); ?>" class="form-control datepicker_ap" required readonly>
 
                                                     </div>
 

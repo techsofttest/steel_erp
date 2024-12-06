@@ -185,7 +185,6 @@
 
         });*/
 
-
         $(document).ready(function(){
             $('.datepicker').datepicker({
                 dateFormat: "dd-MM-yy" // Specify the date format as "dd-MM-yy"
@@ -197,6 +196,38 @@
             $(this).datepicker({ dateFormat: "dd-MM-yy" });
             $(this).attr("autocomplete", "off");
             })
+        });
+
+
+        
+        
+        /* Restrictd Datepicker */
+
+        $(document).ready(function(){
+            $('.datepicker_ap').datepicker({
+                dateFormat: "dd-MM-yy", 
+                minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
+            }).on('change', function() {
+                    $(this).valid();  
+                });
+            $('body').on('focus',".datepicker_ap", function(){
+            $(this).datepicker({ dateFormat: "dd-MM-yy" });
+            $(this).attr("autocomplete", "off");
+            })
+        });
+
+
+        /* #### */
+
+
+
+        $("#departure-date, #return-date").datepicker({
+
+            beforeShow: function (input, instance) {
+             
+                $(instance.dpDiv).addClass("my-datepicker");
+            },
+          
         });
 
 
@@ -496,12 +527,13 @@
         */
 
 
-
+        /*
         $(document).ready(function() {
         $.datepicker.setDefaults({
             minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
         });
         });
+        */
 
 
 

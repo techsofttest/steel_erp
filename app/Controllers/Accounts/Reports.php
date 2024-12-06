@@ -2623,18 +2623,6 @@ EOD;
 
         }
 
-        if(!empty($dummy_code))
-        {
-
-        $dummy_code ="HTML";
-
-        $dummy_ser = "Dummy value";
-
-        $dummy_z = "S$sdwe";
-
-        }
-
-
         //Fetch Balance Sheets
 
         $data['account_heads'] = $this->report_model->BalanceSheet($time_frame,$start_date,$end_date);

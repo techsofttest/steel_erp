@@ -61,7 +61,7 @@
                                     </div>
                                         
                                 <div class="col-col-md-9 col-lg-9">
-                                        <input type="text"  name="pcv_date" class="form-control datepicker" required readonly>
+                                        <input type="text"  name="pcv_date" class="form-control datepicker_ap" required readonly>
                                     </div>
                                 </div>
 

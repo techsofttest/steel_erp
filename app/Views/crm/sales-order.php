@@ -105,7 +105,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker input_length" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker_ap input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -509,7 +509,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker edit_date" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker_ap edit_date" required>
                                                                     </div>
 
                                                                 </div> 

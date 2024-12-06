@@ -78,7 +78,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker" value="<?= date('d-F-Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
 
                             </div>
 
@@ -128,7 +128,7 @@
                                         </th>
 
 
-                                        <th class="select2_parent"> 
+                                        <th class="select2_parent" width="35%"> 
                                             
                                         <select name="jv_account[]" class="form-control account_select2" required>
 
@@ -491,7 +491,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text" id="jv_date_edit"  name="jv_date" class="form-control datepicker" value="" required>
+                            <input type="text" id="jv_date_edit"  name="jv_date" class="form-control datepicker_ap" value="" required>
 
                             </div>
 

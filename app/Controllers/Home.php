@@ -44,7 +44,7 @@ class Home extends BaseController
 
         $new_year = $this->request->getGet('ac_year');
 
-        $new_month = $this->request->getGet('ac_month');
+        $new_month = $this->request->getGet('ap_month');
 
         //Check if year is less
         $current_period = $this->ap_model->CheckCurrentPeriod();

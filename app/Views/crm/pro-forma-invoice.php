@@ -78,7 +78,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker_ap" required>
                                                                     </div>
 
                                                                 </div> 
@@ -843,7 +843,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control edit_date datepicker" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control edit_date datepicker_ap" required>
                                                                     </div>
 
                                                                 </div> 
