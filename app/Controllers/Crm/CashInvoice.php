@@ -294,6 +294,8 @@ class CashInvoice extends BaseController
 
                     'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
 
+                    'ci_paid_amount'  => $this->request->getPost('ci_advance_amount'),
+
                 ];
 
                 if (isset($_FILES['ci_file']) && $_FILES['ci_file']['name'] !== '') {
@@ -855,7 +857,7 @@ class CashInvoice extends BaseController
 
         public function FetchSalesData()
         {
-            $cond = array('so_id' => $this->request->getPost('ID'));
+            $cond = array('so_id' => $sales_id = $this->request->getPost('ID'));
 
             $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
 
@@ -863,9 +865,11 @@ class CashInvoice extends BaseController
 
             $sales_order_details = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
 
-
             //$total_amount =  $this->common_model->FetchSum('crm_sales_product_details','spd_amount',$cond1);
 
+            $data['sales_order_advance'] = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',array('rso_sales_order' => $sales_id));
+
+            //$data['sales_order_advance'] = format_currency(1000);
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 

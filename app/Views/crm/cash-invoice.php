@@ -352,6 +352,12 @@
                                                                 <td><input type="text" name="ci_total_amount" class="amount_total form-control" readonly></td>
                                                             </tr>
 
+                                                            <tr>
+                                                                <td colspan="5"></td>
+                                                                <td>Advance Paid</td>
+                                                                <td><input type="text" name="ci_advance_amount" class="amount_advance form-control" readonly></td>
+                                                            </tr>
+
                                                         </tbody>
                                                         
                                                     </table>
@@ -1606,6 +1612,8 @@
                     $(".project_clz").val(data.so_project);
 
                     $(".cont_person").html(data.contact_detail);
+
+                    $('.amount_advance').val(data.sales_order_advance);
 
                     $(".contactProduct3").html(data.select_table);
 
