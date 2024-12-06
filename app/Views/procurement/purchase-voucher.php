@@ -128,7 +128,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_date" class="form-control mr_date datepicker input_length voucher_date" required>
+                                                                        <input type="text" name="purchase_date" class="form-control mr_date datepicker_ap input_length voucher_date" required>
                                                                     </div>
 
                                                                 </div> 
@@ -798,7 +798,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pv_date" class="form-control edit_date mr_date datepicker" >
+                                                                        <input type="text" name="pv_date" class="form-control edit_date mr_date datepicker_ap" >
                                                                     </div>
 
                                                                 </div>

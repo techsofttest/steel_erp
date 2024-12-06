@@ -1103,7 +1103,7 @@
 
 
 
-                                                <div class="row align-items-center mb-2" id="bank_sec_edit">
+                                                <div class="row align-items-center mb-2 bank_sec_edit" id="bank_sec_edit">
 
 
                                                     <div class="col-col-md-3 col-lg-3">
@@ -1218,8 +1218,8 @@
 
                                             <div class="col-lg-12">
 
-                                            <div style="">
-                                                    <button class="submit_btn" type="submit">Update</button>
+                                            <div style="" class="text-center">
+                                                    <button class=" btn btn-success" type="submit">Update</button>
                                             </div>
 
                                             </div>
@@ -1536,13 +1536,15 @@
 
                         $('#EditModal .bank_sec_edit').addClass("d-none");
 
-                        $('#r_bank_edit').removeAttr("required");
+                        $('#p_bank_edit').val("");
+
+                        $('#p_bank_edit').removeAttr("required");
 
                         } else {
 
                         $('#EditModal .bank_sec_edit').removeClass("d-none");
 
-                        $('#r_bank_edit').attr("required", true);
+                        $('#p_bank_edit').attr("required", true);
 
                         }
 
@@ -1576,6 +1578,57 @@
 
         });
         /*####*/
+
+
+
+        //Change Receipt Method 
+
+        $("body").on('change', '#p_method_edit', function() {
+
+        var method = $(this).val();
+
+        if (method == 2) {
+
+            $('#EditModal .bank_sec_edit').addClass("d-none");
+
+            $('#p_bank_edit').removeAttr("required");
+
+        } else {
+
+            $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+            $('#p_bank_edit').attr("required", true);
+
+        }
+
+
+        if (method == "1") {
+
+            $('.cheque_sec').removeClass("d-none");
+
+            $('.cheque_file_sec').removeClass("d-none");
+
+            $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
+
+            $('.r_cheque_edit').attr("required", true);
+
+        } else {
+
+            $('.cheque_sec').addClass("d-none");
+
+            $('.cheque_file_sec').addClass("d-none");
+
+            $('.r_cheque_edit').removeAttr("required");
+
+        }
+
+
+
+
+        });
+
+        //###
+
 
 
 
