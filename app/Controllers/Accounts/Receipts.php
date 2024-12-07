@@ -1533,7 +1533,6 @@ class Receipts extends BaseController
 
                 $this->common_model->EditData($update_credit_invoice_data,$credit_invoice_cond,'crm_credit_invoice');
 
-
                 }
 
 

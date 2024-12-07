@@ -1160,59 +1160,6 @@
 
 
 
-                                                    <tbody>
-
-
-                                                        <tr class="edit_add_debit invoice_row">
-
-
-                                                            <td>
-
-                                                                <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
-
-                                                                    <option value="">Select Debit Account</option>
-
-                                                                </select>
-
-                                                            </td>
-
-
-                                                            <td>
-
-                                                                <input class="form-control debit_amount" type="number" name="inv_amount[]">
-
-                                                            </td>
-
-
-                                                            <td>
-
-                                                                <input class="form-control debit_narration" type="text" name="narration[]" />
-
-                                                            </td>
-
-
-
-                                                            <th> <a href="javascript:void(0);" class="btn btn-success edit_invoice_add">Add</a></th>
-
-
-                                                        </tr>
-
-
-
-                                                    </tbody>
-                                        
-                                
-                                        <tr>
-                                                <td colspan="1"></td>
-
-                                                <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
-
-                                                <td align="right" colspan="3">Total</td>
-
-                                                <th id="total_amount_edit">0</th>
-                                        </tr>
-
-
                                                 </table>
 
 
@@ -2237,6 +2184,16 @@
                     contentType: false,
 
                     success: function(data) {
+
+                        var data = JSON.parse(data);
+
+                        if (data.status == 0) {
+
+                            alertify.error(data.msg).delay(3).dismissOthers();
+
+                            return false;
+
+                        }
 
                         $('#EditModal').modal('hide');
 

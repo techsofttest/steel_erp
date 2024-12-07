@@ -261,9 +261,7 @@ class Payments extends BaseController
 
         $debits = $this->common_model->FetchWhereJoin('accounts_payment_debit', $debit_cond, $debit_joins);
 
-
         $data['invoices'] = "";
-
 
         $inv_ser=0;
 
@@ -280,6 +278,36 @@ class Payments extends BaseController
         <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
         <td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>
         </tr>";
+
+        $debit_data_join = array(
+           
+            array(
+            'table' => 'pro_purchase_voucher',
+            'pk' => 'pv_id', 
+            'fk' => 'pdi_invoice',
+            ),
+ 
+        );
+
+        $debit_linked = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices',array('pdi_debit_id'=>$invoice->pd_id),$debit_data_join);
+
+
+
+        foreach($debit_linked as $dl)
+        {
+
+            $data['invoices'] .="<tr>
+            <input type='hidden' name='linked_pv_id[$invoice->pd_id][]' value='".$dl->pv_id."'>
+            <td></td>
+            <td></td>
+            <td>{$dl->pdi_lpo_ref}</td>
+            <td><input name='linked_pv_paid[$invoice->pd_id][]' type='text' value='".$dl->pdi_payment_amount."' class='form-control'></td>
+            <td></td>
+            </tr>";
+
+        }
+
+
 
         }
 
@@ -420,6 +448,52 @@ class Payments extends BaseController
 
 
         $this->common_model->EditData($update_data, $cond, 'accounts_payments');
+
+
+        for($p=0;$p<(count($this->request->getPost('pd_id')));$p++)
+        {
+
+        $update_invoice_data['pd_payment_amount'] = $this->request->getPost('pay_inv_amount')[$p];
+
+        $update_invoice_cond['pd_id'] = $this->request->getPost('pd_id')[$p];
+
+        $total_linked_invoice=array_sum($this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']]);
+
+
+        if($total_linked_invoice!=$update_invoice_data['pd_payment_amount'])
+        {
+
+            $return['status'] = 0;
+
+            $return['msg'] ="Total amount should be adjusted!";
+    
+            echo json_encode($return);
+    
+            exit;  
+
+        }
+
+
+        for($l=0;$l<(count($this->request->getPost('linked_pv_id')[$update_invoice_cond['pd_id']]));$l++)
+        {
+
+        $update_linked_cond = array('pdi_id' => $this->request->getPost('linked_pv_id')[$update_invoice_cond['pd_id']][$l]);
+
+        $update_linked_amount = array('pdi_payment_amount' => $this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']][$l]);
+
+        $this->common_model->EditData($update_linked_amount,$update_linked_cond,'accounts_payment_debit_invoices');
+
+        }
+
+        $this->common_model->EditData($update_invoice_data,$update_invoice_cond,'accounts_payment_debit');
+
+        }
+
+        $return['status'] =1;
+
+        echo json_encode($return);
+
+
     }
 
 
@@ -1378,7 +1452,7 @@ class Payments extends BaseController
 
                 $insert_data['pdi_debit_id'] = $this->request->getPost('pay_debit_id')[$i];
 
-                $insert_data['pdi_invoice'] = $this->request->getPost('debit_account_invoice')[$i];
+                $insert_data['pdi_invoice'] = $this->request->getPost('p_v_id')[$i];
 
                 $insert_data['pdi_lpo_ref'] = $this->request->getPost('inv_lpo_ref')[$i];
 
