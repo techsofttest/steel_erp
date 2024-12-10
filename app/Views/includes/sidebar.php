@@ -54,44 +54,71 @@
                                 </a>
                                 
                             </li> <!-- end Dashboard Menu -->
+                            
+                            
+                            <?php
+                               
+                                $permissionsArray = array_map(function($permission) {
+                                    return $permission->per_module;
+                                }, $this->data['permissions']);
+                                
+                                if(in_array('accounts', $permissionsArray)){ ?> 
+                                
+                                    <li class="nav-item">
+
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Accounts") {echo "active" ;} ?>" href="<?= base_url() ?>Accounts/AccountHead">
+                                            <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
+                                        </a>
+
+                                    </li>
+                                
+                                <?php } 
+
+
+                                if (in_array('crm', $permissionsArray)) { ?> 
+
+                                    <li class="nav-item">
+                                    
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
+                                            <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
+                                        </a>
                         
-                        
-                    
+                                    </li>
 
-                            <li class="nav-item">
+
+                                <?php }  
                                 
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Accounts") {echo "active" ;} ?>" href="<?= base_url() ?>Accounts/AccountHead">
-                                    <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
-                                </a>
+                                
+
+                                if(in_array('procurement', $permissionsArray)){ ?> 
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
+                                            <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
+                                        </a>
+
+                                    </li>
+
+                                <?php } 
+
+                                if(in_array('hr', $permissionsArray)){ ?> 
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
+                                            <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
+                                        </a>
+
+                                    </li>
+
+                                
+                                <?php }
+                                
+                                ?>
+
+                                
                             
-                            </li>
-
-
-                            <li class="nav-item">
-                                
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
-                                    <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
-                                </a>
-                            
-                            </li>
-
-
-                            <li class="nav-item">
-                                
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
-                                    <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
-                                </a>
-                                
-                            </li>
-
-
-                            <li class="nav-item">
-                                
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
-                                    <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
-                                </a>
-                            
-                            </li>
 
 						
 						    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-components">Pages</span></li>

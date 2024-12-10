@@ -616,16 +616,18 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
-        $cash_invoices = $this->common_model->FetchSalesReturns('crm_cash_invoice',$cond,array('ci_paid_status'=>0),array('ci_status'=>0));
+        $cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
 
-        $credit_invoices = $this->common_model->FetchSalesReturns('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
+        
+        $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
         
         
         $data['invoice_no'] ='<option value="" selected disabled>Select Unpaid Invoices</option>';
 
 
         foreach($cash_invoices as $cash_invoice)
-        {
+        {   
+            
             $data['invoice_no'] .='<option value='.$cash_invoice->ci_reffer_no.'';
            
             $data['invoice_no'] .='>' .$cash_invoice->ci_reffer_no. '</option>'; 

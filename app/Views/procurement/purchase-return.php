@@ -2176,11 +2176,7 @@
                         alertify.error('Data Delete Successfully').delay(3).dismissOthers();
                         datatable.ajax.reload(null,false);
                     });
-                    
-                   
-
-                    
-                        
+                     
 
                 }
 

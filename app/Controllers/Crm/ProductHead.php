@@ -49,11 +49,14 @@ class ProductHead extends BaseController
     
         $data = array();
 
+
         $i=1;
+        
         foreach($records as $record ){
+
             $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ph_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ph_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-           $data[] = array( 
+            $data[] = array( 
               "ph_id"=>$i,
               'ph_code' => $record->ph_code,
               'ph_product_head' => $record->ph_product_head,

@@ -70,7 +70,6 @@ abstract class BaseController extends Controller
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
-
         // Preload any models, libraries, etc, here.
 
         $this->account_model = new \App\Models\AccountsModel();
@@ -79,7 +78,7 @@ abstract class BaseController extends Controller
 
         $this->common_model = new \App\Models\CommonModel();
 
-        $this->crm_modal = new \App\Models\CrmReportModel();
+        $this->crm_modal  = new \App\Models\CrmReportModel();
 
         $this->pro_model = new \App\Models\ProcurementModel();
 
@@ -95,8 +94,39 @@ abstract class BaseController extends Controller
 
         $this->data['accounting_month'] = $this->ap_model->CheckCurrentPeriod()->ap_month; 
 
-         // Share the data globally
-         \Config\Services::renderer()->setData($this->data);
+        $adminId = session('admin_id'); // Retrieves 'admin_name' from the session
+
+        // Fetch the  data and make it available to all views
+
+        $joins = array(
+            array(
+                'table' => 'steel_permission',
+                'pk'    => 'per_id ',
+                'fk'    => 'up_permission',
+            ),
+
+        );
+
+        
+        $this->data['permissions'] = $this->common_model->FetchWhereJoin('user_permission',array('up_user_id' => $adminId),$joins); 
+
+      
+
+        /*$joins1 = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'dpd_prod_det',
+            ),
+
+        );
+
+
+       $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond1,$joins1);*/
+
+       
+        // Share the data globally
+        \Config\Services::renderer()->setData($this->data);
         
 
     }

@@ -2833,7 +2833,7 @@
             cc++;    
 
                 $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-                InitSelect2();
+                InitCostSelect();
             }
         });
 
@@ -2882,7 +2882,8 @@
             $(".cost_product_det:last").select2({
                 placeholder: "Select Product",
                 theme : "default form-control-",
-                dropdownParent: $('#CostCalculation'),
+                //dropdownParent: $('#CostCalculation'),
+                dropdownParent: $($('.cost_product_det:last').closest('.cost_cal_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
                     dataType: 'json',
@@ -2912,6 +2913,12 @@
         }
 
         InitCostSelect();
+
+
+
+
+
+      
 
         /*####*/
 
@@ -3163,6 +3170,21 @@
                     };
                 },
                 processResults: function(data, params) {
+
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.cc_id,
+                                text: item.cc_customer_name
+                            }
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+                /*processResults: function(data, params) {
                     var page = params.page || 1;
                     return {
                         results: $.map(data.result, function (item) {return {id: item.cc_id, text: item.cc_customer_name}}),
@@ -3171,10 +3193,13 @@
                             more: (page * 10) <= data.total_count
                         }
                     };
-                },              
+                },*/              
             }
         })
         /**/
+
+
+        
  
 
 
@@ -4558,27 +4583,7 @@
       /*total amount calculation section start*/
 
 
-      function Percentage()
-        {
-           
-           var cost_total = parseFloat($('.total_cost_cal').val());
-
-           var quotation_total = parseFloat($('.amount_total').val());
-
-           if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
-           {
-                var result = cost_total / quotation_total;
-
-                var percentage = result * 100
-
-                var percent =  percentage.toFixed(2)
-
-                $('.total_percent').val(percent);
-
-              
-
-            }
-        }
+      
 
 
 
@@ -4615,7 +4620,7 @@
 
         function totalCalcutate()
         {
-
+           
             var total = 0; 
             
             $('body .cost_amount_clz').each(function()
@@ -4632,14 +4637,44 @@
 
             $('.total_cost_cal').val(total);
             
-            var result = numberToWords.toWords(total);
+           // var result = numberToWords.toWords(total);
 
+           
             //$(".cost_cal_amount_in_words").text(result);
 
            // $(".cost_cal_amount_in_words_val").val(result);
 
+           
+
+
             Percentage()
          
+        }
+
+
+        function Percentage()
+        {
+           
+            
+           var cost_total = parseFloat($('.total_cost_cal').val());
+
+           var quotation_total = parseFloat($('.amount_total').val());
+
+           if ( (!isNaN(cost_total)) && (!isNaN(quotation_total)) && (quotation_total !== 0)) 
+           {
+                var result = cost_total / quotation_total;
+
+                var percentage = result * 100
+
+                var percent =  percentage.toFixed(2)
+
+                console.log(percent);
+
+                $('.total_percent').val(percent);
+
+              
+
+            }
         }
 
         
@@ -4679,7 +4714,10 @@ $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
 
 
 $(document).ajaxError(function() {
-    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+    if(!isSelect2Request)
+    {   
+        alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
+    }
 });
 
 

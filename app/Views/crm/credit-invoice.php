@@ -150,12 +150,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <select class="form-select input_length" name="ci_credit_account" id="" required>
-                                                                            <option value="" selected disabled>Select Credit Account</option>
-                                                                            <?php foreach($charts_of_accounts as $chart_account){?> 
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
-                                                                            <?php } ?>
-                                                                        </select>
+                                                                        <select class="form-select input_length credit_select" name="ci_credit_account" id="" required></select>
                                                                         
                                                                     </div>
 
@@ -2031,6 +2026,50 @@
         /**/
 
 
+
+
+
+        /*credit account droup drown search*/
+        $(".credit_select").select2({
+            placeholder: "Select Credit Account",
+            theme : "default form-control-",
+            dropdownParent: $('#CreditInvoice'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/CreditInvoice/CreditAccount",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /*###*/
+
+
+
+       
+
+
         /*add selected product*/
 
 
@@ -2607,7 +2646,10 @@ $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
 
 
 $(document).ajaxError(function() {
-    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+    if(!isSelect2Request)
+    {   
+        alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
+    }
 });
 
 

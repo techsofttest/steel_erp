@@ -148,17 +148,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <select class="form-select input_length" name="ci_credit_account" id="" required>
-                                                                        
-                                                                            <option value="" selected disabled>Select Credit Account</option>
-
-                                                                            <?php foreach($charts_of_accounts as $chart_account){?> 
-
-                                                                                <option value="<?php echo $chart_account->ca_id; ?>"><?php echo $chart_account->ca_name;?></option>
-
-                                                                            <?php } ?>
-
-                                                                        </select>
+                                                                        <select class="form-select input_length credit_select" name="ci_credit_account" id="" required></select>
                                                                         
                                                                     </div>
 
@@ -1675,6 +1665,44 @@
 
 
 
+        /*customer droup drown search*/
+        $(".credit_select").select2({
+            placeholder: "Select Credit Account",
+            theme : "default form-control-",
+            dropdownParent: $('#CashInvoice'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/CashInvoice/CreditAccount",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        /*###*/
+
+
+
 
 
 
@@ -2639,44 +2667,47 @@
 
     document.addEventListener("DOMContentLoaded", function(event) {
 
-function isDataTableRequest(ajaxSettings) {
-    // Check for DataTables-specific URL or any other pattern
-    return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
-}
+        function isDataTableRequest(ajaxSettings) {
+            // Check for DataTables-specific URL or any other pattern
+            return ajaxSettings.url && ajaxSettings.url.includes('/FetchData');
+        }
 
-function isSelect2Request(ajaxSettings) {
-    // Check for specific data or parameters in Select2 requests
-    return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
-}
-
-
-function isSelect2Search(ajaxSettings) {
-    // Check for specific data or parameters in Select2 requests
-    return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
-}
+        function isSelect2Request(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('term='); // Adjust based on actual request data
+        }
 
 
-$(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
-    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
-        $("#overlay").fadeIn(300);
-    }
-});
+        function isSelect2Search(ajaxSettings) {
+            // Check for specific data or parameters in Select2 requests
+            return ajaxSettings.url && ajaxSettings.url.includes('page='); // Adjust based on actual request data
+        }
 
 
-$(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
-    if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
-        $("#overlay").fadeOut(300);
-    }
-});
+        $(document).ajaxSend(function(event, jqXHR, ajaxSettings) {
+            if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                $("#overlay").fadeIn(300);
+            }
+        });
+
+
+        $(document).ajaxComplete(function(event, jqXHR, ajaxSettings) {
+            if ((!isDataTableRequest(ajaxSettings)) && (!isSelect2Request(ajaxSettings)) && (!isSelect2Search(ajaxSettings))) {
+                $("#overlay").fadeOut(300);
+            }
+        });
 
 
 
-$(document).ajaxError(function() {
-    alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
-});
+        $(document).ajaxError(function() {
+            if(!isSelect2Request)
+            {   
+                alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
+            }
+        });
 
 
-});
+    });
 
 
 

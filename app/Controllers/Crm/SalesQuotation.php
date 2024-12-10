@@ -1858,7 +1858,7 @@ class SalesQuotation extends BaseController
 
             $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',array('qd_id'=>$id),$join);
 
-           
+            $amount_in_words =currency_to_words($quotation_details->qd_sales_amount); // outputs "fifty dollars ninety nine cents"
 
             $date = date('d-M-Y',strtotime($quotation_details->qd_date));
 
@@ -2045,7 +2045,7 @@ class SalesQuotation extends BaseController
     
                     <td>Amount in words</td>
                 
-                    <td>'.$quotation_details->qd_sales_quot_amount_in_words.'</td>
+                    <td>'.$amount_in_words.'</td>
         
                     <td style="font-weight: bold;">Net Quote Value</td>
         

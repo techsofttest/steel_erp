@@ -873,7 +873,10 @@
 
 
         $(document).ajaxError(function() {
-            alertify.error('Something went wrong. Please try again later').delay(5).dismissOthers();
+            if(!isSelect2Request)
+            {   
+                alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
+            }
         });
 
 

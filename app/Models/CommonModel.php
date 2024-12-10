@@ -1404,6 +1404,81 @@ class CommonModel extends Model
         ->get();
 
         return $query->getResult();
+
+    }
+
+
+    public function FetchSalesReturns1($table,$cond,$cond2){
+       
+        $query = $this->db->table($table)
+
+        ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+
+        ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
+
+        ->where($cond)
+
+        ->where($cond2)
+        
+        ->groupStart() // Start grouping conditions
+
+            ->where('ci_paid_status', 0) // Condition for ci_paid_status = 0
+
+            ->orGroupStart() // Nested group for ci_paid_status = 1
+            
+                ->where('ci_paid_status', 1)
+
+                ->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+
+            ->groupEnd() // End nested group
+
+        ->groupEnd() // End outer group
+        
+
+        ->get();
+
+        //echo $this->db->getLastQuery(); exit();
+
+    return $query->getResult();
+
+    }
+
+
+    public function FetchSalesReturns2($table,$cond,$cond2){
+
+
+        $query = $this->db->table($table)
+
+        ->select('cci_id, cci_reffer_no, cci_customer, cci_paid_status, cci_status, (cci_total_amount - cci_paid_amount) AS price_difference')
+
+        ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.cci_sales_order')
+
+        ->where($cond)
+
+        ->where($cond2)
+        
+        ->groupStart() // Start grouping conditions
+
+            ->where('cci_paid_status', 0) // Condition for ci_paid_status = 0
+
+            ->orGroupStart() // Nested group for ci_paid_status = 1
+            
+                ->where('cci_paid_status', 1)
+
+                ->where('(cci_total_amount - cci_paid_amount) > crm_sales_orders.so_amount_total')
+
+            ->groupEnd() // End nested group
+
+        ->groupEnd() // End outer group
+        
+
+        ->get();
+
+        //echo $this->db->getLastQuery(); exit();
+
+        return $query->getResult();
+
+
     }
 
     /**/
