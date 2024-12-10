@@ -330,11 +330,8 @@
 
                     <div class="row align-items-center mb-2" id="add_ah_parent">
 
-                    <div class="col-col-md-3 col-lg-3">
-                        <label for="basicInput" class="form-label">Month</label>
-                    </div>
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-6 col-lg-6">
                        
                     <select class="form-select " name="month"  required>
                     
@@ -347,7 +344,7 @@
                     </div>
 
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-6 col-lg-6">
                        
                     <select class="form-select " name="year"  required>
 
@@ -369,28 +366,15 @@
                     
 
                     </div> <!-- Section 1 end -->
+                        
 
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-12 text-center">
 
 
-                        </div>
-
-
-                        <div class="col-lg-6">
-
-
-                        <div style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                    
-                                                        <tr>
-                                                            <td><button class="submit_btn" type="submit">Record</button></td>
-                                                    
-                                                        </tr>
-                                                        
-                                                    </table>
-                        </div>
-
+                        
+                            <button class="submit_btn btn btn-success" type="submit">Record</button></td>
+                               
 
                         </div>
 
@@ -426,25 +410,25 @@
 
                         <th>Name</th>
 
-                        <th>Division</th>
+                        <th class="">Division</th>
 
-                        <th>Basic Salary</th>
+                        <th class="text-end">Basic Salary</th>
 
-                        <th>Leave</th>
+                        <th class="text-end">Leave</th>
 
-                        <th>Overtime</th>
+                        <th class="text-end">Overtime</th>
 
-                        <th>HRA</th>
+                        <th class="text-end">HRA</th>
 
-                        <th>Transport Allowance</th>
+                        <th class="text-end">Transport Allowance</th>
 
-                        <th>Telephone Allowance</th>
+                        <th class="text-end">Telephone Allowance</th>
 
-                        <th>Food Allowance</th>
+                        <th class="text-end">Food Allowance</th>
 
-                        <th>Other Allowance</th>
+                        <th class="text-end">Other Allowance</th>
 
-                        <th>Total Salary</th>
+                        <th class="text-end">Total Salary</th>
 
                       
 
@@ -471,7 +455,7 @@
 
                                 <td align="right">Staff Salary</td>
 
-                                <th id="staff_salary_add"></th>
+                                <th class="text-end" id="staff_salary_add"></th>
 
                                 </tr>
 
@@ -481,7 +465,7 @@
 
                                 <td align="right">Salaries And Wages</td>
 
-                                <th id="salaries_and_wages_add"></th>
+                                <th class="text-end"  id="salaries_and_wages_add"></th>
 
                                 </tr>
 
@@ -490,7 +474,7 @@
 
                                 <td align="right">Overtime</td>
 
-                                <th id="overtime_add"></th>
+                                <th class="text-end"  id="overtime_add"></th>
 
                                 </tr>
 
@@ -500,7 +484,7 @@
 
                                 <td align="right">House Rent Allowance</td>
 
-                                <th id="hra_add"></th>
+                                <th class="text-end" id="hra_add"></th>
 
                                 </tr>
 
@@ -509,7 +493,7 @@
 
                                 <td align="right">Transportation Allowance</td>
 
-                                <th id="transport_allow_add"></th>
+                                <th class="text-end" id="transport_allow_add"></th>
 
                                 </tr>
 
@@ -517,7 +501,7 @@
 
                                 <td align="right">Telephone Allowance</td>
 
-                                <th id="telephone_allow_add"></th>
+                                <th class="text-end" id="telephone_allow_add"></th>
 
                                 </tr>
 
@@ -526,7 +510,7 @@
 
                                 <td align="right">Food Allowance</td>
 
-                                <th id="food_allow_add"></th>
+                                <th class="text-end" id="food_allow_add"></th>
 
                                 </tr>
 
@@ -535,7 +519,7 @@
 
                                 <td align="right">Other Allowance</td>
 
-                                <th id="other_allow_add"></th>
+                                <th class="text-end" id="other_allow_add"></th>
 
                                 </tr>
 
@@ -545,7 +529,7 @@
 
                                 <td align="right">Total Salary</td>
 
-                                <th id="total_salary_add"></th>
+                                <th class="text-end" id="total_salary_add"></th>
 
                                 </tr>
                                 
@@ -569,26 +553,15 @@
 
 
 
-                            <div class="col-lg-6">
+       
 
 
-                            </div>
+                            <div class="col-lg-12 text-center">
 
 
-                            <div class="col-lg-6">
-
-
-                            <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        
-                                                            <tr>
-                                                                <td><button class="submit_btn" type="submit">Save To JV</button></td>
-                                                        
-                                                            </tr>
-                                                            
-                                                        </table>
-                            </div>
-
+                              <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Save To JV</button>
+                                                       
+                          
 
                             </div>
 
@@ -735,6 +708,190 @@
 <!-- End Page-content -->
 
 
+
+
+<!-- Journal Voucher Modal Start -->
+
+
+  <!-- Add Modal -->
+
+
+  <div class="modal fade" id="AddToJournalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+            <form  class="Dashboard-form class" id="add_journal_form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Generate Journal Voucher</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#AddModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+    <div class="row">
+
+
+<div class="col-lg-12">
+    <div class="card">
+       
+        <div class="card-body">
+            <div class="live-preview">
+            
+                    <div class="row align-items-start justify-content-start">
+
+                    <div class="col-lg-6">
+
+                    <div class="row align-items-center mb-2">
+                            
+
+                            <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Reference</label>
+
+                            </div>
+
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text" id="uid"  class="form-control" readonly>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row align-items-center mb-2">
+                            
+                            <div class="col-col-md-3 col-lg-3">
+
+                                <label for="basiInput" class="form-label">Date</label>
+
+                            </div>
+
+                            <div class="col-col-md-9 col-lg-9">
+
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+
+                            </div>
+
+                        </div>
+
+                        
+                        </div>
+
+                          
+                        <div class="col-col-md-12 col-lg-12">
+
+
+                        <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                    <thead>
+                                        <tr>    
+                                        <th>Sl No</th>
+                                        <th>Account</th>
+                                        <th>Narration</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="jv_rows">
+
+                                    </tbody>
+
+
+                                    <tr>
+
+                                    <td colspan="3" align="right">Total</td>
+                                   
+                                    <th id="total_amount_debit_disp">0</th>
+
+                                    <th  id="total_amount_credit_disp">0</th>
+                                    
+                                    <input type="hidden" id="total_amount_inp" name="total_amount">
+
+                                    <input type="hidden" id="total_amount_debit" name="total_debit">
+
+                                    <input type="hidden" id="total_amount_credit" name="total_credit">
+                                    
+                                    </tr>
+
+
+
+                        </table>
+
+                        
+                        </div>
+
+
+                        <div class="row">
+
+
+<div class="col-lg-12 text-center">
+
+
+    <div style="">
+        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+            <!--
+            <tr>
+                <td><button class="submit_btn">Print</button></td>
+                <td><button class="submit_btn">Email</button></td>
+            </tr>
+            -->
+            <tr>
+
+                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <!--<td><button class="submit_btn">PDF</button></td>-->
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+                        
+                        
+                    </div>
+                    <!--end row-->
+                
+            </div>
+            
+        </div>
+
+
+
+    </div>
+</div>
+
+<!--end col-->
+</div>
+
+</div>
+            <!-- <div class="modal-footer justify-content-center">
+                <button  class="btn btn btn-success">Save</button>
+            </div> -->
+
+        </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<!-- Journal Voucher End -->
+
+
+
+
+
+
+
+
 <!--footer section start-->
 
 <?php echo view('includes/footer'); ?>
@@ -820,6 +977,8 @@
 
                             $('#salaries_and_wages_add').html(data.salaries_wages);
 
+                            $('#overtime_add').html(data.total_ot);
+
                             $('#transport_allow_add').html(data.transport_allow);
 
                             $('#hra_add').html(data.hra);
@@ -899,6 +1058,80 @@
         });
 
         /*###*/
+
+
+
+
+
+        /* Save to jv button click start */
+
+
+        $('#save_to_jv_btn').click(function(){
+
+
+            $.ajax({
+
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+
+            method : "GET",
+
+            success:function(data)
+            {
+
+            $('#uid').val(data);
+
+            }
+
+            });
+
+
+            var month = $('#payroll_month').val();
+
+            var year = $('#payroll_year').val();
+
+
+            $.ajax({
+
+        url : "<?php echo base_url(); ?>HR/Payroll/AddToJvRows",
+
+        method : "POST",
+
+        data: {p_month: month,p_year:year},
+
+        success:function(data)
+        {   
+            if(data)
+            {
+            var data = JSON.parse(data);
+
+            $('#jv_rows').html(data.jv_rows);
+
+            $('#total_amount_debit').val(data.total_debit);
+            $('#total_amount_debit_disp').html(data.total_debit);
+
+            $('#total_amount_credit').val(data.total_credit);
+            $('#total_amount_credit_disp').html(data.total_credit);
+
+            $('#AddModal').modal('hide');
+
+            $('#AddToJournalModal').modal('show');
+
+            }
+        }
+
+        })
+
+
+
+
+        })
+
+
+
+
+
+
+        /* Save to jv button click end */
 
 
 

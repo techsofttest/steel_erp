@@ -345,6 +345,9 @@ class ChartsOfAccounts extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
 
+        if($term !="")
+        $where=array('ca_name' => $term);
+
         $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_charts_of_accounts','ca_name','asc',$where,$end,$start);
       
         //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);

@@ -358,4 +358,27 @@ class AccountsModel extends Model
 
         return $result->srp_amount;
     }
+
+
+
+
+    public function SalesAdvancePaid($id)
+    {
+
+    $query = $this->db->table('accounts_receipts_sales_orders');
+
+    $query->selectSum('rso_receipt_amount');
+
+    $query->where('rso_sales_order', $id);
+
+    $result = $query->get()->getRow()->rso_receipt_amount;
+
+    return $result;
+
+    }
+
+
+
+
+
 }

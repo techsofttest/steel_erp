@@ -150,8 +150,7 @@
                                                 
                                                 foreach ($months as $index => $month) {
                                                     
-                                                    if($index>=$this->data['accounting_month']-1)
-                                                    {
+                                                   
 
                                                     if($index == $this->data['accounting_month']-1) 
                                                     { 
@@ -162,7 +161,7 @@
                                                     }
 
                                                     echo '<option value="' . ($index + 1) . '" '.$sel.'>' . $month . '</option>';
-                                                    }
+                                                   
                                                 
                                                 }
                                                 ?>

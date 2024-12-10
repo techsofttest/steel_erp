@@ -122,7 +122,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input id="receipt_no" type="text" name="r_receipt_no" class="form-control" autocomplete="off" required>
+                                                        <input id="receipt_no" type="text" name="r_receipt_no" class="form-control" autocomplete="off">
 
                                                     </div>
 
@@ -862,7 +862,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="r_no_edit" name="r_receipt_no" class="form-control" required>
+                                                        <input type="text" id="r_no_edit" name="r_receipt_no" class="form-control" >
 
                                                     </div>
 
@@ -1809,7 +1809,7 @@
                 rules: {
                     required: 'required',
                     r_receipt_no: {
-                        required: true,
+                        required: false,
                         remote: {
                             url: "<?= base_url() ?>Accounts/Receipts/ReceiptNoCheck",
                             type: 'POST',
@@ -1931,9 +1931,9 @@
 
             if ((max != "") && (value > max)) {
 
-                alertify.error('Cannot be greater than pending invoice amount!').delay(3).dismissOthers();
+                //alertify.error('Cannot be greater than pending invoice amount!').delay(3).dismissOthers();
 
-                $(this).val(max);
+                //$(this).val(max);
 
             }
 
@@ -1941,9 +1941,9 @@
 
             if (max == "" && value>0) {
 
-                alertify.error('No pending amount to credit!').delay(3).dismissOthers();
+                //alertify.error('No pending amount to credit!').delay(3).dismissOthers();
 
-                $(this).val('');
+                //$(this).val('');
 
             }
 
@@ -4389,7 +4389,7 @@
 
             })
 
-            /*
+            
             $('#AddSOAdvanceModal .so_receipt_amount').each(function() {
 
                 parent = $(this).closest('tr');
@@ -4397,7 +4397,7 @@
                 invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
 
             })
-                */
+            
 
             if (invoice_total > total) {
 
@@ -4788,9 +4788,9 @@
 
             if ((max != "") && (value > max)) {
 
-                alertify.error('Cannot be greater than pending invoice amount!').delay(3).dismissOthers();
+                //alertify.error('Cannot be greater than pending invoice amount!').delay(3).dismissOthers();
 
-                $(this).val(max);
+                //$(this).val(max);
 
             }
 

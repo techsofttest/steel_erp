@@ -1244,6 +1244,7 @@
 
 
 
+
 <div class="row align-items-center mb-2">
 
 <div class="col-col-md-3 col-lg-3">
@@ -1361,26 +1362,18 @@
 
 
 
-                            <div class="col-lg-6">
+                           
 
 
-                            </div>
+                            <div class="col-lg-12 text-center">
 
 
-                            <div class="col-lg-6">
+                           
+                   
 
-
-                            <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        
-                                                            <tr>
-
-                                                                <td><button class="submit_btn" type="submit">Save</button></td>
-                                                        
-                                                            </tr>
-                                                            
-                                                        </table>
-                            </div>
+                        <button class="submit_btn btn btn-success" type="submit">Save</button>
+                    
+                       
 
 
                             </div>

@@ -208,6 +208,8 @@ class Receipts extends BaseController
                 $insert_data['r_number'] = str_replace(" ","",$this->request->getPost('r_receipt_no'));
                 //Check Duplicate Receipt Number
                 
+                if(!empty($this->request->getPost('r_receipt_no')))
+                {
                 $r_no_check = $this->common_model->SingleRow('accounts_receipts',array('r_number' => $insert_data['r_number']));
 
                 if(!empty($r_no_check))
@@ -217,6 +219,7 @@ class Receipts extends BaseController
                     echo json_encode($return);        
                     exit;        
                 }
+            }
                 
 
         $insert_data['r_added_by'] = 1;
@@ -750,6 +753,11 @@ class Receipts extends BaseController
         foreach($sales_orders as $so)
         {
 
+        
+        $advance_paid = $this->account_model->SalesAdvancePaid($so->so_id);
+
+        $balance_total = $so->so_amount_total-$advance_paid;
+
         $sl++;
 
         $data['so_rows'] .='<tr>
@@ -771,11 +779,11 @@ class Receipts extends BaseController
         </td>
 
         <td>
-        '.$so->so_amount_total.'
+        '.$balance_total.'
         </td>
 
         <td>
-        <input type="number" class="form-control so_receipt_amount" maxlength="'.$so->so_amount_total.'" name="so_receipt_amount[]">
+        <input type="number" class="form-control so_receipt_amount" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
         </td>
 
 
@@ -835,7 +843,7 @@ class Receipts extends BaseController
 
                 $total_amount = $so_row->so_amount_total;
 
-                $new_advance = $current_advance + $insert_data['rso_receipt_amount'];
+                $new_advance = (float)$current_advance + (float)$insert_data['rso_receipt_amount'];
 
                 if($new_advance==$total_amount)
                 {
