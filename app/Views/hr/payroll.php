@@ -21,6 +21,14 @@
    width: 1%;
 }
 
+
+    #view_payroll_table td.text-end {
+    text-align: right;          /* Right-align the text */
+    padding-right: 25%;        /* Add padding for space between the value and the edge */
+    max-width: 150px;           /* Limit the width to avoid excessive space */
+    word-wrap: break-word;      /* Ensure the text wraps if it's too long */
+}
+
     </style>
     
 
@@ -75,7 +83,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Timesheets</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Payroll</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -90,173 +98,28 @@
         <div class="card-body">
             <div class="live-preview">
             
-                    <div class="row align-items-end">
+
+                    <div class="row ">
 
 
-                    <div class="col-col-md-2 col-lg-2">
-                            <div>
-                                <label for="basiInput" class="form-label">Reference No</label>
-                                <input type="text"  id="r_ref_view" class="form-control" value="" disabled>
-                            </div>
-                    </div>
+                        <div class="col-lg-12">
 
 
-                        <div class="col-col-md-2 col-lg-2">
-                            <div>
-                                <label for="basiInput" class="form-label">Date</label>
-                                <input type="text"  id="r_date" class="form-control datepicker" value="" disabled>
-                            </div>
-                        </div>
+                            <table id="view_payroll_table" class="table table-bordered">
+
+                                <tbody id="view_payroll_body">
 
 
-                        <div class="col-col-md-2 col-lg-2">
-
-                            <div>
-
-                                <label for="basiInput" class="form-label">Debit Account</label>
-                               
-                                <input type="text"  id="r_debit_acc" class="form-control" value="" disabled>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2">
-                            <div>
-                                <label for="basiInput" class="form-label">Receipt No</label>
-                                <input type="text"  id="r_no" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2">
-
-                            <div>
-
-                                <label for="basiInput" class="form-label">Receipt Method</label>
                                 
-                                <input type="text"  id="r_method_view" class="form-control" value="" disabled>
+                                </tbody>
 
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Number</label>
-                                <input type="text"  id="cheque_no_view" class="form-control" disabled>
-                            </div>
-                        </div>
-
-
-                        <div class="col-col-md-2 col-lg-2 cheque_sec_view">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Date</label>
-                                <input type="text" id="cheque_date_view" class="form-control" disabled>
-                            </div>
-                        </div>
-
-
-                        <!--
-                        <div class="col-col-md-4 col-lg-4 cheque_sec_view">
-                            <div>
-                                <label for="basiInput" class="form-label">Cheque Copy</label>
-                                <span class="form-control"></span>
-                            </div>
-                        </div>
-                        -->
-
-
-                        <div class="col-col-md-4 col-lg-4">
-
-                            <div>
-
-                                <label for="basiInput" class="form-label">Bank</label>
-                              
-                                <input type="text"  id="r_bank_view" class="form-control" value="" disabled>
-
-                            </div>
-
-                        </div>
-
-
-
-
-                      
-
-
-
-
-
-
-                        <div class="col-col-md-2 col-lg-2">
-
-                        <div>
-
-                        <label for="basiInput" class="form-label">Collected By</label>
-                        
-                        <input type="text"  id="r_collected_by_view" class="form-control" value="" disabled>
-
-                        </div>
-
-                    </div>
-
-
-                        <div class="col-col-md-2 col-lg-2">
-
-                            <div>
-                                
-                                <label for="basiInput" class="form-label">Credit Account</label>
-                                
-                               <input type="text" id="r_credit_account_view" class="form-control" value="" disabled>
-
-                            </div>
-
-                        </div>
-
-
-                        <h3 class="my-2 text-center">Invoices</h3>
-
-                        <div class="col-col-md-12 col-lg-12">
-
-                        <table class="table table-bordered" style="overflow-y:scroll;">
-
-                                    <thead>
-                                        <tr>
-                                        <th>SL No</th>
-                                        <th>Credit Account</th>
-                                        <th>Remarks</th>
-                                        <th>Amount</th>
-                                        </tr>
-                                    </thead>
-
-
-                                    <tbody id="invoice_sec_view">
-
-                                        
-
-                                    </tbody>
-                                    
-
-                                    <tr>
-
-                                    <td colspan="3" align="right">Total</td>
-
-                                    <td id="total_amount_view" style="font-size: 17px;font-weight: 600;"></td>
-
-                                    </tr>
-
-
-                        </table>
-
+                            </table>
 
 
                         </div>
 
-                        
+
+
                         
                     </div>
                     <!--end row-->
@@ -643,24 +506,22 @@
     <!-- ### -->
 
     
-    <?php /*
+    
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Payroll</h4>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
-                <div class="card-body" id="account_type_id">
+                <div class="card-body" id="">
                         <!-- CSRF token --> 
                     <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
-                    <table id="accountTable1" class="table table-bordered table-striped delTable display dataTable">
+                    <table id="datatable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
                                 <th>Month</th>
-                                <th>Year</th>
-                                <th>Staff Salary</th>
-                                <th>Salaries And Wages</th>
+                                <th>Total Salary</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -675,8 +536,7 @@
                 </div>
             </div>
         </div>
-
-        */ ?>
+      
        
         <!--end col-->
 
@@ -840,7 +700,7 @@
             -->
             <tr>
 
-                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -922,24 +782,6 @@
 
 
 
-
-        $('.sal_calc').on('input', function() {
-
-        let total = 0;
-        $('.sal_calc').each(function() {
-            // Parse the value as a float and add to total
-            total += parseFloat($(this).val()) || 0;
-        });
-        // Set the total in the input with ID add_total_salary
-        $('#add_total_salary').val(total.toFixed(2));
-
-
-        });
-
-
-
-
-
         /* Main Add */     
    
         $(function() {
@@ -997,7 +839,7 @@
                             else
                             {
 
-                            alertify.error('No timesheets found').delay(3).dismissOthers();
+                            alertify.error(data.msg).delay(3).dismissOthers();
 
                             $('#timesheets_row').html('');
 
@@ -1021,9 +863,94 @@
 
 
 
+        $('#add_journal_form').submit(function(e){
 
+            e.preventDefault();
+
+            $.ajax({
+                        url: "<?php echo base_url(); ?>HR/Payroll/AddPayrollJournal",
+                        method: "POST",
+                        data: $(this).serialize(),
+                        success: function(data) 
+                        {
+                            var data = JSON.parse(data);
+
+                            if(data.status==1)
+                            {
+                             
+                            alertify.success(data.msg).delay(3).dismissOthers();
+
+                            datatable.ajax.reload( null, false);
+
+                            $('#AddToJournalModal').modal('hide');
+
+                            }
+
+                            //datatable.ajax.reload( null, false)
+
+                        }
+                       
+                    });
+
+        });
+
+
+
+        $("body").on('click', '.view_btn', function () {
+    var id = $(this).data('id');
+
+    $.ajax({
+        url: "<?php echo base_url(); ?>HR/Payroll/View",
+        method: "POST",
+        data: { pr_id: id },
+        success: function (data) {
+            try {
+                var payroll = JSON.parse(data);
+
+                // Generate table rows
+                var rows = `
+                    <tr><td class="text-center">Added Date</td> <td class="text-end">${payroll.pr_added_date}</td></tr>
+                    <tr><td class="text-center">Journal ID</td> <td class="text-end">${payroll.pr_journal_id || "N/A"}</td></tr>
+                    <tr><td class="text-center">Month</td> <td class="text-end">${payroll.pr_month}</td></tr>
+                    <tr><td class="text-center">Year</td> <td class="text-end">${payroll.pr_year}</td></tr>
+                    <tr><td class="text-center">Basic Salary</td> <td class="text-end">${payroll.pr_basic_salary}</td></tr>
+                    <tr><td class="text-center">Leave</td> <td class="text-end">${payroll.pr_leave}</td></tr>
+                    <tr><td class="text-center">Overtime</td> <td class="text-end">${payroll.pr_overtime}</td></tr>
+                    <tr><td class="text-center">HRA</td> <td class="text-end">${payroll.pr_hra}</td></tr>
+                    <tr><td class="text-center">Transport Allowance</td> <td class="text-end">${payroll.pr_transport_allow}</td></tr>
+                    <tr><td class="text-center">Telephone Allowance</td> <td class="text-end">${payroll.pr_telephone_allow}</td></tr>
+                    <tr><td class="text-center">Food Allowance</td> <td class="text-end">${payroll.pr_food_allow}</td></tr>
+                    <tr><td class="text-center">Other Allowance</td> <td class="text-end">${payroll.pr_other_allow}</td></tr>
+                    <tr><td class="text-center">Total Salary</td> <td class="text-end">${payroll.pr_total_salary}</td></tr>
+                    
+
+                    
+                `;
+
+                // Insert rows into the table
+                $('#view_payroll_body').html(rows);
+
+                $('#ViewModal').modal('show');
+
+            } catch (e) {
+                console.error("Error parsing payroll data:", e);
+                alert("An error occurred while fetching payroll data.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+            alert("Failed to fetch payroll data.");
+        }
+    });
+});
+
+
+
+
+
+        
         $(function() {
-            $('#timesheet_add_form').validate({
+            $('#add_journal_form0').validate({
                 rules: {
                     required: 'required',
                 },
@@ -1126,150 +1053,10 @@
 
         })
 
-
-
-
-
-
         /* Save to jv button click end */
 
 
 
-
-
-
-
-
-        /*account head modal start*/ 
-                                                    
-        $("body").on('click', '.edit_btn', function(){ 
-
-            $("#EditModal :input").prop("disabled", false);
-
-            $('#EditModal .submit_btn').show();
-
-            $('#EditModal .edit_invoice').show();
-
-            $('#EditModal .view_linked').show();
-
-            $('.edit_copy').css('display','flex');
-
-            $('.view_copy').css('display','none');
-
-            $('#EditModal .edit_add_credit').show();
-
-
-
-
-            var id = $(this).data('id');
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Accounts/Receipts/Edit",
-
-                method : "POST",
-
-                data: {r_id: id},
-
-                success:function(data)
-                {   
-                    if(data)
-                    {
-                    var data = JSON.parse(data);
-
-                    $('#ruid_edit').val(data.rc.r_ref_no);
-
-                    $('#id_edit').val(data.rc.r_id);
-
-                    $('#r_date_edit').val(data.rc.r_date);
-
-                    $('#r_debit_account_edit').val(data.rc.ca_name);
-
-                    $('#r_no_edit').val(data.rc.r_number);
-
-                    $('#r_method_edit').val(data.rc.r_method);
-
-                    if(data.rc.r_method=="1")
-                    {
-                   
-                    $('.cheque_sec').removeClass("d-none");
-
-                    $('.cheque_file_sec').removeClass("d-none");
-
-                    $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
-           
-                    $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
-
-                    $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
-
-                    $('#EditModal #cheque_file_view').attr('href','<?= base_url();?>uploads/Receipts/'+data.rc.r_cheque_copy+'');
-
-                    }
-                    else
-                    {
-
-                    $('.cheque_sec').addClass("d-none");
-
-                    $('.cheque_file_sec').addClass("d-none");
-
-                    }
-
-                    $('#r_bank_edit').val(data.rc.r_bank);
-
-                    $('#r_collected_by_edit').val(data.rc.r_collected_by);
-
-                    $('#total_amount_edit').html(data.rc.r_amount);
-
-                    $('#sel_invoices_edit').html(data.invoices);
-
-                    $('#EditModal').modal('show');
-                
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
-                    
-                }
-
-
-            });
-            
-            
-        });
-        /*####*/
-
-
-           /*account head modal start*/ 
-           $("body").on('click', '.view_btn', function(){
-
-                var id = $(this).data('id');
-
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Accounts/Receipts/Edit",
-
-                    method : "POST",
-
-                    data: {r_id: id},
-
-                    success:function(data)
-                    {   
-                        if(data)
-                        {
-                       
-                        
-                    }
-
-                }
-
-
-                });
-              
-            
-            
-        });
-        /*####*/
 
 
        
@@ -1293,7 +1080,7 @@
                 {
                     alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
 
-                    datatable.ajax.reload( null, false )
+                    datatable.ajax.reload( null, false );
                 }
 
 
@@ -1301,12 +1088,6 @@
 
         });
         /*###*/
-
-
-
-
-
-
 
 
 
@@ -1321,13 +1102,13 @@
             }
             */
 
-            datatable = $('#accountTable').DataTable({
+            datatable = $('#datatable').DataTable({
                 'stateSave': true,
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url': "<?php echo base_url(); ?>HR/Timesheets/FetchData",
+                    'url': "<?php echo base_url(); ?>HR/Payroll/FetchData",
                     'data': function (data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -1347,13 +1128,9 @@
                     }
                 },
                 'columns': [
-                    { data: 'ts_id' },
-                    { data : "employee_id"},
-                    { data : "employee_name" },
-                    { data: 'month' },
-                    { data : 'year'},
-                    { data : 'working_days'},
-                    { data: 'total_salary'},
+                    { data: 'pr_id' },
+                    { data : "pr_month"},
+                    { data : "total_salary" },
                     { data: 'action' },
                 ]
                 
@@ -1370,398 +1147,45 @@
 
         $('.add_model_btn').click(function(){
 
-
             $('.added_id').val('');
 
             $('#add_form')[0].reset();
 
             $('.add_form')[0].reset();
 
-           
-
-            });
+        });
 
 
           
-        
-        $(".add_te").select2({
-        placeholder: "Select Employee",
-        theme : "default form-control-",
-        dropdownParent: $('#add_te_parent'),
-        ajax: {
-                url: "<?= base_url(); ?>HR/Timesheets/FetchEmployees",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                   
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.emp_id, text: item.emp_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-
         /*###*/
 
 
 
-
-      
-        $("body").on('input', '.time_to1', function(){ 
-
-        var parent = $(this).closest('.day_row');
-
-        var time1 = parent.find(".time_from").val().split(':');
         
-        var time2 = parent.find(".time_to").val().split(':');
-
-        var hours1 = parseInt(time1[0], 10), 
-             hours2 = parseInt(time2[0], 10),
-             mins1 = parseInt(time1[1], 10),
-             mins2 = parseInt(time2[1], 10);
-
-        /*
-         var hours = hours2 - hours1, mins = 0;
-         if(hours < 0) hours = 24 + hours;
-         if(mins2 >= mins1) {
-             mins = mins2 - mins1;
-         }
-         else {
-             mins = (mins2 + 60) - mins1;
-             hours--;
-         }
-         mins = mins / 60; // take percentage in 60
-         hours += mins;
-         hours = hours.toFixed(2);
-         //$(".Hours").val(hours);
-         */
-
-       // Get the values of time_from and time_to inputs
-        var timeFrom = parent.find(".time_from").val();
-        var timeTo = parent.find(".time_to").val();
-
-        // Parse the time values into hours and minutes
-        var fromHours = parseInt(timeFrom.split(':')[0]);
-        var fromMinutes = parseInt(timeFrom.split(':')[1]);
-        var toHours = parseInt(timeTo.split(':')[0]);
-        var toMinutes = parseInt(timeTo.split(':')[1]);
-
-        // Calculate the difference in minutes
-        var diffMinutes = (toHours * 60 + toMinutes) - (fromHours * 60 + fromMinutes);
-
-        // Convert minutes difference into hours and remaining minutes
-        var hours = Math.floor(diffMinutes / 60);
-        var minutes = diffMinutes % 60;
-
-        var formattedHours = hours + (minutes / 60);
-
-        // Display the total hours and minutes in the .total_hours input
-        parent.find('.total_hours').val(formattedHours.toFixed(2));
-
-         //console.log(hours);
-
-        });
-
-
-
-        $("body").on('input', '.time_to', function(){ 
-
-            var parent = $(this).closest('.day_row');
-
-            var time1 = parent.find(".time_from").val().split(':');
-
-            var time2 = parent.find(".time_to").val().split(':');
-
-            var elem = parent.find('.total_hours');
-
-            let hours;
-            let minute;
-
-        if (parseInt(time1[0]) < parseInt(time2[0]) && parseInt(time1[1]) < parseInt(time2[1])) {
-
-            //As for the addition, the subtraction is carried out separately, column by column.
-            hours = parseInt(time2[0]) - parseInt(time1[0]);
-            minute =   parseInt(time2[1]) - parseInt(time1[1]);
-
-            // alert(time1[0]);
-
-            // alert(time2[0]);
-
-            let _hours = '';
-            let _minute = '';
-
-            if (hours < 10) {
-                _hours ='0' + hours;
-            } else {
-                _hours = hours;
-            }
-
-            if (minute < 10) {
-                _minute = '0' + minute;
-            } else {
-                _minute = minute;
-            }
-
-            elem.val(_hours +'.'+ _minute +'')
-
-
-        }else if (parseInt(time2[0]) > parseInt(time1[0])) {
-            if (parseInt(time2[1]) < parseInt(time1[1])) {
-
-                // As before we subtract column by column ... and we realize that it's impossible because our minute in second hour is greater than our minute in first hour
-                // We will transform 1 hour in 60 minutes
-                let _hours = parseInt(time2[0]) - 1;
-                let _minute = parseInt(time2[1]) + 60;
-                let final_hours = '';
-                let final_min = '';
-
-                hours = _hours - parseInt(time1[0]);
-                minute = _minute - parseInt(time1[1]);
-
-                if (hours < 10) {
-                    final_hours = '0' + hours;
-                } else {
-                    final_hours = hours;
-                }
-
-                if (minute < 10) {
-                    final_min = '0' + minute;
-                } else {
-                    final_min = minute;
-                }
-                elem.val(final_hours + '.' + final_min)
-            }
-
-            if (parseInt(time2[1]) === parseInt(time1[1])) {
-                hours = parseInt(time2[0]) - parseInt(time1[0]);
-                let final_hours = '';
-
-                if (hours < 10) {
-                    final_hours = '0' + hours;
-                } else {
-                    final_hours = hours;
-                }
-
-                elem.val(final_hours + '.' + '00')
-            }
-
-        }else if (parseInt(time1[0]) > parseInt(time2[0])) {
-            let first_hour_only_hour = parseInt(time1[0]);
-            let second_hour_only_hour = parseInt(time2[0]);
-
-            let first_hour_only_min = parseInt(time1[1]);
-            let second_hour_only_min = parseInt(time2[1]);
-
-            let tmp_hour = 24 - first_hour_only_hour;
-            let tmp_ttl_hour = tmp_hour + second_hour_only_hour;
-
-            let tmp_ttl_min = first_hour_only_min + second_hour_only_min;
-            let tmp_new_hour = 0;
-            let tmp_new_min_mod = 0;
-
-            let _hours = '';
-            let _min = '';
-
-            if (tmp_ttl_min > 59) {
-                tmp_new_hour = parseInt(tmp_ttl_min/60);
-                tmp_new_min_mod = tmp_ttl_min%60;
-
-                tmp_ttl_hour += tmp_new_hour;
-            } else {
-                tmp_new_min_mod = tmp_ttl_min
-            }
-
-            if (tmp_ttl_hour < 10) {
-                _hours = '0' + tmp_ttl_hour;
-            } else {
-                _hours = tmp_ttl_hour
-            }
-
-            if (tmp_new_min_mod < 10) {
-                _min = '0' + tmp_new_min_mod
-            } else {
-                _min = tmp_new_min_mod
-            }
-
-            elem.val(_hours + '.' + _min)
-        } else if (parseInt(time1[0]) === parseInt(time2[0])) {
-            hours = '00';
-            let minute = 0;
-            if (parseInt(time1[1]) < parseInt(time2[1])) {
-                minute = parseInt(time2[1]) - parseInt(time1[1]);
-            }
-
-            if (minute < 10) {
-                elem.val(hours + '.0' + minute)
-            } else  {
-                elem.val(hours + '.' + minute)
-            }
-        }else if (parseInt(time1[0]) === 0 && parseInt(time1[1]) === 0) {
-            hours = parseInt(time2[0]);
-            minute = parseInt(time2[1]);
-
-            if (hours === 0) {
-                elem.val('00.' + minute)
-            }else if (minute === 0){
-                if (hours < 10) {
-                    elem.val('0' + hours + '.00');
-                }else {
-                    elem.val(hours + '.00');
-                }
-            }else {
-                elem.val(hours + '.' + minute)
-            }
-        }
-
-
-
-        });
        
+        $("body").on('click', '.delete_btn', function() {
 
+        //if (!confirm('Are you absolutely sure you want to delete?')) return;
+        var id = $(this).data('id');
+        $.ajax({
 
+            url: "<?php echo base_url(); ?>HR/Payroll/Delete",
 
+            method: "POST",
 
+            data: {
+                id: id
+            },
 
-        $("body").on('change', '.day_type', function(){
-            
-            parent = $(this).closest('.day_row');
+            success: function(data) {
 
-            leave = 0;
+                alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
 
-            medical_leave = 0;
-
-            public_holidays = 0;
-
-            unpaid_leave = 0;
-
-            working_days = 0;
-
-            $('body .day_type').each(function(i, obj) {
-
-                if($(this).val() ==1)
-                {
-                
-                working_days++;
-
-                parent.find('input').attr('required',true);
-
-                //$(this).children("option").filter(":selected").text();
-                }
-
-                else
-                {
-                parent.find('input').removeAttr('required');
-                }
-
-                if($(this).val() ==2)
-                {
-                public_holidays++;
-                }
-
-                if($(this).val() ==3)
-                {
-                leave++;
-                }
-
-                if($(this).val() ==4)
-                {
-                unpaid_leave++;
-                }
-
-                if($(this).val() ==5)
-                {
-
-                medical_leave++;
-
-                }
-
-                
-            });
-
-
-            $('#working_days').val(working_days);
-
-            $('#public_holiday').val(public_holidays);
-
-            $('#leave').val(leave);
-
-            $('#unpaid_leave').val(unpaid_leave);
-
-            $('#medical_leave').val(medical_leave);
-
-
-        });
-
-
-
-
-        $("body").on('change', '.normal_ot', function(){
-
-            var total_normal_ot_hours = 0;
-
-            var total_normal_ot_days = 0;
-            
-            $('body .normal_ot').each(function(i, obj) {
-
-            ot = parseFloat($(this).val())||0;
-
-            if(ot>0)
-            {
-
-            total_normal_ot_days++;
-
+                datatable.ajax.reload(null, false)
             }
 
-            total_normal_ot_hours = total_normal_ot_hours + ot;
-
-            });
-
-            $('#normal_ot').val(total_normal_ot_days);
-
-            //salary_calc();
-
 
         });
-
-
-        $("body").on('change', '.friday_ot', function(){
-
-        var total_friday_ot_hours = 0;
-
-        var total_friday_ot_days = 0;
-
-        $('body .friday_ot').each(function(i, obj) {
-
-        friday_ot = parseFloat($(this).val())||0;
-
-        if(friday_ot>0)
-            {
-
-                total_friday_ot_days++;
-
-            }
-
-        total_friday_ot_hours = total_friday_ot_hours + friday_ot;
-
-        });
-
-        $('#friday_ot').val(total_friday_ot_days);
-
-        //salary_calc();
 
         });
 
@@ -1769,132 +1193,6 @@
 
 
 
-        /*
-        $("body").on('change keyup', '.total_hours', function(){
-
-            salary_calc();
-
-        });
-        */
-
-
-
-
-        $("body").on('change keyup', '.normal_ot,.normal_hours,.friday_ot', function(){
-
-         var parent = $(this).closest('.day_row');
-
-         var total_hours = parent.find('.total_hours').val();
-
-         if(total_hours<1)
-         {
-
-        alertify.error('Enter total hours first!').delay(3).dismissOthers();
-        
-        parent.find('.total_hours').focus();
-
-        $(this).val('');
-
-        return false;
-
-         }
-
-         else
-         {
-
-            var normal_hours = parseFloat(parent.find('.normal_hours').val())||0;
-
-            var normal_ot = parseFloat(parent.find('.normal_ot').val())||0;
-
-            var friday_ot = parseFloat(parent.find('.friday_ot').val())||0;
-
-            //var entered_val = $(this).val();
-
-            var total = normal_hours+normal_ot+friday_ot;
-
-            if(total_hours<total)
-            {
-              alertify.error('Total Hours exceeded!').delay(3).dismissOthers();
-              $(this).val('');
-              return false;
-            }
-            
-
-         }
-
-         salary_calc();
-
-    
-        });
-
-
-
-
-
-
-
-        function salary_calc()
-        {
-
-        var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
-
-        var total_normal_ot = 0;
-
-        var total_friday_ot= 0;
-
-        var total_hours_month = 0;
-
-        var total_salary_month = 0;
-
-
-        //Normal Ot Calculation Start
-
-        $('.normal_ot').each(function(){
-
-        total_normal_ot+=parseFloat($(this).val())||0;
-
-        });
-        
-        var total_normal_ot_salary = total_normal_ot*hourly_salary;
-
-        $('#total_normal_ot_salary').val(total_normal_ot_salary.toFixed(2));
-
-        //Normal OT Calculation End
-
-
-        //Friday OT Calcualation Start
-
-        $('.friday_ot').each(function(){
-
-        total_friday_ot+=parseFloat($(this).val())||0;
-
-        });
-
-        total_friday_ot_salary = total_friday_ot*hourly_salary;
-
-        $('#total_friday_ot_salary').val(total_friday_ot_salary.toFixed(2));
-
-        //Friday OT Calculation End
-
-
-
-         //Calculate Total Salary Start
-
-         $('.total_hours').each(function(){
-
-        total_hours_month+=parseFloat($(this).val())||0;
-
-        });
-
-        total_salary_month = total_hours_month*hourly_salary;
-
-
-        $('#total_month_salary').val(total_salary_month.toFixed(2));
-
-        //Calculate Total Salary End
-
-
-        }
 
 
     

@@ -35,27 +35,18 @@ class Payroll extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('hr_timesheets','ts_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('hr_payrolls','pr_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('ts_id');
+        $searchColumns = array('pr_id');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_timesheets','ts_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_payrolls','pr_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
-        $joins = array(
-           
-            array(
-            'table' => 'hr_employees',
-            'pk' => 'emp_id',
-            'fk' => 'ts_emp_id',
-            ),
-
-
-        );
+        $joins = array();
         ## Fetch records
-        $records = $this->common_model->GetRecord('hr_timesheets','ts_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('hr_payrolls','pr_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -63,20 +54,16 @@ class Payroll extends BaseController
 
         foreach($records as $record ){
 
-        $monthName = date('F', mktime(0, 0, 0, $record->ts_month, 10)); // March
-
-        $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-           $data[] = array( 
-              "ts_id"=>$i,
-              "employee_id" => $record->emp_uid,
-              "employee_name" => $record->emp_name,
-              "month" => $monthName,
-              "year" => $record->ts_year,
-              "working_days" => $record->ts_working_days,
-              "total_salary" => $record->ts_cur_month_salary,
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+
+        $data[] = array( 
+              "pr_id"=>$i,
+              "pr_month" => date('M Y',strtotime("1-{$record->pr_month}-{$record->pr_year}")),
+              "total_salary" => $record->pr_total_salary,
               "action" =>$action,
-           );
+        );
 
         $i++; 
 
@@ -172,6 +159,20 @@ class Payroll extends BaseController
 
         $year = $this->request->getPost('year');
 
+        $payroll_check = $this->common_model->SingleRow('hr_payrolls',array('pr_year' => $year,'pr_month' => $month));
+
+        if(!empty($payroll_check))
+        {
+
+        $data['msg'] = "Payroll already added!";
+        $data['status']=0;
+
+        echo json_encode($data);
+
+        exit;
+
+        }
+
         $joins = array(
 
             array(
@@ -197,6 +198,7 @@ class Payroll extends BaseController
         }
         else
         {
+        $data['msg'] = "No timesheets found!";
         $data['status']=0;
         }
 
@@ -361,6 +363,7 @@ class Payroll extends BaseController
 
     public function AddToJvRows()
     {
+
         $this->hr_model = new \App\Models\HRModel();
 
         if($this->request->getPost('p_month') && $this->request->getPost('p_year'))
@@ -465,7 +468,10 @@ class Payroll extends BaseController
 
             $jv_sl=0;
 
-
+            $data['jv_rows'] .='
+            <input type="hidden" name="pr_year" value="'.$year.'">
+            <input type="hidden" name="pr_month" value="'.$month.'">
+            ';
             
             $data['jv_rows'] .='
 
@@ -475,7 +481,7 @@ class Payroll extends BaseController
 
                                         <th class="select2_parent" width="35%"> 
                                             
-                                        <input type="text" class="form-control" name="jv_account" value="Staff Salary" readonly>
+                                        <input type="text" class="form-control" name="jv_account[]" value="Staff Salary" readonly>
 
                                         </th>
                                         
@@ -499,7 +505,7 @@ class Payroll extends BaseController
 
                                       <th class="select2_parent" width="35%"> 
                                           
-                                      <input type="text" class="form-control" name="jv_account" value="Salaries And Wages" readonly>
+                                      <input type="text" class="form-control" name="jv_account[]" value="Salaries And Wages" readonly>
 
                                       </th>
                                       
@@ -523,7 +529,7 @@ class Payroll extends BaseController
 
                                       <th class="select2_parent" width="35%"> 
                                           
-                                      <input type="text" class="form-control" name="jv_account" value="Overtime" readonly>
+                                      <input type="text" class="form-control" name="jv_account[]" value="Overtime" readonly>
 
                                       </th>
                                       
@@ -547,7 +553,7 @@ class Payroll extends BaseController
 
                                       <th class="select2_parent" width="35%"> 
                                           
-                                      <input type="text" class="form-control" name="jv_account" value="House Rent Allowance" readonly>
+                                      <input type="text" class="form-control" name="jv_account[]" value="House Rent Allowance" readonly>
 
                                       </th>
                                       
@@ -571,7 +577,7 @@ class Payroll extends BaseController
 
                                     <th class="select2_parent" width="35%"> 
                                         
-                                    <input type="text" class="form-control" name="jv_account" value="Transportation Allowance" readonly>
+                                    <input type="text" class="form-control" name="jv_account[]" value="Transportation Allowance" readonly>
 
                                     </th>
                                     
@@ -593,7 +599,7 @@ class Payroll extends BaseController
 
                                   <th class="select2_parent" width="35%"> 
                                       
-                                  <input type="text" class="form-control" name="jv_account" value="Telephone Allowance" readonly>
+                                  <input type="text" class="form-control" name="jv_account[]" value="Telephone Allowance" readonly>
 
                                   </th>
                                   
@@ -616,7 +622,7 @@ class Payroll extends BaseController
 
                                 <th class="select2_parent" width="35%"> 
                                     
-                                <input type="text" class="form-control" name="jv_account" value="Food Allowance" readonly>
+                                <input type="text" class="form-control" name="jv_account[]" value="Food Allowance" readonly>
 
                                 </th>
                                 
@@ -640,7 +646,7 @@ class Payroll extends BaseController
 
                                 <th class="select2_parent" width="35%"> 
                                     
-                                <input type="text" class="form-control" name="jv_account" value="Other Allowance" readonly>
+                                <input type="text" class="form-control" name="jv_account[]" value="Other Allowance" readonly>
 
                                 </th>
                                 
@@ -658,10 +664,10 @@ class Payroll extends BaseController
 
 
      //Employee Credit Journal
-
      
 
-     foreach($timesheets as $ts)
+    foreach($timesheets as $ts)
+
             {
 
     $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary;
@@ -674,7 +680,7 @@ class Payroll extends BaseController
 
                                <th class="select2_parent" width="35%"> 
                                    
-                               <input type="text" class="form-control" name="jv_account" value="'.$ts->emp_name.'" readonly>
+                               <input type="text" class="form-control" name="jv_account[]" value="'.$ts->emp_name.'" readonly>
 
                                </th>
                                
@@ -703,24 +709,250 @@ class Payroll extends BaseController
     }
 
 
-    public function AddPayroll()
+    public function AddPayrollJournal()
     {
 
+        $this->hr_model = new \App\Models\HRModel();
 
         if($this->request->getPost())
 
         {
 
-            
+        $month = $this->request->getPost('pr_month');
+
+        $year = $this->request->getPost('pr_year');
+
+
+        $payroll_check = $this->common_model->SingleRow('hr_payrolls',array('pr_year' => $year,'pr_month' => $month));
+
+        if(!empty($payroll_check))
+        {
+
+        $data['msg'] = "Payroll already added!";
+        $data['status']=0;
+
+        echo json_encode($data);
+
+        exit;
 
         }
 
 
+        
+        $joins = array(
+
+            array(
+                'table' => 'hr_employees',
+                'pk' => 'emp_id',
+                'fk' => 'ts_emp_id',
+                ), 
+
+            array(
+                'table' => 'hr_divisions',
+                'pk' => 'div_id',
+                'fk' => 'emp_division',
+                'table2' => 'hr_employees',
+                ), 
+
+        );
+
+        //Add To Payroll Table
+
+        $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
+
+            $emp_journal ="";
+
+            foreach($timesheets as $ts)
+            {
+
+                //Salary And Deductions
+                    $basic_salary=0;
+                    $total_leave=0;
+                    $total_ot=0;
+
+                    //Allowances
+                    $house_rent_allow=0;
+                    $transport_allow=0;
+                    $telephone_allow=0;
+                    $food_allow=0;
+                    $other_allow=0;
+                    $total_salary=0;
+
+                    $staff_salary=0;
+                    $salaries_wages=0;
+
+                    foreach($timesheets as $ts)
+                    {
+
+                    if($ts->emp_division==2)
+                    {
+                    //staff_salary 
+                    $staff_salary+= $ts->ts_cur_month_basic_salary;
+                    }
 
 
+                    if($ts->emp_division==1)
+                    {
+                    $salaries_wages+=$ts->ts_cur_month_basic_salary;
+                    }
+
+                    $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
+
+                    $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
+
+                    $basic_salary+=$ts->ts_cur_month_basic_salary;
+
+                    $total_ot+=$ot;
+
+                    $total_leave+=$leave;
+
+                    $house_rent_allow+=$ts->ts_house_rent_allowance;
+
+                    $transport_allow+=$ts->ts_transportation_allowance;
+
+                    $telephone_allow+=$ts->ts_telephone_allowance;
+
+                    $food_allow+=$ts->ts_food_allowance;
+
+                    $other_allow+=$ts->ts_other_allowance;
+
+                    $total_salary+=$ts->ts_cur_month_salary;
+                    }
+        }
+
+        $insert_payroll['pr_month'] = $month;
+        $insert_payroll['pr_year'] = $year;
+        $insert_payroll['pr_month'] = $month;
+        $insert_payroll['pr_year'] = $year;
+        $insert_payroll['pr_basic_salary'] = $basic_salary;
+        $insert_payroll['pr_leave'] = $total_leave;
+        $insert_payroll['pr_overtime'] = $total_ot;
+        $insert_payroll['pr_hra'] = $house_rent_allow; // House Rent Allowance
+        $insert_payroll['pr_transport_allow'] = $transport_allow; // Transportation Allowance
+        $insert_payroll['pr_telephone_allow'] = $telephone_allow; // Telephone Allowance
+        $insert_payroll['pr_food_allow'] = $food_allow; // Food Allowance
+        $insert_payroll['pr_other_allow'] = $other_allow; // Other Allowance
+        $insert_payroll['pr_total_salary'] = $total_salary;
+        $insert_payroll['pr_added_date'] = date('Y-m-d H:i:s'); // Current date and time
+
+        $payroll_id = $this->common_model->InsertData('hr_payrolls',$insert_payroll);
+
+        /// End
+
+
+
+        //Insert Journal voucher
+
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+
+        $insert_journal['jv_voucher_no'] = $juid;
+
+        $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
+
+        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
+
+        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+
+        $insert_journal['jv_added_date'] = date('Y-m-d');
+
+        $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
+
+        $this->common_model->EditData(array('pr_journal_id' => $journal_id),array('pr_id' => $payroll_id),'hr_payrolls');
+
+        //Insert Journal invoices
+
+        for($ji=0;$ji<count($this->request->getPost('jv_account'));$ji++){
+
+        $account = $this->request->getPost('jv_account')[$ji];
+
+        $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_name' => $account));
+
+        $account_id = 0;
+
+        if(!empty($account_data))
+        $account_id = $account_data->ca_id;
+
+        $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
+        $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
+        $narration = $this->request->getPost('jv_remarks')[$ji];
+        
+        $insert_journal_invoice['ji_voucher_id'] = $journal_id;
+        //$insert_journal_invoice['ji_sales_order_id'] = ''; // Populate if needed
+        $insert_journal_invoice['ji_account'] = $account_id;
+        $insert_journal_invoice['ji_debit'] = $debit;
+        $insert_journal_invoice['ji_credit'] = $credit;
+        $insert_journal_invoice['ji_narration'] = $narration;
+
+        $this->common_model->InsertData('accounts_journal_invoices',$insert_journal_invoice);
+
+        }
+
+        $return['msg'] = "Added to journal";
+
+        $return['status'] = 1;
+
+        }
+
+        echo json_encode($return);
 
 
     }
+
+
+
+
+
+
+
+    public function View()
+    {
+
+        if($this->request->getPost('pr_id'))
+        {
+
+        $id = $this->request->getPost('pr_id');
+
+        $payroll = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+
+        $payroll->pr_month = date("F", mktime(0, 0, 0, $payroll->pr_month, 10)); // e.g., "1" -> "January"
+
+        $payroll->pr_added_date = date('d M Y', strtotime($payroll->pr_added_date));
+        
+        echo json_encode($payroll);
+    
+        }
+
+    }
+
+
+
+    public function Delete()
+    {
+
+
+    $id = $this->request->getPost('id');
+
+
+    $cond = array('pr_id' => $id);
+    
+    $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
+
+    $this->common_model->DeleteData('hr_payrolls',$cond);
+
+    $jv_cond = array('jv_id' => $payroll->pr_journal_id);
+
+    $this->common_model->DeleteData('accounts_journal_vouchers',$cond);
+
+
+    }
+
+
+
+
+
+
+
+
 
 
 

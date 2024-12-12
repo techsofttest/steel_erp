@@ -312,6 +312,8 @@ class CashInvoice extends BaseController
 
                     'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
 
+                    'ci_advance_amount'  => $this->request->getPost('ci_advance_amount'),
+
                     'ci_paid_amount'  => $this->request->getPost('ci_advance_amount'),
 
                 ];
@@ -442,8 +444,15 @@ class CashInvoice extends BaseController
         
                     $charts_of_accounts = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_customer' => $cash_inv_data->ci_customer));
                     
-                    $receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
+                    //$receipts = $this->common_model->FetchWhere('steel_accounts_receipts',array('r_debit_account' => $charts_of_accounts->ca_id));
                     
+                    //Update Receipt Advance 
+                    $advance_cond = array('rso_sales_order' => $cash_inv_data->ci_sales_order);
+
+                    $advance_data = array('rso_remarks' => "Adjusted - ".$cash_inv_data->ci_reffer_no,'rso_status' => 1);
+
+                    $this->common_model->EditData($advance_data,$advance_cond,'accounts_receipts_sales_orders');
+
                     if(!empty($_POST['print_btn']))
                     {
                         
@@ -454,6 +463,7 @@ class CashInvoice extends BaseController
                     }
         
                 
+                    /*
         
                     $data['adjustment_data'] = "";
                     
@@ -479,6 +489,7 @@ class CashInvoice extends BaseController
                     {
                         $data['advance_status'] ="false"; 
                     }
+                    */
             
                 }
 
@@ -885,7 +896,7 @@ class CashInvoice extends BaseController
 
             //$total_amount =  $this->common_model->FetchSum('crm_sales_product_details','spd_amount',$cond1);
 
-            $data['sales_order_advance'] = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',array('rso_sales_order' => $sales_id));
+            $data['sales_order_advance'] = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',array('rso_sales_order' => $sales_id,'rso_status' => 0));
 
             //$data['sales_order_advance'] = format_currency(1000);
 

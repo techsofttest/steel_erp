@@ -537,7 +537,7 @@
 
 
 
-                                                    <div class="row align-items-center mb-2" id="bank_sec_add">
+                                                    <div class="row align-items-center mb-2 d-none" id="bank_sec_add">
 
                                                         <div class="col-col-md-3 col-lg-3">
 
@@ -1698,6 +1698,7 @@
             //var id=1;
 
 
+            
             if (!$("#add_form").valid()) {
                 alertify.error('Fill required fields!').delay(3).dismissOthers();
                 return false;
@@ -2354,6 +2355,11 @@
                 $('#bank_sec_add').removeClass("d-none");
             }
 
+            if($(this).children(':selected').val() == "")
+            {
+                $('#bank_sec_add').addClass("d-none");
+            }
+
         });
 
 
@@ -2867,6 +2873,7 @@
 
 
 
+            /*
             if ((max != "") && (value > max)) {
 
                 alertify.error('Cannot be greater than pending amounts!').delay(3).dismissOthers();
@@ -2884,6 +2891,7 @@
                 $(this).val(max);
 
             }
+            */
 
 
             TotalAmount();
@@ -3072,7 +3080,7 @@
 
 
 
-
+        /*
         $('body').on('change', '.debit_account_select2', function() {
 
             var vendor_id = $(this).val();
@@ -3108,6 +3116,7 @@
             });
 
         });
+        */
 
 
 

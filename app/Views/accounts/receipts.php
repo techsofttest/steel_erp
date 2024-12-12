@@ -206,7 +206,7 @@
 
 
 
-                                                <div class="row align-items-center mb-2" id="bank_sec_add">
+                                                <div class="row align-items-center mb-2 d-none" id="bank_sec_add">
                                                     <div class="col-col-md-3 col-lg-3">
                                                         <label for="basiInput" class="form-label">Bank</label>
                                                     </div>
@@ -1885,44 +1885,6 @@
 
 
 
-        $('#AddModal .btn-close').click(function() {
-
-            //$('#AddModal').on('hidden.bs.modal', function () {
-
-            var stat = $('#AddModal #add_saved').val();
-
-            if (stat == "no") {
-                if ($('#added_id').val() != "") {
-
-                    var id = $('#added_id').val();
-
-                    $.ajax({
-
-                        url: "<?php echo base_url(); ?>Accounts/Receipts/Delete",
-
-                        method: "POST",
-
-                        data: {
-                            id: id
-                        },
-
-                        success: function(data) {
-                            //alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
-
-                            datatable.ajax.reload(null, false)
-                        }
-                    })
-
-                }
-            }
-
-        })
-
-
-
-
-
-
         $('body').on('input', '.credit_amount', function() {
 
             value = parseFloat($(this).val());
@@ -2234,12 +2196,15 @@
             }
 
 
+            /*
             if (!$("#add_form").valid()) {
                 alertify.error('Fill required fields!').delay(3).dismissOthers();
                 return false;
             }
+            */
 
 
+            /*
             if ($('#added_id').val() == '') {
 
                 $('#add_form').submit();
@@ -2249,22 +2214,18 @@
                     return false;
                 }
 
-                /*
-                if($('#added_id').val()=='')
-                {
-                return false;
-                }
-                */
+               
 
             }
+            */
 
 
             //var id=1;
 
             // Use a timeout-based polling approach
-            var checkValueInterval = setInterval(function() {
-                if ($('#added_id').val() !== '') {
-                    clearInterval(checkValueInterval);
+            //var checkValueInterval = setInterval(function() {
+                //if ($('#added_id').val() !== '') {
+                    //clearInterval(checkValueInterval);
 
                     var receipt = $('#added_id').val();
 
@@ -2276,9 +2237,7 @@
 
                     var credit_narration = parent.find('.credit_narration').val();
 
-
                     $.ajax({
-
 
                         url: "<?php echo base_url(); ?>Accounts/Receipts/FetchInvoices",
 
@@ -2309,11 +2268,12 @@
                             $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
 
                             $('#add_form').attr('data-submit', 'true');
-                            $('#add_form').attr('data-rcid', data);
-                            datatable.ajax.reload(null, false)
+
+                            //$('#add_form').attr('data-rcid', data);
+
+                            //datatable.ajax.reload(null, false)
 
                             $('#AddModal').modal('hide');
-
 
                             $('body #fifo_add').attr('data-total', credit_amount);
 
@@ -2332,10 +2292,10 @@
 
                     });
 
-                } else {
+                //} else {
                     //console.log('No'); // Logging for debugging purposes
-                }
-            }, 100);
+                //}
+            //}, 100);
 
         });
 
@@ -3553,6 +3513,11 @@
             } else {
                 $('#bank_sec_add').removeClass("d-none");
                 $('.bank_sec_edit').removeClass("d-none");
+            }
+
+            if($(this).children(':selected').val() == "")
+            {
+                $('#bank_sec_add').addClass("d-none");
             }
 
 

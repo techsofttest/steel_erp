@@ -578,6 +578,8 @@
 
 <!--save modal section start-->
 
+<?php /*
+
 <div class="modal fade" id="SaveModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<form  class="Dashboard-form class" id="">
@@ -607,20 +609,7 @@
                                                             
                                                            
                                 </thead>
-                                                        
-                                <tbody  class="travelerinfo adjustment_table">
-                                    
-                                    <!--<tr>
-                                        <td>1</td>
-                                        <td><input type="date" name="" value="30-01-2024" class="form-control" required></td>
-                                        <td><input type="text" name="" value="RF567" class="form-control" required></td>
-                                        <td><input type="text" name="" value="420" class="form-control" required></td>
-                                        <td><input type="text" name="" value="2" class="form-control" required></td>
-                                        <td><input type="checkbox" name="" value="" class="" required></td>
-                                    </tr>--->
-                                    
-                                </tbody>
-
+                                              
                                 
 
                             </table>
@@ -652,6 +641,8 @@
 	</div>
 
 </div>
+
+*/ ?>
 
 <!--save modal section end-->
 
@@ -1412,7 +1403,7 @@
 
                                     $('#CashInvoice').modal('hide');
 
-                                    $('.adjustment_table').html(data.adjustment_data);
+                                    //$('.adjustment_table').html(data.adjustment_data);
 
                                     $('.customer_id').val('').trigger('change');
 
@@ -1427,10 +1418,12 @@
                                         window.open(data.print, '_blank');
                                     }
 
+                                    /*
                                     if(data.advance_status === "true")
                                     {
                                         $('#SaveModal').modal('show');
                                     }
+                                    */
 
                                 }else{
 
