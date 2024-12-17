@@ -1,8 +1,34 @@
 <style>
-    #DataTable td{
-        line-height:2.3
+    .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
     }
-    </style>
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
+    #DataTable td {
+        line-height: 1.0
+    }
+    #DataTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+   
+</style>
+
 
 <div class="tab-content text-muted">
 
@@ -227,19 +253,19 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Material Received Note to Purchase Voucher Analysis </h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-12%">Material Received Note to Purchase Voucher Analysis </h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
 
-                                
-                                            <button class="excel_button report_button" type="submit">Excel</button>
-                                      
+
+                                        <button class="excel_button report_button" type="submit">Excel</button>
+
 
                                         <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -253,28 +279,29 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="max-height:80vh; overflow-x:scroll;">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
+                                    <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
+                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <thead>
                                                 <tr>
 
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th class="text-center">Date</th>
-                                                    <th class="text-center">MRN Ref</th>
-                                                    <th class="text-center">Vendor</th>
-                                                    <th class="text-center">Purchase Order Ref</th>
-                                                    <th class="text-center">Sales Order Ref</th>
-                                                    <th class="text-center">Vendor DN Ref</th>
-                                                    <th>Amount</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th class="text-center">Vendor Invoice Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Rate</th>
-                                                    <th>Amount</th>
-                                                    <th>Balance</th>
+                                                    <th class="no-sort text-center" style="width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:250px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:120px">Purchase Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:90px">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:350px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Quantity</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Rate</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Discount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:120px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Quantity</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Rate</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:90px">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:90px">Balance</th>
 
                                                 </tr>
                                             </thead>
@@ -286,92 +313,100 @@
                                                     $mrn_total = $pvp_total = $total = $balance = 0;
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
-                                                            <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo $pur_order->mrn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->mrn_date; ?></td>
 
-                                                            <td class="text-center"><?php echo $pur_order->mrn_reffer; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_reffer; ?></td>
 
-                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
-                                                                    echo $pur_order->mrn_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
-                                                                } ?>
+                                                            <td class="" style="white-space: nowrap;width:250px"><?php foreach ($vendors as $vendor) {
+                                                                                                                        echo $pur_order->mrn_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                                                                    } ?>
                                                             </td>
 
-                                                            <td class="text-center"><?php echo $pur_order->po_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:120px"><?php echo $pur_order->po_reffer_no; ?></td>
+
+                                                            <td colspan="9" align="left" class="p-0">
+                                                                <table>
+                                                                    <?php
+
+                                                                    foreach ($pur_order->product_orders as $orders) { ?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
 
 
-                                                            <td class="text-center"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->so_reffer_no; ?><br>
-                                                                <?php } ?></td>
 
-                                                            <td class="text-center"><?php echo $pur_order->mrn_delivery_note; ?></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $orders->so_reffer_no; ?></td>
 
-                                                            <td class="text-end"><?php $total_amt = 0;
-                                                                                    foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php $total_amt += $orders->rnp_amount; ?>
-                                                                <?php }
-                                                                                    echo format_currency($total_amt);
-                                                                                    $total += $total_amt; ?></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_delivery_note; ?></td>
 
-
-                                                            <td><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->product_details; ?><br>
-                                                                <?php } ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:90px"><?php $total_amt = 0;
+                                                                                                                                            foreach ($pur_order->product_orders as $ord) { ?>
+                                                                                    <?php $total_amt += $ord->rnp_amount; ?>
+                                                                                <?php }
+                                                                                                                                            echo format_currency($total_amt);
+                                                                                                                                            $total += $total_amt; ?></td>
 
 
-                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->rnp_current_delivery ?? ''; ?><br>
-                                                                <?php } ?></td>
-
-                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pop_rate ?? 0); ?><br>
-                                                                <?php } ?></td>
-
-                                                            <td class="text-end"><?php foreach ($pur_order->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->rnp_amount ?? 0);
-                                                                                        $mrn_total += $orders->rnp_amount ?? 0; ?><br>
-                                                                <?php } ?></td>
+                                                                            <td style="width:350px">
+                                                                                <?php echo $orders->product_details; ?><br>
+                                                                            </td>
 
 
-                                                            <td><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:70px">
+                                                                                <?php echo $orders->rnp_current_delivery ?? ''; ?>
+                                                                            </td>
 
-                                                            <td class="text-end">
-                                                                <?php
-                                                                // Check if voucher_prod exists and is an array
-                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) {
-                                                                        echo $orders->pvp_qty ?? 0; ?><br>
-                                                                <?php }
-                                                                } else {
-                                                                    echo "0"; // Handle the case when voucher_prod is not set
-                                                                } ?>
+                                                                            <td class="text-end" style="width:70px">
+                                                                                <?php echo format_currency($orders->pop_rate ?? 0); ?></td>
+                                                                                <td class="text-end" style="width:70px">
+                                                                                <?php echo format_currency($orders->pop_discount ?? 0); ?></td>
+
+                                                                            <td class="text-end" style="white-space: nowrap;width:90px"><?php echo format_currency($orders->rnp_amount ?? 0);
+                                                                                                                                        $mrn_total += $orders->rnp_amount ?? 0; ?></td>
+
+
+                                                                            <td class="text-center" style="white-space: nowrap;width:120px"><?php echo $pur_order->pv_vendor_inv ?? ''; ?></td>
+
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </table>
                                                             </td>
 
-                                                            <td class="text-end">
-                                                                <?php
-                                                                // Check if voucher_prod exists and is an array
-                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) {
-                                                                        echo format_currency($orders->pvp_rate ?? 0); ?><br>
-                                                                <?php }
-                                                                } else {
-                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
-                                                                } ?>
-                                                            </td>
+                                                            <?php if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {  ?>
+                                                                <td colspan="4" align="left" class="p-0">
+                                                                    <table>
+                                                                        <?php
 
-                                                            <td class="text-end">
-                                                                <?php
-                                                                // Check if voucher_prod exists and is an array
-                                                                if (isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
-                                                                    foreach ($pur_order->voucher_prod as $orders) {
-                                                                        echo format_currency($orders->pvp_amount ?? 0);
-                                                                        $pvp_total += $orders->pvp_amount ?? 0; ?><br>
-                                                                <?php }
-                                                                } else {
-                                                                    echo format_currency(0); // Handle the case when voucher_prod is not set
-                                                                } ?>
-                                                            </td>
+                                                                        foreach ($pur_order->product_orders as $orders) { ?>
+                                                                            <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                            <td class="text-end">
+                                                                                <td class="text-end" style="white-space: nowrap;width:70px">
+                                                                                    <?php echo $orders->pvp_qty ?? 0; ?> </td>
+
+                                                                                <td class="text-end" style="white-space: nowrap;width:70px">
+                                                                                    <?php echo format_currency($orders->pvp_rate ?? 0); ?>
+                                                                                </td>
+                                                                                <td class="text-end" style="white-space: nowrap;width:70px">
+                                                                                    <?php echo format_currency($orders->pvp_rate ?? 0); ?>
+                                                                                </td>
+
+                                                                                <td class="text-end" style="white-space: nowrap;width:90px">
+                                                                                    <?php
+                                                                                    echo format_currency($orders->pvp_amount ?? 0);
+                                                                                    $pvp_total += $orders->pvp_amount ?? 0; ?>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </table>
+                                                                </td>
+                                                            <?php } else { ?>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            <?php  } ?>
+
+
+                                                            <td class="text-end" style="white-space: nowrap;width:90px">
                                                                 <?php
                                                                 // Ensure the counts of product_orders and voucher_prod are the same
                                                                 if (isset($pur_order->product_orders) && is_array($pur_order->product_orders) && isset($pur_order->voucher_prod) && is_array($pur_order->voucher_prod)) {
@@ -391,6 +426,8 @@
                                                             </td>
 
 
+
+
                                                         </tr>
 
 
@@ -398,23 +435,26 @@
                                                     <?php $i++;
                                                     } ?>
                                                     <tr>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($mrn_total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($pvp_total); ?></th>
-                                                        <th class="text-end"><?php echo format_currency($balance); ?></th>
+                                                        <th style="width:40px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th style="white-space: nowrap;width:250px"></th>
+                                                        <th style="white-space: nowrap;width:120px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:90px"><?php echo format_currency($total); ?></th>
+                                                        <th style="white-space: nowrap;width:350px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:90px"><?php echo format_currency($mrn_total); ?></th>
+                                                        <th style="white-space: nowrap;width:120px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:90px"><?php echo format_currency($pvp_total); ?></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:90px"><?php echo format_currency($balance); ?></th>
+                                                        
                                                     </tr>
                                                 <?php
                                                 } ?>
@@ -454,6 +494,9 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 <script>

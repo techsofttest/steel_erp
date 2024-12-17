@@ -1,6 +1,32 @@
 <style>
+    .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
+    }
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
     #DataTable td {
-        line-height: 2.3;
+        line-height: 1.0
+    }
+
+    #DataTable {
+        table-layout: fixed;
+        width: auto;
+        margin: unset
     }
 </style>
 <div class="tab-content text-muted">
@@ -188,7 +214,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Purchase Voucher Reports</h4>
@@ -212,22 +238,22 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th class="text-center">Date</th>
-                                                    <th class="text-center">Vendor Invoice Ref</th>
-                                                    <th class="text-center">Vendor</th>
-                                                    <th class="text-center">Purchase Order Ref</th>
-                                                    <th class="text-center">MRN Ref</th>
-                                                    <th class="text-end">Amount</th>
-                                                    <th>Product</th>
-                                                    <th class="text-end">Quantity</th>
-                                                    <th class="text-end">Rate</th>
-                                                    <th class="text-end">Discount</th>
-                                                    <th class="text-end">Amount</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th style="white-space: nowrap;width:400px">Product</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Quantity</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -239,67 +265,67 @@
                                                     foreach ($purchase_order as $pur_vouc) { ?>
                                                         <tr>
 
-                                                            <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo $pur_vouc->pv_date; ?></td>
-                                                            <td class="text-center"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->pv_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
-                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
-                                                                                        echo $pur_vouc->pv_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
-                                                                                    } ?>
+                                                            <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
+                                                                                                            echo $pur_vouc->pv_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                                                        } ?>
                                                             </td>
 
-                                                            <td class="text-center"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_vouc->po_reffer_no ?? ''; ?></td>
 
                                                             <!-- <td class="text-center"><?php echo $pur_vouc->mrn_reffer ?? ''; ?></td> -->
 
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->mrn_reffer; ?><br>
-                                                                <?php } ?></td>
+                                                            <td colspan="7" align="left" class="p-0">
+                                                                <table>
+                                                                    <?php foreach ($pur_vouc->product_orders as $orders) { ?>
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+
+                                                                            <td style="white-space: nowrap;width:100px">
+                                                                                <?php echo $orders->mrn_reffer; ?><br>
+                                                                            </td>
 
 
-                                                            <td class="text-end"><?php echo format_currency($pur_vouc->pv_total);
-                                                                                    $total += $pur_vouc->pv_total; ?> </td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($pur_vouc->pv_total);
+                                                                                                    $total += $pur_vouc->pv_total; ?> </td>
 
-                                                            <td><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pvp_prod_dec; ?><br>
-                                                                <?php } ?></td>
-                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo $orders->pvp_qty; ?><br>
-                                                                <?php } ?></td>
+                                                                            <td style="white-space: nowrap;width:400px"> <?php echo $orders->pvp_prod_dec; ?></td>
 
-                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pvp_rate); ?><br>
-                                                                <?php } ?></td>
-                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pvp_discount); ?>%<br>
-                                                                <?php } ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:70px"><?php echo $orders->pvp_qty; ?></td>
 
-                                                            <td class="text-end"><?php foreach ($pur_vouc->product_orders as $orders) { ?>
-                                                                    <?php echo format_currency($orders->pvp_amount);
-                                                                                        $pv_total += $orders->pvp_amount; ?><br>
-                                                                <?php } ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:70px"> <?php echo format_currency($orders->pvp_rate); ?></td>
 
-                                                        </tr>
+                                                                            <td class="text-end" style="white-space: nowrap;width:70px"> <?php echo format_currency($orders->pvp_discount); ?></td>
 
-                                                    <?php $i++;
+                                                                            <td class="text-end" style="white-space: nowrap;width:100px"> <?php echo format_currency($orders->pvp_amount);
+                                                                                                        $pv_total += $orders->pvp_amount; ?> </td>
+
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </table>
+                                                            </td>
+
+                                                        <?php $i++;
                                                     } ?>
 
-                                                    <tr>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($pv_total); ?></th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th class="text-end"><?php echo format_currency($total); ?></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th class="text-end"><?php echo format_currency($pv_total); ?></th>
+                                                        </tr>
 
-                                                <?php
+                                                    <?php
                                                 } ?>
 
                                             </tbody>
@@ -338,6 +364,9 @@
 
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 <script>

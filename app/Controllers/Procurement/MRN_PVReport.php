@@ -512,6 +512,13 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
+                    $pdf_data .= "'>" . format_currency($prod_del->pop_discount ?? 0) . "</td>";
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
                     $pdf_data .= "'>" . format_currency($prod_del->rnp_amount ?? 0) . "</td>";
                     $rnp_amt += $prod_del->rnp_amount ?? 0;
 
@@ -685,6 +692,8 @@ class MRN_PVReport extends BaseController
                 <th align="right">Quantity</th>
     
                 <th align="right">Rate</th>
+
+                <th align="right">Discount</th>
     
                 <th align="right">Amount</th>
     
@@ -711,6 +720,7 @@ class MRN_PVReport extends BaseController
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>               
                     <td style="border-top: 2px solid; text-align:right;">' . format_currency($total_amount) . '</td>
+                    <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>
                     <td style="border-top: 2px solid;"></td>

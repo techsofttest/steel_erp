@@ -165,8 +165,6 @@ class DepreciationCalculation extends BaseController
     // add account head
     public function Add()
     {
-        $insert_data = $this->request->getPost();
-
         $insert_data = [
             'dpc_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpc_acquired_date'))),
             'dpc_account_head' => $this->request->getPost('dpc_account_head'),
@@ -176,11 +174,11 @@ class DepreciationCalculation extends BaseController
             'dpc_depreciation' => $this->request->getPost('dpc_depreciation'),
         ];
 
+        // Insert main data
         $id = $this->common_model->InsertData('pro_depreciation_calculation', $insert_data);
 
-
+        // Insert detailed data
         for ($i = 0; $i < count($this->request->getPost('dpcd_acquired_date')); $i++) {
-
             $det_data = [
                 'dpcd_acquired_date' => date('Y-m-d', strtotime($this->request->getPost('dpcd_acquired_date')[$i])),
                 'dpcd_depreciation_id' => $id,
@@ -192,10 +190,13 @@ class DepreciationCalculation extends BaseController
                 'dpcd_depreciation_amt' => $this->request->getPost('dpcd_depreciation_amt')[$i],
             ];
 
-
             $this->common_model->InsertData('pro_depreciation_det', $det_data);
         }
+
+        // Return the inserted ID as a response
+        return $this->response->setJSON(['status' => 'success', 'id' => $id]);
     }
+
 
 
     public function Date()
@@ -224,7 +225,10 @@ class DepreciationCalculation extends BaseController
         // Calculate account head balance
         $acchead_balance = 0;
 
-        $acchead_balance = $this->pro_model->AccHeadBalance($data['fixedasset']->cfs_credit_account);
+        $credit_balance = $this->pro_model->CreditBalance($data['fixedasset']->cfs_credit_account);
+
+        $acchead_balance = $credit_balance->ending_balance;
+
 
         $data['acchead_balance'] = $acchead_balance;
 
@@ -243,29 +247,38 @@ class DepreciationCalculation extends BaseController
 
         foreach ($assets as $asset) {
 
-            $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id);
+            $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id) ?? 0;
 
-            // echo $fixed_amount;
+            $fixed_amount = (float)$fixed_amount;
+            $cfs_last_yr_depreciation = (float)$asset->cfs_last_yr_depreciation;
+
+            $fixed_amount -= $cfs_last_yr_depreciation;
+
+
 
 
             // Ensure $sel_date is in year format (extract only the year part)
             $sel_year = date('Y-m-d', strtotime($sel_date));
 
             // Get the acquired year and set it to January 1st of that year
-            $acq_year = date('Y', strtotime($asset->cfs_acquired_date));
+
+            // $acq_year = date('Y', strtotime($asset->cfs_acquired_date));
+
+            $acq_year = date('Y', strtotime($sel_date));
+
             $acq_date = date('Y-m-d', strtotime($acq_year . '-01-01')); // January 1st of the acquired year
 
             // Calculate the difference in days between the two dates
             $diff_in_days = (strtotime($sel_date) - strtotime($acq_date)) / (60 * 60 * 24);
 
             // Output the difference in days
-            $entitlement = $diff_in_days+1;
+            $entitlement = $diff_in_days + 1;
 
 
             $acchead_balance = isset($fixed_amount) ? $fixed_amount : 0;
 
             $depreciation_percent = preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation); // Remove non-numeric characters
-            $depreciation = floatval($depreciation_percent)/100; // Convert to float
+            $depreciation = floatval($depreciation_percent) / 100; // Convert to float
 
             $depreciation_amount = round(floatval(($acchead_balance * $depreciation * $entitlement) / 365), 2);
 
@@ -289,7 +302,7 @@ class DepreciationCalculation extends BaseController
             <td colspan="2" align="left" class="amount_in_words_add"></td>
             <td align="right" colspan="3">Total</td>
             <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
-            <th id="total_amount"> ' . $total_amt . '</th>
+            <th id="total_amount"> ' . format_currency($total_amt) . '</th>
         </tr>';
 
         // Set fixed_asset key in the response data
@@ -595,7 +608,7 @@ class DepreciationCalculation extends BaseController
         $total_amt = 0;
         foreach ($depreciation_det as $det) {
 
-            $total_amt += $det->dpcd_amount;
+            $total_amt += $det->dpcd_depreciation_amt;
 
             $dep_det .= '<tr>
                                  <td>' . $j . '</td>
@@ -616,7 +629,7 @@ class DepreciationCalculation extends BaseController
         <td colspan="2" align="left" class="amount_in_words_add"></td>
         <td align="right" colspan="3">Total</td>
         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
-        <th id="total_amount"> ' . $total_amt . '</th>
+        <th id="total_amount"> ' . format_currency($total_amt) . '</th>
     </tr>';
 
         // Set fixed_asset key in the response data
@@ -626,6 +639,198 @@ class DepreciationCalculation extends BaseController
 
         echo json_encode($data);
     }
+
+
+    public function AddToJvRows()
+    {
+
+        try {
+            $credit_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $this->request->getPost('cfs_credit_account')]);
+            $debit_acc = $this->common_model->SingleRow('accounts_charts_of_accounts', ['ca_id' => $this->request->getPost('cfs_debit_account')]);
+
+            if (!$credit_acc || !$debit_acc) {
+                // Return an error response if either account is not found
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Account not found']);
+            }
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            log_message('error', 'Error in AddToJvRows: ' . $e->getMessage());
+
+            // Return an error response
+            return $this->response->setJSON(['status' => 'error', 'message' => 'An error occurred']);
+        }
+
+        $emp_journal = "";
+
+        $dep_amount = floatval($this->request->getPost('depreciation'));
+        // echo $dep_amount;
+        // exit;
+
+        //     $joins = array(
+
+        //         array(
+        //             'table' => 'hr_employees',
+        //             'pk' => 'emp_id',
+        //             'fk' => 'ts_emp_id',
+        //             ), 
+
+        //         array(
+        //             'table' => 'hr_divisions',
+        //             'pk' => 'div_id',
+        //             'fk' => 'emp_division',
+        //             'table2' => 'hr_employees',
+        //             ), 
+
+        //     );
+
+        $depreciation_det = $this->common_model->FetchWhere('pro_depreciation_det', ['dpcd_depreciation_id' => $this->request->getPost('ID')]);
+
+        //     $emp_journal ="";
+
+        //     foreach($timesheets as $ts)
+        //     {
+
+        //         //Salary And Deductions
+        //             $basic_salary=0;
+        //             $total_leave=0;
+        //             $total_ot=0;
+
+        //             //Allowances
+        //             $house_rent_allow=0;
+        //             $transport_allow=0;
+        //             $telephone_allow=0;
+        //             $food_allow=0;
+        //             $other_allow=0;
+        //             $total_salary=0;
+
+        //             $staff_salary=0;
+        //             $salaries_wages=0;
+
+        //             foreach($timesheets as $ts)
+        //             {
+
+        //             if($ts->emp_division==2)
+        //             {
+        //             //staff_salary 
+        //             $staff_salary+= $ts->ts_cur_month_basic_salary;
+        //             }
+
+
+        //             if($ts->emp_division==1)
+        //             {
+        //             $salaries_wages+=$ts->ts_cur_month_basic_salary;
+        //             }
+
+        //             $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
+
+        //             $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
+
+        //             $basic_salary+=$ts->ts_cur_month_basic_salary;
+
+        //             $total_ot+=$ot;
+
+        //             $total_leave+=$leave;
+
+        //             $house_rent_allow+=$ts->ts_house_rent_allowance;
+
+        //             $transport_allow+=$ts->ts_transportation_allowance;
+
+        //             $telephone_allow+=$ts->ts_telephone_allowance;
+
+        //             $food_allow+=$ts->ts_food_allowance;
+
+        //             $other_allow+=$ts->ts_other_allowance;
+
+        //             $total_salary+=$ts->ts_cur_month_salary;
+
+        //     }
+
+
+
+
+        // }
+
+        $data['jv_rows'] = "";
+
+        $data['total_credit'] =  $data['total_debit'] = 0;
+
+        $j = 1;
+        foreach ($depreciation_det as $dept) {
+
+
+            $data['jv_rows'] .= '
+
+        <tr class="jv_row">
+                                  <th class="sl_no"> '.$j.' </th>
+                                  <th class="select2_parent" width="35%"> 
+                                  <input type="text" class="form-control" name="jv_account[]" value="' . $dept->dpcd_description . '" readonly>
+                                  </th>
+                                  <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                  <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="' . $dept->dpcd_depreciation_amt . '" readonly></th>
+                                  <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+      </tr>
+      ';
+      
+      $data['total_debit'] += $dept->dpcd_depreciation_amt;
+
+      $j++;
+        }
+
+
+
+
+
+
+        $data['jv_rows'] .= '
+
+      <tr class="jv_row">
+
+                                <th class="sl_no"> '. $j.' </th>
+
+                                <th class="select2_parent" width="35%"> 
+                                    
+                                <input type="text" class="form-control" name="jv_account[]" value="' . $credit_acc->ca_name . '" readonly>
+
+                                </th>
+                                
+                                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+
+                                <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount"  readonly></th>
+
+                                <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="' . $dep_amount . '" readonly></th>
+
+    </tr>
+    
+    ';
+
+    $data['total_credit'] = $dep_amount;
+
+        $data['jv_rows'] .= '
+    <tr>
+        <td colspan="3" align="right">Total</td>
+        <th id="total_amount_debit_disp">' . htmlspecialchars($dep_amount) . '</th>
+        <th id="total_amount_credit_disp">' . htmlspecialchars($dep_amount) . '</th>
+        
+        <input type="hidden" id="total_amount_inp" name="total_amount" value="' . $dep_amount . '">
+        <input type="hidden" id="total_amount_debit" name="total_debit" value="">
+        <input type="hidden" id="total_amount_credit" name="total_credit" value="">
+    </tr>
+';
+
+
+
+        //Employee Credit Journal
+
+
+
+
+        $data['jv_rows'] .= $emp_journal;
+
+
+
+        return json_encode($data);
+    }
+
 
 
     public function Delete()
@@ -687,5 +892,71 @@ class DepreciationCalculation extends BaseController
         $data['depreciation_det'] = $dep_det;
 
         echo json_encode($data);
+    }
+
+
+
+
+    public function AddJournalVoucher()
+    {
+
+       
+// echo $this->request->getPost('total_debit'). ' - debit total';
+
+// echo $this->request->getPost('total_credit'). ' - credit total';
+
+// exit;
+
+        //Insert Journal voucher
+
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers', "JV-{$this->data['accounting_year']}-");
+
+        $insert_journal['jv_voucher_no'] = $juid;
+
+        $insert_journal['jv_date'] = date('Y-m-d', strtotime($this->request->getPost('jv_date')));
+
+        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
+
+        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
+
+        $insert_journal['jv_added_date'] = date('Y-m-d');
+
+        $journal_id = $this->common_model->InsertData('accounts_journal_vouchers', $insert_journal);
+
+
+        //Insert Journal invoices
+
+        for ($ji = 0; $ji < count($this->request->getPost('jv_account')); $ji++) {
+
+            $account = $this->request->getPost('jv_account')[$ji];
+
+            $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts', array('ca_name' => $account));
+
+            $account_id = 0;
+
+            if (!empty($account_data))
+                $account_id = $account_data->ca_id;
+
+            $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
+            $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
+            $narration = $this->request->getPost('jv_remarks')[$ji];
+
+            $insert_journal_invoice['ji_voucher_id'] = $journal_id;
+            //$insert_journal_invoice['ji_sales_order_id'] = ''; // Populate if needed
+            $insert_journal_invoice['ji_account'] = $account_id;
+            $insert_journal_invoice['ji_debit'] = $debit;
+            $insert_journal_invoice['ji_credit'] = $credit;
+            $insert_journal_invoice['ji_narration'] = $narration;
+
+            $this->common_model->InsertData('accounts_journal_invoices', $insert_journal_invoice);
+        }
+
+        $return['msg'] = "Added to journal";
+
+        $return['status'] = 1;
+
+
+
+        echo json_encode($return);
     }
 }

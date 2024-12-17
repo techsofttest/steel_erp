@@ -166,8 +166,6 @@ class FixedAssetDisposal extends BaseController
     }
 
 
-
-
     //view page
     public function index()
     {
@@ -227,7 +225,12 @@ class FixedAssetDisposal extends BaseController
         // Fetch the fixed asset data
         $data['fixedasset'] = $asset = $this->common_model->SingleRowJoin('pro_create_fixed_asset', $cond, $joins);
 
-        $data['asset_balance'] = $this->pro_model->FixedAssetBalance($fixed);
+        $fixed_asset_bal = floatval($this->pro_model->FixedAssetBalance($fixed)); // Get the fixed asset balance
+        $fixed_asset_depr = floatval($data['fixedasset']->cfs_depreciation); // Get the depreciation percentage
+        
+        // Add the depreciation percentage of the asset balance to the balance itself
+        $data['asset_balance'] = number_format($fixed_asset_bal + ($fixed_asset_bal * $fixed_asset_depr / 100), 2);
+        
 
         $fixed_amount = $this->pro_model->FetchFixedPurchases($asset->cfs_account_id);
 

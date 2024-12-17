@@ -1,8 +1,35 @@
 <style>
-    #DataTable td{
-        line-height:2.3
+    .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
     }
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
+    #DataTable td {
+        line-height: 1.0
+    }
+    #DataTable {
+        table-layout: fixed;
+        width: auto;
+        margin:unset
+    }
+   
 </style>
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -210,8 +237,8 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
+                            <div class="col-lg-12" style="padding: 0px;">
+                                <div class="card" >
                                     <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-13%">Pending Purchase Voucher Reports</h4>
 
@@ -235,18 +262,18 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="max-height:80vh; overflow-x:scroll">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th class="text-center">Date</th>
-                                                    <th class="text-center">Purchase Order Ref</th>
-                                                    <th class="text-center">Vendor</th>
-                                                    <th class="text-end">Amount</th>
-                                                    <th class="text-end">Recieved</th>
-                                                    <th class="text-end">Booked</th>
-                                                    <th class="text-end">Balance</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
+                                                    <th class="text-center" style="width:300px">Vendor</th>
+                                                    <th style="width:100px;white-space: nowrap" class="text-center">Amount</th>
+                                                    <th style="width:100px;white-space: nowrap" class="text-center">Recieved</th>
+                                                    <th style="width:100px;white-space: nowrap" class="text-center">Booked</th>
+                                                    <th style="width:100px;white-space: nowrap" class="text-center">Balance</th>
                                                 </tr>
                                             </thead>
 
@@ -259,18 +286,18 @@
                                                         <tr>
 
                                                             <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo $pur_vouc->po_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->po_date; ?></td>
                                                             <td class="text-center"><?php echo $pur_vouc->po_reffer_no; ?></td>
 
-                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
+                                                            <td class="rotate" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                     echo $pur_vouc->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
                                                             </td>
 
-                                                            <td class="text-end"><?php echo format_currency($pur_vouc->po_amount);
+                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->po_amount);
                                                                                     $po_total += $pur_vouc->po_amount; ?></td>
 
-                                                            <td class="text-end"><?php $booked_note = 0;
+                                                            <td class="rotate text-end" style="width:80px"><?php $booked_note = 0;
                                                                                     foreach ($pur_vouc->received_products as $notes) {
                                                                                         $booked_note += $notes->rnp_amount;
                                                                                         //   print_r($notes);
@@ -278,11 +305,11 @@
                                                                                     echo format_currency($booked_note);
                                                                                     $pv_booked += $booked_note; ?></td>
 
-                                                            <td class="text-end"><?php echo format_currency($pur_vouc->pv_paid ?? 0);
+                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->pv_paid ?? 0);
                                                                                     $pv_paid += $pur_vouc->pv_paid ?? 0; ?></td>
 
-                                                            <td class="text-end"><?php echo format_currency($pur_vouc->po_amount - $pur_vouc->pv_paid);
-                                                                                    $balance += $pur_vouc->po_amount - $pur_vouc->pv_paid; ?></td>
+                                                            <td class="rotate text-end" style="width:100px"><?php echo format_currency($pur_vouc->po_amount - $booked_note);
+                                                                                    $balance += $pur_vouc->po_amount - $booked_note; ?></td>
 
 
 
@@ -341,6 +368,9 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 

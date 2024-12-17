@@ -524,6 +524,13 @@ class LPO_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_discount ?? 0))."</td>";
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+
+                        $pdf_data .= $border;
+                    }
                     $pdf_data .= "'>".format_currency($prod_del->pop_amount ?? 0)."</td>";
                     $pop_amt += $prod_del->pop_amount ?? 0;
                     
@@ -577,6 +584,36 @@ class LPO_PVReport extends BaseController
 
                     // 
 
+                    if ( isset($product_details)) {
+                        if ($q == count($product_details)) {
+                        $pdf_data .= "<td colspan='1' align='left' class='p-0' style='border-bottom: 2px solid;'><table>";
+                        }else{
+                            $pdf_data .= "<td colspan='1' align='left' class='p-0' style='border-bottom: 2px;'><table>";
+                        }
+                                          
+                        // Loop through both arrays to calculate the difference
+                       
+                            $pop_amount = $prod_del->pop_amount ?? 0;
+                            $pvp_amount = $prod_del->pvp_amount ?? 0;
+                            $difference = $pop_amount - $pvp_amount;
+                            
+                            // Format each row as a new table row within $pdf_data
+                            $pdf_data .= "<tr style='background: unset; border-bottom: hidden !important;'>
+                                            <td class='text-end' style='width:100px; text-align:right;'>" . format_currency($difference) . "</td>
+                                          </tr>";
+                    
+                            $diff_amt += $difference;
+                        
+                    
+                        $pdf_data .= "</table></td>";
+                    } else {
+                        // Display an empty cell if neither array is set
+                        $pdf_data .= "<td style='text-align:right; border-bottom: 2px solid;'></td>";
+                    }
+                
+                    
+
+
                     if ($q != 1) {
                         $pdf_data .= "</tr>";
                     }
@@ -584,15 +621,7 @@ class LPO_PVReport extends BaseController
                     $q++;
                 }
 
-                $pdf_data .= "<td style='text-align:right; border-bottom: 2px solid;";
-                if ($q == 1) {
-
-                    $pdf_data .= $border; $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
-                    $diff_amt += $po_amts - $pvp_amts;
-    
-                }
                
-                $pdf_data .= "'>" . (format_currency(($po_amts - $pvp_amts))) . "</td>";
 
 
                 if ($q == 1) {
@@ -729,6 +758,8 @@ class LPO_PVReport extends BaseController
 
             <th align="right">Rate</th>
 
+             <th align="right">Discount</th>
+
             <th align="right">Amount</th>
 
             <th align="left">Vendor Inv Ref</th>
@@ -754,6 +785,7 @@ class LPO_PVReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>               
                 <td style="border-top: 2px solid; text-align:right;">' .  format_currency($po_amt) . '</td>
+                <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
