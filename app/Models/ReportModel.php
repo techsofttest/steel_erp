@@ -253,6 +253,38 @@ class ReportModel extends Model
 
 
 
+    public function GetAccounts($head="",$type="")
+    {
+
+        $query = $this->db->table('accounts_charts_of_accounts');
+        
+        $query->select('*');
+
+        $this->db->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+
+        $this->db->join('accounts_account_types','accounts_account_types.at_id=accounts_account_heads.ah_account_type','left');
+
+        if($head !="")
+        {
+
+        $query->where('accounts_account_heads.ah_id',$head);
+
+        }
+
+        if($type !="")
+        {
+
+        $query->where('accounts_account_types.at_id',$type);
+
+        }
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+
+    }
+
 
 
 
@@ -265,7 +297,12 @@ class ReportModel extends Model
     $journal_table = "{$this->db->getPrefix()}accounts_journal_invoices";
     $pcv_table = "{$this->db->getPrefix()}accounts_petty_cash_voucher";
     $sr_table = "{$this->db->getPrefix()}crm_sales_return";
-    $pv_table = "{$this->db->getPrefix()}pro_purchase_voucher";
+    $pv_table = "{$this->db->getPrefix()}pro_purchase_voucher";                                                                                                                                                                                                                                                                 
+
+
+    //$account_head;
+
+    //$account_type;
 
 
     $query = "";
@@ -278,7 +315,7 @@ class ReportModel extends Model
                 {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
                 {$payment_table}.pay_date AS transaction_date,
                 {$payment_table}.pay_amount AS credit_amount,
-                NULL AS debit_amount,
+                NULL AS debit_amount,                                                                                                                                                                           
                 'Payment' as voucher_type,
                 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
                 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
@@ -897,7 +934,7 @@ $query .= ")";
 
 //Journal Start
 
-
+/*
 
 $query .= "UNION ALL 
 (SELECT 
@@ -991,6 +1028,122 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 }
 
+
+$query .= ")";
+
+*/
+
+
+
+$query .= "UNION ALL 
+(SELECT 
+    ji_id AS id,
+    jv.jv_voucher_no AS reference,
+    ah.ah_head_id AS head_id,
+    jv.jv_date AS transaction_date,
+    ji_credit AS credit_amount,
+    ji_debit AS debit_amount,
+    'Journal Voucher' AS voucher_type,
+    ca.ca_id AS account_id,
+    ca.ca_name AS account_name
+FROM {$this->db->getPrefix()}accounts_journal_invoices AS ji
+LEFT JOIN {$this->db->getPrefix()}accounts_journal_vouchers AS jv ON jv.jv_id = ji.ji_voucher_id
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca ON ca.ca_id = ji.ji_account
+LEFT JOIN {$this->db->getPrefix()}accounts_account_heads AS ah ON ah.ah_id = ca.ca_account_type
+LEFT JOIN {$this->db->getPrefix()}accounts_account_types AS at ON at.at_id = ah.ah_id";
+
+
+if (!empty($time_frame) || $account_type != "" || !empty($account_head) || !empty($account) || !empty($range_from) || !empty($range_to)) {
+    $query .= " WHERE ";
+}
+
+
+if ($time_frame != "") {
+    if ($time_frame == "Range") {
+        if ($date_from != "") {
+            $query .= "jv.jv_date >= '{$date_from}' ";
+        }
+
+        if ($date_to != "") {
+            if ($date_from != "") {
+                $query .= "AND ";
+            }
+            $query .= "jv.jv_date <= '{$date_to}' ";
+        }
+    } elseif ($time_frame == "Month") {
+        $query .= "YEAR(jv.jv_date) = YEAR(CURRENT_DATE()) 
+            AND MONTH(jv.jv_date) = MONTH(CURRENT_DATE()) ";
+    } elseif ($time_frame == "Year") {
+        $query .= "YEAR(jv.jv_date) = YEAR(CURRENT_DATE())";
+    }
+}
+
+if ($account_head != "") {
+    if ($time_frame != "" || $date_from != "" || $date_to != "") {
+        $query .= "AND ";
+    }
+    //$query .= "ah.ah_id = {$account_head} ";
+   $query .= "ji.ji_voucher_id IN (    
+        SELECT DISTINCT ji_inner.ji_voucher_id
+        FROM {$this->db->getPrefix()}accounts_journal_invoices AS ji_inner
+        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_head ON ca_head.ca_id = ji_inner.ji_account
+        LEFT JOIN {$this->db->getPrefix()}accounts_account_heads AS ah_head ON ah_head.ah_id = ca_head.ca_account_type
+        WHERE ah_head.ah_id = {$account_head}
+    )
+    AND ah.ah_id != {$account_head}";
+
+}
+
+if ($account_type != "") {
+    if ($account_head != "" || $time_frame != "") {
+        $query .= "AND ";
+    }
+    //$query .= "at.at_id = {$account_type} ";
+
+    $query .= "ji.ji_voucher_id IN (    
+        SELECT DISTINCT ji_voucher_id
+        FROM {$this->db->getPrefix()}accounts_journal_invoices AS ji_inner
+        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_type ON ca_type.ca_id = ji_inner.ji_account
+        LEFT JOIN {$this->db->getPrefix()}accounts_account_heads AS ah_type ON ah_type.ah_id = ca_type.ca_account_type
+        LEFT JOIN {$this->db->getPrefix()}accounts_account_types AS at_type ON at_type.at_id = ah_type.ah_id
+        WHERE at_type.at_id = {$account_type}
+    )
+    AND ah.ah_id NOT IN (
+        SELECT ah_head.ah_id
+        FROM {$this->db->getPrefix()}accounts_account_heads AS ah_head
+        WHERE ah_head.ah_id = {$account_type}
+    )";
+
+}
+
+if ($account != "") {
+    if ($account_head != "" || $account_type != "" || $time_frame != "" || $date_from != "" || $date_to != "") {
+        $query .= "AND ";
+    }
+    //$query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+
+    $query .= "ji.ji_voucher_id IN (    
+            SELECT DISTINCT ji_voucher_id
+            FROM {$this->db->getPrefix()}accounts_journal_invoices
+            WHERE {$this->db->getPrefix()}accounts_journal_invoices.ji_account = {$account}
+        )
+        AND ji.ji_account != {$account}";
+
+}
+
+if ($range_from != "") {
+    if ($account_head != "" || $account_type != "" || $time_frame != "") {
+        $query .= "AND ";
+    }
+    $query .= "ah.ah_head_id >= {$range_from} ";
+}
+
+if ($range_to != "") {
+    if ($account_head != "" || $account_type != "" || $time_frame != "" || $range_from != "") {
+        $query .= "AND ";
+    }
+    $query .= "ah.ah_head_id <= {$range_to} ";
+}
 
 $query .= ")";
 
@@ -1980,6 +2133,37 @@ $query .= " ORDER BY transaction_date ASC,id ASC";
 
     return $result;
 }
+
+
+
+
+
+
+
+public function FetchGlBalance($date_from, $date_to, $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="")
+{
+
+    $result = array();
+
+    $transactions = $this->FetchGLTransactions($date_from, $date_to, $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
+
+    $result['begining_balance'] = 0;
+
+    $result['total_credit'] = array_sum(array_column($transactions,'credit_amount'));
+
+    $result['total_debit'] = array_sum(array_column($transactions,'debit_amount'));
+
+    $result['balance'] = $result['begining_balance'] + $result['total_debit'] - $result['total_credit'];
+
+    return $result;
+
+}
+
+
+
+
+
+
 
 
 

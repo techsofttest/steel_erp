@@ -346,7 +346,7 @@ class ChartsOfAccounts extends BaseController
         $start = $end + $resultCount;
 
         if($term !="")
-        $where=array('ca_name' => $term);
+        $where="ca_name LIKE '%$term%'";
 
         $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_charts_of_accounts','ca_name','asc',$where,$end,$start);
       

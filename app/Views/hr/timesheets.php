@@ -173,22 +173,41 @@
                         
                         <tfoot>
 
+                        <tr>
+
+                        <th></th>
+                           
+                           <td id=""></td>
+
+
+                           <th></th>
+                           
+                           <td id="" align="right"></td>
+
+
+                           <th></th>
+                           
+                           <td id="" align="right"></td>
+
+
+                        </tr>
+
 
                         <tr>
 
                            <th>Working Days</th>
                            
-                           <td id="working_days_view"></td>
+                           <td  id="working_days_view"></td>
 
 
                            <th>Basic Salary</th>
                            
-                           <td id="basic_salary_view" align="right"></td>
+                           <td  id="basic_salary_view" align="right"></td>
 
 
                            <th>Leave</th>
                            
-                           <td id="total_leave_deduction_view" align="right"></td>
+                           <td  id="total_leave_deduction_view" align="right"></td>
                            
 
                         </tr>
@@ -313,10 +332,13 @@
                         <td id="hourly_salary_view" align="right"></td>
 
 
+                        <th></th>
+                        <td></td>
+                        <!--
                         <th>Basic Salary</th>
 
                         <td id="total_basic_salary_view" align="right"></td>
-
+                        -->
 
                         </tr>
 
@@ -741,7 +763,9 @@
                     <select class="form-select " name="month"  required>
                     
 
-                    <?php // Get the current month
+                    <?php
+                    /*
+                    // Get the current month
                         $currentMonth = (int)date('n'); // 'n' returns the current month number (1 to 12)
 
                         // Get the previous month
@@ -751,6 +775,35 @@
                     <option value="<?= $previousMonth ?>"><?= $months[$previousMonth] ?></option>
 
                     <option value="<?= $currentMonth ?>" selected><?= $months[$currentMonth] ?></option>
+
+                    */?>
+
+
+                    <option value="">Select a month</option>
+                                                <?php
+                                                $months = [
+                                                    "January", "February", "March", "April",
+                                                    "May", "June", "July", "August",
+                                                    "September", "October", "November", "December"
+                                                ];
+                                                
+                                                foreach ($months as $index => $month) {
+                                                    
+                                                   
+
+                                                    if($index == $this->data['accounting_month']-1) 
+                                                    { 
+                                                    $sel ="selected"; 
+                                                    }
+                                                    else{ 
+                                                    $sel=""; 
+                                                    }
+
+                                                    echo '<option value="' . ($index + 1) . '" '.$sel.'>' . $month . '</option>';
+                                                   
+                                                
+                                                }
+                                                ?>
                     
                     
 
@@ -1135,6 +1188,7 @@
 </div>
 
 
+
 <div class="row align-items-center mb-2">
 
 <div class="col-col-md-3 col-lg-3">
@@ -1145,13 +1199,16 @@
 
 <div class="col-col-md-9 col-lg-9">
 
-<input id="add_hourly_salary" type="number"  name="total_salary" class="form-control" min="0" readonly>
+<input id="add_hourly_salary" type="number"  name="total_salary" class="form-control" min="0" step="0.01" readonly>
 
 <input id="add_max_hours" type="hidden" min="0" readonly>
 
+<input id="add_max_days" type="hidden" min="0" readonly>
+
 </div>
 
 </div>
+
 
 
 <div class="row align-items-center mb-2">
@@ -1299,6 +1356,7 @@
 
 
 
+<!--
 <div class="row align-items-center mb-2">
 
 <div class="col-col-md-3 col-lg-3">
@@ -1314,8 +1372,11 @@
 </div>
 
 </div>
+-->
 
-
+<!--
+<input id="total_basic_salary" name="total_month_basic_salary" class="form-control" step=".01" min="0" type="number"> 
+-->
 
 
 <div class="row align-items-center mb-2">
@@ -2239,6 +2300,15 @@
 <script>
 
 
+
+        // Declare global variables with total_ prefix
+        var total_emp_rent_allowance;
+        var total_emp_transp_allowance;
+        var total_emp_telephone_allowance;
+        var total_emp_food_allowance;
+        var total_emp_other_allowance;
+
+
      document.addEventListener("DOMContentLoaded", function(event) { 
     
 
@@ -2272,7 +2342,8 @@
 
 
 
-        /* Main Add */    
+        /* Main Add */
+
    
         $(function() {
             $('#add_form').validate({
@@ -2319,6 +2390,9 @@
 
                             $('#emp_basic_salary').val(data.emp_det.emp_basic_salary);
 
+
+
+
                             $('#emp_rent_allowance').val(data.emp_det.emp_house_rent_allow);
 
                             $('#emp_transp_allowance').val(data.emp_det.emp_transport_allow);
@@ -2329,9 +2403,19 @@
 
                             $('#emp_other_allowance').val(data.emp_det.emp_other_allow);
 
+
+                             total_emp_rent_allowance = data.emp_det.emp_house_rent_allow;
+                             total_emp_transp_allowance = data.emp_det.emp_transport_allow;
+                             total_emp_telephone_allowance = data.emp_det.emp_tel_allow;
+                             total_emp_food_allowance = data.emp_det.emp_food_allow;
+                             total_emp_other_allowance = data.emp_det.emp_other_allow;
+
+
                             $('#add_hourly_salary').val(data.hour_salary);
 
                             $('#add_max_hours').val(data.max_normal_hours);
+
+                            $('#add_max_days').val(data.max_normal_days);
                             
                             $('#add_total_salary').val(data.emp_det.emp_total_salary);
 
@@ -2484,6 +2568,7 @@
         /*####*/
 
 
+
            /*account head modal start*/ 
            $("body").on('click', '.view_btn', function(){
 
@@ -2546,10 +2631,13 @@
 
                     $('#other_allowance_view').html(data.ts.ts_other_allowance);
 
-                    $('#hourly_salary_view').html((parseInt(data.ts.ts_monthly_salary)/30/8).toFixed(2))
+                    var daily_salary = data.ts.monthly_salary_int/30;
+
+                    var hourly_salary = daily_salary/8;
+
+                    $('#hourly_salary_view').html(hourly_salary.toFixed(2));
 
                     $('#monthly_salary_view').html(data.ts.ts_monthly_salary);
-
 
 
 
@@ -2565,7 +2653,7 @@
 
                     $('#total_friday_to_salary_view').html(data.ts.ts_cur_month_friday_ot);
 
-                    $('#total_basic_salary_view').html(data.ts.ts_cur_month_basic_salary);
+                    //$('#total_basic_salary_view').html(data.ts.ts_cur_month_basic_salary);
 
                     $('#total_month_salary_view').html(data.ts.ts_cur_month_salary);
 
@@ -2993,13 +3081,19 @@
         });
        
 
+        var publicHolidaysCount=0;
 
-
-
+        var workingDaysCount=0;
 
         $("body").on('change', '.day_type', function(){
+
+            publicHolidaysCount=0;
+
+            workingDaysCount=0;
             
             parent = $(this).closest('.day_row');
+
+            day_name = parent.find($('input[name="day[]"]')).val();
 
             leave = 0;
 
@@ -3025,6 +3119,8 @@
             parent.find('.total_hours').val('').trigger('change');
 
             parent.find('.normal_hours').val('').trigger('change');
+
+            parent.find('.normal_ot').val('').trigger('change');
 
             parent.find('.friday_ot').val('').trigger('change');
             
@@ -3083,6 +3179,7 @@
 
             $('#leave_total_amount').val(0);
 
+
             $('body .day_type').each(function(i, obj) {
 
 
@@ -3117,6 +3214,9 @@
                 if($(this).val() ==2)
                 {
                 public_holidays++;
+               
+                publicHolidaysCount++;
+               
                 }
 
                 if($(this).val() ==3)
@@ -3239,7 +3339,8 @@
 
 
 
-        $("body").on('change keyup', '.normal_ot,.normal_hours,.friday_ot', function(){
+        
+        $("body").on('change', '.normal_ot,.normal_hours,.friday_ot', function(){
 
          var parent = $(this).closest('.day_row');
 
@@ -3271,9 +3372,10 @@
 
             var total = normal_hours+normal_ot+friday_ot;
 
+
             if(total_hours<total)
             {
-              alertify.error('Total Hours exceeded!').delay(3).dismissOthers();
+              //alertify.error('Total Hours exceeded!').delay(3).dismissOthers();
               $(this).val('');
               return false;
             }
@@ -3288,6 +3390,7 @@
 
     
         });
+        
 
 
 
@@ -3302,7 +3405,15 @@
 
         var hourly_salary = parseFloat($('#add_hourly_salary').val())||0;
 
-        var max_hours = parseFloat($('#add_max_hours').val())||0;
+        //var max_hours = parseFloat($('#add_max_hours').val())||0;
+
+        var month_work_days = 30;
+
+        var max_working_days = $('#add_max_days').val();
+
+        max_working_days = max_working_days-publicHolidaysCount;
+
+        var max_hours = max_working_days*8;
 
         var total_normal_ot = 0;
 
@@ -3344,7 +3455,11 @@
 
         var total_leave_deduction = basic_salary/30*total_leave;
 
-        $('#leave_total_amount').val(total_leave_deduction.toFixed(2));
+        month_work_days = month_work_days - total_leave;
+
+        total_leave_deduction = Math.round(total_leave_deduction);
+
+        $('#leave_total_amount').val(total_leave_deduction);
 
         //Leave Calculation End
 
@@ -3363,7 +3478,11 @@
 
         var total_unpaid_leave_deduction = basic_salary/30*total_unpaid_leave*1.5;
 
-        $('#total_unpaid_leave_deduction').val(total_unpaid_leave_deduction.toFixed(2));
+        month_work_days = month_work_days - total_unpaid_leave;
+
+        total_unpaid_leave_deduction = Math.round(total_unpaid_leave_deduction)
+
+        $('#total_unpaid_leave_deduction').val(total_unpaid_leave_deduction);
 
 
         //Unpaid Leave Calculation End
@@ -3378,12 +3497,21 @@
 
         var total_vacation_deduction = basic_salary/30*total_vacation;
 
-        $('#total_vacation_deduction').val(total_vacation_deduction.toFixed(2));
+        month_work_days = month_work_days - total_vacation;
+
+        total_vacation_deduction = Math.round(total_vacation_deduction);
+
+        $('#total_vacation_deduction').val(total_vacation_deduction);
 
 
         //Vacation Calculation End
 
 
+        emp_rent_allowance = total_emp_rent_allowance * month_work_days / 30;
+        emp_transp_allowance = total_emp_transp_allowance * month_work_days / 30;
+        emp_telephone_allowance = total_emp_telephone_allowance * month_work_days / 30;
+        emp_food_allowance = total_emp_food_allowance * month_work_days / 30;
+        emp_other_allowance = total_emp_other_allowance * month_work_days / 30;
 
 
 
@@ -3397,8 +3525,9 @@
         
         var total_normal_ot_salary = basic_salary/30/8*1.25*total_normal_ot; 
 
+        total_normal_ot_salary = Math.round(total_normal_ot_salary);
 
-        $('#total_normal_ot_salary').val(total_normal_ot_salary.toFixed(2));
+        $('#total_normal_ot_salary').val(total_normal_ot_salary);
 
         //Normal OT Calculation End
 
@@ -3414,7 +3543,9 @@
 
         total_friday_ot_salary = basic_salary/30/8*1.50*total_friday_ot;
 
-        $('#total_friday_ot_salary').val(total_friday_ot_salary.toFixed(2));
+        total_friday_ot_salary = Math.round(total_friday_ot_salary);
+
+        $('#total_friday_ot_salary').val(total_friday_ot_salary);
 
         //Friday OT Calculation End
 
@@ -3429,11 +3560,14 @@
         normal_total_monthly+=parseFloat($(this).val())||0;
 
         });
+
         
 
         //Normal Total
 
         month_total_salary = 0;
+
+        max_hours = month_work_days*8;
         
         $('#total_basic_salary').val(0);
 
@@ -3446,28 +3580,44 @@
 
         month_total_salary = basic_salary;
 
-        $('#total_basic_salary').val(basic_salary.toFixed(2));
+        $('#total_basic_salary').val(Math.round(basic_salary));
 
         }
 
         else
         {
 
-        
         var difference = max_hours-normal_total_monthly;
 
-        var month_total_salary = basic_salary-(difference*hourly_salary);
+        hourly_deduction = difference*hourly_salary;
 
-        $('#total_basic_salary').val(month_total_salary.toFixed(2));
+        //var month_total_salary = basic_salary-(difference*hourly_salary);
+
+        //var month_total_salary = normal_total_monthly * hourly_salary;
+
+        $('#total_basic_salary').val(Math.round(month_total_salary));
 
         }
 
         }
 
 
-        var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
+        var total_salary_month = basic_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
 
-        $('#total_month_salary').val(total_salary_month.toFixed(2));
+        var total_salary_month = total_salary_month-(total_unpaid_leave_deduction+total_vacation_deduction+total_leave_deduction)
+
+        //var total_salary_month = month_total_salary+total_normal_ot_salary+total_friday_ot_salary+emp_rent_allowance+emp_transp_allowance+emp_telephone_allowance+emp_food_allowance+emp_other_allowance;
+
+
+        // Reassign updated values back to the elements
+        $('#emp_rent_allowance').val(Math.round(emp_rent_allowance));
+        $('#emp_transp_allowance').val(Math.round(emp_transp_allowance));
+        $('#emp_telephone_allowance').val(Math.round(emp_telephone_allowance));
+        $('#emp_food_allowance').val(Math.round(emp_food_allowance));
+        $('#emp_other_allowance').val(Math.round(emp_other_allowance));
+
+
+        $('#total_month_salary').val(Math.round(total_salary_month));
 
 
         //Calculate Total Salary End

@@ -77,7 +77,10 @@ class Payments extends BaseController
         $i = 1;
         foreach ($records as $record) {
 
-            $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/Payments/Print/'.$record->pay_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="delete delete-color delete_btn d-none1" data-toggle="tooltip" data-id="' . $record->pay_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> 
+                       <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+                       <a href="'.base_url().'Accounts/Payments/Print/'.$record->pay_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true" title="Print"></i> Print</a>
+                       <a href="javascript:void(0)" class="delete delete-color delete_btn d-none1" data-toggle="tooltip" data-id="' . $record->pay_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
             $data[] = array(
                 "pay_id" => $i,
@@ -130,8 +133,26 @@ class Payments extends BaseController
     }
 
 
+
+
+
+
     public function Add()
     {
+
+        $puid = $this->request->getPost('pay_ref_no');
+
+        $puid_check = $this->common_model->SingleRow('accounts_payments',array('pay_ref_no' => $puid));
+
+                if(!empty($puid_check))
+                {
+                    $return['status'] = 0;        
+                    $return['error'] ="Duplicate Reference Number!";        
+                    echo json_encode($return);        
+                    exit;        
+                }
+
+
         if (empty($this->request->getPost('p_debit_account'))) {
             $return['status'] = 0;
             $return['error'] = "Enter debit details!";
@@ -194,7 +215,10 @@ class Payments extends BaseController
 
             // Process debit accounts
             if (!empty($this->request->getPost('p_debit_account'))) {
+
                 for ($i = 0; $i < count($this->request->getPost('p_debit_account')); $i++) {
+
+
                     $check_debit = $this->common_model->SingleRow('accounts_payment_debit', array('pd_payment' => $id, 'pd_debit_account' => $_POST['p_debit_account'][$i]));
 
                     $insert_inv_data['pd_payment'] = $id;
@@ -211,16 +235,171 @@ class Payments extends BaseController
                     $this->common_model->InsertData('master_transactions', $debit_trans_data);
 
                     if (empty($check_debit)) {
-                        $this->common_model->InsertData('accounts_payment_debit', $insert_inv_data);
+                       $pay_debit_id = $this->common_model->InsertData('accounts_payment_debit', $insert_inv_data);
                     } else {
-                        $this->common_model->EditData($insert_inv_data, array('pd_id' => $check_debit->pd_id), 'accounts_payment_debit');
+                       $pay_debit_id =  $this->common_model->EditData($insert_inv_data, array('pd_id' => $check_debit->pd_id), 'accounts_payment_debit');
                     }
+
+
+                    //Add Payment Linked Purchase Voucher Start
+
+                    $accountId = $insert_inv_data['pd_debit_account'];
+
+                    $allLinked = $this->session->get('payment_linked') ?? [];
+
+                    $thisAccountLinked=$allLinked[$accountId]?? null;
+
+
+                    if(!empty($thisAccountLinked))
+                    {
+
+                        $linkedCount = count($thisAccountLinked['pv_id']);
+
+                        for($li=0;$li<$linkedCount;$li++)
+                        {
+
+                        if($thisAccountLinked['inv_payment_amount'][$li]>0)
+
+                        {
+
+                        $lpo_ref = $thisAccountLinked['inv_lpo_ref'][$li] ?? null;
+
+
+                        $insert_invoice_data['pdi_debit_id'] = $pay_debit_id;
+
+                        $insert_invoice_data['pdi_invoice'] = $thisAccountLinked['pv_id'][$li];
+
+                        $insert_invoice_data['pdi_lpo_ref'] = $lpo_ref;
+
+                        $insert_invoice_data['pdi_payment_amount'] = $thisAccountLinked['inv_payment_amount'][$li];
+
+
+                        $this->common_model->InsertData('accounts_payment_debit_invoices', $insert_invoice_data);
+                    
+                        $this->UpdateInvoicePaid($insert_invoice_data['pdi_invoice']);
+
+                        }
+
+
                 }
+
+                    }
+
+
+                    //Add Payment Linked Purchase Voucher End
+
+
+                    //Add Payment Advances Start
+
+                    $allAdvance = $this->session->get('payment_advance') ?? [];
+
+                    $advanceData = $allAdvance[$accountId] ?? null;
+
+                    if(!empty($advanceData))
+                    {
+                        $advanceCount = count($advanceData['po_id']);
+
+                        for($pa=0;$pa<$advanceCount;$pa++)
+                        {
+
+
+                        if($advanceData['advance_amount'][$pa]>0)
+
+                        {
+
+                        $insert_poa_data['pa_debit_id'] = $pay_debit_id;
+
+                        $insert_poa_data['pa_purchase_order'] = $advanceData['po_id'][$pa];
+
+                        $insert_poa_data['pa_advance_amount'] = $advanceData['advance_amount'][$pa];
+
+                        $this->common_model->InsertData('accounts_payment_advances', $insert_poa_data);
+
+                        $this->UpdatePOAdvance($insert_poa_data['pa_purchase_order']);
+
+                        }
+
+
+                        }
+
+
+                    }
+
+
+
+                }
+
+
+
             }
         }
 
         echo json_encode($return);
     }
+
+
+
+    public function UpdateInvoicePaid($id)
+    {
+
+    $cond_payment = array('pdi_invoice' => $id);
+
+    $updated_invoice_payment = $this->common_model->FetchSum('accounts_payment_debit_invoices','pdi_payment_amount',$cond_payment);
+
+    $advance_paid = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $id))->pv_advance;
+
+    $updated_invoice_paid = $updated_invoice_payment+$advance_paid;
+
+    $update_invoice['pv_paid'] = $updated_invoice_paid;
+
+    $this->common_model->EditData($update_invoice,array('pv_id' => $id),'pro_purchase_voucher');
+
+    }
+
+
+
+    public function UpdatePOAdvance($id)
+    {
+
+    $cond_advance_total = array('pa_purchase_order' => $id);
+
+    $updated_po_advance = $this->common_model->FetchSum('accounts_payment_advances','pa_advance_amount',$cond_advance_total);
+
+    $update_po['po_advance_paid'] = $updated_po_advance;
+
+    $this->common_model->EditData($update_po,array('po_id' => $id),'pro_purchase_order');
+    
+    }
+
+
+
+    public function PaymentTotal($id)
+    {
+
+    $cond_payment = array('pd_payment' => $id);
+
+    $total = $this->common_model->FetchSum('accounts_payment_debit','pd_payment_amount',$cond_payment);
+
+    $payment_data['pay_amount'] = $total;
+
+    $payment_cond['pay_id'] = $id;
+
+    $this->common_model->EditData($payment_data,$payment_cond,'accounts_payments');
+
+    }
+
+
+
+
+
+    public function ResetSess()
+    {
+        $this->session->remove('payment_linked'); 
+        
+        $this->session->remove('payment_advance');
+    }
+
+
 
 
 
@@ -271,11 +450,13 @@ class Payments extends BaseController
         $inv_ser++;
 
         $data['invoices'] .="<tr>
+
         <input type='hidden' name='pd_id[]' value='".$invoice->pd_id."'>
-        <td>{$inv_ser}</td>
         <td>{$invoice->ca_name}</td>
-        <td><input name='pay_inv_amount[]' type='text' value='".$invoice->pd_payment_amount."' class='form-control'></td>
+        <td>Debit</td>
+        <td>-</td>
         <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
+        <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pd_payment_amount."' class='form-control'></td>
         <td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>
         </tr>";
 
@@ -296,16 +477,86 @@ class Payments extends BaseController
         foreach($debit_linked as $dl)
         {
 
+            $max_payable = $this->InvoiceMaxAmount($dl->pv_id,$dl->pdi_payment_amount);
+
             $data['invoices'] .="<tr>
+
+            <input type='hidden' name='linked_payment_id[$invoice->pd_id][]' value='".$dl->pdi_id."'>
+
             <input type='hidden' name='linked_pv_id[$invoice->pd_id][]' value='".$dl->pv_id."'>
+
             <td></td>
+
+            <td>Linked</td>
+
+            <td>{$dl->pv_reffer_id}</td>
+
             <td></td>
-            <td>{$dl->pdi_lpo_ref}</td>
-            <td><input name='linked_pv_paid[$invoice->pd_id][]' type='text' value='".$dl->pdi_payment_amount."' class='form-control'></td>
+
+            <td><input name='linked_pv_paid[$invoice->pd_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pdi_payment_amount."' class='form-control'></td>
+            
             <td></td>
+
             </tr>";
 
         }
+
+
+        //Fetch PO Advance
+
+
+        
+            $po_advance_data_join = array(
+
+                array(
+                    'table' => 'pro_purchase_order',
+                    'pk' => 'po_id',
+                    'fk' => 'pa_purchase_order',
+                    ),
+        
+            );
+        
+
+
+           $po_advances = $this->common_model->FetchWhereJoin('accounts_payment_advances',array('pa_debit_id'=>$invoice->pd_id),$po_advance_data_join);
+        
+            foreach($po_advances as $advance)
+            {
+        
+
+            $max_po_payable = $this->MaxAdvanceAmount($advance->pa_purchase_order,$advance->pa_advance_amount);
+
+
+            $remarks ="";
+
+            if(!empty($advance->pa_remarks))
+            {
+            $remarks = "({$advance->pa_remarks})";
+            }
+
+            $data['invoices'] .="<tr>
+            <td></td>
+
+            <td>Advance</td>
+
+            <td>".$advance->po_reffer_no."</td>
+
+            <td></td>
+
+            <td class=''>
+            <input type='hidden' name='advance_invoice_id[$invoice->pd_id][]' value='".$advance->pa_id."'>
+            <input type='hidden' name='advance_po_id[$invoice->pd_id][]' value='".$advance->pa_purchase_order."'>
+
+            <input type='number' step='0.01' class='form-control' max='".$max_po_payable."' name='advance_payment_amount[$invoice->pd_id][]' value='".$advance->pa_advance_amount."'>
+            
+            </td>
+
+            </tr>";
+        
+            }
+
+
+
 
 
 
@@ -399,10 +650,53 @@ class Payments extends BaseController
 
 
 
+
+    public function InvoiceMaxAmount($id,$amount)
+    {
+
+        $cond_payment = array('pdi_invoice' => $id);
+
+        $updated_invoice_payment = $this->common_model->FetchSum('accounts_payment_debit_invoices','pdi_payment_amount',$cond_payment);
+    
+        $advance_paid = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $id))->pv_advance;
+    
+        $updated_invoice_paid = $updated_invoice_payment+$advance_paid;
+    
+        $max_payable_amount = $updated_invoice_paid + $amount;
+
+        return $max_payable_amount;
+
+    }
+
+
+
+    public function MaxAdvanceAmount($id,$amount)
+    {
+
+        $cond_advance_total = array('pa_purchase_order' => $id);
+
+        $updated_po_advance = $this->common_model->FetchSum('accounts_payment_advances','pa_advance_amount',$cond_advance_total);
+
+        $total_po_amount = $this->common_model->SingleRowCol('pro_purchase_order','po_amount',array('po_id' => $id))->po_amount; 
+
+        $balance_amount = $total_po_amount- $updated_po_advance;
+    
+        $max_payable_amount = $balance_amount+$amount;
+
+        return $max_payable_amount;
+
+    }
+
+
+
+
+
+
+
     // update account head 
     public function Update()
     {
-        $cond = array('pay_id' => $this->request->getPost('p_id'));
+        $cond = array('pay_id' => $pay_id = $this->request->getPost('p_id'));
 
         $update_data['pay_date'] = date('Y-m-d', strtotime($this->request->getPost('p_date')));
 
@@ -445,9 +739,9 @@ class Payments extends BaseController
 
         }
 
-
-
         $this->common_model->EditData($update_data, $cond, 'accounts_payments');
+
+
 
 
         for($p=0;$p<(count($this->request->getPost('pd_id')));$p++)
@@ -457,10 +751,21 @@ class Payments extends BaseController
 
         $update_invoice_cond['pd_id'] = $this->request->getPost('pd_id')[$p];
 
-        $total_linked_invoice=array_sum($this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']]);
+
+        $total_linked_invoice=0;
+        if(!empty($this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']]))
+        $total_linked_invoice = array_sum($this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']]);
 
 
-        if($total_linked_invoice!=$update_invoice_data['pd_payment_amount'])
+        $total_advance_amount=0;
+        if(!empty($this->request->getPost('advance_payment_amount')[$update_invoice_cond['pd_id']]))
+        $total_advance_amount=array_sum($this->request->getPost('advance_payment_amount')[$update_invoice_cond['pd_id']]);
+        
+
+        $total_invoices=$total_linked_invoice+$total_advance_amount;
+
+
+        if($total_invoices!=$update_invoice_data['pd_payment_amount'])
         {
 
             $return['status'] = 0;
@@ -477,17 +782,43 @@ class Payments extends BaseController
         for($l=0;$l<(count($this->request->getPost('linked_pv_id')[$update_invoice_cond['pd_id']]));$l++)
         {
 
-        $update_linked_cond = array('pdi_id' => $this->request->getPost('linked_pv_id')[$update_invoice_cond['pd_id']][$l]);
+        $update_linked_cond = array('pdi_id' => $this->request->getPost('linked_payment_id')[$update_invoice_cond['pd_id']][$l]);
 
         $update_linked_amount = array('pdi_payment_amount' => $this->request->getPost('linked_pv_paid')[$update_invoice_cond['pd_id']][$l]);
 
         $this->common_model->EditData($update_linked_amount,$update_linked_cond,'accounts_payment_debit_invoices');
 
+        $this->UpdateInvoicePaid($this->request->getPost('linked_pv_id')[$update_invoice_cond['pd_id']][$l]);
+
         }
 
+
+        if(!empty($this->request->getPost('advance_po_id')[$update_invoice_cond['pd_id']]))
+        {
+
+        for($poa=0;$poa<count($this->request->getPost('advance_po_id')[$update_invoice_cond['pd_id']]);$poa++)
+        {
+
+        $update_poa_cond = array('pa_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['pd_id']]);
+
+        $updated_amount = array('pa_advance_amount' => $this->request->getPost('advance_payment_amount')[$update_invoice_cond['pd_id']]);
+
+        $po_id_advance = $this->request->getPost('advance_po_id')[$update_invoice_cond['pd_id']];
+
+        $this->common_model->EditData($updated_amount,$update_poa_cond,'accounts_payment_advances');
+
+        $this->UpdatePOAdvance($po_id_advance);
+
+        }
+
+        }
+
+        
         $this->common_model->EditData($update_invoice_data,$update_invoice_cond,'accounts_payment_debit');
 
         }
+
+        $this->PaymentTotal($pay_id);
 
         $return['status'] =1;
 
@@ -716,228 +1047,6 @@ class Payments extends BaseController
 
 
 
-    public function EditPfInvoice()
-    {
-
-        $cond = array('pdi_debit_id' => $this->request->getPost('id'));
-
-        $joins = array(
-
-            array(
-                'table' => 'crm_proforma_invoices',
-                'pk' => 'pf_id',
-                'fk' => 'pdi_invoice',
-            ),
-
-        );
-
-
-        $invoices = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices', $cond, $joins);
-
-        $data['status'] = 0;
-
-        $data['invoices'] = "";
-
-        $sl = 0;
-        foreach ($invoices as $inv) {
-            $sl++;
-
-            $data['invoices'] .=
-
-                '
-        <tr class="view_pf_invoice" id="edit_pf' . $inv->pdi_id . '">
-
-        <input type="hidden" name="ri_id" value="' . $inv->pdi_id . '">
-
-        <th>' . $sl . '</th>
-
-        <th>
-
-        <p class="">' . date('d-F-Y', strtotime($inv->pdi_date)) . '</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">' . $inv->pf_reffer_no . '</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">' . $inv->pdi_lpo_ref . '</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="' . $inv->pdi_lpo_ref . '">
-        
-        </th>
-        
-        <th>
-        
-        <p class="">' . $inv->pf_total_amount . '</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">' . $inv->pdi_payment_amount . '</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="' . $inv->pdi_payment_amount . '">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="' . $inv->pdi_id . '">Edit</a>
-        
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="' . $inv->pdi_id . '" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="' . $inv->pdi_id . '" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-        </tr>';
-
-            $data['status'] = 1;
-        }
-
-        echo json_encode($data);
-    }
-
-
-
-    public function UpdatePfDetails()
-    {
-
-        $id = $this->request->getPost('id');
-
-        $cond = array('pdi_id' => $id);
-
-        $update_data['pdi_lpo_ref'] = $this->request->getPost('lpo_ref');
-
-        $update_data['pdi_payment_amount'] = $this->request->getPost('receipt_amount');
-
-        $this->common_model->EditData($update_data, $cond, 'accounts_payment_debit_invoices');
-
-        $this->FetchPfDetails($id);
-    }
-
-
-
-    public function FetchPfdetails($id)
-    {
-
-        $cond = array('pdi_id' => $id);
-
-        $joins = array(
-
-            array(
-                'table' => 'crm_proforma_invoices',
-                'pk' => 'pf_id',
-                'fk' => 'pdi_invoice',
-            ),
-
-        );
-
-        $inv = $this->common_model->SingleRowJoin('accounts_payment_debit_invoices', $cond, $joins);
-
-        $sl = 1;
-
-        $data['inv_id'] = $id;
-
-        $data['invoices'] = "";
-
-        $data['invoices'] .=
-
-            '
-        <input type="hidden" name="ri_id" value="' . $inv->pdi_id . '">
-
-        <th>' . $sl . '</th>
-
-        <th>
-
-        <p class="">' . date('d-F-Y', strtotime($inv->pdi_date)) . '</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">' . $inv->pf_reffer_no . '</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">' . $inv->pdi_lpo_ref . '</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="' . $inv->pdi_lpo_ref . '">
-        
-        </th>
-    
-        <th>
-        
-        <p class="">' . $inv->pf_total_amount . '</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">' . $inv->pdi_payment_amount . '</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="' . $inv->pdi_payment_amount . '">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="' . $inv->pdi_id . '">Edit</a>
-      
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="' . $inv->pdi_id . '" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="' . $inv->pdi_id . '" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-       ';
-
-        echo json_encode($data);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function View()
     {
 
@@ -993,11 +1102,14 @@ class Payments extends BaseController
         $invoice_sec = "";
 
         $first = true;
-
+        
         $isl=1;
+
         foreach ($invoices as $inv) {
 
             $invoice_sec .="";
+
+           
 
             $joins_voucher = array(
 
@@ -1018,67 +1130,105 @@ class Payments extends BaseController
                 ),
 
 
-
             );
 
             $linked_voucher = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices', array('pdi_debit_id' => $inv->pd_id), $joins_voucher);
 
             
-
-            $data['invoices'] .="
-
-            <tr>
-            
-            <td>{$isl}</td>
-
-            <td>{$inv->ca_name}</td>
-
-            <td>{$inv->pd_payment_amount}</td>
-
-            <td>{$inv->pd_remarks}</td>
-            
-            </tr>
-            
-            ";
-
             $isl++;
-
-            $o=1;
 
             if(!empty($linked_voucher))
             {
 
-                $data['invoices'] .= "<tr>
-            
-                <th>Linked</th>
-    
-                <td></td>
-    
-                <td></td>
-    
-                <td></td>
-                
-                </tr>";
+                if($first==true)
+                {
+                $account_name = $inv->ca_name;
+                }
+                else
+                {
+                $account_name = "";
+                }
 
-            }
 
             foreach($linked_voucher as $lv){
                 
             $data['invoices'] .= "<tr>
             
+            <td>".$account_name."</td>
+
+            <td>Linked</td>
+
+            <td>".$lv->pv_reffer_id."</td>
+
             <td></td>
 
-            <td>{$inv->ca_name}</td>
+            <td class='text-end'>".format_currency($lv->pdi_payment_amount)."</td>
 
-            <td>{$inv->pd_payment_amount}</td>
-
-            <td>{$inv->pd_remarks}</td>
             
             </tr>";
 
-            $o++;
+            }
+
+            $first=false;
 
             }
+
+
+
+            //Advance
+
+            $po_advance_data_join = array(
+
+                array(
+                    'table' => 'pro_purchase_order',
+                    'pk' => 'po_id',
+                    'fk' => 'pa_purchase_order',
+                    ),
+        
+            );
+            
+            $po_advances = $this->common_model->FetchWhereJoin('accounts_payment_advances',array('pa_debit_id'=>$inv->pd_id),$po_advance_data_join);
+        
+            foreach($po_advances as $advance)
+            {
+        
+            $remarks ="";
+
+            if(!empty($advance->pa_remarks))
+            {
+            $remarks = "({$advance->pa_remarks})";
+            }
+
+            $data['invoices'] .="<tr>
+            <td></td>
+            <td>Advance</td>
+            <td>".$advance->po_reffer_no." ".$remarks."</td>
+            <td></td>
+            <td class='text-end'>".format_currency($advance->pa_advance_amount)."</td>
+            </tr>";
+        
+            }
+
+
+            $data['invoices'] .="
+
+            <tr>
+            
+            <td></td>
+
+            <td>Credit</td>
+
+            <td>-</td>
+
+            <td>{$inv->pd_remarks}</td>
+
+            <td class='text-end'><b>".format_currency($inv->pd_payment_amount)."</b></td>
+            
+            </tr>
+            
+            ";
+
+
 
 
         }
@@ -1113,19 +1263,48 @@ class Payments extends BaseController
         $payment = $this->common_model->SingleRow('accounts_payments', $cond);
 
 
-        //Fetch Debit Invoices 
+        $cond_invoices = array('pd_payment' => $this->request->getPost('id'));
 
-        //$debits = 
-
-
+        $invoices = $this->common_model->FetchWhere('accounts_payment_debit',$cond_invoices);
 
 
+            foreach($invoices as $inv)
+            {
 
+            $invoice_datas = $this->common_model->FetchWhere('accounts_payment_debit_invoices',array('pdi_debit_id' => $inv->pd_id));
+
+            $advance_datas = $this->common_model->FetchWhere('accounts_payment_advances',array('pa_debit_id' => $inv->pd_id));
+
+            foreach($invoice_datas as $inv_data){
+
+            $this->common_model->DeleteData('accounts_payment_debit_invoices',array('pdi_id'=>$inv_data->pdi_id));
+
+            $this->UpdateInvoicePaid($inv_data->pdi_invoice);
+
+            }
+
+
+            foreach($advance_datas as $adv_data)
+            {
+
+            $cond_po = array('pa_id' => $adv_data->pa_id);
+
+            $this->common_model->DeleteData('accounts_payment_advances',$cond_po);
+
+            $this->UpdatePOAdvance($adv_data->pa_purchase_order);
+
+            }
+
+        }
+        
         $this->common_model->DeleteData('accounts_payments', $cond);
+
+        $this->common_model->DeleteData('accounts_payment_debit',$cond_invoices);
 
         $cond_tran = array('tran_reference' => $payment->pay_ref_no);
 
         $this->common_model->DeleteData('master_transactions', $cond_tran);
+
     }
 
 
@@ -1213,9 +1392,10 @@ class Payments extends BaseController
 
         if ($_POST) {
 
+
             $vendor_id = $this->request->getPost('id');
 
-
+            /*
             $insert_data['pd_payment'] = $this->request->getPost('pid');
 
             $insert_data['pd_debit_account'] = $vendor_id;
@@ -1244,6 +1424,8 @@ class Payments extends BaseController
 
             $data['pd_id'] = $pd_id;
 
+            */
+
 
             $joins = array(
                 array(
@@ -1257,48 +1439,6 @@ class Payments extends BaseController
 
             $customer = $this->common_model->SingleRowJoin('accounts_charts_of_accounts', array('ca_id' => $vendor_id), $joins);
 
-            /*
-    $cond = array('ci_customer' => $customer->cc_id);
-
-    $invoices = $this->common_model->FetchUnpaidInvoices('crm_cash_invoice',$cond,'ci_paid_status');
-
-    $data['status']=0;
-
-    $data['invoices']="";
-
-    $sl =0;
-
-
-    foreach($invoices as $inv)
-    {
-
-    $sl++;
-
-    $balance_amount = $inv->ci_total_amount - $inv->ci_paid_amount;
-
-    $data['invoices'].='<tr id="'.$inv->ci_id.'">
-    <input type="hidden" name="pay_debit_id[]" value="'.$pd_id.'">
-    <input type="hidden" name="debit_account_invoice[]" value="'.$ac_id.'">
-    <th>'.$sl.'</th>
-    <th>'.date('d-m-Y',strtotime($inv->ci_date)).'</th>
-    <th>'.$inv->ci_reffer_no.'</th>
-    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_reffer_no.'" required></th>
-    
-    <th>'.$balance_amount.'
-    <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$balance_amount.'">
-    </th>
-
-    <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" type="number"></th>
-    
-    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'"></th>
-    </tr>';
-
-    $data['status']=1;
-
-    }
-
-    */
-
             $data['status'] = 0;
 
             $data['invoices'] = "";
@@ -1311,30 +1451,32 @@ class Payments extends BaseController
 
             $data['vendor_id'] = $vendor_id;
 
+            $data['invoices'] .= '<input type="hidden" name="account_id" value="' . $customer->ca_id. '">';
+
             foreach ($purchase_vouchers as $pv) {
 
-                $sl++;
+            $sl++;
 
-                $balance_amount = $pv->pv_total - $pv->pv_paid;
+            $balance_amount = $pv->pv_total - $pv->pv_paid;
 
-                $data['invoices'] .= '<tr id="' . $pv->pv_id . '">
+            $data['invoices'] .= '<tr id="' . $pv->pv_id . '">
 
-                 <input type="hidden" name="p_v_id[]" value="' . $pv->pv_id . '">
-    <input type="hidden" name="pay_debit_id[]" value="' . $pd_id . '">
-    <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
-    <th>' . $sl . '</th>
-    <th>' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
-    <th>' . $pv->pv_reffer_id . '</th>
-    <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
-    
-    <th>' . $balance_amount . '
-    <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
-    </th>
+            <input type="hidden" name="pv_id[]" value="' . $pv->pv_id . '">
 
-    <th><input class="form-control invoice_receipt_amount" step=".01" maxlength="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_receipt_amount[]" type="number"></th>
-    
-    <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
-    </tr>';
+            <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
+            <th>' . $sl . '</th>
+            <th>' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
+            <th>' . $pv->pv_reffer_id . '</th>
+            <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
+            
+            <th>' . $balance_amount . '
+            <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
+            </th>
+
+            <th><input class="form-control invoice_receipt_amount" step="0.01" maxlength="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            
+            <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+            </tr>';
 
                 $data['status'] = 1;
             }
@@ -1435,6 +1577,7 @@ class Payments extends BaseController
 
 
 
+    /*
     public function AddInvoices()
     {
 
@@ -1502,6 +1645,30 @@ class Payments extends BaseController
             }
             // exit;
         }
+    }
+    */
+
+
+    public function AddInvoices()
+    {
+
+
+        if ($this->request->getPost()) {
+
+            $accountId = $this->request->getPost('account_id');
+
+            $allLinked = $this->session->get('payment_linked') ?? [];
+
+            // Add or update the data for this account
+            $allLinked[$accountId] = $this->request->getPost();
+
+            // Set the grouped session data
+            $this->session->set('payment_linked', $allLinked);
+
+        }
+
+
+
     }
 
 
@@ -2053,7 +2220,6 @@ class Payments extends BaseController
 
             $vendor_id = $this->request->getPost('vendor');
 
-            $debit_id = $this->request->getPost('d_id'); 
 
             $v_id = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_type' => 'VENDOR','ca_id' => $vendor_id))->ca_customer;
 
@@ -2063,6 +2229,8 @@ class Payments extends BaseController
 
             $sl_no=1;
 
+            $data['po_rows'] .='<input type="hidden" name="account_id" value="'.$vendor_id.'">';
+
             foreach($purchase_orders as $po)
 
             {
@@ -2070,8 +2238,6 @@ class Payments extends BaseController
             $data['po_rows'] .='
             
             <tr>
-
-            <input type="hidden" name="debit_id[]" value="'.$debit_id.'">
 
             <input type="hidden" name="po_id[]" value="'.$po->po_id.'">
             
@@ -2083,7 +2249,7 @@ class Payments extends BaseController
 
             <td>'.format_currency($po->po_amount).'</td>
 
-            <td><input class="form-control" name="advance_amount[]" step="0.01" type="number"></td>
+            <td><input class="form-control po_advance_amount" name="advance_amount[]" step="0.01" type="number"></td>
 
             </tr>
             
@@ -2103,6 +2269,8 @@ class Payments extends BaseController
 
 
 
+
+    /*
     public function AddPoAdvance()
     {
 
@@ -2133,7 +2301,27 @@ class Payments extends BaseController
         }
 
     }
+        */
 
+        public function AddPoAdvance()
+        {
+
+
+        if($this->request->getPost())
+        {
+
+            $accountId = $this->request->getPost('account_id');
+
+            $allAdvance = $this->session->get('payment_advance') ?? [];
+
+            $allAdvance[$accountId] = $this->request->getPost();
+
+            $this->session->set('payment_advance',$allAdvance);
+
+        }
+
+
+        }
 
 
 

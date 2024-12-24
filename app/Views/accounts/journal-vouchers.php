@@ -61,7 +61,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text" id="uid"  class="form-control" readonly>
+                            <input type="text" id="uid" name="jv_voucher_no" class="form-control" required>
 
                             </div>
 
@@ -78,7 +78,7 @@
 
                             <div class="col-col-md-9 col-lg-9">
 
-                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+                            <input type="text"  name="jv_date" class="form-control datepicker_ap" value="" required>
 
                             </div>
 
@@ -109,24 +109,17 @@
 
                                     <tr class="so_row so_row_add">
 
+                                        <input type="hidden" name="jv_invoice[]" value="1">
+
                                         <th class="sl_no">1</th>
                                         
-                                        <th class="so_select2_parent_add">
+                                        <th class="so_select2_parent_add" width="20%">
 
                                         <select name="jv_sale_invoice[]" class="form-control so_select_add so_select2_add">
-
-                                        <option value="0">None</option>
-
-                                        <?php foreach($sales_orders as $sorder){ ?>
-
-                                        <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_reffer_no; ?></option>
-
-                                        <?php } ?>
 
                                         </select>
 
                                         </th>
-
 
                                         <th class="select2_parent" width="35%"> 
                                             
@@ -139,9 +132,9 @@
                                         
                                         <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" type="number" class="form-control debit_amount" ></th>
+                                        <th><input name="jv_debit[]" step="0.01" type="number" class="form-control debit_amount" ></th>
 
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" ></th>
+                                        <th><input name="jv_credit[]" step="0.01" type="number" class="form-control credit_amount" ></th>
 
                                         <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
 
@@ -319,9 +312,9 @@
 
                         <th>Narration</th>
 
-                        <th>Debit</th>
+                        <th class="text-end">Debit</th>
 
-                        <th>Credit</th>
+                        <th class="text-end">Credit</th>
 
                         </tr>
 
@@ -510,6 +503,7 @@
                                         <tr>    
                                         <th>Sl No</th>
                                         <th>Sales Order No</th>
+                                        <th>Account</th>
                                         <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
@@ -544,11 +538,9 @@
                                     -->
 
 
-
-
                                     <tr>
 
-                                    <td colspan="3" align="right">Total</td>
+                                    <td colspan="4" align="right">Total</td>
                                    
                                     <th id="total_amount_debit_disp_edit">0</th>
 
@@ -570,23 +562,26 @@
 
                         <div>
 
-                        <div class="action_btns" style="float: right;">
-                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        <!--
-                                                        <tr>
-                                                            <td><button>Print</button></td>
-                                                            <td><button>Email</button></td>
-                                                        </tr>
-                                                        -->
-                                                        <tr>
-                                                            <td><button type="submit">Update</button></td>
-                                                            <!--<td><button>PDF</button></td>-->
-                                                        </tr>
+                        <div class="row">
 
-                                                    </table>
+
+                <div class="col-lg-12 text-center">
+
+
+                <div style="">
+
+
+                                                    
+                                                       
+                             <button type="submit" class="btn btn-success">Update</button>
+                                                          
+                                                        
+
                          </div>
 
                         </div>
+
+                                </div>
 
 
                         
@@ -697,8 +692,7 @@
         {
             $(this).closest('.so_row').remove();
             cc--;
-            totalCalcutate();                                                                           
-            grossCalculate();
+            totalCalcutate();    
         });
 
         /**/
@@ -749,6 +743,17 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data) {
+
+                            var data = JSON.parse(data);
+
+                            if(data.status==0)
+                            {
+
+                            alertify.error(data.error).delay(3).dismissOthers();
+                            return false;
+                                
+                            }
+
                             $('#add_form')[0].reset();
                             $('#AddModal').modal('hide');
                             alertify.success('Data Added Successfully').delay(3).dismissOthers();
@@ -771,16 +776,6 @@
         $("body").on('click', '.edit_btn', function(){ 
 
             var id = $(this).data('id');
-
-            $("#EditModal :input").prop("disabled", false);
-
-            $('#EditModal .action_btns').show();
-
-            $('#EditModal .submit_btn').show();
-
-            $('#EditModal .edit_invoice').show();
-
-            $('#EditModal .view_linked').show();
 
 
             $.ajax({
@@ -813,6 +808,10 @@
                     $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
 
                     $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
+
+                    SOSelect2Edit();
+
+                    AccountsSelect2Edit();
 
                     $('#EditModal').modal('show');
                   
@@ -862,7 +861,7 @@ $('body .debit_amount_edit').each(function()
 
 var sub_tot = $(this).val();
 
-d_total += parseInt(sub_tot)||0;
+d_total += parseFloat(sub_tot)||0;
 
 });
 
@@ -872,7 +871,7 @@ $('body .credit_amount_edit').each(function()
 
 var sub_tot = $(this).val();
 
-c_total += parseInt(sub_tot)||0;
+c_total += parseFloat(sub_tot)||0;
 
 });
 
@@ -944,7 +943,7 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
         $('input[name=qd_gross_profit]').on("keyup change",function(){
 
-        grossCalculate();
+        //grossCalculate();
 
         });
 
@@ -1092,6 +1091,16 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
                     success:function(data)
                     {
+
+                        var data = JSON.parse(data);
+
+
+                        if(data.status==0)
+                        {
+                            alertify.error(data.error).delay(3).dismissOthers();
+                            return false;  
+                        }
+
                         
                         $('#EditModal').modal('hide');
 
@@ -1193,6 +1202,18 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
 $('.add_model_btn').click(function(){
 
+ $('#add_form')[0].reset();
+ 
+ $('#total_amount_credit_disp').html('0.00');
+ 
+ $('#total_amount_debit_disp').html('0.00');
+ 
+ $('.so_select2_add').val('').trigger('change');
+ 
+ $('.account_select2').val('').trigger('change');
+ 
+ $('.so_row_add').not(':first').remove();
+ 
 
 $.ajax({
 
@@ -1209,62 +1230,56 @@ $('#uid').val(data);
 
 });
 
+
+
 });
 
 
-
-                        function SOSelect2(){
-                        $('.so_select2_add').select2({
-                        placeholder: "Select Sales Order",
-                        theme: "default form-control-",
-                        dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
-                        ajax: {
-                            url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
-                            dataType: 'json',
-                            delay: 250,
-                            cache: false,
-                            minimumInputLength: 1,
-                            allowClear: true,
-                            data: function(params) {
-                                return {
-                                    term: params.term,
-                                    page: params.page || 1,
-                                };
-                            },
-                            processResults: function(data, params) {
-
-                                var page = params.page || 1;
-                                return {
-                                    results: $.map(data.result, function(item) {
+                        function SOSelect2() {
+                            $('.so_select2_add').select2({
+                                placeholder: "Select Sales Order", // This is the placeholder
+                                theme: "default form-control-",
+                                dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
+                                allowClear: true, // Allows clearing the selection
+                                ajax: {
+                                    url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    cache: false,
+                                    minimumInputLength: 1,
+                                    data: function(params) {
                                         return {
-                                            id: item.so_id,
-                                            text: item.so_reffer_no
-                                        }
-                                    }),
-                                    pagination: {
-                                        more: (page * 10) <= data.total_count
-                                    }
-                                };
-                            },
+                                            term: params.term,
+                                            page: params.page || 1,
+                                        };
+                                    },
+                                    processResults: function(data, params) {
+                                        var page = params.page || 1;
+                                        return {
+                                            results: [
+                                                { id: null, text: "Select Sales Order" }, // Default null option
+                                                ...$.map(data.result, function(item) {
+                                                    return {
+                                                        id: item.so_id,
+                                                        text: item.so_reffer_no
+                                                    };
+                                                })
+                                            ],
+                                            pagination: {
+                                                more: (page * 10) <= data.total_count
+                                            }
+                                        };
+                                    },
+                                }
+                            });
                         }
-                    });
-                    
-                }
-                SOSelect2();
-
-                
-
-
-
-
-
-
+                        SOSelect2();
 
 
 
                         /* Accounts Init Select 2 */
 
-                function InitAccountsSelect2(classname, parent) {
+                        function InitAccountsSelect2(classname, parent) {
 
                     $('body ' + classname + ':last').select2({
                         placeholder: "Select Account",
@@ -1303,6 +1318,104 @@ $('#uid').val(data);
                     }
 
                     InitAccountsSelect2('.account_select2', '.select2_parent');
+
+
+
+
+                    //Edit 
+
+                    function SOSelect2Edit() {
+                    $('.so_select2_edit').each(function() {
+                        $(this).select2({
+                            placeholder: "Select Sales Order", // Placeholder text
+                            theme: "default form-control-", // Theme for styling
+                            dropdownParent: $(this).closest('.so_row_edit'), // Correct parent for dropdown placement
+                            allowClear: true, // Allow clearing the selection
+                            ajax: {
+                                url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                                dataType: 'json',
+                                delay: 250,
+                                cache: false,
+                                minimumInputLength: 1, // Minimum characters to trigger search
+                                data: function(params) {
+                                    return {
+                                        term: params.term, // User-typed term
+                                        page: params.page || 1, // Pagination
+                                    };
+                                },
+                                processResults: function(data, params) {
+                                    var page = params.page || 1;
+                                    return {
+                                        results: [
+                                            { id: null, text: "Select Sales Order" }, // Default null option
+                                            ...$.map(data.result, function(item) {
+                                                return {
+                                                    id: item.so_id,
+                                                    text: item.so_reffer_no
+                                                };
+                                            })
+                                        ],
+                                        pagination: {
+                                            more: (page * 10) <= data.total_count // Pagination flag
+                                        }
+                                    };
+                                }
+                            }
+                        });
+                    });
+                }
+
+
+
+
+
+                function AccountsSelect2Edit() {
+                $('body .account_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Account",
+                    theme: "default form-control-",
+                    dropdownParent: $($(this).closest('.so_row_edit')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.ca_id,
+                                        text: item.ca_name
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+                }
+
+
+
+
+
+
 
 
 

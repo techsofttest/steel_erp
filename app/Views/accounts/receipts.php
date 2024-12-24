@@ -63,7 +63,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="ruid" class="form-control" readonly required>
+                                                        <input type="text" id="ruid" name="r_ref_no" class="form-control" required>
 
                                                     </div>
 
@@ -139,7 +139,7 @@
                                                     </div>
 
 
-                                                    <div class="col-col-md-6 col-lg-6">
+                                                    <div class="col-col-md-9 col-lg-9">
 
                                                         <select name="r_collected_by" class="form-control" required>
 
@@ -1060,10 +1060,11 @@
 
                 <thead>
                     <tr>
-                        <th>Sl No</th>
-                        <th>Credit Account</th>
-                        <th>Amount</th>
+                        <th>Account</th>
+                        <th>Type</th>
+                        <th>Invoice</th>
                         <th>Narration</th>
+                        <th>Amount</th>
 
                     </tr>
                 </thead>
@@ -1080,11 +1081,14 @@
                 <tbody>
 
 
+                    <!--
                     <div class="text-center">
 
                         <a href="javascript:void(0);" class="btn btn-success edit_invoice_add">Add</a>
 
                     </div>
+
+                    -->
 
 
                 </tbody>
@@ -1172,21 +1176,20 @@
 
 
 
-                         <div class="col-lg-6">
+                         <div class="col-lg-12 text-center">
 
 
-                                                    <div style="float: right;">
-                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
+                                 <div style="">
+                                                       
 
-                                                            <tr>
-                                                                <td><button class="submit_btn" type="submit">Update</button></td>
-                                                            </tr>
+                                                            
+                                        <button class="submit_btn btn btn-success" type="submit">Update</button></td>
+                                                           
+                                                        
+                                </div>
 
-                                                        </table>
-                                                    </div>
 
-
-                                                </div>
+                        </div>
 
 
 
@@ -1648,7 +1651,7 @@
 
                                             <tr>
 
-                                                <th colspan="4" style="text-align: center;
+                                                <th colspan="5" style="text-align: center;
     font-size: 15px;">Invoices</th>
 
                                             </tr>
@@ -1659,13 +1662,15 @@
 
                                                 <tr>
 
-                                                    <th>Sl No</th>
+                                                    <th>Account</th>
 
-                                                    <th>Credit Account</th>
+                                                    <th>Type</th>
 
-                                                    <th>Amount</th>
+                                                    <th>Invoice</th>
 
                                                     <th>Narration</th>
+
+                                                    <th class="text-end">Amount</th>
 
                                                 </tr>
 
@@ -1676,19 +1681,22 @@
 
                                             </tbody>
 
-                                           
+
+
+                                            <tfoot>
+
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end">Total Receipt : </td>
+                                            <td class='text-end' style=""><b><span id="total_receipt_amount_view"></span></b></td>
+                                            </tr>
+
+                                            </tfoot>
 
 
                                         </table>
-
-
-
-                                        <div class="col-lg-12 text-center">
-
-                                        <p><b>Total : <span id="total_receipt_amount_view"></span></b></p>
-
-                                        </div>
-
 
 
 
@@ -3294,7 +3302,7 @@
 
             e.preventDefault();
 
-            var total = parseInt($('#fifo_edit').attr('data-total')) || 0;
+            var total = parseFloat($('#fifo_edit').attr('data-total')) || 0;
 
             var invoice_total = 0;
 
@@ -3304,7 +3312,7 @@
 
                 //alert(parent);
 
-                invoice_total += parseInt(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
 
             })
 
@@ -4006,6 +4014,21 @@
 
             });
 
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Accounts/Receipts/ResetSess",
+
+            method: "GET",
+
+            success: function() {
+
+            }
+
+            });
+
+
+
         });
 
 
@@ -4342,7 +4365,7 @@
 
             //var total = parseInt($('#fifo_add').attr('data-total'))||0;
 
-            var total = parseInt($('#fifo_add').data('total')) || 0;
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
 
             var invoice_total = 0;
 
@@ -4350,7 +4373,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseInt(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
 
             })
 
@@ -4359,7 +4382,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseInt(parent.find('.so_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.so_receipt_amount').val()) || 0;
 
             })
             
@@ -4654,6 +4677,7 @@
 
         /* Add Receipt Credit Amount Check Start */
 
+        /*
         $('body').on('change', '.credit_account_select2', function() {
 
             var account_id = $(this).val();
@@ -4692,6 +4716,7 @@
             });
 
         });
+        */
 
 
         /* Add Receipt Invoice Credit Check ENd */

@@ -12,14 +12,13 @@
     <meta content="" name="author" />
     
     
-    
     <style>
 
-.table td.fit, 
-.table th.fit {
-   white-space: nowrap;
-   width: 1%;
-}
+    .table td.fit, 
+    .table th.fit {
+    white-space: nowrap;
+    width: 1%;
+    }
 
 
     #view_payroll_table td.text-end {
@@ -27,7 +26,7 @@
     padding-right: 25%;        /* Add padding for space between the value and the edge */
     max-width: 150px;           /* Limit the width to avoid excessive space */
     word-wrap: break-word;      /* Ensure the text wraps if it's too long */
-}
+    }
 
     </style>
     
@@ -163,7 +162,7 @@
             
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Payroll</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Vacation Travel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -182,273 +181,225 @@
 
 
                     <form  class="Dashboard-form class add_form" data-empid="" id="add_form">
+                    
                     <input class="added_id" type="hidden" name="emp_id" value="" autocomplete="off">
             
-                    <div class="row align-items-start form_sec" id="employee_sec">
+
+
+                    <div class="row align-items-start form_sec">
 
                     <!-- Section 1 -->
 
                     <div class="col-lg-6">
 
 
-                    <div class="row align-items-center mb-2" id="add_ah_parent">
+                    <div class="row align-items-center mb-2">
 
 
-                    <div class="col-col-md-6 col-lg-6">
+                    <div class="col-col-md-4 col-lg-4">
                        
-                    <select class="form-select " name="month"  required>
-                    
-                    <?php foreach($months as $key=>$month){ ?>
-                    <option value="<?= $key ?>"><?= $month ?></option>
-                    <?php } ?>
-
-                    </select>
+                    <label>Debit Account</label>
                         
                     </div>
 
 
-                    <div class="col-col-md-6 col-lg-6">
+                    <div class="col-col-md-8 col-lg-8">
                        
-                    <select class="form-select " name="year"  required>
-
-
-                    <?php for($m=2000;$m<=date('Y');$m++){ ?>
-
-                    <option value="<?= $m ?>" <?php if($m==date('Y')) { echo "selected"; }  ?>><?= $m ?></option>
-
-                    <?php } ?>
+                    <select id="debit_account" class="account_select2" name="debit_account" required>
 
 
                     </select>
-
-                        
+                    
                     </div>
 
 
                     </div> 
+
+                    </div>
+
+
+
+
+                    <div class="col-lg-6">
+
+
+
+                    <div class="row align-items-center mb-2" >
+
+
+                    <div class="col-col-md-4 col-lg-4">
                     
-
-                    </div> <!-- Section 1 end -->
+                    <label>Current Balance</label>
                         
+                    </div>
 
 
-                        <div class="col-lg-12 text-center">
+                    <div class="col-col-md-8 col-lg-8">
+                    
+                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+
+                    </div>
 
 
+                    </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="col-lg-6">
+
+
+                    <div class="row align-items-center mb-2">
+
+
+                    <div class="col-col-md-4 col-lg-4">
+                    
+                    <label>Credit Account</label>
                         
-                            <button class="submit_btn btn btn-success" type="submit">Record</button></td>
-                               
-
-                        </div>
+                    </div>
 
 
-                        </div>
+                    <div class="col-col-md-8 col-lg-8">
+                    
+                    <select id="credit_account" class="account_select2" name="credit_account" required>
 
 
+                    </select>
+
+                    </div>
+
+
+                    </div> 
+
+                    </div>
+
+
+
+
+
+                    <div class="col-lg-6">
+
+
+
+                    <div class="row align-items-center mb-2" >
+
+
+                    <div class="col-col-md-4 col-lg-4">
+                    
+                    <label>Date</label>
+                        
+                    </div>
+
+
+                    <div class="col-col-md-4 col-lg-4">
+                    
+                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
+
+                    </div>
+
+
+
+                    <div class="col-col-md-4 col-lg-4">
+
+                    <button class="btn btn-success generate_vt" type="button">Generate</button>
+
+                    </div>
+
+
+
+                    </div>
+
+
+                    </div>
+                    
 
 
        
                     </div>
 
-                    </form>
 
 
 
-
+                    <div class="row align-items-start" id="employee_sec">
 
 
                     
-                    <form  class="Dashboard-form class add_form" data-empid="" id="timesheet_add_form">
+                    <table class="table table-bordered">
 
-                    <input class="" id="timesheet_emp_id" type="hidden" name="emp_id" value="" autocomplete="off">
 
-                    <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
+                    <thead>
+                    
+                    <tr>
+                        <td>Sl No</td>
+                        <td>Employee ID</td>
+                        <td>Name</td>
+                        <td>Ticket Due From</td>
+                        <td>Ticket Rate</td>
+                        <td>Ticket/Year</td>
+                        <td>Utilization</td>
+                        <td>Entitlement</td>
+                        <td class="text-end">Amount</td>
+                    </tr>
 
-                    <div class="col-lg-12">
+                    </thead>
 
 
-                        <table class="table table-bordered">
 
-                        <tr>
+                    <tbody id="emp_rows">
 
-                        <th>ID</th>
 
-                        <th>Name</th>
+                    </tbody>
 
-                        <th class="">Division</th>
 
-                        <th class="text-end">Basic Salary</th>
+                    <tfoot>
 
-                        <th class="text-end">Leave</th>
 
-                        <th class="text-end">Overtime</th>
+                    <td colspan="8" class="text-end">Total</td>
 
-                        <th class="text-end">HRA</th>
+                    <input type="hidden" id="total_amount_input" name="" value="" required>
 
-                        <th class="text-end">Transport Allowance</th>
+                    <td id="total_amount_view" class="text-end"></td>
 
-                        <th class="text-end">Telephone Allowance</th>
+                    </tfoot>
 
-                        <th class="text-end">Food Allowance</th>
 
-                        <th class="text-end">Other Allowance</th>
+                    </table>
 
-                        <th class="text-end">Total Salary</th>
 
-                      
 
-                        </tr>
 
-                        <tbody id="timesheets_row">
+                    </div>
 
 
-                        </tbody>
 
-                       
 
-                        </table>
+                    <div class="row">
 
 
 
+                    <div class="col-lg-12 text-center">
 
-                        <div class="row">
-                        <div class="col-lg-12">
 
-                            <table class="table table-bordered">
-
-                                <tr>
-
-                                <td align="right">Staff Salary</td>
-
-                                <th class="text-end" id="staff_salary_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">Salaries And Wages</td>
-
-                                <th class="text-end"  id="salaries_and_wages_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Overtime</td>
-
-                                <th class="text-end"  id="overtime_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">House Rent Allowance</td>
-
-                                <th class="text-end" id="hra_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Transportation Allowance</td>
-
-                                <th class="text-end" id="transport_allow_add"></th>
-
-                                </tr>
-
-                                <tr>
-
-                                <td align="right">Telephone Allowance</td>
-
-                                <th class="text-end" id="telephone_allow_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Food Allowance</td>
-
-                                <th class="text-end" id="food_allow_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Other Allowance</td>
-
-                                <th class="text-end" id="other_allow_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">Total Salary</td>
-
-                                <th class="text-end" id="total_salary_add"></th>
-
-                                </tr>
-                                
-
-
-
-                            </table>
-
-                        </div>
-
-                        </div>
-
-
-
-
-
-
-
-
-                            <div class="row">
-
-
-
-       
-
-
-                            <div class="col-lg-12 text-center">
-
-
-                              <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Save To JV</button>
+                    <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Generate JV</button>
                                                        
                           
-
-                            </div>
-
-
-                            </div>
-
-
-
+                    </div>
 
 
                     </div>
 
 
 
-                </form>
-
-
-                <!-- Salary Section End  -->
 
 
 
-
+                    </form>
 
 
 
@@ -512,7 +463,7 @@
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">View Payroll</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">View Vacation Travel</h4>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="">
@@ -522,8 +473,10 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
-                                <th>Month</th>
-                                <th>Total Salary</th>
+                                <th>Date</th>
+                                <th>Debit Account</th>
+                                <th>Credit Account</th>
+                                <th>Total</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -769,40 +722,35 @@
      document.addEventListener("DOMContentLoaded", function(event) { 
 
 
-        $('#AddModal').modal('show');
-    
-
-        $('.sec_btn').click(function(){
-
-        var sec = $(this).data('sec');
-
-        $('.form_sec').hide();
-
-        $('#'+sec+'').show();
-
-        });
 
 
+        $('.generate_vt').click(function(){
 
-        /* Main Add */     
-   
-        $(function() {
-            $('#add_form').validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(form) {
+            if (! $('#debit_account')[0].checkValidity()) {
+                $('#add_form')[0].reportValidity()
+                return false;
+            }
 
-                    var formData = new FormData(form);
+            if (! $('#credit_account')[0].checkValidity()) {
+                $('#add_form')[0].reportValidity()
+                return false;
+            }
 
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>HR/Payroll/FetchTimesheets",
+            if (! $('#date')[0].checkValidity()) {
+                $('#add_form')[0].reportValidity()
+                return false;
+            }
+
+            var credit_account = $('#credit_account').val();
+
+            var debit_account = $('#debit_account').val();
+
+            var date = $('#date').val();
+
+            $.ajax({
+                        url: "<?php echo base_url(); ?>HR/VacationTravel/FetchEmployees",
                         method: "POST",
-                        data: $(form).serialize(),
+                        data : {account:credit_account,debit_account:debit_account,date:date},
                         success: function(data) 
                         {
 
@@ -810,42 +758,28 @@
 
                             if(data.status=="1")
                             {
-                       
-                            alertify.success('Timesheets fetched').delay(3).dismissOthers();
-                            // $('#add_form').attr('data-empid',data);
-                            //$('.added_id').val(data);
 
-                            $('#timesheets_row').html(data.table);
+                            $('#current_balance').val(data.current_balance);
 
-                            $('#staff_salary_add').html(data.staff_salary);
+                            $('#emp_rows').html(data.emp_row);
 
-                            $('#salaries_and_wages_add').html(data.salaries_wages);
+                            $('#total_amount_input').val(data.total_amount);
 
-                            $('#overtime_add').html(data.total_ot);
+                            $('#total_amount_view').html(data.total_amount);
 
-                            $('#transport_allow_add').html(data.transport_allow);
+                            $('#jv_rows').html(data.jv_rows);
 
-                            $('#hra_add').html(data.hra);
+                            $('#total_amount_debit').val(data.total_amount);
+                            $('#total_amount_debit_disp').html(data.total_amount);
 
-                            $('#telephone_allow_add').html(data.tel_allow);
-
-                            $('#food_allow_add').html(data.food_allow);
-
-                            $('#other_allow_add').html(data.other_allow);
-
-                            $('#total_salary_add').html(data.total_salary);
-
-                            $('#timesheet_sec').show();
+                            $('#total_amount_credit').val(data.total_amount);
+                            $('#total_amount_credit_disp').html(data.total_amount);
 
                             }
                             else
                             {
 
-                            alertify.error(data.msg).delay(3).dismissOthers();
-
-                            $('#timesheets_row').html('');
-
-                            $('#timesheet_sec').hide();
+                            
 
                             }
 
@@ -855,24 +789,72 @@
                         }
                        
                     });
-                    return false; // prevent the form from submitting
-                }
-            });
+
+
         });
 
-        /*###*/
+
+
+                        //$(".account_select2").select2({
+                        $('.account_select2').each(function() {
+                        $(this).select2({   
+                        placeholder: "Select Account",
+                        theme : "default form-control-",
+                        dropdownParent: $(this).closest('.add_form'),
+                        ajax: {
+                                url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                                dataType: 'json',
+                                delay: 250,
+                                cache: false,
+                                minimumInputLength: 1,
+                                allowClear: true,
+                                data: function (params) {
+                                    return {
+                                        term: params.term,
+                                        page: params.page || 1,
+                                    };
+                                },
+                                processResults: function(data, params) {
+                                
+                                    var page = params.page || 1;
+                                    return {
+                                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                                        pagination: {
+                                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                            more: (page * 10) <= data.total_count
+                                        }
+                                    };
+                                },              
+                            }
+                        })
+
+                    });
+
+
+       
+
+       
 
 
 
 
+        
         $('#add_journal_form').submit(function(e){
 
             e.preventDefault();
 
+            var journal_form = $(this).serialize();
+
+            var credit_account = $('#credit_account').val();
+
+            var debit_account = $('#debit_account').val();
+
+            var date = $('#date').val();
+
             $.ajax({
-                        url: "<?php echo base_url(); ?>HR/Payroll/AddPayrollJournal",
+                        url: "<?php echo base_url(); ?>HR/VacationTravel/AddJournal",
                         method: "POST",
-                        data: $(this).serialize(),
+                        data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
                         success: function(data) 
                         {
                             var data = JSON.parse(data);
@@ -902,6 +884,10 @@
                         }
                        
                     });
+
+
+
+
 
         });
 
@@ -959,42 +945,6 @@
 
 
 
-        
-        $(function() {
-            $('#add_journal_form0').validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(form) {
-
-                    var formData = new FormData(form);
-
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>HR/Timesheets/Add",
-                        method: "POST",
-                        //data: $(form).serialize(),
-                        data:formData,
-                        processData: false, 
-                        contentType: false,
-                        success: function(data) 
-                        {
-
-                            var data = JSON.parse(data);
-                            
-                            datatable.ajax.reload( null, false)
-
-                        }
-                       
-                    });
-                    return false; // prevent the form from submitting
-                }
-            });
-        });
-
         /*###*/
 
 
@@ -1005,7 +955,6 @@
 
 
         $('#save_to_jv_btn').click(function(){
-
 
             $.ajax({
 
@@ -1023,47 +972,32 @@
             });
 
 
-            var month = $('#payroll_month').val();
-
-            var year = $('#payroll_year').val();
-
-
+            /*
             $.ajax({
 
-        url : "<?php echo base_url(); ?>HR/Payroll/AddToJvRows",
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
 
-        method : "POST",
+            method : "GET",
 
-        data: {p_month: month,p_year:year},
-
-        success:function(data)
-        {   
-            if(data)
+            success:function(data)
             {
-            var data = JSON.parse(data);
 
-            $('#jv_rows').html(data.jv_rows);
+            $('#uid').val(data);
 
-            $('#total_amount_debit').val(data.total_debit);
-            $('#total_amount_debit_disp').html(data.total_debit);
+            }
 
-            $('#total_amount_credit').val(data.total_credit);
-            $('#total_amount_credit_disp').html(data.total_credit);
+            });
+            */
+
 
             $('#AddModal').modal('hide');
 
             $('#AddToJournalModal').modal('show');
 
-            }
-        }
 
         })
 
-
-
-
-        })
-
+       
         /* Save to jv button click end */
 
 
@@ -1073,32 +1007,6 @@
        
 
 
-
-        /*account head delete*/ 
-        $("body").on('click', '.delete_btn', function(){ 
-            
-            if (!confirm('Are you absolutely sure you want to delete?')) return;
-            var id = $(this).data('id');
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>HR/Timesheets/Delete",
-
-                method : "POST",
-
-                data: {id: id},
-
-                success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
-
-                    datatable.ajax.reload( null, false );
-                }
-
-
-            });
-
-        });
-        /*###*/
 
 
 
@@ -1119,7 +1027,7 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url': "<?php echo base_url(); ?>HR/Payroll/FetchData",
+                    'url': "<?php echo base_url(); ?>HR/VacationTravel/FetchData",
                     'data': function (data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -1139,9 +1047,11 @@
                     }
                 },
                 'columns': [
-                    { data: 'pr_id' },
-                    { data : "pr_month"},
-                    { data : "total_salary" },
+                    { data: 'vt_id' },
+                    { data : "vt_date"},
+                    { data : "vt_debit_account" },
+                    { data : "vt_credit_account" },
+                    { data : "vt_total" },
                     { data: 'action' },
                 ]
                 
@@ -1158,7 +1068,6 @@
 
         $('.add_model_btn').click(function(){
 
-            $('.added_id').val('');
 
             $('#add_form')[0].reset();
 
@@ -1185,7 +1094,7 @@
         var id = $(this).data('id');
         $.ajax({
 
-            url: "<?php echo base_url(); ?>HR/Payroll/Delete",
+            url: "<?php echo base_url(); ?>HR/VacationTravel/Delete",
 
             method: "POST",
 

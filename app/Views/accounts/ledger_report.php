@@ -168,21 +168,14 @@
 
 
 
-                                                                            <tr id="Account" style="display:none;">
+                                                                            <tr id="Account" style="display:none;" class="account_parent">
 
                                                                             <td>Account</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account">
+                                                                            <select class="form-control account_select2_common" name="filter_account">
 
-                                                                            <option value="">Select Account</option>
-                                                                            
-                                                                            <?php foreach($accounts as $account){ ?>
-
-                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
-
-                                                                            <?php } ?>
 
                                                                             </select>
 
@@ -194,21 +187,14 @@
 
 
 
-                                                                            <tr id="Account_Head" style="display:none;">
+                                                                            <tr id="Account_Head" style="display:none;" class="head_parent">
 
                                                                             <td>Account Head</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account_head">
+                                                                            <select class="form-control head_select2_common" name="filter_account_head">
 
-                                                                            <option value="">Select Account Head</option>
-
-                                                                            <?php foreach($account_heads as $ah){ ?>
-
-                                                                            <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
-
-                                                                            <?php } ?>
 
                                                                             </select>
 
@@ -220,24 +206,15 @@
 
 
 
-                                                                            <tr id="Account_Type" style="display:none;">
+                                                                            <tr id="Account_Type" style="display:none;" class="type_parent">
 
                                                                             <td>Account Type</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account_type">
+                                                                            <select class="form-control type_select2_common" name="filter_account_type">
 
-                                                                            <option value="">Select Account Type</option>
-
-                                                                            <?php foreach($account_types as $account_type)
-                                                                            {
-                                                                            ?>
-                                                                            
-                                                                            <option value="<?php echo $account_type->at_id; ?>"><?php echo $account_type->at_name; ?></option>
-
-                                                                            <?php } ?>
-
+                                                                          
                                                                             </select>
 
                                                                             </td>
@@ -286,14 +263,14 @@
                                                                             <td>Date From</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly />
+                                                                            <input class="form-control datepicker" type="text"  name="start_date" readonly disabled/>
                                                                             </td>
 
 
                                                                             <td>Date To</td>
 
                                                                             <td>
-                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly />
+                                                                            <input class="form-control datepicker" type="text"  name="end_date" readonly disabled/>
                                                                             </td>
 
 
@@ -586,7 +563,7 @@
                                             <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
 
                                             <td>
-                                             <?php if(($vc->voucher_type=="Receipt")){
+                                            <?php if(($vc->voucher_type=="Receipt")){
                                              $href="Accounts/Receipts";
                                              } 
                                              else if($vc->voucher_type=="Cash Invoice")
@@ -1016,7 +993,7 @@
 $(document).ready(function(){
     $("#btnExport").click(
                 function () {
-                    tableToExcel('DataTable','General Ledger','General Ledger');
+                    tableToExcel('DataTable1','General Ledger','General Ledger');
                 }            
             );
     })
@@ -1140,7 +1117,7 @@ document.getElementById("email_button").addEventListener("click", function() {
 
 
 
-    $('body').on('click','.print_button',function(e){
+$('body').on('click','.print_button',function(e){
     
     // Open the PDF generation script in a new window
 
@@ -1152,6 +1129,122 @@ document.getElementById("email_button").addEventListener("click", function() {
     };
 
     });
+
+
+
+    $('.account_select2').select2({
+                placeholder: "Select Account",
+                theme: "default form-control-",
+                dropdownParent: $('.account_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ca_id,
+                                    text: item.ca_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
+
+            $('.head_select2').select2({
+                placeholder: "Select Account Head",
+                theme: "default form-control-",
+                dropdownParent: $('.head_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/AccountHead/FetchHeads",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ah_id,
+                                    text: item.ah_account_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
+
+            $('.type_select2').select2({
+                placeholder: "Select Account Type",
+                theme: "default form-control-",
+                dropdownParent: $('.type_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/AccountHead/FetchTypes",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.at_id,
+                                    text: item.at_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
 
 
 

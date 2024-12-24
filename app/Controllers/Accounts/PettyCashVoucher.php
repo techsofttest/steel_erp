@@ -59,7 +59,13 @@ class PettyCashVoucher extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn d-none" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color view_btn" data-id="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pcv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+            
+            <a  href="javascript:void(0)" class="view view-color view_btn" data-id="'.$record->pcv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            
+            <a href="javascript:void(0)" class="delete delete-color delete_btn d-" data-toggle="tooltip" data-id="'.$record->pcv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>
+
+            ';
            
            $data[] = array( 
               "pcv_id"=>$i,
@@ -115,9 +121,11 @@ class PettyCashVoucher extends BaseController
 
         $data['r_methods'] = $this->common_model->FetchAllOrder('master_receipt_method','rm_name','asc');
        
-        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+        //$data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
-        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+        //$data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $data['banks'] = $this->common_model->FetchAllOrder('master_banks', 'bank_name', 'asc');
 
         //$data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
@@ -135,6 +143,19 @@ class PettyCashVoucher extends BaseController
     Public function Add()
     {   
 
+        $insert_data['pcv_voucher_no'] = $this->request->getPost('pcv_uid');
+
+        //Check 
+        $pcv_uid_check = $this->common_model->SingleRow('accounts_petty_cash_voucher',array('pcv_voucher_no' => $insert_data['pcv_voucher_no']));
+
+        if(!empty($pcv_uid_check))
+         {
+                $return['status'] = 0;        
+                $return['error'] ="Duplicate Reference Number!";        
+                echo json_encode($return);        
+                exit;        
+         }
+
         $insert_data['pcv_date'] = date('Y-m-d',strtotime($this->request->getPost('pcv_date')));
 
         $insert_data['pcv_credit_account'] = $this->request->getPost('pcv_credit_account');
@@ -146,6 +167,20 @@ class PettyCashVoucher extends BaseController
         $insert_data['pcv_added_by'] = 0; 
 
         $insert_data['pcv_added_date'] = date('Y-m-d'); 
+
+        if(!empty($this->request->getPost('pcv_pay_method')==1))
+        {
+
+        $insert_data['pcv_cheque_no'] = $this->request->getPost('p_cheque_no');
+
+        $insert_data['pcv_cheque_date'] = date('Y-m-d',strtotime($this->request->getpost('p_cheque_date')));
+
+        }
+
+        if ($_FILES['p_cheque_copy']['name'] !== '') {
+            $attachment_name = $this->uploadFile('p_cheque_copy','uploads/PettyCashVoucher');
+            $insert_data['pcv_cheque_copy'] = $attachment_name;
+        }
 
 
         if(empty($this->request->getPost('pcv_id')))
@@ -201,6 +236,7 @@ class PettyCashVoucher extends BaseController
             $insert_invoice['pci_voucher_id'] = $id;
 
 
+
             if(empty($check_credit))
             {
             $this->common_model->InsertData('accounts_petty_cash_debits',$insert_invoice);
@@ -214,7 +250,10 @@ class PettyCashVoucher extends BaseController
 
         }
 
-    
+
+        $return['status'] = 1;     
+        echo json_encode($return); 
+
        
     }
 

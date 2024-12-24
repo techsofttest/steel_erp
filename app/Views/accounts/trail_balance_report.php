@@ -309,6 +309,7 @@ padding:5px 0px;
                                             $total_deb = $total_deb+ $account->total_debit;
                                             $total_cred = $total_cred + $account->total_credit;
                                             ?>
+           
                                             <tr>
 
                                             <td><?= $account->ca_name; ?></td>

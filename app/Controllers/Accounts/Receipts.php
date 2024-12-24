@@ -80,7 +80,10 @@ class Receipts extends BaseController
 
            //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/Receipts/Print/'.$record->r_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> 
+           <a href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+           <a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i> Print</a>
+           <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
            $data[] = array( 
               "r_id"=>$i,
@@ -150,9 +153,37 @@ class Receipts extends BaseController
     Public function Add()
     {   
 
-        // print_r($_POST); 
 
-        // exit;
+        //Check Refer Number Duplicate
+        $ruid = $this->request->getPost('r_ref_no');
+
+        $ruid_check = $this->common_model->SingleRow('accounts_receipts',array('r_ref_no' => $ruid));
+
+                if(!empty($ruid_check))
+                {
+                    $return['status'] = 0;        
+                    $return['error'] ="Duplicate Reference Number!";        
+                    echo json_encode($return);        
+                    exit;        
+                }
+
+        
+        //Check If Invoices Linked is empty
+        /*
+        if(empty($this->session->get('receipt_linked')))
+        {
+            $return['status'] = 0;
+
+            $return['error'] ="No invoices linked!";
+
+            echo json_encode($return);   
+
+            exit; 
+        }
+        */
+        
+        
+
 
         if(empty($this->request->getPost('r_credit_account')))
         {
@@ -166,6 +197,8 @@ class Receipts extends BaseController
         else{
 
         $return['status'] = 1;
+
+        $insert_data['r_ref_no'] = $ruid;
 
         $insert_data['r_date'] = date('Y-m-d',strtotime($this->request->getPost('r_date')));
 
@@ -242,38 +275,17 @@ class Receipts extends BaseController
 
         //$r_ref_no = 'REC'.str_pad($id, 7, '0', STR_PAD_LEFT);
 
-        $r_ref_no = $this->FetchReference("r");
+        //$r_ref_no = $this->FetchReference("r");
 
-        $cond = array('r_id' => $id);
+        //$cond = array('r_id' => $id);
 
-        $update_data['r_ref_no'] = $r_ref_no;
+        //$update_data['r_ref_no'] = $r_ref_no;
 
-        $this->common_model->EditData($update_data,$cond,'accounts_receipts');
+        //$this->common_model->EditData($update_data,$cond,'accounts_receipts');
 
 
         //Add invoices
 
-        /*
-        if(!empty($this->request->getPost('pf_id')))
-        {
-
-        for($i=0;$i<count($this->request->getPost('pf_id'));$i++)
-        {
-
-        $inv_id = $_POST['pf_id'][$i];
-
-        $inv_remarks = $_POST['pf_remarks'][$i];
-
-        $insert_inv_data['ri_receipt'] = $id;
-
-        $insert_inv_data['ri_invoice'] = $inv_id;
-
-        $insert_inv_data['ri_remarks'] = $inv_remarks;
-
-        $this->common_model->InsertData('accounts_receipt_invoices',$insert_inv_data);
-        }
-        }
-        */
 
         if(!empty($this->request->getPost('r_credit_account')))
         {
@@ -319,7 +331,7 @@ class Receipts extends BaseController
 
                 //Add To Transactions
 
-                $credit_trans_data['tran_reference'] = $r_ref_no;
+                $credit_trans_data['tran_reference'] = $ruid;
 
                 $credit_trans_data['tran_account'] = $insert_inv_data['ri_credit_account'];
 
@@ -341,6 +353,8 @@ class Receipts extends BaseController
                 }
 
 
+                // Add Receipt Linked Invoices Start
+
                 $accountId = $insert_inv_data['ri_credit_account'];
 
                 // Retrieve the session data for 'receipt_linked'
@@ -355,11 +369,17 @@ class Receipts extends BaseController
 
                     // Loop through all the values in the arrays
                     for ($li = 0; $li < $arrayCount; $li++) {
+
+
                         $type = $accountData['type'][$li] ?? null;
                         $creditAccountInvoice = $accountData['credit_account_invoice'][$li] ?? null;
                         $invReceiptAmount = $accountData['inv_receipt_amount'][$li] ?? null;
                         $invLpoRef = $accountData['inv_lpo_ref'][$li] ?? null;
                 
+                        if($invReceiptAmount>0)
+
+                        {
+
                         // Prepare the data for insertion
                         $insert_invoice_data['rid_receipt_invoice'] = $receipt_invoice_id;
                         $insert_invoice_data['rid_invoice'] = $creditAccountInvoice;
@@ -373,12 +393,55 @@ class Receipts extends BaseController
                         //Update Invoice Paid Amount
                         $this->UpdateInvoicePaid($insert_invoice_data['rid_invoice'],$insert_invoice_data['rid_invoice_type']);
 
+                        }
+
                         
+
+                    }
+
+                }
+
+                // Add Receipt Linked Invoices End
+
+
+
+                //Add Receipt Advances Start
+
+                
+                $allAdvance = $this->session->get('receipt_advance') ?? [];
+
+                $advanceData = $allAdvance[$accountId] ?? null;
+
+                if(!empty($advanceData))
+                {
+
+                    $advanceCount = count($advanceData['so_id']);
+
+                    for($sa=0;$sa<$advanceCount;$sa++)
+                    {
+
+                    if($advanceData['so_receipt_amount'][$sa]>0)
+
+                    {
+
+                    $insert_soa_data['rso_sales_order'] = $advanceData['so_id'][$sa] ?? NULL;
+
+                    $insert_soa_data['rso_receipt_amount'] = $advanceData['so_receipt_amount'][$sa] ?? NULL;
+
+                    $insert_soa_data['rso_credit_id'] = $receipt_invoice_id;
+
+                    $this->common_model->InsertData('accounts_receipts_sales_orders',$insert_soa_data);
+
+                    $this->UpdateSalesOrderAdvance($insert_soa_data['rso_sales_order']);
+
+                    }
 
 
                     }
 
                 }
+
+                //Add Receipt Advances End
                 
 
             }
@@ -386,10 +449,14 @@ class Receipts extends BaseController
             //Insert Data
 
         }
+
+        $this->session->remove('receipt_linked'); 
+        
+        $this->session->remove('receipt_advance');
         
         //Add To Transactions
 
-        $trans_data['tran_reference'] = $r_ref_no;
+        $trans_data['tran_reference'] = $ruid;
 
         $trans_data['tran_account'] = $insert_data['r_debit_account'];
 
@@ -406,6 +473,23 @@ class Receipts extends BaseController
         }
 
         echo json_encode($return);
+
+    }
+
+
+
+    public function ReceiptTotal($id)
+    {
+
+    $cond_receipt = array('ri_receipt' => $id);
+
+    $total = $this->common_model->FetchSum('accounts_receipt_invoices','ri_amount',$cond_receipt);
+
+    $receipt_data['r_amount'] = $total;
+
+    $receipt_cond['r_id'] = $id;
+
+    $this->common_model->EditData($receipt_data,$receipt_cond,'accounts_receipts');
 
     }
 
@@ -434,6 +518,21 @@ class Receipts extends BaseController
     }
 
 
+    if($type=="credit_invoice")
+    {
+
+    $advance_paid = $this->common_model->SingleRowCol('crm_credit_invoice','cci_advance_amount',array('cci_id' => $id))->cci_advance_amount;
+
+    $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
+    
+    $update_invoice['cci_paid_amount'] = $updated_invoice_paid;
+    
+    $this->common_model->EditData($update_invoice,array('cci_id' => $id),'crm_credit_invoice');
+
+    }
+
+
+
     }
 
 
@@ -442,7 +541,9 @@ class Receipts extends BaseController
 
     public function ResetSess()
     {
-        $this->session->remove('receipt_linked');  
+        $this->session->remove('receipt_linked'); 
+        
+        $this->session->remove('receipt_advance');
     }
 
 
@@ -593,7 +694,7 @@ class Receipts extends BaseController
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" value="0"></th>
+     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
      
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
@@ -640,7 +741,7 @@ class Receipts extends BaseController
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" value="0"></th>
+     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
     
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
@@ -846,7 +947,7 @@ class Receipts extends BaseController
 
 
 
-
+    
     public function FetchSalesOrdersAdd()
     {
 
@@ -865,6 +966,9 @@ class Receipts extends BaseController
 
         $sl=0;
 
+        $data['so_rows'] .='
+        <input type="hidden" name="so_account" value="'.$customer.'">';
+
         foreach($sales_orders as $so)
         {
 
@@ -876,7 +980,7 @@ class Receipts extends BaseController
         $sl++;
 
         $data['so_rows'] .='<tr>
-        
+
         <input type="hidden" name="so_credit_id[]" value="'.$credit_id.'">
 
         <input type="hidden" name="so_id[]" value="'.$so->so_id.'">
@@ -894,7 +998,7 @@ class Receipts extends BaseController
         </td>
 
         <td>
-        '.$balance_total.'
+        '.format_currency($balance_total).'
         </td>
 
         <td>
@@ -922,6 +1026,8 @@ class Receipts extends BaseController
 
     }
 
+    
+
 
     //Fetch Sales Orders Advance (Add Receipt) End
 
@@ -931,6 +1037,7 @@ class Receipts extends BaseController
     //Add Sales Order Advance Start
 
 
+    /*
     public function AddSalesOrderAdvance()
     {
 
@@ -1001,15 +1108,58 @@ class Receipts extends BaseController
 
         }
 
+    }
 
-        
-  
+    */
 
+
+    public function AddSalesOrderAdvance()
+    {
+
+        if($this->request->getPost())
+        {
+
+          $accountId = $this->request->getPost('so_account');  
+
+          $allAdvance = $this->session->get('receipt_advance') ?? [];
+
+          $allAdvance[$accountId] = $this->request->getPost();
+
+          //print_r($allAdvance[$accountId]); exit;
+
+          $this->session->set('receipt_advance',$allAdvance);
+
+        }
+    
     }
 
 
 
     //Add Sales Order Advance End
+
+
+
+
+
+    public function UpdateSalesOrderAdvance($so_id)
+    {
+
+    $cond_advance_total = array('rso_sales_order' => $so_id);
+
+    $updated_so_advance = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',$cond_advance_total);
+    
+
+    $update_so['so_advance_paid'] = $updated_so_advance;
+
+    $this->common_model->EditData($update_so,array('so_id' => $so_id),'crm_sales_orders');
+    
+
+    }
+
+
+
+
+
 
 
 
@@ -1155,6 +1305,11 @@ class Receipts extends BaseController
 
 
 
+    //public function 
+
+
+
+
 
 
 
@@ -1195,104 +1350,6 @@ class Receipts extends BaseController
 
 
 
-        //$customers = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
-
-        //$coa = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
-
-        /*
-
-        $data['invoices'] = "";
-
-        $dd='';
-
-        foreach($coa as $cus) { 
-
-           $dd.='<option value="'.$cus->ca_id.'">'.$cus->ca_name.'</option>';
-
-        }
-
-
-        $sl=1;
-
-        foreach($invoices as $invoice)
-        {
-
-            $data['invoices'] .='
-            <tr class="view_credit" id="view'.$invoice->ri_id.'">
-            <input type="hidden" name="credit_id" value="'.$invoice->ri_id.'">
-
-            <td class="sl_no_edit">'.$sl.'</td>
-
-
-            <td>
-
-            <p class="view">'.$invoice->ca_name.'</p>
-
-            <select style="display:none;" class="edit form-control" name="c_name">
-
-            <option value="'.$invoice->ca_id.'" selected hidden>'.$invoice->ca_name.'</option>
-
-            '.$dd.'
-            
-            </select>
-           
-            </td>
-
-
-            <td>
-            
-            <p class="view">'.$invoice->ri_amount.'</p>
-
-            <input style="display:none;" class="edit form-control" type="number" name="amount" value="'.$invoice->ri_amount.'">
-            
-            </td>
-
-
-            <td>
-
-             <p class="view">'.$invoice->ri_remarks.'</p>
-
-             <input style="display:none;" class="edit form-control" type="text" name="remarks" value="'.$invoice->ri_remarks.'">
-            
-            </td>
-
-
-            <!--
-            <td>
-            
-            <div class="view">-->
-
-            <!--<a href="javascript:void(0);" class="edit_invoice btn btn-primary" data-id="'.$invoice->ri_id.'">Edit</a>-->
-
-            <!--<a href="javascript:void(0);" class="edit_linked btn btn-warning" data-rid="'.$invoice->ri_id.'" data-id="'.$invoice->ca_id.'">Linked</a>-->
-
-            <!--
-            <a href="javascript:void(0);" class="del_credit btn btn-danger" data-id="'.$invoice->ri_id.'">Delete</a>
-
-            </div>
-
-            <div class="edit" style="display:none;">
-            
-            <button class="btn btn-success update_invoice_btn" data-id="'.$invoice->ri_id.'" type="button">Update</button>
-
-            <button class="btn btn-danger cancel_invoice_btn" data-id="'.$invoice->ri_id.'" type="button">Cancel</button>
-
-            </div>
-
-            </td>
-
-            </tr>
-            -->
-
-            ';
-
-            $sl++;
-
-        }
-
-        */
-
-
 
     $data['invoices'] ="";
 
@@ -1325,10 +1382,11 @@ class Receipts extends BaseController
 
     $data['invoices'] .="<tr>
     <input type='hidden' name='rec_inv_id[]' value='".$invoice->ri_id."'>
-    <td>{$inv_ser}</td>
     <td>{$invoice->ca_name}</td>
-    <td><input name='rec_inv_amount[]' type='text' value='".$invoice->ri_amount."' class='form-control'></td>
+    <td>Debit</td>
+    <td>-</td>
     <td><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
+    <td><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control'></td>
     <td><a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a></td>
     </tr>";
 
@@ -1349,7 +1407,12 @@ class Receipts extends BaseController
 
         // Sanitize dynamic values for safer rendering
         $ridId = htmlspecialchars($inv_data->rid_id, ENT_QUOTES, 'UTF-8');
+
+
         $ridReceipt = htmlspecialchars($inv_data->rid_receipt, ENT_QUOTES, 'UTF-8');
+
+        $max_payable = $this->InvoiceMaxAmount($inv_data->rid_invoice,$inv_data->rid_invoice_type,$ridReceipt);
+
         $formattedDate = htmlspecialchars(date('d M Y', strtotime($invoiceDate)), ENT_QUOTES, 'UTF-8');
         $refNumberEscaped = htmlspecialchars($refNumber, ENT_QUOTES, 'UTF-8');
 
@@ -1357,13 +1420,19 @@ class Receipts extends BaseController
         $data['invoices'] .= "
         <tr>
             <td class='text-end'><i class='ri-links-line'></i></td>
-            <td>{$formattedDate}</td>
+
+            <td>Linked</td>
+
+            <td>{$refNumberEscaped}</td>
+
+            <td></td>
+
             <td>
                 <input type='hidden' name='linked_invoice_id[$invoice->ri_id][]' value='{$invoice->ri_id}'>
                 <input type='hidden' name='linked_receipt_id[$invoice->ri_id][]' value='{$ridId}'>
-                <input name='linked_receipt_amount[$invoice->ri_id][]' class='form-control' type='number' step='0.01' value='{$ridReceipt}'>
+                <input name='linked_receipt_amount[$invoice->ri_id][]' class='form-control linked_amount_edit' type='number' step='0.01' max='{$max_payable}' value='{$ridReceipt}'>
             </td>
-            <td>{$refNumberEscaped}</td>
+
             <td></td>
         </tr>";
 
@@ -1385,12 +1454,19 @@ class Receipts extends BaseController
     foreach($so_advances as $advance)
     {
 
+    $max_so_payable = $this->MaxAdvanceAmount($advance->so_id,$advance->rso_receipt_amount);
+
     $data['invoices'] .="<tr>
     <td></td>
     <td>Advance</td>ed
     <td>".$advance->so_reffer_no."</td>
-    
-    <td>".$advance->rso_receipt_amount."</td><td></td></tr>";
+    <td></td>
+    <td>
+    <input type='hidden' name='advance_invoice_id[$invoice->ri_id][]' value='$advance->rso_id'>
+    <input type='hidden' name='advance_so_id[$invoice->ri_id][]' value='$advance->so_id'>
+    <input type='number' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='form-control' max='".$max_so_payable."' value='".$advance->rso_receipt_amount."'></td>
+    <td></td>
+    </tr>";
 
     }
 
@@ -1400,6 +1476,76 @@ class Receipts extends BaseController
         echo json_encode($data);
 
     }
+
+
+
+
+    public function InvoiceMaxAmount($id,$type,$amount)
+    {
+
+    $cond_receipt = array('rid_invoice' => $id,'rid_invoice_type' => $type);
+
+    $updated_invoice_receipt = $this->common_model->FetchSum('accounts_receipt_invoice_data','rid_receipt',$cond_receipt);
+
+    if($type=="cash_invoice")
+
+    {
+  
+    $advance_paid = $this->common_model->SingleRowCol('crm_cash_invoice','ci_advance_amount',array('ci_id' => $id))->ci_advance_amount;
+
+    $total_amount = $this->common_model->SingleRowCol('crm_cash_invoice','ci_total_amount',array('ci_id' => $id))->ci_total_amount;
+
+    $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
+
+    $balance_amount = $total_amount-$updated_invoice_paid;
+
+    }
+
+
+    if($type=="credit_invoice")
+    {
+
+    $advance_paid = $this->common_model->SingleRowCol('crm_credit_invoice','cci_advance_amount',array('cci_id' => $id))->cci_advance_amount;
+
+    $total_amount = $this->common_model->SingleRowCol('crm_credit_invoice','cci_total_amount',array('cci_id' => $id))->cci_total_amount;
+
+    $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
+
+    $balance_amount = $total_amount-$updated_invoice_paid;
+    
+    }
+
+    $max_allowed_amount = $balance_amount+$amount;
+
+
+    return $max_allowed_amount;
+
+
+    }
+
+
+
+    public function MaxAdvanceAmount($id,$amount)
+    {
+
+    $cond_advance_total = array('rso_sales_order' => $id);
+
+    $updated_so_advance = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',$cond_advance_total);
+    
+    $total_so_amount = $this->common_model->SingleRowCol('crm_sales_orders','so_amount_total',array('so_id' => $id))->so_amount_total; 
+
+    $balance_amount = $total_so_amount - $updated_so_advance;
+
+    $max_allowed_amount = $balance_amount+$amount;
+
+    return $max_allowed_amount;
+
+    }
+
+
+
+
+
 
 
 
@@ -1571,18 +1717,16 @@ class Receipts extends BaseController
         $update_data['r_credit_account'] = $this->request->getPost('r_credit_account');
 
 
-        $update_data['r_amount'] = array_sum($_POST['rec_inv_amount']);
+        //$update_data['r_amount'] = array_sum($_POST['rec_inv_amount']);
 
+    
 
         $this->common_model->EditData($update_data,$cond,'accounts_receipts');
 
 
         //Update Receipt Invoices
 
-
-        //Check Total Credit
         
-
 
         for($r=0;$r<(count($this->request->getPost('rec_inv_id')));$r++)
         {
@@ -1592,9 +1736,20 @@ class Receipts extends BaseController
             $update_invoice_cond['ri_id'] = $this->request->getPost('rec_inv_id')[$r];
 
             if(count($this->request->getPost('linked_receipt_id')[$update_invoice_cond['ri_id']]))
+
+            $total_linked_invoice =0;
+            if(!empty($this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]))
             $total_linked_invoice = array_sum($this->request->getPost('linked_receipt_amount')[$update_invoice_cond['ri_id']]);
 
-            if($total_linked_invoice!=$update_invoice_data['ri_amount'])
+
+            $total_advance_amount=0;
+            if(!empty($this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']]))
+            $total_advance_amount = array_sum($this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']]);
+            
+
+            $total_invoices = $total_linked_invoice+$total_advance_amount;
+
+            if($total_invoices!=$update_invoice_data['ri_amount'])
             {
 
                 $return['status'] = 0;
@@ -1619,57 +1774,38 @@ class Receipts extends BaseController
 
                 $revert_invoice_amount = $old_invoice_data->rid_receipt;
 
-                //Update invoice table
-                if($old_invoice_data->rid_invoice_type=="cash_invoice")
-                {
-
-                $cash_invoice_cond = array('ci_id' => $old_invoice_data->rid_invoice);
-
-                $inv_row = $this->common_model->SingleRow('crm_cash_invoice',$cash_invoice_cond);
-
-                
                 $this->common_model->EditData(array('rid_receipt' => $new_amount),$update_invoice_data_cond,'accounts_receipt_invoice_data');
 
-                $all_linked_cond = array('rid_invoice_type' => 'cash_invoice','rid_invoice' => $old_invoice_data->rid_invoice);
-                $all_linked_invoices = $this->common_model->FetchWhere('accounts_receipt_invoice_data',$all_linked_cond); 
-
-                $update_cash_invoice_data['ci_paid_amount'] = array_sum(array_column($all_linked_invoices,'rid_receipt'));
-
-                $this->common_model->EditData($update_cash_invoice_data,$cash_invoice_cond,'crm_cash_invoice');
-
-                }
-
-                else if($old_invoice_data->rid_invoice_type=="credit_invoice")
-                {
-
-                $credit_invoice_cond = array('cci_id' => $old_invoice_data->rid_invoice);
-
-                $inv_row = $this->common_model->SingleRow('crm_credit_invoice',$cash_invoice_cond);
-
-                
-                $this->common_model->EditData(array('rid_receipt' => $new_amount),$update_invoice_data_cond,'accounts_receipt_invoice_data');
-
-                $all_linked_cond = array('rid_invoice_type' => 'credit_invoice','rid_invoice' => $old_invoice_data->rid_invoice);
-                $all_linked_invoices = $this->common_model->FetchWhere('accounts_receipt_invoice_data',$all_linked_cond); 
-
-                $update_credit_invoice_data['cci_paid_amount'] = array_sum(array_column($all_linked_invoices,'rid_receipt'));
-
-                $this->common_model->EditData($update_credit_invoice_data,$credit_invoice_cond,'crm_credit_invoice');
-
-                }
-
+                $this->UpdateInvoicePaid($old_invoice_data->rid_invoice,$old_invoice_data->rid_invoice_type);
 
             }
 
-            
+
+            if(!empty($this->request->getPost('advance_so_id')[$update_invoice_cond['ri_id']]))
+            {
+            for($a=0;$a<count($this->request->getPost('advance_so_id')[$update_invoice_cond['ri_id']]);$a++)
+            {
+
+              $update_rso_cond = array('rso_id' => $this->request->getPost('advance_invoice_id')[$update_invoice_cond['ri_id']][$a]);
+              
+              $new_rso_amount = $this->request->getPost('advance_receipt_amount')[$update_invoice_cond['ri_id']][$a];
+              
+              $so_id_advance = $this->request->getPost('advance_so_id')[$update_invoice_cond['ri_id']][$a];
+
+              $this->common_model->EditData(array('rso_receipt_amount' => $new_rso_amount),$update_rso_cond,'accounts_receipts_sales_orders');
+
+              $this->UpdateSalesOrderAdvance($so_id_advance);
+
+            }
+            }
+
+
 
             $this->common_model->EditData($update_invoice_data,$update_invoice_cond,'accounts_receipt_invoices');
 
         }
 
-
-
-
+        $this->ReceiptTotal($r_id);
 
         $return['status'] =1;
 
@@ -1717,9 +1853,11 @@ class Receipts extends BaseController
 
     $data['rc'] = $this->common_model->SingleRowJoin('accounts_receipts',$cond,$joins);
 
-    $data['rc']->r_date = date('d-F-Y',strtotime($data['rc']->r_date));
+    $data['rc']->r_date = date('d M Y',strtotime($data['rc']->r_date));
 
-    $data['rc']->cheque_date = date('d-F-Y',strtotime($data['rc']->r_cheque_date));
+    $data['rc']->cheque_date = date('d M Y',strtotime($data['rc']->r_cheque_date));
+
+    $data['rc']->r_amount = format_currency($data['rc']->r_amount);
 
     $invoice_cond = array('ri_receipt' => $data['rc']->r_id);
 
@@ -1746,7 +1884,6 @@ class Receipts extends BaseController
     $inv_ser++;
 
     $inv_data_join = array(
-           
            array(
            'table' => 'crm_credit_invoice',
            'pk' => 'cci_id', 
@@ -1758,66 +1895,51 @@ class Receipts extends BaseController
             'pk' => 'ci_id',
             'fk' => 'rid_invoice',
             ),
-   
        );
 
     $invoice_datas = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',array('rid_receipt_invoice'=>$invoice->ri_id),$inv_data_join);
 
-     $data['invoices'] .="<tr>
-    <td>{$inv_ser}</td>
-    <td>{$invoice->ca_name}</td>
-    <td>".format_currency($invoice->ri_amount)."</td>
-    <td>{$invoice->ri_remarks}</td>
-    </tr>";
 
 
-    /* Custom var */
-
-
-
-
-
-    /* Custp, wat */
-  
-
-    
-    if(empty($data['invoices']))
-    {
-    
-    $data['msg'] = $mdf;
-
-    }
-
-    if(!empty($invoice_datas))
-    {
-       $data['invoices'] .='<th></th><th colspan="3" style="text-align: left;
-                            font-size: 13px;">Linked</th>';
-    }
-
-
-
+    $first = true;
 
     foreach($invoice_datas as $inv_data)
     {
-        if($inv_data->rid_invoice_type=="cash_invoice")
+        if($first==true)
         {
-        $data['invoices'] .="<tr>
-        <td></td>
-        <td>".date('d-F-Y',strtotime($inv_data->ci_date))."</td>
-        <td>{$inv_data->ci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
+        $account_name=$invoice->ca_name;
         }
         else
         {
-        $data['invoices'] .="<tr>
+        $account_name="";
+        }
+        
+        if($inv_data->rid_invoice_type=="cash_invoice")
+        {
+        $data['invoices'] .="
+        <tr>
+        <td>{$account_name}</td>
+        <td>Linked</td>
+        <td>{$inv_data->ci_reffer_no}</td>
         <td></td>
-        <td>".date('d M Y',strtotime($inv_data->cci_date))."</td>
-        <td>{$inv_data->cci_reffer_no}</td><td>".format_currency($inv_data->rid_receipt)."</td></tr>";
+        <td class='text-end'>".format_currency($inv_data->rid_receipt)."</td>
+        </tr>";
+        }
+        else
+        {
+        $data['invoices'] .="
+        <tr>
+        <td></td>
+        <td>Linked</td>
+        <td>{$inv_data->cci_reffer_no}</td>
+        <td></td>
+        <td class='text-end'>".format_currency($inv_data->rid_receipt)."</td>
+        </tr>";
         }
 
+        $first=false;
+
     } 
-
-
-
 
     $so_advance_data_join = array(
 
@@ -1833,12 +1955,31 @@ class Receipts extends BaseController
 
     foreach($so_advances as $advance)
     {
+    
+    $remarks = "";
+
+    if(!empty($advance->rso_remarks))
+    {
+    $remarks = "({$advance->rso_remarks})";
+    }
 
     $data['invoices'] .="<tr>
     <td></td>
-    <td>Advance</td><td>".$advance->so_reffer_no." (".$advance->rso_remarks.")</td><td>".$advance->rso_receipt_amount."</td></tr>";
-
+    <td>Advance</td>
+    <td>".$advance->so_reffer_no." ".$remarks."</td>
+    <td></td>
+    <td class='text-end'>".format_currency($advance->rso_receipt_amount)."</td>
+    </tr>";
     }
+
+    $data['invoices'] .="<tr>
+    <td></td>
+    <td>Debit</td>
+    <td>-</td>
+    <td>".$invoice->ri_remarks."</td>
+    <td class='text-end'><b>".format_currency($invoice->ri_amount)."</b></td>
+    </tr>";
+
 
     }
 
@@ -1865,10 +2006,10 @@ class Receipts extends BaseController
 
         $invoices = $this->common_model->FetchWhere('accounts_receipt_invoices',$cond_receipt);
 
+        //print_r($invoices);
+
         foreach($invoices as $inv)
         {
-
-
 
             $main_id = $inv->ri_id;
 
@@ -1876,119 +2017,26 @@ class Receipts extends BaseController
 
             $invoice_data = $this->common_model->FetchWhere('accounts_receipt_invoice_data',array('rid_receipt_invoice' => $main_id));
 
+            $advance_data = $this->common_model->FetchWhere('accounts_receipts_sales_orders',array('rso_credit_id' => $main_id)); 
+
             foreach($invoice_data as $inv_data)
             { 
-
+                //Delete From Invoice Data Table
+                $this->common_model->DeleteData('accounts_receipt_invoice_data',array('rid_id' => $inv_data->rid_id));
 
                 $this->UpdateInvoicePaid($inv_data->rid_invoice,$inv_data->rid_invoice_type);
 
-                //Fetch invoice Column row
-
-                /*
-                if($inv_data->rid_invoice_type=="cash_invoice")
-                {
-
-                
-
-                $cash_invoice_cond = array('ci_id' => $inv_data->rid_invoice);
-
-                $invoice_row = $this->common_model->SingleRow('crm_cash_invoice',$cash_invoice_cond);
-
-                //Recalculate Paid Amount And Change Status
-
-                if(!empty($invoice_row))
-
-                {
-                
-                $receipt_paid = $inv_data->rid_receipt;
-
-                $invoice_paid = $invoice_row->ci_paid_amount;
-
-                max($invoice_paid,0);
-
-                $updated_paid = $invoice_paid-$receipt_paid;
-
-                $updated_paid = max($updated_paid,0);
-                
-
-                    if($updated_paid>0)
-                    {
-
-                    $pay_status = 1;
-
-                    }
-                    else
-                    {
-                    
-                    $pay_status = 0;
-
-                    }
-
-                    $update_invoice['ci_paid_amount'] = $updated_paid;
-
-                    $update_invoice['ci_paid_status'] = $pay_status;
-                    
-                    $this->common_model->EditData($update_invoice,$cash_invoice_cond,'crm_cash_invoice');
-
-                }
+            }
 
 
-                }
-                else if($inv_data->rid_invoice_type=="credit_invoice")
-                {
+            foreach($advance_data as $adv_data)
+            {
 
-                $credit_invoice_cond = array('cci_id' => $inv_data->rid_invoice);
+            $cond_so = array('rso_id' => $adv_data->rso_id);
 
-                $invoice_row = $this->common_model->SingleRow('crm_credit_invoice',$credit_invoice_cond);
+            $this->common_model->DeleteData('accounts_receipts_sales_orders',$cond_so);
 
-
-                if(!empty($invoice_row))
-
-                {
-
-                //Recalculate Paid Amount And Change Status
-                
-                $receipt_cr_paid = $inv_data->rid_receipt;
-
-                $invoice_cr_paid = $invoice_row->cci_paid_amount;
-
-                max($invoice_cr_paid,0);
-
-                $updated_cr_paid = $invoice_cr_paid-$receipt_cr_paid;
-
-                $updated_cr_paid = max($updated_cr_paid,0);
-                
-
-                    if($updated_cr_paid>0)
-                    {
-
-                    $pay_cr_status = 1;
-
-                    }
-                    else
-                    {
-                    
-                    $pay_cr_status = 0;
-
-                    }
-
-                    $update_cr_invoice['cci_paid_amount'] = $updated_cr_paid;
-
-                    $update_cr_invoice['cci_paid_status'] = $pay_cr_status;
-                    
-                    $this->common_model->EditData($update_cr_invoice,$credit_invoice_cond,'crm_credit_invoice');
-
-                }
-
-                }
-
-                */
-
-                $cond_so = array('rso_credit_id' => $inv_data->rid_id);
-                $this->common_model->DeleteData('accounts_receipts_sales_orders',$cond_so);
-
-                //Delete From Invoice Data Table
-                $this->common_model->DeleteData('accounts_receipt_invoice_data',array('rid_id' => $inv_data->rid_id));
+            $this->UpdateSalesOrderAdvance($adv_data->rso_sales_order);
 
             }
 
@@ -1998,8 +2046,6 @@ class Receipts extends BaseController
         $this->common_model->DeleteData('accounts_receipts',$cond);
 
         $this->common_model->DeleteData('accounts_receipt_invoices',$cond_receipt);
-
-        
 
         // $cond_tran = array('tran_reference' => $receipt->r_ref_no);
         // $this->common_model->DeleteData('master_transactions',$cond_tran);
@@ -2486,233 +2532,6 @@ class Receipts extends BaseController
 
 
     }
-
-
-
-
-
-
-
-
-    public function EditPfInvoice()
-     {
-
-        $cond = array('rid_receipt_invoice' => $this->request->getPost('id'));
-
-        $joins = array(
-
-            array(
-            'table' => 'crm_proforma_invoices',
-            'pk' => 'pf_id',
-            'fk' => 'rid_invoice',
-            ),
-    
-        );
-
-
-        $invoices = $this->common_model->FetchWhereJoin('accounts_receipt_invoice_data',$cond,$joins);
-       
-        $data['status']=0;
-    
-        $data['invoices']="";
-    
-        $sl =0;
-        foreach($invoices as $inv)
-        {
-        $sl++;
-
-        $data['invoices'].=
-        
-        '
-        <tr class="view_pf_invoice" id="edit_pf'.$inv->rid_id.'">
-
-        <input type="hidden" name="ri_id" value="'.$inv->rid_id.'">
-
-        <th>'.$sl.'</th>
-
-        <th>
-
-        <p class="">'.date('d-m-Y',strtotime($inv->pf_date)).'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">'.$inv->pf_reffer_no.'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">'.$inv->pf_lpo_ref.'</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->pf_lpo_ref.'">
-        
-        </th>
-        
-        <th>
-        
-        <p class="">'.$inv->pf_total_amount.'</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">'.$inv->rid_receipt.'</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->rid_receipt.'">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->rid_id.'">Edit</a>
-        
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-        </tr>'
-        
-        ;
-    
-        $data['status']=1;
-    
-        }
-    
-        echo json_encode($data);
-    
-
-    }
-
-
-
-    public function UpdatePfDetails()
-    {
-
-    $id = $this->request->getPost('id');
-
-    $cond = array('rid_id' => $id);
-
-    $update_data['rid_lpo_ref'] = $this->request->getPost('lpo_ref');
-
-    $update_data['rid_receipt'] = $this->request->getPost('receipt_amount');
-
-    $this->common_model->EditData($update_data,$cond,'accounts_receipt_invoice_data');
-
-    $this->FetchPfDetails($id);
-
-    }
-
-
-
-    public function FetchPfdetails($id)
-    {
-
-    $cond = array('rid_id' => $id);
-
-    $joins = array(
-
-        array(
-        'table' => 'crm_proforma_invoices',
-        'pk' => 'pf_id',
-        'fk' => 'rid_invoice',
-        ),
-
-    );
-
-    $inv = $this->common_model->SingleRowJoin('accounts_receipt_invoice_data',$cond,$joins);
-
-    $sl = 1;
-
-    $data['inv_id'] = $id ;
-
-    $data['invoices'] = "";
-
-    $data['invoices'].=
-        
-        '
-        <input type="hidden" name="ri_id" value="'.$inv->rid_id.'">
-
-        <th>'.$sl.'</th>
-
-        <th>
-
-        <p class="">'.date('d-m-Y',strtotime($inv->pf_date)).'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="">'.$inv->pf_reffer_no.'</p>
-
-        </th>
-
-
-        <th>
-
-        <p class="view">'.$inv->rid_lpo_ref.'</p>
-
-        <input style="display:none;" class="form-control edit" name="lpo_ref" type="text" value="'.$inv->rid_lpo_ref.'">
-        
-        </th>
-    
-        <th>
-        
-        <p class="">'.$inv->pf_total_amount.'</p>
-
-        </th>
-
-        <th>
-
-        <p class="view">'.$inv->rid_receipt.'</p>
-
-        <input style="display:none;" class="form-control edit" name="inv_receipt_amount" type="number" value="'.$inv->rid_receipt.'">
-        
-        </th>
-
-        <th>
-
-        <div class="view">
-
-        <a href="javascript:void(0);" class="edit_pf_invoice btn btn-primary" data-id="'.$inv->rid_id.'">Edit</a>
-        
-        </div>
-
-        <div class="edit" style="display:none;">
-        
-        <button class="btn btn-success update_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Update</button>
-
-        <button class="btn btn-danger cancel_pf_invoice_btn" data-id="'.$inv->rid_id.'" type="button">Cancel</button>
-
-        </div>
-        
-        </th>
-
-       '
-        ;
-
-
-        echo json_encode($data);
-
-
-    }
-
-
-
 
 
 

@@ -14,6 +14,15 @@
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link <?php if($uri->getSegment(3)=="Payroll") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Payroll">Payroll</a>
     </li>
+
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(3)=="VacationTravel") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationTravel">Vacation Travel</a>
+    </li>
+
+
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(3)=="Indemnity") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Indemnity">Indemnity</a>
+    </li>
   
 
 </ul>

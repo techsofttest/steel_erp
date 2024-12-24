@@ -58,7 +58,12 @@ class JournalVouchers extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/JournalVouchers/Print/'.$record->jv_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="delete delete-color delete_btn d-none" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '
+            <a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
+            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
+            <a href="'.base_url().'Accounts/JournalVouchers/Print/'.$record->jv_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>
+            ';
            
            $data[] = array( 
               "jv_id"=>$i,
@@ -165,32 +170,78 @@ class JournalVouchers extends BaseController
     Public function Add()
     {   
 
+
+        $insert_data['jv_voucher_no'] = $this->request->getPost('jv_voucher_no');
+
+        $juid_check = $this->common_model->SingleRow('accounts_journal_vouchers',array('jv_voucher_no' => $insert_data['jv_voucher_no']));
+
+        if(!empty($juid_check))
+        {
+            $return['status'] = 0;        
+            $return['error'] ="Duplicate Reference Number!";        
+            echo json_encode($return);        
+            exit;        
+        }
+
+        for($i=0;$i<count($this->request->getPost('jv_invoice'));$i++)
+        {
+        
+            if(empty($_POST['jv_account'][$i]))
+            {
+                $return['status'] = 0;        
+                $return['error'] ="Enter account!";        
+                echo json_encode($return);        
+                exit; 
+
+            }
+
+        }
+
+
         $insert_data['jv_added_by'] = 0; 
 
         $insert_data['jv_added_date'] = date('Y-m-d'); 
 
+        $insert_data['jv_voucher_no'] = $this->request->getPost('jv_voucher_no');
+
         $insert_data['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
-        $insert_data['jv_credit_total'] = $this->request->getPost('total_credit');
+        $insert_data['jv_credit_total'] = array_sum($_POST['jv_credit']);
 
-        $insert_data['jv_debit_total'] = $this->request->getPost('total_debit'); 
+        $insert_data['jv_debit_total'] = array_sum($_POST['jv_debit']); 
+
+
+        if($insert_data['jv_credit_total'] != $insert_data['jv_debit_total'])
+        {
+
+            $return['status'] = 0;        
+            $return['error'] ="Credit and debit must be same!";        
+            echo json_encode($return);        
+            exit; 
+
+        }
+
+
+
 
         $id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_data);
 
 
-        for($i=0;$i<count($this->request->getPost('jv_sale_invoice'));$i++)
+        for($i=0;$i<count($this->request->getPost('jv_invoice'));$i++)
         {
-
-            $sales_invoice = $_POST['jv_sale_invoice'][$i];
+            $sales_invoice = $_POST['jv_sale_invoice'][$i] ?? null;
 
             $account = $_POST['jv_account'][$i];
 
-            $debit = $_POST['jv_debit'][$i];
+            $debit = $_POST['jv_debit'][$i] ?? null;
 
-            $credit = $_POST['jv_credit'][$i];
+            $credit = $_POST['jv_credit'][$i] ?? null;
 
-            $remarks = $_POST['jv_remarks'][$i];
+            $remarks = $_POST['jv_remarks'][$i] ?? null;
 
+
+            if( (!empty($debit)) || (!empty($credit)))
+            {
 
             $insert_invoice['ji_sales_order_id'] =  $sales_invoice;
 
@@ -206,16 +257,16 @@ class JournalVouchers extends BaseController
 
             $this->common_model->InsertData('accounts_journal_invoices',$insert_invoice);
 
+            }
 
         }
 
-        $jv_no = $this->FetchReference("r");
+        $return['status'] = 1;
+
+        echo json_encode($return);    
+
+        //$jv_no = $this->FetchReference("r");
         
-        $cond = array('jv_id' => $id);
-
-        $update_data['jv_voucher_no'] = $jv_no;
-
-        $this->common_model->EditData($update_data,$cond,'accounts_journal_vouchers');
 
     }
 
@@ -282,7 +333,7 @@ class JournalVouchers extends BaseController
         else
         {
 
-        $debit_amount = $invoice->ji_debit;
+        $debit_amount = format_currency($invoice->ji_debit);
 
         }
 
@@ -298,7 +349,7 @@ class JournalVouchers extends BaseController
         else
         {
 
-        $credit_amount = $invoice->ji_credit;
+        $credit_amount = format_currency($invoice->ji_credit);
 
         }
 
@@ -309,9 +360,9 @@ class JournalVouchers extends BaseController
         <td>".$sales_order."</td>
         <td>".$invoice->ca_name."</td>
         <td>".$invoice->ji_narration."</td>
-        <td>".$debit_amount."</td>
-        <td>".$credit_amount."</td>
-      
+        <td class='text-end'>".$debit_amount."</td>
+        <td class='text-end'>".$credit_amount."</td>
+    
         </tr>";
 
 
@@ -350,6 +401,12 @@ class JournalVouchers extends BaseController
                 'pk' => 'so_id',
                 'fk' => 'ji_sales_order_id',
                 ),
+
+                array(
+                    'table' => 'accounts_charts_of_accounts',
+                    'pk' => 'ca_id',
+                    'fk' => 'ji_account',
+                    ),
 
         );
 
@@ -407,45 +464,46 @@ class JournalVouchers extends BaseController
 
         $options = "";
 
-        foreach($sales_orders as $so)
-        {
-
-        if($so->so_id == $invoice->ji_sales_order_id)
-        {
-        $selected = "selected";
-        $no_so= "";
-        }
-        else
-        {
-        $selected = "";
-        }
-
         $options .='
         
-        <option value="'.$so->so_id.'" '.$selected.'>'.$so->so_reffer_no.'</option>
+        <option value="'.$invoice->so_id.'" selected>'.$invoice->so_reffer_no.'</option>
 
         ';
 
-        }
+        $options_account = '
+        <option value="'.$invoice->ca_id.'" selected>'.$invoice->ca_name.'</option>
+        ';
+       
 
-
-        $data['invoices'] .= "<tr class=\"so_row\">
+        $data['invoices'] .= "<tr class=\"so_row_edit\">
 
         <td>".$i."
         <input type=\"hidden\" name=\"jv_invoice_id[]\" value=\"".$invoice->ji_id."\">
         </td>
 
-        <td><select name=\"jv_sale_invoice[]\" class=\"form-control\">
+        <td class=\"so_select2_parent_edit\" width='20%'>
         
-        <option value=\"0\" ".$no_so.">None</option>
-
+        <select name=\"jv_sale_invoice[]\" class=\"form-control so_select2_edit\">
+        
         ".$options."
         
-        </select></td>
+        </select>
         
-        <td><input name=\"jv_remarks[]\" type=\"text\" class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
-        <td><input name=\"jv_debit[]\" type=\"number\" class=\"form-control debit_amount_edit\" value=\"".$debit_amount."\"></td>
-        <td><input name=\"jv_credit[]\" type=\"number\" class=\"form-control credit_amount_edit\" value=\"".$credit_amount."\" ></td>
+        </td>
+
+        <td class=\"select2_parent_edit\" width='35%'>
+
+        <select name=\"jv_account[]\" class=\"form-control account_select2_edit\">
+        
+        ".$options_account."
+        
+        </select>
+        
+        </td>
+        
+        <td><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
+        <td><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control debit_amount_edit\" value=\"".$debit_amount."\"></td>
+        <td><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control credit_amount_edit\" value=\"".$credit_amount."\" ></td>
       
         </tr>";
 
@@ -467,9 +525,20 @@ class JournalVouchers extends BaseController
 
         $update_data['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
 
-        $update_data['jv_credit_total'] = $this->request->getPost('total_credit');
+        $update_data['jv_credit_total'] = array_sum($_POST['jv_credit']);
 
-        $update_data['jv_debit_total'] = $this->request->getPost('total_debit');
+        $update_data['jv_debit_total'] = array_sum($_POST['jv_debit']);
+
+        if($update_data['jv_credit_total'] != $update_data['jv_debit_total'])
+        {
+
+            $return['status'] = 0;        
+            $return['error'] ="Credit and debit must be same!";        
+            echo json_encode($return);        
+            exit; 
+
+
+        }
         
 
         $this->common_model->EditData($update_data,array('jv_id' => $id),'accounts_journal_vouchers');
@@ -482,7 +551,7 @@ class JournalVouchers extends BaseController
 
             $sales_invoice = $_POST['jv_sale_invoice'][$i];
 
-           // $account = $_POST['jv_account'][$i];
+            $account = $_POST['jv_account'][$i];
 
             $debit = $_POST['jv_debit'][$i];
 
@@ -492,7 +561,7 @@ class JournalVouchers extends BaseController
 
             $update_invoice['ji_sales_order_id'] =  $sales_invoice;
 
-            //$update_invoice['ji_account'] = $account;
+            $update_invoice['ji_account'] = $account;
 
             $update_invoice['ji_debit'] = $debit;
 
@@ -508,7 +577,9 @@ class JournalVouchers extends BaseController
         }
 
 
+        $return['status'] = 1;
 
+        echo json_encode($return);
 
 
 

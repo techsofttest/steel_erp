@@ -231,7 +231,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text"  name="date_of_join" class="form-control datepicker" required reaonly autocomplete="off">
+                        <input type="text"  name="date_of_join" class="form-control datepicker" required readonly autocomplete="off">
 
                         </div>
 
@@ -659,7 +659,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text"  name="air_ticket_per_year" class="form-control" required>
+                        <input type="number"  name="air_ticket_per_year" class="form-control" required>
 
                         </div>
 
@@ -677,7 +677,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text"  name="budgeted_air_ticket" class="form-control" required>
+                        <input type="number" step="0.01" name="budgeted_air_ticket" class="form-control" required>
 
                         </div>
 
@@ -713,7 +713,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="date" onclick="this.showPicker();" name="air_ticket_due_from" class="form-control" required>
+                        <input type="text" name="air_ticket_due_from" class="form-control datepicker" readonly required>
 
                         </div>
 
@@ -732,7 +732,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="date" onclick="this.showPicker();" name="vacation_pay_due_from" class="form-control" required>
+                        <input type="text"  name="vacation_pay_due_from" class="form-control datepicker" required>
 
                         </div>
 
@@ -896,20 +896,20 @@
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text"  name="visa_no" class="form-control" placeholder="Visa Number"  required>
+<input type="text"  name="visa_no" class="form-control" placeholder="Visa Number" >
 
 </div>
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text"  name="visa_expiry" class="form-control datepicker" placeholder="Visa Expiry" required readonly>
+<input type="text"  name="visa_expiry" class="form-control datepicker" placeholder="Visa Expiry" readonly>
 
 </div>
 
 
 <div class="col-col-md-3 col-lg-3">
 
-<input placeholder="Visa File" type="file"  name="visa_file" class="form-control" required>
+<input placeholder="Visa File" type="file"  name="visa_file" class="form-control">
 
 </div>
 
@@ -962,14 +962,14 @@
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text"  name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" required readonly>
+<input type="text"  name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" readonly>
 
 </div>
 
 
 <div class="col-col-md-3 col-lg-3">
 
-<input placeholder="Contract File" type="file"  name="contract_file" class="form-control" required>
+<input placeholder="Contract File" type="file"  name="contract_file" class="form-control">
 
 </div>
 
@@ -1187,7 +1187,11 @@
 
             <th>Basic Salary</th>
 
-            <td colspan="2" id="view_basic_salary"></td>
+            <td colspan="2" id="" align="">
+
+            <p id="view_basic_salary" style="width:70%;text-align:right;"></p>
+
+            </td>
 
 
             <th>Mode Of Payment</th>
@@ -1202,7 +1206,11 @@
 
             <th>House Rent Allowance</th>
 
-            <td colspan="2" id="view_hra"></td>
+            <td colspan="2" id="" align="">
+
+            <p id="view_hra" style="width:70%;text-align:right;"></p>
+
+            </td>
 
 
             <th>Account Number</th>
@@ -1217,7 +1225,11 @@
 
             <th>Transportation Allowance</th>
 
-            <td colspan="2" id="view_transport_allow"></td>
+            <td colspan="2" id="" align="">
+
+            <p id="view_transport_allow" style="width:70%;text-align:right;"></p>
+
+            </td>
 
 
             <th>Bank</th>
@@ -1232,7 +1244,13 @@
 
             <th>Telephone Allowance</th>
 
-            <td colspan="2" id="view_tel_allow"></td>
+            <td colspan="2" id="" align="">
+
+            <p id="view_tel_allow" style="width:70%;text-align:right;"></p>
+
+            </td>
+
+
 
 
             <th>Air Ticket Per Year</th>
@@ -1247,7 +1265,11 @@
 
             <th>Food Allowance</th>
 
-            <td colspan="2" id="view_food_allowance"></td>
+            <td colspan="2" id="" align="">
+
+            <p id="view_food_allowance" style="width:70%;text-align:right;"></p>
+
+            </td>
 
 
             <th>Budgeted Ticket Amount</th>
@@ -1263,14 +1285,57 @@
 
             <tr>
 
-            <th>Vacation Taken</th>
+            <th>Other Allowance</th>
 
-            <td colspan="2" id="view_vacation_taken"></td>
+            <td colspan="2" id="">
+
+            <p id="view_other_allowance" style="width:70%;text-align:right;"></p>
+
+            </td>
 
 
             <th>Air Ticket Due From</th>
 
             <td colspan="2" id="view_air_ticket_due_from"></td>
+
+            </tr>
+
+
+
+
+           <tr>
+
+           
+
+           <th>Total Salary</th>
+
+            <td colspan="2" >
+
+            <p id="view_total_salary" style="width:70%;text-align:right;"></p>
+
+            </td>
+
+            <th>Vacation Taken</th>
+
+            <td colspan="2" id="view_vacation_taken"></td>
+
+
+            </tr>
+
+
+
+
+
+            <tr>
+
+            <th></th>
+
+            <td colspan="2"></td>
+
+
+            <th>Vacation Pay Due From</th>
+
+            <td colspan="2" id="view_vacation_pay_due_from"></td>
 
 
             </tr>
@@ -1279,9 +1344,9 @@
 
             <tr>
 
-            <th>Vacation Pay Due From</th>
+            <th></th>
 
-            <td colspan="2" id="view_vacation_pay_due_from"></td>
+            <td colspan="2"></td>
 
             <th>Indemnity Advance</th>
 
@@ -1291,21 +1356,8 @@
 
 
 
+           
 
-
-           <tr>
-
-            <th>Other Allowance</th>
-
-            <td colspan="2" id="view_other_allowance"></td>
-
-
-            <th>Total Salary</th>
-
-            <td colspan="2" id="view_total_salary"></td>
-
-
-            </tr>
 
 
 
@@ -1488,7 +1540,6 @@
                                 <th>Division</th>
                                 <th>Designation</th>
                                 <th>Date Of Join</th>
-                                <th>Contract Expiry</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -2253,13 +2304,13 @@
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text" id="visa_no_edit"  name="visa_no" class="form-control" placeholder="Visa Number"  required>
+<input type="text" id="visa_no_edit"  name="visa_no" class="form-control" placeholder="Visa Number" >
 
 </div>
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text" id="visa_expiry_edit"  name="visa_expiry" class="form-control datepicker" placeholder="Visa Expiry" required readonly>
+<input type="text" id="visa_expiry_edit"  name="visa_expiry" class="form-control datepicker" placeholder="Visa Expiry" readonly>
 
 </div>
 
@@ -2319,7 +2370,7 @@
 
 <div class="col-col-md-3 col-lg-3">
 
-<input type="text" id="contract_expiry_edit" name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" required readonly>
+<input type="text" id="contract_expiry_edit" name="contract_expiry" class="form-control datepicker" placeholder="Contract Expiry" readonly>
 
 </div>
 
@@ -3014,27 +3065,68 @@
 
                         $('#view_passport_no').html(data.employee.emp_passport_no);
 
+
+                        if(data.employee.emp_passport_expiry!=null)
+                        {
                         $('#view_passport_expiry').html(FormatDate(data.employee.emp_passport_expiry));
+                        }
+                        else
+                        {
+                        $('#view_passport_expiry').html('-');  
+                        }
 
-                        $('#view_passport_file').attr('href','<?= base_url(); ?>public/uploads/Employees/'+data.employee.emp_passport_file+'');
+
+                        $('#view_passport_file').attr('href','<?= base_url(); ?>public/uploads/Employees/Documents/'+data.employee.emp_passport_file+'');
 
                         $('#view_visa_no').html(data.employee.emp_visa_no);
 
-                        $('#view_visa_no').html(data.employee.emp_visa_no);
 
-                        $('#view_visa_file').attr('href','<?= base_url(); ?>public/uploads/Employees/'+data.employee.emp_visa_file+'');
+                        if(data.employee.emp_visa_file!=null)
+                        {
+                        $('#view_visa_file').attr('href','<?= base_url(); ?>public/uploads/Employees/Documents/'+data.employee.emp_visa_file+'');
+                        }
+                        else
+                        {
+                        
+                        }
 
+
+                        if(data.employee.emp_visa_expiry!=null)
+                        {
                         $('#view_visa_expiry').html(FormatDate(data.employee.emp_visa_expiry));
+                        }
+                        else
+                        {
+                        $('#view_visa_expiry').html('-');  
+                        }
+
 
                         $('#view_qid_no').html(data.employee.emp_qatar_id_no);
 
-                        $('#view_qatar_id_file').attr('href','<?= base_url(); ?>public/uploads/Employees/'+data.employee.emp_qatar_id_file+'');
+                        $('#view_qatar_id_file').attr('href','<?= base_url(); ?>public/uploads/Employees/Documents/'+data.employee.emp_qatar_id_file+'');
 
+
+                        if(data.employee.emp_qatar_id_expiry!=null)
+                        {
                         $('#view_qid_expiry').html(FormatDate(data.employee.emp_qatar_id_expiry));
+                        }
+                        else
+                        {
+                        $('#view_qid_expiry').html('-');   
+                        }
 
-                        $('#view_contract').attr('href','<?= base_url(); ?>public/uploads/Employees/'+data.employee.emp_contract_file+'');
 
+
+                        $('#view_contract').attr('href','<?= base_url(); ?>public/uploads/Employees/Documents/'+data.employee.emp_contract_file+'');
+
+                        if(data.employee.emp_contract_expiry!=null)
+                        {
                         $('#view_contract_expiry').html(FormatDate(data.employee.emp_contract_expiry));
+                        }
+                        else
+                        {
+                        $('#view_contract_expiry').html('-');
+                        }
           
                         //
 
@@ -3247,7 +3339,6 @@
                     { data: 'division' },
                     { data : 'designation'},
                     { data : 'date_of_join'},
-                    { data: 'contract_expiry'},
                     { data: 'action' },
                 ]
                 
@@ -3362,6 +3453,11 @@
 
     function formatNumber(num) {
     // Convert number to string
+
+    if(num!="")
+
+    {
+
     let numStr = num.toString();
 
     // Split into integer and decimal parts (if any)
@@ -3381,11 +3477,12 @@
     let formattedInteger = otherDigits.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThreeDigits;
 
     return formattedInteger + decimalPart;
+
+    }
+
+    
 }
 
-// Example usage
-let formattedNumber = formatNumber(100000);
-console.log(formattedNumber); // Output: "1,00,000"
 
 
 

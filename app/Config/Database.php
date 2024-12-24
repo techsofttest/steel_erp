@@ -31,7 +31,7 @@ class Database extends Config
         'hostname'     => 'localhost',
         'username'     => 'root',
         'password'     => '',
-        'database'     => 'steel_new',
+        'database'     => 'steel',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => 'steel_',
         'pConnect'     => false,

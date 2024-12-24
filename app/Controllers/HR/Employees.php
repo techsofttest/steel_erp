@@ -25,25 +25,27 @@ class Employees extends BaseController
         $start = $dtpostData['start'];
         $rowperpage = $dtpostData['length']; // Rows display per page
         $columnIndex = $dtpostData['order'][0]['column']; // Column index
-        $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
-        $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
+        //$columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
+        //$columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
         $searchValue = $dtpostData['search']['value']; // Search value
 
         // Check if the current sort order is 'asc', then set it to 'desc'
-        if ($columnSortOrder === 'asc') {
+        /*if ($columnSortOrder === 'asc') {
             $columnSortOrder = 'desc';
-        } 
+        }*/
 
+        $columnName = 'emp_uid'; 
+        $columnSortOrder = 'ASC';
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('hr_employees','emp_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('hr_employees','emp_uid','ASC');
  
         ## Total number of records with filtering
        
         $searchColumns = array('emp_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_employees','emp_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_employees','emp_uid',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
@@ -57,7 +59,7 @@ class Employees extends BaseController
 
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('hr_employees','emp_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('hr_employees','emp_uid',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -73,7 +75,6 @@ class Employees extends BaseController
               'division' => $record->div_name,
               'designation' => $record->emp_designation,
               'date_of_join' => date('d-F-Y',strtotime($record->emp_date_of_join)),
-              "contract_expiry"=>  date('d-F-Y',strtotime($record->emp_contract_expiry)),
               "action" =>$action,
            );
            $i++; 

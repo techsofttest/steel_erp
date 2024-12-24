@@ -42,6 +42,18 @@
     content: "\ecb1";
 }
 
+.ri-line-chart-line:before {
+    content: "\eeab";
+}
+
+.ri-truck-line:before {
+    content: "\f231";
+}
+
+.ri-box-3-line:before {
+    content: "\f2f5";
+}
+
 .ri-pencil-fill:before {
     content: "\efdf";
 }

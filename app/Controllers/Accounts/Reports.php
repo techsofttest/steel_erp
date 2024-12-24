@@ -127,7 +127,10 @@ class Reports extends BaseController
 
        //$data['vouchers']=$this->report_model->FetchGLTransactions($start_date,$end_date,$account_head,$account_type,$account,$time_frame,$range_from,$range_to);
 
-        
+        if($filter_type=="Account_Head" || )
+        {
+        $accounts = $this->report_model->GetAccounts($head="",$type="");
+        }
 
 
         $data['vouchers']=$this->report_model->FetchGLTransactions($start_date,$end_date,$account_head,$account_type,$account,$time_frame,$range_from,$range_to);

@@ -192,6 +192,57 @@ class AccountHead extends BaseController
 
 
 
+     //Common For Select 2 Dropdown
+
+    public function FetchHeads($where="")
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+
+        if($term !="")
+        $where="ah_account_name LIKE '%$term%'";
+
+        $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_account_heads','ah_account_name','asc',$where,$end,$start);
+      
+        //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
+
+    public function FetchTypes($where="")
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+
+        if($term !="")
+        $where="at_name LIKE '%$term%'";
+
+        $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_account_types','at_name','asc',$where,$end,$start);
+      
+        //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
 
 
 }
