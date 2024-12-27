@@ -23,7 +23,7 @@ use Psr\Log\LoggerInterface;
 abstract class BaseController extends Controller
 {
 
-
+    
 
 
     /**
@@ -99,6 +99,7 @@ abstract class BaseController extends Controller
         // Fetch the  data and make it available to all views
 
         $joins = array(
+            
             array(
                 'table' => 'steel_permission',
                 'pk'    => 'per_id ',
@@ -110,6 +111,10 @@ abstract class BaseController extends Controller
         
         $this->data['permissions'] = $this->common_model->FetchWhereJoin('user_permission',array('up_user_id' => $adminId),$joins); 
 
+        
+
+        //print_r($this->data['permissions']); exit();
+ 
       
 
         /*$joins1 = array(
@@ -125,9 +130,12 @@ abstract class BaseController extends Controller
        $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond1,$joins1);*/
 
        
+
+       
         // Share the data globally
         \Config\Services::renderer()->setData($this->data);
-        
+
+
 
     }
 

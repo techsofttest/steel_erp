@@ -608,8 +608,8 @@
                                         <td>Sales Order</td>
                                         <td>Product Description</td>
                                         <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
+                                        <td>Order Qty</td>
+                                        <td>Delivered Qty</td>
 
 
 
@@ -861,9 +861,8 @@
                                         <td>Product Description</td>
                                         <td>Unit</td>
                                         <td>Order Qty</td>
-                                        <td>Order Qty</td>
-                                        <td>Rate</td>
-                                        <td>Action</td>
+                                        <td>Delivered Qty</td>
+                                        
                                     </tr>
 
                                 </tbody>
@@ -1411,18 +1410,26 @@
                 },
 
                 success: function(data) {
-                    //var data = JSON.parse(data);
 
-                    rowToDelete.fadeOut(500, function() {
+                    var data = JSON.parse(data);
 
-                        $(this).remove();
+                    if(data.status === "true"){
 
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        rowToDelete.fadeOut(500, function() {
+
+                            $(this).remove();
+
+                            alertify.error('Data Delete Successfully').delay(3).dismissOthers();
 
 
 
-                        datatable.ajax.reload(null, false);
-                    });
+                            datatable.ajax.reload(null, false);
+                        });
+
+                    }else{
+
+                        alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
+                    }
 
                 }
 

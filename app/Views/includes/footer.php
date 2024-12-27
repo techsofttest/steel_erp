@@ -139,6 +139,54 @@
 
     </script>
 
+    <script>
+
+        $("body").on('click', '.delete_btn', function(){ 
+            
+            var adminId = "<?= session('admin_id') ?>";
+
+            var url = window.location.href;
+
+            var segments = url.split('/');
+
+            var segment1 = segments[4]; 
+
+            var segment2 = segments[5];
+
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+
+                method : "POST",
+
+                data: {ID: adminId,
+                       segment1:segment1,
+                       segment2:segment2,
+                       
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    if(data.status==="true")
+                    {   
+                        //alert("sucess");
+
+                        //$('.delete_btn').hide();
+
+                        alertify.error('Access Denied: You do not have permission to access this page.').delay(3).dismissOthers();
+                    }
+
+                }
+
+            });
+
+        });
+
+    </script>
+
 
     <script>
 
@@ -148,17 +196,17 @@
         function FormatDate(rawDate)
         {
 
-        var dateObj = new Date(rawDate);
+            var dateObj = new Date(rawDate);
 
-        // Array to convert month number to month name
-        var monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-        ];
+            // Array to convert month number to month name
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+            ];
 
-        // Format the date
-        var formattedDate = ('0' + dateObj.getDate()).slice(-2) + '-' + monthNames[dateObj.getMonth()] + '-' + dateObj.getFullYear();
+            // Format the date
+            var formattedDate = ('0' + dateObj.getDate()).slice(-2) + '-' + monthNames[dateObj.getMonth()] + '-' + dateObj.getFullYear();
 
-        return formattedDate;
+            return formattedDate;
 
         }
        
@@ -193,8 +241,8 @@
                     // '$(this)' refers to '$("#datepicker")'
                 });
             $('body').on('focus',".datepicker", function(){
-            $(this).datepicker({ dateFormat: "dd-MM-yy" });
-            $(this).attr("autocomplete", "off");
+                $(this).datepicker({ dateFormat: "dd-MM-yy" });
+                $(this).attr("autocomplete", "off");
             })
         });
 

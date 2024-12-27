@@ -246,7 +246,7 @@ class PurchaseOrder extends BaseController
                 
                     for($j=0;$j<=$count-1;$j++)
                     {
-                    
+                        $delivered_qty =  $_POST['pop_qty'][$j] + $_POST['prod_delivered_qty'][$j];
                     
                         $insert_data  	= array(  
                             
@@ -264,9 +264,17 @@ class PurchaseOrder extends BaseController
                         );
 
                         $this->common_model->InsertData('pro_purchase_order_product',$insert_data);
-
-                        $this->common_model->EditData(array('mrp_pur_status' => 1), array('mrp_id' =>$_POST['material_req_prod_id'][$j]), 'pro_material_requisition_prod');
                         
+                        $this->common_model->EditData(array('mrp_delivered_qty' => $delivered_qty), array('mrp_id' =>$_POST['material_req_prod_id'][$j]), 'pro_material_requisition_prod');
+
+                        $single_material = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_id' =>$_POST['material_req_prod_id'][$j]));
+
+                        if($single_material->mrp_qty == $single_material->mrp_delivered_qty){
+
+                            $this->common_model->EditData(array('mrp_pur_status' => 1), array('mrp_id' =>$_POST['material_req_prod_id'][$j]), 'pro_material_requisition_prod');
+                        }
+                       
+
                         $material_req_prod1 = $this->common_model->FetchWhere('pro_material_requisition_prod' ,array('mrp_mr_id' => $_POST['material_req'][$j]));
                         
                         $material_req_prod2 = $this->common_model->FetchSalesOrder('pro_material_requisition_prod' ,array('mrp_mr_id' => $_POST['material_req'][$j]),array('mrp_pur_status' => 1));
@@ -481,13 +489,18 @@ class PurchaseOrder extends BaseController
             //$products = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
             
+
+            
             foreach($products as $product){
+
+                $current_qty = $product->mrp_qty - $product->mrp_delivered_qty;
+
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->mrp_id.'">
                                             <td class="si_no">'.$i.'</td>
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control" readonly></td>
                                             <td style="width:40%;"><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control" readonly></td>
-                                            <td><input type="number" name="pop_qty[]" value="'.$product->mrp_qty.'"  class="form-control add_prod_qty" readonly></td>
+                                            <td><input type="number" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty" ></td>
                                             <td><input type="number" name="pop_rate[]" value=""  class="form-control add_prod_rate" required></td>
                                             <td><input type="number" name="pop_discount[]" value=""  class="form-control add_discount" min="0" max="100" onkeyup="MinMax(this)" required></td>
                                             <td><input type="number" name="pop_amount[]" value=""  class="form-control add_prod_amount" readonly></td>
@@ -495,6 +508,8 @@ class PurchaseOrder extends BaseController
                                             <input type="hidden" name="pop_prod_desc[]" value="'.$product->mrp_product_desc.'">
                                             <input type="hidden" name="material_req_prod_id[]" value="'.$product->mrp_id.'">
                                             <input type="hidden" name="material_req[]" value="'.$product->mrp_mr_id.'">
+                                            <input type="hidden" name="prod_delivered_qty[]" class="check_delivered_qty" value="'.$product->mrp_delivered_qty.'">
+                                            <input type="hidden" name="" class="check_total_qty" value="'.$product->mrp_qty.'">
                                                  
                                                     
                                                 </tr>';
@@ -585,7 +600,7 @@ class PurchaseOrder extends BaseController
 
         $data['vendor_ref'] = $material_requisition->po_vendor_ref;
 
-        $data['total_amount'] = $material_requisition->po_amount;
+        $data['total_amount'] = format_currency($material_requisition->po_amount);
 
 
 
@@ -622,7 +637,7 @@ class PurchaseOrder extends BaseController
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_amount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" style="text-align: center;" class="form-control" readonly></td>
             </tr>
             ';
             $i++; 
@@ -729,7 +744,7 @@ class PurchaseOrder extends BaseController
 
         $data['purchase_id'] = $purchase_order->po_id;
 
-        $data['po_amount'] = $purchase_order->po_amount;
+        $data['po_amount'] = format_currency($purchase_order->po_amount);
 
         $join =  array(
             
@@ -766,9 +781,9 @@ class PurchaseOrder extends BaseController
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_amount.'" class="form-control edit_amount" readonly></td>
-            <td style="width:15%">
-                <a href="javascript:void(0)" class="delete delete-color sales_delete" data-id="'.$pur_order_prod->pop_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control edit_amount" style="text-align: right;" readonly></td>
+            <td width="10%">
+               <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$pur_order_prod->pop_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
             </td>
             </tr>
             ';
@@ -845,6 +860,139 @@ class PurchaseOrder extends BaseController
 
         $this->common_model->EditData($update_data, array('po_id' => $this->request->getPost('po_id')), 'pro_purchase_order');
         
+    }
+
+
+    public function EditSingleProd(){
+        
+        $join =  array(
+            
+            array(
+                'table' => 'crm_sales_orders',
+                'pk'    => 'so_id',
+                'fk'    => 'pop_sales_order',
+            ),
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id ',
+                'fk'    => 'pop_prod_desc',
+            ),
+
+           
+        );
+
+        $pur_order_prod = $this->common_model->SingleRowjoin('pro_purchase_order_product',array('pop_id' => $this->request->getPost('ID')),$join);
+
+        $marial_req = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_id' => $pur_order_prod->pop_material_req_prod_id));
+        
+        $data['sales_order'] = "";
+
+           
+
+      
+            $data['sales_order'] .= '<tr class="edit_single_prod_row" id="'.$pur_order_prod->pop_id.'">
+           
+            <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control" readonly></td>
+            <td style="width:30%"><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  name="pop_unit"  value="'.$pur_order_prod->pop_unit.'" class="form-control"></td>
+            <td> <input type="text" name="pop_qty" value="'.$pur_order_prod->pop_qty.'" class="form-control edit_prod_qty edit_qty_update"></td>
+            <td> <input type="text" name="pop_rate" value="'.$pur_order_prod->pop_rate.'" class="form-control edit_prod_rate"></td>
+            <td> <input type="text" name="pop_discount" value="'.$pur_order_prod->pop_discount.'" class="form-control edit_prod_discount" ></td>
+            <td> <input type="text" name="pop_amount" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control" readonly></td>
+            <input type="hidden" value="'.$marial_req->	mrp_qty.'" class="edit_total_qty">
+            <input type="hidden" value="'.$marial_req->	mrp_delivered_qty.'" class="edit_delivered_qty">
+            <input type="hidden" name="pop_id" value="'.$pur_order_prod->pop_id.'">
+            <input type="hidden" value="'.$pur_order_prod->pop_qty.'" class="edit_actual_qty">
+            
+            </tr>
+            ';
+         
+        echo json_encode($data);
+        
+
+    }
+
+
+    public function UpdateSingleProd(){
+
+        
+       
+        if(empty($this->request->getPost('single_prod_sub'))){
+
+            $update_data = [
+
+                'pop_unit'      => date('Y-m-d',strtotime($this->request->getPost('pop_unit'))),
+
+                'pop_qty'       => $this->request->getPost('pop_qty'),
+
+                'pop_rate'      => $this->request->getPost('pop_rate'),
+
+                'pop_discount'  => $this->request->getPost('pop_discount'),
+
+                'pop_amount'    => $this->request->getPost('pop_amount'),
+
+
+            ];
+
+            $this->common_model->EditData($update_data, array('pop_id' => $this->request->getPost('pop_id')), 'pro_purchase_order_product');
+
+            $single_po_prod = $this->common_model->SingleRow('pro_purchase_order_product', array('pop_id' => $this->request->getPost('pop_id')));
+
+            $purchase_orders = $this->common_model->FetchWhere('pro_purchase_order_product',array('pop_purchase_order' => $single_po_prod->pop_purchase_order));
+
+            $purchase_orders_materials = $this->common_model->FetchWhere('pro_purchase_order_product',array('pop_material_req_prod_id' => $single_po_prod->pop_material_req_prod_id));
+            
+            $total_amount = 0;
+             
+            foreach($purchase_orders as $pur_ord){
+                
+                $total_amount = $pur_ord->pop_amount + $total_amount;
+
+            }
+
+            $this->common_model->EditData(array('po_amount' => $total_amount), array('po_id' => $single_po_prod->pop_purchase_order), 'pro_purchase_order');
+
+            $delivered_qty = 0;
+
+            foreach($purchase_orders_materials as $pur_ord_mat){
+               
+                $delivered_qty = $pur_ord_mat->pop_qty + $delivered_qty; 
+                
+            }
+
+            $this->common_model->EditData(array('mrp_delivered_qty' => $delivered_qty), array('mrp_id' => $single_po_prod->pop_material_req_prod_id),'pro_material_requisition_prod');
+
+            $material_requistion = $this->common_model->SingleRow('pro_material_requisition_prod',array('mrp_id' => $single_po_prod->pop_material_req_prod_id));
+
+            if($material_requistion->mrp_qty == $material_requistion->mrp_delivered_qty){
+                
+                $this->common_model->EditData(array('mrp_pur_status' => 1), array('mrp_id' => $single_po_prod->pop_material_req_prod_id),'pro_material_requisition_prod');
+
+            }else{
+               
+                $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_id' => $single_po_prod->pop_material_req_prod_id),'pro_material_requisition_prod');
+
+            }
+
+            
+            $material_data1 = $this->common_model->FetchWhere('pro_material_requisition_prod',array('mrp_mr_id' =>$material_requistion->mrp_mr_id));
+
+            $material_data2 = $this->common_model->CheckTwiceCond1('pro_material_requisition_prod',array('mrp_mr_id' => $material_requistion->mrp_mr_id),array('mrp_pur_status' =>1));
+
+           
+
+            if(count($material_data1) == count($material_data2)){
+                
+
+                $this->common_model->EditData(array('mr_pur_status' => 1), array('mr_id' => $material_requistion->mrp_mr_id),'pro_material_requisition');
+
+            }else{
+               
+                $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $material_requistion->mrp_mr_id),'pro_material_requisition');
+
+            }
+        }
+
     }
 
 
@@ -931,6 +1079,33 @@ class PurchaseOrder extends BaseController
 
         $purchase = $this->common_model->SingleRow('pro_purchase_order',$cond);
 
+       
+
+        $purchase_products = $this->common_model->FetchWhere('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
+        
+        $qty =0;
+
+        foreach($purchase_products  as $pur_prod){
+              
+           $purchase_qty =  $pur_prod->pop_qty + $qty;
+
+           $pur_prod->pop_material_req_prod_id;
+
+           $material_req_single = $this->common_model->SingleRow('pro_material_requisition_prod', array('mrp_id' => $pur_prod->pop_material_req_prod_id));
+
+           $delivered_qty = $material_req_single->mrp_delivered_qty;
+
+           $current_qty =  $delivered_qty -  $purchase_qty;
+
+           $this->common_model->EditData(array('mrp_delivered_qty' => $current_qty), array('mrp_id' => $material_req_single->mrp_id ),'pro_material_requisition_prod');
+
+
+        }
+
+       // $purchase_vouchers = $this->common_model->FetchWhere('pro_purchase_voucher',array('pv_vendor_name' => $vendor_id));
+
+       
+
         $this->common_model->EditData(array('mrp_pur_status' => 0), array('mrp_mr_id' => $purchase->po_mrn_reff),'pro_material_requisition_prod');
         
         $this->common_model->EditData(array('mr_pur_status' => 0), array('mr_id' => $purchase->po_mrn_reff),'pro_material_requisition');
@@ -979,6 +1154,8 @@ class PurchaseOrder extends BaseController
         return null;
 
     }
+
+   
 
 
 

@@ -782,6 +782,7 @@ class CashInvoice extends BaseController
             $cond2 = array('cipd_cash_invoice' => $cash_invoice_id);
 
             $joins = array(
+                
                 array(
                     'table' => 'crm_sales_product_details',
                     'pk'    => 'spd_id',
@@ -797,18 +798,22 @@ class CashInvoice extends BaseController
             {   
                 $sales_order_prod = $this->common_model->SingleRow('crm_sales_product_details',array('spd_id' => $cash_prod_det->cipd_sales_prod));
 
-                $update_data1 = [
+                if(!empty($sales_order_prod )){
 
-                    'spd_deliver_flag' => 0,
+                    $update_data1 = [
 
-                    'spd_delivered_qty' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
+                        'spd_deliver_flag' => 0,
 
-                    'spd_cash_invoice' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
+                        'spd_delivered_qty' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
 
+                        'spd_cash_invoice' => $sales_order_prod->spd_delivered_qty - $cash_prod_det->cipd_qtn,
 
-                ];
+                    ];
 
-                $this->common_model->EditData($update_data1,array('spd_id' => $cash_prod_det->cipd_sales_prod),'crm_sales_product_details');
+                    $this->common_model->EditData($update_data1,array('spd_id' => $cash_prod_det->cipd_sales_prod),'crm_sales_product_details');
+
+                }
+
             }
 
             $this->common_model->DeleteData('crm_cash_invoice',$cond);

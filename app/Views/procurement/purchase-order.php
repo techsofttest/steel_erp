@@ -644,6 +644,7 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
+                                                                
                                                                 <td>Serial No.</td>
                                                                 <td>Sales Order</td>
                                                                 <td>Product Description</td>
@@ -651,9 +652,8 @@
                                                                 <td>Qty</td>
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td style="text-align: center;">Amount</td>
                                                                
-                                                                
                                                             </tr>
                                                             
                                                            
@@ -666,7 +666,7 @@
                                                                 
                                                                 <td colspan="6" class=""></td>
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="" class="view_total_prod form-control" readonly=""></td>
+                                                                <td><input type="text" name="" class="view_total_prod form-control" style="text-align: right;" readonly=""></td>
                                                             </tr>
 		
 		                                                </tbody>
@@ -947,8 +947,9 @@
                                                                 <td>Qty</td>
                                                                 <td>Rate</td>
                                                                 <td>Discount</td>
-                                                                <td>Amount</td>
-                                                                <td>Action</td>
+                                                                <td style="text-align: center;">Amount</td>
+                                                                <td>Actions</td>
+                                                                
                                                             </tr>
                                                             
                                                         </tbody>
@@ -959,7 +960,7 @@
                                                             <tr>
                                                                 <td colspan="6" class=""></td>
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="" class="edit_total_prod form-control" readonly=""></td>
+                                                                <td><input type="text" name="" class="edit_total_prod form-control" readonly="" style="text-align: right;"></td>
                                                             </tr>
                                                             
                                                         </tbody>
@@ -1211,6 +1212,79 @@
 
 
 <!--select  modal section end-->
+
+
+
+<!--edit product single modal start--->
+
+<div class="modal fade" id="EditProdModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="update_single_prod">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close close_single_prod" data-bs-dismiss="modal"  aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Sales Order Ref</td>
+                                        <td>Product Description</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</th>
+                                       
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo edit_single_prod"></tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                                                  
+                    <button class="btn btn btn-success" type="submit" name="single_prod_sub" >Save</button>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+
+<!--edit product single modal end--->
+
 
 
 <!--vendor modal start-->
@@ -1592,14 +1666,13 @@
                     
                         $.ajax({
 
-                            url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/FetchReference",
+                            url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/FetchMR",
 
                             method : "GET",
 
                             success:function(data)
                             {
                                 var data = JSON.parse(data);
-                                
                                
                                 $('#po_mrn_reff_id').html(data.mrn);
 
@@ -1838,6 +1911,14 @@
 
             var quantity = parseInt($quantitySelectElement.val())||0;
 
+            var $totalqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_total_qty');
+
+            var total_qty = parseInt($totalqtySelectElement.val())||0;
+
+            var $deliveredqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_delivered_qty');
+
+            var delivered_qty = parseInt($deliveredqtySelectElement.val())||0;
+
             var parsedRate = parseFloat(rate);
 
             var parsedQuantity = quantity; 
@@ -1853,6 +1934,27 @@
             var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
 
             $amountElement.val(orginalPrice);
+
+            var current_qty = total_qty -  delivered_qty;
+
+           
+
+            if(quantity > current_qty)
+            {   
+                
+
+                var currencyNull = $quantitySelectElement.val("");
+
+                var $currencyNullElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
+
+                $currencyNullElement.val(currencyNull);  
+
+                alertify.error('Quantity should not be greater than ' + current_qty).delay(3).dismissOthers();
+                
+                
+
+            }
+
 
             TotalAmount();
 
@@ -2070,6 +2172,138 @@
 
         });
 
+
+        $("body").on('click', '.edit_prod_btn', function(){ 
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/EditSingleProd",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+                                    
+                    $('.edit_single_prod').html(data.sales_order);
+
+                    $('#EditProdModal').modal("show");
+
+                    $('#EditModal').modal("hide");
+
+                    
+
+                }
+
+            });
+
+           
+
+        });
+
+
+
+
+        $('.close_single_prod').click(function(){
+
+          $('#EditModal').modal('show');   
+
+        });
+
+
+       
+
+       
+
+
+        /*single product calculation start*/
+
+        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_discount').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var $totalqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_total_qty');
+
+            var total_qty = parseInt($totalqtySelectElement.val())||0;
+
+            var $deliveredqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_delivered_qty');
+
+            var delivered_qty = parseInt($deliveredqtySelectElement.val())||0;
+
+            var $actqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_actual_qty');
+
+            var act_qty = parseInt($actqtySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); 
+
+            var $amountElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+
+            if(act_qty === delivered_qty){
+               
+                current_qty =  total_qty;
+
+            }
+            else{
+               
+                var qty =  delivered_qty - act_qty;
+                                
+                var current_qty = total_qty -  qty;             
+
+               
+            }
+
+
+           
+
+            if(quantity > current_qty)
+            {   
+               
+                var $currencyNullElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
+
+                $currencyNullElement.val("");  
+
+                alertify.error('Quantity should not be greater than ' + current_qty).delay(3).dismissOthers();
+             
+            }
+
+
+        });
+
+
+       
+
+
+        /*single product calculation end*/
+
+
+
         
         /*fetch contact by vendor start*/
 
@@ -2148,6 +2382,55 @@
 
 
         /*#####*/
+
+
+        /*update single prod  start*/
+
+
+        $(function() {
+
+            var form = $('#update_single_prod');
+
+
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+
+                    var formData = new FormData(currentForm);
+
+                    // Submit the form for the current tab
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Procurement/PurchaseOrder/UpdateSingleProd",
+                        method: "POST",
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(data) {
+                            
+                            $('#EditProdModal').modal('hide');
+                        
+                            alertify.success('Data Update Successfully').delay(3).dismissOthers();
+                        
+                            datatable.ajax.reload(null, false);
+
+                            
+                            
+                        }
+                    });
+
+                
+                }
+            });
+        });
+
+
+        /*update single prod end*/
 
 
 
@@ -2275,6 +2558,8 @@
             });
 
         });
+
+
 
 
 

@@ -792,7 +792,7 @@ class CommonModel extends Model
 
 
     public function FetchProd($table, $cond, $cond2, $joins)
-   {
+    {
         $query = $this->db->table($table)
             ->select('*')
             ->where($cond)
@@ -1631,6 +1631,30 @@ class CommonModel extends Model
         //echo $this->db->getLastQuery(); exit();
        return $result;
 
+    }
+
+
+    public function CheckModule($id,$data1,$data2){
+
+        $query = $this->db->table('user_permission')
+        
+        ->select('*');
+
+        $query->join('steel_permission','steel_permission.per_id = user_permission.up_permission','left');
+
+        $query->join('premission_sub_module','premission_sub_module.psm_id = user_permission.up_sub_module_id','left');
+
+        $query->where('up_user_id',$id);
+
+        $query->where('steel_permission.per_module',$data1);
+
+        $query->where('premission_sub_module.psm_sub_module',$data2);
+
+        $result = $query->get()->getRow();
+
+        return $result;
+
+        
     }
 
    

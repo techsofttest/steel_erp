@@ -811,7 +811,7 @@ class CrmReportModel extends Model
 
 
     /*job profitability*/
-    public function job_profitability($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col,$data4,$data4_col,$table,$joins,$group_by_col)
+    /*public function job_profitability($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col,$data4,$data4_col,$table,$joins,$group_by_col)
     { 
         $query = $this->db->table($table)
         ->select('*');
@@ -869,6 +869,135 @@ class CrmReportModel extends Model
 
             $i++;
         }
+
+        return $result;
+
+    }*/
+
+    public function job_profitability($from_date,$from_date_col,$to_date,$to_date_col,$data1,$data1_col,$data2,$data2_col,$data3,$data3_col){
+
+        $query = $this->db->table('crm_sales_orders')
+
+        ->select('*');
+
+        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_sales_orders.so_customer','left');
+
+        $query->join('executives_sales_executive','executives_sales_executive.se_id =crm_sales_orders.so_sales_executive','left');
+
+        if (!empty($from_date)) {
+           
+            $query->where($from_date_col.' >=', $from_date);
+        }
+
+        if (!empty($to_date)) {
+           
+            $query->where($from_date_col . ' <=', $to_date);
+        }
+
+        if (!empty($data1)) {
+            $query->like($data1_col, $data1);
+        }
+
+        if (!empty($data2)) {
+            $query->like($data2_col, $data2);
+        }
+
+        if (!empty($data3)) {
+            $query->like($data3_col, $data3);
+        }
+
+        $result = $query->get()->getResult();
+
+
+        $i = 0;
+
+        foreach ($result as $res) {
+            
+            $result[$i]->purchase_vouchers      = $this->FetchPurchaseVoucher('pro_purchase_voucher_prod',array('pvp_sales_order' => $res->so_reffer_no));
+
+            $result[$i]->purchase_return_prod   = $this->FetchPurchaseReturnProd('pro_purchase_return_prod',array('prp_sales_order' => $res->so_reffer_no));
+
+            $result[$i]->petty_cash             = $this->FetchPettyCash('accounts_petty_cash_debits',array('pci_sales_order' => $res->so_id));
+
+            $result[$i]->journal_voucher        = $this->FetchJournalVoucher('accounts_journal_invoices',array('ji_sales_order_id' => $res->so_id));
+           
+            $i++;
+        }
+
+        return $result;
+     
+    }
+
+
+    public function FetchPurchaseVoucher($table,$cond){
+ 
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $query->join('pro_purchase_voucher','pro_purchase_voucher.pv_id =pro_purchase_voucher_prod.pvp_reffer_id','left');
+
+        $query->groupBy('pro_purchase_voucher.pv_reffer_id');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }
+
+
+    public function FetchPurchaseReturnProd($table,$cond){
+          
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $query->join('pro_purchase_return','pro_purchase_return.pr_id =pro_purchase_return_prod.prp_purchase_return_id','left');
+
+        $query->groupBy('pro_purchase_return.pr_reffer_id');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }
+
+    public function FetchPettyCash($table,$cond){
+         
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $query->join('accounts_petty_cash_voucher','accounts_petty_cash_voucher.pcv_id = accounts_petty_cash_debits.pci_voucher_id','left');
+
+        $query->groupBy('accounts_petty_cash_voucher.pcv_voucher_no');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }
+
+
+    public function FetchJournalVoucher ($table,$cond){
+        
+        $query = $this->db->table($table)
+
+        ->select('*')
+
+        ->where($cond);
+
+        $query->join('accounts_journal_vouchers','accounts_journal_vouchers.jv_id = accounts_journal_invoices.ji_voucher_id','left');
+
+        $query->groupBy('accounts_journal_vouchers.jv_voucher_no');
+
+        $result = $query->get()->getResult();
 
         return $result;
 

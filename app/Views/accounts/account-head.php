@@ -1,7 +1,6 @@
 <!--Start Account head -->
 
 
-
 <!-- Add Modal Start -->
 
 <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

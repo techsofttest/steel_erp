@@ -174,6 +174,24 @@ class PurchaseVoucher extends BaseController
                 $purchase_order = "";
             }
 
+            if(!empty($this->request->getPost('purchase_contact_person'))){
+                 
+                $contact_person =  $this->request->getPost('purchase_contact_person');
+
+            }else{
+
+                $contact_person =  "";
+            }
+
+            if(!empty($this->request->getPost('purchase_delivery_note'))){
+                 
+                $delivery_note =  $this->request->getPost('purchase_delivery_note');
+
+            }else{
+
+                $delivery_note =  "";
+            }
+            
             $insert_data = [
 
                 'pv_reffer_id'       => $uid,
@@ -182,13 +200,13 @@ class PurchaseVoucher extends BaseController
 
                 'pv_vendor_name'     => $this->request->getPost('purchase_vendor_name'),
 
-                'pv_contact_person'  => $this->request->getPost('purchase_contact_person'),
+                'pv_contact_person'  => $contact_person,
 
                 'pv_purchase_order'  => $purchase_order,
 
                 'pv_vendor_inv'      => $this->request->getPost('purchase_vendor'),
 
-                'pv_delivery_note'   => $this->request->getPost('purchase_delivery_note'),
+                'pv_delivery_note'   => $delivery_note,
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
@@ -266,21 +284,38 @@ class PurchaseVoucher extends BaseController
 
         else
         {   
-            $updated_data = [
 
-              
+            if(!empty($this->request->getPost('purchase_contact_person'))){
+                 
+                $contact_person =  $this->request->getPost('purchase_contact_person');
+
+            }else{
+
+                $contact_person =  "";
+            }
+
+            if(!empty($this->request->getPost('purchase_delivery_note'))){
+                 
+                $delivery_note =  $this->request->getPost('purchase_delivery_note');
+
+            }else{
+
+                $delivery_note =  "";
+            }
+
+            $updated_data = [
 
                 'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('purchase_date'))),
 
                 'pv_vendor_name'     => $this->request->getPost('purchase_vendor_name'),
 
-                'pv_contact_person'  => $this->request->getPost('purchase_contact_person'),
+                'pv_contact_person'  =>  $contact_person,
 
                 'pv_purchase_order'  => $purchase_order = $this->request->getPost('purchase_order'),
 
                 'pv_vendor_inv'      => $this->request->getPost('purchase_vendor'),
 
-                'pv_delivery_note'   => $this->request->getPost('purchase_delivery_note'),
+                'pv_delivery_note'   =>  $delivery_note,
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
@@ -657,6 +692,11 @@ class PurchaseVoucher extends BaseController
                 'pk'    => 'ca_id',
                 'fk'    => 'pvp_debit',
             ),
+            array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'pvp_reffer_id',
+            ),
 
 
         );
@@ -679,13 +719,105 @@ class PurchaseVoucher extends BaseController
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
-            <td style="width:0%"><a href="javascript:void(0)" style="display:none" class="delete delete-color product_delete_data" data-id="'.$pur_vou_prod->pvp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
-            </tr>
+            ';
+
+            if(empty($pur_vou_prod->pv_purchase_order)){
+
+            $data['prod_desc'] .='<td style="width:10%;"><a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-toggle="tooltip" data-placement="top" title="edit" data-id="'.$pur_vou_prod->pvp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a></td>';
+
+            }
+
+            $data['prod_desc'] .='</tr>
             ';
             $i++; 
         }
 
         echo json_encode($data);
+    }
+
+
+    public function EditSingleProd(){
+            
+        $join =  array(
+            
+            array(
+                'table' => 'accounts_charts_of_accounts',
+                'pk'    => 'ca_id',
+                'fk'    => 'pvp_debit',
+            ),
+            array(
+                'table' => 'pro_purchase_voucher',
+                'pk'    => 'pv_id',
+                'fk'    => 'pvp_reffer_id',
+            ),
+
+
+        );
+        
+        $pur_vou_prod = $this->common_model->SingleRowJoin('pro_purchase_voucher_prod',array('pvp_id' => $this->request->getPost('ID')),$join);
+
+        $sales_orders = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+
+        $products     = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+    
+
+        $data['prod_desc'] = '';
+
+        $data['prod_desc'] .= '<tr class="edit_single_prod_row" id="'.$pur_vou_prod->pvp_id.'">
+        
+                <td style="width:15%">
+                    <select class="form-select" name="pvp_sales_order" required>';
+                    
+                        foreach($sales_orders as $sales_order){
+                            $data['prod_desc'] .='<option class="droup_color" value="'.$sales_order->so_reffer_no.'" '; 
+                            if($sales_order->so_reffer_no == $pur_vou_prod->pvp_sales_order){ $data['prod_desc'] .= "selected"; }
+                            $data['prod_desc'] .='>'.$sales_order->so_reffer_no.'</option>';
+                        }
+                    $data['prod_desc'] .='</select>
+                </td>
+
+
+                <td>
+                    <select class="form-select" name="pvp_prod_dec" required>';
+                    
+                        foreach($products as $product){
+                            $data['prod_desc'] .='<option class="droup_color" value="'.$product->product_details.'" '; 
+                            if($product->product_details == $pur_vou_prod->pvp_prod_dec){ $data['prod_desc'] .= "selected"; }
+                            $data['prod_desc'] .='>'.$product->product_details.'</option>';
+                        }
+                    $data['prod_desc'] .='</select>
+                </td>
+
+
+                <td>
+                    <select class="form-select" name="pvp_debit" required>';
+                    
+                        foreach($debit_accounts as $debit_account){
+                            $data['prod_desc'] .='<option class="droup_color" value="'.$debit_account->ca_id.'" '; 
+                            if($debit_account->ca_id == $pur_vou_prod->pvp_debit){ $data['prod_desc'] .= "selected"; }
+                            $data['prod_desc'] .='>'.$debit_account->ca_name.'</option>';
+                        }
+                    $data['prod_desc'] .='</select>
+
+                </td>
+
+
+        
+       
+       
+       
+        <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
+        <td> <input type="text" name="pvp_qty" value="'.$pur_vou_prod->pvp_qty.'" class="form-control edit_prod_qty" ></td>
+        <td> <input type="text" name="pvp_rate" value="'.$pur_vou_prod->pvp_rate.'" class="form-control edit_prod_rate" ></td>
+        <td> <input type="text" name="pvp_discount" value="'.$pur_vou_prod->pvp_discount.'" class="form-control edit_prod_dis" ></td>
+        <td> <input type="text" name="pvp_amount" value="'.$pur_vou_prod->pvp_amount.'" class="form-control edit_prod_amount" readonly></td>
+        <input type="hidden" name="pvp_id" value="'.$pur_vou_prod->pvp_id.'">
+        </tr>';
+
+        echo json_encode($data);
+
     }
 	
 
@@ -711,6 +843,60 @@ class PurchaseVoucher extends BaseController
         $start = $end + $resultCount;
       
         $data['result'] = $this->common_model->FetchAllLimit('steel_pro_vendor','ven_name','asc',$term,$start,$end);
+      
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+    public function FetchSalesOrder(){
+        
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
+      
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+        
+    }
+
+
+    public function FetchProducts(){
+        
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_id','asc',$term,$start,$end);
+      
+
+        $data['total_count'] =count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+    public function FetchDebit(){
+         
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_id','asc',$term,$start,$end);
       
 
         $data['total_count'] =count($data['result']);
@@ -772,7 +958,32 @@ class PurchaseVoucher extends BaseController
         
         echo json_encode($data);
     }
+    
+    public function ContactPersons(){
+        
+        $joins = array(
+            array(
+                'table' => 'pro_contact',
+                'pk'    => 'pro_con_id',
+                'fk'    => 'po_contact_person',
+            ),
 
+        );
+
+        
+
+        $contacts = $this->common_model->FetchWherejoin('pro_purchase_order',array('po_id' => $this->request->getPost('ID')),$joins);
+
+        $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
+
+        foreach($contacts as $ven_contact)
+        {
+            $data['condact_data'] .='<option value='.$ven_contact->pro_con_id.'>'.$ven_contact->pro_con_person.'</option>';
+        }
+        
+        echo json_encode($data);
+
+    }
 
 
     public function FetchPurchase()
@@ -945,7 +1156,7 @@ class PurchaseVoucher extends BaseController
                                                    }
                         $data['product_detail'] .='</select>
                                             </td>
-                                            <td><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty" readonly required></td>
+                                            <td><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty"  required readonly></td>
                                             <td><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control" required readonly></td>
                                             <td><input type="number" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate" required ></td>
                                             <td><input type="number" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount" required ></td>
@@ -1077,8 +1288,32 @@ class PurchaseVoucher extends BaseController
     
 
     public function Delete()
-    {
+    {    
+
         $cond = array('pv_id' => $this->request->getPost('ID'));
+
+        $purchase_voucher = $this->common_model->SingleRow('pro_purchase_voucher',$cond);
+
+
+        if(!empty($purchase_voucher->pv_purchase_order)){
+ 
+            $purchase_voucher_prod = $this->common_model->FetchWhere('pro_purchase_voucher_prod',array('pvp_reffer_id' => $this->request->getPost('ID')));
+            
+            foreach($purchase_voucher_prod as $pur_vou_prod){
+                
+                $material_received_note_prod = $this->common_model->SingleRow('pro_material_received_note_prod',array('rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id));
+
+                $this->common_model->EditData(array('rnp_status' => 0), array('	rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
+
+                
+                
+                $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $material_received_note_prod->rnp_material_received_note), 'pro_material_received_note');
+
+
+            }
+
+        }
+ 
  
         $this->common_model->DeleteData('pro_purchase_voucher',$cond);
 
@@ -1086,54 +1321,7 @@ class PurchaseVoucher extends BaseController
  
         $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
 
-        //$sales_order = $this->common_model->SingleRow('crm_sales_orders',array('pv_id' => $this->request->getPost('ID')));
         
-        /*if(empty($sales_order))
-        {   
-            $quotation = $this->common_model->SingleRow('crm_quotation_details',array('qd_id' => $this->request->getPost('ID')));
-            
-            $enquiry_id = $quotation->qd_enq_ref;
-
-            $quotation_id = $quotation->qd_id;
-
-            $updated_data = array('enquiry_status'=>0);
-
-            $this->common_model->EditData($updated_data,array('enquiry_id' => $enquiry_id),'crm_enquiry');
-            
-            $quotation_product = $this->common_model->FetchWhere('crm_quotation_product_details',array('qpd_quotation_details' => $quotation_id));
-            
-            foreach($quotation_product as $quot_prod)
-            {
-                
-                $prod_update = array('pd_status'=>0);
-
-                $this->common_model->EditData($prod_update,array('pd_id' => $quot_prod->qpd_enq_prod_id),'crm_product_detail');
-
-            }
-            
-            $cond = array('qd_id' => $this->request->getPost('ID'));
- 
-            $this->common_model->DeleteData('crm_quotation_details',$cond);
-    
-            $cond1 = array('qpd_quotation_details' => $this->request->getPost('ID'));
-     
-            $this->common_model->DeleteData('crm_quotation_product_details',$cond1);
-    
-            $cond2 = array('qc_quotation_id' => $this->request->getPost('ID'));
-     
-            $this->common_model->DeleteData('crm_quotation_cost_calculation',$cond2);
-
-
-
-            $data['status'] = "true";
-    
-        }*/
-        /*else
-        {
-            $data['status'] = "false";
-        }*/
-
-        //echo json_encode($data);
     }
 
 
@@ -1193,6 +1381,48 @@ class PurchaseVoucher extends BaseController
 
         $this->common_model->EditData($update_data, array('pv_id' => $this->request->getPost('pv_id')), 'pro_purchase_voucher');
         
+    }
+
+
+    public function UpdateSingleProd(){
+           
+        $update_data = [
+             
+            'pvp_sales_order'  => $this->request->getPost('pvp_sales_order'),
+
+            'pvp_prod_dec'    => $this->request->getPost('pvp_prod_dec'),
+
+            'pvp_debit'       => $this->request->getPost('pvp_debit'),
+            
+            'pvp_qty'         => $this->request->getPost('pvp_qty'),
+
+            'pvp_rate'        => $this->request->getPost('pvp_rate'),
+
+            'pvp_discount'    => $this->request->getPost('pvp_discount'),
+
+            'pvp_amount'      => $this->request->getPost('pvp_amount'),
+
+
+        ];
+
+        $this->common_model->EditData($update_data, array('pvp_id' => $this->request->getPost('pvp_id')), 'pro_purchase_voucher_prod');
+
+        $pv_single_prod = $this->common_model->SingleRow('pro_purchase_voucher_prod',array('pvp_id' => $this->request->getPost('pvp_id')));
+
+        $purchase_voucher_product = $this->common_model->FetchWhere('pro_purchase_voucher_prod' ,array('pvp_reffer_id' => $pv_single_prod->pvp_reffer_id));
+
+        $total_amount = 0; 
+
+        foreach($purchase_voucher_product as $purchase_voucher_prod){
+            
+            $total_amount = $purchase_voucher_prod->pvp_amount + $total_amount;
+
+        }
+
+
+        $this->common_model->EditData(array('pv_total' => $total_amount), array('pv_id' => $pv_single_prod->pvp_reffer_id), 'pro_purchase_voucher');
+
+
     }
 
 

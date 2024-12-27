@@ -436,6 +436,8 @@ table.menu td{
 
 
 
+
+
 /* Datatable Alignment For Currency */
 /*
 .ReportTable>table.tfoot th, table.tfoot td,table.dataTable thead th, table.dataTable thead td{

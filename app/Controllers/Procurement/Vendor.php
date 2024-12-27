@@ -822,6 +822,8 @@ class Vendor extends BaseController
 
         $purchase_order = $this->common_model->FetchWhere('pro_purchase_order',array('po_vendor_name' => $this->request->getPost('ID')));
 
+        
+
         if(empty($purchase_order)){
 
             $this->common_model->DeleteData('pro_vendor',array('ven_id' => $this->request->getPost('ID')));

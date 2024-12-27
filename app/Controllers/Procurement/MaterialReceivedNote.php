@@ -399,7 +399,7 @@ class MaterialReceivedNote extends BaseController
     public function FetchReference($type="e")
     {
 
-        $uid = $this->common_model->FetchNextId('accounts_receipts',"MRN-{$this->data['accounting_year']}-");
+        $uid = $this->common_model->FetchNextId('pro_material_received_note',"MRN-{$this->data['accounting_year']}-");
 
         if($type=="e")
 
@@ -746,10 +746,10 @@ class MaterialReceivedNote extends BaseController
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
             
-            <td> <input type="text" name="" value="'.$material_received_prod->rnp_amount.'" class="form-control" readonly></td>
+            
            
-            <td style="width:15%">
-                <a href="javascript:void(0)" class="delete delete-color sales_delete" data-id="'.$material_received_prod->rnp_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
+            <td >
+                <a href="javascript:void(0)" style="display:none;" class="delete delete-color sales_delete" data-id="'.$material_received_prod->rnp_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
             </tr>
             ';
@@ -869,31 +869,46 @@ class MaterialReceivedNote extends BaseController
 
         $material_received_note = $this->common_model->SingleRow('pro_material_received_note',$cond);
 
-        $material_received_product = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $material_received_note->mrn_id));
+        $purchase_voucher = $this->common_model->FetchWhere('pro_purchase_voucher',array('pv_purchase_order' => $material_received_note->mrn_purchase_order));
 
-        foreach($material_received_product as $material_received_prod)
-        {
-            $this->common_model->EditData(array('po_delivered_status' => 0), array('po_id' => $material_received_prod->rnp_purchase_id), 'pro_purchase_order');
-            
-            $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $material_received_prod->rnp_purchase_prod_id));
-            
-            $new_delivery_qty = $purchase_order_product->pop_delivered_order -  $material_received_prod->rnp_current_delivery;
-            
-            $this->common_model->EditData(array('pop_delivered_order'=>$new_delivery_qty,'pop_delivered_status'=>0), array('pop_id' => $material_received_prod->rnp_purchase_prod_id), 'pro_purchase_order_product');
-            
-            $this->common_model->DeleteData('pro_material_received_note_prod',array('rnp_material_received_note' =>$material_received_prod->rnp_material_received_note)); 
+        if(empty($purchase_voucher )){
+
+            $material_received_product = $this->common_model->FetchWhere('pro_material_received_note_prod',array('rnp_material_received_note' => $material_received_note->mrn_id));
+
+            foreach($material_received_product as $material_received_prod)
+            {
+                $this->common_model->EditData(array('po_delivered_status' => 0), array('po_id' => $material_received_prod->rnp_purchase_id), 'pro_purchase_order');
+                
+                $purchase_order_product = $this->common_model->SingleRow('pro_purchase_order_product',array('pop_id' => $material_received_prod->rnp_purchase_prod_id));
+                
+                $new_delivery_qty = $purchase_order_product->pop_delivered_order -  $material_received_prod->rnp_current_delivery;
+                
+                $this->common_model->EditData(array('pop_delivered_order'=>$new_delivery_qty,'pop_delivered_status'=>0), array('pop_id' => $material_received_prod->rnp_purchase_prod_id), 'pro_purchase_order_product');
+                
+                $this->common_model->DeleteData('pro_material_received_note_prod',array('rnp_material_received_note' =>$material_received_prod->rnp_material_received_note)); 
+            }
+
+            if(!empty($material_received_note->mrn_file))
+            {
+                $previousImagePath = 'uploads/MaterialReceived/' .$material_received_note->mrn_file;
+                
+                    if (file_exists($previousImagePath)) {
+                        unlink($previousImagePath);
+                    }
+            }
+
+            $this->common_model->DeleteData('pro_material_received_note',$cond); 
+
+            $data['status'] ="true";
+
+        }
+        else{
+
+            $data['status'] ="false";
+
         }
 
-        if(!empty($material_received_note->mrn_file))
-        {
-            $previousImagePath = 'uploads/MaterialReceived/' .$material_received_note->mrn_file;
-            
-                if (file_exists($previousImagePath)) {
-                    unlink($previousImagePath);
-                }
-        }
-
-        $this->common_model->DeleteData('pro_material_received_note',$cond); 
+        echo json_encode($data);
     }
 
     // Function to handle file upload

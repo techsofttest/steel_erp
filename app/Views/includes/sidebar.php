@@ -57,12 +57,15 @@
                             
                             
                             <?php
+
+
+                               
                                
                                 $permissionsArray = array_map(function($permission) {
                                     return $permission->per_module;
-                                }, $this->data['permissions']);
+                                }, $permissions);
                                 
-                                if(in_array('accounts', $permissionsArray)){ ?> 
+                                if(in_array('Accounts', $permissionsArray)){ ?> 
                                 
                                     <li class="nav-item">
 
@@ -75,7 +78,7 @@
                                 <?php } 
 
 
-                                if (in_array('crm', $permissionsArray)) { ?> 
+                                if (in_array('Crm', $permissionsArray)) { ?> 
 
                                     <li class="nav-item">
                                     
@@ -90,7 +93,7 @@
                                 
                                 
 
-                                if(in_array('procurement', $permissionsArray)){ ?> 
+                                if(in_array('Procurement', $permissionsArray)){ ?> 
 
                                     <li class="nav-item">
 
@@ -102,7 +105,7 @@
 
                                 <?php } 
 
-                                if(in_array('hr', $permissionsArray)){ ?> 
+                                if(in_array('HR', $permissionsArray)){ ?> 
 
                                     <li class="nav-item">
 

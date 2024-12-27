@@ -5,9 +5,11 @@ namespace App\Controllers\Crm;
 use App\Controllers\BaseController;
 
 
+
 class ProductHead extends BaseController
 {
     
+
     public function FetchData()
     {
 
@@ -28,6 +30,7 @@ class ProductHead extends BaseController
 
         // Check if the current sort order is 'asc', then set it to 'desc'
         if ($columnSortOrder === 'asc') {
+            
             $columnSortOrder = 'desc';
         } 
 
@@ -198,6 +201,27 @@ class ProductHead extends BaseController
 
         echo json_encode($data);
       
+    }
+
+
+    public function CheckModule(){
+            
+        $id    =  $this->request->getPost('ID');
+
+        $data1 =  $this->request->getPost('segment1');
+
+        $data2 =  $this->request->getPost('segment2');
+
+       $module_data = $this->common_model->CheckModule($id,$data1,$data2);
+
+       if($module_data->up_delete == 0){
+          
+           $data['status'] =  "true";
+
+       }
+
+       echo json_encode($data); 
+        
     }
 
 

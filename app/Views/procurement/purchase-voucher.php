@@ -2,7 +2,7 @@
     
     .select2.select2-container 
     {
-        width: 95% !important;
+        /*width: 95% !important;*/
     }
     .cust_more_modal
     {
@@ -61,6 +61,20 @@
     .tecs span 
     {
         color: green;
+        cursor: pointer;
+    }
+    .droup_color{
+
+        color: black !important;
+    }
+    .add_new {
+        font-size: 25px;
+        color: #ff0000b5;
+        position: absolute;
+        right: 34px;
+        top: -16px;
+    }
+    .add_more_icon {
         cursor: pointer;
     }
 </style>
@@ -149,13 +163,19 @@
                                                                         <label for="basicInput" class="form-label">Vendor Name</label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-8 col-lg-8">
                                                                         
                                                                         <select class="form-select select_vendor add_vendor vendor_data" name="purchase_vendor_name" id=""  required>
                                                                             
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                            
                                                                         </select>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-1 col-lg-1">
+                                                                        
+                                                                        <span class="add_more_icon add_new vendor_new_modal  ri-add-box-fill"></span>
+                                                                    
                                                                     </div>
 
                                                                 </div> 
@@ -172,27 +192,38 @@
                                                                 <div class="row align-items-center mb-2">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        
-                                                                        <label for="basicInput" class="form-label">Contact Person</label>
-                                                                    
+        
+                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+        
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                    <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" required></select>
-                                                                        
-                                                                        <!--<input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>-->
+                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id="">
+                                                                            
+                                                                            <option value="" selected="" disabled="">Select Purchase Order</option>
+
+                                                                        </select>
+
+                                                                        <!--<input type="text" name="purchase_order" class="form-control select_purchase input_length" required>-->
 
                                                                     </div>
 
+                                                                    <div class="col-col-md-1 col-lg-1">
 
-                                                                   
+                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
+
+                                                                    </div>
 
                                                                 </div> 
 
                                                             </div>    
 
-                                                            <!-- ### -->
+                                                            <!-- ### --> 
+
+
+
+                                                            
 
 
 
@@ -255,34 +286,33 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
-                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
-                                                                        
+                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                    
                                                                     </div>
 
                                                                     <div class="col-col-md-8 col-lg-8">
                                                                         
-                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id="">
-                                                                            
-                                                                            <option value="" selected="" disabled="">Select Purchase Order</option>
-
-                                                                        </select>
-
-                                                                        <!--<input type="text" name="purchase_order" class="form-control select_purchase input_length" required>-->
+                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" style="width: 100% !important;"></select>
+                                                                        
+                                                                        <!--<input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>-->
 
                                                                     </div>
 
                                                                     <div class="col-col-md-1 col-lg-1">
-
-                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
-
+                                                                        <span class="add_more_icon add_new contact_new_modal ri-add-box-fill"></span>
                                                                     </div>
+
+
+   
 
                                                                 </div> 
 
                                                             </div>    
 
-                                                            <!-- ### --> 
+                                                            <!-- ### -->
 
+
+                                                           
 
                                                             <!-- Single Row Start -->
 
@@ -318,7 +348,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length2 delivery_note_clz" value="" required>
+                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length2 delivery_note_clz" value="">
                                                                     </div>
 
                                                                 </div> 
@@ -1233,6 +1263,80 @@
 
 
 
+<!--edit product single modal start--->
+
+<div class="modal fade" id="EditProdModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<form  class="Dashboard-form class" id="update_single_prod">
+			<div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close close_single_prod" data-bs-dismiss="modal"  aria-label="Close"></button>
+                </div>
+
+				<div class="modal-body">
+
+                    <div class="live-preview">
+                                                
+                        <div class="mt-4">
+                            
+                            <table class="table table-bordered table-striped delTable">
+                                
+                                <thead class="travelerinfo contact_tbody">
+                                    
+                                    <tr>
+                                        <td>Sales Order Ref</td>
+                                        <td>Product Description</td>
+                                        <td>Debit A/C</td>
+                                        <td>Unit</td>
+                                        <td>Qty</td>
+                                        <td>Rate</td>
+                                        <td>Discount</td>
+                                        <td>Amount</th>
+                                       
+                                    </tr>
+                                                            
+                                                           
+                                </thead>
+                                                        
+                                <tbody  class="travelerinfo edit_single_prod"></tbody>
+
+
+                            </table>
+                            
+                        </div>
+
+
+
+
+                    </div>  
+                                            
+                                            
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    
+                                                  
+                    <button class="btn btn btn-success" type="submit" name="single_prod_sub" >Save</button>
+
+                </div>
+
+
+
+
+                                        
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+
+<!--edit product single modal end--->
+
+
+
+
 <!--vendor modal start-->
 
 <?= $this->include('procurement/add_vendor') ?>
@@ -1467,8 +1571,9 @@
                     var data = JSON.parse(data);
                  
                     $('.purchase_order').html(data.pur_reff)
-                 
-                     
+
+                    $('.add_contact_person').find('option:not(:first)').remove();
+ 
                 }
  
  
@@ -1480,6 +1585,9 @@
 
         /**/
 
+
+
+        
 
 
       
@@ -1670,6 +1778,128 @@
          
         })
         /*###*/
+
+
+
+         /*sales order droup drown search*/
+         function InitSalesSelectAdd(){
+            $(".add_sales_order:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control- droup_color",
+                dropdownParent: $($('.add_sales_order:last').closest('.add_prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchSalesOrder",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.so_reffer_no, text: item.so_reffer_no}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+
+        InitSalesSelectAdd();
+        /*###*/
+
+
+
+        /*sales order droup drown search*/
+        function InitProductSelectAdd(){
+            $(".add_products:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control- droup_color",
+                dropdownParent: $($('.add_products:last').closest('.add_prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProducts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_details, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+
+        InitProductSelectAdd();
+        /*###*/
+
+
+
+
+        /*debit droup down start*/
+
+        function InitDebitSelectAdd(){
+            $(".debit_account:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control- droup_color",
+                dropdownParent: $($('.debit_account:last').closest('.add_prod_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchDebit",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+
+        InitDebitSelectAdd();
+
+
+        /*debit froup down end*/
+
 
 
 
@@ -2012,7 +2242,7 @@
         
         $("body").on('click', '.vendor_new_modal', function(){ 
             
-            $('#AddPurchaseOrder').modal('hide');
+            $('#AddPurchaseVoucher').modal('hide');
 
             $('#AddVendor').modal('show');
 
@@ -2026,7 +2256,7 @@
 
         $("#add_office_form").submit(function(e){
 
-            $('#AddPurchaseOrder').modal('show');
+            $('#AddPurchaseVoucher').modal('show');
 
             return false;
 
@@ -2049,7 +2279,7 @@
             {
                 $('#AddNewContact').modal('show');
 
-                $('#AddPurchaseOrder').modal('hide');
+                $('#AddPurchaseVoucher').modal('hide');
 
                 $('.new_pro_con_vendor').val(vendor);
             }
@@ -2082,9 +2312,43 @@
                     
                         var data = JSON.parse(data);
 
-                        $('.add_contact_person').html(data.condact_data);
+                       // $('.add_contact_person').html(data.condact_data);
 
                         $('.add_payment_term').val(data.payment_term);
+                    }
+
+                });
+
+            }
+        });
+
+
+        $("body").on('change', '.purchase_order', function(){ 
+
+            var Id = $('.purchase_order').val();
+
+            if(Id!=null ){
+
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/ContactPersons",
+
+                    method : "POST",
+
+                    data: {ID: Id},
+
+                    success:function(data)
+                    {
+                    
+                        var data = JSON.parse(data);
+
+                       $('.add_contact_person').html(data.condact_data);
+
+                       $(".add_contact_person").prop('required',true);
+
+                       $('.delivery_note_clz').prop('required',true);
+
+                       
                     }
 
                 });
@@ -2192,15 +2456,17 @@
             
             //$(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_prod' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select add_prod' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo $product->product_details;?>'><?php echo $product->product_details;?></option><?php } ?></select></td><td><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
                 
 
             }
 
           
-            //slno();
+            InitSalesSelectAdd();
 
-            //InitProductSelect2();
+            InitProductSelectAdd();
+
+            InitDebitSelectAdd();
 
         });
 
@@ -2257,6 +2523,83 @@
 
 
        /*edit product delete section end*/
+
+
+       /*edit single prod section start*/
+
+        $("body").on('keyup', '.edit_prod_dis, .edit_prod_qty, .edit_prod_rate', function(){ 
+
+            var $discountSelect = $(this);
+
+            var discount = parseInt($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_dis').val())||0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_rate');
+
+            var rate = $discountSelectElement.val();
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
+
+            var quantity = parseInt($quantitySelectElement.val())||0;
+
+            var parsedRate = parseFloat(rate);
+
+            var parsedQuantity = quantity; 
+
+            var multipliedTotal = parsedRate * parsedQuantity;
+
+            var per_amount = (discount/100)*multipliedTotal;
+
+            var orginalPrice = multipliedTotal - per_amount;
+
+            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+            var $amountElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_amount');
+
+            $amountElement.val(orginalPrice);
+
+           
+
+        });
+
+
+       /*edit single prod section end*/
+
+
+       
+        $('.close_single_prod').click(function(){
+
+            $('#EditProdModal').modal('hide');
+            
+            $('#EditModal').modal('show');
+
+
+        });
+         
+
+        $('.vendor_con_close').click(function(){
+
+            $('#AddNewContact').modal('hide');
+
+            $('#AddPurchaseVoucher').modal('show');
+
+
+        });
+
+
+        $('.cust_close_modal').click(function(){
+
+            $('#AddVendor').modal('hide');
+
+            $('#AddPurchaseVoucher').modal('show');
+
+
+        });
+
+
+        
+
+
+        
 
        
 
@@ -2386,6 +2729,48 @@
 
 
 
+        /*edit single prod start*/
+
+
+        $("body").on('click', '.edit_prod_btn', function(){ 
+
+            var id = $(this).data('id');
+
+
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/EditSingleProd",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    $('.edit_single_prod').html(data.prod_desc);
+
+                    
+
+                }
+            });
+
+            $('#EditProdModal').modal('show');
+
+            $('#EditModal').modal('hide');
+
+
+
+        });
+
+
+        /*edit single prod end*/
+
+
+
         $(function() {
             var form = $('#edit_purchase_form');
             
@@ -2423,6 +2808,47 @@
 
 
         /*edit section end*/
+
+
+        /*edit single prod start*/
+
+
+        $(function() {
+            var form = $('#update_single_prod');
+            
+            form.validate({
+                rules: {
+                    required: 'required',
+                },
+                messages: {
+                    required: 'This field is required',
+                },
+                errorPlacement: function(error, element) {} , // To Hide Validation Messages
+                submitHandler: function(currentForm) {
+                    //if($('#purchase_form').attr('data_fill')=="true"){   
+
+                        // Submit the form for the current tab
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>Procurement/PurchaseVoucher/UpdateSingleProd",
+                            method: "POST",
+                            data: $(currentForm).serialize(),
+                            success: function(data) {
+                                
+                                $('#EditProdModal').modal('hide');
+                            
+                                alertify.success('Data Updated Successfully').delay(3).dismissOthers();
+                            
+                                datatable.ajax.reload(null, false);
+                             
+                            }
+                        });
+
+                }
+            });
+        });
+
+
+        /*edit single prod end*/
 
 
 

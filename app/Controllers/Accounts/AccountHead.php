@@ -4,9 +4,10 @@ namespace App\Controllers\Accounts;
 
 use App\Controllers\BaseController;
 
-
 class AccountHead extends BaseController
-{
+{    
+   
+
     public function FetchData()
     {
 
