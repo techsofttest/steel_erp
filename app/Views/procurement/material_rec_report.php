@@ -1,9 +1,35 @@
-
 <style>
-    #DataTable td{
-        line-height:2.3
+     .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
     }
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
+    #DataTable td {
+        line-height: 1.0
+    }
+    #DataTable {
+        table-layout: fixed;
+        width: auto;
+        margin:unset
+    }
+   
 </style>
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -188,7 +214,7 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Material Received Note Report</h4>
@@ -214,22 +240,22 @@
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="max-height:80vh; overflow:scroll">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                            <thead>
+                                    <div class="card-body table-responsive divcontainer" style=" overflow:scroll">
+                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th class="text-center">Date</th>
-                                                    <th class="text-center">MRN Ref</th>
-                                                    <th class="text-center">Vendor</th>
-                                                    <th class="text-center">Purchase Order</th>
-                                                    <th class="text-center">Vendor DN Ref</th>
-                                                    <th class="text-end">Amount</th>
-                                                    <th>Product</th>
-                                                    <th class="text-end">Quantity</th>
-                                                    <th class="text-end">Rate</th>
-                                                    <th class="text-end">Discount</th>
-                                                    <th class="text-end">Amount</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th style="white-space: nowrap;width:400px">Product</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Quantity</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:70px">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -242,63 +268,74 @@
 
                                                         <tr>
 
-                                                            <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo $material_req->mrn_date; ?></td>
-                                                            <td class="text-center"><?php echo $material_req->mrn_reffer; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $material_req->mrn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mrn_reffer; ?></td>
 
-                                                            <td class="text-center"><?php foreach ($vendors as $vendor) {
+                                                            <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
                                                                     echo $material_req->mrn_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
                                                                 } ?>
                                                             </td>
 
-                                                            <td class="text-center"><?php echo $material_req->po_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->po_reffer_no; ?></td>
 
-                                                            <td class="text-center"><?php echo $material_req->mrn_delivery_note; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mrn_delivery_note; ?></td>
 
-                                                            <td class="text-end"><?php $tot_amt = 0;
+                                                            <td colspan="6" align="left" class="p-0">
+                                                            <table>
+                                                            <?php $tot_amt = 0;
                                                                                     foreach ($material_req->product_orders as $orders) { ?>
-                                                                    <?php $tot_amt += $orders->rnp_amount; ?>
+
+                                                                <tr style="background: unset;border-bottom: hidden !important;">
+                                                            <td class="text-end" style="white-space: nowrap;width:100px"><?php $tot_amt = 0;
+                                                                                    foreach ($material_req->product_orders as $ord) { ?>
+                                                                    <?php $tot_amt += $ord->rnp_amount; ?>
                                                                 <?php }
                                                                                     echo format_currency($tot_amt);
                                                                                     $total += $tot_amt; ?> </td>
 
-                                                            <td><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td style="white-space: nowrap;width:400px">
                                                                     <?php echo $orders->product_details; ?><br>
-                                                                <?php } ?></td>
-                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                </td>
+                                                            <td class="text-end" style="white-space: nowrap;width:70px">
                                                                     <?php echo $orders->rnp_current_delivery; ?><br>
-                                                                <?php } ?></td>
+                                                                </td>
 
-                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end" style="white-space: nowrap;width:70px">
                                                                     <?php echo format_currency($orders->pop_rate); ?><br>
-                                                                <?php } ?></td>
+                                                               </td>
 
-                                                                <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                                <td class="text-end" style="white-space: nowrap;width:70px">
                                                                     <?php echo format_currency($orders->pop_discount); ?><br>
-                                                                <?php } ?></td>
+                                                                </td>
 
-                                                            <td class="text-end"><?php foreach ($material_req->product_orders as $orders) { ?>
+                                                            <td class="text-end" style="white-space: nowrap;width:100px">
                                                                     <?php echo format_currency($orders->rnp_amount);
                                                                                         $mr_total += $orders->rnp_amount ?><br>
-                                                                <?php } ?></td>
+                                                               </td>
+
+                                                                                    </tr>
+                                                                                    <?php } ?>
+                                                            </table>
+                                                            </td>
 
                                                         </tr>
                                                     <?php $i++;
                                                     } ?>
 
                                                     <tr>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($mr_total); ?></th>
+                                                        <th style="white-space: nowrap;width:40px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th style="white-space: nowrap;width:300px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th style="white-space: nowrap;width:100px"></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($total); ?></th>
+                                                        <th style="white-space: nowrap;width:400px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th style="white-space: nowrap;width:70px"></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($mr_total); ?></th>
                                                     </tr>
 
                                                 <?php
@@ -341,6 +378,9 @@
 
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 

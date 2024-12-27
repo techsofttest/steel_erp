@@ -72,21 +72,15 @@
 
 
 
-                                                                            <tr id="Account" style="display:none;">
+                                                                            <tr id="Account" style="display:none;" class="account_parent">
 
                                                                             <td>Account</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account">
+                                                                            <select class="form-control account_select2_common" name="filter_account">
 
-                                                                            <option value="">Select Account</option>
                                                                             
-                                                                            <?php foreach($accounts as $account){ ?>
-
-                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
-
-                                                                            <?php } ?>
 
                                                                             </select>
 
@@ -98,21 +92,13 @@
 
 
 
-                                                                            <tr id="Account_Head" style="display:none;">
+                                                                            <tr id="Account_Head" style="display:none;" class="head_parent">
 
                                                                             <td>Account Head</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account_head">
-
-                                                                            <option value="">Select Account Head</option>
-
-                                                                            <?php foreach($account_heads as $ah){ ?>
-
-                                                                            <option value="<?= $ah->ah_id; ?>"><?= $ah->ah_account_name; ?></option>
-
-                                                                            <?php } ?>
+                                                                            <select class="form-control head_select2_common" name="filter_account_head">
 
                                                                             </select>
 
@@ -124,13 +110,13 @@
 
 
 
-                                                                            <tr id="Account_Type" style="display:none;">
+                                                                            <tr id="Account_Type" style="display:none;" class="type_parent">
 
                                                                             <td>Account Type</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account_type">
+                                                                            <select class="form-control type_select2_common" name="filter_account_type">
 
                                                                             <option value="">Select Account Type</option>
 

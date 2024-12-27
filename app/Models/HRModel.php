@@ -55,6 +55,8 @@ class HRModel extends Model
         $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
     }
 
+        $query->orderBy('hr_employees.emp_uid','ASC');
+
         $result = $query->get()->getResult();
 
         return $result;

@@ -600,6 +600,9 @@ class FixedAssetCreation extends BaseController
 
         $data['depreciation']   = $fixedCredit1->cfs_depreciation;
 
+        $data['last_yr_depreciation']    = $fixedCredit1->cfs_last_yr_depreciation;
+        
+
         $data['attach']   = $fixedCredit1->cfs_attact != '' ? base_url().'public/uploads/FixedAsset/'.$fixedCredit1->cfs_attact : '';
        
 
@@ -650,6 +653,9 @@ class FixedAssetCreation extends BaseController
         $data['date']           = date('d-M-Y',strtotime($fixedCredit1->cfs_acquired_date));
 
         $data['account_id']    = $fixedCredit1->cfs_account_id;
+
+        $data['last_yr_depreciation']    = $fixedCredit1->cfs_last_yr_depreciation;
+
 
         $data['account_head']     = '';
 

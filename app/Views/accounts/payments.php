@@ -116,7 +116,7 @@
 
                             <tr>
 
-                        <th colspan="4" style="text-align: center;font-size: 15px;">Invoices</th>
+                                <th colspan="5" style="text-align: center;font-size: 15px;">Invoices</th>
 
                             </tr>
 
@@ -126,13 +126,15 @@
 
                                                 <tr>
 
-                                                    <th>Sl No</th>
+                                                <th>Account</th>
 
-                                                    <th>Debit Account</th>
+                                                <th>Type</th>
 
-                                                    <th>Amount</th>
+                                                <th>Invoice</th>
 
-                                                    <th>Narration</th>
+                                                <th>Narration</th>
+
+                                                <th class="text-end">Amount</th>
 
                                                 </tr>
 
@@ -144,15 +146,22 @@
                                             </tbody>
 
 
+                                            <tfoot>
+
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end">Total Payment : </td>
+                                            <td class='text-end' style=""><b><span id="total_payment_amount_view"></span></b></td>
+                                            </tr>
+
+                                            </tfoot>
+
+
                                         </table>
 
-
-                                        <div class="col-lg-12 text-center">
-
-                                        <p><b>Total : <span id="total_payment_amount_view"></span></b></p>
-
-                                        </div>
-
+                                      
 
                                     </div>
 
@@ -251,7 +260,7 @@
 
 
                                                             <tr>
-                                                                <td>Total Payment</td>
+                                                                <td>Total</td>
 
                                                                 <td class="invoice_total"></td>
 
@@ -387,7 +396,7 @@
 
                                                         <div class="col-col-md-9 col-lg-9">
 
-                                                            <input type="text" id="uid" class="form-control" readonly>
+                                                            <input type="text" name="pay_ref_no" id="uid" class="form-control" required>
 
                                                         </div>
 
@@ -752,7 +761,7 @@
 
         <div class="modal-dialog modal-xl">
 
-            <form class="" id="add_po_advance_form">
+            <form class="" class="Dashboard-form class" id="add_po_advance_form">
 
                 <div class="modal-content">
                     <div class="modal-header">
@@ -793,6 +802,27 @@
 
 
                                                         </tbody>
+
+
+                                                        <tbody>
+
+                                                        <tr>
+                                                                <td>Total</td>
+
+                                                                <td class="invoice_total"></td>
+
+                                                                <td>Adjusted</td>
+
+                                                                <td class="invoice_adjusted"></td>
+
+                                                                <td>Balance</td>
+
+                                                                <td class="invoice_balance"></td>
+                                                        </tr>
+
+                                                        </tbody>
+
+
 
 
                                                     </table>
@@ -1142,11 +1172,11 @@
 
                                                     <thead>
                                                         <tr>
-                                                            <th>Sl No</th>
-                                                            <th>Debit Account</th>
-                                                            <th>Amount</th>
+                                                            <th>Account</th>
+                                                            <th>Type</th>
+                                                            <th>Invoice</th>
                                                             <th>Narration</th>
-                                                            <th>Actions</th>
+                                                            <th>Amount</th>
                                                         </tr>
                                                     </thead>
 
@@ -1698,13 +1728,15 @@
             //var id=1;
 
 
-            
+            /*
             if (!$("#add_form").valid()) {
                 alertify.error('Fill required fields!').delay(3).dismissOthers();
                 return false;
             }
+                */
 
 
+            /*
             if ($('#added_id').val() == '') {
                 $('#add_form').submit();
 
@@ -1714,11 +1746,14 @@
                 }
 
             }
+                */
 
 
+            /*
             var checkValueInterval = setInterval(function() {
                 if ($('#added_id').val() !== '') {
                     clearInterval(checkValueInterval);
+            */
 
 
             var pid = $('#added_id').val();
@@ -1789,10 +1824,12 @@
             });
 
 
+            /*
         } else {
                     //console.log('No'); // Logging for debugging purposes
                 }
             }, 100);
+            */
 
 
         });
@@ -2481,11 +2518,11 @@
 
             })
 
-            $('#AddSOAdvanceModal .so_receipt_amount').each(function() {
+            $('.po_advance_amount').each(function() {
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.so_receipt_amount').val()) || 0;
+                invoice_total += parseFloat(parent.find('.po_advance_amount').val()) || 0;
 
             })
 
@@ -2569,9 +2606,19 @@
 
             });
 
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Accounts/Payments/ResetSess",
+
+            method: "GET",
+
+            success: function() {
+            }
+            })
+
+
         });
-
-
 
 
 
@@ -2637,7 +2684,7 @@
 
         // });
 
-        $(document).on('input change', '.invoice_receipt_amount', function(event) {
+        $(document).on('input change', '.invoice_receipt_amount,.po_advance_amount',function(event) {
             // Debugging: Check if the function is called and with correct element
        
 
@@ -2654,11 +2701,13 @@
           
 
             // Ensure the value doesn't exceed the maximum allowed for the field
+            /*
             if (val > max) {
                 $(this).val(max);
                 $(this).trigger('change');
                 val = max; // Set val to max for further calculations
             }
+            */
 
             // Calculate the total of all other fields
             var sum = 0;
@@ -2712,11 +2761,11 @@
             LinkTotal = parseFloat($('.credit_amount').val()) || 0;
 
 
-            // $('body .so_receipt_amount').each(function() {
+             $('body .po_advance_amount').each(function() {
 
-            //     LinkAdjusted += parseFloat($(this).val()) || 0;
+                LinkAdjusted += parseFloat($(this).val()) || 0;
 
-            // });
+             });
 
             //alert('link total : '+LinkTotal+' | Link Adjusted : '+LinkAdjusted)
 

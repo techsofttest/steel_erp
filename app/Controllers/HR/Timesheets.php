@@ -25,15 +25,17 @@ class TimeSheets extends BaseController
         $start = $dtpostData['start'];
         $rowperpage = $dtpostData['length']; // Rows display per page
         $columnIndex = $dtpostData['order'][0]['column']; // Column index
-        $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
-        $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
+        //$columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
+        //$columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
         $searchValue = $dtpostData['search']['value']; // Search value
 
         // Check if the current sort order is 'asc', then set it to 'desc'
-        if ($columnSortOrder === 'asc') {
+        /*if ($columnSortOrder === 'asc') {
             $columnSortOrder = 'desc';
-        } 
+        }*/
 
+        $columnName = 'hr_employees.emp_uid'; 
+        $columnSortOrder = 'ASC';
  
         ## Total number of records without filtering
        
@@ -216,6 +218,8 @@ class TimeSheets extends BaseController
 
         $max_hour_days = $this->getDaysExcluding($year,$month,'friday');
 
+        $data['max_normal_days'] =  $max_hour_days;
+
         $data['max_normal_hours'] = $max_hour_days*8;
         
         for($d=1; $d<=$days; $d++)
@@ -326,13 +330,13 @@ class TimeSheets extends BaseController
 
                         <td width="10%">'.$date["day"].'</td>
 
-                        <td width="15%">
+                        <td width="15%" >
 
                         <input type="hidden" name="date[]" value="'.$date["date"].'">
 
                         <input type="hidden" name="day[]" value="'.$date["day"].'">
 
-                        <select class="day_type form-control" name="day_type[]" required>
+                        <select tabindex="-1" class="day_type form-control" name="day_type[]" required>
                         
                         <option value="">Select Day Type</option>
 
@@ -348,13 +352,13 @@ class TimeSheets extends BaseController
 
                         <td width="10%"><input class="form-control time_to" name="time_to[]" value="" type="text" maxlength="5"  oninput="formatTime(this)" '.$required.' ></td>
 
-                        <td width="10%"><input class="form-control total_hours" name="total_hours[]" value="0" type="text" required readonly></td>
+                        <td width="10%" ><input tabindex="-1" class="form-control total_hours" name="total_hours[]" value="0" type="text" readonly></td>
 
-                        <td width="10%"><input class="form-control normal_hours" type="number" value="0" name="normal_hours[]" readonly></td>
+                        <td width="10%" ><input tabindex="-1" class="form-control normal_hours" type="number" value="0" name="normal_hours[]" readonly></td>
 
-                        <td width="10%"><input class="form-control normal_ot" type="number" name="normal_ot[]" value="0" readonly></td>
+                        <td width="10%" ><input tabindex="-1" class="form-control normal_ot" type="number" name="normal_ot[]" value="0" readonly></td>
 
-                        <td width="10%"><input class="form-control friday_ot" type="number" name="friday_ot[]" value="0" readonly></td>
+                        <td width="10%" ><input tabindex="-1" class="form-control friday_ot" type="number" name="friday_ot[]" value="0" readonly></td>
 
                         </tr>
 
@@ -549,7 +553,9 @@ class TimeSheets extends BaseController
 
         $insert_data['ts_cur_month_friday_ot'] = $this->request->getPost('total_friday_ot_salary');
 
-        $insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('total_month_basic_salary');
+        $insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('basic_salary');
+
+        //$insert_data['ts_cur_month_basic_salary'] = $this->request->getPost('total_month_basic_salary');
 
         $insert_data['ts_cur_month_salary'] = $this->request->getPost('total_month_salary');
 
@@ -710,6 +716,37 @@ class TimeSheets extends BaseController
         // Format the DateTime object to retrieve the full month name
         $data['ts']->month = date('F', mktime(0, 0, 0, $data['ts']->ts_month, 10));
 
+
+        // Define all the columns that need to be formatted
+        $fields_to_format = [
+            'ts_basic_salary',
+            'ts_house_rent_allowance',
+            'ts_transportation_allowance',
+            'ts_telephone_allowance',
+            'ts_food_allowance',
+            'ts_other_allowance',
+            'ts_monthly_salary',
+            'ts_cur_month_leave',
+            'ts_cur_month_unpaid_leave',
+            'ts_current_month_vacation',
+            'ts_cur_month_normal_ot',
+            'ts_cur_month_friday_ot',
+            'ts_cur_month_basic_salary',
+            'ts_cur_month_salary'
+        ];
+
+        
+        $data['ts']->monthly_salary_int = $data['ts']->ts_monthly_salary;
+
+        // Iterate over the fields and format each one
+        foreach ($fields_to_format as $field) {
+            if (isset($data['ts']->$field)) {
+                $data['ts']->$field = format_currency($data['ts']->$field);
+            }
+        }
+
+
+
         $data['ts_days'] ="";   
 
         $total_hours=0;
@@ -726,11 +763,19 @@ class TimeSheets extends BaseController
 
            $ti="-";
            $to="-";
-           if($ts->td_daytype==1 || $ts->td_daytype==2 || $ts->td_daytype==6)
+
+           if($ts->td_time_in=="00:00:00" && $ts->td_time_out == "00:00:00")
+           {
+            $ti ="-";
+            $to ="-";
+           }
+           else if($ts->td_daytype==1 || $ts->td_daytype==2 || $ts->td_daytype==6)
            {
             $ti = date('h:i a',strtotime($ts->td_time_in));
             $to  = date('h:i a',strtotime($ts->td_time_out));
            }
+
+           
 
            $data['ts_days'] .='
            <tr>

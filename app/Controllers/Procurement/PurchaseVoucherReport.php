@@ -439,6 +439,14 @@ class PurchaseVoucherReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
+                    $pdf_data .= "'>".format_currency($prod_del->pvp_discount)."</td>";
+                
+
+                    $pdf_data .= "<td style='text-align:right;";
+                    if ($q == 1) {
+                    
+                        $pdf_data .= $border;
+                    }
                     $pdf_data .= "'>".format_currency($prod_del->pvp_amount)."</td>";
                     $pop_total += $prod_del->pvp_amount;
 
@@ -580,6 +588,8 @@ class PurchaseVoucherReport extends BaseController
 
             <th align="right">Rate</th>
 
+            <th align="right">Discount</th>
+
             <th align="right">Amount</th>
         
             
@@ -598,6 +608,7 @@ class PurchaseVoucherReport extends BaseController
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;"></td>
+                 <td style="border-top: 2px solid;"></td>
                 <td style="border-top: 2px solid;text-align:right; ">'.format_currency($total_amount).'</td>
                 
             </tr>    

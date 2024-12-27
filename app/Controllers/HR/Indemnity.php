@@ -5,7 +5,7 @@ namespace App\Controllers\HR;
 use App\Controllers\BaseController;
 
 
-class Payroll extends BaseController
+class Indemnity extends BaseController
 {
    
 
@@ -35,18 +35,18 @@ class Payroll extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('hr_payrolls','pr_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('hr_vacation_travel','vt_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('pr_id');
+        $searchColumns = array('vt_id');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_payrolls','pr_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_vacation_travel','vt_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array();
         ## Fetch records
-        $records = $this->common_model->GetRecord('hr_payrolls','pr_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('hr_vacation_travel','vt_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -56,12 +56,14 @@ class Payroll extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
         $data[] = array( 
-              "pr_id"=>$i,
-              "pr_month" => date('M Y',strtotime("1-{$record->pr_month}-{$record->pr_year}")),
-              "total_salary" => $record->pr_total_salary,
+              "vt_id"=>$i,
+              "vt_date" => date('d M Y',strtotime($record->vt_date)),
+              "vt_debit_account" => '',
+              "vt_credit_account" => '',
+              "vt_total" => $record->pr_total_salary,
               "action" =>$action,
         );
 
@@ -96,16 +98,45 @@ class Payroll extends BaseController
          public function FetchEmployees()
          {
      
-             $page= !empty($_GET['page']) ? $_GET['page'] : 0;
-             $term = !empty($_GET['term']) ? $_GET['term'] : "";
-             $resultCount = 10;
-             $end = ($page - 1) * $resultCount;       
-             $start = $end + $resultCount;
-           
-             $data['result'] = $this->common_model->FetchAllLimit('hr_employees','emp_name','asc',$term,$start,$end);
-     
-             $data['total_count'] =count($data['result']);
-     
+            $employees = $this->common_model->FetchAll('hr_employees');
+
+            
+            $data['emp_row'] = "";
+            
+
+            foreach($employees as $emp)
+            {
+
+                $data['emp_row'] .="
+                
+                    <tr>
+
+                    <td></td>
+                    
+                    <td>{$emp->emp_uid}</td>
+
+                    <td>{$emp->emp_name}</td>
+
+                    <td>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
+
+                    <td align='right'>{$emp->emp_budgeted_ticket_amount}</td>
+
+                    <td>{$emp->emp_air_ticket_per_year}</td>
+
+                    <td></td>
+
+                    <td></td>
+
+                    <td></td>
+
+                    </tr>
+                
+                ";
+                
+            }
+
+            $data['status'] = 1;
+
              return json_encode($data);
      
          }
@@ -122,25 +153,10 @@ class Payroll extends BaseController
     public function index()
     {   
         
-        $data['divisions'] = $this->common_model->FetchAllOrder('hr_divisions','div_name','asc');
 
-        $data['mops'] = $this->common_model->FetchAllOrder('hr_mode_of_pay','mop_title','asc');
+       $data['sup'] = array();
 
-        $data['months'] = array(
-        1 => "January",
-        2 => "February",
-        3 => "March",
-        4 => "April",
-        5 => "May",
-        6 => "June",
-        7 => "July",
-        8 => "August",
-        9 => "September",
-        10 => "October",
-        11 => "November",
-        12 => "December");
-
-        return view('hr/payroll',$data);
+        return view('hr/vacation_travel',$data);
 
     }
 

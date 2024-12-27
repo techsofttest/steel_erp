@@ -1,8 +1,34 @@
 <style>
-    #DataTable td{
-        line-height:2.3
+    .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
     }
-    </style>
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
+    #DataTable td {
+        line-height: 1.0
+    }
+
+    #DataTable {
+        table-layout: fixed;
+        width: auto;
+        margin: unset
+    }
+</style>
 
 <div class="tab-content text-muted">
 
@@ -211,19 +237,19 @@
                         <!--datatable section start-->
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-15%"> Purchase Return Reports</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-15%"> Purchase Return Reports</h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
 
-                               
-                                            <button class="excel_button report_button" type="submit">Excel</button>
-                                     
+
+                                        <button class="excel_button report_button" type="submit">Excel</button>
+
 
                                         <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -232,19 +258,22 @@
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
-                                            <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
                                         <!-- </form> -->
 
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
-                                    <div class="card-body" style="max-height:80vh; overflow-x:scroll">
+                                    <div class="card-body table-responsive divcontainer" style=" overflow-x:scroll;">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="width:60px">Sl no</th>
-                                                    <th>Date</th>
-                                                    <th>Sales Order</th>
-                                                    <th>Product</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -252,18 +281,35 @@
                                                 <?php
                                                 if (!empty($purchase_order)) {
                                                     $i = 1;
+                                                    $total = 0;
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
                                                             <td class="text-center"><?php echo $i; ?></td>
-                                                            <td><?php echo $pur_order->pr_date; ?></td>
-                                                            <td><?php echo $pur_order->so_reffer_no; ?></td>
-                                                            <td><?php echo $pur_order->product_details; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->pr_date; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->pr_reffer_id; ?></td>
+                                                            <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
+                                                                                                                        echo $pur_order->pr_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';  } ?>
+                                                            </td>
+                                                            <td class="text-center"><?php echo $pur_order->po_reffer_no ?? ''; ?></td>
+                                                            <td class="text-center"><?php echo $pur_order->pv_reffer_id; ?></td>
+                                                            <td class="text-end"><?php echo format_currency($pur_order->prp_amount); $total +=$pur_order->prp_amount; ?></td>
                                                         </tr>
 
                                                 <?php $i++;
-                                                    }
-                                                } ?>
-
+                                                    } ?>
+                                                    <tr>
+                                                     <th>Total</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>                                                        
+                                                            <th class="text-end"><?php echo format_currency($total); ?></th>
+                                                            </tr>
+                                              <?php   } ?>
+   <tr>
+                                                           
+                                                        
                                             </tbody>
 
                                         </table>
@@ -299,6 +345,9 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -569,7 +618,7 @@
 
 <script>
     // Close modal when form is submitted
-    document.getElementById('add_form').addEventListener('submit', function (e) {
+    document.getElementById('add_form').addEventListener('submit', function(e) {
         // Close the modal after the form is submitted
         $('#MaterialRequesitionReport').modal('hide');
     });
@@ -577,39 +626,34 @@
 
 
 <script>
+    document.getElementById("email_button").addEventListener("click", function() {
+        // Select the table element
+        var range = document.createRange();
+        range.selectNode(document.getElementById("DataTable"));
+        window.getSelection().removeAllRanges(); // Clear any existing selections
+        window.getSelection().addRange(range); // Select the table content
 
+        try {
+            // Copy the selected content to clipboard
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Alert to notify the user
+                alert("Table copied to clipboard! Please paste it in the email composer.");
 
-document.getElementById("email_button").addEventListener("click", function() {
-    // Select the table element
-    var range = document.createRange();
-    range.selectNode(document.getElementById("DataTable"));
-    window.getSelection().removeAllRanges();  // Clear any existing selections
-    window.getSelection().addRange(range);    // Select the table content
+                // Email subject and body message
+                var subject = encodeURIComponent("Purchase Return Report");
+                var body = encodeURIComponent("Please paste the copied table here:\n\n");
 
-    try {
-        // Copy the selected content to clipboard
-        var successful = document.execCommand('copy');
-        if (successful) {
-            // Alert to notify the user
-            alert("Table copied to clipboard! Please paste it in the email composer.");
+                // Open the email composer
+                window.location.href = "mailto:?subject=" + subject + "&body=" + body;
 
-            // Email subject and body message
-            var subject = encodeURIComponent("Purchase Return Report");
-            var body = encodeURIComponent("Please paste the copied table here:\n\n");
-
-            // Open the email composer
-            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
-
-            // Optionally clear the selection after copying
-            window.getSelection().removeAllRanges();
-        } else {
-            console.log("Failed to copy table.");
+                // Optionally clear the selection after copying
+                window.getSelection().removeAllRanges();
+            } else {
+                console.log("Failed to copy table.");
+            }
+        } catch (err) {
+            console.error("Error in copying table: ", err);
         }
-    } catch (err) {
-        console.error("Error in copying table: ", err);
-    }
-});
-
-
-
+    });
 </script>

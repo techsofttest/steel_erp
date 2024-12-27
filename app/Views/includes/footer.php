@@ -2,7 +2,7 @@
     <div class="container-fluid">
 		<div class="row">
             <div class="col-sm-6">
-                <script>document.write(new Date().getFullYear())</script> © Al Fuzail Engineering Services WLL.
+                <?= date('Y'); ?> © Al Fuzail Engineering Services WLL.
             </div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
@@ -235,7 +235,10 @@
 
         $(document).ready(function(){
             $('.datepicker').datepicker({
-                dateFormat: "dd-MM-yy" // Specify the date format as "dd-MM-yy"
+                dateFormat: "dd-MM-yy", // Specify the date format as "dd-MM-yy"
+                changeMonth: true, 
+                changeYear: true, 
+                yearRange: "-20:+15"
             }).on('change', function() {
                     $(this).valid();  // triggers the validation test
                     // '$(this)' refers to '$("#datepicker")'
@@ -390,6 +393,22 @@
 
         $(document).ready(function() {
 
+
+            
+            $(document).on('input', 'input[type="number"][max]', function () {
+            const max = parseFloat($(this).attr('max'), 10);
+            const value = parseFloat($(this).val(), 10);
+
+            if (value > max) {
+                $(this).val(max);
+            }
+            });
+            
+
+
+
+
+
             parent = $('body #AddModal');
             const $inputs = parent.find('input,select, button,.select2-hidden-accessible');
             const $form = $('#add_form');
@@ -525,6 +544,139 @@
             }); 
 
 
+            $("form").bind("keypress", function(e) {
+            if (e.keyCode == 13) {
+                return false;
+            }
+            });
+
+
+
+
+
+            $('.account_select2_common').select2({
+                placeholder: "Select Account",
+                theme: "default form-control-",
+                dropdownParent: $('.account_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ca_id,
+                                    text: item.ca_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
+
+            $('.head_select2_common').select2({
+                placeholder: "Select Account Head",
+                theme: "default form-control-",
+                dropdownParent: $('.head_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/AccountHead/FetchHeads",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ah_id,
+                                    text: item.ah_account_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
+
+            $('.type_select2_common').select2({
+                placeholder: "Select Account Type",
+                theme: "default form-control-",
+                dropdownParent: $('.type_parent'),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/AccountHead/FetchTypes",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.at_id,
+                                    text: item.at_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
 
         });

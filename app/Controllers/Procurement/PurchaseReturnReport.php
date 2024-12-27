@@ -14,7 +14,7 @@ class PurchaseReturnReport extends BaseController
     //view page
     public function index()
     {
-        $data['p_returns'] = $this->common_model->FetchAllOrder('pro_purchase_return','pr_id','desc');
+        $data['p_returns'] = $this->common_model->FetchAllOrder('pro_purchase_return', 'pr_id', 'desc');
 
         //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
@@ -168,7 +168,7 @@ class PurchaseReturnReport extends BaseController
         }
 
 
-  
+
 
 
         $joins = array(
@@ -204,10 +204,31 @@ class PurchaseReturnReport extends BaseController
 
         $data['purchase_order'] = $this->pro_model->ReturnCheckData($from_date, 'pr_date', $to_date, '', $data1, 'pr_vendor_name', $data2, 'prp_sales_order', $data5, 'prp_prod_desc', $data3, 'pr_lpo', 'pro_purchase_return_prod', $joins, 'prp_purchase_return_id', $joins1);
 
-        // echo '<pre>';
-        // print_r($data['purchase_order']); 
-        // echo '</pre>';
-        // exit();
+
+        $new_order = [];
+
+        foreach ($data['purchase_order'] as $orders) {
+            
+            // Fetch the MRN record
+            $mrns = $this->common_model->SingleRow('pro_purchase_voucher', ['pv_id' => $orders->pr_vendor_inv]);
+
+            $pos = $this->common_model->SingleRow('pro_purchase_order', ['po_id' => $mrns->pv_purchase_order]);
+
+
+            // if (!empty($mrns)) {
+            //     $pvps = $this->common_model->FetchWhere('pro_purchase_voucher_prod', ['pvp_reffer_id' => $mrns->pv_id]);
+
+            //     $mrns->voucher_prod = $pvps;
+            // }
+            // Merge the $orders and $mrns arrays, then cast the result back to an object
+            $new_order[] = (object) array_merge((array)$orders, (array)$mrns, (array)$pos);
+        }
+
+        $data['purchase_order'] = $new_order;
+
+
+    //    echo '<pre>';
+    //     print_r($data['purchase_order']); exit;
 
 
         if (!empty($from_date)) {
@@ -224,7 +245,7 @@ class PurchaseReturnReport extends BaseController
         }
 
 
-        $data['p_returns'] = $this->common_model->FetchAllOrder('pro_purchase_return','pr_id','desc');
+        $data['p_returns'] = $this->common_model->FetchAllOrder('pro_purchase_return', 'pr_id', 'desc');
 
         $cond = array('so_deliver_flag' => 0);
 
@@ -239,11 +260,11 @@ class PurchaseReturnReport extends BaseController
         $data['products'] = $this->common_model->FetchAllOrder('crm_products', 'product_id', 'desc');
 
         if (!empty($_POST['pdf'])) {
-            $this->Pdf($data['quotation_data'], $data['from_dates'], $data['to_dates']);
+            $this->Pdf($data['purchase_order'], $data['from_dates'], $data['to_dates']);
         }
 
         if (!empty($_POST['excel'])) {
-            $this->Excel($data['quotation_data']);
+            $this->Excel($data['purchase_order']);
         }
 
         $data['content'] = view('procurement/purchase_return_report', $data);
@@ -252,123 +273,131 @@ class PurchaseReturnReport extends BaseController
     }
 
 
-    public function Pdf($quotation_data, $from_date, $to_date)
-    {
+    public function Pdf($purchase_order,$from_date,$to_date)
+    {   
+        
 
-
-        if (!empty($quotation_data)) {
+        if(!empty($purchase_order))
+        {   
             $pdf_data = "";
 
             $joins1 = array(
-
+            
                 array(
                     'table' => 'crm_products',
                     'pk'    => 'product_id',
-                    'fk'    => 'qpd_product_description',
+                    'fk'    => 'pop_prod_desc',
                 ),
-
-
+               
             );
 
+            $total_amount = $pop_total = 0;
+            foreach($purchase_order as $order_data)
+            {   
+                $q=1;
+                $border="border-top: 2px solid";
+                $product_details = $order_data->product_orders;
+                
+                $total_amount = $total_amount + $order_data->prp_amount;
 
-            $total_amount = 0;
-            foreach ($quotation_data as $quot_data) {
-                $q = 1;
-                $border = "border-top: 2px solid";
-                $product_details = $this->common_model->FetchWhereJoin('crm_quotation_product_details', array('qpd_quotation_details' => $quot_data->qd_id), $joins1);
+                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->pr_vendor_name]);
 
-                $total_amount = $total_amount + $quot_data->qd_sales_amount;
 
-                $new_date = date('d-m-Y', strtotime($quot_data->qd_date));
+
+                $new_date = date('d-m-Y',strtotime($order_data->pr_date));
 
                 $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_reffer_no}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->pr_reffer_id}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->cc_customer_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->se_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->po_reffer_no ?? '')."</td>";
+                
+                $pdf_data .= "<td style='border-top: 2px solid'>".($order_data->pv_reffer_id ?? '')."</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$quot_data->qd_sales_amount}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid;text-align:right' class='text-end'>".format_currency($order_data->prp_amount)."</td>";
+                // $pv_total += $order_data->prp_amount;
 
-
-                if ($q != 1) {
-
-                    $pdf_data .= "</tr>";
-                }
-                foreach ($product_details as $prod_del) {
-                    if ($q != 1) {
-
-                        $pdf_data .= "<tr>";
-
-                        $pdf_data .= "<tr><td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-
-                        $pdf_data .= "<td style=''></td>";
-                    }
+                // $pdf_data .= "<td style='border-top: 2px solid;text-align:right;'>".format_currency($order_data->pv_total)."</td>";
 
 
+                
+                // if($q!=1){
+                     
+                //     $pdf_data .="</tr>";
+                // }
+                // foreach($product_details as $prod_del)
+                // {
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                
+                //     if($q!=1){
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->product_details}</td>";
+                //         $pdf_data .="<tr>";
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                     
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_unit}</td>";
+                //         $pdf_data .= "<td style=''></td>";
+                //         $pdf_data .= "<td style=''></td>";
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                //         $pdf_data .= "<td style=''></td>";
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_rate}</td>";
+                //         $pdf_data .= "<td style=''></td>";
+                        
+                     
+                //     }
 
-                    $pdf_data .= "<td style='";
-                    if ($q == 1) {
+                    
+                //     $pdf_data .= "<td style='";
+                //     if ($q == 1) {
+                    
+                //         $pdf_data .= $border;
+                //     }
+                //     $pdf_data .= "'>{$prod_del->mrn_reffer}</td>";
 
-                        $pdf_data .= $border;
-                    }
-                    $pdf_data .= "'>{$prod_del->qpd_amount}</td>";
+                //     $pdf_data .= "<td style='";
+                //     if ($q == 1) {
 
+                //         $pdf_data .= $border;
+                //         $pdf_data .= "'>" . format_currency($order_data->pr_total) . "</td>";
+                //     } else {
+                //         $pdf_data .= "'></td>";
+                //     }
+              
 
-                    if ($q != 1) {
-                        $pdf_data .= "</tr>";
-                    }
+                    
+                //     if($q!=1)
+                //     {
+                //         $pdf_data .="</tr>";
+                //     }
 
-                    $q++;
-                }
+                //     $q++;
 
-                if ($q == 1) {
-                    $pdf_data .= "</tr>";
-                }
+                // }
+                
+                // if($q==1)
+                // {
+                //     $pdf_data .="</tr>";
+                // }
 
-                // $pdf_data .="</tr>";
-
-
-
-
+               // $pdf_data .="</tr>";
+                 
+                
+               
+                
             }
 
-            if (empty($from_date) && empty($to_date)) {
-
-                $dates = "";
-            } else {
-                $dates = $from_date . " to " . $to_date;
+            if(empty($from_date) && empty($to_date))
+            {
+             
+               $dates = "";
+            }
+            else
+            {
+               $dates = $from_date . " to " . $to_date;
             }
 
-
+            
 
             $title = "SQR";
 
@@ -385,11 +414,11 @@ class PurchaseReturnReport extends BaseController
                 ]
             );
 
+         
 
+            $mpdf->SetTitle('Purchase Voucher Report'); // Set the title
 
-            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
-
-            $html = '
+            $html ='
         
             <style>
             th, td {
@@ -440,12 +469,14 @@ class PurchaseReturnReport extends BaseController
             
         
             <tr width="100%">
-            <td>Period : ' . $dates . '</td>
-            <td align="right"><h3>Sales Quotation Report</h3></td>
+            <td>Period : '.$dates.'</td>
+            <td align="right"><h2>Purchase Return Report</h2></td>
         
             </tr>
         
             </table>
+            
+          
 
            
         
@@ -456,38 +487,30 @@ class PurchaseReturnReport extends BaseController
             
             <th align="left">Date</th>
         
-            <th align="left">Quotation Ref.</th>
+            <th align="left">Vendor Ref.</th>
         
-            <th align="left">Customer</th>
+            <th align="left">Vendor</th>
         
-            <th align="left">Sales Executive</th>
+            <th align="left">Purchase Order Ref</th>
+
+             <th align="left">Vendor Invoice Ref</th>
         
-            <th align="left">Amount</th>
-
-            <th align="left">Product</th>
-
-            <th align="left">Quantity</th>
-
-            <th align="left">Rate</th>
-
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
         
             
             </tr>
 
-             
-            ' . $pdf_data . '
+               
+            '.$pdf_data.'
 
             <tr>
-                <td style="border-top: 2px solid;">Total</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $total_amount . '</td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;">' . $total_amount . '</td>
+                <td style="border-top: 2px solid; width:150px">Total</td>
+                <td style="border-top: 2px solid; width:150px"></td>
+                <td style="border-top: 2px solid;width:300px"></td>
+                <td style="border-top: 2px solid; width:150px"></td>
+                <td style="border-top: 2px solid; width:150px"></td>
+                <td style="border-top: 2px solid;text-align:right;width:150px">'.format_currency($total_amount).'</td>
+             
                 
             </tr>    
            
@@ -497,16 +520,19 @@ class PurchaseReturnReport extends BaseController
 
         
             ';
-
-            //$footer = '';
-
-
+        
+            $footer = '';
+        
+            
             $mpdf->WriteHTML($html);
-
-            // $mpdf->SetFooter($footer);
+           
+           // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
+        
         }
+
+       
     }
 
 

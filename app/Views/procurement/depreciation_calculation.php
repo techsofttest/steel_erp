@@ -253,7 +253,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dpc_depreciation" class="form-control add_payment_term depriciation_input" value="" readonly required>
+                                                                        <input type="text" name="dpc_depreciation" id="depriciation_input" class="form-control add_payment_term depriciation_input" value="" readonly required>
                                                                     </div>
 
                                                                 </div>
@@ -303,7 +303,7 @@
                                                     <table class="table table-bordered table-striped enq_tab_submit menu">
                                                         <tbody>
                                                             <tr>
-                                                                <td><button type="submit">Generate JV</button></td>
+                                                                <td><button type="submit" id="save_to_jv_btn">Generate JV</button></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -872,7 +872,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="dpc_amount" class="form-control edit_currentbalance " readonly >
+                                                <input type="text" name="dpc_amount" class="form-control edit_currentbalance " readonly>
                                             </div>
 
                                         </div>
@@ -1032,55 +1032,312 @@
 
 <!--edit section end-->
 
+<!-- Journal Voucher Modal Start -->
+
+
+<!-- Add Modal -->
+
+
+<div class="modal fade" id="AddToJournalModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form class="Dashboard-form class" id="add_journal_form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generate Journal Voucher</h5>
+                    <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#AddModal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-12">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <div class="live-preview">
+
+                                        <div class="row align-items-start justify-content-start">
+
+                                            <div class="col-lg-6">
+
+                                                <div class="row align-items-center mb-2">
+
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Reference</label>
+
+                                                    </div>
+
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" id="uid" class="form-control" >
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Date</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" name="jv_date" class="form-control datepicker_ap" value="<?= date('d M Y') ?>" required>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="col-col-md-12 col-lg-12">
+
+
+                                                <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl No</th>
+                                                            <th>Account</th>
+                                                            <th>Narration</th>
+                                                            <th>Debit</th>
+                                                            <th>Credit</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="jv_rows">
+
+                                                    </tbody>
+
+
+
+
+
+                                                </table>
+
+
+                                            </div>
+
+
+                                            <div class="row">
+
+
+                                                <div class="col-lg-12 text-center">
+
+
+                                                    <div style="">
+                                                        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+                                                            <!--
+            <tr>
+                <td><button class="submit_btn">Print</button></td>
+                <td><button class="submit_btn">Email</button></td>
+            </tr>
+            -->
+                                                            <tr>
+
+                                                                <button class="btn btn-success submit_btn" name="" type="submit">Save</button>
+                                                                <!--<td><button class="submit_btn">PDF</button></td>-->
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <!--end row-->
+
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                        <!--end col-->
+                    </div>
+
+                </div>
+                <!-- <div class="modal-footer justify-content-center">
+                <button  class="btn btn btn-success">Save</button>
+            </div> -->
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<!-- Journal Voucher End -->
+
 
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
 
-        /*add section start*/
-
-        /*add form*/
+        /* Add section start */
         $(function() {
             var form = $('#AddDepreciation');
+            var insertedId = null; // To store the ID of the inserted record
+            var isSecondModalSuccess = false; // Flag to determine if second modal was successful
 
             form.validate({
                 rules: {
-                    required: 'required',
+                    dpc_account_head: 'required',
+                    dpc_acquired_date: 'required',
+                    dpc_amount: 'required',
+                    dpc_debit_account: 'required',
+                    dpc_credit_account: 'required',
+                    dpc_depreciation: 'required',
                 },
                 messages: {
-                    required: 'This field is required',
+                    dpc_account_head: 'This field is required',
+                    dpc_acquired_date: 'This field is required',
+                    dpc_amount: 'This field is required',
+                    dpc_debit_account: 'This field is required',
+                    dpc_credit_account: 'This field is required',
+                    dpc_depreciation: 'This field is required',
                 },
-                errorPlacement: function(error, element) {}, // To Hide Validation Messages
                 submitHandler: function(currentForm) {
-
                     var formData = new FormData(currentForm);
+                    var creditAccount = $('#credit_account_select').val();
+                    var debitAccount = $('#debit_account_select').val();
+                    var depreciation = $('#total_amount').text();
 
-                    // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Add",
                         method: "POST",
                         data: formData,
-                        processData: false, // Don't process the data
-                        contentType: false, // Don't set content type
-                        //data: $(currentForm).serialize(),
-                        success: function(data) {
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                insertedId = response.id; // Store the inserted record ID
+                                datatable.ajax.reload(null, false);
+                                $('#AddDepreciationModal').modal('hide');
+                                alertify.success('Data Added Successfully');
 
-                            $('#AddDepreciationModal').modal('hide');
+                                // Fetch additional data for the second modal
+                                $.ajax({
+                                    url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+                                    method: "GET",
+                                    success: function(response) {
+                                        $('#uid').val(response);
+                                    },
+                                });
 
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                $.ajax({
+                                    url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddToJvRows",
+                                    method: "POST",
+                                    data: {
+                                        cfs_credit_account: creditAccount,
+                                        cfs_debit_account: debitAccount,
+                                        depreciation: depreciation,
+                                        ID: insertedId,
+                                    },
+                                    success: function(response) {
+                                        $('#AddToJournalModal').modal('show');
 
-                            datatable.ajax.reload(null, false);
-
-                        }
+                                        if (response) {
+                                            var data = JSON.parse(response);
+                                            $('#jv_rows').html(data.jv_rows);
+                                            $('#total_amount_debit').val(data.total_debit);
+                                            $('#total_amount_credit').val(data.total_credit);
+                                        }
+                                    },
+                                });
+                            }
+                        },
+                        error: function() {
+                            alertify.error('Error saving data');
+                        },
                     });
 
+                    return false;
+                },
+            });
 
+            // Handle the second modal form submission
+            $('#add_journal_form').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddJournalVoucher",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        var response = JSON.parse(data);
+
+                        if (response.status == 1) {
+                            alertify.success(response.msg).delay(3).dismissOthers();
+
+                            isSecondModalSuccess = true; // Mark as successful
+                            datatable.ajax.reload(null, false);
+
+                            // Close all modals
+                            $('#AddToJournalModal').modal('hide');
+                            $('#AddDepreciationModal').modal('hide');
+                        }
+                    },
+                    error: function() {
+                        alertify.error('Error submitting journal voucher.');
+                    },
+                });
+            });
+
+            // Handle second modal close
+            $('#AddToJournalModal').on('hidden.bs.modal', function() {
+                if (!isSecondModalSuccess && insertedId !== null) {
+                    // Reopen the first modal if the second modal submission was not successful
+                    $('#AddDepreciationModal').modal('show');
+
+                    // Trigger delete operation for the inserted record
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Procurement/DepreciationCalculation/Delete",
+                        method: "POST",
+                        data: {
+                            ID: insertedId
+                        },
+                        success: function(response) {
+                            datatable.ajax.reload(null, false);
+                            alertify.error('Record deleted due to incomplete operation.');
+                            insertedId = null; // Reset the stored ID
+                        },
+                        error: function() {
+                            alertify.error('Error deleting the record.');
+                        },
+                    });
                 }
+
+                // Reset success flag
+                isSecondModalSuccess = false;
             });
         });
+        /* ##### */
 
 
-        /*#####*/
 
         /* account head  search droup drown start*/
 
@@ -1338,6 +1595,8 @@
 
                         $('.depriciation_input').val('');
 
+
+
                         // Update fields based on the response
                         if (parsedData.fixedasset) {
                             // Do something with parsedData.fixedasset, if needed
@@ -1354,11 +1613,12 @@
                             }
 
                         }
-                        if (parsedData.acchead_balance) {
-                            // Do something with the account head balance
-
+                        if (parsedData.hasOwnProperty('acchead_balance')) {
+                            // Do something with the account head balance, even if it's 0
+                            // alert(parsedData.acchead_balance);
                             $('.currentbalance').val(parsedData.acchead_balance);
                         }
+
 
                         if (parsedData.fixed_asset && parsedData.fixed_asset != '') {
                             // Display the table by selecting the correct class for the table
@@ -1479,6 +1739,8 @@
 
 
 
+
+
         /*data table start*/
 
         function initializeDataTable() {
@@ -1534,6 +1796,7 @@
         $(document).ready(function() {
             initializeDataTable();
         });
+
 
 
         /*###*/

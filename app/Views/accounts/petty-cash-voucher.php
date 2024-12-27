@@ -46,7 +46,7 @@
 
                                 <div class="col-col-md-9 col-lg-9">
 
-                                <input type="text" id="pcvid"  class="form-control" readonly required>
+                                <input type="text" name="pcv_uid" id="pcvid"  class="form-control" required>
 
                                 </div>
 
@@ -102,7 +102,7 @@
 
                                 <div class="col-col-md-9 col-lg-9">
 
-                                    <input type="file"  name="" class="form-control ">
+                                    <input type="file"  name="p_cheque_copy" class="form-control ">
 
                                 </div>
 
@@ -146,6 +146,30 @@
                                     <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
 
                                     <?php } ?>
+
+                                    </select>
+
+                                </div>
+
+                                </div>
+
+
+                                <div class="row align-items-center mb-2 d-none" id="bank_sec_add">
+
+                                <div class="col-col-md-3 col-lg-3">
+
+                                    <label for="basiInput" class="form-label">Bank</label>
+
+                                </div>
+
+                                <div class="col-col-md-9 col-lg-9">
+
+                                    <select name="p_bank" class="form-control" required>
+
+                                        <option value="">Select Bank</option>
+                                        <?php foreach ($banks as $a_bank) { ?>
+                                            <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
+                                        <?php } ?>
 
                                     </select>
 
@@ -226,28 +250,21 @@
             <tbody id="sel_invoices">
 
 
-            <tr class="so_row">
+            <tr class="so_row_add">
 
                 <th class="sl_no">1</th> 
                 
-                <th>
+
+                <th width="20%" class="so_select2_parent_add">
 
                 <select name="pcv_sale_invoice[]" class="form-control sales_order_add">
-
-                <option value="0">None</option>
-
-                <?php foreach($sales_orders as $sorder){ ?>
-
-                <option value="<?php echo $sorder->so_id; ?>"><?php echo $sorder->so_reffer_no; ?></option>
-
-                <?php } ?>
 
                 </select>
 
                 </th>
 
 
-                <th> 
+                <th width="35%" class="account_select2_parent_add"> 
                 
                 <select name="pcv_account[]" class="form-control inv_account debit_account_select2_add">
 
@@ -1039,7 +1056,7 @@
 
         $('.so_row').not(':first').remove();
 
-        InitAccountsSelect2('.debit_account_select2_add','.so_row');
+        InitAccountsSelect2('.debit_account_select2_add','.so_row_add');
 
         $.ajax({
 
@@ -1084,10 +1101,22 @@
                         method: "POST",
                         data: $(form).serialize(),
                         success: function(data){
-                            $('#add_form')[0].reset();
-                            $('#AddModal').modal('hide');
-                            alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload( null, false )
+
+                            var data = JSON.parse(data);
+
+                            if (data.status == 0) {
+
+                                alertify.error(data.error).delay(3).dismissOthers();
+                                return false;
+
+                                } else
+
+                                {
+                                $('#add_form')[0].reset();
+                                $('#AddModal').modal('hide');
+                                alertify.success('Data Added Successfully').delay(3).dismissOthers();
+                                datatable.ajax.reload( null, false )
+                                }
                         }
                     });
                     return false; // prevent the form from submitting
@@ -1101,11 +1130,11 @@
 
           /*Add More Debit*/
 
-            var max_fieldcost = 30;
+            var max_fieldcost = 10;
 
             $("body").on('click', '.add_more', function(){
 
-            var cc = $('.so_row').length;
+            var cc = $('.so_row_add').length;
 
             if(cc < max_fieldcost){ 
 
@@ -1113,7 +1142,7 @@
 
             //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
 
-            var $clone =  $('.so_row:first').clone();
+            var $clone =  $('.so_row_add:first').clone();
 
             $clone.find("input").val("");
 
@@ -1131,9 +1160,11 @@
 
             $clone.find('.add_invoices').addClass('disabled');
 
-            $clone.insertAfter('.so_row:last');
+            $clone.insertAfter('.so_row_add:last');
 
-            InitAccountsSelect2('.debit_account_select2_add','.so_row');
+            SOSelect2();
+
+            InitAccountsSelect2('.debit_account_select2_add','.so_row_add');
 
             }
 
@@ -1179,11 +1210,11 @@
             $(document).on("click", ".del_elem", function() 
             {
 
-            $(this).closest('.so_row').remove();
+            $(this).closest('.so_row_add').remove();
 
             var sl_no =1;
 
-            $('body .so_row').each(function()
+            $('body .so_row_add').each(function()
             {
 
             $(this).find('.sl_no').html(sl_no);
@@ -1215,6 +1246,7 @@
 
              /* Show Cheque Fields  */
 
+            /*
             $('select[name=pcv_pay_method]').change(function(){
 
             if($(this).children(':selected').text()=="Cheque")
@@ -1227,8 +1259,35 @@
             }
 
             });
+            */
 
             /* ### */
+
+
+            /* If Cheque  */
+
+
+        $('select[name=pcv_pay_method]').change(function() {
+
+        if ($(this).children(':selected').text() == "Cheque") {
+            $('.cheque_sec').removeClass("d-none");
+        } else {
+            $('.cheque_sec').addClass("d-none");
+        }
+
+        if ($(this).children(':selected').text() == "Cash") {
+            $('#bank_sec_add').addClass("d-none");
+
+        } else {
+            $('#bank_sec_add').removeClass("d-none");
+        }
+
+        if($(this).children(':selected').val() == "")
+        {
+            $('#bank_sec_add').addClass("d-none");
+        }
+
+        });
 
 
 
@@ -1891,7 +1950,7 @@ function InitAccountsSelect2(classname,parent){
 
                 InitAccountsSelect2('.edit_credit_account_select2','.select2_parent');
 
-                InitAccountsSelect2('.debit_account_select2','.so_row');
+                InitAccountsSelect2('.debit_account_select2','.account_select2_parent_add');
 
                 /* ### */
                 
@@ -1903,6 +1962,57 @@ function InitAccountsSelect2(classname,parent){
                     $(this).parent().find(".error").removeClass("error");         
                 });
                 /*###*/
+
+
+
+
+                function SOSelect2() {
+                            $('.sales_order_add').select2({
+                                placeholder: "Select Sales Order", // This is the placeholder
+                                theme: "default form-control-",
+                                dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
+                                allowClear: true, // Allows clearing the selection
+                                ajax: {
+                                    url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    cache: false,
+                                    minimumInputLength: 1,
+                                    data: function(params) {
+                                        return {
+                                            term: params.term,
+                                            page: params.page || 1,
+                                        };
+                                    },
+                                    processResults: function(data, params) {
+                                        var page = params.page || 1;
+                                        return {
+                                            results: [
+                                                { id: null, text: "Select Sales Order" }, // Default null option
+                                                ...$.map(data.result, function(item) {
+                                                    return {
+                                                        id: item.so_id,
+                                                        text: item.so_reffer_no
+                                                    };
+                                                })
+                                            ],
+                                            pagination: {
+                                                more: (page * 10) <= data.total_count
+                                            }
+                                        };
+                                    },
+                                }
+                            });
+                        }
+                        SOSelect2();
+
+
+
+
+
+
+
+
 
 
 

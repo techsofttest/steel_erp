@@ -181,7 +181,23 @@
                                                             </div>
 
                                                             <!-- ### -->
+                                                            <div class="col-lg-12">
 
+                                                                <div class="row align-items-center mb-2">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="cfs_last_yr_depreciation" class="form-control add_payment_term" value="" required>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- 3333333333333 -->
 
 
                                                         </div>
@@ -297,6 +313,9 @@
                                                             <!-- ### -->
 
 
+
+
+                                                            <!-- =================== -->
 
 
 
@@ -663,6 +682,25 @@
                                     </div>
 
 
+
+                                    <!--  -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="cfs_last_yr_depreciation" class="form-control view_last_yr_depreciation" value="" required>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                     <!-- ### -->
 
 
@@ -900,6 +938,25 @@
 
                                                 <input type="text" name="cfs_acquired_date" class="form-control edit_acquired_date datepicker">
 
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- ============================== -->
+
+                                    <div class="col-lg-12">
+
+                                        <div class="row align-items-center mb-2">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Last Year Depreciation</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <input type="text" name="cfs_last_yr_depreciation" class="form-control edit_last_yr_depreciation" value="" required>
                                             </div>
 
                                         </div>
@@ -1383,7 +1440,7 @@
                     {
                         data: 'cfs_account_head'
                     },
-                    
+
                     {
                         data: 'cfs_acquired_date'
                     },
@@ -1840,6 +1897,8 @@
 
                     $('.view_depreciation').val(data.depreciation);
 
+                    $('.view_last_yr_depreciation').val(data.last_yr_depreciation);
+
                     if (data.attach !== '') {
                         $('.view_attach').attr('src', data.attach).show(); // Set the image source and display it
                         $('.view_attach_link').attr('href', data.attach);
@@ -1890,6 +1949,8 @@
                     $('.edit_acc_id').val(data.account_id);
 
                     $('.edit_acquired_date').val(data.date);
+                    
+                    $('.edit_last_yr_depreciation').val(data.last_yr_depreciation);
 
                     $('.edit_debit_acc').html(data.debit_account);
 
@@ -1913,45 +1974,45 @@
         });
 
 
-   /*delete section start*/
+        /*delete section start*/
 
-   $("body").on('click', '.delete_btn', function() {
+        $("body").on('click', '.delete_btn', function() {
 
-    var id = $(this).data('id');
+            var id = $(this).data('id');
 
-    var rowToDelete = $(this).closest('tr');
+            var rowToDelete = $(this).closest('tr');
 
-    $.ajax({
+            $.ajax({
 
-        url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Delete",
+                url: "<?php echo base_url(); ?>Procurement/FixedAssetCreation/Delete",
 
-        method: "POST",
+                method: "POST",
 
-        data: {
-            ID: id
-        },
+                data: {
+                    ID: id
+                },
 
-        success: function(data) {
-            //var data = JSON.parse(data);
+                success: function(data) {
+                    //var data = JSON.parse(data);
 
-            rowToDelete.fadeOut(500, function() {
+                    rowToDelete.fadeOut(500, function() {
 
-                $(this).remove();
+                        $(this).remove();
 
-                alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
 
 
 
-                datatable.ajax.reload(null, false);
+                        datatable.ajax.reload(null, false);
+                    });
+
+                }
+
             });
 
-        }
+        });
 
-    });
-
-    });
-
-    /*delete section end*/
+        /*delete section end*/
 
 
 

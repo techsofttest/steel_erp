@@ -126,7 +126,11 @@
 
                                                 <!--<option value="2023">2023</option>-->
 
-                                                <option value="<?php echo $ap_year = $this->data['accounting_year']; ?>" Selected><?php echo $ap_year; ?></option>
+                                                <?php $ap_year = $this->data['accounting_year']; ?>
+
+                                                <option value="<?php echo $ap_year-1; ?>"><?php echo $ap_year-1; ?></option>
+
+                                                <option value="<?php echo $ap_year; ?>" Selected><?php echo $ap_year; ?></option>
                                                
                                                 <option value="<?php echo $ap_year+1; ?>"><?php echo $ap_year+1; ?></option>
 
