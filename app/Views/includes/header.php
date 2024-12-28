@@ -79,8 +79,67 @@
 
     .form-control:focus
     {
-        border:1px solid !important;
+        border-bottom: 1px solid #000000 !important;
     }
+
+    .Dashboard-form .form-control {
+    font-weight: 600;
+    }
+
+
+    /* New Modal Styles */
+
+    .modal-content
+    {
+
+    border-top: 40px solid #3577f1;
+    border-left: 3px solid #3577f1;
+    border-right: 3px solid #3577f1;
+    border-bottom: 3px solid #3577f1;
+    border-radius: 10px;
+
+    }
+
+    .modal-header
+    {
+
+    color: white !important;
+    position: relative;
+    top: -45px;
+
+    }
+
+
+    .modal-title {
+    color:white;
+    }
+
+    button.btn-close {
+    background-color: red;
+    opacity: 1;
+    }
+
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #3577f1 !important;
+    }
+
+    .select2-results__option
+    {
+        font-weight: 700 !important;
+    }
+
+
+    option {
+        font-weight: 700 !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-weight: 600;
+    color: black;
+    }
+
+    /* ##### */
 
    
     /* For Select 2 Dropdown */
