@@ -1613,6 +1613,8 @@
                 },
 
                 "drawCallback": function() {
+                
+                
 
                 $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
 
@@ -2811,13 +2813,11 @@
     }
 
 
-    $("body").on('click', '.delete_btn', function()
-    { 
+    $("body").on('click', '.delete_btn', function(e)
+    {    
         if (!confirm('Are you absolutely sure you want to delete?')) return false;     
             
         var Proforma_id = $(this).data('id');
-
-       
 
         var rowToDelete = $(this).closest('tr');
 
@@ -2833,6 +2833,7 @@
             success:function(data)
             {   
                 rowToDelete.fadeOut(500, function() {
+                    
                     $(this).remove();
                  
                     alertify.success('Data Delete Successfully').delay(3).dismissOthers();

@@ -141,49 +141,73 @@
 
     <script>
 
-        $("body").on('click', '.delete_btn', function(){ 
-            
+
+
+
+
+        /*function addAccess(){
             var adminId = "<?= session('admin_id') ?>";
-
             var url = window.location.href;
-
             var segments = url.split('/');
-
-            var segment1 = segments[4]; 
-
+            var segment1 = segments[4];
             var segment2 = segments[5];
 
-
             $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
-
-                method : "POST",
-
-                data: {ID: adminId,
-                       segment1:segment1,
-                       segment2:segment2,
-                       
+                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+                method: "POST",
+                data: {
+                    ID: adminId,
+                    segment1: segment1,
+                    segment2: segment2
                 },
+                success: function(data) {
+                    var responseData = JSON.parse(data);
 
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-
-                    if(data.status==="true")
-                    {   
-                        //alert("sucess");
-
-                        //$('.delete_btn').hide();
-
-                        alertify.error('Access Denied: You do not have permission to access this page.').delay(3).dismissOthers();
+                    if (responseData.status_add === "true") {
+                        
+                        $(".add_model_btn").hide();
+                            
+                        return false;
                     }
 
+                    
                 }
-
             });
+            
+        }*/
 
-        });
+
+        /*function editAccess(){
+            var adminId = "<?= session('admin_id') ?>";
+            var url = window.location.href;
+            var segments = url.split('/');
+            var segment1 = segments[4];
+            var segment2 = segments[5];
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+                method: "POST",
+                data: {
+                    ID: adminId,
+                    segment1: segment1,
+                    segment2: segment2
+                },
+                success: function(data) {
+                    var responseData = JSON.parse(data);
+
+                    if (responseData.status_edit === "true") {
+                        
+                        $(".edit_btn").hide();
+                            
+                        return false;
+                    }
+
+                    
+                }
+            });
+            
+        } */
+
 
     </script>
 
@@ -671,6 +695,117 @@
 
 
 
+       
+
+
+        /*$("body").on('click', '.edit_btn', function(){ 
+            
+            var adminId = "<?= session('admin_id') ?>";
+
+            var url = window.location.href;
+
+            var segments = url.split('/');
+
+            var segment1 = segments[4]; 
+
+            var segment2 = segments[5];
+
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+
+                method : "POST",
+
+                data: {ID: adminId,
+                       segment1:segment1,
+                       segment2:segment2,
+                       
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    if(data.status_edit==="true")
+                    {   
+                        
+                        alertify.error('Access Denied: You do not have permission for this action').delay(3).dismissOthers();
+
+                        $('.modal').remove();            // Remove modal elements
+                        $('.modal-backdrop').remove();   // Remove backdrops
+                        $('body').removeClass('modal-open'); 
+
+                        return false;
+                    }
+
+                   
+
+                }
+
+            });
+
+        });*/
+
+
+        /*$("body").on('click', '.add_model_btn', function(){ 
+            
+            var adminId = "<?= session('admin_id') ?>";
+
+            var url = window.location.href;
+
+            var segments = url.split('/');
+
+            var segment1 = segments[4]; 
+
+            var segment2 = segments[5];
+
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+
+                method : "POST",
+
+                data: {ID: adminId,
+                       segment1:segment1,
+                       segment2:segment2,
+                       
+                },
+
+                success:function(data)
+                {   
+                    var data = JSON.parse(data);
+
+                    if(data.status_add==="true")
+                    {   
+                        
+                        alertify.error('Access Denied: You do not have permission for this action').delay(3).dismissOthers();
+                        $('.modal').remove();            
+                        $('.modal-backdrop').remove();   
+                        $('body').removeClass('modal-open'); 
+                        return false;
+                    }
+
+
+                }
+
+            });
+
+        });*/
+
+
+      
+      
+        
+
+
+
+
+
+
+
+
 
 
 
@@ -680,6 +815,41 @@
 
 
         });
+
+
+        /*$("body").on('click', '.delete_btn', function(e) {
+       
+       var adminId = "<?= session('admin_id') ?>";
+       var url = window.location.href;
+       var segments = url.split('/');
+       var segment1 = segments[4];
+       var segment2 = segments[5];
+
+       $.ajax({
+           url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+           method: "POST",
+           data: {
+               ID: adminId,
+               segment1: segment1,
+               segment2: segment2
+           },
+           success: function(data) {
+               var responseData = JSON.parse(data);
+
+               if (responseData.status_delete === "true") {
+                   
+                   alertify.error('Access Denied: You do not have permission for this action').delay(3).dismissOthers();
+                   
+                   e.preventDefault();
+                  e.stopImmediatePropagation();   
+
+                   return false;
+               }
+
+               
+           }
+       });
+   });*/
 
 
          /*

@@ -205,20 +205,32 @@ class ProductHead extends BaseController
 
 
     public function CheckModule(){
-            
+        $data[] ="";     
         $id    =  $this->request->getPost('ID');
 
         $data1 =  $this->request->getPost('segment1');
 
         $data2 =  $this->request->getPost('segment2');
 
-       $module_data = $this->common_model->CheckModule($id,$data1,$data2);
+        $module_data = $this->common_model->CheckModule($id,$data1,$data2);
 
-       if($module_data->up_delete == 0){
+        if($module_data->up_delete == 1){
           
-           $data['status'] =  "true";
+           $data['status_delete'] =  "true";
 
-       }
+        }
+
+        if($module_data->up_add == 1){
+          
+            $data['status_add'] =  "true";
+
+        }
+
+        if($module_data->up_edit == 1){
+          
+            $data['status_edit'] =  "true";
+
+        }
 
        echo json_encode($data); 
         

@@ -88,7 +88,29 @@ class AuthGuard implements FilterInterface
                 return redirect()->to(base_url());  
             }
             
+            
+            /*$currentUrl = current_url();
+
+            $urlSegments = explode('/', $currentUrl);
+
            
+            if(!empty($urlSegments[4]) && !empty($urlSegments[5])){
+
+                $uri_data1 = $urlSegments[4];
+
+                $uri_data2 = $urlSegments[5];
+
+    
+                $module_data = $this->common_model->CheckModule($adminId,$uri_data1,$uri_data2); 
+
+                //print_r($module_data); exit();
+
+               
+                
+            }*/
+
+
+
             
 
         }

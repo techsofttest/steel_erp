@@ -48,9 +48,81 @@
 
 <script src="<?php echo base_url(); ?>public/assets/code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 
+<script>
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+    
+    function checkAccess(){
+            var adminId = "<?= session('admin_id') ?>";
+            var url = window.location.href;
+            var segments = url.split('/');
+            var segment1 = segments[4];
+            var segment2 = segments[5];
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+                method: "POST",
+                data: {
+                    ID: adminId,
+                    segment1: segment1,
+                    segment2: segment2
+                },
+                success: function(data) {
+                    var responseData = JSON.parse(data);
+
+                    $(".delete_btn, .add_model_btn, .edit_btn").each(function() {
+
+                        if ($(this).hasClass("delete_btn") && responseData.status_delete === "true") {
+                            this.style.setProperty('display', 'inline-block', 'important');
+                        }
+                        if ($(this).hasClass("add_model_btn") && responseData.status_add === "true") {
+                            this.style.setProperty('display', 'inline-block', 'important');
+                        }
+                        if ($(this).hasClass("edit_btn") && responseData.status_edit === "true") {
+                            this.style.setProperty('display', 'inline-block', 'important');
+                        }
+                        
+                    });
+                    
+                }
+            });
+            
+        }
+    // Initialize DataTable after permission checks
+    //initializeDataTable();
+
+    //$(document).on('draw.dt', function () {
+        $(document).on('xhr.dt', function () {
+        //editAccess();
+        //addAccess();
+        //deleteAccess();
+
+        checkAccess();
+    });
+
+
+});
+
+</script>
+
 <style>
 
+a.delete_btn{
+ 
+    display:none !important;
+}
 
+a.add_model_btn{
+ 
+    display:none !important;
+}
+
+
+a.edit_btn{
+ 
+    display:none !important;
+}
  
 
 
