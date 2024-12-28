@@ -53,6 +53,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
     
+    /*
     function checkAccess(){
             var adminId = "<?= session('admin_id') ?>";
             var url = window.location.href;
@@ -89,17 +90,54 @@ document.addEventListener("DOMContentLoaded", function(event) {
             });
             
         }
-    // Initialize DataTable after permission checks
-    //initializeDataTable();
+        */
 
-    //$(document).on('draw.dt', function () {
+        
+        $("body").on('click', '.delete_btn', function (event) {
+        event.preventDefault(); 
+
+        var button = $(this); 
+
+            var adminId = "<?= session('admin_id') ?>";
+            var url = window.location.href;
+            var segments = url.split('/');
+            var segment1 = segments[4];
+            var segment2 = segments[5];
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+                method: "POST",
+                data: {
+                    ID: adminId,
+                    segment1: segment1,
+                    segment2: segment2
+                },
+            success: function (response) {
+            if (response.hasPermission) {
+                // Trigger the original click event
+                button.off('click').trigger('click');
+            } else {
+                alert('You do not have permission to delete this item.');
+            }
+            },
+            error: function () {
+            alert('Error checking permission.');
+            },
+        });
+        });
+
+
+        // Initialize DataTable after permission checks
+        //initializeDataTable();
+
+        //$(document).on('draw.dt', function () {
         $(document).on('xhr.dt', function () {
         //editAccess();
         //addAccess();
         //deleteAccess();
 
-        checkAccess();
-    });
+        //checkAccess();
+        });
 
 
 });
