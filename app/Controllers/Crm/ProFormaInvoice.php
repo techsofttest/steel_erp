@@ -406,7 +406,7 @@ class ProFormaInvoice extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control " readonly></td>
             <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control " readonly></td>
             <td> <input type="text" value="'.$prod_det->pp_rate.'" class="form-control " readonly></td>
@@ -525,14 +525,36 @@ class ProFormaInvoice extends BaseController
 
      //delete account head
      public function Delete()
-     {
+     {  
+        /*check permission*/
+
+        /*$adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(1);
+
+        $check_module = $this->common_model->CheckModule($id,$data1,$data2);
+        
+        if($check_module->up_delete == 1){
+
+            $data['detele_access'] = "true"
+        }*/
+        
+
+       
+        /**/
         $cond = array('pf_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_proforma_invoices',$cond);
         
         $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
+
+        
  
         $this->common_model->DeleteData('crm_proforma_product',$cond1);
+
+        
   
      }
 
