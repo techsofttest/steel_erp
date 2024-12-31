@@ -369,7 +369,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Reffer Number</th>
+                                                    <th>Reference</th>
                                                     <th>Purchase Order</th>
                                                     <th>Date</th>
                                                     <th>Actions</th>

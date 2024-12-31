@@ -63,8 +63,8 @@ class CreditInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->cci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->cci_id.'"  class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
 
             ';
            
@@ -75,7 +75,6 @@ class CreditInvoice extends BaseController
               'cci_customer'      => $record->cc_customer_name,
               'cci_sales_order'   => $record->so_reffer_no,
               'cci_total_amount'  => $record->cci_total_amount,
-              'cci_paid_amount'   => $record->cci_paid_amount,
               'action'            => $action,
            );
            $i++; 
@@ -551,8 +550,8 @@ class CreditInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total</td>
-                <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
+                <td class="text-center">Total</td>
+                <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
             </tr> ';
 
@@ -580,13 +579,13 @@ class CreditInvoice extends BaseController
             foreach($delivery_prod_details as $delivery_prod){
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
-                                                <td>'.$delivery_prod->dn_reffer_no.'</td>
-                                                <td>'.$delivery_prod->product_details.'</td>
-                                                <td>'.$delivery_prod->ipd_unit.'</td>
-                                                <td>'.$delivery_prod->ipd_quantity.'</td>
-                                                <td>'.$delivery_prod->ipd_rate.'</td>
-                                                <td>'.$delivery_prod->ipd_discount.'</td>
-                                                <td>'.$delivery_prod->ipd_amount.'</td>
+                                                <td class="text-center">'.$delivery_prod->dn_reffer_no.'</td>
+                                                <td style="width:35%">'.$delivery_prod->product_details.'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_unit.'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_quantity.'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_rate.'</td>
+                                                <td class="text-center">'.$delivery_prod->ipd_discount.'</td>
+                                                <td class="text-end" style="width:10%">'.format_currency($delivery_prod->ipd_amount).'</td>
                                               
                                             </tr>';
                                                     $i++;
@@ -1082,7 +1081,7 @@ class CreditInvoice extends BaseController
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
                                                 <td class="si_no">'.$i.'</td>
                                                 <td>'.$delivery_prod->dn_reffer_no.'</td>
-                                                <td>'.$delivery_prod->product_details.'</td>
+                                                <td style="width: 35%">'.$delivery_prod->product_details.'</td>
                                                 <td>'.$delivery_prod->ipd_unit.'</td>
                                                 <td>'.$delivery_prod->ipd_quantity.'</td>
                                                 <td>'.$delivery_prod->ipd_rate.'</td>

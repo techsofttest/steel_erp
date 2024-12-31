@@ -129,7 +129,7 @@ abstract class BaseController extends Controller
 
        $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond1,$joins1);*/
 
-       
+     
 
        
         // Share the data globally
@@ -138,6 +138,9 @@ abstract class BaseController extends Controller
 
 
     }
+
+
+   
 
 
 

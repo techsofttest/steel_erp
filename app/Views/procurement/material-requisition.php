@@ -767,7 +767,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Reffer Number</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Actions</th>
                                                 </tr>

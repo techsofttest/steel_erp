@@ -50,6 +50,43 @@
 
 <script>
 
+
+        /*$("body").on('click', '.delete_btn', function (e) {
+                e.preventDefault(); 
+
+                var button = $(this); 
+
+                    var adminId = "<?= session('admin_id') ?>";
+                    var url = window.location.href;
+                    var segments = url.split('/');
+                    var segment1 = segments[4];
+                    var segment2 = segments[5];
+
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
+                        method: "POST",
+                        data: {
+                            ID: adminId,
+                            segment1: segment1,
+                            segment2: segment2
+                        },
+                    success: function (response) {
+                        
+                        var responseData = JSON.parse(response);
+                    if (responseData.status_delete != "true") {
+                        alert('You do not have permission to delete this item.');
+                        e.stopImmediatePropagation();
+                        // Trigger the original click event
+                        //button.off('click').trigger('click');
+                        } 
+                        },
+                        error: function () {
+                        alert('Error checking permission.');
+                        },
+                });
+                });*/
+
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
     
@@ -93,7 +130,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         */
 
         
-        $("body").on('click', '.delete_btn', function (event) {
+        
+
+
+        /*$("body").on('click', '.edit_btn', function (event) {
         event.preventDefault(); 
 
         var button = $(this); 
@@ -113,11 +153,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     segment2: segment2
                 },
             success: function (response) {
-            if (response.hasPermission) {
+            if (response.status_edit === "true") {
                 // Trigger the original click event
                 button.off('click').trigger('click');
             } else {
-                alert('You do not have permission to delete this item.');
+                alert('You do not have permission to edit this item.');
+
+                event.stopPropagation();
+
+                return false;
             }
             },
             error: function () {
@@ -137,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         //deleteAccess();
 
         //checkAccess();
-        });
+        });*/
 
 
 });
@@ -146,21 +190,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 <style>
 
-a.delete_btn{
- 
-    display:none !important;
-}
 
-a.add_model_btn{
- 
-    display:none !important;
-}
-
-
-a.edit_btn{
- 
-    display:none !important;
-}
  
 
 
@@ -602,6 +632,39 @@ table.menu td{
     transform: rotate(360deg); 
   }
 }
+
+.select2{
+   
+    overflow: hidden;
+}
+
+
+
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-height: 100px;
+    overflow: auto;
+}
+
+
+
+/*.select2-selection__rendered{
+
+    
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-height: 100px;
+    overflow: auto;
+}*/
+
+/*.select2-container{
+
+    overflow: hidden !important;
+}*/
 
 
 

@@ -64,7 +64,7 @@ class SalesReturn extends BaseController
         $i=1;
         foreach($records as $record ){
             
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->sr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->sr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>';
            
             $data[] = array( 
               'sr_id'           => $i,
@@ -544,12 +544,12 @@ class SalesReturn extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
+            <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
              $i++;
         }
@@ -1326,7 +1326,7 @@ class SalesReturn extends BaseController
             {
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
                 <td>'.$i.'</td>
-                <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+                <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
                 <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>

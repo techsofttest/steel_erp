@@ -65,8 +65,8 @@ class SalesQuotation extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="javascript:void(0)"  data-id="'.$record->qd_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->qd_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->qd_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->qd_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>
+            <a href="javascript:void(0)" title="Preview" data-id="'.$record->qd_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
 
             ';
            
@@ -613,11 +613,11 @@ class SalesQuotation extends BaseController
 
         $data['project']           = $quotation_details->qd_project;
 
-        $data['sales_amount']      = $quotation_details->qd_sales_amount;
+        $data['sales_amount']      = format_currency($quotation_details->qd_sales_amount);
 
-        $data['cost_amount']       = $quotation_details->qd_cost_amount;
+        $data['cost_amount']       = format_currency($quotation_details->qd_cost_amount);
 
-        $data['percentage']        = $quotation_details->qd_percentage;
+        $data['percentage']        = format_currency($quotation_details->qd_percentage);
 
         $data['cost_details'] ="";
         
@@ -625,12 +625,12 @@ class SalesQuotation extends BaseController
         foreach($cost_calculation_data as $cost_cal_data)
         {
             $data['cost_details'] .='<tr>
-            <td><input type="text"  value="'.$i.'" class="form-control " readonly></td>
-            <td colspan="2"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
-            <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$i.'" class="form-control text-center" readonly></td>
+            <td colspan="2" style="width:40%"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($cost_cal_data->qc_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
 
             $i++;
@@ -646,13 +646,13 @@ class SalesQuotation extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"  value="'.$j.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_amount.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$j.'" class="form-control text-center" readonly></td>
+            <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->qpd_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
             
             $j++;
@@ -1101,7 +1101,7 @@ class SalesQuotation extends BaseController
         {
             $data['prod_details'] .='<tr class="edit_add_prod_row">
             <td class="edit_add_prod_si_no"><input type="text"  value="'.$i.'" class="form-control" readonly></td>
-            <td style="width:30%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td style="width:35%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control" readonly></td>
@@ -1139,7 +1139,7 @@ class SalesQuotation extends BaseController
         {
             $data['cost_prod_det'] .='<tr class="edt_cost_row">
             <td class="edit_cost_si_no">'.$j.'</td>
-            <td style="width:30%"><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
+            <td style="width:35%"><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_unit.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_qty.'" class="form-control" readonly></td>
            

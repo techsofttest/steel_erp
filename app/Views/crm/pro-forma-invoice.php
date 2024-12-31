@@ -692,13 +692,13 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td class="text-center">Serial No.</td>
+                                                                <td class="text-center">Product Description</td>
+                                                                <td class="text-center">Unit</td>
+                                                                <td class="text-center">Qty</td>
+                                                                <td class="text-center">Rate</td>
+                                                                <td class="text-center">Discount</td>
+                                                                <td class="text-center">Amount</td>
                                                               
                                                             </tr>
                                                             
@@ -713,7 +713,7 @@
                                                                 <td colspan="3"></td>
                                                                 
                                                                 <td>Total Order value</td>
-                                                                <td><input type="text" class="view_amount_total form-control" readonly></td>
+                                                                <td><input type="text" class="view_amount_total form-control text-end" readonly></td>
                                                             </tr>
 
 
@@ -722,7 +722,7 @@
                                                                 <td colspan="3"></td>
                                                                 
                                                                 <td>Current Claim %</td>
-                                                                <td><input type="number" class="form-control view_current_claim" readonly></td>
+                                                                <td><input type="number" class="form-control view_current_claim text-end" readonly></td>
                                                             </tr>
 
 
@@ -730,7 +730,7 @@
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 <td>Current Claim Value</td>
-                                                                <td><input type="number" class="form-control view_current_claim_value" readonly></td>
+                                                                <td><input type="number" class="form-control view_current_claim_value text-end" readonly></td>
                                                             </tr>
                                                             
                                                           
@@ -1353,14 +1353,14 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Pro-Forma Invoice</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#PerformaInvoice" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Pro-forma Invoice Number</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Sales Order No</th>
@@ -2023,7 +2023,7 @@
         InitProductSelect2();
 
 
-    $('.add_model_btn').click(function(){
+    $('.add_model_btn').click(function(e){
 
         $('.once_form_submit').attr('disabled',false); // Disable this input.
 
@@ -2048,11 +2048,49 @@
             success:function(data)
             {
 
-            $('#pfid').val(data);
+                $('#pfid').val(data);
+
+                $.ajax({
+
+                    url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/AddAccess",
+
+                    method : "POST",
+
+                    success:function(data)
+                    {
+
+                        var data = JSON.parse(data);
+
+                        if(data.status === "false"){
+                           
+                            alertify.error(data.msg).delay(3).dismissOthers();
+
+                            e.stopImmediatePropagation();
+
+                            return false;
+
+                            
+
+                        }
+                        else{
+
+                            $('#PerformaInvoice').modal('show');
+
+                        }
+                        
+
+                    }
+
+                });
+
+               
+                
 
             }
 
         });
+
+        
 
     });
 
@@ -2832,14 +2870,26 @@
 
             success:function(data)
             {   
-                rowToDelete.fadeOut(500, function() {
-                    
-                    $(this).remove();
-                 
-                    alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+               
+                var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
-                }); 
+                if(data.status === "true"){
+
+                    rowToDelete.fadeOut(500, function() {
+                    
+                        $(this).remove();
+                    
+                        alertify.success(data.msg).delay(3).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+                    }); 
+                }else{
+                   
+                   alertify.error(data.msg).delay(3).dismissOthers();
+
+                }
+
+                
 
 
             }

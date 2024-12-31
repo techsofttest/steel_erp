@@ -143,8 +143,6 @@
 
 
 
-
-
         /*function addAccess(){
             var adminId = "<?= session('admin_id') ?>";
             var url = window.location.href;

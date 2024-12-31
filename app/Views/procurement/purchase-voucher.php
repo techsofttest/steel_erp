@@ -711,15 +711,15 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No</td>
-                                                                <td>Sales Order Ref</td>
-                                                                <td>Product Description</td>
-                                                                <td>Debit A/C</td>
-                                                                <td>Qty</td>
-                                                                <td>Unit</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td class="text-center">Serial No</td>
+                                                                <td class="text-center">Sales Order</td>
+                                                                <td class="text-center">Product Description</td>
+                                                                <td class="text-center">Debit A/C</td>
+                                                                <td class="text-center">Qty</td>
+                                                                <td class="text-center">Unit</td>
+                                                                <td class="text-center">Rate</td>
+                                                                <td class="text-center">Discount</td>
+                                                                <td class="text-center">Amount</td>
 
 
 
@@ -735,7 +735,7 @@
                                                             <tr>
                                                                 <td colspan="7" class=""></td>
                                                                 <td>Total</td>
-                                                                <td><input type="text" name="" class=" form-control view_total_amount" readonly=""></td>
+                                                                <td><input type="text" name="" class=" form-control view_total_amount text-end" readonly=""></td>
                                                              </tr>
                                                         
                                                         </tbody>
@@ -1084,7 +1084,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Reffer Number</th>
+                                                    <th>Reference</th>
                                                     <th>Purchase Order</th>
                                                     <th>Date</th>
                                                     <th>Actions</th>

@@ -1669,13 +1669,13 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td class="text-center">Serial No.</td>
+                                                                <td class="text-center">Product Description</td>
+                                                                <td class="text-center">Unit</td>
+                                                                <td class="text-center">Qty</td>
+                                                                <td class="text-center">Rate</td>
+                                                                <td class="text-center">Discount</td>
+                                                                <td class="text-center">Amount</td>
                                                                 
                                                             </tr>
                                                            
@@ -1701,12 +1701,12 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td colspan="2">Cost Of Materials / Services</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Amount</td>
+                                                                <td class="text-center">Serial No.</td>
+                                                                <td colspan="2" class="text-center">Cost Of Materials / Services</td>
+                                                                <td class="text-center">Unit</td>
+                                                                <td class="text-center">Qty</td>
+                                                                <td class="text-center">Rate</td>
+                                                                <td class="text-center">Amount</td>
                                                                 
                                                             </tr>
                                                            
@@ -1721,19 +1721,19 @@
                                                                 <td colspan="3" class=""></td>
                                                                 
                                                                 <td>Product</td>
-                                                                <td><input type="text" name="" class="view_btn_total_prod form-control" readonly></td>
+                                                                <td><input type="text" name="" class="view_btn_total_prod form-control text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Cost</td>
-                                                                <td><input type="text" class="form-control view_btn_total_cost_cal" readonly></td>
+                                                                <td><input type="text" class="form-control view_btn_total_cost_cal text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
                                                                 <td>Percentage</td>
-                                                                <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent" readonly></td>
+                                                                <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent text-end" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         
@@ -1788,7 +1788,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Quotation Number</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Enquiry Number</th>

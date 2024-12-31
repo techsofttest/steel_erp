@@ -1014,7 +1014,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Delivery Note No</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Actions</th>

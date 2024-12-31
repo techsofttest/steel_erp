@@ -63,8 +63,8 @@ class CashInvoice extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="javascript:void(0)" data-id="'.$record->ci_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ci_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ci_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->ci_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->ci_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
             ';
            
            $data[] = array( 
@@ -577,7 +577,7 @@ class CashInvoice extends BaseController
             <td></td>
             <td></td>
             <td>Total</td>
-            <td><input type="text" value="'.$total_amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
             
         </tr> ';
 
@@ -611,11 +611,11 @@ class CashInvoice extends BaseController
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
             <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$rate.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$discount.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$amount.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$rate.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
             </tr>'; 
              $i++;
         }

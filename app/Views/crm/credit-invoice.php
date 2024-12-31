@@ -444,12 +444,11 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Invoice No.</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Sales Order</th>
                                                     <th>Total Amount</th>
-                                                    <th>Paid Amount</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1197,14 +1196,14 @@
                             <table class="table table-bordered table-striped delTable">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td>Serial No.</td>
-                                        <td>Delivery Reffer</td>
-                                        <td>Product Description</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
-                                        <td>Discount</td>
-                                        <td>Amount</td>
+                                        <td class="text-center">Serial No.</td>
+                                        <td class="text-center">Delivery Reffer</td>
+                                        <td class="text-center">Product Description</td>
+                                        <td class="text-center">Unit</td>
+                                        <td class="text-center">Qty</td>
+                                        <td class="text-center">Rate</td>
+                                        <td class="text-center">Discount</td>
+                                        <td class="text-center">Amount</td>
                                         
 
                                     </tr>
@@ -1214,7 +1213,7 @@
                                 <tbody  class="travelerinfo view_prod_table"></tbody>
 
 
-                                <tbody  class="travelerinfo view_total_amount"></tbody>
+                                <tbody  class="travelerinfo view_total_amount" ></tbody>
                                                        
                                 
                                                        
@@ -1532,7 +1531,6 @@
                 { data: 'cci_customer'},
                 { data: 'cci_sales_order'},
                 { data: 'cci_total_amount'},
-                { data: 'cci_paid_amount'},
                 { data: 'action'},
                 
                ],

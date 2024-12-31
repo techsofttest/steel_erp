@@ -460,7 +460,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Cash Invoice No</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Sales Order</th>
@@ -899,13 +899,13 @@
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td>Serial No.</td>
-                                        <td>Product Description</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
-                                        <td>Discount</td>
-                                        <td>Amount</td>
+                                        <td class="text-center">Serial No.</td>
+                                        <td class="text-center">Product Description</td>
+                                        <td class="text-center">Unit</td>
+                                        <td class="text-center">Qty</td>
+                                        <td class="text-center">Rate</td>
+                                        <td class="text-center">Discount</td>
+                                        <td class="text-center">Amount</td>
                                       
                                     </tr>
                                     

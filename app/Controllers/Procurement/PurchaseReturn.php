@@ -56,22 +56,22 @@ class PurchaseReturn extends BaseController
         ## Fetch records
         $records = $this->common_model->GetRecord('pro_purchase_return','pr_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
-        
 
         $data = array();
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a><a  href="javascript:void(0)" data-id="'.$record->pr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>';
            
-           $data[] = array( 
+            $data[] = array( 
               "pr_id"          => $i,
               'pr_reffer_id'   => $record->pr_reffer_id,
               'pr_vendor_name' => $record->ven_name,
               'pr_date'        => date('d-m-Y',strtotime($record->pr_date)),
               "action"         => $action,
-           );
+            );
            $i++; 
+           
         }
  
         ## Response
@@ -717,7 +717,7 @@ class PurchaseReturn extends BaseController
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
-        $data['total_amount']   = $purchase_return->pr_total_amount;
+        $data['total_amount']   = format_currency($purchase_return->pr_total_amount);
 
         /*$join =  array(
             
@@ -748,14 +748,14 @@ class PurchaseReturn extends BaseController
         {
             $data['purchase_return'] .= '<tr class="edit_prod_row" id="'.$pur_return_prod->prp_id.'">
             <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control text-center" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_amount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_amount).'" class="form-control text-end" readonly></td>
             </tr>
             ';
             $i++; 

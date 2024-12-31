@@ -63,8 +63,8 @@ class ProFormaInvoice extends BaseController
         $i=1;
         foreach($records as $record ){
             
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>
+            <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
 
             ';
            
@@ -392,11 +392,11 @@ class ProFormaInvoice extends BaseController
 
         $data['project']              = $proforma->pf_project;
 
-        $data['total_amount']         = $proforma->pf_total_amount;
+        $data['total_amount']         = format_currency($proforma->pf_total_amount);
 
-        $data['current_claim']        = $proforma->pf_current_cliam;
+        $data['current_claim']        = format_currency($proforma->pf_current_cliam);
 
-        $data['current_claim_value']  = $proforma->pf_current_claim_value;
+        $data['current_claim_value']  = format_currency($proforma->pf_current_claim_value);
 
 
         $data['prod_details'] ="";
@@ -407,11 +407,11 @@ class ProFormaInvoice extends BaseController
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
             <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_rate.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control " readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_amount.'" class="form-control " readonly></td>
+            <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
 
             $i++;
@@ -528,31 +528,51 @@ class ProFormaInvoice extends BaseController
      {  
         /*check permission*/
 
-        /*$adminId = session('admin_id');
+        $adminId = session('admin_id');
 
         $segment1 = service('uri')->getSegment(1);
 
-        $segment2 = service('uri')->getSegment(1);
+        $segment2 = service('uri')->getSegment(2);
 
-        $check_module = $this->common_model->CheckModule($id,$data1,$data2);
-        
-        if($check_module->up_delete == 1){
-
-            $data['detele_access'] = "true"
-        }*/
-        
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
 
        
+        if($check_module->up_delete == 1){
+
+            $data['status'] = "true";
+
+            $data['msg'] ="Data Delete Successfully";
+
+            $cond = array('pf_id' => $this->request->getPost('ID'));
+ 
+            $this->common_model->DeleteData('crm_proforma_invoices',$cond);
+            
+            $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
+
+            $this->common_model->DeleteData('crm_proforma_product',$cond1);
+
+
+        }
+        else{
+           
+            $data['status'] = "false";
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+        }
+
+        echo json_encode($data);
         /**/
-        $cond = array('pf_id' => $this->request->getPost('ID'));
+
+
+        /*old one*/
+       /* $cond = array('pf_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_proforma_invoices',$cond);
         
         $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
 
-        
- 
-        $this->common_model->DeleteData('crm_proforma_product',$cond1);
+        $this->common_model->DeleteData('crm_proforma_product',$cond1);*/
+
+        /***/
 
         
   
@@ -1142,6 +1162,40 @@ class ProFormaInvoice extends BaseController
            
             echo json_encode($data); 
         }
+
+
+        public function AddAccess(){
+             
+            $data['msg'] = "";
+
+            $adminId = session('admin_id'); 
+
+            $segment1 = service('uri')->getSegment(1);
+
+            $segment2 = service('uri')->getSegment(2);
+
+            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+            if($check_module->up_add == 1){
+               
+                $data['status'] = "true";
+
+               
+
+            }
+            else{
+                
+                $data['status'] = "false";
+
+                $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+            }
+
+            echo json_encode($data); 
+        }
+
+
+        
         
 
         public function Pdf($id)

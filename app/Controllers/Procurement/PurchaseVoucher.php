@@ -63,7 +63,7 @@ class PurchaseVoucher extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pv_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pv_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->pv_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>';
            
            $data[] = array( 
               "pv_id"             => $i,
@@ -594,7 +594,7 @@ class PurchaseVoucher extends BaseController
 
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
 
-        $data['total_amount']    = $purchase_voucher->pv_total;
+        $data['total_amount']    = format_currency($purchase_voucher->pv_total);
 
         
 
@@ -619,14 +619,14 @@ class PurchaseVoucher extends BaseController
         {
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control text-center" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control" readonly></td>
-            <td style="width:7%"> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control text-center" readonly></td>
+            <td style="width:7%"> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control text-end" readonly></td>
             </tr>
             ';
             $i++; 

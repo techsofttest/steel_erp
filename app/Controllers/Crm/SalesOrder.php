@@ -62,7 +62,7 @@ class SalesOrder extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a><a href="javascript:void(0)" data-id="'.$record->so_id.'"  class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Preview</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->so_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->so_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->so_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a><a href="javascript:void(0)" data-id="'.$record->so_id.'"  class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>';
              
             if(!empty($record->so_edit_reff_no))
             {
@@ -1000,7 +1000,7 @@ class SalesOrder extends BaseController
 
         $data['file_name']      = $sales_order->so_file;
         
-        $data['total_amount']      = $sales_order->so_amount_total;
+        $data['total_amount']   = format_currency($sales_order->so_amount_total);
         
         $data['file_attach'] = '<a href="' . base_url('uploads/SalesOrder/' . $sales_order->so_file) . '" target="_blank">View</a>';  
 
@@ -1031,12 +1031,12 @@ class SalesOrder extends BaseController
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
             <td class="si_no2">'.$i.'</td>
-            <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control " readonly></td>
-            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id"  readonly></td>
-            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" readonly></td>
-            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" readonly></td>
-            <td> <input type="text" name="spd_amount[]" value="'.$prod_det->spd_amount.'"  class="form-control amount_clz_id" readonly></td>
+            <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center"  readonly></td>
+            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id text-center" readonly></td>
+            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
+            <td> <input type="text" name="spd_amount[]" value="'.format_currency($prod_det->spd_amount).'"  class="form-control amount_clz_id text-end" readonly></td>
           
             </tr>'; 
             $i++; 
