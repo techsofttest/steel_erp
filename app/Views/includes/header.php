@@ -221,10 +221,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     {
         border-bottom: 1px solid #000000 !important;
     }
-
-    .Dashboard-form .form-control {
-    font-weight: 600;
-    }
+   
 
 
     /* New Modal Styles */
@@ -264,18 +261,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         background-color: #3577f1 !important;
     }
 
-    .select2-results__option
-    {
-        font-weight: 700 !important;
-    }
-
-
-    option {
-        font-weight: 700 !important;
-    }
+  
+   
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-    font-weight: 600;
     color: black;
     }
 
