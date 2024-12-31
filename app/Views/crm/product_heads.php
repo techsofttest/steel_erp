@@ -324,15 +324,14 @@
                             {
                                 alertify.success('Data Update Successfully').delay(3).dismissOthers();
                                 $('#EditProductHead').modal('hide');
-                                datatable.ajax.reload( null, false )
+                                datatable.ajax.reload(null,false)
                             }
                             else
                             {
                                 alertify.error('Duplicate Data').delay(3).dismissOthers();
                                 
                             }
-                            
-                            
+                          
                         }
                     });
                     return false; // prevent the form from submitting
@@ -349,7 +348,9 @@
         $("body").on('click', '.delete_btn', function(){ 
             
             if (!confirm('Are you absolutely sure you want to delete?')) return false;
+
             var id = $(this).data('id');
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/ProductHead/Delete",
@@ -368,7 +369,7 @@
 
                         datatable.ajax.reload(null,false);
  
-                    }else{
+                    } else{
 
                         alertify.error('Data In Use. Can\'t Be Delete').delay(2).dismissOthers();
                     } 

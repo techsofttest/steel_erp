@@ -53,7 +53,10 @@ class MaterialRequisition extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>';
+            $action = ' <a  href="javascript:void(0)" data-id="'.$record->mr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
+            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->mr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->mr_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
+           ';
            
            $data[] = array( 
               "mr_id"         => $i,

@@ -1054,7 +1054,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
-                                                    <th>Enquiry Number</th>
+                                                    <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
                                                     <th>Actions</th>

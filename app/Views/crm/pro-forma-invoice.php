@@ -2041,6 +2041,39 @@
 
         $.ajax({
 
+            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/AddAccess",
+
+            method : "POST",
+
+            success:function(data)
+            {
+
+                var data = JSON.parse(data);
+
+                if(data.status === "false"){
+                
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+                    e.stopImmediatePropagation();
+
+                    return false;
+
+                    
+
+                }
+                else{
+
+                    $('#PerformaInvoice').modal('show');
+
+                }
+                
+
+            }
+
+        });
+
+        $.ajax({
+
             url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchReference",
 
             method : "GET",
@@ -2050,41 +2083,6 @@
 
                 $('#pfid').val(data);
 
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/AddAccess",
-
-                    method : "POST",
-
-                    success:function(data)
-                    {
-
-                        var data = JSON.parse(data);
-
-                        if(data.status === "false"){
-                           
-                            alertify.error(data.msg).delay(3).dismissOthers();
-
-                            e.stopImmediatePropagation();
-
-                            return false;
-
-                            
-
-                        }
-                        else{
-
-                            $('#PerformaInvoice').modal('show');
-
-                        }
-                        
-
-                    }
-
-                });
-
-               
-                
 
             }
 
@@ -2262,6 +2260,39 @@
 
         $.ajax({
 
+            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/EditAccess",
+
+            method : "POST",
+
+            data: {ID: id},
+
+            success:function(data)
+            {
+                var data = JSON.parse(data);
+
+                if(data.status === "false"){
+                
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+                   
+                    return false;
+
+                    
+
+                }
+                else{
+
+                    $('#EditPerformaInvoice').modal('show');
+
+                }
+
+
+            }
+
+        });
+
+        $.ajax({
+
             url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/Edit",
 
             method : "POST",
@@ -2310,7 +2341,7 @@
 
         });
 
-        $('#EditPerformaInvoice').modal('show');
+        
 
     });
 

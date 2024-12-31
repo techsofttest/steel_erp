@@ -63,8 +63,12 @@ class ProFormaInvoice extends BaseController
         $i=1;
         foreach($records as $record ){
             
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a><a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i></a>
+            $action = '<a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
+            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
             <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
+            
+            
 
             ';
            
@@ -1193,7 +1197,38 @@ class ProFormaInvoice extends BaseController
 
             echo json_encode($data); 
         }
+        
 
+        public function EditAccess(){
+            
+            $data['msg'] = "";
+
+            $adminId = session('admin_id'); 
+
+            $segment1 = service('uri')->getSegment(1);
+
+            $segment2 = service('uri')->getSegment(2);
+
+            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+            if($check_module->up_edit == 1){
+               
+                $data['status'] = "true";
+
+               
+
+            }
+            else{
+                
+                $data['status'] = "false";
+
+                $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+            }
+
+            echo json_encode($data); 
+
+        }
 
         
         
