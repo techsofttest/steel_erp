@@ -638,8 +638,8 @@ class PurchaseOrder extends BaseController
             <td style="width:40%"><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_order_prod->pop_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_order_prod->pop_discount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" style="text-align: center;" class="form-control" readonly></td>
             </tr>
             ';

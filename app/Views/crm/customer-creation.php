@@ -1174,7 +1174,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Customer Creation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddCustomerCreation" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1383,58 +1383,66 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
+
+                    if(data.status === 0){
+
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }else{
                     
-                    $('.edit_customer_name').val(data.customer_name);
+                        $('.edit_customer_name').val(data.customer_name);
 
-                    $('.edit_account_id').val(data.account_id);
+                        $('.edit_account_id').val(data.account_id);
 
-                    $('.edit_post_box').val(data.post_box);
+                        $('.edit_post_box').val(data.post_box);
 
-                    $('.edit_telephone').val(data.telephone);
+                        $('.edit_telephone').val(data.telephone);
 
-                    $('.edit_fax').val(data.fax);
+                        $('.edit_fax').val(data.fax);
 
-                    $('.edit_email').val(data.email);
+                        $('.edit_email').val(data.email);
 
-                    $('.edit_credit_term').val(data.credit_term);
+                        $('.edit_credit_term').val(data.credit_term);
 
-                    $('.edit_credit_period').val(data.credit_period);
+                        $('.edit_credit_period').val(data.credit_period);
 
-                    $('.edit_credit_limit').val(data.credit_limit);
+                        $('.edit_credit_limit').val(data.credit_limit);
 
-                    $('.edit_account_head').html(data.account_head);
+                        $('.edit_account_head').html(data.account_head);
 
-                    $('.edit_cc_id').val(data.cust_id);
+                        $('.edit_cc_id').val(data.cust_id);
 
+                        
+                        //contact details
+
+                        $('.edit_product-more').html(data.contact);
+
+
+                        //official document
+
+                        $('.edit_cr_no').val(data.cr_no);
+
+                        $('.edit_cr_expiry').val(data.cr_expiry);
+
+                        $('.edit_est_id').val(data.est_id);
+
+                        $('.edit_est_id_expery').val(data.est_id_expery);
+
+                        $('.edit_signature_name').val(data.signatory_name);
+
+                        $('.edit_qid_number').val(data.qid_number);
+
+                        $('.edit_qid_expiry').val(data.qid_expiry);
+
+                        $('.edit_cr_attach').html(data.cc_attach_cr);
+
+                        $('.edit_est_id_attach').html(data.cc_est_id_attach);
+
+                        $('.edit_qid_attach').html(data.cc_qid_attach);
                     
-                    //contact details
+                        $('#EditCustomerCreation').modal('show');
 
-                    $('.edit_product-more').html(data.contact);
-
-
-                    //official document
-
-                    $('.edit_cr_no').val(data.cr_no);
-
-                    $('.edit_cr_expiry').val(data.cr_expiry);
-
-                    $('.edit_est_id').val(data.est_id);
-
-                    $('.edit_est_id_expery').val(data.est_id_expery);
-
-                    $('.edit_signature_name').val(data.signatory_name);
-
-                    $('.edit_qid_number').val(data.qid_number);
-
-                    $('.edit_qid_expiry').val(data.qid_expiry);
-
-                    $('.edit_cr_attach').html(data.cc_attach_cr);
-
-                    $('.edit_est_id_attach').html(data.cc_est_id_attach);
-
-                    $('.edit_qid_attach').html(data.cc_qid_attach);
-                  
-                   $('#EditCustomerCreation').modal('show');
+                    }
                 
                 }
 
@@ -1917,14 +1925,14 @@
             {   
                 var data = JSON.parse(data);
 
-                if(data.status=='true'){
+                if(data.status== 1){
 
-                    alertify.success('Data Delete Successfully').delay(3).dismissOthers();
+                    alertify.success(data.msg).delay(3).dismissOthers();
                     datatable.ajax.reload(null, false);
                 }
                 else{
 
-                    alertify.error("Customer In Use Cant't Delete").delay(3).dismissOthers();
+                    alertify.error(data.msg).delay(3).dismissOthers();
                 }
             }
 
@@ -1997,7 +2005,36 @@
 
             $('.account_head_clz').val('').trigger('change');
 
-            InitAccountsSelect('.account_head_select', '.select_parent');
+            
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CustomerCreation/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddCustomerCreation').modal('show');
+
+                        InitAccountsSelect('.account_head_select', '.select_parent');
+
+                    }
+                    
+
+                }
+
+            });
 
         });
 

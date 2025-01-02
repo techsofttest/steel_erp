@@ -78,7 +78,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker_ap" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -730,7 +730,7 @@
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 <td>Current Claim Value</td>
-                                                                <td><input type="number" class="form-control view_current_claim_value text-end" readonly></td>
+                                                                <td><input type="text" class="form-control view_current_claim_value text-end" readonly></td>
                                                             </tr>
                                                             
                                                           
@@ -843,7 +843,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control edit_date datepicker_ap" required>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control edit_date datepicker" required readonly>
                                                                     </div>
 
                                                                 </div> 

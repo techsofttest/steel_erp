@@ -125,12 +125,37 @@ class ProductHead extends BaseController
        echo json_encode($data);
 
     }
+    
+
 
 
     //account head modal 
     public function Edit()
     {
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
         
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+
         $cond = array('ph_id' => $this->request->getPost('ID'));
 
         $product_head = $this->common_model->SingleRow('crm_product_heads',$cond);
@@ -179,11 +204,34 @@ class ProductHead extends BaseController
 
     }
 
-
+    public function DeleteAccess(){
+        
+        
+    }
 
     //delete account head
     public function Delete()
     {  
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+
+
         $product_head = $this->common_model->SingleRow('crm_products',array('product_product_head' => $this->request->getPost('ID')));
 
         if(empty($product_head)){
@@ -192,11 +240,13 @@ class ProductHead extends BaseController
  
             $this->common_model->DeleteData('crm_product_heads',$cond);
 
-            $data['status'] = "true";
+            $data['status'] =1;
+            $data['msg'] ="Data Deleted Successfully";
 
         }else{
             
-            $data['status'] = "false";
+            $data['status'] = 0;
+            $data['msg'] ="Data In Use. Cannot Delete";
         }
 
         echo json_encode($data);
@@ -204,36 +254,34 @@ class ProductHead extends BaseController
     }
 
 
-    public function CheckModule(){
-        $data[] ="";     
-        $id    =  $this->request->getPost('ID');
 
-        $data1 =  $this->request->getPost('segment1');
 
-        $data2 =  $this->request->getPost('segment2');
 
-        $module_data = $this->common_model->CheckModule($id,$data1,$data2);
-
-        if($module_data->up_delete == 1){
-          
-           $data['status_delete'] =  "true";
-
-        }
-
-        if($module_data->up_add == 1){
-          
-            $data['status_add'] =  "true";
-
-        }
-
-        if($module_data->up_edit == 1){
-          
-            $data['status_edit'] =  "true";
-
-        }
-
-       echo json_encode($data); 
+    public function AddAccess(){
         
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 

@@ -105,7 +105,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker_ap input_length" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -323,7 +323,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_project"  class="form-control project input_length2" required>
+                                                                        <input type="text" name="so_project"  class="form-control project input_length2">
                                                                     </div>
 
                                                                 </div> 
@@ -509,7 +509,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker_ap edit_date" required>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker edit_date" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -715,7 +715,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_project"  class="form-control project edit_project" required>
+                                                                        <input type="text" name="so_project"  class="form-control project edit_project">
                                                                     </div>
 
                                                                 </div> 

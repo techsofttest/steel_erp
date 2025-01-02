@@ -102,7 +102,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker_ap input_length" required>
+                                                                        <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -607,7 +607,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker_ap edit_data" required>
+                                                <input type="text" name="cci_date" autocomplete="off" class="form-control datepicker edit_data" required readonly>
                                             </div>
 
                                         </div> 

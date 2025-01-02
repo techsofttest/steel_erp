@@ -630,7 +630,7 @@ class SalesQuotation extends BaseController
             <td colspan="2" style="width:40%"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($cost_cal_data->qc_rate).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($cost_cal_data->qc_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
 
@@ -651,8 +651,8 @@ class SalesQuotation extends BaseController
             <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.$prod_det->qpd_quantity.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_rate.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$prod_det->qpd_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->qpd_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->qpd_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->qpd_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
             

@@ -444,9 +444,9 @@ class SalesOrder extends BaseController
             $data['prod_details'] .='</select>
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id" required></td>
-            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" class="form-control qtn_clz_id"  required></td>
-            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id" required></td>
-            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  class="form-control discount_clz_id" required></td>
+            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id"  required></td>
+            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id" step="0.01"  required></td>
+            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
             <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">

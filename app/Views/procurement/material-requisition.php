@@ -98,7 +98,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker_ap" required>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -480,7 +480,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker_ap edit_date" required>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker edit_date" required readonly>
                                                                     </div>
 
                                                                 </div> 

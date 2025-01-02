@@ -556,7 +556,33 @@ class CustomerCreation extends BaseController
 
     
     public function Edit()
-    {
+    {   
+
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+
+
         $cond = array('cc_id' => $this->request->getPost('ID'));
 
         $customer_creation = $this->common_model->SingleRow('crm_customer_creation',$cond);
@@ -740,6 +766,25 @@ class CustomerCreation extends BaseController
     //delete account head
     public function Delete()
     {
+        
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
 
         $customer_id = $this->request->getPost('ID');
 
@@ -804,30 +849,19 @@ class CustomerCreation extends BaseController
 
             $this->common_model->DeleteData('accounts_charts_of_accounts',$coa_cond);
 
-            $data['status'] = "true"; 
+            $data['status'] = 1; 
+
+            $data['msg'] ="Data Deleted Successfully";
         
         }
         else
         {
-            $data['status'] = "false"; 
+            $data['status'] = 0; 
+
+            $data['msg'] ="Data In Use. Cannot Delete";
         }
 
-        //delete enquiry
-        
-        //$enquiry = $this->common_model->SingleRow('crm_enquiry',$cond2);
-
-        /*if(!empty($enquiry))
-        {
-           
-            $enquiry_id = $enquiry->enquiry_id;
-
-            $cond3 = array('pd_enquiry_id' =>  $enquiry_id);
-            
-            $this->common_model->DeleteData('crm_enquiry',$cond2);
-
-            $this->common_model->DeleteData('crm_product_detail',$cond3);
-
-        }*/
+       
 
         echo json_encode($data);
 
@@ -975,6 +1009,33 @@ class CustomerCreation extends BaseController
         
         echo json_encode($data);
         
+    }
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 
