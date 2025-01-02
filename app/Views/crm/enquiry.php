@@ -107,7 +107,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control enquiry_date datepicker_ap input_length" required>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control enquiry_date datepicker_ap input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -689,7 +689,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control edit_date datepicker_ap" required>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control edit_date datepicker_ap" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -1414,6 +1414,34 @@
 
             $.ajax({
 
+                url : "<?php echo base_url(); ?>Crm/Enquiry/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddProductHead').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+
+            $.ajax({
+
                 url : "<?php echo base_url(); ?>Crm/Enquiry/FetchReference",
 
                 method : "GET",
@@ -1516,27 +1544,39 @@
                 {   
                     var data = JSON.parse(data);
 
-                    $('.edit_reff').val(data.enquiry_reff);
+                    if(data.status === 0){
 
-                    $('.edit_date').val(data.enquiry_date);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.edit_customer').html(data.customer_creation);
 
-                    $('.edit_contact_person').html(data.contact_person);
 
-                    $('.edit_assign_to').html(data.assigned_to);
+                    }
+                    else{
 
-                    $('.edit_source').val(data.enquiry_source);
+                        $('.edit_reff').val(data.enquiry_reff);
 
-                    $('.edit_time_frame').val(data.enquiry_time_frame);
+                        $('.edit_date').val(data.enquiry_date);
 
-                    $('.edit_project').val(data.enquiry_project);
+                        $('.edit_customer').html(data.customer_creation);
 
-                    $('.edit_enquiry_id').val(data.enquiry_id);
+                        $('.edit_contact_person').html(data.contact_person);
 
-                    $('.edit_contact_detail').html(data.prod_details);
+                        $('.edit_assign_to').html(data.assigned_to);
 
-                    $('#EditEnquiry').modal('show');
+                        $('.edit_source').val(data.enquiry_source);
+
+                        $('.edit_time_frame').val(data.enquiry_time_frame);
+
+                        $('.edit_project').val(data.enquiry_project);
+
+                        $('.edit_enquiry_id').val(data.enquiry_id);
+
+                        $('.edit_contact_detail').html(data.prod_details);
+
+                        $('#EditEnquiry').modal('show');
+                    }
+
+                    
                    
                 
                 }
@@ -2134,16 +2174,16 @@
                 {
                     var data = JSON.parse(data);
                      
-                    if(data.status === "true")
+                    if(data.status === 1)
                     {
 
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
                         datatable.ajax.reload(null,false);
                     }
                     else
                     {
-                        alertify.error("Enquiry In Use Cant't Delete").delay(3).dismissOthers();
+                        alertify.error(data.msg).delay(3).dismissOthers();
    
                     }
                 }

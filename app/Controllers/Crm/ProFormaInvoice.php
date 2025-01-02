@@ -413,8 +413,8 @@ class ProFormaInvoice extends BaseController
             <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_rate.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
 

@@ -627,8 +627,8 @@ class PurchaseVoucher extends BaseController
             <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control text-center" readonly></td>
             <td style="width:7%"> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control text-end" readonly></td>
             </tr>
             ';
@@ -882,9 +882,8 @@ class PurchaseVoucher extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_id','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$end,$start);
       
-
         $data['total_count'] =count($data['result']);
 
         return json_encode($data);
@@ -899,7 +898,7 @@ class PurchaseVoucher extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_id','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$end,$start);
       
 
         $data['total_count'] =count($data['result']);

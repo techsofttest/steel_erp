@@ -91,7 +91,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Product Head</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddProductHead" class="btn btn-primary py-1  add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1  add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -265,10 +265,49 @@
         /*###*/
 
 
+        /*add button start*/
+
+        $("body").on('click', '.add_model_btn', function(){ 
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/ProductHead/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddProductHead').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+        });
+
+
+        /*add button end*/
+
+
 
         /*edit*/ 
         $("body").on('click', '.edit_btn', function(){ 
+
             var id = $(this).data('id');
+
 
             $.ajax({
 
@@ -281,14 +320,27 @@
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-                     
-                    $(".edit_prod_code").val(data.product_code);
 
-                    $(".edit_product_head").val(data.ph_product_head);
+                    if(data.status === 0){
 
-                    $('#EditProductHead').modal('show');
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
                     
-                    $(".prod_head_id").val(id);
+
+                    }
+                    else{
+
+                        $(".edit_prod_code").val(data.product_code);
+
+                        $(".edit_product_head").val(data.ph_product_head);
+
+                        $('#EditProductHead').modal('show');
+
+                        $(".prod_head_id").val(id);
+
+                        
+                    } 
+                   
                     
                 }
 
@@ -351,6 +403,7 @@
 
             var id = $(this).data('id');
 
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/ProductHead/Delete",
@@ -363,15 +416,15 @@
                 {   
                     var data = JSON.parse(data);
                     
-                    if(data.status === "true"){
+                    if(data.status === 1){
                         
-                        alertify.error('Deleted Successfully').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
                         datatable.ajax.reload(null,false);
  
                     } else{
 
-                        alertify.error('Data In Use. Can\'t Be Delete').delay(2).dismissOthers();
+                        alertify.error(data.msg).delay(2).dismissOthers();
                     } 
                     
                 }

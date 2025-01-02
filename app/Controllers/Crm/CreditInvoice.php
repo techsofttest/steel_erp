@@ -578,13 +578,14 @@ class CreditInvoice extends BaseController
             $data['product_detail'] ="";
             foreach($delivery_prod_details as $delivery_prod){
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
+                                                
                                                 <td class="si_no">'.$i.'</td>
                                                 <td class="text-center">'.$delivery_prod->dn_reffer_no.'</td>
                                                 <td style="width:35%">'.$delivery_prod->product_details.'</td>
                                                 <td class="text-center">'.$delivery_prod->ipd_unit.'</td>
                                                 <td class="text-center">'.$delivery_prod->ipd_quantity.'</td>
-                                                <td class="text-center">'.$delivery_prod->ipd_rate.'</td>
-                                                <td class="text-center">'.$delivery_prod->ipd_discount.'</td>
+                                                <td class="text-center">'.format_currency($delivery_prod->ipd_rate).'</td>
+                                                <td class="text-center">'.format_currency($delivery_prod->ipd_discount).'</td>
                                                 <td class="text-end" style="width:10%">'.format_currency($delivery_prod->ipd_amount).'</td>
                                               
                                             </tr>';
