@@ -104,4 +104,34 @@ class HRModel extends Model
 
 
 
+    public function FetchVTSingle($id)
+    {
+        $query = $this->db->table('hr_vacation_travel')
+            ->select('hr_vacation_travel.*, debit_account.ca_name AS debit_account_name, credit_account.ca_name AS credit_account_name') // Select specific columns
+            ->where('vt_id', $id)
+            ->join('accounts_charts_of_accounts AS debit_account', 'debit_account.ca_id = hr_vacation_travel.vt_debit_account', 'left')
+            ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_vacation_travel.vt_credit_account', 'left');
+        
+        $result = $query->get()->getRow();
+    
+        return $result;
+    }
+
+
+
+    public function FetchIDSingle($id)
+    {
+        $query = $this->db->table('hr_indemnity')
+            ->select('hr_indemnity.*, debit_account.ca_name AS debit_account_name, credit_account.ca_name AS credit_account_name') // Select specific columns
+            ->where('id_id', $id)
+            ->join('accounts_charts_of_accounts AS debit_account', 'debit_account.ca_id = hr_indemnity.id_debit_account', 'left')
+            ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_indemnity.id_credit_account', 'left');
+        
+        $result = $query->get()->getRow();
+    
+        return $result;
+    }
+
+
+
 }

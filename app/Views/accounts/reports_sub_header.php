@@ -1,6 +1,6 @@
-
-
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
+
+
 
 <div class="row">
 

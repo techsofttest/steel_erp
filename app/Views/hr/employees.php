@@ -732,7 +732,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text"  name="vacation_pay_due_from" class="form-control datepicker" required>
+                        <input type="text"  name="vacation_pay_due_from" class="form-control datepicker" readonly required>
 
                         </div>
 
@@ -2166,7 +2166,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="vacation_pay_due_edit"type="date" onclick="this.showPicker();"  name="vacation_pay_due_from" class="form-control" required>
+                        <input id="vacation_pay_due_edit" type="text"  name="vacation_pay_due_from" class="form-control datepicker" readonly required>
 
                         </div>
 
@@ -2183,7 +2183,24 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input id="indemnity_advance_edit" type="text"  name="indemnity_advance" class="form-control" required>
+                        <input id="indemnity_advance_edit" type="number" step="0.01" name="indemnity_advance" class="form-control" required>
+
+                        </div>
+
+                        </div>
+
+
+                        <div class="row align-items-center mb-2">
+
+                        <div class="col-col-md-3 col-lg-3">
+
+                        <label for="basiInput" class="form-label">Id Charges Deduction</label>
+
+                        </div>
+
+                        <div class="col-col-md-9 col-lg-9">
+
+                        <input id="id_charges_edit" type="number" step="0.01" name="id_charges" class="form-control" required>
 
                         </div>
 
@@ -2600,7 +2617,7 @@
 
         $('#mop_edit').change(function(){
 
-        if($(this).val()!="1")
+        if($(this).val()!="1" && $(this).val()!=null)
             {
             $('.edit_bank_sec').show();
             }
@@ -2857,7 +2874,8 @@
 
                     $('#mop_edit').val(data.emp.emp_mode_of_payment);
 
-                    if(data.emp.emp_mode_of_payment!=1)
+
+                    if((data.emp.emp_mode_of_payment!=1) && (data.emp.emp_mode_of_payment!=null))
                     {
                     $('.edit_bank_sec').show();
 

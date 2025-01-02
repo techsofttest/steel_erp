@@ -85,14 +85,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js"></script>
    
 
-    
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
-    -->
+
+    <!-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script> -->
 
 
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
+    <script src="<?php echo base_url(); ?>public/assets/js/jquery-ui.min.js"></script>
 
     <script>
        
@@ -279,6 +277,7 @@
         $(document).ready(function(){
             $('.datepicker_ap').datepicker({
                 dateFormat: "dd-MM-yy", 
+                changeMonth: true,
                 minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
             }).on('change', function() {
                     $(this).valid();  

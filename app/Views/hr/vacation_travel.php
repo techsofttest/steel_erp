@@ -82,7 +82,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Payroll</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Vacation Travel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -104,9 +104,39 @@
                         <div class="col-lg-12">
 
 
-                            <table id="view_payroll_table" class="table table-bordered">
+                            <table id="view_vt_table" class="table table-bordered">
 
-                                <tbody id="view_payroll_body">
+                                <tbody id="view_vt_body">
+
+
+                                <tr>
+
+                                <td>Debit Account</td>
+
+                                <td id="debit_account_view"></td>
+
+
+                                <td>Credit Account</td>
+
+                                <td id="credit_account_view"></td>
+
+                                </tr>
+
+
+
+                                <tr>
+
+                                <td>Current Balance</td>
+
+                                <td id="current_balance_view"></td>
+
+
+                                <td>Date</td>
+
+                                <td id="date_view"></td>
+
+                                </tr>
+
 
 
                                 
@@ -182,9 +212,6 @@
 
                     <form  class="Dashboard-form class add_form" data-empid="" id="add_form">
                     
-                    <input class="added_id" type="hidden" name="emp_id" value="" autocomplete="off">
-            
-
 
                     <div class="row align-items-start form_sec">
 
@@ -463,7 +490,7 @@
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">View Vacation Travel</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">View Indemnity</h4>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="">
@@ -736,9 +763,10 @@
                 return false;
             }
 
-            if (! $('#date')[0].checkValidity()) {
-                $('#add_form')[0].reportValidity()
-                return false;
+            if($('#date').val()=="")
+            {
+            alertify.error('Enter date').delay('5').dismissOthers();
+            return false;
             }
 
             var credit_account = $('#credit_account').val();
@@ -894,49 +922,38 @@
 
 
         $("body").on('click', '.view_btn', function () {
-    var id = $(this).data('id');
 
-    $.ajax({
-        url: "<?php echo base_url(); ?>HR/Payroll/View",
+        var id = $(this).data('id');
+
+        $.ajax({
+        url: "<?php echo base_url(); ?>HR/VacationTravel/View",
         method: "POST",
-        data: { pr_id: id },
+        data: { vt_id: id },
         success: function (data) {
             try {
-                var payroll = JSON.parse(data);
 
-                // Generate table rows
-                var rows = `
-                    <tr><td class="text-center">Added Date</td> <td class="text-end">${payroll.pr_added_date}</td></tr>
-                    <tr><td class="text-center">Journal ID</td> <td class="text-end">${payroll.pr_journal_id || "N/A"}</td></tr>
-                    <tr><td class="text-center">Month</td> <td class="text-end">${payroll.pr_month}</td></tr>
-                    <tr><td class="text-center">Year</td> <td class="text-end">${payroll.pr_year}</td></tr>
-                    <tr><td class="text-center">Basic Salary</td> <td class="text-end">${payroll.pr_basic_salary}</td></tr>
-                    <tr><td class="text-center">Leave</td> <td class="text-end">${payroll.pr_leave}</td></tr>
-                    <tr><td class="text-center">Overtime</td> <td class="text-end">${payroll.pr_overtime}</td></tr>
-                    <tr><td class="text-center">HRA</td> <td class="text-end">${payroll.pr_hra}</td></tr>
-                    <tr><td class="text-center">Transport Allowance</td> <td class="text-end">${payroll.pr_transport_allow}</td></tr>
-                    <tr><td class="text-center">Telephone Allowance</td> <td class="text-end">${payroll.pr_telephone_allow}</td></tr>
-                    <tr><td class="text-center">Food Allowance</td> <td class="text-end">${payroll.pr_food_allow}</td></tr>
-                    <tr><td class="text-center">Other Allowance</td> <td class="text-end">${payroll.pr_other_allow}</td></tr>
-                    <tr><td class="text-center">Total Salary</td> <td class="text-end">${payroll.pr_total_salary}</td></tr>
-                    
-
-                    
-                `;
+                var data = JSON.parse(data);
 
                 // Insert rows into the table
-                $('#view_payroll_body').html(rows);
+
+                $('#debit_account_view').html(data.debit_account_name);
+
+                $('#credit_account_view').html(data.credit_account_name);
+
+                $('#current_balance_view').html(data.vt_current_balance);
+
+                $('#date_view').html(data.vt_date);
 
                 $('#ViewModal').modal('show');
 
             } catch (e) {
-                console.error("Error parsing payroll data:", e);
-                alert("An error occurred while fetching payroll data.");
+                console.error("Error parsing  data:", e);
+                alert("An error occurred while fetching  data.");
             }
         },
         error: function (xhr, status, error) {
             console.error("AJAX Error:", status, error);
-            alert("Failed to fetch payroll data.");
+            alert("Failed to fetch  data.");
         }
     });
 });
@@ -1073,9 +1090,11 @@
 
             $('.add_form')[0].reset();
 
-            $('#timesheet_sec').hide();
+            $('.account_select2').val('').trigger('change');
 
-            $('#timesheets_row').html('');
+            $('#emp_rows').html('');
+
+            //$('#save_to_jv_btn').hide();
 
 
         });
@@ -1090,7 +1109,7 @@
        
         $("body").on('click', '.delete_btn', function() {
 
-        //if (!confirm('Are you absolutely sure you want to delete?')) return;
+        if (!confirm('Are you absolutely sure you want to delete?')) return;
         var id = $(this).data('id');
         $.ajax({
 

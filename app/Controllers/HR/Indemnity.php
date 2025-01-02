@@ -35,18 +35,18 @@ class Indemnity extends BaseController
  
         ## Total number of records without filtering
        
-        $totalRecords = $this->common_model->GetTotalRecords('hr_vacation_travel','vt_id','DESC');
+        $totalRecords = $this->common_model->GetTotalRecords('hr_indemnity','id_id','DESC');
  
         ## Total number of records with filtering
        
-        $searchColumns = array('vt_id');
+        $searchColumns = array('id_id');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_vacation_travel','vt_id',$searchValue,$searchColumns);
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('hr_indemnity','id_id',$searchValue,$searchColumns);
     
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array();
         ## Fetch records
-        $records = $this->common_model->GetRecord('hr_vacation_travel','vt_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('hr_indemnity','id_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
         $data = array();
 
@@ -56,14 +56,26 @@ class Indemnity extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->id_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->id_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+
+        $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->id_credit_account));
+
+        $credit_account = "";
+        if(!empty($credit_data))
+        $credit_account = $credit_data->ca_name;
+
+        $debit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->id_debit_account));
+
+        $debit_account = "";
+        if(!empty($debit_data))
+        $debit_account = $debit_data->ca_name;
 
         $data[] = array( 
-              "vt_id"=>$i,
-              "vt_date" => date('d M Y',strtotime($record->vt_date)),
-              "vt_debit_account" => '',
-              "vt_credit_account" => '',
-              "vt_total" => $record->pr_total_salary,
+              "id_id"=>$i,
+              "vt_date" => date('d M Y',strtotime($record->id_date)),
+              "vt_debit_account" => $debit_account,
+              "vt_credit_account" => $credit_account,
+              "vt_total" => $record->id_total,
               "action" =>$action,
         );
 
@@ -93,54 +105,278 @@ class Indemnity extends BaseController
 
 
 
-    //Fetch Employees
 
-         public function FetchEmployees()
-         {
-     
+    public function AddJournal()
+    {
+
+        $this->hr_model = new \App\Models\HRModel();
+
+        if($this->request->getPost())
+
+        {
+        
+            $serializedData = $this->request->getPost('journal_form');
+            $formData = [];
+            parse_str($serializedData, $formData);
+
+           
+            $credit_account = $this->request->getPost('credit_account');
+
+            $debit_account = $this->request->getPost('debit_account');
+
+            $date = date('Y-m-d',strtotime($this->request->getPost('date')));
+
+            $credit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $credit_account));
+
+            $debit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $debit_account));
+
             $employees = $this->common_model->FetchAll('hr_employees');
 
-            
+            $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
+        
+            $data['current_balance'] = $gl_balance['balance'];
+
             $data['emp_row'] = "";
-            
+
+            $data['total_amount'] = 0;
 
             foreach($employees as $emp)
             {
 
-                $data['emp_row'] .="
+                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
+
+                $diff = abs(strtotime($ticket_due_date) - strtotime($date));
+
+                $years = floor($diff / (365*60*60*24));
+                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+                $entitlement = $days;
+
+                $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+
+                $amount = $amount/365;
                 
-                    <tr>
+                $data['total_amount']+=number_format((float)$amount,2,'.','');
 
-                    <td></td>
-                    
-                    <td>{$emp->emp_uid}</td>
-
-                    <td>{$emp->emp_name}</td>
-
-                    <td>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
-
-                    <td align='right'>{$emp->emp_budgeted_ticket_amount}</td>
-
-                    <td>{$emp->emp_air_ticket_per_year}</td>
-
-                    <td></td>
-
-                    <td></td>
-
-                    <td></td>
-
-                    </tr>
-                
-                ";
-                
             }
 
-            $data['status'] = 1;
+            $jv_sl=0;
 
-             return json_encode($data);
-     
-         }
+            $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
 
+
+
+        //Insert Vacation Travel
+
+        $insert_indemnity['id_date'] =  $date;
+
+        $insert_indemnity['id_debit_account'] =  $debit_account;
+
+        $insert_indemnity['id_credit_account'] = $credit_account;
+
+        $insert_indemnity['id_current_balance'] = 0;
+       
+        $insert_indemnity['id_total'] = $data['total_amount'];
+        
+
+        //Insert Journal voucher
+
+
+        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+
+        $insert_journal['jv_voucher_no'] = $juid;
+
+        $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
+
+        $insert_journal['jv_debit_total'] = $data['total_amount'];
+
+        $insert_journal['jv_credit_total'] = $data['total_amount'];
+
+        $insert_journal['jv_added_date'] = date('Y-m-d');
+
+        $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
+
+        $vt_id = $this->common_model->InsertData('hr_indemnity',$insert_indemnity);
+
+        $this->common_model->EditData(array('id_jv_id' => $journal_id),array('id_id' => $vt_id),'hr_indemnity');
+
+        //Insert Journal invoices
+        
+            for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
+                $account = $formData['jv_account'][$ji];
+                $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
+                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credit'][$ji] : 0;
+                $narration = $formData['jv_remarks'][$ji] ?? '';
+
+                $insert_journal_invoice = [
+                    'ji_voucher_id' => $journal_id,
+                    'ji_account' => $account,
+                    'ji_debit' => $debit,
+                    'ji_credit' => $credit,
+                    'ji_narration' => $narration
+                ];
+
+                $this->common_model->InsertData('accounts_journal_invoices', $insert_journal_invoice);
+
+            }
+
+        $return['msg'] = "Added to journal";
+
+        $return['status'] = 1;
+
+        }
+
+        echo json_encode($return);
+
+    }
+
+
+
+
+
+
+
+
+
+
+        //Fetch Employees
+
+        public function FetchEmployees()
+        {
+
+           $account = $this->request->getPost('account');
+
+           $debit_account = $this->request->getPost('debit_account');
+
+           $date = date('Y-m-d',strtotime($this->request->getPost('date')));
+
+           $credit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $account));
+
+           $debit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $debit_account));
+
+           $employees = $this->common_model->FetchAll('hr_employees');
+
+           $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
+       
+           $data['current_balance'] = $gl_balance['balance'];
+
+           $data['emp_row'] = "";
+
+           $data['total_amount'] = 0;
+
+           foreach($employees as $emp)
+           {
+
+               $diff = abs(strtotime($emp->emp_date_of_join)-strtotime($date));
+
+               $years = floor($diff / (365*60*60*24));
+               $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+               $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+               $entitlement = $days*21/365;
+
+               $year_salary = $emp->emp_basic_salary*12;
+
+               $indemnity = $year_salary/365*$entitlement;
+
+               $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+
+               $amount = $amount/365;
+
+               $data['emp_row'] .="
+               
+                   <tr>
+
+                   <td></td>
+                   
+                   <td>{$emp->emp_uid}</td>
+
+                   <td>{$emp->emp_name}</td>
+
+                   <td>{$emp->emp_basic_salary}</td>
+
+                   <td>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
+
+                   <td>{$entitlement}</td>
+
+                   <td>{$indemnity}</td>
+
+                   <td>{$emp->emp_indemnity_advance}</td>
+
+                   <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
+
+                   </tr>
+               
+               ";
+               
+               $data['total_amount']+=number_format((float)$amount,2,'.','');
+
+           }
+
+           $jv_sl=0;
+
+           $data['total_amount'] = number_format((float)$data['total_amount'],2,'.','');
+
+           $data['jv_rows'] ='';
+
+           $data['jv_rows'] .='
+
+             <tr class="jv_row">
+
+                                       <th class="sl_no">'.++$jv_sl.'</th>
+
+                                       <th class="select2_parent" width="35%"> 
+                                           
+                                       <input type="hidden" name="jv_account[]" value="'.$debit_account_data->ca_id.'">
+
+                                       <input type="text" class="form-control"  value="'.$debit_account_data->ca_name.'" readonly>
+
+                                       </th>
+                                       
+                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+
+                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="'.$data['total_amount'].'" readonly></th>
+
+                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
+
+           </tr>
+
+           
+           ';
+
+
+           $data['jv_rows'] .='
+
+             <tr class="jv_row">
+
+                                       <th class="sl_no">'.++$jv_sl.'</th>
+
+                                       <th class="select2_parent" width="35%"> 
+                                           
+                                       <input type="hidden" name="jv_account[]" value="'.$credit_account_data->ca_id.'">
+
+                                       <input type="text" class="form-control"  value="'.$credit_account_data->ca_name.'" readonly>
+
+                                       </th>
+                                       
+                                       <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+
+                                       <th><input name="jv_debit[]" type="number" step="0.01" class="form-control" value="" readonly></th>
+
+                                       <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$data['total_amount'].'" readonly></th>
+
+           </tr>
+
+           
+           ';
+
+
+           $data['status'] = 1;
+
+            return json_encode($data);
+    
+        }
 
     //End
 
@@ -156,840 +392,9 @@ class Indemnity extends BaseController
 
        $data['sup'] = array();
 
-        return view('hr/vacation_travel',$data);
+        return view('hr/indemnity',$data);
 
     }
-
-
-
-
-    public function FetchTimesheets()
-    {
-
-        $this->hr_model = new \App\Models\HRModel();
-
-        if($_POST)
-        {
-
-        $month = $this->request->getPost('month');
-
-        $year = $this->request->getPost('year');
-
-        $payroll_check = $this->common_model->SingleRow('hr_payrolls',array('pr_year' => $year,'pr_month' => $month));
-
-        if(!empty($payroll_check))
-        {
-
-        $data['msg'] = "Payroll already added!";
-        $data['status']=0;
-
-        echo json_encode($data);
-
-        exit;
-
-        }
-
-        $joins = array(
-
-            array(
-                'table' => 'hr_employees',
-                'pk' => 'emp_id',
-                'fk' => 'ts_emp_id',
-                ), 
-
-            array(
-                'table' => 'hr_divisions',
-                'pk' => 'div_id',
-                'fk' => 'emp_division',
-                'table2' => 'hr_employees',
-                ), 
-
-        );
-
-        $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
-
-        if(!empty($timesheets))
-        {
-        $data['status']=1;
-        }
-        else
-        {
-        $data['msg'] = "No timesheets found!";
-        $data['status']=0;
-        }
-
-        $data['table'] ="";
-
-        $data['table'] .='
-        <input type="hidden" id="payroll_month" name="month" value="'.$month.'">
-         <input type="hidden" id="payroll_year" name="year" value="'.$year.'">
-        ';
-
-        //Salary And Deductions
-        $basic_salary=0;
-        $total_leave=0;
-        $total_ot=0;
-
-        //Allowances
-        $house_rent_allow=0;
-        $transport_allow=0;
-        $telephone_allow=0;
-        $food_allow=0;
-        $other_allow=0;
-        $total_salary=0;
-
-        $staff_salary=0;
-        $salaries_wages=0;
-
-        foreach($timesheets as $ts)
-        {
-
-
-        $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
-
-        $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
-
-
-        if($ts->emp_division==2)
-        {
-        //staff_salary 
-        $staff_salary+= $ts->ts_cur_month_basic_salary-$leave;
-        }
-
-
-        if($ts->emp_division==1)
-        {
-        $salaries_wages+=$ts->ts_cur_month_basic_salary-$leave;
-        }
-
-        $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
-
-        $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
-
-        $basic_salary+=$ts->ts_cur_month_basic_salary;
-
-        $total_ot+=$ot;
-
-        $total_leave+=$leave;
-
-        $house_rent_allow+=$ts->ts_house_rent_allowance;
-
-        $transport_allow+=$ts->ts_transportation_allowance;
-
-        $telephone_allow+=$ts->ts_telephone_allowance;
-
-        $food_allow+=$ts->ts_food_allowance;
-
-        $other_allow+=$ts->ts_other_allowance;
-
-        $total_salary+=$ts->ts_cur_month_salary;
-
-        $data['table'] .='
-
-            <tr class="emp_row">
-
-                        <td>'.$ts->emp_uid.'</td>
-
-                        <td>'.$ts->emp_name.'</td>
-
-                        <td>'.$ts->div_name.'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_basic_salary).'</td>
-
-                        <td class="text-end">'.format_currency($leave).'</td>
-
-                        <td class="text-end">'.format_currency($ot).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_house_rent_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_transportation_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_telephone_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_food_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_other_allowance).'</td>
-
-                        <td class="text-end">'.format_currency($ts->ts_cur_month_salary).'</td>
-
-                        
-
-                        </tr>
-
-                        ';
-
-
-        }
-
-
-        $data['table'] .='
-        
-         <tr>
-
-                        <th colspan="2">Total</th>
-
-                        <th class="text-end">'.format_currency($basic_salary).'</th>
-
-                        <th class="text-end">'.format_currency($total_leave).'</th>
-
-                        <th class="text-end">'.format_currency($total_ot).'</th>
-
-                        <th class="text-end">'.format_currency($house_rent_allow).'</th>
-
-                        <th class="text-end">'.format_currency($transport_allow).'</th>
-
-                        <th class="text-end">'.format_currency($telephone_allow).'</th>
-
-                        <th class="text-end">'.format_currency($food_allow).'</th>
-
-                        <th class="text-end">'.format_currency($other_allow).'</th>
-
-                        <th class="text-end">'.format_currency($total_salary).'</th>
-
-                        </tr>
-        ';
-
-
-        $data['staff_salary']= format_currency($staff_salary);
-
-        $data['salaries_wages']= format_currency($salaries_wages);
-
-        $data['total_ot'] = format_currency($total_ot);
-
-        $data['hra'] = format_currency($house_rent_allow);
-
-        $data['transport_allow'] = format_currency($transport_allow);
-
-        $data['tel_allow'] = format_currency($telephone_allow);
-
-        $data['food_allow'] = format_currency($food_allow);
-
-        $data['other_allow'] = format_currency($other_allow);
-
-        $data['total_salary'] = format_currency($total_salary);
-
-        echo json_encode($data);
-
-        }
-
-
-        
-
-
-
-
-
-    }
-
-
-
-
-
-    public function AddToJvRows()
-    {
-
-        $this->hr_model = new \App\Models\HRModel();
-
-        if($this->request->getPost('p_month') && $this->request->getPost('p_year'))
-        {
-
-
-            $month = $this->request->getPost('p_month');
-
-            $year = $this->request->getPost('p_year');
-
-
-            $joins = array(
-
-                array(
-                    'table' => 'hr_employees',
-                    'pk' => 'emp_id',
-                    'fk' => 'ts_emp_id',
-                    ), 
-    
-                array(
-                    'table' => 'hr_divisions',
-                    'pk' => 'div_id',
-                    'fk' => 'emp_division',
-                    'table2' => 'hr_employees',
-                    ), 
-    
-            );
-    
-            $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
-
-            $emp_journal ="";
-
-
-
-             //Salary And Deductions
-             $basic_salary=0;
-             $total_leave=0;
-             $total_ot=0;
-
-             //Allowances
-             $house_rent_allow=0;
-             $transport_allow=0;
-             $telephone_allow=0;
-             $food_allow=0;
-             $other_allow=0;
-             $total_salary=0;
-
-             $staff_salary=0;
-             $salaries_wages=0;
-
-
-
-            foreach($timesheets as $ts)
-            {
-                
-
-                    // foreach($timesheets as $ts)
-                    // {
-
-
-                    $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
-
-                    $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
-    
-                    $basic_salary+=$ts->ts_cur_month_basic_salary-$leave;
-
-                    $ts_basic_salary = $ts->ts_cur_month_basic_salary-$leave;
-
-                    if($ts->emp_division==2)
-                    {
-                    //staff_salary 
-                    $staff_salary+= $ts_basic_salary;
-                    }
-
-                    if($ts->emp_division==1)
-                    {
-                    $salaries_wages+=$ts_basic_salary;
-                    }
-
-                    $total_ot+=$ot;
-
-                    $total_leave+=$leave;
-
-                    $house_rent_allow+=$ts->ts_house_rent_allowance;
-
-                    $transport_allow+=$ts->ts_transportation_allowance;
-
-                    $telephone_allow+=$ts->ts_telephone_allowance;
-
-                    $food_allow+=$ts->ts_food_allowance;
-
-                    $other_allow+=$ts->ts_other_allowance;
-
-                    $total_salary+=$ts->ts_cur_month_salary;
-
-           // }
-
-
-
-
-        }
-
-
-            $data['jv_rows'] = "";
-
-            $data['total_credit'] = 0;
-
-            $data['total_debit'] = $staff_salary+$salaries_wages+$total_ot+$house_rent_allow+$transport_allow+$telephone_allow+$food_allow+$other_allow;
-
-            $jv_sl=0;
-
-            $data['jv_rows'] .='
-            <input type="hidden" name="pr_year" value="'.$year.'">
-            <input type="hidden" name="pr_month" value="'.$month.'">
-            ';
-            
-            $data['jv_rows'] .='
-
-              <tr class="jv_row">
-
-                                        <th class="sl_no">'.++$jv_sl.'</th>
-
-                                        <th class="select2_parent" width="35%"> 
-                                            
-                                        <input type="text" class="form-control" name="jv_account[]" value="Staff Salary" readonly>
-
-                                        </th>
-                                        
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                        <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$staff_salary.'" readonly></th>
-
-                                        <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-            </tr>
-
-            
-            ';
-
-
-            $data['jv_rows'] .='
-
-            <tr class="jv_row">
-
-                                      <th class="sl_no">'.++$jv_sl.'</th>
-
-                                      <th class="select2_parent" width="35%"> 
-                                          
-                                      <input type="text" class="form-control" name="jv_account[]" value="Salaries And Wages" readonly>
-
-                                      </th>
-                                      
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$salaries_wages.'" readonly ></th>
-
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-          </tr>
-
-          
-          ';
-
-
-          $data['jv_rows'] .='
-
-            <tr class="jv_row">
-
-                                      <th class="sl_no">'.++$jv_sl.'</th>
-
-                                      <th class="select2_parent" width="35%"> 
-                                          
-                                      <input type="text" class="form-control" name="jv_account[]" value="Overtime" readonly>
-
-                                      </th>
-                                      
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$total_ot.'" readonly></th>
-
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-          </tr>
-          
-          ';
-
-
-
-
-          if(!empty($house_rent_allow))
-
-          {
-
-          $data['jv_rows'] .='
-
-            <tr class="jv_row">
-
-                                      <th class="sl_no">'.++$jv_sl.'</th>
-
-                                      <th class="select2_parent" width="35%"> 
-                                          
-                                      <input type="text" class="form-control" name="jv_account[]" value="House Rent Allowance" readonly>
-
-                                      </th>
-                                      
-                                      <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                      <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$house_rent_allow.'" readonly></th>
-
-                                      <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-          </tr>
-          
-          ';
-
-          }
-
-
-
-
-
-
-          if(!empty($transport_allow))
-
-          {
-
-          $data['jv_rows'] .='
-
-          <tr class="jv_row">
-
-                                    <th class="sl_no">'.++$jv_sl.'</th>
-
-                                    <th class="select2_parent" width="35%"> 
-                                        
-                                    <input type="text" class="form-control" name="jv_account[]" value="Transportation Allowance" readonly>
-
-                                    </th>
-                                    
-                                    <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                    <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$transport_allow.'" readonly></th>
-
-                                    <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-        </tr>
-        
-
-        ';
-
-
-        }
-
-
-
-
-        if(!empty($telephone_allow))
-
-
-        {
-
-        $data['jv_rows'] .='
-
-        <tr class="jv_row">
-
-                                  <th class="sl_no">'.++$jv_sl.'</th>
-
-                                  <th class="select2_parent" width="35%"> 
-                                      
-                                  <input type="text" class="form-control" name="jv_account[]" value="Telephone Allowance" readonly>
-
-                                  </th>
-                                  
-                                  <th><input name="jv_remarks[]" type="text" class="form-control" value=""></th>
-
-                                  <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$telephone_allow.'" readonly></th>
-
-                                  <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-      </tr>
-      
-      ';
-
-        }
-
-
-
-
-    if(!empty($food_allow))
-
-    {
-
-      $data['jv_rows'] .='
-
-      <tr class="jv_row">
-
-                                <th class="sl_no">'.++$jv_sl.'</th>
-
-                                <th class="select2_parent" width="35%"> 
-                                    
-                                <input type="text" class="form-control" name="jv_account[]" value="Food Allowance" readonly>
-
-                                </th>
-                                
-                                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$food_allow.'" readonly></th>
-
-                                <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-    </tr>
-    
-    ';
-
-    }
-
-
-
-    if(!empty($other_allow))
-
-    {
-
-    $data['jv_rows'] .='
-
-      <tr class="jv_row">
-
-                                <th class="sl_no">'.++$jv_sl.'</th>
-
-                                <th class="select2_parent" width="35%"> 
-                                    
-                                <input type="text" class="form-control" name="jv_account[]" value="Other Allowance" readonly>
-
-                                </th>
-                                
-                                <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
-
-                                <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="'.$other_allow.'" readonly></th>
-
-                                <th><input name="jv_credit[]" type="number" class="form-control credit_amount" readonly></th>
-
-    </tr>
-    
-    ';
-
-    }
-
-
-
-
-     //Employee Credit Journal
-     
-
-    foreach($timesheets as $ts)
-
-            {
-
-    $data['total_credit'] = $data['total_credit']+=$ts->ts_cur_month_salary;
-
-     $emp_journal .='
-            
-    <tr class="jv_row">
-
-                               <th class="sl_no">'.++$jv_sl.'</th>
-
-                               <th class="select2_parent" width="35%"> 
-                                   
-                               <input type="text" class="form-control" name="jv_account[]" value="'.$ts->emp_name.'" readonly>
-
-                               </th>
-                               
-                               <th><input name="jv_remarks[]" type="text" class="form-control" value="Salary : '.date("M Y",strtotime(date("01-{$month}-{$year} "))).'"></th>
-
-                               <th><input name="jv_debit[]" type="number" step="0.01" class="form-control debit_amount" value="" readonly></th>
-
-                               <th><input name="jv_credit[]" type="number" class="form-control credit_amount" value="'.$ts->ts_cur_month_salary.'" readonly></th>
-
-    </tr>
-
-   ';
-
-            }
-
-    $data['jv_rows'].=$emp_journal;
-
-
-
-        return json_encode($data);
-
-
-        }
-
-
-    }
-
-
-    public function AddPayrollJournal()
-    {
-
-        $this->hr_model = new \App\Models\HRModel();
-
-        if($this->request->getPost())
-
-        {
-
-        $month = $this->request->getPost('pr_month');
-
-        $year = $this->request->getPost('pr_year');
-
-
-        $payroll_check = $this->common_model->SingleRow('hr_payrolls',array('pr_year' => $year,'pr_month' => $month));
-
-        if(!empty($payroll_check))
-        {
-
-        $data['msg'] = "Payroll already added!";
-        $data['status']=0;
-
-        echo json_encode($data);
-
-        exit;
-
-        }
-
-
-        $jv_total_credit = array_sum($this->request->getPost('jv_credit'));
-
-        $jv_total_debit = array_sum($this->request->getPost('jv_debit'));
-
-
-        if($jv_total_credit!=$jv_total_debit)
-        {
-            
-        $data['msg'] = "Debit and credit must be same!";
-        $data['status']=0;
-        echo json_encode($data);
-        exit;
-
-        }
-
-
-        
-        $joins = array(
-
-            array(
-                'table' => 'hr_employees',
-                'pk' => 'emp_id',
-                'fk' => 'ts_emp_id',
-                ), 
-
-            array(
-                'table' => 'hr_divisions',
-                'pk' => 'div_id',
-                'fk' => 'emp_division',
-                'table2' => 'hr_employees',
-                ), 
-
-        );
-
-        //Add To Payroll Table
-
-        $timesheets = $this->hr_model->FetchTimesheets($month,$year,$joins);
-
-            $emp_journal ="";
-
-            foreach($timesheets as $ts)
-            {
-
-                //Salary And Deductions
-                    $basic_salary=0;
-                    $total_leave=0;
-                    $total_ot=0;
-
-                    //Allowances
-                    $house_rent_allow=0;
-                    $transport_allow=0;
-                    $telephone_allow=0;
-                    $food_allow=0;
-                    $other_allow=0;
-                    $total_salary=0;
-
-                    $staff_salary=0;
-                    $salaries_wages=0;
-
-                    foreach($timesheets as $ts)
-                    {
-
-                    if($ts->emp_division==2)
-                    {
-                    //staff_salary 
-                    $staff_salary+= $ts->ts_cur_month_basic_salary;
-                    }
-
-
-                    if($ts->emp_division==1)
-                    {
-                    $salaries_wages+=$ts->ts_cur_month_basic_salary;
-                    }
-
-                    $ot = $ts->ts_cur_month_normal_ot+$ts->ts_cur_month_friday_ot;
-
-                    $leave = $ts->ts_cur_month_leave+$ts->ts_cur_month_unpaid_leave+$ts->ts_current_month_vacation;
-
-                    $basic_salary+=$ts->ts_cur_month_basic_salary;
-
-                    $total_ot+=$ot;
-
-                    $total_leave+=$leave;
-
-                    $house_rent_allow+=$ts->ts_house_rent_allowance;
-
-                    $transport_allow+=$ts->ts_transportation_allowance;
-
-                    $telephone_allow+=$ts->ts_telephone_allowance;
-
-                    $food_allow+=$ts->ts_food_allowance;
-
-                    $other_allow+=$ts->ts_other_allowance;
-
-                    $total_salary+=$ts->ts_cur_month_salary;
-                    }
-        }
-
-        $insert_payroll['pr_month'] = $month;
-        $insert_payroll['pr_year'] = $year;
-        $insert_payroll['pr_month'] = $month;
-        $insert_payroll['pr_year'] = $year;
-        $insert_payroll['pr_basic_salary'] = $basic_salary;
-        $insert_payroll['pr_leave'] = $total_leave;
-        $insert_payroll['pr_overtime'] = $total_ot;
-        $insert_payroll['pr_hra'] = $house_rent_allow; // House Rent Allowance
-        $insert_payroll['pr_transport_allow'] = $transport_allow; // Transportation Allowance
-        $insert_payroll['pr_telephone_allow'] = $telephone_allow; // Telephone Allowance
-        $insert_payroll['pr_food_allow'] = $food_allow; // Food Allowance
-        $insert_payroll['pr_other_allow'] = $other_allow; // Other Allowance
-        $insert_payroll['pr_total_salary'] = $total_salary;
-        $insert_payroll['pr_added_date'] = date('Y-m-d H:i:s'); // Current date and time
-
-        
-
-        /// End
-
-
-
-        //Insert Journal voucher
-
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
-
-        $insert_journal['jv_voucher_no'] = $juid;
-
-        $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
-
-        $insert_journal['jv_debit_total'] = $this->request->getPost('total_debit');
-
-        $insert_journal['jv_credit_total'] = $this->request->getPost('total_credit');
-
-        $insert_journal['jv_added_date'] = date('Y-m-d');
-
-        $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
-
-        $payroll_id = $this->common_model->InsertData('hr_payrolls',$insert_payroll);
-
-        $this->common_model->EditData(array('pr_journal_id' => $journal_id),array('pr_id' => $payroll_id),'hr_payrolls');
-
-        //Insert Journal invoices
-
-        for($ji=0;$ji<count($this->request->getPost('jv_account'));$ji++){
-
-        $account = $this->request->getPost('jv_account')[$ji];
-
-        $account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_name' => $account));
-
-        $account_id = 0;
-
-        if(!empty($account_data))
-        $account_id = $account_data->ca_id;
-
-        $debit = !empty($this->request->getPost('jv_debit')[$ji]) ? $this->request->getPost('jv_debit')[$ji] : 0;
-        $credit = !empty($this->request->getPost('jv_credit')[$ji]) ? $this->request->getPost('jv_credit')[$ji] : 0;
-        $narration = $this->request->getPost('jv_remarks')[$ji];
-        
-        $insert_journal_invoice['ji_voucher_id'] = $journal_id;
-        //$insert_journal_invoice['ji_sales_order_id'] = ''; // Populate if needed
-        $insert_journal_invoice['ji_account'] = $account_id;
-        $insert_journal_invoice['ji_debit'] = $debit;
-        $insert_journal_invoice['ji_credit'] = $credit;
-        $insert_journal_invoice['ji_narration'] = $narration;
-
-        $this->common_model->InsertData('accounts_journal_invoices',$insert_journal_invoice);
-
-        }
-
-        $return['msg'] = "Added to journal";
-
-        $return['status'] = 1;
-
-        }
-
-        echo json_encode($return);
-
-
-    }
-
-
 
 
 
@@ -998,18 +403,18 @@ class Indemnity extends BaseController
     public function View()
     {
 
-        if($this->request->getPost('pr_id'))
+        $this->hr_model = new \App\Models\HRModel();
+
+        if($this->request->getPost('id_id'))
         {
 
-        $id = $this->request->getPost('pr_id');
+        $id = $this->request->getPost('id_id');
 
-        $payroll = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+        $indemnity = $this->hr_model->FetchIDSingle($id);
 
-        $payroll->pr_month = date("F", mktime(0, 0, 0, $payroll->pr_month, 10)); // e.g., "1" -> "January"
+        $indemnity->vt_date = date('d M Y',strtotime($indemnity->id_date));
 
-        $payroll->pr_added_date = date('d M Y', strtotime($payroll->pr_added_date));
-        
-        echo json_encode($payroll);
+        echo json_encode($indemnity);
     
         }
 
@@ -1020,21 +425,19 @@ class Indemnity extends BaseController
     public function Delete()
     {
 
-
     $id = $this->request->getPost('id');
 
-
-    $cond = array('pr_id' => $id);
+    $cond = array('id_id' => $id);
     
-    $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
+    $indemnity = $this->common_model->SingleRow('hr_indemnity',$cond);
 
-    $this->common_model->DeleteData('hr_payrolls',$cond);
+    $this->common_model->DeleteData('hr_indemnity',$cond);
 
-    $jv_cond = array('jv_id' => $payroll->pr_journal_id);
+    $jv_cond = array('jv_id' => $indemnity->id_jv_id);
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
+    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $indemnity->id_jv_id));
 
 
     }

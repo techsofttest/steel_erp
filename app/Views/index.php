@@ -659,7 +659,7 @@
                                                
                                             </div><!-- end card header -->
 
-                                            <div class="card-body">
+                                            <div class="card-body" style="max-height: 250px;overflow: auto;">
                                                 <div class="table-responsive table-card m-1">
                                                     <table style="max-height: 380px;" class="table table-hover">
 
@@ -724,7 +724,7 @@
                                                
                                             </div><!-- end card header -->
 
-                                            <div class="card-body">
+                                            <div class="card-body" style="max-height: 250px;overflow: auto;">
                                                 <div class="table-responsive table-card m-1">
                                                     <table style="max-height: 380px;" class="table table-hover">
 

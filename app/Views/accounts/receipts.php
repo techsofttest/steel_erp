@@ -1760,11 +1760,11 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
-                                <th>Receipt No</th>
                                 <th>Reference</th>
                                 <th>Date</th>
-                                <th>Receipt Method</th>
+                                <th>Method</th>
                                 <th>Bank</th>
+                                <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -3458,19 +3458,19 @@
                         data: 'r_id'
                     },
                     {
-                        data: "receipt_no"
+                        data: "r_ref_no"
                     },
                     {
-                        data: "reference"
+                        data: 'r_date'
                     },
                     {
-                        data: 'date'
+                        data: 'rm_name'
                     },
                     {
-                        data: 'receipt_method'
+                        data: 'bank_name'
                     },
                     {
-                        data: 'bank'
+                        data: 'r_amount'
                     },
                     {
                         data: 'action'
@@ -3841,23 +3841,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $("body").on('change', '.so_select', function() {
 
             order_id = $(this).val();
@@ -4030,126 +4013,6 @@
 
 
         });
-
-
-
-
-        //Update PF Invoices
-
-        $("body").on('click', '.edit_pf_invoice', function() {
-
-            var id = $(this).data('id');
-
-            $('#edit_pf' + id + '').find('.edit').fadeIn(200);
-
-            $('#edit_pf' + id + '').find('.view').hide();
-
-            $('#ri_id_edit').val(id);
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Accounts/Receipts/EditInvoice",
-
-                method: "POST",
-
-                data: {
-                    inv_id: id
-                },
-
-                success: function(data) {
-                    var data = JSON.parse(data);
-
-                    $('#ri_date_edit').val(data.ri.ri_date);
-
-                    $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
-
-                    $('#ri_amount_edit').val(data.ri.ri_amount);
-
-                    $('#ri_remarks_edit').val(data.ri.ri_remarks);
-
-                }
-
-            });
-
-            //$('#EditModal').modal('hide');
-
-            //$('#InvoiceEditModal').modal('show');
-
-        });
-
-
-
-
-
-
-
-
-        $('body').on('click', '.update_pf_invoice_btn', function() {
-
-            var id = $(this).data('id');
-
-            parent = $(this).closest('.view_pf_invoice');
-
-            var lpo_ref = parent.find('input[name=lpo_ref]').val();
-
-            var receipt_amount = parent.find('input[name=inv_receipt_amount]').val();
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Accounts/Receipts/UpdatePfdetails",
-
-                method: "POST",
-
-                data: {
-                    id: id,
-                    lpo_ref: lpo_ref,
-                    receipt_amount: receipt_amount
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    $('#edit_pf' + data.inv_id + '').html(data.invoices);
-
-                    $('#edit_pf' + data.inv_id + '').find('.edit').hide();
-
-                    $('#edit_pf' + data.inv_id + '').find('.view').fadeIn(200);
-
-                }
-            });
-
-        });
-
-        //#########
-
-
-        //Cancel Credit Edit
-
-        $('body').on('click', '.cancel_invoice_btn', function() {
-
-            var id = $(this).data('id');
-
-            $('#view' + id + '').find('.edit').hide();
-
-            $('#view' + id + '').find('.view').fadeIn(200);
-
-        });
-
-        $('body').on('click', '.cancel_pf_invoice_btn', function() {
-
-            var id = $(this).data('id');
-
-            $('#edit_pf' + id + '').find('.edit').hide();
-
-            $('#edit_pf' + id + '').find('.view').fadeIn(200);
-
-        });
-
-
-        //
-
-
 
 
 

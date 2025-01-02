@@ -80,18 +80,18 @@ class Receipts extends BaseController
 
            //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="'.base_url().'Accounts/Receipts/Print/'.$record->r_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a><a href="javascript:void(0)" class="d-none delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> 
-           <a href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-           <a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i> Print</a>
-           <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i></a> 
+           <a href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->r_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
+           <a href="javascript:void(0);" data-id="'.$record->r_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+           <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->r_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
            $data[] = array( 
               "r_id"=>$i,
-              "receipt_no" => $record->r_number,
-              "reference" => $record->r_ref_no,
-              'date' => date('d-m-Y',strtotime($record->r_date)),
-              'receipt_method' => $record->rm_name,
-              "bank"=> $record->bank_name ?? "--",
+              "r_ref_no" => $record->r_ref_no,
+              'r_date' => date('d M Y',strtotime($record->r_date)),
+              'rm_name' => $record->rm_name,
+              "bank_name"=> $record->bank_name ?? "-",
+              "r_amount" => format_currency($record->r_amount),
               "action" =>$action,
            );
            $i++; 
@@ -1387,7 +1387,7 @@ class Receipts extends BaseController
     <td>-</td>
     <td><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
     <td><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control'></td>
-    <td><a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a></td>
+    <td><!--<a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a>--></td>
     </tr>";
 
     
@@ -1665,7 +1665,7 @@ class Receipts extends BaseController
         if((!empty($r_no_check)) && ($r_id != $r_no_check->r_id))
         {
 
-        $return['status'] = 0;
+        $return['status'] = 0;                          
 
         $return['msg'] ="Duplicate Receipt Number!";
 
@@ -1733,7 +1733,10 @@ class Receipts extends BaseController
 
             $update_invoice_data['ri_amount'] = $this->request->getPost('rec_inv_amount')[$r];
 
+            $update_invoice_data['ri_remarks'] =$this->request->getPost('rec_inv_notes')[$r];
+
             $update_invoice_cond['ri_id'] = $this->request->getPost('rec_inv_id')[$r];
+
 
             if(count($this->request->getPost('linked_receipt_id')[$update_invoice_cond['ri_id']]))
 

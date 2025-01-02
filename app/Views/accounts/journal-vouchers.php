@@ -400,8 +400,10 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
+                                <th>Reference</th>
                                 <th>Date</th>
-                                <th>Voucher Number</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1183,8 +1185,10 @@ $('#total_amount_credit_disp_edit').html(c_total);
                 },
                 'columns': [
                     { data: 'jv_id' },
+                    { data: 'jv_voucher_no'},
                     { data: 'jv_voucher_date'},
-                    { data: 'jv_voucher_no' },
+                    { data: 'jv_debit_total'},
+                    { data: 'jv_credit_total'},
                     { data: 'action' },
                 ]
                 
@@ -1236,7 +1240,8 @@ $('#uid').val(data);
 
 
                         function SOSelect2() {
-                            $('.so_select2_add').select2({
+                           
+                            $('.so_select2_add:last').select2({
                                 placeholder: "Select Sales Order", // This is the placeholder
                                 theme: "default form-control-",
                                 dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
@@ -1272,6 +1277,7 @@ $('#uid').val(data);
                                     },
                                 }
                             });
+                           
                         }
                         SOSelect2();
 

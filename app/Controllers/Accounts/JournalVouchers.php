@@ -34,14 +34,12 @@ class JournalVouchers extends BaseController
             $columnSortOrder = 'desc';
         } 
 
- 
         ## Total number of records without filtering
        
         $totalRecords = $this->common_model->GetTotalRecords('accounts_journal_vouchers','jv_id','DESC');
  
         ## Total number of records with filtering
         $searchColumns = array('jv_voucher_no');
-
         
         $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('accounts_journal_vouchers','jv_id',$searchValue,$searchColumns);
         
@@ -53,25 +51,27 @@ class JournalVouchers extends BaseController
         
         $records = $this->common_model->GetRecord('accounts_journal_vouchers','jv_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
        
- 
         $data = array();
         
         $i=1;
         foreach($records as $record ){
             $action = '
-            <a  href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>
-            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->jv_id .'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-            <a href="'.base_url().'Accounts/JournalVouchers/Print/'.$record->jv_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true"></i>Print </a>
-            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>
+            <a href="javascript:void(0)" class="view view-color jv_view" data-jvview="'.$record->jv_id .'" data-toggle="tooltip" data-placement="top" title="View" ><i class="ri-eye-fill"></i></a>
+            <a href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->jv_id .'"><i class="ri-pencil-fill"></i></a>
+            <a href="'.base_url().'Accounts/JournalVouchers/Print/'.$record->jv_id.'" target="_blank" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->jv_id .'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
             ';
            
            $data[] = array( 
               "jv_id"=>$i,
-              "jv_voucher_date"=>date('d-m-Y',strtotime($record->jv_date)),
               "jv_voucher_no"=>$record->jv_voucher_no,
+              "jv_voucher_date"=>date('d M Y',strtotime($record->jv_date)),
+              "jv_debit_total" => format_currency($record->jv_debit_total),
+              "jv_credit_total" => format_currency($record->jv_debit_total),
               "action" =>$action,
            );
            $i++; 
+
         }
  
         ## Response
@@ -136,7 +136,7 @@ class JournalVouchers extends BaseController
         
         $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
-        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
+        //$data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
         $data['content'] = view('accounts/journal-vouchers',$data);
 

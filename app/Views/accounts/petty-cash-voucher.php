@@ -1,684 +1,194 @@
-<!--Start Petty cash voucher  col-->
-<div class="tab-pane" id="border-nav-6" role="tabpanel">
+<!--Start Account head -->
+
+<style>
+    .cheque_sec {
+        display: flex;
+    }
+
+    .cheque_sec_view {
+        display: none;
+    }
+</style>
 
 
 
 
- <!-- Add Modal -->
+
+<!-- View Modal -->
 
 
- <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form  class="Dashboard-form class" id="add_form">
-             <input id="added_id" type="hidden" name="pcv_id" value="" autocomplete="off">
+
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Petty Cash Voucher</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
 
-    <div class="row">
-
-
-<div class="col-lg-12">
-    <div class="card">
-
-
-
-    <div class="card-body">
-                    <div class="live-preview">
-
-                            <div class="row align-items-start">
-
-
-                                <div class="col-lg-6">
-
-
-                                <div class="row align-items-center mb-2">
-
-                                <div class="col-col-md-3 col-lg-3">
-
-                                <label for="basiInput" class="form-label">Reference</label>
-
-                                </div>
-
-                                <div class="col-col-md-9 col-lg-9">
-
-                                <input type="text" name="pcv_uid" id="pcvid"  class="form-control" required>
-
-                                </div>
-
-                                </div>
-
-
-
-                                <div class="row align-items-center mb-2">
-
-                                    <div class="col-col-md-3 col-lg-3">
-                                        <label for="basiInput" class="form-label">Date</label>
-                                    </div>
-                                        
-                                <div class="col-col-md-9 col-lg-9">
-                                        <input type="text"  name="pcv_date" class="form-control datepicker_ap" required readonly>
-                                    </div>
-                                </div>
-
-
-								<!--end col-->
-                                <div class="row align-items-center mb-2">
-
-                                <div class="col-col-md-3 col-lg-3">
-
-                                    <label for="basiInput" class="form-label">Credit Account</label>
-
-                                </div>
-
-
-                                <div class="col-col-md-9 col-lg-9 select2_parent">
-
-                                        <select class="form-select add_credit_account_select2" name="pcv_credit_account" required>
-                                           
-
-                                        </select>
-
-                                    </div>
-                                </div>
-
-
-
-
-
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
-
-                                    
-                                    <div class="col-col-md-3 col-lg-3">
-
-                                        <label for="basiInput" class="form-label">Attach</label>
-
-                                    </div>
-
-
-                                <div class="col-col-md-9 col-lg-9">
-
-                                    <input type="file"  name="p_cheque_copy" class="form-control ">
-
-                                </div>
-
-
-
-
-                                 </div>
-
-
-
-
-
-
-                                </div>
-
-
-
-
-                            <div class="col-lg-6">
-
-
-
-
-                            <div class="row align-items-center mb-2">
-
-                                <div class="col-col-md-3 col-lg-3">
-
-                                    <label for="basiInput" class="form-label">Payment Method</label>
-
-                                </div>
-                                    
-
-                                <div class="col-col-md-9 col-lg-9">
-
-                                    <select name="pcv_pay_method" class="form-control" required>
-
-                                    <option value="">Select Payment Method</option>
-
-                                    <?php foreach($r_methods as $r_method){ ?>
-
-                                    <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
-
-                                    <?php } ?>
-
-                                    </select>
-
-                                </div>
-
-                                </div>
-
-
-                                <div class="row align-items-center mb-2 d-none" id="bank_sec_add">
-
-                                <div class="col-col-md-3 col-lg-3">
-
-                                    <label for="basiInput" class="form-label">Bank</label>
-
-                                </div>
-
-                                <div class="col-col-md-9 col-lg-9">
-
-                                    <select name="p_bank" class="form-control" required>
-
-                                        <option value="">Select Bank</option>
-                                        <?php foreach ($banks as $a_bank) { ?>
-                                            <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
-                                        <?php } ?>
-
-                                    </select>
-
-                                </div>
-
-                                </div>
-
-
-
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
-
-                                <div class="col-col-md-3 col-lg-3">
-                                        <label for="basiInput" class="form-label">Cheque Number</label>
-                                        </div>
-
-                                        <div class="col-col-md-9 col-lg-9">
-                                        <input type="text"  name="p_cheque_no" class="form-control" required>
-                                    </div>
-                                </div>
-
-
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
-                                    
-
-                                    <div class="col-col-md-3 col-lg-3">
-
-                                        <label for="basiInput" class="form-label">Cheque Date</label>
-                                    
-                                    </div>
-
-
-                                    <div class="col-col-md-9 col-lg-9">
-
-                                    <input type="text"  name="p_cheque_date" class="form-control datepicker" required readonly>
-
-                                    </div>
-
-                                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                            </div>
-
-
-
-
-
-
-
-
-
-                                <div class="col-col-md-12 col-lg-12">
-
-
-<table class="table table-bordered" style="overflow-y:scroll;">
-
-            <thead>
-                <tr>    
-                <th>Sl No</th>
-                <th>Sales Order No</th>
-                <th>Debit Account</th>
-                <th>Amount</th>
-                <th>Link</th>
-                <th>Narration</th>
-                <th></th>
-                </tr>
-            </thead>
-
-            <tbody id="sel_invoices">
-
-
-            <tr class="so_row_add">
-
-                <th class="sl_no">1</th> 
-                
-
-                <th width="20%" class="so_select2_parent_add">
-
-                <select name="pcv_sale_invoice[]" class="form-control sales_order_add">
-
-                </select>
-
-                </th>
-
-
-                <th width="35%" class="account_select2_parent_add"> 
-                
-                <select name="pcv_account[]" class="form-control inv_account debit_account_select2_add">
-
-                </select>
-
-                </th>
-                
-                <th><input name="pcv_debit[]" type="number" class="form-control pcv_amount" ></th>
-
-                <th>
-                    <a class="btn btn-primary add_invoices disabled" href="javascript:void(0);">Click</a>
-                </th>
-
-                <th><input name="pcv_remarks[]" type="text" class="form-control" ></th>
-
-                <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
-
-            </tr>
-
-
-            </tbody>
-
-
-            <!--
-            <tr>
-            <td colspan="3">Total</td>
-
-            <td id="total_amount_disp">0</td>
-            
-            <input type="hidden" id="total_amount_inp" name="total_amount">
-
-            </tr>
-            -->
-
-
-            <tr>
-
-            <td colspan="1"></td>
-
-            <td colspan="3" align="left" class="sales_quotation_amount_in_word_disabled"></td>
-
-            <td align="right" colspan="3">Total</td>
-
-            <th  id="total_amount_disp">0</th>
-
-            <input type="hidden" id="total_amount_add" name="total_amount" value="">
-
-            </tr>
-
-
-</table>
-
-
-
-</div>
-
-
-<div class="col-lg-12 mb-4 text-center">
-                                    
-    <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-
-</div>
-
-
-
-                                <div class="row">
-
-
-                                <div class="col-lg-12 text-center">
-
-
-                                    <div style="">
-                                        <table class="table table-bordered table-striped enq_tab_submit menu">
-
-                                            <!--
-                                            <tr>
-                                                <td><button class="submit_btn">Print</button></td>
-                                                <td><button class="submit_btn">Email</button></td>
-                                            </tr>
-                                            -->
-                                            <tr>
-
-                                                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
-                                                <!--<td><button class="submit_btn">PDF</button></td>-->
-                                            </tr>
-                                        </table>
-                                    </div>
-
-
-                                </div>
-
-
-                                </div>
-
-
-
-
-
-                            </div>
-                        <!--end row-->
-						</form>
-                    </div>
-                                    
-                </div>
-
-
-    </div>
-</div>
-
-<!--end col-->
-</div>
-
-</div>
-            <!-- <div class="modal-footer justify-content-center">
-                <button  class="btn btn btn-success">Save</button>
-            </div> -->
-
-        </div>
-        </form>
-
-    </div>
-</div>
-
-    <!-- ### -->
-
-
-
-
-    <!--Edit Modal section start-->
-<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <form id="edit_form" class="Dashboard-form">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                
-                    <div class="row">
-
+                <div class="row">
 
 
                     <div class="col-lg-12">
-    <div class="card">
+                        <div class="card">
 
+                            <div class="card-body">
+                                <div class="live-preview">
 
+                                    <div class="row align-items-end">
 
-    <div class="card-body">
-                    <div class="live-preview">
-					
-                            <div class="row align-items-start">
 
 
-                                <div class="col-lg-6">
+                                        <table class="table table-bordered">
 
 
+                                            <tbody id="view_receipt_body">
 
-                                <div class="row align-items-center mb-2">
 
-                                <input type="hidden" id="pcv_id_edit" name="pcv_id" value="">
+                                                <tr>
 
-                                    <div class="col-col-md-3 col-lg-3">
-                                        <label for="basiInput" class="form-label">Date</label>
-                                    </div>
-                                        
-                                <div class="col-col-md-9 col-lg-9">
-                                        <input id="pcv_date_edit" type="date" onclick="this.showPicker()"  name="pcv_date" class="form-control " required>
-                                    </div>
-                                </div>
 
+                                                    <td>Reference</td>
 
-								<!--end col-->
-                                <div class="row align-items-center mb-2">
+                                                    <th id="view_reference"></th>
 
-                                <div class="col-col-md-3 col-lg-3">
 
-                                    <label for="basiInput" class="form-label">Credit Account</label>
+                                                    <td>Payment Method</td>
 
-                                </div>
+                                                    <th id="view_payment_method"></th>
 
 
-                                <div class="col-col-md-9 col-lg-9 select2_parent">
+                                                </tr>
 
-                                        <!--
-                                        <select id="pcv_credit_edit" class="form-select debit_account_select2" name="pcv_credit_account" required>
-                                        </select>
-                                        -->
 
-                                        <input class="form-control" id="pcv_credit_edit" value="" readonly>
 
-                                    </div>
-                                </div>
+                                                <tr>
 
+                                                    <td>Credit Account</td>
 
+                                                    <th id="view_debit_account"></th>
 
+                                                    <td class="view_cheque_sec">Cheque No</td>
 
+                                                    <th class="view_cheque_sec" id="view_cheque_no"></th>
 
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
 
-                                    
-                                    <div class="col-col-md-3 col-lg-3">
+                                                </tr>
 
-                                        <label for="basiInput" class="form-label">Attach</label>
 
-                                    </div>
 
+                                                <tr>
 
-                                <div class="col-col-md-9 col-lg-9">
+                                                    <td>Date</td>
 
-                                    <input type="file"  name="" class="form-control ">
+                                                    <th id="view_date"></th>
 
-                                </div>
 
+                                                    <td>Bank</td>
 
 
+                                                    <th id="view_bank"></th>
 
-                                 </div>
 
+                                                </tr>
+                                               
 
+                                                <tr class="view_cheque_sec">
 
+                                                    <td>Cheque Date</td>
 
+                                                    <th id="view_cheque_date"></th>
 
+                                                    <td>Cheque File</td>
 
-                                </div>
+                                                    <th id="view_cheque_file">
 
+                                                    </th>
 
+                                                </tr>
 
 
-                            <div class="col-lg-6">
 
 
+                                            </tbody>
 
+                            <tr>
 
-                            <div class="row align-items-center mb-2">
+                                <th colspan="5" style="text-align: center;font-size: 15px;">Invoices</th>
 
-                                <div class="col-col-md-3 col-lg-3">
+                            </tr>
 
-                                    <label for="basiInput" class="form-label">Payment Method</label>
 
-                                </div>
-                                    
+                                            <tbody>
 
-                                <div class="col-col-md-9 col-lg-9">
 
-                                    <select name="pcv_pay_method" id="pcv_pay_method" class="form-control" required>
+                                                <tr>
 
-                                    <option value="">Select Payment Method</option>
+                                                <th>Account</th>
 
-                                    <?php foreach($r_methods as $r_method){ ?>
+                                                <th>Type</th>
 
-                                    <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+                                                <th>Invoice</th>
 
-                                    <?php } ?>
+                                                <th>Narration</th>
 
-                                    </select>
+                                                <th class="text-end">Amount</th>
 
-                                </div>
+                                                </tr>
 
-                                </div>
+                                            </tbody>
 
+                                            <tbody id="view_payment_invoices">
 
 
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
+                                            </tbody>
 
-                                <div class="col-col-md-3 col-lg-3">
-                                    <label for="basiInput" class="form-label">Cheque Number</label>
-                                </div>
 
-                                        <div class="col-col-md-9 col-lg-9">
-                                        <input type="text"  name="p_cheque_no" class="form-control">
-                                    </div>
-                                </div>
+                                            <tfoot>
 
+                                            <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-end">Total Payment : </td>
+                                            <td class='text-end' style=""><b><span id="total_payment_amount_view"></span></b></td>
+                                            </tr>
 
-                                <div class="row align-items-center mb-2 cheque_sec d-none">
-                                    
+                                            </tfoot>
 
-                                    <div class="col-col-md-3 col-lg-3">
 
-                                        <label for="basiInput" class="form-label">Cheque Date</label>
-                                    
+                                        </table>
+
+                                      
+
                                     </div>
 
 
-                                    <div class="col-col-md-9 col-lg-9">
-
-                                    <input type="date"  name="p_cheque_date" class="form-control">
-
-                                    </div>
 
                                 </div>
-
-
-
+                                <!--end row-->
 
                             </div>
 
-
-
-
-                            <div class="col-lg-6">
-
-
-                            <div style="float: right;">
-
-                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                        
-                                    <tr>
-                                           <td><button class="submit_btn" type="submit">Update</button></td>
-                                    </tr>
-
-                                    </table>
-                            </div>
-
-
-                            </div>
-
-
-
-
-                        <div class="col-col-md-12 col-lg-12">
-
-
-<table class="table table-bordered" style="overflow-y:scroll;">
-
-            <thead>
-                <tr>
-                    
-                <th>Sales Order No</th>
-                <th>Debit Account</th>
-                <th>Amount</th>
-                <th>Narration</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-
-
-            <tbody id="sel_invoices_edit">
-
-         
-            <tr>
-
-            <td colspan="6">
-
-            <div class="col-lg-12 text-center">
-                                    
-              <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-        
-            </div>
-            
-            </td>
-
-            </tr>
-
-
-            </tbody>
-
-
-
-            <tr>
-
-            <td colspan="1"></td>
-
-            <td colspan="3" align="left" class="sales_quotation_amount_in_word"></td>
-
-            <td align="right" colspan="3">Total</td>
-
-            <th  id="total_amount_edit">0</th>
-
-
-            </tr>
-
-
-
-
-</table>
-
-
-</div>
-
-
-
-
-                        
                         </div>
-
-                        
-                        
                     </div>
-                    <!--end row-->
-                
-            </div>
-            
-        </div>
-    </div>
-</div>
+                </div>
 
-                        <!--end col-->
-
-
-                    </div>
-                
+                <!--end col-->
             </div>
 
-
-
         </div>
-        </form>
+
 
     </div>
+
+
+</div>
 </div>
 
-<!--Edit modal section end-->
+<!-- ######### -->
 
 
 
@@ -692,144 +202,131 @@
 
 
 
-
-
-
-
-
-
-
-
-
-    
 <!-- Invoices Seletion Modal -->
 
 
 <div class="modal fade" id="InvoicesModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-            <form method="POST" class="Dashboard-form class" id="invoices_add">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
-                <button type="button" class="btn-close" data-bs-target="#AddModal" data-bs-toggle="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+        <form method="POST" class="Dashboard-form class" id="invoices_add">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
+                    <button type="button" class="btn-close" data-bs-target="#AddModal" data-bs-toggle="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-            <input type="hidden" name="credit_id" value="">
+                    <input type="hidden" name="credit_id" value="">
 
-    <div class="row">
-
-
-<div class="col-lg-12">
-
-    <div class="card">
-       
-        <div class="card-body">
-
-            <div class="live-preview">
-            
-                    <div class="row align-items-end">
-
-                        <div class="col-col-md-12 col-lg-12">
-
-                        <div class="row align-items-center">
-
-                        <div class="col-lg-10"> 
-
-                        <table class="table table-bordered">
+                    <div class="row">
 
 
-                                    <thead>
-                                        <tr>
-                                        <th>Sl No</th>
-                                        <th>Date</th>
-                                        <th>Invoice No</th>
-                                        <th>LPO Ref</th>
-                                        <th>Amount</th>
-                                        <th>Receipt</th>
-                                        <th>Tick</th>
-                                        </tr>
-                                    </thead>
+                        <div class="col-lg-12">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="live-preview">
+
+                                        <div class="row align-items-end">
+
+                                            <div class="col-col-md-12 col-lg-12">
+
+                                                <div class="row align-items-center">
+
+                                                    <div class="col-lg-10">
+
+                                                        <table class="table table-bordered">
 
 
-                                    <tbody id="invoices_sec">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sl No</th>
+                                                                    <th>Date</th>
+                                                                    <th>Invoice No</th>
+                                                                    <th>LPO Ref</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Payment</th>
+                                                                    <th>Tick</th>
+                                                                </tr>
+                                                            </thead>
 
 
-                                    </tbody>
+                                                            <tbody id="invoices_sec">
 
 
-                                    <!--
-                                    <tr>
-
-                                    <td>Total Receipt</td>
-
-                                    <td></td>
-
-                                    <td>Adjusted</td>
-
-                                    <td></td>
+                                                            </tbody>
 
 
-                                    <td>Balance</td>
 
-                                    <td></td>
+                                                            <tr>
+                                                                <td>Total</td>
 
-                                    </tr>
-                                    -->
+                                                                <td class="invoice_total"></td>
+
+                                                                <td>Adjusted</td>
+
+                                                                <td class="invoice_adjusted"></td>
+
+                                                                <td>Balance</td>
+
+                                                                <td class="invoice_balance"></td>
+                                                            </tr>
 
 
-                        </table>
 
+                                                        </table>
+
+                                                    </div>
+
+
+
+                                                    <div class="col-lg-2">
+
+
+                                                        <button type="button" class="w-100" id="add_poadvance_btn">Advance</button>
+
+                                                        <button id="fifo_add" class="w-100" type="button">FIFO</button>
+
+                                                        <button class="w-100" type="submit">Save</button>
+
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <!--end row-->
+
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
 
-
-
-                        <div class="col-lg-2">
-
-                        
-                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#SalesOrderModal">Advance</button>
-
-                        <button class="w-100">FIFO</button>
-
-                        <button class="w-100" type="submit">Save</button>
-
-
-
-                        </div>
-
-
-                        </div>
-
-
-
-
-
-
-                        </div>
-
-
-
-
+                        <!--end col-->
                     </div>
-                    <!--end row-->
-                
-            </div>
-            
-        </div>
-    </div>
-</div>
 
-<!--end col-->
-</div>
+                </div>
 
-</div>
-
-            <!-- <div class="modal-footer justify-content-center">
+                <!-- <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
                 <button type="submit" class="btn btn btn-success">Add</button>
             </div> -->
 
-        </div>
+            </div>
         </form>
 
     </div>
@@ -843,147 +340,539 @@
 
 
 
-  
-<!-- View Modal -->
+
+<div class="tab-pane active" id="border-nav-1" role="tabpanel">
 
 
-<div class="modal fade" id="SalesOrderModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
-    <div class="modal-dialog modal-xl">
-
-    <form class="" id="sales_order_add">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
-                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+    <!-- Add Modal -->
 
 
-    <div class="row">
+    <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <form class="Dashboard-form class" id="add_form">
+
+                <input type="hidden" id="added_id" name="p_id" autocomplete="off">
+                <input id="add_saved" value="no" type="hidden">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
 
 
-<div class="col-lg-12">
-    <div class="card">
-       
-        <div class="card-body">
-            <div class="live-preview">
-            
-                    <div class="row align-items-end">
+                        <div class="row">
 
 
-                        <div class="col-col-md-12 col-lg-12">
+                            <div class="col-lg-12">
+                                <div class="card">
 
-                        <table class="table table-bordered" style="overflow-y:scroll;">
+                                    <div class="card-body">
+                                        <div class="live-preview">
 
-                                    <thead>
-                                        <tr>
-                                        <th>Sl No</th>
-                                        <th>Vendor</th>
-                                        <th>LPO Ref</th>
-                                        <th>Amount</th>
-                                        <th>Receipt</th>
-                                        <th>Tick</th>
-                                        <th></th>
-                                        </tr>
-                                    </thead>
-
-
-                                    <tbody id="lpo_body">
-
-                                        <tr class="lpo_row">
-
-                                        <td class="lpo_slno">1</td>
-
-                                        <td>
-
-                                        <select class="form-control" name="lpo_select">
-
-                                        <option value="">Select Vendor</option>
+                                            <div class="row align-items-start">
 
 
 
-                                        </select>
-                                        
-                                        </td>
-
-                                        <td>LPO12345</td>
-                                        <td>10000</td>
-                                        <td><input class="form-control" type="number" name="lpo_reciept[]"></td>
-                                        <td><input type="checkbox" name="lpo_selected[]"></td>
-
-                                        
-                                        <th> <a href="javascript:void(0);" class="lpo_del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
 
 
-                                        </tr>
+                                                <!-- Section 1 -->
+
+                                                <div class="col-lg-6">
 
 
 
-                                    </tbody>
 
-                                    <tr>
+                                                    <div class="row align-items-center mb-2">
 
-                                    <td colspan="6">
+                                                        <div class="col-col-md-3 col-lg-3">
 
-                                    <div class="col-lg-12 text-center">
-                                                            
-                                    <a class="lpo_add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                                                            <label for="basiInput" class="form-label">Reference</label>
+                                                        </div>
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <input type="text" name="pay_ref_no" id="uid" class="form-control" required>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <div class="row align-items-center mb-2">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Date</label>
+                                                        </div>
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <input type="text" name="p_date" class="form-control datepicker_ap" required readonly>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+                                                    <div class="row align-items-center mb-2">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Credit Account</label>
+
+                                                        </div>
+
+
+                                                        <div class="col-col-md-9 col-lg-9 select2_parent">
+
+
+                                                            <select class="form-control add_credit_account_select2" name="p_credit_account" required>
+
+
+                                                            </select>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+
+
+                                                    <div class="row align-items-center mb-2 cheque_sec d-none">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Cheque Copy</label>
+
+                                                        </div>
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <input type="file" name="p_cheque_copy" class="form-control" required>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+
+
+
+                                                </div> <!-- Section 1 End -->
+
+
+
+                                                <div class="col-lg-6">
+
+
+
+                                                    <div class="row align-items-center mb-2">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Payment Method</label>
+
+                                                        </div>
+
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <select name="p_method" class="form-control" id="" required>
+
+                                                                <option value="">Select Payment Method</option>
+
+                                                                <?php foreach ($p_methods as $r_method) { ?>
+
+                                                                    <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+
+                                                                <?php } ?>
+
+                                                            </select>
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <div class="row align-items-center mb-2 cheque_sec d-none">
+
+
+                                                        <div class="col-col-md-3 col-lg-3">
+                                                            <label for="basiInput" class="form-label">Cheque Number</label>
+                                                        </div>
+
+                                                        <div class="col-col-md-9 col-lg-9">
+                                                            <input type="text" name="p_cheque_no" class="form-control" required>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row align-items-center mb-2 cheque_sec d-none">
+
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Cheque Date</label>
+
+
+
+
+
+
+                                                        </div>
+
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <input type="text" name="p_cheque_date" class="form-control datepicker" required readonly>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <div class="row align-items-center mb-2 d-none" id="bank_sec_add">
+
+                                                        <div class="col-col-md-3 col-lg-3">
+
+                                                            <label for="basiInput" class="form-label">Bank</label>
+
+                                                        </div>
+
+                                                        <div class="col-col-md-9 col-lg-9">
+
+                                                            <select name="p_bank" class="form-control" required>
+
+                                                                <option value="">Select Bank</option>
+                                                                <?php foreach ($banks as $a_bank) { ?>
+                                                                    <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
+                                                                <?php } ?>
+
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+                                                </div> <!-- -->
+
+
+                                                <input id="total_amount_val" type="hidden" name="p_amount" class="form-control" value="">
+
+
+                                                <div class="col-col-md-12 col-lg-12">
+
+
+                                                    <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Sl No</th>
+                                                                <th>Sales Order</th>
+                                                                <th>Debit Account</th>
+                                                                <th>Amount</th>
+                                                                <th>Link</th>
+                                                                <th>Narration</th>
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody id="sel_invoices">
+
+                                                            <tr class="invoice_row">
+
+
+                                                                <td width="5%">
+
+                                                                    <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
+
+
+
+                                                                </td>
+
+                                                                
+
+
+                                                                <td width="20%" class="so_select2_parent_add">
+
+                                                                    <select class="form-control sales_order so_select2_add" name="p_sales_order[]">
+
+                                                                    </select>
+
+                                                                </td>
+
+
+
+                                                                <td width="35%">
+
+                                                                    <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
+
+                                                                    </select>
+
+                                                                </td>
+
+
+                                                                <td>
+
+                                                                    <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
+
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
+                                                                </td>
+
+                                                                <td>
+
+                                                                    <input class="form-control credit_narration" type="text" name="narration[]" />
+
+                                                                </td>
+
+
+                                                                <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+
+
+                                                            </tr>
+
+
+                                                            <tr>
+
+                                                                <td colspan="6">
+
+                                                                    <div class="col-lg-12 text-center">
+
+                                                                        <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+
+                                                                    </div>
+
+                                                                </td>
+
+                                                            </tr>
+
+
+                                                        </tbody>
+
+
+
+
+
+                                                        <tr>
+
+                                                            <td colspan="1"></td>
+
+                                                            <td colspan="3" align="left" class="sales_quotation_amount_in_word1"></td>
+
+                                                            <td align="right" colspan="3">Total</td>
+
+
+                                                            <th id="total_amount">0</th>
+
+
+                                                        </tr>
+
+
+                                                    </table>
+
+
+                                                </div>
+
+
+
+                                            </div>
+                                            <!--end row-->
+
+
+
+                                            <div class="row">
+
+
+<div class="col-lg-12 text-center">
+
+
+    <div style="">
+        <table class="table table-bordered table-striped enq_tab_submit menu">
+
+            <!--
+            <tr>
+                <td><button class="submit_btn">Print</button></td>
+                <td><button class="submit_btn">Email</button></td>
+            </tr>
+            -->
+            <tr>
+
+                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <!--<td><button class="submit_btn">PDF</button></td>-->
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+                                        </div>
 
                                     </div>
+                                </div>
+                            </div>
 
-                                    </td>
-
-                                    </tr>
-                                    
+                            <!--end col-->
 
 
-                        </table>
 
 
 
                         </div>
 
-                        
-                        
                     </div>
-                    <!--end row-->
-                
-            </div>
+
+                    <!-- <div class="modal-footer justify-content-center">
             
-        </div>
-    </div>
-</div>
+                <button  class="btn btn btn-success">Save</button>
+            </div> -->
 
-<!--end col-->
-</div>
-
-</div>
-
-
-   <div class="modal-footer justify-content-center">
-    
-                <button type="submit" class="btn btn btn-success">Save</button>
-    </div>
-           
+                </div>
+            </form>
 
         </div>
-     
-</form>
-
     </div>
-</div>
-
-
-<!-- ## -->
 
 
 
+    <!-- ### -->
 
 
 
 
+    <!-- View Modal -->
+
+
+    <div class="modal fade" id="AddPOAdvanceModal" aria-hidden="true">
+
+        <div class="modal-dialog modal-xl">
+
+            <form class="" class="Dashboard-form class" id="add_po_advance_form">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
+                        <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="row">
+
+
+                            <div class="col-lg-12">
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="live-preview">
+
+                                            <div class="row align-items-end">
+
+
+                                                <div class="col-col-md-12 col-lg-12">
+
+                                                    <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Sl No</th>
+                                                                <th>Purchase Order</th>
+                                                                <th>LPO Ref</th>
+                                                                <th>Amount</th>
+                                                                <th>Payment</th>
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody id="purchase_order_add">
+
+
+                                                        </tbody>
+
+
+                                                        <tbody>
+
+                                                        <tr>
+                                                                <td>Total</td>
+
+                                                                <td class="invoice_total"></td>
+
+                                                                <td>Adjusted</td>
+
+                                                                <td class="invoice_adjusted"></td>
+
+                                                                <td>Balance</td>
+
+                                                                <td class="invoice_balance"></td>
+                                                        </tr>
+
+                                                        </tbody>
+
+
+
+
+                                                    </table>
+
+
+
+                                                </div>
+
+
+
+                                            </div>
+                                            <!--end row-->
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end col-->
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-footer justify-content-center">
+
+                        <button type="submit" class="btn btn btn-success">Save</button>
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- ## -->
 
 
 
@@ -992,208 +881,1242 @@
 
 
 
-    		
-					
-	<div class="row">
+
+
+
+
+
+
+    <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Petty Cash Vouchers</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="add_model_btn btn btn-primary py-1">Add</button>
                 </div><!-- end card header -->
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered table-striped delTable">
-                        
+                <div class="card-body" id="account_type_id">
+                    <!-- CSRF token -->
+                    <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                    <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
+                                <th>Reference</th>
                                 <th>Date</th>
-                                <th>Voucher No</th>
-                                <th>Credit Account</th>
+                                <th>Method</th>
+                                <th>Bank</th>
+                                <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            
+
+
                         </tbody>
-           
+
                     </table>
-                                    
+
                 </div>
             </div>
         </div>
         <!--end col-->
     </div>
-                                          
+
+
 </div>
-										
-										
-<!--end Petty cash voucher col-->
 
-<script>
 
-    document.addEventListener("DOMContentLoaded", function(event){
+<!--end Account  Head-->
 
 
 
 
-        $("body").on('change', '.debit_account_select2_add', function(){
+<!--Edit Modal section start-->
+<div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form id="edit_form" class="Dashboard-form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Petty Cash Voucher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-        parent = $(this).closest('.so_row');
-
-        parent.find('.add_invoices').removeClass('disabled');
-
-        });
-
-        
-        $('.add_model_btn').click(function(){
+                    <div class="row">
 
 
-        $('#added_id').val('');
 
-        $('#add_form')[0].reset();
+                        <div class="col-lg-12">
+                            <div class="card">
 
-        $('.so_row').not(':first').remove();
+                                <div class="card-body">
+                                    <div class="live-preview">
 
-        InitAccountsSelect2('.debit_account_select2_add','.so_row_add');
-
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchReference",
-
-        method : "GET",
-
-        success:function(data)
-        {
-
-        $('#pcvid').val(data);
-
-        }
-
-        });
-
-        });
+                                        <div class="row align-items-start">
 
 
 
 
-       
+
+                                            <!-- Section 1 -->
+
+                                            <div class="col-lg-6">
 
 
-        /* Start Add Petty Cash Voucher */
 
 
-        //Add Function 
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Reference</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" id="uid_edit" class="form-control" readonly>
+
+                                                        <input type="hidden" id="p_id_edit" name="p_id" value="">
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Date</label>
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" id="p_date_edit" name="p_date" class="form-control datepicker_ap" required readonly>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Credit Account</label>
+
+                                                    </div>
+
+
+                                                    <div class="col-col-md-9 col-lg-9 select2_parent">
+
+                                                        <!--
+                            <select class="form-control edit_credit_account_select2" id="p_credit_account_edit" name="p_credit_account">
+
+                            <option value="">Select Credit Account</option>
+
+                            </select>
+                            -->
+
+                                                        <input class="form-control" id="p_credit_account_edit" readonly>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2 cheque_file_sec cheque_sec d-none">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Cheque File</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <a class="" target="_blank" id="cheque_file_view" href="javascript:void(0);">View</a>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2 cheque_sec cheque_file_edit_sec d-none">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Update Cheque Copy</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="file" name="p_cheque_copy" class="form-control">
+
+                                                    </div>
+
+                                                </div>
+
+
+
+
+
+
+
+                                            </div> <!-- Section 1 End -->
+
+
+
+                                            <div class="col-lg-6">
+
+
+
+                                                <div class="row align-items-center mb-2">
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Payment Method</label>
+
+                                                    </div>
+
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <select id="p_method_edit" name="p_method" class="form-control" required>
+
+                                                            <option value="">Select Payment Method</option>
+
+                                                            <?php foreach ($p_methods as $r_method) { ?>
+
+                                                                <option value="<?= $r_method->rm_id; ?>"><?= $r_method->rm_name; ?></option>
+
+                                                            <?php } ?>
+
+                                                        </select>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+
+                                                    <div class="col-col-md-3 col-lg-3">
+                                                        <label for="basiInput" class="form-label">Cheque Number</label>
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+                                                        <input type="text" name="p_cheque_no" class="form-control">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row align-items-center mb-2 cheque_sec d-none">
+
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Cheque Date</label>
+
+                                                    </div>
+
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <input type="text" name="p_cheque_date" class="form-control datepicker" readonly>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+                                                <div class="row align-items-center mb-2 bank_sec_edit" id="bank_sec_edit">
+
+
+                                                    <div class="col-col-md-3 col-lg-3">
+
+                                                        <label for="basiInput" class="form-label">Bank</label>
+
+                                                    </div>
+
+                                                    <div class="col-col-md-9 col-lg-9">
+
+                                                        <select id="p_bank_edit" name="p_bank" class="form-control" required>
+
+                                                            <option value="">Select Bank</option>
+                                                            <?php foreach ($banks as $a_bank) { ?>
+                                                                <option value="<?= $a_bank->bank_id ?>"><?= $a_bank->bank_name ?></option>
+                                                            <?php } ?>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div> <!-- -->
+
+
+
+                                            <input type="hidden" name="p_amount" class="form-control" value="">
+
+
+                                            <div class="col-col-md-12 col-lg-12">
+
+
+                                                <table class="table table-bordered" style="overflow-y:scroll;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Account</th>
+                                                            <th>Type</th>
+                                                            <th>Invoice</th>
+                                                            <th>Narration</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+
+
+
+                                                    <tbody id="sel_invoices_edit">
+
+
+
+                                                    </tbody>
+
+
+
+                                                </table>
+
+
+                                            <div class="col-lg-12">
+
+                                            <div style="" class="text-center">
+                                                    <button class=" btn btn-success" type="submit">Update</button>
+                                            </div>
+
+                                            </div>
+
+
+
+
+                                            </div>
+
+
+
+                                        </div>
+                                        <!--end row-->
+
+
+
+
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end col-->
+
+
+
+
+
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--Edit modal section end-->
+
+
+
+<!-- Invoices Seletion Modal -->
+
+
+<div class="modal fade" id="EditInvoiceModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <form method="POST" class="Dashboard-form class" id="invoices_edit">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
+                    <button type="button" class="btn-close" data-bs-target="#EditModal" data-bs-toggle="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="credit_id" value="">
+
+                    <div class="row">
+
+
+                        <div class="col-lg-12">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="live-preview">
+
+                                        <div class="row align-items-end">
+
+                                            <div class="col-col-md-12 col-lg-12">
+
+                                                <div class="row align-items-center">
+
+                                                    <div class="col-lg-10">
+
+                                                        <table class="table table-bordered">
+
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sl No</th>
+                                                                    <th>Date</th>
+                                                                    <th>Invoice No</th>
+                                                                    <th>LPO Ref</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Payment</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+
+
+                                                            <tbody id="invoice_detail_edit">
+
+                                                            </tbody>
+
+
+                                                        </table>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <!--end row-->
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end col-->
+                    </div>
+
+                </div>
+
+                <!-- <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
+                <button type="submit" class="btn btn btn-success">Add</button>
+            </div> -->
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!-- ### -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- <script src="<?php echo base_url(); ?>public/assets/js/jquery.num2words.js"></script> -->
+
+
+<script> 
+    var LinkTotal = 0;
+
+    var LinkAdjusted = 0;
+
+    var balance = 0;
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+
+
+        /*account head add section*/
+
         $(function() {
             $('#add_form').validate({
-                
                 rules: {
                     required: 'required',
                 },
                 messages: {
                     required: 'This field is required',
+
                 },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(form){
+                errorPlacement: function(error, element) {},
+                submitHandler: function(form) {
+
+                    var submitButtonName = $(this.submitButton).attr("name");
+
+                    var formData = new FormData(form);
+
                     $.ajax({
                         url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Add",
                         method: "POST",
-                        data: $(form).serialize(),
-                        success: function(data){
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            //$('#add_form')[0].reset();
+                            //$('#AddModal').modal('hide');
 
                             var data = JSON.parse(data);
-
+                            //console.log(data.status);
                             if (data.status == 0) {
-
                                 alertify.error(data.error).delay(3).dismissOthers();
                                 return false;
+                            }
 
-                                } else
+                            $('#added_id').val(data.id);
 
-                                {
-                                $('#add_form')[0].reset();
+
+                            if (submitButtonName == "main_submit") {
                                 $('#AddModal').modal('hide');
                                 alertify.success('Data Added Successfully').delay(3).dismissOthers();
-                                datatable.ajax.reload( null, false )
-                                }
+                            }
+
+                            //datatable.ajax.reload( null, false )
+
+                            datatable.ajax.reload(null, false);
                         }
+
                     });
                     return false; // prevent the form from submitting
                 }
             });
         });
 
+        /*###*/
+
+
+
+
+        /*account head modal start*/
+
+
+
+        $("body").on('click', '.edit_btn', function() {
+
+            var id = $(this).data('id');
+
+
+            $("#EditModal :input").prop("disabled", false);
+
+            $('#EditModal .submit_btn').show();
+
+            $('#EditModal .edit_invoice').show();
+
+            $('#EditModal .view_linked').show();
+
+            $('#EditModal .edit_add_debit').show();
+
+            $('#EditModal input[name=p_cheque_copy]').val('');
+
+            $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Edit",
+                method: "POST",
+                data: {
+                    id: id
+                },
+
+                success: function(data) {
+                    if (data) {
+                        var data = JSON.parse(data);
+
+                        InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+                        $('#uid_edit').val(data.pcv.pcv_voucher_no);
+
+                        $('#p_id_edit').val(data.pcv.pcv_id);
+
+                        $('#p_credit_account_edit').val(data.pcv.ca_name);
+
+                        $('#p_method_edit').val(data.pcv.pcv_pay_method);
+
+                        if (data.pcv.pcv_pay_method == "1") {
+                            $('#EditModal .cheque_sec').removeClass("d-none");
+                        } else {
+                            $('#EditModal .cheque_sec').addClass("d-none");
+                        }
+
+                        if (data.pcv.pcv_pay_method == "1") {
+
+                            $('.cheque_sec').removeClass("d-none");
+
+                            $('.cheque_file_sec').removeClass("d-none");
+
+                            $('#EditModal input[name=p_cheque_no]').val(data.pcv.pcv_cheque_no);
+
+                            $('#EditModal input[name=p_cheque_date]').val(FormatDate(data.pcv.pcv_cheque_date));
+
+                        if (data.pay.pay_cheque_copy != null) {
+                            $('#EditModal #cheque_file_view').attr('href', '<?= base_url(); ?>uploads/PettyCashVoucher/' + data.pcv.pcv_cheque_copy + '');
+                        } else {
+                            $('.cheque_file_sec').addClass("d-none");
+                        }
+
+                        } else {
+
+                            $('.cheque_sec').addClass("d-none");
+
+                            $('.cheque_file_sec').addClass("d-none");
+
+                        }
+
+
+                        if (data.pcv.pcv_pay_method = "2") {
+
+                        $('#EditModal .bank_sec_edit').addClass("d-none");
+
+                        $('#p_bank_edit').val("");
+
+                        $('#p_bank_edit').removeAttr("required");
+
+                        } else {
+
+                        $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+                        $('#p_bank_edit').attr("required", true);
+
+                        }
+
+
+
+                        $('#p_date_edit').val(data.pcv.pcv_date);
+
+                        $('#p_bank_edit').val(data.pcv.pcv_bank);
+
+                        $('#total_amount_edit').html(data.pcv.pcv_total);
+
+                        //$('#sel_invoices_edit').html(data.debit);
+
+                        $('#sel_invoices_edit').html(data.invoices);
+
+                        $('#EditModal').modal('show');
+
+                    } else {
+                        alertify.error('Something went wrong!').delay(8).dismissOthers();
+                    }
+
+                }
+
+
+            });
+
+
+
+
+
+
+        });
+        /*####*/
+
+
+
+        //Change Receipt Method 
+
+        $("body").on('change', '#p_method_edit', function() {
+
+        var method = $(this).val();
+
+        if (method == 2) {
+
+            $('#EditModal .bank_sec_edit').addClass("d-none");
+
+            $('#p_bank_edit').removeAttr("required");
+
+        } else {
+
+            $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+            $('#p_bank_edit').attr("required", true);
+
+        }
+
+
+        if (method == "1") {
+
+            $('.cheque_sec').removeClass("d-none");
+
+            $('.cheque_file_sec').removeClass("d-none");
+
+            $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
+
+            $('.r_cheque_edit').attr("required", true);
+
+        } else {
+
+            $('.cheque_sec').addClass("d-none");
+
+            $('.cheque_file_sec').addClass("d-none");
+
+            $('.r_cheque_edit').removeAttr("required");
+
+        }
+
+
+
+
+        });
+
         //###
 
 
 
-          /*Add More Debit*/
 
-            var max_fieldcost = 10;
 
-            $("body").on('click', '.add_more', function(){
 
-            var cc = $('.so_row_add').length;
+        $("body").on('click', '.view_btn', function() {
 
-            if(cc < max_fieldcost){ 
 
-            cc++;
+            var id = $(this).data('id');
 
-            //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+            $.ajax({
 
-            var $clone =  $('.so_row_add:first').clone();
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/View",
 
-            $clone.find("input").val("");
+                method: "POST",
 
-            //$clone.find("select").val("");
+                data: {
+                    id: id
+                },
 
-            $clone.find(".debit_account_select2_add").val('');
+                success: function(data) {
 
-            $clone.find(".debit_account_select2_add").removeAttr('data-select2-id');
+                    if (data) {
 
-            $clone.find('.select2').remove();
+                        var data = JSON.parse(data);
 
-            $clone.find(".sl_no").html(cc);
+                        $('#view_reference').html(data.pay.pcv_voucher_no);
 
-            $clone.find(".del_elem").show();
+                        $('#view_date').html(FormatDate(data.pay.pcv_date));
 
-            $clone.find('.add_invoices').addClass('disabled');
+                        $('#view_payment_method').html(data.pay.rm_name);
 
-            $clone.insertAfter('.so_row_add:last');
+                        $('#view_debit_account').html(data.pay.ca_name);
 
-            SOSelect2();
+                        $('#view_payment_invoices').html(data.invoices);
 
-            InitAccountsSelect2('.debit_account_select2_add','.so_row_add');
 
-            }
+                        if (data.pay.pcv_pay_method == "1") {
+
+                        $('.view_cheque_sec').removeClass("d-none");
+
+                        if ((data.pay.pcv_cheque_copy != "") && (data.pay.pcv_cheque_copy != null) ) {
+                            
+                            $('#view_cheque_file').html('<a href="<?= base_url(); ?>uploads/Payments/' + data.pay.pcv_cheque_copy + '" target="_blank">View </a>');
+                        } else {
+                            $('#view_cheque_file').html("-");
+                        }
+
+                        $('#view_cheque_no').html(data.pay.pcv_cheque_no);
+
+                        $('#view_cheque_date').html(data.pay.pcv_cheque_date);
+
+                        } else {
+
+                        $('.view_cheque_sec').addClass("d-none");
+
+                        }
+                        
+
+                        if (data.pay.pcv_pay_method == "2") {
+                            $('#view_bank').html('-');
+                        } else {
+                            $('#view_bank').html(data.pay.bank_name);
+                        }
+
+                        $('#total_payment_amount_view').html(data.pay.total_amount);
+
+
+                        $('#ViewModal').modal('show');
+
+
+                    } else {
+                        alertify.error('Something went wrong!').delay(8).dismissOthers();
+                    }
+
+                }
+
 
             });
 
-            // ####
+
+        });
+
+        /*####*/
+
+
+
+        /* Fetch Invoices */
+
+        $("body").on('click', '.add_invoices', function() {
+
+            var parent = $(this).closest('tr');
+
+            var c_account = parent.find('.debit_account');
+
+            // console.log(c_account.val());
+
+            var c_amount = parent.find('.credit_amount');
+
+            if (c_account.val() == "") {
+
+                alertify.error('Select Debit Account!').delay(3).dismissOthers();
+
+                return false;
+
+            }
+
+
+            if (c_amount.val() == "") {
+
+                alertify.error('Enter Amount!').delay(3).dismissOthers();
+
+                c_amount.focus();
+
+                return false;
+
+            }
+
+            //var id=1;
+
+
+            /*
+            if (!$("#add_form").valid()) {
+                alertify.error('Fill required fields!').delay(3).dismissOthers();
+                return false;
+            }
+                */
+
+
+            /*
+            if ($('#added_id').val() == '') {
+                $('#add_form').submit();
+
+                if (!$("#add_form").valid()) {
+                    alertify.error('Fill required fields!').delay(3).dismissOthers();
+                    return false;
+                }
+
+            }
+                */
+
+
+            /*
+            var checkValueInterval = setInterval(function() {
+                if ($('#added_id').val() !== '') {
+                    clearInterval(checkValueInterval);
+            */
+
+
+            var pid = $('#added_id').val();
+
+            var id = c_account.val(); //Customer_ID
+
+            var credit_date = parent.find('.credit_date').val();
+
+            var credit_amount = parent.find('.credit_amount').val();
+
+            var credit_narration = parent.find('.credit_narration').val();
+
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchInvoices",
+
+                method: "POST",
+
+                data: {
+                    id: id,
+                    cdate: credit_date,
+                    camount: credit_amount,
+                    cnarration: credit_narration,
+                    pid: pid
+                },
+
+                dataType: "json",
+
+                success: function(data) {
+
+                    if (data.status == 0) {
+                        alertify.error('No Invoices Found!').delay(3).dismissOthers();
+
+                        $('#AddModal').modal('show');
+
+                        return false;
+                    }
+
+                    $('#invoices_sec').hide().html(data.invoices).fadeIn(200);
+
+                    $('#AddModal').modal('hide');
+
+                    $('#fifo_add').attr('data-total', credit_amount);
+
+                    $('body #fifo_add').data('total', credit_amount);
+
+                    $('body #add_poadvance_btn').data('vendor', data.vendor_id);
+
+                    $('body #add_poadvance_btn').attr('data-vendor',data.vendor_id);
+
+                    $('body #add_poadvance_btn').data('debitid', data.pd_id);
+
+                    $('body #add_poadvance_btn').attr('data-debitid',data.pd_id);
+
+
+                    $('#InvoicesModal').modal('show');
+
+                    $('.invoice_total').html(credit_amount);
+
+                    $('.invoice_adjusted').html('0');
+
+                    $('.invoice_balance').html('0');
+
+                }
+
+
+            });
+
+
+            /*
+        } else {
+                    //console.log('No'); // Logging for debugging purposes
+                }
+            }, 100);
+            */
+
+
+        });
+
+        /*##*/
+
+
+
+        $('body').on('click', '#fifo_add', function() {
+
+            var total = $(this).attr('data-total');
+
+            $('.invoice_receipt_amount').each(function() {
+
+                parent = $(this).closest('tr');
+
+                invoice_total = parent.find('.invoice_total_amount').val();
+
+                var fill_amount = Math.min(total, invoice_total);
+
+                parent.find('.invoice_receipt_amount').val(fill_amount);
+
+                total -= fill_amount;
+
+            });
+
+
+        });
 
 
 
 
 
-              /*account head delete*/ 
-        $("body").on('click', '.delete_btn', function(){ 
-            
+
+        /* Edit Invoice Start */
+
+        $("body").on('click', '.edit_invoice', function() {
+
+            var id = $(this).data('id');
+
+            $('#view' + id + '').find('.edit').show();
+
+            $('#view' + id + '').find('.view').hide();
+
+            $('#pd_id_edit').val(id);
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/EditInvoice",
+
+                method: "POST",
+
+                data: {
+                    inv_id: id
+                },
+
+                success: function(data) {
+                    var data = JSON.parse(data);
+
+                    $('#ri_date_edit').val(data.ri.ri_date);
+
+                    $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
+
+                    $('#ri_amount_edit').val(data.ri.ri_amount);
+
+                    $('#ri_remarks_edit').val(data.ri.ri_remarks);
+
+                }
+
+            });
+
+            //$('#EditModal').modal('hide');
+
+            //$('#InvoiceEditModal').modal('show');
+
+        });
+
+
+
+
+        //Cancel Credit Edit
+
+        $('body').on('click', '.cancel_invoice_btn', function() {
+
+            var id = $(this).data('id');
+
+            $('#view' + id + '').find('.edit').hide();
+
+            $('#view' + id + '').find('.view').show();
+
+        });
+
+
+        //
+
+
+
+        /*cost calculation add more*/
+
+        var max_fieldcost = 30;
+
+        var cc = $('.invoice_row').length;
+
+        $("body").on('click', '.add_more', function() {
+
+            var cc = $('.invoice_row').length;
+
+            if (cc < max_fieldcost) {
+
+                cc++;
+                //$(".cost_cal").append("<div class='row cost_cal_row'><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Material / Services</label><select id='quotation_material' class='form-control quotation_material_clz'><option value='' selected disabled>Select Material / Services</option></select></div><div class='col-md-3 col-lg-3'><label for='basiInput' class='form-label'>Qty</label><input type='number' name='qd_qty' class='form-control cost_qty' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Rate</label><input type='number' name='qd_rate' class='form-control cost_rate' required></div><div class='col-md-3 col-lg-3'><label for='basicInput' class='form-label'>Amount</label><input readonly type='number' name='qd_amount' class='form-control cost_amount' required style='width:95%'></div><div class='remove-cost'><div class='remainpass cost_remove'><i class='ri-close-line'></i></div></div></div>");
+
+                var $clone = $('.invoice_row:first').clone();
+
+                $clone.find("input").val("");
+
+                $clone.find("select").val("");
+
+                $clone.find(".debit_account_select2").val('');
+
+                $clone.find(".debit_account_select2").removeAttr('data-select2-id');
+
+                $clone.find(".so_select2_add").val('');
+
+                $clone.find(".so_select2_add").removeAttr('data-select2-id');
+
+                $clone.find('.select2').remove();
+
+                $clone.find(".sl_no").html(cc);
+
+                $clone.find(".del_elem").show();
+
+                //$clone.find('.credit_sl_no').val('2');
+
+                $clone.insertAfter('.invoice_row:last');
+
+                slno();
+
+                InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+                SOSelect2();
+
+
+            }
+
+        });
+
+
+
+        $(document).on("click", ".del_elem", function() {
+            $(this).closest('.invoice_row').remove();
+            cc--;
+            //totalCalcutate();                                                                           
+            //grossCalculate();
+            slno();
+        });
+
+        /**/
+
+
+        function slno() {
+
+            var pp = 1;
+
+            $('body .invoice_row').each(function() {
+
+                $(this).find('.credit_sl_no').val(pp);
+
+                pp++;
+
+            });
+
+        }
+
+
+
+
+
+
+
+        /*account head update*/
+        $(document).ready(function() {
+            $('#edit_form').submit(function(e) {
+
+                e.preventDefault();
+
+                $.ajax({
+
+                    url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Update",
+
+                    method: "POST",
+
+                    //data : $('#edit_form').serialize(),
+
+                    data: new FormData(document.getElementById("edit_form")),
+
+                    processData: false,
+
+                    contentType: false,
+
+                    success: function(data) {
+
+                        var data = JSON.parse(data);
+
+                        if (data.status == 0) {
+
+                            alertify.error(data.msg).delay(3).dismissOthers();
+
+                            return false;
+
+                        }
+
+                        $('#EditModal').modal('hide');
+
+                        alertify.success('Data Updated Successfully').delay(8).dismissOthers();
+
+                        datatable.ajax.reload(null, false);
+                    }
+
+
+                });
+            });
+        });
+        /*###*/
+
+
+
+        $('#AddModal .btn-close').click(function() {
+
+            //$('#AddModal').on('hidden.bs.modal', function () {
+
+            var stat = $('#AddModal #add_saved').val();
+
+            if (stat == "no") {
+                if ($('#added_id').val() != "") {
+
+                    var id = $('#added_id').val();
+
+                    $.ajax({
+
+                        url: "<?php echo base_url(); ?>Accounts/Payments/Delete",
+
+                        method: "POST",
+
+                        data: {
+                            id: id
+                        },
+
+                        success: function(data) {
+                            //alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+
+                            datatable.ajax.reload(null, false)
+                        }
+                    })
+
+                }
+            }
+
+        })
+
+
+
+        /*account head delete*/
+        $("body").on('click', '.delete_btn', function() {
+
             if (!confirm('Are you absolutely sure you want to delete?')) return;
             var id = $(this).data('id');
             $.ajax({
 
-                url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Delete",
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Delete",
 
-                method : "POST",
+                method: "POST",
 
-                data: {id: id},
+                data: {
+                    id: id
+                },
 
-                success:function(data)
-                {
+                success: function(data) {
                     alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
 
-                    datatable.ajax.reload( null, false )
+                    datatable.ajax.reload(null, false)
                 }
 
 
@@ -1204,585 +2127,20 @@
 
 
 
+        /*data table start*/
 
-            // Delete Add More Field
 
-            $(document).on("click", ".del_elem", function() 
-            {
+        function initializeDataTable() {
 
-            $(this).closest('.so_row_add').remove();
 
-            var sl_no =1;
-
-            $('body .so_row_add').each(function()
-            {
-
-            $(this).find('.sl_no').html(sl_no);
-
-            sl_no++;
-
-            });
-
-            totalCalcutate();  
-
-            });
-
-            //#####
-
-
-
-            //Calcuate Total On Amount Keyup
-
-            $("body").on('keyup', '.pcv_amount', function(){ 
-
-            totalCalcutate();    
-
-            });
-
-            //#######
-
-
-
-
-             /* Show Cheque Fields  */
-
-            /*
-            $('select[name=pcv_pay_method]').change(function(){
-
-            if($(this).children(':selected').text()=="Cheque")
-            {
-            $('.cheque_sec').removeClass("d-none");
-            }
-            else
-            {
-            $('.cheque_sec').addClass("d-none");
-            }
-
-            });
-            */
-
-            /* ### */
-
-
-            /* If Cheque  */
-
-
-        $('select[name=pcv_pay_method]').change(function() {
-
-        if ($(this).children(':selected').text() == "Cheque") {
-            $('.cheque_sec').removeClass("d-none");
-        } else {
-            $('.cheque_sec').addClass("d-none");
-        }
-
-        if ($(this).children(':selected').text() == "Cash") {
-            $('#bank_sec_add').addClass("d-none");
-
-        } else {
-            $('#bank_sec_add').removeClass("d-none");
-        }
-
-        if($(this).children(':selected').val() == "")
-        {
-            $('#bank_sec_add').addClass("d-none");
-        }
-
-        });
-
-
-
-
-
-        /* End Add Petty Cash Voucher */
-
-
-          
-
-
-        /*
-        function totalCalcutate()
-        {
- 
-        var total = 0;
-        
-        $('body .pcv_amount').each(function()
-        {
-
-        var sub_tot = $(this).val();
-
-        total += parseInt(sub_tot)||0;
-
-        });
-
-        $('#total_amount_inp').val(total);
-
-        $('#total_amount_disp').html(total);
-
-
-        }
-        */
-
-        
-        
-
-    /* Start Edit Petty Cash Voucher */
-
-
-    //Onclick Edit Show And Populate Modal
-    $("body").on('click', '.edit_btn', function(){ 
-
-    var id = $(this).data('id');
-
-
-    $("#EditModal :input").prop("disabled", false);
-
-    $('#EditModal .submit_btn').show();
-
-    $('#EditModal .edit_invoice').show();
-
-    $('#EditModal .view_linked').show();
-
-
-
-    $.ajax({
-
-    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Edit",
-
-    method : "POST",
-
-    data: {id: id},
-
-    success:function(data)
-    {   
-        if(data)
-        {
-
-        var data = JSON.parse(data);
-
-        $('#pcv_id_edit').val(data.pcv.pcv_id);
-
-        $('#pcv_date_edit').val(data.pcv.pcv_date);
-
-        $('#pcv_credit_edit').val(data.pcv.ca_name);
-
-        $('#pcv_pay_method').val(data.pcv.pcv_pay_method);
-
-        $('#total_amount_edit').html(data.pcv.pcv_total);
-
-        $('#sel_invoices_edit').html(data.debit);
-
-        $('#EditModal').modal('show');
-        
-        }
-        else
-        {
-        alertify.error('Something went wrong!').delay(8).dismissOthers();  
-        }
-        
-        }
-
-
-        });
-
-
-        });
-
-        //######
-
-
-
-        //Update Petty Cash Voucher
-
-        $(document).ready(function(){
-            $('#edit_form').submit(function(e){
-
-                e.preventDefault();
-                
-                $.ajax({
-
-                    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Update",
-
-                    method : "POST",
-
-                    data : $('#edit_form').serialize(),
-
-                    success:function(data)
-                    {
-                        
-                        $('#EditModal').modal('hide');
-
-                        alertify.success('Data Updated Successfully').delay(8).dismissOthers();
-
-                        datatable.ajax.reload( null, false );
-                    }
-
-
-                });
-            });
-        });
-
-        /*###*/
-
-
-
-
-        /* End Edit Petty Cash Voucher*/
-
-
-
-
-
-
-        //Onclick Edit Show And Populate Modal
-    $("body").on('click', '.view_btn', function(){ 
-
-var id = $(this).data('id');
-
-
-$.ajax({
-
-url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/Edit",
-
-method : "POST",
-
-data: {id: id},
-
-success:function(data)
-{   
-    if(data)
-    {
-
-    var data = JSON.parse(data);
-
-    $('#pcv_id_edit').val(data.pcv.pcv_id);
-
-    $('#pcv_date_edit').val(data.pcv.pcv_date);
-
-    $('#pcv_credit_edit').val(data.pcv.pcv_credit_account);
-
-    $('#pcv_pay_method').val(data.pcv.pcv_pay_method);
-
-    $('#total_amount_edit').html(data.pcv.pcv_total);
-
-    $('#sel_invoices_edit').html(data.debit);
-
-
-    $("#EditModal :input").prop("disabled", true);
-
-    $('#EditModal .btn-close').prop("disabled",false);
-
-    $('#EditModal .submit_btn').hide();
-
-    $('#EditModal .edit_invoice').hide();
-
-    $('#EditModal .view_linked').hide();
-
-
-    $('#EditModal').modal('show');
-    
-    }
-    else
-    {
-    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-    }
-    
-    }
-
-
-    });
-
-
-    });
-
-    //######
-
-
-
-
-    $("body").on('click', '.add_invoices', function(e){ 
-
-    alertify.error('No invoices found!').delay(8).dismissOthers();
-
-    });
-
-    
-
-
-
-
-        /* Start Debit Section */
-
-
-
-        //Add 
-        
-        $("body").on('submit', '#invoices_add', function(e){ 
-
-        e.preventDefault();
-
-        /*
-        $('#sel_invoices').html('');
-
-        var form = $(this);
-
-        var tbody =  $('#sel_invoices');
-
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/Payments/SelectedInvoices",
-
-        method : "POST",
-
-        data: form.serialize(),
-
-        processData: false,
-
-        success:function(data)
-        {
-
-        var data = JSON.parse(data);
-
-        //console.log(data);
-
-        $.each(data.html, function(key,value) {
-        //alert(value.so_o);
-        tbody.append('<tr><td>'+value['pf_date']+'</td><td><input type="hidden" name="pf_id[]" value="'+value['pf_id']+'">'+value['pf_uid']+'</td><td><input class="form-control" name="pf_remarks[]" type="text"></td><td>'+value['pf_total_cost']+'</td></tr>');
-
-        }); 
-
-        $('#total_amount').html(data.total);
-
-        $('input[name=p_amount]').val(data.total);
-
-
-        }
-
-        });
-
-        */
-
-
-
-        $('#AddModal').modal('show');
-
-        $('#InvoicesModal').modal('hide');
-
-        alertify.success('Saved!').delay(8).dismissOthers();
-
-
-        });
-
-
-
-
-
-    /* Edit Invoice Start */
-
-     $("body").on('click', '.edit_invoice', function(){
-
-    var id = $(this).data('id'); 
-
-    $('#view'+id+'').find('.edit').show();
-
-    $('#view'+id+'').find('.view').hide();
-
-    $('#pd_id_edit').val(id);
-
-    $.ajax({
-
-    url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/EditInvoice",
-
-    method : "POST",
-
-    data: {inv_id: id},
-
-    success:function(data)
-    {   
-        var data = JSON.parse(data);
-
-        $('#ri_date_edit').val(data.ri.ri_date);
-
-        $('#ri_credit_account_edit').val(data.ri.ri_credit_account);
-
-        $('#ri_amount_edit').val(data.ri.ri_amount);
-
-        $('#ri_remarks_edit').val(data.ri.ri_remarks);
-
-    }
-
-    });
-
-    //$('#EditModal').modal('hide');
-
-    //$('#InvoiceEditModal').modal('show');
-
-    });
-
-
-
-
-    //Cancel Credit Edit
-
-    $('body').on('click','.cancel_invoice_btn',function(){
-
-        var id = $(this).data('id'); 
-
-        $('#view'+id+'').find('.edit').hide();
-
-        $('#view'+id+'').find('.view').show();
-
-        });
-
-
-        //
-
-
-
-
-
-        //Update Invoices
-
-        $('body').on('click','.update_invoice_btn',function(){
-
-        var id = $(this).data('id'); 
-
-        parent = $(this).closest('.view_debit');
-
-        var debit_id = parent.find('input[name=debit_id]').val();
-
-        var date = parent.find('input[name=date]').val();
-
-        var debit_account = parent.find('select[name=c_name]').val();
-
-        var amount = parent.find('input[name=amount]').val();
-
-        var narration = parent.find('input[name=remarks]').val();
-
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/PettyCashVoucher/UpdateDebitDetails",
-
-        method : "POST",
-
-        data: {d_id:debit_id,d_date:date,d_account:debit_account,d_amount:amount,d_narration:narration},
-
-        success:function(data)
-        {
-
-        var data = JSON.parse(data);
-
-        $('#view'+data.inv_id+'').html(data.debit);
-
-        $('#total_amount_edit').html(data.total);
-
-        $('#view'+data.inv_id+'').find('.edit').hide();
-
-        $('#view'+data.inv_id+'').find('.view').fadeIn(200);
-
-        }
-        }); 
-
-        });
-
-        //#########
-
-
-        //Cancel Credit Edit
-
-        $('body').on('click','.cancel_invoice_btn',function(){
-
-        var id = $(this).data('id'); 
-
-        $('#view'+id+'').find('.edit').hide();
-
-        $('#view'+id+'').find('.view').fadeIn(200);
-
-        });
-
-
-        //
-
-
-
-
-
-
-
-
-
-
-
-        /* End Debit Section */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*sales order  droupdrown*/
-         $(".order_select").select2({
-        placeholder: "Sales order No",
-        theme : "default form-control-",
-        ajax: {
-                url: "<?= base_url(); ?>Accounts/PettyCashVoucher/FetchTypes",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params){
-                    //console.log(data);
-                    //  NO NEED TO PARSE DATA `processResults` automatically parse it
-                    //var c = JSON.parse(data);
-                    console.log(data);
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.so_id, text: item.so_order_no}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
-        /*###*/
-
-
-
-
-
-
-         /*data table start*/ 
-
-
-         function initializeDataTable() {
-
-            datatable = $('#datatable').DataTable({
+            datatable = $('#accountTable').DataTable({
                 'stateSave': true,
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
                     'url': "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchData",
-                    'data': function (data) {
+                    'data': function(data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
                         var csrfHash = $('.txt_csrfname').val(); // CSRF hash
@@ -1792,266 +2150,960 @@ success:function(data)
                             [csrfName]: csrfHash, // CSRF Token
                         };
                     },
-                    dataSrc: function (data) {
+                    dataSrc: function(data) {
                         // Update token hash
                         $('.txt_csrfname').val(data.token);
                         // Datatable data
                         return data.aaData;
                     }
                 },
-                'columns': [
-                    { data: 'pcv_id' },
-                    { data: 'pcv_date'},
-                    { data: 'pcv_voucher_no' },
-                    { data :'pcv_credit_account'},
-                    { data: 'action' },
+                'columns': [{
+                        data: 'pcv_id'
+                    },
+                    {
+                        data: 'pcv_voucher_no'
+                    },
+                    {
+                        data: 'pcv_date'
+                    },
+                    {
+                        data: 'pcv_pay_method'
+                    },
+                    {
+                        data: 'bank_name'
+                    },
+                    {
+                        data: 'pcv_total'
+                    },
+                    {
+                        data: 'action'
+                    },
                 ]
-                
+
             });
+        }
+
+        $(document).ready(function() {
+            initializeDataTable();
+        });
+        /*###*/
+
+
+
+
+
+        /* If Cheque  */
+
+        $('select[name=p_method]').change(function() {
+
+            if ($(this).children(':selected').text() == "Cheque") {
+                $('.cheque_sec').removeClass("d-none");
+            } else {
+                $('.cheque_sec').addClass("d-none");
             }
 
-            $(document).ready(function () {
-            initializeDataTable();
+            if ($(this).children(':selected').text() == "Cash") {
+                $('#bank_sec_add').addClass("d-none");
+
+            } else {
+                $('#bank_sec_add').removeClass("d-none");
+            }
+
+            if($(this).children(':selected').val() == "")
+            {
+                $('#bank_sec_add').addClass("d-none");
+            }
+
+        });
+
+
+
+
+
+
+        /* ### */
+
+
+
+        /* Show Invoices after reference */
+
+
+        $('input[name=amount]').focusout(function() {
+
+
+            $('#AddModal').modal('hide');
+            $('#InvoicesModal').modal('show');
+
+
+        });
+
+
+        /* ### */
+
+
+
+
+
+
+        $('#sales_order_add').submit(function(e) {
+
+            e.preventDefault();
+
+            alertify.success('Saved!').delay(3).dismissOthers();
+
+            $('#SalesOrderModal').modal('hide');
+
+            $('#AddModal').modal('show');
+
+
+        });
+
+
+
+
+
+        /* Sales Order  */
+
+        $("body").on('click', '.lpo_add_more', function() {
+
+            var cc = $('.lpo_row').length;
+
+            if (cc < 30) {
+
+                cc++;
+
+                var $clone = $('.lpo_row:first').clone();
+
+                $clone.find("input").val("");
+
+                $clone.find("select").val("");
+
+                $clone.find(".lpo_slno").html(cc);
+
+                $clone.find(".lpo_del_elem").show();
+
+                $clone.insertAfter('.lpo_row:last');
+
+            }
+
+        });
+
+
+        $(document).on("click", ".lpo_del_elem", function() {
+            $(this).closest('.lpo_row').remove();
+            cc--;
+            //totalCalcutate();                                                                           
+            //grossCalculate();
+        });
+
+        /**/
+
+        function lpo_slno() {
+
+            var pp = 1;
+
+            $('body .lpo_row').each(function() {
+
+                $(this).find('.lpo_slno').html('<td class="si_no">' + pp + '</td>');
+
+                pp++;
+
             });
 
-            /*###*/
+        }
 
 
-
-
-                /* Fetch Invoices */
-
-     
-
+        /* ### */
 
 
 
 
 
+        $("body").on('submit', '#invoices_add', function(e) {
 
-      /* Sales Order  */
+            e.preventDefault();
 
-      $("body").on('click', '.lpo_add_more', function(){
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
 
-var cc = $('.lpo_row').length;
+            var invoice_total = 0.00;
 
-if(cc < 30){ 
+            $('.invoice_receipt_amount').each(function() {
 
-cc++;
+                parent = $(this).closest('tr');
 
-var $clone =  $('.lpo_row:first').clone();
+                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
 
-$clone.find("input").val("");
+            })
 
-$clone.find("select").val("");
+            $('.po_advance_amount').each(function() {
 
-$clone.find(".lpo_slno").html(cc);
+                parent = $(this).closest('tr');
 
-$clone.find(".lpo_del_elem").show();
+                invoice_total += parseFloat(parent.find('.po_advance_amount').val()) || 0;
 
-$clone.insertAfter('.lpo_row:last');
+            })
 
-}
+            if (invoice_total > total) {
 
-});
+                alertify.error('Amount should not be greater than credit amount!').delay(3).dismissOthers();
 
+                return false;
 
-$(document).on("click", ".lpo_del_elem", function() 
-{
-$(this).closest('.lpo_row').remove();
-cc--;
-//totalCalcutate();                                                                           
-//grossCalculate();
-});
-
-/**/
-
-function lpo_slno(){
-
-var pp =1;
-
-$('body .lpo_row').each(function() {
-
-$(this).find('.lpo_slno').html('<td class="si_no">' + pp + '</td>');
-
-pp++;
-
-});
-
-}
+            }
 
 
-/* ### */
+            if (invoice_total < total) {
 
+                alertify.error('Total payment amount should be adjusted!').delay(3).dismissOthers();
 
+                return false;
 
+            }
 
+            $('#invoices_add').serialize();
 
+            $.ajax({
 
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/AddInvoices",
 
+                method: "POST",
 
+                data: $(this).serialize(),
 
+                success: function(data) {
 
+                    alertify.success('Saved!').delay(3).dismissOthers();
 
+                    $('#InvoicesModal').modal('hide');
 
-$('#sales_order_add').submit(function(e){
+                    $('#AddModal').modal('show');
 
-e.preventDefault();
-
-alertify.success('Saved!').delay(3).dismissOthers();   
-
-$('#SalesOrderModal').modal('hide');
-
-$('#AddModal').modal('show');
-
-    
-
-});
-
-
-
-
-/* Accounts Init Select 2 */
-
-function InitAccountsSelect2(classname,parent){
-                    $('body '+classname+':last').select2({
-                        placeholder: "Select Account",
-                        theme : "default form-control-",
-                        dropdownParent: $($(''+classname+':last').closest(''+parent+'')),
-                        ajax: {
-                            url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
-                            dataType: 'json',
-                            delay: 250,
-                            cache: false,
-                            minimumInputLength: 1,
-                            allowClear: true,
-                            data: function (params) {
-                                return {
-                                    term: params.term,
-                                    page: params.page || 1,
-                                };
-                            },
-                            processResults: function(data, params) {
-                            
-                                var page = params.page || 1;
-                                return {
-                                    results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
-                                    pagination: {
-                                        more: (page * 10) <= data.total_count
-                                    }
-                                };
-                            },              
-                        }
-                    })
                 }
 
-                
-                InitAccountsSelect2('.add_credit_account_select2','.select2_parent');
-
-                InitAccountsSelect2('.edit_credit_account_select2','.select2_parent');
-
-                InitAccountsSelect2('.debit_account_select2','.account_select2_parent_add');
-
-                /* ### */
-                
-            //
-
-
-             /* Select 2 Remove Validation On Change */
-             $(".add_credit_account_select2").on("change",function(e) {
-                    $(this).parent().find(".error").removeClass("error");         
-                });
-                /*###*/
-
-
-
-
-                function SOSelect2() {
-                            $('.sales_order_add').select2({
-                                placeholder: "Select Sales Order", // This is the placeholder
-                                theme: "default form-control-",
-                                dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
-                                allowClear: true, // Allows clearing the selection
-                                ajax: {
-                                    url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
-                                    dataType: 'json',
-                                    delay: 250,
-                                    cache: false,
-                                    minimumInputLength: 1,
-                                    data: function(params) {
-                                        return {
-                                            term: params.term,
-                                            page: params.page || 1,
-                                        };
-                                    },
-                                    processResults: function(data, params) {
-                                        var page = params.page || 1;
-                                        return {
-                                            results: [
-                                                { id: null, text: "Select Sales Order" }, // Default null option
-                                                ...$.map(data.result, function(item) {
-                                                    return {
-                                                        id: item.so_id,
-                                                        text: item.so_reffer_no
-                                                    };
-                                                })
-                                            ],
-                                            pagination: {
-                                                more: (page * 10) <= data.total_count
-                                            }
-                                        };
-                                    },
-                                }
-                            });
-                        }
-                        SOSelect2();
-
-
-
-
-
-
-
-
-
-
-
-});
-
-
-
-
-        function totalCalcutate()
-        {
-
-            var total= 0;
-
-            $('body .pcv_amount').each(function()
-            {
-            var sub_tot = parseFloat($(this).val());
-            total += parseFloat(sub_tot.toFixed(2))||0;
-               //total = Number(total).toFixed(2)
             });
 
-           total = total.toFixed(2);
 
-           $('#total_amount_inp').val(total);
+        });
 
-           $('#total_amount_add').val(total);
 
-           $('#total_amount_disp').html(total);
+
+
+
+        $('.add_model_btn').click(function() {
+
+            $('#added_id').val('');
+
+            $('#add_saved').val("no");
+
+            $('#total_amount').html('0.00');
+
+            $('#total_amount_val').val('0.00');
+
+            //$('.add_credit_account_select2').val('').trigger('change');
+
+            $('#AddModal .debit_account_select2').val('').trigger('change');
+
+            $('#add_form')[0].reset();
+
+            $('.invoice_row').not(':first').remove();
+
+            InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchReference",
+
+                method: "GET",
+
+                success: function(data) {
+
+                    $('#uid').val(data);
+
+                }
+
+            });
+
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/ResetSess",
+
+            method: "GET",
+
+            success: function() {
+            }
+            })
+
+
+        });
+
+
+       
+
+        $(document).on('input change', '.invoice_receipt_amount,.po_advance_amount',function(event) {
+            // Debugging: Check if the function is called and with correct element
+       
+
+            event = event || window.event;
+
+            parent = $(this).closest('tr');
+
+            var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
+            var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
+
+            var val = parseFloat($(this).val()) || 0; // Current value entered
+            var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
+
+          
+
+            // Ensure the value doesn't exceed the maximum allowed for the field
+            /*
+            if (val > max) {
+                $(this).val(max);
+                $(this).trigger('change');
+                val = max; // Set val to max for further calculations
+            }
+            */
+
+            // Calculate the total of all other fields
+            var sum = 0;
+            $('.invoice_receipt_amount').each(function() {
+                if (this !== event.target) {
+                    sum += parseFloat($(this).val()) || 0;
+                }
+            });
+
            
-           var resultQuotation = numberToWords.toWords(total);
 
-            $(".sales_quotation_amount_in_word").text(resultQuotation);
+            // If the sum plus the current value exceeds the initial balance
+            if (sum + val > receipt_total) {
+                // Adjust the current field value so the sum equals the receipt_total
+                val = receipt_total - sum;
+                $(this).val(val).trigger('change');
+            }
 
-            $(".sales_quotation_amount_in_word_val").val(resultQuotation);
+          
+            // Handle the checkbox based on the value entered
+            if (max_receipt != val) {
+                parent.find('.invoice_add_check').prop('checked', false);
+            } else {
+                parent.find('.invoice_add_check').prop('checked', true);
+            }
+
+            // Update balance and other totals if necessary
+            CalcBalance();
+        });
+
+
+
+
+
+
+        function CalcBalance() {
+
+            LinkAdjusted = 0;
+            // alert();
+
+            balance = 0;
+
            
+
+            $('body .invoice_receipt_amount').each(function() {
+
+                LinkAdjusted += parseFloat($(this).val()) || 0;
+
+            });
+
+            LinkTotal = parseFloat($('.credit_amount').val()) || 0;
+
+
+             $('body .po_advance_amount').each(function() {
+
+                LinkAdjusted += parseFloat($(this).val()) || 0;
+
+             });
+
+            //alert('link total : '+LinkTotal+' | Link Adjusted : '+LinkAdjusted)
+
+            balance = LinkTotal - LinkAdjusted;
+
+            balance = Math.max(0, balance);
+
+            $('.invoice_balance').html(balance);
+
+
+
+            if (LinkAdjusted > LinkTotal) {
+
+                LinkAdjusted = LinkTotal;
+
+            }
+
+            //  alert(balance + '|' + LinkAdjusted);
+
+
+            $('.invoice_adjusted').html(LinkAdjusted);
+
+
+          //  alert(balance);
+
+        }
+
+        if (balance < LinkAdjusted) {
+
+            //return false;
+
+        } else {
+
+            //return true;    
 
         }
 
 
 
 
-</script>
+        function CalcBalanceEdit() {
 
+            LinkAdjusted = 0;
+
+            balance = 0;
+
+            $('#InvoicesLinkEditModal .invoice_receipt_amount').each(function() {
+
+                LinkAdjusted += parseFloat($(this).val()) || 0;
+
+            });
+
+
+            $('body .so_receipt_amount').each(function() {
+
+                LinkAdjusted += parseFloat($(this).val()) || 0;
+
+            });
+
+            balance = LinkTotal - LinkAdjusted;
+
+
+            balance = Math.max(0, balance);
+
+            $('.invoice_balance_edit').html(balance);
+
+            $('.invoice_adjusted_edit').html(LinkAdjusted);
+
+        }
+
+
+
+
+        // $("body").on('change', '.invoice_add_check', function() {
+
+        //     parent = $(this).closest('tr');
+
+        //     var total = $('#fifo_add').data('total');
+
+        //     if ($(this).prop('checked') == true)
+
+        //     {
+
+        //         var total_amount = parent.find('.invoice_total_amount').val();
+
+        //         var fill_amount = Math.min(total, total_amount);
+
+        //         parent.find('.invoice_receipt_amount').val(fill_amount);
+
+        //     } else {
+
+        //         parent.find('.invoice_receipt_amount').val(0);
+
+        //     }
+
+        //     $('.invoice_receipt_amount').trigger('change');
+
+
+        // });
+
+        $(document).on('change', '.invoice_add_check', function(event) {
+
+            parent = $(this).closest('tr');
+
+            // Parse the total and total_amount as floats to ensure numeric comparison
+            var total = parseFloat($('#fifo_add').data('total')) || 0;
+            var total_amount = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
+
+             console.log(total + ' | ' + total_amount);
+
+            // If total is less than total_amount, uncheck the box and prevent the default action
+            if (total < total_amount) {
+                //console.log("point 1");
+
+                // Uncheck the checkbox
+                $(this).prop('checked', false);
+
+                // Prevent the default action
+                event.preventDefault();
+                return false;
+            }
+
+            // If the checkbox is checked
+            if($(this).prop('checked') == true) {
+               // console.log("point 2");
+
+                // Fill the amount with the minimum between total and total_amount
+                var fill_amount = Math.min(total, total_amount);
+                parent.find('.invoice_receipt_amount').val(fill_amount);
+
+                // Trigger the change event on the receipt amount
+                parent.find('.invoice_receipt_amount').trigger('change');
+
+            }else{
+               // console.log("point 3");
+
+                // If unchecked, set the receipt amount to 0
+                parent.find('.invoice_receipt_amount').val(0);
+
+                // Trigger the change event on the receipt amount
+                parent.find('.invoice_receipt_amount').trigger('change');
+            }
+
+        });
+
+
+
+
+        $("body").on('keyup', '.credit_amount', function() {
+
+            value = parseFloat($(this).val()) || 0;
+
+            max = parseFloat($(this).attr('data-max')) || 0;
+
+
+
+            /*
+            if ((max != "") && (value > max)) {
+
+                alertify.error('Cannot be greater than pending amounts!').delay(3).dismissOthers();
+
+                $(this).val(max);
+
+            }
+
+
+
+            if (max == "") {
+
+                alertify.error('No pending amount to debit!').delay(3).dismissOthers();
+
+                $(this).val(max);
+
+            }
+            */
+
+
+            TotalAmount();
+
+        });
+
+
+
+
+        //Update Invoices
+
+        $('body').on('click', '.update_invoice_btn', function() {
+
+            var id = $(this).data('id');
+
+            parent = $(this).closest('.view_debit');
+
+            var debit_id = parent.find('input[name=debit_id]').val();
+
+            var date = parent.find('input[name=date]').val();
+
+            var debit_account = parent.find('select[name=c_name]').val();
+
+            var amount = parent.find('input[name=amount]').val();
+
+            var narration = parent.find('input[name=remarks]').val();
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/UpdateDebitDetails",
+
+                method: "POST",
+
+                data: {
+                    d_id: debit_id,
+                    d_date: date,
+                    d_account: debit_account,
+                    d_amount: amount,
+                    d_narration: narration
+                },
+
+                success: function(data) {
+
+                    var data = JSON.parse(data);
+
+                    $('#view' + data.inv_id + '').html(data.debit);
+
+                    $('#total_amount_edit').html(data.total);
+
+                    $('#view' + data.inv_id + '').find('.edit').hide();
+
+                    $('#view' + data.inv_id + '').find('.view').fadeIn(200);
+
+                }
+            });
+
+        });
+
+        //#########
+
+
+        //Cancel Credit Edit
+
+        $('body').on('click', '.cancel_invoice_btn', function() {
+
+            var id = $(this).data('id');
+
+            $('#view' + id + '').find('.edit').hide();
+
+            $('#view' + id + '').find('.view').fadeIn(200);
+
+        });
+
+
+
+
+
+        $("body").on('click', '.del_debit', function() {
+
+            if (!confirm('Delete this debit?')) {
+                return false;
+            }
+
+            var id = $(this).data('id');
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/DeleteDebit",
+
+                method: "POST",
+
+                data: {
+                    id: id
+                },
+
+                success: function(data) {
+
+                    var data = JSON.parse(data);
+
+                    $('#view' + id + '').fadeOut(300).remove();
+
+                    $('#total_amount_edit').html(data.total);
+
+                    alertify.error('Data Deleted Successfully').delay(3).dismissOthers();
+
+                }
+
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+
+        //
+
+
+
+
+        //New Edit
+
+
+
+        //Linked Edit View
+
+
+        $('body').on('click', '.edit_invoice_add', function() {
+
+            var pid = $('#p_id_edit').val();
+
+            var parent = $(this).closest('.edit_add_debit');
+
+            var date = parent.find('.debit_date').val();
+
+            var account = parent.find('.debit_account').val();
+
+
+            var amount = parent.find('.debit_amount').val();
+
+            var narration = parent.find('.debit_narration').val();
+
+            if ((date == "") || (account == "") || (amount == "")) {
+
+                alertify.error('Fill required fields').delay(3).dismissOthers();
+
+                return false;
+
+            }
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/EditAddDebit",
+
+                method: "POST",
+
+                data: {
+                    pid: pid,
+                    date: date,
+                    account: account,
+                    amount: amount,
+                    narration: narration
+                },
+
+                success: function(data) {
+
+                    var data = JSON.parse(data);
+
+                    $('#sel_invoices_edit').append(data.debit);
+
+                    $('#total_amount_edit').html(data.total);
+
+                    parent.find(':input').val('');
+
+                }
+            });
+
+
+        });
+
+
+
+
+
+        /* Accounts Init Select 2 */
+
+        function InitAccountsSelect2(classname, parent) {
+            $('body ' + classname + ':last').select2({
+                placeholder: "Select Account",
+                theme: "default form-control-",
+                dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
+                ajax: {
+                    url: "<?= base_url(); ?>Accounts/PettyCashVoucher/FetchAccounts",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function(params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function(item) {
+                                return {
+                                    id: item.ca_id,
+                                    text: item.ca_name
+                                }
+                            }),
+                            pagination: {
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },
+                }
+            })
+        }
+
+
+        InitAccountsSelect2('.add_credit_account_select2', '.select2_parent');
+
+        InitAccountsSelect2('.edit_credit_account_select2', '.select2_parent');
+
+        InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+        /* ### */
+
+
+        function SOSelect2() {
+                           
+                           $('.so_select2_add:last').select2({
+                               placeholder: "Select Sales Order", // This is the placeholder
+                               theme: "default form-control-",
+                               dropdownParent: $($('.so_select2_parent_add:last').closest('.invoice_row')),
+                               allowClear: true, // Allows clearing the selection
+                               ajax: {
+                                   url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                                   dataType: 'json',
+                                   delay: 250,
+                                   cache: false,
+                                   minimumInputLength: 1,
+                                   data: function(params) {
+                                       return {
+                                           term: params.term,
+                                           page: params.page || 1,
+                                       };
+                                   },
+                                   processResults: function(data, params) {
+                                       var page = params.page || 1;
+                                       return {
+                                           results: [
+                                               { id: null, text: "Select Sales Order" }, // Default null option
+                                               ...$.map(data.result, function(item) {
+                                                   return {
+                                                       id: item.so_id,
+                                                       text: item.so_reffer_no
+                                                   };
+                                               })
+                                           ],
+                                           pagination: {
+                                               more: (page * 10) <= data.total_count
+                                           }
+                                       };
+                                   },
+                               }
+                           });
+                          
+                       }
+                       SOSelect2();
+
+
+
+
+        /* Select 2 Remove Validation On Change */
+        $(".add_credit_account_select2").on("change", function(e) {
+            $(this).parent().find(".error").removeClass("error");
+        });
+        /*###*/
+
+
+
+
+        $('body').on('click', '#add_poadvance_btn', function() {
+
+            var vendor_id = $(this).data('vendor');
+
+            var debit_id = $(this).data('debitid');
+
+            //parent = $(this).closest('.invoice_row');
+
+            //var parent = $(this).closest('.invoice_row');
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Accounts/Payments/FetchPOAdvance",
+
+                method: "POST",
+
+                data: {
+                    vendor: vendor_id,
+                    d_id : debit_id
+                },
+
+                success: function(data) {
+
+                    var data = JSON.parse(data);
+
+                    $('#InvoicesModal').modal('hide');
+
+                    $('#AddPOAdvanceModal').modal('show');
+
+                    $('#purchase_order_add').html(data.po_rows);
+
+                }
+
+            });
+
+
+
+
+        });
+
+
+
+
+        $("body").on('submit', '#add_po_advance_form', function(e) {
+
+                    e.preventDefault();
+
+                    $('#add_po_advance_form').serialize();
+
+                    $.ajax({
+
+                        url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/AddPoAdvance",
+
+                        method: "POST",
+
+                        data: $(this).serialize(),
+
+                        success: function(data) {
+
+                            alertify.success('Saved!').delay(3).dismissOthers();
+
+                            $('#AddPOAdvanceModal').modal('hide');
+
+                            alertify.success('Saved!').delay(3).dismissOthers();
+
+                            $('#InvoicesModal').modal('show');
+
+                        }
+
+                    });
+
+
+                    });
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+    function TotalAmount() {
+
+        var total = 0;
+
+        $('body .credit_amount').each(function() {
+            var sub_tot = parseFloat($(this).val());
+
+            total += parseFloat(sub_tot.toFixed(2)) || 0;
+            //total = Number(total).toFixed(2)
+        });
+
+        total = total.toFixed(2);
+
+        $('#total_amount').html(total);
+
+        $('#total_amount_val').val(total);
+
+
+        var resultQuotation = total;
+
+        $(".sales_quotation_amount_in_word").text(resultQuotation);
+
+        $(".sales_quotation_amount_in_word_val").val(resultQuotation);
+
+
+    }
+</script>

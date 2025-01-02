@@ -17,7 +17,7 @@
         <a class="nav-link <?php if($uri->getSegment(3)=="JournalVouchers") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/JournalVouchers">Journal Vouchers</a>
     </li>
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="PettyCashVoucher") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/PettyCashVoucher" >Petty Cash voucher</a>
+        <a class="nav-link <?php if($uri->getSegment(3)=="PettyCashVoucher") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/PettyCashVoucher" >Petty Cash Voucher</a>
     </li>
 
     <li class="nav-item waves-effect waves-light">

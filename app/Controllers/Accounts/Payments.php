@@ -77,17 +77,18 @@ class Payments extends BaseController
         $i = 1;
         foreach ($records as $record) {
 
-            $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> 
-                       <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="' . $record->pay_id . '" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
-                       <a href="'.base_url().'Accounts/Payments/Print/'.$record->pay_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true" title="Print"></i> Print</a>
-                       <a href="javascript:void(0)" class="delete delete-color delete_btn d-none1" data-toggle="tooltip" data-id="' . $record->pay_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="' . $record->pay_id . '"><i class="ri-eye-fill"></i></a> 
+                       <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="' . $record->pay_id . '"><i class="ri-pencil-fill"></i></a>
+                       <a href="'.base_url().'Accounts/Payments/Print/'.$record->pay_id.'" target="_blank" class="print_color"><i class="ri-file-pdf-2-line " aria-hidden="true" title="Print"></i></a>
+                       <a href="javascript:void(0)" class="delete delete-color delete_btn d-none1" data-toggle="tooltip" data-id="' . $record->pay_id . '"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
 
             $data[] = array(
                 "pay_id" => $i,
-                'date' => date('d-m-Y', strtotime($record->pay_date)),
                 "pay_ref_no" => $record->pay_ref_no,
+                'pay_date' => date('d-m-Y', strtotime($record->pay_date)),
                 'pay_method' => $record->rm_name,
-                "bank" => $record->bank_name ?? "--",
+                "bank_name" => $record->bank_name ?? "-",
+                "pay_amount" => format_currency($record->pay_amount),
                 "action" => $action,
             );
             $i++;
@@ -137,6 +138,7 @@ class Payments extends BaseController
 
 
 
+    
     public function Add()
     {
 
@@ -342,13 +344,20 @@ class Payments extends BaseController
     public function UpdateInvoicePaid($id)
     {
 
+    //Payments
     $cond_payment = array('pdi_invoice' => $id);
 
     $updated_invoice_payment = $this->common_model->FetchSum('accounts_payment_debit_invoices','pdi_payment_amount',$cond_payment);
 
+    //Petty Cash
+    $cond_petty = array('pcdi_invoice' => $id);
+
+    $updated_invoice_petty = $this->common_model->FetchSum('accounts_petty_cash_debit_invoices','pcdi_payment_amount',$cond_petty);
+
+
     $advance_paid = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $id))->pv_advance;
 
-    $updated_invoice_paid = $updated_invoice_payment+$advance_paid;
+    $updated_invoice_paid = $updated_invoice_payment+$updated_invoice_petty+$advance_paid;
 
     $update_invoice['pv_paid'] = $updated_invoice_paid;
 
@@ -361,11 +370,17 @@ class Payments extends BaseController
     public function UpdatePOAdvance($id)
     {
 
+    //Payment
     $cond_advance_total = array('pa_purchase_order' => $id);
 
     $updated_po_advance = $this->common_model->FetchSum('accounts_payment_advances','pa_advance_amount',$cond_advance_total);
 
-    $update_po['po_advance_paid'] = $updated_po_advance;
+    //Petty Cash
+    $cond_petty_advance = array('pca_purchase_order' => $id);
+
+    $updated_po_advance_petty = $this->common_model->FetchSum('accounts_petty_cash_advances','pca_advance_amount',$cond_petty_advance);
+
+    $update_po['po_advance_paid'] = $updated_po_advance+$updated_po_advance_petty;
 
     $this->common_model->EditData($update_po,array('po_id' => $id),'pro_purchase_order');
     
@@ -457,7 +472,7 @@ class Payments extends BaseController
         <td>-</td>
         <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
         <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pd_payment_amount."' class='form-control'></td>
-        <td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>
+        <!--<td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";
 
         $debit_data_join = array(
@@ -658,9 +673,15 @@ class Payments extends BaseController
 
         $updated_invoice_payment = $this->common_model->FetchSum('accounts_payment_debit_invoices','pdi_payment_amount',$cond_payment);
     
+        //Petty Cash
+        $cond_petty = array('pcdi_invoice' => $id);
+ 
+        $updated_invoice_petty = $this->common_model->FetchSum('accounts_petty_cash_debit_invoices','pcdi_payment_amount',$cond_petty);
+ 
+
         $advance_paid = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_id' => $id))->pv_advance;
     
-        $updated_invoice_paid = $updated_invoice_payment+$advance_paid;
+        $updated_invoice_paid = $updated_invoice_payment+$updated_invoice_petty+$advance_paid;
     
         $max_payable_amount = $updated_invoice_paid + $amount;
 
@@ -678,6 +699,12 @@ class Payments extends BaseController
         $updated_po_advance = $this->common_model->FetchSum('accounts_payment_advances','pa_advance_amount',$cond_advance_total);
 
         $total_po_amount = $this->common_model->SingleRowCol('pro_purchase_order','po_amount',array('po_id' => $id))->po_amount; 
+
+        //Petty Cash
+        $cond_petty_advance = array('pca_purchase_order' => $id);
+
+        $updated_po_advance_petty = $this->common_model->FetchSum('accounts_petty_cash_advances','pca_advance_amount',$cond_petty_advance);
+
 
         $balance_amount = $total_po_amount- $updated_po_advance;
     
@@ -722,7 +749,7 @@ class Payments extends BaseController
             $update_data['pay_cheque_date'] = NULL;
         }
 
-        $update_data['pay_amount'] = $this->request->getPost('p_amount');
+        //$update_data['pay_amount'] = $this->request->getPost('p_amount');
 
         $update_data['pay_bank'] = $this->request->getPost('p_bank');
 
@@ -1101,7 +1128,7 @@ class Payments extends BaseController
 
         $invoice_sec = "";
 
-        $first = true;
+        
         
         $isl=1;
 
@@ -1134,6 +1161,7 @@ class Payments extends BaseController
 
             $linked_voucher = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices', array('pdi_debit_id' => $inv->pd_id), $joins_voucher);
 
+            $first = true;
             
             $isl++;
 

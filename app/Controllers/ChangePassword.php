@@ -47,6 +47,15 @@ class ChangePassword extends BaseController
 
         $user = $this->common_model->GetProfile($username,$password);
 
+        if(empty($this->request->getPost('new_pass')))
+        {
+
+        $this->session->setFlashdata('error','Enter password!');
+
+        return redirect()->to('ChangePassword');
+
+        }
+
         if(!empty($user))
         {
 

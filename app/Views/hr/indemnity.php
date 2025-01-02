@@ -76,13 +76,14 @@
 <!-- View Modal -->
 
 
+
 <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Payroll</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Indemnity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -104,9 +105,39 @@
                         <div class="col-lg-12">
 
 
-                            <table id="view_payroll_table" class="table table-bordered">
+                            <table id="view_vt_table" class="table table-bordered">
 
-                                <tbody id="view_payroll_body">
+                                <tbody id="view_vt_body">
+
+
+                                <tr>
+
+                                <td>Debit Account</td>
+
+                                <td id="debit_account_view"></td>
+
+
+                                <td>Credit Account</td>
+
+                                <td id="credit_account_view"></td>
+
+                                </tr>
+
+
+
+                                <tr>
+
+                                <td>Current Balance</td>
+
+                                <td id="current_balance_view"></td>
+
+
+                                <td>Date</td>
+
+                                <td id="date_view"></td>
+
+                                </tr>
+
 
 
                                 
@@ -143,6 +174,7 @@
 
 
 
+
 <!-- ######### -->
 
 
@@ -162,7 +194,7 @@
             
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Vacation Travel</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Indemnity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -205,7 +237,7 @@
 
                     <div class="col-col-md-8 col-lg-8">
                        
-                    <select class="account_select2" name="debit_account" required>
+                    <select id="debit_account" class="account_select2" name="debit_account" required>
 
 
                     </select>
@@ -236,7 +268,7 @@
 
                     <div class="col-col-md-8 col-lg-8">
                     
-                    <input type="number" step="0.01" class="form-control" readonly>
+                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
 
                     </div>
 
@@ -267,7 +299,7 @@
 
                     <div class="col-col-md-8 col-lg-8">
                     
-                    <select class="account_select2" name="credit_account" required>
+                    <select id="credit_account" class="account_select2" name="credit_account" required>
 
 
                     </select>
@@ -299,7 +331,7 @@
 
                     <div class="col-col-md-4 col-lg-4">
                     
-                    <input type="text" name="date" class="form-control datepicker" readonly>
+                    <input id="date" type="text" name="date" class="form-control datepicker" readonly>
 
                     </div>
 
@@ -307,7 +339,7 @@
 
                     <div class="col-col-md-4 col-lg-4">
 
-                    <button class="btn btn-success generate_vt" type="button">Generate</button>
+                    <button class="btn btn-success generate_id" type="button">Generate</button>
 
                     </div>
 
@@ -339,11 +371,11 @@
                         <td>Sl No</td>
                         <td>Employee ID</td>
                         <td>Name</td>
-                        <td>Ticket Due From</td>
-                        <td>Ticket Rate</td>
-                        <td>Ticket/Year</td>
-                        <td>Utilization</td>
+                        <td>Basic Salary</td>
+                        <td>Date Of Joining</td>
                         <td>Entitlement</td>
+                        <td>Indemnity</td>
+                        <td>Advance</td>
                         <td>Amount</td>
                     </tr>
 
@@ -365,204 +397,20 @@
                     </div>
 
 
-
-
-
-
-
-
-                    </form>
-
-
-
-
-
-
                     
-                    <form  class="Dashboard-form class add_form" data-empid="" id="timesheet_add_form">
+                    <div class="row">
 
-                    <input class="" id="timesheet_emp_id" type="hidden" name="emp_id" value="" autocomplete="off">
 
-                    <div class="row align-items-start form_sec" id="timesheet_sec" style="display:none;">
+                    <div class="col-lg-12 text-center">
 
-                    <div class="col-lg-12">
-
-
-                        <table class="table table-bordered">
-
-                        <tr>
-
-                        <th>ID</th>
-
-                        <th>Name</th>
-
-                        <th class="">Division</th>
-
-                        <th class="text-end">Basic Salary</th>
-
-                        <th class="text-end">Leave</th>
-
-                        <th class="text-end">Overtime</th>
-
-                        <th class="text-end">HRA</th>
-
-                        <th class="text-end">Transport Allowance</th>
-
-                        <th class="text-end">Telephone Allowance</th>
-
-                        <th class="text-end">Food Allowance</th>
-
-                        <th class="text-end">Other Allowance</th>
-
-                        <th class="text-end">Total Salary</th>
-
-                      
-
-                        </tr>
-
-                        <tbody id="timesheets_row">
-
-
-                        </tbody>
-
-                       
-
-                        </table>
-
-
-
-
-                        <div class="row">
-                        <div class="col-lg-12">
-
-                            <table class="table table-bordered">
-
-                                <tr>
-
-                                <td align="right">Staff Salary</td>
-
-                                <th class="text-end" id="staff_salary_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">Salaries And Wages</td>
-
-                                <th class="text-end"  id="salaries_and_wages_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Overtime</td>
-
-                                <th class="text-end"  id="overtime_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">House Rent Allowance</td>
-
-                                <th class="text-end" id="hra_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Transportation Allowance</td>
-
-                                <th class="text-end" id="transport_allow_add"></th>
-
-                                </tr>
-
-                                <tr>
-
-                                <td align="right">Telephone Allowance</td>
-
-                                <th class="text-end" id="telephone_allow_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Food Allowance</td>
-
-                                <th class="text-end" id="food_allow_add"></th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                <td align="right">Other Allowance</td>
-
-                                <th class="text-end" id="other_allow_add"></th>
-
-                                </tr>
-
-
-
-                                <tr>
-
-                                <td align="right">Total Salary</td>
-
-                                <th class="text-end" id="total_salary_add"></th>
-
-                                </tr>
-                                
-
-
-
-                            </table>
-
-                        </div>
-
-                        </div>
-
-
-
-
-
-
-
-
-                            <div class="row">
-
-
-
-       
-
-
-                            <div class="col-lg-12 text-center">
-
-
-                              <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Save To JV</button>
-                                                       
-                          
-
-                            </div>
-
-
-                            </div>
-
-
-
-
+                    <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Generate JV</button>
+                                     
+                    </div>
 
                     </div>
 
 
-
-                </form>
+                    </form>
 
 
                 <!-- Salary Section End  -->
@@ -882,8 +730,6 @@
 <?php echo view('includes/footer'); ?>
 
 
-<script src="<?= base_url(); ?>public/assets/js/differenceHours.js"></script>
-
 <!--footer section end-->    
 
 <script>
@@ -892,15 +738,31 @@
      document.addEventListener("DOMContentLoaded", function(event) { 
 
 
+        $('.generate_id').click(function(){
 
 
-        $('.generate_vt').click(function(){
+            if (! $('.account_select2')[0].checkValidity()) {
+                $('#add_form')[0].reportValidity()
+                return false;
+            }
+           
+            if($('#date').val()=="")
+            {
+            alertify.error('Enter date').delay('5').dismissOthers();
+            return false;
+            }
 
+            var credit_account = $('#credit_account').val();
+
+            var debit_account = $('#debit_account').val();
+
+            var date = $('#date').val();
 
 
             $.ajax({
-                        url: "<?php echo base_url(); ?>HR/VacationTravel/FetchEmployees",
-                        method: "GET",
+                        url: "<?php echo base_url(); ?>HR/Indemnity/FetchEmployees",
+                        method: "POST",
+                        data : {account:credit_account,debit_account:debit_account,date:date},
                         
                         success: function(data) 
                         {
@@ -910,16 +772,29 @@
                             if(data.status=="1")
                             {
 
+                            $('#current_balance').val(data.current_balance);
+
                             $('#emp_rows').html(data.emp_row);
+
+                            $('#total_amount_input').val(data.total_amount);
+
+                            $('#total_amount_view').html(data.total_amount);
+
+                            $('#jv_rows').html(data.jv_rows);
+
+                            $('#total_amount_debit').val(data.total_amount);
+                            $('#total_amount_debit_disp').html(data.total_amount);
+
+                            $('#total_amount_credit').val(data.total_amount);
+                            $('#total_amount_credit_disp').html(data.total_amount);
 
                             }
                             else
                             {
 
-                           
+                            
 
                             }
-
                             //datatable.ajax.reload( null, false)
 
 
@@ -932,14 +807,14 @@
 
 
 
-        //$(".account_select2").select2({
+       //$(".account_select2").select2({
         $('.account_select2').each(function() {
         $(this).select2({   
         placeholder: "Select Account",
         theme : "default form-control-",
         dropdownParent: $(this).closest('.add_form'),
         ajax: {
-                url: "<?= base_url(); ?>HR/Timesheets/FetchEmployees",
+                url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
                 dataType: 'json',
                 delay: 250,
                 cache: false,
@@ -952,10 +827,10 @@
                     };
                 },
                 processResults: function(data, params) {
-                   
+                
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.emp_id, text: item.emp_name}}),
+                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
@@ -972,176 +847,97 @@
 
         /* Main Add */     
    
-        $(function() {
-            $('#add_form').validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(form) {
+        $('#add_journal_form').submit(function(e){
 
-                    var formData = new FormData(form);
+        e.preventDefault();
 
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>HR/VacationTravel/FetchEmployees",
-                        method: "POST",
-                        data: $(form).serialize(),
-                        success: function(data) 
-                        {
+        var journal_form = $(this).serialize();
 
-                            var data = JSON.parse(data);
+        var credit_account = $('#credit_account').val();
 
-                            if(data.status=="1")
-                            {
-                       
-                            alertify.success('Timesheets fetched').delay(3).dismissOthers();
-                           
-                            $('#timesheets_row').html(data.table);
+        var debit_account = $('#debit_account').val();
 
-                            $('#staff_salary_add').html(data.staff_salary);
+        var date = $('#date').val();
 
-                            $('#salaries_and_wages_add').html(data.salaries_wages);
+        $.ajax({
+            url: "<?php echo base_url(); ?>HR/Indemnity/AddJournal",
+            method: "POST",
+            data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+            success: function(data) 
+            {
+                var data = JSON.parse(data);
 
-                            $('#overtime_add').html(data.total_ot);
+                if(data.status==0)
+                {
+                 
+                alertify.error(data.msg).delay(3).dismissOthers();
 
-                            $('#transport_allow_add').html(data.transport_allow);
-
-                            $('#hra_add').html(data.hra);
-
-                            $('#telephone_allow_add').html(data.tel_allow);
-
-                            $('#food_allow_add').html(data.food_allow);
-
-                            $('#other_allow_add').html(data.other_allow);
-
-                            $('#total_salary_add').html(data.total_salary);
-
-                            $('#timesheet_sec').show();
-
-                            }
-                            else
-                            {
-
-                            alertify.error(data.msg).delay(3).dismissOthers();
-
-                            $('#timesheets_row').html('');
-
-                            $('#timesheet_sec').hide();
-
-                            }
-
-                            //datatable.ajax.reload( null, false)
-
-
-                        }
-                       
-                    });
-                    return false; // prevent the form from submitting
+                return false;
+                    
                 }
-            });
+
+                if(data.status==1)
+                {
+                 
+                alertify.success(data.msg).delay(3).dismissOthers();
+
+                datatable.ajax.reload( null, false);
+
+                $('#AddToJournalModal').modal('hide');
+
+                }
+
+                //datatable.ajax.reload( null, false)
+
+            }
+           
         });
+
+
+
+
+
+        });
+
 
         /*###*/
 
-
-
-
-        $('#add_journal_form').submit(function(e){
-
-            e.preventDefault();
-
-            $.ajax({
-                        url: "<?php echo base_url(); ?>HR/Payroll/AddPayrollJournal",
-                        method: "POST",
-                        data: $(this).serialize(),
-                        success: function(data) 
-                        {
-                            var data = JSON.parse(data);
-
-                            if(data.status==0)
-                            {
-                             
-                            alertify.error(data.msg).delay(3).dismissOthers();
-
-                            return false;
-                                
-                            }
-
-                            if(data.status==1)
-                            {
-                             
-                            alertify.success(data.msg).delay(3).dismissOthers();
-
-                            datatable.ajax.reload( null, false);
-
-                            $('#AddToJournalModal').modal('hide');
-
-                            }
-
-                            //datatable.ajax.reload( null, false)
-
-                        }
-                       
-                    });
-
-        });
-
-
-
         $("body").on('click', '.view_btn', function () {
-    var id = $(this).data('id');
 
-    $.ajax({
-        url: "<?php echo base_url(); ?>HR/Payroll/View",
+        var id = $(this).data('id');
+
+        $.ajax({
+        url: "<?php echo base_url(); ?>HR/Indemnity/View",
         method: "POST",
-        data: { pr_id: id },
+        data: { id_id: id },
         success: function (data) {
             try {
-                var payroll = JSON.parse(data);
 
-                // Generate table rows
-                var rows = `
-                    <tr><td class="text-center">Added Date</td> <td class="text-end">${payroll.pr_added_date}</td></tr>
-                    <tr><td class="text-center">Journal ID</td> <td class="text-end">${payroll.pr_journal_id || "N/A"}</td></tr>
-                    <tr><td class="text-center">Month</td> <td class="text-end">${payroll.pr_month}</td></tr>
-                    <tr><td class="text-center">Year</td> <td class="text-end">${payroll.pr_year}</td></tr>
-                    <tr><td class="text-center">Basic Salary</td> <td class="text-end">${payroll.pr_basic_salary}</td></tr>
-                    <tr><td class="text-center">Leave</td> <td class="text-end">${payroll.pr_leave}</td></tr>
-                    <tr><td class="text-center">Overtime</td> <td class="text-end">${payroll.pr_overtime}</td></tr>
-                    <tr><td class="text-center">HRA</td> <td class="text-end">${payroll.pr_hra}</td></tr>
-                    <tr><td class="text-center">Transport Allowance</td> <td class="text-end">${payroll.pr_transport_allow}</td></tr>
-                    <tr><td class="text-center">Telephone Allowance</td> <td class="text-end">${payroll.pr_telephone_allow}</td></tr>
-                    <tr><td class="text-center">Food Allowance</td> <td class="text-end">${payroll.pr_food_allow}</td></tr>
-                    <tr><td class="text-center">Other Allowance</td> <td class="text-end">${payroll.pr_other_allow}</td></tr>
-                    <tr><td class="text-center">Total Salary</td> <td class="text-end">${payroll.pr_total_salary}</td></tr>
-                    
-
-                    
-                `;
+                var data = JSON.parse(data);
 
                 // Insert rows into the table
-                $('#view_payroll_body').html(rows);
+
+                $('#debit_account_view').html(data.debit_account_name);
+
+                $('#credit_account_view').html(data.credit_account_name);
+
+                $('#current_balance_view').html(data.id_current_balance);
+
+                $('#date_view').html(data.id_date);
 
                 $('#ViewModal').modal('show');
 
             } catch (e) {
-                console.error("Error parsing payroll data:", e);
-                alert("An error occurred while fetching payroll data.");
+                console.error("Error parsing data:", e);
+                alert("An error occurred while fetching data.");
             }
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX Error:", status, error);
-            alert("Failed to fetch payroll data.");
-        }
-    });
-});
-
-
-
-
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+                alert("Failed to fetch data.");
+            }
+            });
+            });
 
         /*###*/
 
@@ -1149,11 +945,10 @@
 
 
 
-        /* Save to jv button click start */
+            /* Save to jv button click start */
 
 
-        $('#save_to_jv_btn').click(function(){
-
+            $('#save_to_jv_btn').click(function(){
 
             $.ajax({
 
@@ -1170,48 +965,14 @@
 
             });
 
-
-            var month = $('#payroll_month').val();
-
-            var year = $('#payroll_year').val();
-
-
-            $.ajax({
-
-        url : "<?php echo base_url(); ?>HR/Payroll/AddToJvRows",
-
-        method : "POST",
-
-        data: {p_month: month,p_year:year},
-
-        success:function(data)
-        {   
-            if(data)
-            {
-            var data = JSON.parse(data);
-
-            $('#jv_rows').html(data.jv_rows);
-
-            $('#total_amount_debit').val(data.total_debit);
-            $('#total_amount_debit_disp').html(data.total_debit);
-
-            $('#total_amount_credit').val(data.total_credit);
-            $('#total_amount_credit_disp').html(data.total_credit);
-
             $('#AddModal').modal('hide');
 
             $('#AddToJournalModal').modal('show');
 
-            }
-        }
-
-        })
+            })
 
 
-
-        })
-
-        /* Save to jv button click end */
+            /* Save to jv button click end */
 
 
 
@@ -1240,7 +1001,7 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url': "<?php echo base_url(); ?>HR/VacationTravel/FetchData",
+                    'url': "<?php echo base_url(); ?>HR/Indemnity/FetchData",
                     'data': function (data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -1260,7 +1021,7 @@
                     }
                 },
                 'columns': [
-                    { data: 'vt_id' },
+                    { data: 'id_id' },
                     { data : "vt_date"},
                     { data : "vt_debit_account" },
                     { data : "vt_credit_account" },
@@ -1303,7 +1064,8 @@
        
         $("body").on('click', '.delete_btn', function() {
 
-        //if (!confirm('Are you absolutely sure you want to delete?')) return;
+        if (!confirm('Are you absolutely sure you want to delete?')) return;
+
         var id = $(this).data('id');
         $.ajax({
 

@@ -58,12 +58,24 @@ class VacationTravel extends BaseController
            
         $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
 
+        $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vt_credit_account));
+
+        $credit_account = "";
+        if(!empty($credit_data))
+        $credit_account = $credit_data->ca_name;
+
+        $debit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vt_debit_account));
+
+        $debit_account = "";
+        if(!empty($debit_data))
+        $debit_account = $debit_data->ca_name;
+
         $data[] = array( 
               "vt_id"=>$i,
               "vt_date" => date('d M Y',strtotime($record->vt_date)),
-              "vt_debit_account" => '',
-              "vt_credit_account" => '',
-              "vt_total" => '',
+              "vt_debit_account" => $debit_account,
+              "vt_credit_account" => $credit_account,
+              "vt_total" => $record->vt_total,
               "action" =>$action,
         );
 
@@ -302,33 +314,6 @@ class VacationTravel extends BaseController
                 $amount = $amount/365;
 
 
-
-                $data['emp_row'] .="
-                
-                    <tr>
-
-                    <td></td>
-                    
-                    <td>{$emp->emp_uid}</td>
-
-                    <td>{$emp->emp_name}</td>
-
-                    <td>".date('d M Y',strtotime($emp->emp_air_ticket_due_from))."</td>
-
-                    <td align='right'>{$emp->emp_budgeted_ticket_amount}</td>
-
-                    <td>{$emp->emp_air_ticket_per_year}</td>
-
-                    <td></td>
-
-                    <td>{$entitlement}</td>
-
-                    <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
-
-                    </tr>
-                
-                ";
-                
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
             }
@@ -359,7 +344,7 @@ class VacationTravel extends BaseController
 
         $insert_journal['jv_voucher_no'] = $juid;
 
-        $insert_journal['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
+        $insert_journal['jv_date'] = date('Y-m-d',strtotime($formData['jv_date']));
 
         $insert_journal['jv_debit_total'] = $data['total_amount'];
 
@@ -374,12 +359,12 @@ class VacationTravel extends BaseController
         $this->common_model->EditData(array('vt_jv_id' => $journal_id),array('vt_id' => $vt_id),'hr_vacation_travel');
 
         //Insert Journal invoices
-        
-            for ($ji = 0; $ji < count($jv_accounts); $ji++) {
-                $account = $jv_accounts[$ji];
-                $debit = !empty($jv_debits[$ji]) ? $jv_debits[$ji] : 0;
-                $credit = !empty($jv_credits[$ji]) ? $jv_credits[$ji] : 0;
-                $narration = $jv_remarks[$ji] ?? '';
+
+            for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
+                $account = $formData['jv_account'][$ji];
+                $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
+                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credits'][$ji] : 0;
+                $narration = $formData['jv_remarks'][$ji] ?? '';
 
                 $insert_journal_invoice = [
                     'ji_voucher_id' => $journal_id,
@@ -413,18 +398,18 @@ class VacationTravel extends BaseController
     public function View()
     {
 
-        if($this->request->getPost('pr_id'))
+        $this->hr_model = new \App\Models\HRModel();
+
+        if($this->request->getPost('vt_id'))
         {
 
-        $id = $this->request->getPost('pr_id');
+        $id = $this->request->getPost('vt_id');
 
-        $payroll = $this->common_model->SingleRow('hr_payrolls',array('pr_id' => $id));
+        $vacation_travel = $this->hr_model->FetchVTSingle($id);
 
-        $payroll->pr_month = date("F", mktime(0, 0, 0, $payroll->pr_month, 10)); // e.g., "1" -> "January"
+        $vacation_travel->vt_date = date('d M Y',strtotime($vacation_travel->vt_date));
 
-        $payroll->pr_added_date = date('d M Y', strtotime($payroll->pr_added_date));
-        
-        echo json_encode($payroll);
+        echo json_encode($vacation_travel);
     
         }
 
@@ -436,20 +421,21 @@ class VacationTravel extends BaseController
     {
 
 
+
     $id = $this->request->getPost('id');
 
 
-    $cond = array('pr_id' => $id);
+    $cond = array('vt_id' => $id);
     
-    $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
+    $vt = $this->common_model->SingleRow('hr_vacation_travel',$cond);
 
-    $this->common_model->DeleteData('hr_payrolls',$cond);
+    $this->common_model->DeleteData('hr_vacation_travel',$cond);
 
-    $jv_cond = array('jv_id' => $payroll->pr_journal_id);
+    $jv_cond = array('jv_id' => $vt->vt_jv_id);
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
+    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vt->vt_jv_id));
 
 
     }

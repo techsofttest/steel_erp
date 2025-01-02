@@ -59,7 +59,9 @@ class AccountHead extends BaseController
         
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ah_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ah_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+            $action = '
+            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->ah_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ah_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
            $data[] = array( 
               "ah_head_id"=>$record->ah_head_id,
@@ -92,7 +94,7 @@ class AccountHead extends BaseController
     //view page
     public function index()
     {   
-        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_name','asc');
 
         $data['content'] = view('accounts/account-head',$data);
 

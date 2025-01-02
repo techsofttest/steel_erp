@@ -891,10 +891,11 @@
                         <thead>
                             <tr>
                                 <th class="no-sort">Sl no</th>
+                                <th>Reference</th>
                                 <th>Date</th>
-                                <th>Payment Reference</th>
                                 <th>Method</th>
                                 <th>Bank</th>
+                                <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -2347,16 +2348,19 @@
                         data: 'pay_id'
                     },
                     {
-                        data: 'date'
+                        data: 'pay_ref_no'
                     },
                     {
-                        data: 'pay_ref_no'
+                        data: 'pay_date'
                     },
                     {
                         data: 'pay_method'
                     },
                     {
-                        data: 'bank'
+                        data: 'bank_name'
+                    },
+                    {
+                        data: 'pay_amount'
                     },
                     {
                         data: 'action'
