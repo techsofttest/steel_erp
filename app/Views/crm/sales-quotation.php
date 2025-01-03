@@ -1781,7 +1781,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Quotation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesQuotation" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -2664,7 +2664,32 @@
 
             $('.cost_cal_row2_remove').remove();
 
-            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesQuotation/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddSalesQuotation').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 
@@ -3276,15 +3301,15 @@
                 success:function(data)
                 {
                     var data = JSON.parse(data);
-                    if(data.status == "true")
+                    if(data.status == 1)
                     {
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
                         datatable.ajax.reload(null,false);
                     }
                     else
                     {
-                        alertify.error("Sales Quotation In Use Cant't Delete").delay(2).dismissOthers();
+                        alertify.error(data.msg).delay(2).dismissOthers();
                     }
                    
                 }
@@ -3318,35 +3343,46 @@
                 {
                     var responseData = JSON.parse(data);
 
-                    $(".edit_ref").val(responseData.reffer_no);
+                    if(responseData.status === 0){
 
-                    $(".edit_date").val(responseData.date);
+                        alertify.error(responseData.msg).delay(3).dismissOthers();
 
-                    $(".edit_customer").html(responseData.customer_creation);
+                    }
+                    else{
 
-                    $(".edit_enquiry").html(responseData.enquiry_ref);
+                        $(".edit_ref").val(responseData.reffer_no);
 
-                    $(".edit_validity").val(responseData.validity);
+                        $(".edit_date").val(responseData.date);
 
-                    $(".edit_sales_exce").html(responseData.sales_exec);
+                        $(".edit_customer").html(responseData.customer_creation);
 
-                    $(".edit_contact_person").html(responseData.contact_person);
+                        $(".edit_enquiry").html(responseData.enquiry_ref);
 
-                    $(".edit_payment").val(responseData.payment_term);
+                        $(".edit_validity").val(responseData.validity);
 
-                    $(".edit_delivery_term").html(responseData.delivery_term);
+                        $(".edit_sales_exce").html(responseData.sales_exec);
 
-                    $(".edit_project").val(responseData.project);
+                        $(".edit_contact_person").html(responseData.contact_person);
 
-                    $(".edit_product-more").html(responseData.prod_details);
+                        $(".edit_payment").val(responseData.payment_term);
 
-                    $(".edit_cost_cal").html(responseData.cost_prod_det);
+                        $(".edit_delivery_term").html(responseData.delivery_term);
 
-                    $(".edit_total_cost_cal").val(responseData.cost_amount);
+                        $(".edit_project").val(responseData.project);
 
-                    $(".edit_total_prod").val(responseData.quot_total_amount);
+                        $(".edit_product-more").html(responseData.prod_details);
 
-                    $(".edit_total_percent").val(responseData.quot_percentage);
+                        $(".edit_cost_cal").html(responseData.cost_prod_det);
+
+                        $(".edit_total_cost_cal").val(responseData.cost_amount);
+
+                        $(".edit_total_prod").val(responseData.quot_total_amount);
+
+                        $(".edit_total_percent").val(responseData.quot_percentage);
+
+                        $('#EditSalesQuotation').modal('show');
+
+                    }
 
                 }
 
@@ -3354,7 +3390,7 @@
 
             
 
-            $('#EditSalesQuotation').modal('show');
+            
             
 
         });

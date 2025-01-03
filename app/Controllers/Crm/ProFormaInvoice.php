@@ -527,11 +527,10 @@ class ProFormaInvoice extends BaseController
        
     }
 
-     //delete account head
-     public function Delete()
-     {  
-        /*check permission*/
-
+    //delete account head
+    public function Delete()
+    {   
+        
         $adminId = session('admin_id');
 
         $segment1 = service('uri')->getSegment(1);
@@ -540,47 +539,31 @@ class ProFormaInvoice extends BaseController
 
         $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
 
-       
-        if($check_module->up_delete == 1){
+        if($check_module->up_delete == 0){
 
-            $data['status'] = "true";
-
-            $data['msg'] ="Data Delete Successfully";
-
-            $cond = array('pf_id' => $this->request->getPost('ID'));
- 
-            $this->common_model->DeleteData('crm_proforma_invoices',$cond);
-            
-            $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
-
-            $this->common_model->DeleteData('crm_proforma_product',$cond1);
-
-
-        }
-        else{
+           $data['status'] = 0;
            
-            $data['status'] = "false";
-            $data['msg'] ="Access Denied: You do not have permission for this Action";
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
         }
 
-        echo json_encode($data);
-        /**/
-
-
-        /*old one*/
-       /* $cond = array('pf_id' => $this->request->getPost('ID'));
+        $cond = array('pf_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('crm_proforma_invoices',$cond);
-        
+            
         $cond1 = array('pp_proforma' => $this->request->getPost('ID'));
 
-        $this->common_model->DeleteData('crm_proforma_product',$cond1);*/
+        $this->common_model->DeleteData('crm_proforma_product',$cond1);
 
-        /***/
+        $data['status'] =1;
 
-        
-  
-     }
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
+    }
 
 
 
@@ -687,6 +670,31 @@ class ProFormaInvoice extends BaseController
 
         public function Edit()
         {
+            
+            $data['msg'] = "";
+
+            $data['status'] ="";
+    
+            $adminId = session('admin_id'); 
+    
+            $segment1 = service('uri')->getSegment(1);
+    
+            $segment2 = service('uri')->getSegment(2);
+    
+            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+    
+            if($check_module->up_edit == 0){
+               
+                $data['msg'] = "Access Denied: You do not have permission for this Action";
+            
+                $data['status'] = 0;
+    
+                echo json_encode($data);
+    
+                exit();
+    
+            }
+            
             $cond = array('pf_id' => $this->request->getPost('ID'));
 
             $joins = array(
@@ -1168,68 +1176,36 @@ class ProFormaInvoice extends BaseController
         }
 
 
-        public function AddAccess(){
-             
-            $data['msg'] = "";
+        
+    public function AddAccess(){
+        
+        $data['status'] = "";
 
-            $adminId = session('admin_id'); 
+        $data['msg'] ="";
 
-            $segment1 = service('uri')->getSegment(1);
+        $adminId = session('admin_id'); 
 
-            $segment2 = service('uri')->getSegment(2);
+        $segment1 = service('uri')->getSegment(1);
 
-            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+        $segment2 = service('uri')->getSegment(2);
 
-            if($check_module->up_add == 1){
-               
-                $data['status'] = "true";
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
 
-               
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
 
-            }
-            else{
-                
-                $data['status'] = "false";
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
 
-                $data['msg'] ="Access Denied: You do not have permission for this Action";
-
-            }
-
-            echo json_encode($data); 
         }
         
 
-        public function EditAccess(){
-            
-            $data['msg'] = "";
+        echo json_encode($data); 
+    }
+        
 
-            $adminId = session('admin_id'); 
-
-            $segment1 = service('uri')->getSegment(1);
-
-            $segment2 = service('uri')->getSegment(2);
-
-            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
-
-            if($check_module->up_edit == 1){
-               
-                $data['status'] = "true";
-
-               
-
-            }
-            else{
-                
-                $data['status'] = "false";
-
-                $data['msg'] ="Access Denied: You do not have permission for this Action";
-
-            }
-
-            echo json_encode($data); 
-
-        }
-
+       
         
         
 

@@ -2050,15 +2050,9 @@
 
                 var data = JSON.parse(data);
 
-                if(data.status === "false"){
+                if(data.status === 0){
                 
                     alertify.error(data.msg).delay(3).dismissOthers();
-
-                    e.stopImmediatePropagation();
-
-                    return false;
-
-                    
 
                 }
                 else{
@@ -2071,6 +2065,7 @@
             }
 
         });
+
 
         $.ajax({
 
@@ -2258,38 +2253,7 @@
 
         var id = $(this).data('id');
 
-        $.ajax({
-
-            url : "<?php echo base_url(); ?>Crm/ProFormaInvoice/EditAccess",
-
-            method : "POST",
-
-            data: {ID: id},
-
-            success:function(data)
-            {
-                var data = JSON.parse(data);
-
-                if(data.status === "false"){
-                
-                    alertify.error(data.msg).delay(3).dismissOthers();
-
-                   
-                    return false;
-
-                    
-
-                }
-                else{
-
-                    $('#EditPerformaInvoice').modal('show');
-
-                }
-
-
-            }
-
-        });
+      
 
         $.ajax({
 
@@ -2300,42 +2264,55 @@
             data: {ID: id},
 
             success:function(data)
-            {
+            {   
                 var responseData = JSON.parse(data);
 
-                $(".edit_reff").val(responseData.reff_no);
+                if(responseData.status === 0){
 
-                $(".edit_date").val(responseData.date);
+                    alertify.error(responseData.msg).delay(3).dismissOthers();
 
-                $(".edit_customer").html(responseData.customer);
+                }
+                else
+                {
 
-                $(".edit_sales_order").html(responseData.sales_order);
+                    
 
-                $(".edit_lpo_ref").val(responseData.lpo_reff);
+                    $(".edit_reff").val(responseData.reff_no);
 
-                $(".edit_sales_exec").html(responseData.sales_executive);
+                    $(".edit_date").val(responseData.date);
 
-                $(".edit_contact").html(responseData.contact_person);
+                    $(".edit_customer").html(responseData.customer);
 
-                $(".edit_payment_term").val(responseData.payment_term);
+                    $(".edit_sales_order").html(responseData.sales_order);
 
-                $(".edit_delivery").val(responseData.delivery_term);
+                    $(".edit_lpo_ref").val(responseData.lpo_reff);
 
-                $(".edit_project").val(responseData.project);
+                    $(".edit_sales_exec").html(responseData.sales_executive);
 
-                $(".edit_total_order").val(responseData.total_amount);
+                    $(".edit_contact").html(responseData.contact_person);
 
-                $(".edit_current_claim").val(responseData.current_claim);
+                    $(".edit_payment_term").val(responseData.payment_term);
 
-                $(".edit_current_claim_value").val(responseData.current_claim_value);
+                    $(".edit_delivery").val(responseData.delivery_term);
 
-                $(".edit_performa_id").val(responseData.performa_id);
+                    $(".edit_project").val(responseData.project);
 
-                $(".edit_prod").html(responseData.prod_details);
+                    $(".edit_total_order").val(responseData.total_amount);
 
-                $(".edit_image_table").html(responseData.image_table);
+                    $(".edit_current_claim").val(responseData.current_claim);
 
-               
+                    $(".edit_current_claim_value").val(responseData.current_claim_value);
+
+                    $(".edit_performa_id").val(responseData.performa_id);
+
+                    $(".edit_prod").html(responseData.prod_details);
+
+                    $(".edit_image_table").html(responseData.image_table);
+
+                    $('#EditPerformaInvoice').modal('show');
+                }
+                
+           
 
             }
 
@@ -2904,7 +2881,7 @@
                
                 var data = JSON.parse(data);
 
-                if(data.status === "true"){
+                if(data.status === 1){
 
                     rowToDelete.fadeOut(500, function() {
                     

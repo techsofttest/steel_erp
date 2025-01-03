@@ -1365,7 +1365,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Sales Order</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSalesOrder" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -2130,19 +2130,17 @@
                 {
                     var data = JSON.parse(data);
 
-                    if(data.status === "false")
+                    if(data.status === 1)
                     {
 
-                        alertify.error('Sales Order Cannot Be Deleted').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
-                       
+                        datatable.ajax.reload(null,false);
 
                     }
                     else
                     {
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
-
-                        datatable.ajax.reload(null,false);
+                        alertify.error(data.msg).delay(2).dismissOthers();
                     }
                 }
 
@@ -2174,6 +2172,33 @@
 
            // $('.sales_executive_clz option').remove();
 
+           $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/SalesOrder/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddSalesOrder').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesOrder/FetchReference",
@@ -2204,9 +2229,7 @@
         $("body").on('click', '.edit_btn', function(){ 
 
             var id = $(this).data('id');
-            
            
-            
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Crm/SalesOrder/Edit",
@@ -2219,40 +2242,51 @@
                 {
                     var data = JSON.parse(data);
 
-                    $(".edit_reff").val(data.reff_no);
+                    if(data.status === 0){
 
-                    $(".edit_date").val(data.date);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $(".edit_customer").html(data.customer_creation);
+                    }
+                    else{
+                       
+                        $(".edit_reff").val(data.reff_no);
 
-                    $(".edit_quot").html(data.quotation);
+                        $(".edit_date").val(data.date);
 
-                    $(".edit_lpo").val(data.lpo);
+                        $(".edit_customer").html(data.customer_creation);
 
-                    $(".edit_executive").html(data.sales_executive);
+                        $(".edit_quot").html(data.quotation);
 
-                    $(".edit_contact_person").html(data.contact_person);
+                        $(".edit_lpo").val(data.lpo);
 
-                    $(".payment_term").val(data.payment_term);
+                        $(".edit_executive").html(data.sales_executive);
 
-                    $(".edit_delivery_date").val(data.delivery_term);
+                        $(".edit_contact_person").html(data.contact_person);
 
-                    $(".edit_project").val(data.project);
+                        $(".payment_term").val(data.payment_term);
 
-                    $(".edit_so_id").val(data.so_id);
+                        $(".edit_delivery_date").val(data.delivery_term);
 
-                    $(".edit_add_prod_det").html(data.prod_details);
+                        $(".edit_project").val(data.project);
 
-                    $(".edit_amount_total").val(data.amount_total);
+                        $(".edit_so_id").val(data.so_id);
 
-                    $(".edit_file_name").html(data.file_name);
+                        $(".edit_add_prod_det").html(data.prod_details);
 
-                    $(".edit_file_attach").html(data.file_attach);
+                        $(".edit_amount_total").val(data.amount_total);
 
-                    $(".edit_image_table").html(data.image_table);
+                        $(".edit_file_name").html(data.file_name);
 
-                    $('#EditSalesOrder').modal("show");
+                        $(".edit_file_attach").html(data.file_attach);
+
+                        $(".edit_image_table").html(data.image_table);
+
+                        $('#EditSalesOrder').modal("show");
                    
+
+                    }
+
+                    
                     
                 }
 

@@ -1007,7 +1007,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Delivery Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#DeliverNote" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1506,15 +1506,17 @@
                 {   
                     var data = JSON.parse(data);
                     
-                    if(data.status === "false")
+                    if(data.status === 1)
                     {
-                        alertify.error('Delivery Note Cannot Be Deleted').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+                        
+                        
                     }
                     else
                     {
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
-
-                        datatable.ajax.reload(null,false);
+                        alertify.error(data.msg).delay(2).dismissOthers();
                     }
                    
                 }
@@ -1945,6 +1947,33 @@
 
         $.ajax({
 
+            url : "<?php echo base_url(); ?>Crm/DeliverNote/AddAccess",
+
+            method : "POST",
+
+            success:function(data)
+            {
+
+                var data = JSON.parse(data);
+
+                if(data.status === 0){
+                
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+                }
+                else{
+
+                    $('#DeliverNote').modal('show');
+
+                }
+                
+
+            }
+
+        });
+
+        $.ajax({
+
             url : "<?php echo base_url(); ?>Crm/DeliverNote/FetchReference",
 
             method : "GET",
@@ -2041,10 +2070,12 @@
                                 
                 //console.log(data.customer);
 
-                if(data.status === "false")
-                {
-                    alertify.error('Delivery Note Cant Be Edit').delay(3).dismissOthers();
-                
+                if(data.status === 0){
+
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+
+
                 }
                 else
                 {

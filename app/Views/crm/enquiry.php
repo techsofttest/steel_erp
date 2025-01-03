@@ -1047,7 +1047,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Enquiry</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddEnquiry" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1430,7 +1430,7 @@
                     }
                     else{
 
-                        $('#AddProductHead').modal('show');
+                        $('#AddEnquiry').modal('show');
 
                     }
                     
