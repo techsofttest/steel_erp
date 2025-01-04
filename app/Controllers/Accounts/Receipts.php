@@ -1316,7 +1316,31 @@ class Receipts extends BaseController
  
     //account head modal 
     public function Edit()
-    {
+    {  
+
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
         
         $cond = array('r_id' => $this->request->getPost('r_id'));
 
@@ -2000,7 +2024,27 @@ class Receipts extends BaseController
 
     //delete account head
     public function Delete()
-    {
+    {   
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+
+
         //Fetch Receipt
         $cond = array('r_id' => $this->request->getPost('id'));
         $receipt = $this->common_model->SingleRow('accounts_receipts',$cond);
@@ -2050,8 +2094,14 @@ class Receipts extends BaseController
 
         $this->common_model->DeleteData('accounts_receipt_invoices',$cond_receipt);
 
+        $data['status'] =1;
+
+        $data['msg'] ="Data Deleted Successfully";
+
         // $cond_tran = array('tran_reference' => $receipt->r_ref_no);
         // $this->common_model->DeleteData('master_transactions',$cond_tran);
+
+        echo json_encode($data);
       
     }
 
@@ -2783,6 +2833,34 @@ class Receipts extends BaseController
     return $uid;
     }
 
+    }
+
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 
