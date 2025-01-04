@@ -130,11 +130,11 @@ class Receipts extends BaseController
 
         $data['collectors'] = $this->common_model->FetchAllOrder('master_collectors','col_name','asc');
 
-        $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
+        //$data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_customer_name','asc');
 
         //$data['customers'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
-        $data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','asc');
+        //$data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','asc');
 
         $data['content'] = view('accounts/receipts',$data);
 
@@ -694,7 +694,7 @@ class Receipts extends BaseController
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
+     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
      
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">

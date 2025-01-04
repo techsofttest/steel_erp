@@ -146,10 +146,12 @@ class CommonModel extends Model
 
     public function CountWhere($table,$cond)
     {
-        $query = $this->db->table($table)
-        ->where($cond)
-        ->get();
-        return $query->getNumRows();
+        $query = $this->db->table($table);
+        if($cond!="")
+        {
+        $query->where($cond);
+        }
+        return $query->get()->getNumRows();
 
     }
 

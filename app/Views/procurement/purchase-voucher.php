@@ -1087,6 +1087,8 @@
                                                     <th>Reference</th>
                                                     <th>Purchase Order</th>
                                                     <th>Date</th>
+                                                    <th>Total</th>
+                                                    <th>Paid</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1681,6 +1683,8 @@
                 { data: 'pv_reffer_id'},
                 { data: 'pv_purchase_order'},
                 { data: 'pv_date'},
+                { data: 'pv_total'},
+                { data: 'pv_paid'},
                 { data: 'action'},
                 
                ],

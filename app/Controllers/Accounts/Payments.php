@@ -122,11 +122,11 @@ class Payments extends BaseController
 
         $data['banks'] = $this->common_model->FetchAllOrder('master_banks', 'bank_name', 'asc');
 
-        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
+        //$data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts', 'ca_name', 'asc');
 
         $data['collectors'] = $this->common_model->FetchAllOrder('master_collectors', 'col_name', 'asc');
 
-        $data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_customer_name', 'asc');
+        //$data['customers'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_customer_name', 'asc');
 
         $data['content'] = view('accounts/payments', $data);
 
@@ -1501,7 +1501,7 @@ class Payments extends BaseController
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th><input class="form-control invoice_receipt_amount" step="0.01" maxlength="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            <th><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
             
             <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
             </tr>';

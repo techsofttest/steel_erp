@@ -1241,42 +1241,54 @@ $('#uid').val(data);
 
                         function SOSelect2() {
                            
-                            $('.so_select2_add:last').select2({
-                                placeholder: "Select Sales Order", // This is the placeholder
-                                theme: "default form-control-",
-                                dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
-                                allowClear: true, // Allows clearing the selection
-                                ajax: {
-                                    url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
-                                    dataType: 'json',
-                                    delay: 250,
-                                    cache: false,
-                                    minimumInputLength: 1,
-                                    data: function(params) {
-                                        return {
-                                            term: params.term,
-                                            page: params.page || 1,
-                                        };
-                                    },
-                                    processResults: function(data, params) {
-                                        var page = params.page || 1;
-                                        return {
-                                            results: [
-                                                { id: null, text: "Select Sales Order" }, // Default null option
-                                                ...$.map(data.result, function(item) {
-                                                    return {
-                                                        id: item.so_id,
-                                                        text: item.so_reffer_no
-                                                    };
-                                                })
-                                            ],
-                                            pagination: {
-                                                more: (page * 10) <= data.total_count
-                                            }
-                                        };
-                                    },
-                                }
-                            });
+                            const element = $('.so_select2_add:last');
+
+// Ensure the element exists
+if (element.length === 0) {
+    console.error('No element found for Select2 initialization.');
+    return;
+}
+
+// Only initialize if it is not already initialized
+if (!element.hasClass('select2-hidden-accessible')) {
+    element.select2({
+        placeholder: "Select Sales Order", // Placeholder text
+        theme: "default form-control-",
+        dropdownParent: $($('.so_select2_parent_add:last').closest('.so_row_add')),
+        allowClear: true, // Allows clearing the selection
+        ajax: {
+            url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+            dataType: 'json',
+            delay: 250,
+            cache: false,
+            minimumInputLength: 1,
+            data: function(params) {
+                return {
+                    term: params.term,
+                    page: params.page || 1,
+                };
+            },
+            processResults: function(data, params) {
+                const page = params.page || 1;
+
+                // Log data for debugging
+                console.log('Data:', data, 'Page:', page);
+
+                return {
+                    results: $.map(data.result, function(item) {
+                        return {
+                            id: item.so_id,
+                            text: item.so_reffer_no,
+                        };
+                    }),
+                    pagination: {
+                        more: (page * 10) < data.total_count // Ensure accurate pagination
+                    },
+                };
+            },
+        },
+    });
+}
                            
                         }
                         SOSelect2();

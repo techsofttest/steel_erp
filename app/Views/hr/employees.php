@@ -2854,6 +2854,8 @@
 
                     $('#emp_division_edit').val(data.emp.emp_division);
 
+                    $('#emp_status_edit').val(data.emp.emp_status);
+
 
                     //Salary Sec
 
@@ -2873,6 +2875,8 @@
                     $('#edit_total_salary').val(data.emp.emp_total_salary);
 
                     $('#mop_edit').val(data.emp.emp_mode_of_payment);
+
+
 
 
                     if((data.emp.emp_mode_of_payment!=1) && (data.emp.emp_mode_of_payment!=null))
