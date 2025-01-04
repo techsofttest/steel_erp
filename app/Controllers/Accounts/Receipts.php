@@ -1514,7 +1514,13 @@ class Receipts extends BaseController
     if($type=="cash_invoice")
 
     {
-  
+    
+    $check_invoice = $this->common_model->SingleRow('crm_cash_invoice',array('ci_id' => $id));
+
+    if(!empty($check_invoice))
+
+    {
+
     $advance_paid = $this->common_model->SingleRowCol('crm_cash_invoice','ci_advance_amount',array('ci_id' => $id))->ci_advance_amount;
 
     $total_amount = $this->common_model->SingleRowCol('crm_cash_invoice','ci_total_amount',array('ci_id' => $id))->ci_total_amount;
@@ -1525,8 +1531,23 @@ class Receipts extends BaseController
 
     }
 
+    else
+    {
+
+    $balance_amount = 0;
+
+    }
+
+    }
+
 
     if($type=="credit_invoice")
+    {
+
+    $check_invoice = $this->common_model->SingleRow('crm_credit_invoice',array('cci_id' => $id));
+
+    if(!empty($check_invoice))
+    
     {
 
     $advance_paid = $this->common_model->SingleRowCol('crm_credit_invoice','cci_advance_amount',array('cci_id' => $id))->cci_advance_amount;
@@ -1536,6 +1557,15 @@ class Receipts extends BaseController
     $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
 
     $balance_amount = $total_amount-$updated_invoice_paid;
+
+    }
+
+    else
+    {
+
+    $balance_amount = $updated_invoice_paid;
+
+    }
     
     }
 
@@ -1556,18 +1586,30 @@ class Receipts extends BaseController
 
     $updated_so_advance = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',$cond_advance_total);
     
+    $check_so = $this->common_model->SingleRow('crm_sales_orders',array('so_id' => $id));
+
+    if(!empty($check_so))
+
+    {
+
     $total_so_amount = $this->common_model->SingleRowCol('crm_sales_orders','so_amount_total',array('so_id' => $id))->so_amount_total; 
 
     $balance_amount = $total_so_amount - $updated_so_advance;
+
+    }
+
+    else
+    {
+
+    $balance_amount = $updated_so_advance;
+
+    }
 
     $max_allowed_amount = $balance_amount+$amount;
 
     return $max_allowed_amount;
 
     }
-
-
-
 
 
 
@@ -1627,43 +1669,7 @@ class Receipts extends BaseController
 
 
 
-    public function UpdateCreditDetails()
-    {
-
-        if($_POST)
-
-        {
-
-        $id = $this->request->getPost('c_id');
-
-        $cond = array('ri_id' => $id);
-
-        //$date = date('Y-m-d',strtotime($this->request->getPost('c_date')));
-
-        $credit_account = $this->request->getPost('c_account');
-
-        $amount = $this->request->getPost('c_amount');
-
-        $narration = $this->request->getPost('c_narration');
-
-
-        $update_data['ri_credit_account'] = $credit_account;
-
-        $update_data['ri_amount'] = $amount;
-
-        $update_data['ri_remarks'] = $narration;
-        
-        //$update_data['ri_date'] = $date;
-
-        $this->common_model->EditData($update_data,$cond,'accounts_receipt_invoices');
-
-        $this->FetchCreditData($id);
-
-        }
-
-    }
-
-
+    
 
 
         // update account head 
