@@ -134,7 +134,9 @@ class JournalVouchers extends BaseController
     public function index()
     {  
         
-        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+        $data = array();
+
+        //$data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
 
         //$data['sales_orders'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','desc');
 
@@ -614,17 +616,36 @@ class JournalVouchers extends BaseController
 
 
 
-    public function FetchSalesOrders()
+    public function FetchSalesOrders($where="")
     {
 
-    $data['result'] = $this->common_model->FetchAllOrder('crm_sales_orders','so_id','asc');
-
-    $data['total_count'] = count($data['result']);
-
-    echo json_encode($data);
+        $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10; // Number of records per page
+        $offset = ($page - 1) * $resultCount; // Calculate the offset (starting index)
+    
+        // Build the WHERE clause for filtering
+        if (!empty($term)) {
+            $where = "so_reffer_no LIKE '%$term%'";
+        }
+    
+        // Fetch paginated results
+        $data['result'] = $this->common_model->FetchWhereArrayLimit(
+            'crm_sales_orders', 
+            'so_reffer_no', 
+            'asc', 
+            $where, 
+            $resultCount,  // Limit (number of records per page)
+            $offset        // Offset (starting record index)
+        );
+    
+        // Count the total matching records for pagination
+        $data['total_count'] = $this->common_model->CountWhere('crm_sales_orders', $where);
+    
+        // Return the data as JSON
+        return $this->response->setJSON($data);
 
     }
-
 
 
 

@@ -72,7 +72,9 @@ class PurchaseVoucher extends BaseController
               "pv_id"             => $i,
               'pv_reffer_id'      => $record->pv_reffer_id,
               'pv_purchase_order' => $record->po_reffer_no,
-              'pv_date'           => date('d-m-Y',strtotime($record->pv_date)),
+              'pv_date'           => date('d M Y',strtotime($record->pv_date)),
+              'pv_total'          => format_currency($record->pv_total),
+              'pv_paid'          => format_currency($record->pv_paid),
               "action"            => $action,
            );
            $i++; 

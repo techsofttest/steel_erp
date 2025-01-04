@@ -341,22 +341,31 @@ class ChartsOfAccounts extends BaseController
     public function FetchAccounts($where="")
     {
 
-        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $term = !empty($_GET['term']) ? $_GET['term'] : "";
-        $resultCount = 10;
-        $end = ($page - 1) * $resultCount;       
-        $start = $end + $resultCount;
-
-        if($term !="")
-        $where="ca_name LIKE '%$term%'";
-
-        $data['result'] = $this->common_model->FetchWhereArrayLimit('accounts_charts_of_accounts','ca_name','asc',$where,$end,$start);
-      
-        //$data['result'] = $this->common_model->FetchAllLimit('accounts_charts_of_accounts','ca_name','asc',$term,$start,$end);
-
-        $data['total_count'] = count($data['result']);
-
-        return json_encode($data);
+        $resultCount = 10; // Number of records per page
+        $offset = ($page - 1) * $resultCount; // Calculate the offset (starting index)
+    
+        // Build the WHERE clause for filtering
+        if (!empty($term)) {
+            $where = "ca_name LIKE '%$term%'";
+        }
+    
+        // Fetch paginated results
+        $data['result'] = $this->common_model->FetchWhereArrayLimit(
+            'accounts_charts_of_accounts', 
+            'ca_name', 
+            'asc', 
+            $where, 
+            $resultCount,  // Limit (number of records per page)
+            $offset        // Offset (starting record index)
+        );
+    
+        // Count the total matching records for pagination
+        $data['total_count'] = $this->common_model->CountWhere('accounts_charts_of_accounts', $where);
+    
+        // Return the data as JSON
+        return $this->response->setJSON($data);
 
     }
 

@@ -19,9 +19,18 @@
         <a class="nav-link <?php if($uri->getSegment(3)=="VacationTravel") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationTravel">Vacation Travel</a>
     </li>
 
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(3)=="VacationPay") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/VacationPay">Vacation Pay</a>
+    </li>
+
 
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link <?php if($uri->getSegment(3)=="Indemnity") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/Indemnity">Indemnity</a>
+    </li>
+
+
+    <li class="nav-item waves-effect waves-light">
+        <a class="nav-link <?php if($uri->getSegment(3)=="RPRenewal") {echo "active" ;} ?>" href="<?= base_url(); ?>HR/RPRenewal">RP Renewal</a>
     </li>
   
 

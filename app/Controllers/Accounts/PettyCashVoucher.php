@@ -228,7 +228,7 @@ class PettyCashVoucher extends BaseController
                     $insert_inv_data['pci_debit_account'] = $_POST['p_debit_account'][$i];
                     $insert_inv_data['pci_amount'] = $_POST['inv_amount'][$i];
                     $insert_inv_data['pci_narration'] = $_POST['narration'][$i];
-                    $insert_inv_data['pci_sales_order'] = $_POST['p_sales_order'][$i];
+                    $insert_inv_data['pci_sales_order'] = $_POST['p_sales_order'][$i] ?? null;
 
                     // Add to Transactions
                     $debit_trans_data['tran_reference'] = $p_ref_no;
@@ -1427,7 +1427,7 @@ class PettyCashVoucher extends BaseController
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th><input class="form-control invoice_receipt_amount" step="0.01" maxlength="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            <th><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
             
             <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
             </tr>';

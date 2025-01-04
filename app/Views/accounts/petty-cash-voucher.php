@@ -2399,11 +2399,14 @@
 
             $('#total_amount_val').val('0.00');
 
+            $('#add_form')[0].reset();
+
             //$('.add_credit_account_select2').val('').trigger('change');
 
-            $('#AddModal .debit_account_select2').val('').trigger('change');
+            $('.add_credit_account_select2').val('').trigger('change');
 
-            $('#add_form')[0].reset();
+            $('.debit_account_select2').val('').trigger('change');
+
 
             $('.invoice_row').not(':first').remove();
 
