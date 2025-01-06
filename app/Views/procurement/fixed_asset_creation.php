@@ -360,7 +360,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Fixed Asset Creation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddFixedAssetCreation" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1464,11 +1464,38 @@
         /*reset reffer no*/
         $('.add_model_btn').click(function() {
 
-            $('#purchase_form')[0].reset();
+            //$('#purchase_form')[0].reset();
             $('.add_vendor').val('').trigger('change');
             $('#AddPurchaseOrder').modal('hide');
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddFixedAssetCreation').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 
@@ -1940,32 +1967,42 @@
 
                     var data = JSON.parse(data);
 
-                    $('.edit_id').val(data.cfsid);
+                    if(data.status === 0){
 
-                    $('.edit_description').val(data.description);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.edit_acc_head').html(data.account_head);
+                    }else{
 
-                    $('.edit_acc_id').val(data.account_id);
+                        $('.edit_id').val(data.cfsid);
 
-                    $('.edit_acquired_date').val(data.date);
-                    
-                    $('.edit_last_yr_depreciation').val(data.last_yr_depreciation);
+                        $('.edit_description').val(data.description);
 
-                    $('.edit_debit_acc').html(data.debit_account);
+                        $('.edit_acc_head').html(data.account_head);
 
-                    $('.edit_credit_acc').html(data.credit_account);
+                        $('.edit_acc_id').val(data.account_id);
 
-                    $('.edit_depreciation').val(data.depreciation);
+                        $('.edit_acquired_date').val(data.date);
 
-                    if (data.attach !== '') {
-                        $('.edit_attach').attr('src', data.attach).show(); // Set the image source and display it
-                        $('.edit_attach_link').attr('href', data.attach);
-                    } else {
-                        $('.edit_attach').hide(); // Hide the image element if no data is available
+                        $('.edit_last_yr_depreciation').val(data.last_yr_depreciation);
+
+                        $('.edit_debit_acc').html(data.debit_account);
+
+                        $('.edit_credit_acc').html(data.credit_account);
+
+                        $('.edit_depreciation').val(data.depreciation);
+
+                        if (data.attach !== '') {
+                            $('.edit_attach').attr('src', data.attach).show(); // Set the image source and display it
+                            $('.edit_attach_link').attr('href', data.attach);
+                        } else {
+                            $('.edit_attach').hide(); // Hide the image element if no data is available
+                        }
+
+                        $('#EditModal').modal("show");
+
                     }
 
-                    $('#EditModal').modal("show");
+                    
 
                 }
 
@@ -1993,18 +2030,27 @@
                 },
 
                 success: function(data) {
-                    //var data = JSON.parse(data);
 
-                    rowToDelete.fadeOut(500, function() {
+                    var data = JSON.parse(data);
 
-                        $(this).remove();
+                    if(data.status === 1){
+                        
+                        rowToDelete.fadeOut(500, function() {
 
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                            $(this).remove();
 
+                            alertify.success(data.msg).delay(3).dismissOthers();
 
+                            datatable.ajax.reload(null, false);
 
-                        datatable.ajax.reload(null, false);
-                    });
+                        });
+
+                    }else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    }
+                    
+                    
 
                 }
 

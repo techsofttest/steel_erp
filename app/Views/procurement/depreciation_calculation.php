@@ -2448,18 +2448,28 @@
                 },
 
                 success: function(data) {
-                    //var data = JSON.parse(data);
 
-                    rowToDelete.fadeOut(500, function() {
+                    var data = JSON.parse(data);
 
-                        $(this).remove();
+                    if(data.status === 1){
 
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        rowToDelete.fadeOut(500, function() {
+
+                            $(this).remove();
+
+                            alertify.error(data.msg).delay(3).dismissOthers();
+
+                            datatable.ajax.reload(null, false);
+
+                        });
 
 
+                    }else{
 
-                        datatable.ajax.reload(null, false);
-                    });
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    }
+
+                    
 
                 }
 

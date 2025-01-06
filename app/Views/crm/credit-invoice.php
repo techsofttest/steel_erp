@@ -437,7 +437,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Credit Invoice</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CreditInvoice" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button" class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1709,14 +1709,14 @@
                 {
                     var data = JSON.parse(data);
 
-                    if(data.status === "true")
+                    if(data.status === 1)
                     {
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                        alertify.success(data.msg).delay(2).dismissOthers();
                         datatable.ajax.reload(null,false);
                     }
                     else
                     {
-                        alertify.error("Credit Invoice In Use Cant't Delete").delay(2).dismissOthers();
+                        alertify.error(data.msg).delay(2).dismissOthers();
                     }
                     
                 }
@@ -2238,41 +2238,42 @@
                 {
 
                     var data = JSON.parse(data);
-                                    
+                    
+                    if(data.status === 0){
+
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }else
+                    {
+                        $('.edit_reff').val(data.reffer_no);
+
+                        $('.edit_data').val(data.date);
+
+                        $('.edit_customer').html(data.customer);
+
+                        $('.edit_sales_order').val(data.sales_order);
+
+                        $('.edit_lpo_reff').val(data.lpo_reff);
+
+                        $('.edit_cont_person').html(data.contact_person);
+
+                        $('.edit_payment_term_clz').val(data.payment_term);
+
+                        $('.edit_project_clz').val(data.project);
+
+                        $('.edit_credit_invoice_id').val(data.credit_invoice_id);
+
+                        $('.edit_product_table').html(data.product_detail);
+
+                        $('.edit_charts_account').html(data.charts_account);
+
+                        $('.edit_total_amount').html(data.total_amount);
+
+                        $('#EditCreditInvoice').modal('show')
+                    }
                     
 
-                    $('.edit_reff').val(data.reffer_no);
 
-                    $('.edit_data').val(data.date);
-
-                    $('.edit_customer').html(data.customer);
-
-                    $('.edit_sales_order').val(data.sales_order);
-
-                    $('.edit_lpo_reff').val(data.lpo_reff);
-
-                    $('.edit_cont_person').html(data.contact_person);
-
-                    $('.edit_payment_term_clz').val(data.payment_term);
-
-                    $('.edit_project_clz').val(data.project);
-
-                    $('.edit_credit_invoice_id').val(data.credit_invoice_id);
-
-                    $('.edit_product_table').html(data.product_detail);
-
-                    $('.edit_charts_account').html(data.charts_account);
-                    
-                    $('.edit_total_amount').html(data.total_amount);
-
-                    $('#EditCreditInvoice').modal('show')
-                   
-
-                   // $('.edit_image_table').html(data.image_table);
-
-                    //console.log(data.product_detail);
-
-                /*$('.view_image_table').html(data.image_table);*/
                 }
 
             });
@@ -2425,6 +2426,33 @@
             $('.once_form_submit').attr('disabled', false); // Disable this input.
 
             $(".cust_more_modal").removeClass("disabled-span");
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Crm/CreditInvoice/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#CreditInvoice').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 

@@ -127,7 +127,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Charts Of Accounts</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                    <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -315,6 +315,42 @@
         /*###*/
 
 
+        /**/
+
+        $("body").on('click', '.add_model_btn', function(){ 
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/ChartsOfAccounts/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+        });
+
+        /*#####*/
+
+
 
 
         /*account head modal start*/ 
@@ -331,24 +367,30 @@
 
                 success:function(data)
                 {   
-                    if(data)
-                    {
+                    
                     var data = JSON.parse(data);
 
-                    $("#edit_account_id").val(data.ca_account_id);
+                    if(data.status === 0){
 
-                    $("#edit_account_name").val(data.ca_name);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('#edit_account_type').val(data.ca_account_type);
+                    }else{
 
-                    $('#EditModal').modal('show');
+                        $("#edit_account_id").val(data.ca_account_id);
+
+                        $("#edit_account_name").val(data.ca_name);
+
+                        $('#edit_account_type').val(data.ca_account_type);
+
+                        $('#EditModal').modal('show');
+                        
+                        $("#ca_id").val(id);
+
+                    }
+
                     
-                    $("#ca_id").val(id);
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
+                    
+                    
                     
                 }
 
@@ -417,7 +459,7 @@
                     if(data.status==0)
                     {
 
-                    alertify.error('Account is in use.').delay(8).dismissOthers();   
+                    alertify.error(data.msg).delay(8).dismissOthers();   
 
                     return false
 
@@ -425,7 +467,7 @@
 
                     else{
 
-                    alertify.error('Data Deleted Successfully').delay(8).dismissOthers();
+                    alertify.error(data.msg).delay(8).dismissOthers();
 
                     datatable.ajax.reload( null, false )
 

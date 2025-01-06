@@ -1751,7 +1751,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Reciepts</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                    <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                     <!-- CSRF token -->
@@ -2548,71 +2548,77 @@
                 },
 
                 success: function(data) {
-                    if (data) {
+                    
                         var data = JSON.parse(data);
 
-                        $('#ruid_edit').val(data.rc.r_ref_no);
+                        if(data.status === 0){
 
-                        $('#id_edit').val(data.rc.r_id);
+                            alertify.error(data.msg).delay(3).dismissOthers();
 
-                        $('#r_date_edit').val(data.rc.r_date);
+                        }else{
 
-                        $('#r_debit_account_edit').val(data.rc.ca_name);
+                            $('#ruid_edit').val(data.rc.r_ref_no);
 
-                        $('#r_no_edit').val(data.rc.r_number);
+                            $('#id_edit').val(data.rc.r_id);
 
-                        $('#r_method_edit').val(data.rc.r_method);
+                            $('#r_date_edit').val(data.rc.r_date);
 
-                        if (data.rc.r_method == "1") {
+                            $('#r_debit_account_edit').val(data.rc.ca_name);
 
-                            $('.cheque_sec').removeClass("d-none");
+                            $('#r_no_edit').val(data.rc.r_number);
 
-                            $('.cheque_file_sec').removeClass("d-none");
+                            $('#r_method_edit').val(data.rc.r_method);
 
-                            $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
+                            if (data.rc.r_method == "1") {
 
-                            $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
+                                $('.cheque_sec').removeClass("d-none");
 
-                            $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
+                                $('.cheque_file_sec').removeClass("d-none");
 
-                            $('#EditModal #cheque_file_view').attr('href', '<?= base_url(); ?>uploads/Receipts/' + data.rc.r_cheque_copy + '');
+                                $('#EditModal .cheque_file_edit_sec').removeClass("d-none");
 
-                        } else {
+                                $('#EditModal input[name=r_cheque_no]').val(data.rc.r_cheque_no);
 
-                            $('.cheque_sec').addClass("d-none");
+                                $('#EditModal input[name=r_cheque_date]').val(FormatDate(data.rc.r_cheque_date));
 
-                            $('.cheque_file_sec').addClass("d-none");
+                                $('#EditModal #cheque_file_view').attr('href', '<?= base_url(); ?>uploads/Receipts/' + data.rc.r_cheque_copy + '');
+
+                            } else {
+
+                                $('.cheque_sec').addClass("d-none");
+
+                                $('.cheque_file_sec').addClass("d-none");
+
+                            }
+
+                            if (data.rc.r_method = "2") {
+
+                                $('#EditModal .bank_sec_edit').addClass("d-none");
+
+                                $('#r_bank_edit').removeAttr("required");
+
+                            } else {
+
+                                $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+                                $('#r_bank_edit').attr("required", true);
+
+                            }
+
+
+                            $('#r_bank_edit').val(data.rc.r_bank);
+
+                            $('#r_collected_by_edit').val(data.rc.r_collected_by);
+
+                            $('#total_amount_edit').html(data.rc.r_amount);
+
+                            $('#sel_invoices_edit').html(data.invoices);
+
+                            $('#EditModal').modal('show');
+
 
                         }
 
-                        if (data.rc.r_method = "2") {
-
-                            $('#EditModal .bank_sec_edit').addClass("d-none");
-
-                            $('#r_bank_edit').removeAttr("required");
-
-                        } else {
-
-                            $('#EditModal .bank_sec_edit').removeClass("d-none");
-
-                            $('#r_bank_edit').attr("required", true);
-
-                        }
-
-
-                        $('#r_bank_edit').val(data.rc.r_bank);
-
-                        $('#r_collected_by_edit').val(data.rc.r_collected_by);
-
-                        $('#total_amount_edit').html(data.rc.r_amount);
-
-                        $('#sel_invoices_edit').html(data.invoices);
-
-                        $('#EditModal').modal('show');
-
-                    } else {
-                        alertify.error('Something went wrong!').delay(8).dismissOthers();
-                    }
 
                 }
 
@@ -3402,9 +3408,19 @@
                 },
 
                 success: function(data) {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                    
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null, false)
+                    if(data.status === 1){
+
+                        alertify.success(data.msg).delay(8).dismissOthers();
+
+                        datatable.ajax.reload(null, false)
+                    }else{
+
+                        alertify.error(data.msg).delay(8).dismissOthers();
+                    }
+                    
                 }
 
 
@@ -3982,6 +3998,33 @@
             $('.invoice_row').not(':first').remove();
 
             InitAccountsSelect2('.credit_account_select2', '.invoice_row');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/Receipts/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 

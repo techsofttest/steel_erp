@@ -244,6 +244,29 @@ class ChartsOfAccounts extends BaseController
     //account head modal 
     public function Edit()
     {
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
         
         $cond = array('ca_id' => $this->request->getPost('id'));
 
@@ -287,9 +310,26 @@ class ChartsOfAccounts extends BaseController
 
     //delete account head
     public function Delete($coa_id="")
-
-
     {
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $return['status'] = 0;
+           
+           $return['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($return);
+
+           exit();
+        }
+        
         //Check 
         if($coa_id=="")
         {
@@ -299,8 +339,6 @@ class ChartsOfAccounts extends BaseController
         $receipts = $this->common_model->CountWhere('accounts_receipts',array('r_debit_account' => $coa_id));
 
         $payments = $this->common_model->CountWhere('accounts_payments',array('pay_credit_account' => $coa_id));
-
-        $return['status'] = 0;
 
         if($receipts ==0 && $payments==0)
 
@@ -316,6 +354,10 @@ class ChartsOfAccounts extends BaseController
 
         $return['status'] = 1;
 
+        $return['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($return);
+
         }
 
         else
@@ -323,11 +365,14 @@ class ChartsOfAccounts extends BaseController
 
         $return['status'] = 0;
 
-        }
-
+        $return['msg'] ="Account is in use";
 
         echo json_encode($return);
 
+        }
+
+
+       
       
     }
 
@@ -368,7 +413,37 @@ class ChartsOfAccounts extends BaseController
         return $this->response->setJSON($data);
 
     }
+    
 
+    
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
+    }
 
 
 

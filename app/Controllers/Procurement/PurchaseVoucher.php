@@ -645,6 +645,31 @@ class PurchaseVoucher extends BaseController
 
     public function Edit()
     {
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+        
+        
         $join =  array(
             
             array(
@@ -1293,7 +1318,26 @@ class PurchaseVoucher extends BaseController
 
     public function Delete()
     {    
+        $adminId = session('admin_id');
 
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+        
+        
         $cond = array('pv_id' => $this->request->getPost('ID'));
 
         $purchase_voucher = $this->common_model->SingleRow('pro_purchase_voucher',$cond);
@@ -1324,6 +1368,12 @@ class PurchaseVoucher extends BaseController
         $cond2 = array('pvp_reffer_id' => $this->request->getPost('ID'));
  
         $this->common_model->DeleteData('pro_purchase_voucher_prod',$cond2);
+
+        $data['status'] = 1;
+           
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
 
         
     }
@@ -1428,6 +1478,35 @@ class PurchaseVoucher extends BaseController
 
 
     }
+
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
+    }
+
 
 
    

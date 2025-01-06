@@ -294,6 +294,31 @@ class MaterialRequisition extends BaseController
 
     public function Edit()
     {
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+        
+        
         $join =  array(
                     
             array(
@@ -507,6 +532,26 @@ class MaterialRequisition extends BaseController
 
     public function Delete()
     {
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+
+        
         $cond = array('mr_id' => $this->request->getPost('ID'));
 
         $purchase_order = $this->common_model->FetchWhere('pro_purchase_order',array('po_mrn_reff' => $this->request->getPost('ID')));
@@ -517,11 +562,15 @@ class MaterialRequisition extends BaseController
 
             $this->common_model->DeleteData('pro_material_requisition_prod',array('mrp_mr_id' => $this->request->getPost('ID')));
             
-            $data['status'] ="true";
+            $data['status'] = 1;
+
+            $data['msg'] ="Data Deleted Successfully";
         }
         else
         {
-            $data['status'] ="false";
+            $data['status'] = 0;
+
+            $data['msg'] ="Data In Use. Cannot Delete";
         }
 
         echo json_encode($data);
@@ -546,6 +595,34 @@ class MaterialRequisition extends BaseController
 
         $this->common_model->EditData($update_data, array('mr_id' => $this->request->getPost('mr_id')), 'pro_material_requisition');
        
+    }
+
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 

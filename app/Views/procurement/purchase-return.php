@@ -376,7 +376,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Material Received Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddPurchaseReturn" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1459,6 +1459,33 @@
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
             $('.hidden_purchase_return_id').val("");
+            
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseReturn/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddPurchaseReturn').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 
@@ -2082,28 +2109,38 @@
                 {
                 
                     var data = JSON.parse(data);
+
+                    if(data.status === 0){
+
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }else{
+                      
+                        $('.edit_ref').val(data.reffer_id);
+
+                        $('.edit_pr_id').val(data.pr_id);
+
+                        $('.edit_date').val(data.date);
+
+                        $('.edit_vendor_name').val(data.vendor_name);
+
+                        $('.edit_vendor_inv_ref').val(data.vendor_inv);
+
+                        $('.edit_lpo_ref').val(data.lpo);
+
+                        $('.edit_contact_person').val(data.contact_person);
+
+                        $('.edit_payment_term').val(data.payment_term);
+
+                        $('.edit_total_prod').val(data.total_amount);
+
+                        $('.edit_prod_data').html(data.purchase_return);
+
+                        $('#EditModal').modal("show");
+                    
+
+                    }
                                     
-                    $('.edit_ref').val(data.reffer_id);
-
-                    $('.edit_pr_id').val(data.pr_id);
-
-                    $('.edit_date').val(data.date);
-
-                    $('.edit_vendor_name').val(data.vendor_name);
-
-                    $('.edit_vendor_inv_ref').val(data.vendor_inv);
-
-                    $('.edit_lpo_ref').val(data.lpo);
-
-                    $('.edit_contact_person').val(data.contact_person);
-
-                    $('.edit_payment_term').val(data.payment_term);
-
-                    $('.edit_total_prod').val(data.total_amount);
-
-                    $('.edit_prod_data').html(data.purchase_return);
-
-                    $('#EditModal').modal("show");
                     
                 }
 
@@ -2170,12 +2207,21 @@
 
                 success:function(data)
                 {   
+                    var data = JSON.parse(data);
+
+                    if(data.status === 1){
+
+                        rowToDelete.fadeOut(500, function() {
+                            $(this).remove();
+                            alertify.success(data.msg).delay(3).dismissOthers();
+                            datatable.ajax.reload(null,false);
+                        });
+                    }else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    }
                     
-                    rowToDelete.fadeOut(500, function() {
-                        $(this).remove();
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
-                        datatable.ajax.reload(null,false);
-                    });
+                    
                      
 
                 }

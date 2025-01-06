@@ -391,7 +391,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Journal Vouchers</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="add_model_btn btn btn-primary py-1">Add</button>
+                    <button type="button"   class="add_model_btn btn btn-primary py-1">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -790,38 +790,43 @@
 
                 success:function(data)
                 {  
-                    if(data)
-                    {
-
+                    
                     var data = JSON.parse(data);
 
-                    $('#id_edit').val(data.jv.jv_id);
+                    if(data.status === 0){
 
-                    $('#uid_edit').val(data.jv.jv_voucher_no);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('#jv_date_edit').val(FormatDate(data.jv.jv_date));
+                    }else{
 
-                    $('#jv_invoices_edit').html(data.invoices);
+                        $('#id_edit').val(data.jv.jv_id);
 
-                    $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
+                        $('#uid_edit').val(data.jv.jv_voucher_no);
 
-                    $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
+                        $('#jv_date_edit').val(FormatDate(data.jv.jv_date));
 
-                    $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
+                        $('#jv_invoices_edit').html(data.invoices);
 
-                    $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
+                        $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
 
-                    SOSelect2Edit();
+                        $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
 
-                    AccountsSelect2Edit();
+                        $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
 
-                    $('#EditModal').modal('show');
+                        $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
+
+                        SOSelect2Edit();
+
+                        AccountsSelect2Edit();
+
+                        $('#EditModal').modal('show');
+
+
+                    }
+
+                   
                   
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
+                    
                     
                 }
 
@@ -1135,9 +1140,18 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
                 success:function(data)
                 {
-                    alertify.error('Data Deleted Successfully').delay(8).dismissOthers();
+                    var data = JSON.parse(data);
+                    
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
-                    datatable.ajax.reload( null, false )
+                        datatable.ajax.reload(null,false);
+ 
+                    } else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                 }
 
 
@@ -1217,6 +1231,33 @@ $('.add_model_btn').click(function(){
  $('.account_select2').val('').trigger('change');
  
  $('.so_row_add').not(':first').remove();
+
+ $.ajax({
+
+url : "<?php echo base_url(); ?>Accounts/JournalVouchers/AddAccess",
+
+method : "POST",
+
+success:function(data)
+{
+
+    var data = JSON.parse(data);
+
+    if(data.status === 0){
+    
+        alertify.error(data.msg).delay(3).dismissOthers();
+
+    }
+    else{
+
+        $('#AddModal').modal('show');
+
+    }
+    
+
+}
+
+});
  
 
 $.ajax({

@@ -759,7 +759,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Material Requisition</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddMaterialRequisition" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1173,6 +1173,33 @@
 
             $.ajax({
 
+                url : "<?php echo base_url(); ?>Procurement/MaterialRequisition/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddMaterialRequisition').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+            $.ajax({
+
                 url : "<?php echo base_url(); ?>Procurement/MaterialRequisition/FetchReference",
 
                 method : "GET",
@@ -1255,23 +1282,34 @@
 
                     var data = JSON.parse(data);
 
-                    $('.edit_reffer_no').val(data.reffer_no);
+                    if(data.status === 0){
 
-                    $('.edit_date').val(data.mr_date);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.edit_time_frame').val(data.mr_time_frame);
+                    }else{
+                       
+                        $('.edit_reffer_no').val(data.reffer_no);
 
-                    $('.edit_material_id').val(data.material_requisition_id);
+                        $('.edit_date').val(data.mr_date);
 
-                    $('.edit_assigned_to').html(data.mr_assigned_to);
+                        $('.edit_time_frame').val(data.mr_time_frame);
 
-                    $('.edit_products').html(data.sales_order);
+                        $('.edit_material_id').val(data.material_requisition_id);
+
+                        $('.edit_assigned_to').html(data.mr_assigned_to);
+
+                        $('.edit_products').html(data.sales_order);
+
+                        $('#editModal').modal('show');
+                    }
+
+                   
 
                 }
 
             });
 
-            $('#editModal').modal('show');
+           
 
         });
 
@@ -1632,17 +1670,19 @@
                 {   
                     var data = JSON.parse(data);
 
-                    if(data.status == "false")
-                    {
-                        alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
-                    }
-                    else
+                    if(data.status == 1)
                     {
                         rowToDelete.fadeOut(500, function() {
                             $(this).remove();
-                            alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                            alertify.success(data.msg).delay(3).dismissOthers();
                             datatable.ajax.reload(null,false);
                         }); 
+                        
+                       
+                    }
+                    else
+                    {
+                        alertify.error(data.msg).delay(3).dismissOthers();
                     }
                     
                         

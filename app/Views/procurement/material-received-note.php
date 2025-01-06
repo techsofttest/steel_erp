@@ -361,7 +361,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Material Received Note</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddMaterialReceived" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1268,27 +1268,37 @@
 
                     var data = JSON.parse(data);
 
-                    $('.edit_reff').val(data.reffer_n0);
+                    if(data.status === 0){
 
-                    $('.edit_date').val(data.date);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.edit_vendor').val(data.vendor_name);
+                    }else{
+                      
+                        $('.edit_reff').val(data.reffer_n0);
 
-                    $('.edit_purchase').val(data.purchase_order);
+                        $('.edit_date').val(data.date);
 
-                    $('.edit_delivery').val(data.delivery_note);
+                        $('.edit_vendor').val(data.vendor_name);
 
-                    $('.edit_mr').val(data.mr_reffer);
+                        $('.edit_purchase').val(data.purchase_order);
 
-                    $('.edit_payment_term').val(data.payment_term);
+                        $('.edit_delivery').val(data.delivery_note);
 
-                    $('.edit_main_id').val(data.main_id);
+                        $('.edit_mr').val(data.mr_reffer);
 
-                    $('.edit_products').html(data.sales_order);
+                        $('.edit_payment_term').val(data.payment_term);
 
-                    $('.edit_image_table').html(data.image_table);
+                        $('.edit_main_id').val(data.main_id);
 
-                    $('#EditModal').modal("show");
+                        $('.edit_products').html(data.sales_order);
+
+                        $('.edit_image_table').html(data.image_table);
+
+                        $('#EditModal').modal("show");
+
+                    }
+
+                    
 
                 }
 
@@ -1413,22 +1423,20 @@
 
                     var data = JSON.parse(data);
 
-                    if(data.status === "true"){
+                    if(data.status === 1){
 
                         rowToDelete.fadeOut(500, function() {
 
                             $(this).remove();
 
-                            alertify.error('Data Delete Successfully').delay(3).dismissOthers();
-
-
+                            alertify.success(data.msg).delay(3).dismissOthers();
 
                             datatable.ajax.reload(null, false);
                         });
 
                     }else{
 
-                        alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
+                        alertify.error(data.msg).delay(3).dismissOthers();
                     }
 
                 }
@@ -1508,6 +1516,33 @@
             $('.add_prod_remove').remove();
             $('.hidden_recived_id').val("");
             $('.once_form_submit').attr('disabled', false); // Disable this input.
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/MaterialReceivedNote/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddMaterialReceived').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 

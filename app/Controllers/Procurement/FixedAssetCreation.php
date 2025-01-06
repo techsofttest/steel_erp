@@ -59,7 +59,10 @@ class FixedAssetCreation extends BaseController
 
         $i=1;
         foreach($records as $record ){
-            $action = '<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->cfs_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a><a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cfs_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a><a  href="javascript:void(0)" data-id="'.$record->cfs_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-2-line"></i> View</a>';
+            $action = '<a  href="javascript:void(0)" data-id="'.$record->cfs_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
+            <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->cfs_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
+            <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->cfs_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
+           ';
            
            $data[] = array( 
               "cfs_id"               => $i,
@@ -616,6 +619,30 @@ class FixedAssetCreation extends BaseController
     
     public function Edit(){
         
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+        
         $join =  array(            
             array(
                 'table' => 'accounts_account_heads',
@@ -707,13 +734,10 @@ class FixedAssetCreation extends BaseController
         }
 
 
-
-
         $data['depreciation']   = $fixedCredit1->cfs_depreciation;
 
         $data['attach']   = $fixedCredit1->cfs_attact != '' ? base_url().'public/uploads/FixedAsset/'.$fixedCredit1->cfs_attact : '';
        
-
 
         echo json_encode($data);
     }
@@ -783,14 +807,66 @@ class FixedAssetCreation extends BaseController
 
     public function Delete()
     {
-    
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+   
           
         $this->common_model->DeleteData('pro_create_fixed_asset', array('cfs_id' => $this->request->getPost('ID')));
 
         $this->common_model->DeleteData('accounts_charts_of_accounts', array('ca_customer' => $this->request->getPost('ID')));
+        
+        $data['status'] =1;
+        
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
 
         
 
+    }
+
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 

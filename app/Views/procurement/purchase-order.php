@@ -1098,7 +1098,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Purchase Order</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddPurchaseOrder" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1650,6 +1650,33 @@
 
             $.ajax({
 
+                url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddPurchaseOrder').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+            $.ajax({
+
                 url : "<?php echo base_url(); ?>Procurement/PurchaseOrder/FetchReference",
 
                 method : "GET",
@@ -2135,36 +2162,47 @@
                 {
                 
                     var data = JSON.parse(data);
+
+                    if(data.status === 0){
+
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }else{
+
+                        $('.edit_reff').val(data.reffer_no);
+
+                        $('.edit_date').val(data.date);
+
+                        $('.edit_vendor').html(data.vendor_name);
+
+                        $('.edit_contact').html(data.contact_person);
+
+                        $('.edit_mrn_ref').val(data.material_req);
+
+                        $('.edit_payment_term').val(data.payment_term);
+
+                        $('.edit_delivery_date').val(data.delivery_date);
+
+                        $('.edit_vendor_ref').val(data.vendor_ref);
+
+                        $('.edit_mrn_reff_id').val(data.mrn_reff_id);
+
+                        $('.edit_purchase_id').val(data.purchase_id);
+
+                        $('.edit_total_prod').val(data.po_amount);
+
+                        $('.edit_image_table').html(data.image_table);
+
+                        $('.edit_products').html(data.sales_order)
+
+                        $('.add_more_class').html(data.add_more);
+
+                        $('#EditModal').modal("show");
+
+
+                    }
                                     
-                    $('.edit_reff').val(data.reffer_no);
-
-                    $('.edit_date').val(data.date);
-
-                    $('.edit_vendor').html(data.vendor_name);
-
-                    $('.edit_contact').html(data.contact_person);
-
-                    $('.edit_mrn_ref').val(data.material_req);
-
-                    $('.edit_payment_term').val(data.payment_term);
-
-                    $('.edit_delivery_date').val(data.delivery_date);
-
-                    $('.edit_vendor_ref').val(data.vendor_ref);
-
-                    $('.edit_mrn_reff_id').val(data.mrn_reff_id);
-
-                    $('.edit_purchase_id').val(data.purchase_id);
-
-                    $('.edit_total_prod').val(data.po_amount);
-
-                    $('.edit_image_table').html(data.image_table);
-
-                    $('.edit_products').html(data.sales_order)
-
-                    $('.add_more_class').html(data.add_more);
-
-                    $('#EditModal').modal("show");
+                    
   
                 }
 
@@ -2536,17 +2574,19 @@
                 {   
                     var data = JSON.parse(data);
 
-                    if(data.status == "false")
+                    if(data.status == 1)
 		            {
-			            alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
+			            rowToDelete.fadeOut(500, function() {
+                            $(this).remove();
+                            alertify.success(data.msg).delay(3).dismissOthers();
+                            datatable.ajax.reload(null,false);
+                        });
+                        
+                        
 		            }
                     else
                     {
-                        rowToDelete.fadeOut(500, function() {
-                            $(this).remove();
-                            alertify.error('Data Delete Successfully').delay(3).dismissOthers();
-                            datatable.ajax.reload(null,false);
-                        });
+                        alertify.error(data.msg).delay(3).dismissOthers();
                     }
                    
 

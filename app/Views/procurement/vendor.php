@@ -25,7 +25,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Vendor</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddVendor" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -763,6 +763,33 @@
 
             $('.vendor_once_form_submit3').attr('disabled', false); // Disable this input.
 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/Vendor/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddVendor').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
            
         });
 
@@ -811,17 +838,18 @@
                 }*/
 
                 
-                if(data.status == "false")
-                {
-                    alertify.error("Data in Use Can't Be Delete").delay(3).dismissOthers();
-                }
-                else
+                if(data.status == 1)
                 {
                     rowToDelete.fadeOut(500, function() {
                         $(this).remove();
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                        alertify.success(data.msg).delay(3).dismissOthers();
                         datatable.ajax.reload(null,false);
                     }); 
+                  
+                }
+                else
+                {
+                    alertify.error(data.msg).delay(3).dismissOthers();
                 }
             }
 

@@ -1563,7 +1563,7 @@ class Receipts extends BaseController
     else
     {
 
-    $balance_amount = $updated_invoice_paid;
+    $balance_amount = 0;
 
     }
     
@@ -1621,45 +1621,45 @@ class Receipts extends BaseController
         if($_POST)
         {
 
-        $id = $this->request->getPost('id');
+            $id = $this->request->getPost('id');
 
-        $cond_receipt = array('ri_id' => $id);
-
-
-        $invoice = $this->common_model->SingleRow('accounts_receipt_invoices',$cond_receipt);
-
-        $receipt_id = $invoice->ri_receipt;
+            $cond_receipt = array('ri_id' => $id);
 
 
-        $this->common_model->DeleteData('accounts_receipt_invoices',$cond_receipt);
+            $invoice = $this->common_model->SingleRow('accounts_receipt_invoices',$cond_receipt);
 
-        $cond_data = array('rid_receipt_invoice' => $id);
+            $receipt_id = $invoice->ri_receipt;
 
-        $this->common_model->DeleteData('accounts_receipt_invoice_data',$cond_data);
 
-        
+            $this->common_model->DeleteData('accounts_receipt_invoices',$cond_receipt);
 
-        $all_credits = $this->common_model->FetchWhere('accounts_receipt_invoices',array('ri_receipt' => $receipt_id));
+            $cond_data = array('rid_receipt_invoice' => $id);
 
-        $total = 0;
+            $this->common_model->DeleteData('accounts_receipt_invoice_data',$cond_data);
 
-        foreach($all_credits as $credit)
-        {
+            
 
-        $total = $total+=$credit->ri_amount;
+            $all_credits = $this->common_model->FetchWhere('accounts_receipt_invoices',array('ri_receipt' => $receipt_id));
 
-        }
-        
+            $total = 0;
 
-        $receipt_data['r_amount'] = $total;
+            foreach($all_credits as $credit)
+            {
 
-        $receipt_cond['r_id'] = $receipt_id;
+                $total = $total+=$credit->ri_amount;
 
-        $this->common_model->EditData($receipt_data,$receipt_cond,'accounts_receipts');
+            }
+            
 
-        $data['total'] = $total;
+            $receipt_data['r_amount'] = $total;
 
-        echo json_encode($data);
+            $receipt_cond['r_id'] = $receipt_id;
+
+            $this->common_model->EditData($receipt_data,$receipt_cond,'accounts_receipts');
+
+            $data['total'] = $total;
+
+            echo json_encode($data);
 
         }
 

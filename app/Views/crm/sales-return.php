@@ -410,7 +410,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Sales Returns</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#SalesReturn" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1974,10 +1974,20 @@
                 data: {ID: id},
 
                 success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                {   
+                    
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+ 
+                    } else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                 }
 
 
@@ -2346,6 +2356,33 @@
 
         $.ajax({
 
+            url : "<?php echo base_url(); ?>Crm/SalesReturn/AddAccess",
+
+            method : "POST",
+
+            success:function(data)
+            {
+
+                var data = JSON.parse(data);
+
+                if(data.status === 0){
+                
+                    alertify.error(data.msg).delay(3).dismissOthers();
+
+                }
+                else{
+
+                    $('#SalesReturn').modal('show');
+
+                }
+                
+
+            }
+
+        });
+
+        $.ajax({
+
             url : "<?php echo base_url(); ?>Crm/SalesReturn/FetchReference",
 
             method : "GET",
@@ -2425,7 +2462,7 @@
     
     $("body").on('click', '.edit_btn', function(){ 
             
-            $('#EditSalesReturn').modal('show');
+            
     
             var id = $(this).data('id'); 
 
@@ -2443,42 +2480,44 @@
                     {
         
                         var data = JSON.parse(data);
+
+                        if(data.status === 0){
+
+                            alertify.error(data.msg).delay(3).dismissOthers();
+
+                        }else{
+                            
+                            $('.edit_reff').val(data.reffer_no);
+        
+                            $('.edit_date').val(data.date);
+
+                            $('.edit_customer').html(data.customer);
+
+                            $('.edit_sales_order').val(data.invoice_no);
+
+                            $('.edit_lpo_reff').val(data.lpo_reff);
+
+                            $('.edit_contact_person').html(data.contact_person);
+
+                            $('.edit_payment_terms').val(data.payment_term);
+
+                            $('.edit_project').val(data.project);
+
+                            $('.edit_project').val(data.project);
+
+                            $('.edit_product').html(data.prod_details);
+
+                            $('.edit_cash_invoice_id').val(data.cash_invoice_id);
+
+                            $('.edit_charts_account').val(data.credit_account);
+
+                            $('.add_more_class').html(data.add_more);
+
+                            $('#EditSalesReturn').modal('show');
+
+                        }
                         
-                        $('.edit_reff').val(data.reffer_no);
-        
-                        $('.edit_date').val(data.date);
-        
-                        $('.edit_customer').html(data.customer);
-        
-                        $('.edit_sales_order').val(data.invoice_no);
-
-                        $('.edit_lpo_reff').val(data.lpo_reff);
-        
-                        $('.edit_contact_person').html(data.contact_person);
-
-                    
-                        $('.edit_payment_terms').val(data.payment_term);
-        
-                        $('.edit_project').val(data.project);
-
-                        $('.edit_project').val(data.project);
-
-        
-                        /*$('.view_credit_account').val(data.credit_account);
-        
-                        $('.view_image_table').html(data.image_table)*/;
-
-                        $('.edit_product').html(data.prod_details);
-
-                        $('.edit_cash_invoice_id').val(data.cash_invoice_id);
-
-                        $('.edit_charts_account').val(data.credit_account);
-
-                        //console.log(data.credit_account);
-
-                    // $('.edit_charts_account').html(data.charts_of_account);
-
-                        $('.add_more_class').html(data.add_more);
+                       
                         
                     
                     }

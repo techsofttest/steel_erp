@@ -1066,60 +1066,70 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                 var data = JSON.parse(data);
 
-                $('.edit_vendor_name').val(data.vendor_name);
+                if(data.status === 0){
 
-                $('.edit_account_head').val(data.account_name);
+                    alertify.error(data.msg).delay(3).dismissOthers();
 
-                $('.edit_account_id').val(data.account_id);
+                }else{
 
-                $('.edit_post_box').val(data.post_box);
+                    $('.edit_vendor_name').val(data.vendor_name);
 
-                $('.edit_telephone').val(data.telephone);
+                    $('.edit_account_head').val(data.account_name);
 
-                $('.edit_fax').val(data.fax);
+                    $('.edit_account_id').val(data.account_id);
 
-                $('.edit_email').val(data.email);
+                    $('.edit_post_box').val(data.post_box);
 
-                $('.edit_credit_term').val(data.credit_term);
+                    $('.edit_telephone').val(data.telephone);
 
-                $('.edit_credit_period').val(data.credit_period);
-                
-                $('.edit_credit_limit').val(data.credit_limit);
+                    $('.edit_fax').val(data.fax);
 
-                $('.edit_vendor_id').val(data.vendor_id);
+                    $('.edit_email').val(data.email);
 
-                //contact
-                
-                $('.edit_contact').html(data.contact);
+                    $('.edit_credit_term').val(data.credit_term);
+
+                    $('.edit_credit_period').val(data.credit_period);
+
+                    $('.edit_credit_limit').val(data.credit_limit);
+
+                    $('.edit_vendor_id').val(data.vendor_id);
+
+                    //contact
+
+                    $('.edit_contact').html(data.contact);
 
 
-                //office document
+                    //office document
 
-                $('.edit_ven_cr_no').val(data.cr_no);
+                    $('.edit_ven_cr_no').val(data.cr_no);
 
-                $('.edit_ven_cr_expiry').val(data.cr_expiry);
+                    $('.edit_ven_cr_expiry').val(data.cr_expiry);
 
-                $('.edit_ven_est_id').val(data.est_id);
+                    $('.edit_ven_est_id').val(data.est_id);
 
-                $('.edit_ven_est_expiry').val(data.est_id_expiry);
+                    $('.edit_ven_est_expiry').val(data.est_id_expiry);
 
-                $('.edit_ven_signature_name').val(data.signature_name);
+                    $('.edit_ven_signature_name').val(data.signature_name);
 
-                $('.edit_ven_qid_no').val(data.qid_no);
+                    $('.edit_ven_qid_no').val(data.qid_no);
 
-                $('.edit_ven_qid_expiry').val(data.qid_expiry);
+                    $('.edit_ven_qid_expiry').val(data.qid_expiry);
 
-                $('.vendor_hidden_id').val(data.vendor_id);
+                    $('.vendor_hidden_id').val(data.vendor_id);
 
-                //image section
+                    //image section
 
-                $('.edit_cr_attach').html(data.ven_cr_attach);
+                    $('.edit_cr_attach').html(data.ven_cr_attach);
 
-                $('.edit_est_id_attach').html(data.ven_est_attach);
+                    $('.edit_est_id_attach').html(data.ven_est_attach);
 
-                $('.edit_qid_attach').html(data.ven_qid_attach);
+                    $('.edit_qid_attach').html(data.ven_qid_attach);
 
-                $('#EditVendor').modal('show');
+                    $('#EditVendor').modal('show');
+
+                }
+
+
 
 
             }

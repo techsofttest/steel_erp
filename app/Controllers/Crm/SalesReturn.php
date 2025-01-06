@@ -717,6 +717,29 @@ class SalesReturn extends BaseController
      //delete account head
      public function Delete()
      {
+        $data['status'] = "";
+           
+        $data['msg'] ="";
+
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+        
         
         $cond = array('sr_id' => $this->request->getPost('ID'));
         
@@ -745,6 +768,16 @@ class SalesReturn extends BaseController
                     $this->common_model->EditData(array('cci_status' => 0), array('cci_id' =>$credit_inv_prod->ipd_credit_invoice), 'crm_credit_invoice');
                     
                 }
+
+                $data['status'] =1;
+
+                $data['msg'] ="Data Deleted Successfully";
+            }
+            else
+            {
+                $data['status'] = 0;
+
+                $data['msg'] ="Data In Use. Cannot Delete";
             }
 
             if(!empty($cash_invoice_product))
@@ -758,6 +791,16 @@ class SalesReturn extends BaseController
                     $this->common_model->EditData(array('ci_status' => 0), array('ci_id' =>$cash_inv_prod->cipd_cash_invoice), 'crm_cash_invoice');
                     
                 }
+
+                $data['status'] =1;
+
+                $data['msg'] ="Data Deleted Successfully";
+            }
+            else
+            {
+                $data['status'] = 0;
+
+                $data['msg'] ="Data In Use. Cannot Delete";
             }
             
            
@@ -768,6 +811,9 @@ class SalesReturn extends BaseController
         $this->common_model->DeleteData('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
 
         $this->common_model->DeleteData('crm_sales_return',$cond);
+
+        echo json_encode($data);
+
       
          
      }
@@ -1207,7 +1253,30 @@ class SalesReturn extends BaseController
 
         public function Edit()
         {
+            $data['msg'] = "";
+
+            $data['status'] ="";
+    
+            $adminId = session('admin_id'); 
+    
+            $segment1 = service('uri')->getSegment(1);
+    
+            $segment2 = service('uri')->getSegment(2);
+    
+            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+    
+            if($check_module->up_edit == 0){
+               
+                $data['msg'] = "Access Denied: You do not have permission for this Action";
             
+                $data['status'] = 0;
+    
+                echo json_encode($data);
+    
+                exit();
+    
+            }
+
             $cond = array('sr_id' => $this->request->getPost('ID'));
     
             $joins = array(
@@ -1804,6 +1873,34 @@ class SalesReturn extends BaseController
             }
             
             echo json_encode($data);
+        }
+
+
+        public function AddAccess(){
+        
+            $data['status'] = "";
+    
+            $data['msg'] ="";
+    
+            $adminId = session('admin_id'); 
+    
+            $segment1 = service('uri')->getSegment(1);
+    
+            $segment2 = service('uri')->getSegment(2);
+    
+            $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+    
+            if($check_module->up_add == 0){
+               
+                $data['status'] = 0 ;
+    
+                $data['msg'] ="Access Denied: You do not have permission for this Action";
+     
+    
+            }
+            
+    
+            echo json_encode($data); 
         }
 
        

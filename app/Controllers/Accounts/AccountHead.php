@@ -155,6 +155,30 @@ class AccountHead extends BaseController
     public function Edit()
     {
         
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+        
         $cond = array('ah_id' => $this->request->getPost('ID'));
 
         $account_type = $this->common_model->SingleRow('accounts_account_heads',$cond);
@@ -185,13 +209,38 @@ class AccountHead extends BaseController
     }
 
      //delete account head
-     public function Delete()
-     {
-         $cond = array('ah_id' => $this->request->getPost('ID'));
+    public function Delete()
+    {
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+        
+        $cond = array('ah_id' => $this->request->getPost('ID'));
  
-         $this->common_model->DeleteData('accounts_account_heads',$cond);
+        $this->common_model->DeleteData('accounts_account_heads',$cond);
+
+        $data['status'] =1;
+
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
  
-     }
+    }
 
 
 
@@ -242,6 +291,33 @@ class AccountHead extends BaseController
 
         return json_encode($data);
 
+    }
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 

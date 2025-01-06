@@ -882,7 +882,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Payments</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="add_model_btn btn btn-primary py-1">Add</button>
+                    <button type="button"   class="add_model_btn btn btn-primary py-1">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                     <!-- CSRF token -->
@@ -1466,83 +1466,92 @@
                 },
 
                 success: function(data) {
-                    if (data) {
+                    
                         var data = JSON.parse(data);
 
-                        InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+                        if(data.status === 0){
 
-                        $('#uid_edit').val(data.pay.pay_ref_no);
+                            alertify.error(data.msg).delay(3).dismissOthers();
 
-                        $('#p_id_edit').val(data.pay.pay_id);
+                        }else{
 
-                        $('#p_credit_account_edit').val(data.pay.ca_name);
+                            InitAccountsSelect2('.debit_account_select2', '.invoice_row');
 
-                        $('#p_method_edit').val(data.pay.pay_method);
+                            $('#uid_edit').val(data.pay.pay_ref_no);
 
-                        if (data.pay.pay_method == "1") {
-                            $('#EditModal .cheque_sec').removeClass("d-none");
-                        } else {
-                            $('#EditModal .cheque_sec').addClass("d-none");
-                        }
+                            $('#p_id_edit').val(data.pay.pay_id);
 
-                        if (data.pay.pay_method == "1") {
+                            $('#p_credit_account_edit').val(data.pay.ca_name);
 
-                            $('.cheque_sec').removeClass("d-none");
+                            $('#p_method_edit').val(data.pay.pay_method);
 
-                            $('.cheque_file_sec').removeClass("d-none");
-
-                            $('#EditModal input[name=p_cheque_no]').val(data.pay.pay_cheque_no);
-
-                            $('#EditModal input[name=p_cheque_date]').val(FormatDate(data.pay.pay_cheque_date));
-
-                            if (data.pay.pay_cheque_copy != null) {
-                                $('#EditModal #cheque_file_view').attr('href', '<?= base_url(); ?>uploads/Payments/' + data.pay.pay_cheque_copy + '');
+                            if (data.pay.pay_method == "1") {
+                                $('#EditModal .cheque_sec').removeClass("d-none");
                             } else {
-                                $('.cheque_file_sec').addClass("d-none");
+                                $('#EditModal .cheque_sec').addClass("d-none");
                             }
 
-                        } else {
+                            if (data.pay.pay_method == "1") {
 
-                            $('.cheque_sec').addClass("d-none");
+                                $('.cheque_sec').removeClass("d-none");
 
-                            $('.cheque_file_sec').addClass("d-none");
+                                $('.cheque_file_sec').removeClass("d-none");
+
+                                $('#EditModal input[name=p_cheque_no]').val(data.pay.pay_cheque_no);
+
+                                $('#EditModal input[name=p_cheque_date]').val(FormatDate(data.pay.pay_cheque_date));
+
+                                if (data.pay.pay_cheque_copy != null) {
+                                    $('#EditModal #cheque_file_view').attr('href', '<?= base_url(); ?>uploads/Payments/' + data.pay.pay_cheque_copy + '');
+                                } else {
+                                    $('.cheque_file_sec').addClass("d-none");
+                                }
+
+                            } else {
+
+                                $('.cheque_sec').addClass("d-none");
+
+                                $('.cheque_file_sec').addClass("d-none");
+
+                            }
+
+
+                            if (data.pay.pay_method = "2") {
+
+                            $('#EditModal .bank_sec_edit').addClass("d-none");
+
+                            $('#p_bank_edit').val("");
+
+                            $('#p_bank_edit').removeAttr("required");
+
+                            } else {
+
+                            $('#EditModal .bank_sec_edit').removeClass("d-none");
+
+                            $('#p_bank_edit').attr("required", true);
+
+                            }
+
+
+
+                            $('#p_date_edit').val(FormatDate(data.pay.pay_date));
+
+                            $('#p_bank_edit').val(data.pay.pay_bank);
+
+                            $('#total_amount_edit').html(data.pay.pay_amount);
+
+                            //$('#sel_invoices_edit').html(data.debit);
+
+                            $('#sel_invoices_edit').html(data.invoices);
+
+                            $('#EditModal').modal('show');
+
 
                         }
 
+                        
 
-                        if (data.pay.pay_method = "2") {
-
-                        $('#EditModal .bank_sec_edit').addClass("d-none");
-
-                        $('#p_bank_edit').val("");
-
-                        $('#p_bank_edit').removeAttr("required");
-
-                        } else {
-
-                        $('#EditModal .bank_sec_edit').removeClass("d-none");
-
-                        $('#p_bank_edit').attr("required", true);
-
-                        }
-
-
-
-                        $('#p_date_edit').val(FormatDate(data.pay.pay_date));
-
-                        $('#p_bank_edit').val(data.pay.pay_bank);
-
-                        $('#total_amount_edit').html(data.pay.pay_amount);
-
-                        //$('#sel_invoices_edit').html(data.debit);
-
-                        $('#sel_invoices_edit').html(data.invoices);
-
-                        $('#EditModal').modal('show');
-
-                    } else {
-                        alertify.error('Something went wrong!').delay(8).dismissOthers();
-                    }
+                   
 
                 }
 
@@ -2300,9 +2309,19 @@
                 },
 
                 success: function(data) {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                    
+                    var data = JSON.parse(data);
+                    
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
-                    datatable.ajax.reload(null, false)
+                        datatable.ajax.reload(null,false);
+ 
+                    } else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                 }
 
 
@@ -2598,6 +2617,33 @@
             $('.invoice_row').not(':first').remove();
 
             InitAccountsSelect2('.debit_account_select2', '.invoice_row');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/Payments/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 

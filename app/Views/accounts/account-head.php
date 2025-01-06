@@ -124,7 +124,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Account Head</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1">Add</button>
+                    <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -313,6 +313,43 @@
         /*###*/
 
 
+        /*add modal btn start*/
+
+        $("body").on('click', '.add_model_btn', function(){ 
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Accounts/AccountHead/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
+        });
+
+
+        /*add modal btn end*/
+
+
         /*account head modal start*/ 
         $("body").on('click', '.edit_btn', function(){ 
             var id = $(this).data('id');
@@ -329,15 +366,25 @@
                 {   
                     var data = JSON.parse(data);
 
-                    $("#edit_account_hid").val(data.ah_head_id);
+                    if(data.status === 0){
 
-                    $("#edit_account_name").val(data.ah_account_name);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $("#edit_account_type").val(data.ah_account_type);
+                    }else{
+                        
+                        $("#edit_account_hid").val(data.ah_head_id);
 
-                    $('#EditModal').modal('show');
+                        $("#edit_account_name").val(data.ah_account_name);
+
+                        $("#edit_account_type").val(data.ah_account_type);
+
+                        $('#EditModal').modal('show');
+                        
+                        $("#id").val(id);
+
+                    }
+
                     
-                    $("#id").val(id);
                     
                 }
 
@@ -397,9 +444,20 @@
 
                 success:function(data)
                 {
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    var data = JSON.parse(data);
 
-                    datatable.ajax.reload(null,false);
+                    if(data.status === 1){
+                         
+                        alertify.success(data.msg).delay(2).dismissOthers();
+
+                        datatable.ajax.reload(null,false);
+
+                    }else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    }
+                    
+                    
                 }
 
 

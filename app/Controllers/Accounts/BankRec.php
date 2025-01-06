@@ -822,7 +822,26 @@ class BankRec extends BaseController
     //delete account head
     public function Delete()
     {
+        $adminId = session('admin_id');
 
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+        
+        
         $cond = array('br_id' => $id = $this->request->getPost('id'));
 
         //$receipt = $this->common_model->SingleRow('accounts_receipts',$cond);
@@ -832,6 +851,12 @@ class BankRec extends BaseController
         $cond_rec = array('brc_rec_id' => $id);
 
         $this->common_model->DeleteData('accounts_bank_rec_cleared',$cond_rec);
+
+        $data['status'] =1;
+
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
 
     }
 

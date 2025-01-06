@@ -675,6 +675,30 @@ class PurchaseOrder extends BaseController
 
     public function Edit(){
 
+        $data['msg'] = "";
+
+        $data['status'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_edit == 0){
+           
+            $data['msg'] = "Access Denied: You do not have permission for this Action";
+        
+            $data['status'] = 0;
+
+            echo json_encode($data);
+
+            exit();
+
+        }
+        
         $join =  array(
             
             array(
@@ -1078,11 +1102,29 @@ class PurchaseOrder extends BaseController
 
     public function Delete()
     {
+        
+        $adminId = session('admin_id');
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
+        
         $cond = array('po_id' => $this->request->getPost('ID'));
 
         $purchase = $this->common_model->SingleRow('pro_purchase_order',$cond);
-
-       
 
         $purchase_products = $this->common_model->FetchWhere('pro_purchase_order_product', array('pop_purchase_order' => $this->request->getPost('ID')));
         
@@ -1121,12 +1163,17 @@ class PurchaseOrder extends BaseController
         
             $this->common_model->DeleteData('pro_purchase_order',$cond);
 
-            $data['status'] ="true";
+            $data['status'] =1;
+
+            $data['msg'] ="Data Deleted Successfully";
 
         }
         else{
 
-            $data['status'] ="false";
+            $data['status'] =0;
+
+            $data['msg'] ="Data In Use. Cannot Delete";
+        
         }
 
         echo json_encode($data);
@@ -1156,6 +1203,33 @@ class PurchaseOrder extends BaseController
  
         return null;
 
+    }
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
    

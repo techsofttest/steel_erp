@@ -1076,7 +1076,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Purchase Voucher</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddPurchaseVoucher" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1726,6 +1726,33 @@
            
             $(".purchase_order").val("").trigger( "change" );
             $('.add_prod_row').remove();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddPurchaseVoucher').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
             $.ajax({
 
@@ -2699,35 +2726,46 @@
 
                     var data = JSON.parse(data);
 
-                    console.log(data.reffer_id);
+                    if(data.status === 0){
 
-                    $('.edit_ref').val(data.reffer_id);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('.edit_date').val(data.date);
+                    }
+                    else{
+                        
+                        $('.edit_ref').val(data.reffer_id);
 
-                    $('.edit_vendor_name').val(data.vendor_name);
+                        $('.edit_date').val(data.date);
 
-                    $('.edit_contact_person').val(data.contact_person);
+                        $('.edit_vendor_name').val(data.vendor_name);
 
-                    $('.edit_purchase_order').val(data.purchase_order);
+                        $('.edit_contact_person').val(data.contact_person);
 
-                    $('.edit_vendor_inv_ref').val(data.vendor_inv);
+                        $('.edit_purchase_order').val(data.purchase_order);
 
-                    $('.edit_delivery_note').val(data.delivery_note);
+                        $('.edit_vendor_inv_ref').val(data.vendor_inv);
 
-                    $('.edit_payment_term').val(data.payment_term);
+                        $('.edit_delivery_note').val(data.delivery_note);
 
-                    $('.edit_prod_data').html(data.prod_desc);
+                        $('.edit_payment_term').val(data.payment_term);
 
-                    $('.edit_purchase_id').val(data.purchase_id);
+                        $('.edit_prod_data').html(data.prod_desc);
 
-                    $('.edit_total_amount').val(data.total_amount);
+                        $('.edit_purchase_id').val(data.purchase_id);
+
+                        $('.edit_total_amount').val(data.total_amount);
+
+                        $('#EditModal').modal('show');
+
+                    }
+                    
+                   
 
 
                 }
             });
 
-            $('#EditModal').modal('show');
+            
 
         });
 
@@ -2878,22 +2916,19 @@
 
                 success:function(data)
                 {
-                   // var data = JSON.parse(data);
-                    
-                    /*if(data.status == "true")
-                    {
-                        alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                   
+                    var data = JSON.parse(data);
+
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
                         datatable.ajax.reload(null,false);
-                    }
-                    else
-                    {
-                        alertify.error("Sales Quotation In Use Cant't Delete").delay(2).dismissOthers();
-                    }*/
 
-                    alertify.success('Data Deleted Successfully').delay(2).dismissOthers();
+                    } else{
 
-                    datatable.ajax.reload(null,false);
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                    
                 }
 
