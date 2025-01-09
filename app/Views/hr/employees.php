@@ -1526,7 +1526,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Employees</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                    <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="account_type_id">
                         <!-- CSRF token --> 
@@ -2832,143 +2832,149 @@
 
                 success:function(data)
                 {   
-                    if(data)
-                    {
+                    
                     var data = JSON.parse(data);
 
-                    $('#EditModal .edit_id').val(data.emp.emp_id);
+                    if(data.status === 0){
 
-                    $('#emp_name_edit').val(data.emp.emp_name);
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                    $('#employee_id_check_edit').val(data.emp.emp_uid);
-                  
-                    $('#emp_doj_edit').val(FormatDate(data.emp.emp_date_of_join));
+                    }else{
 
-                    $('#emp_designation_edit').val(data.emp.emp_designation);
+                        $('#EditModal .edit_id').val(data.emp.emp_id);
 
-                    $('#emp_nationality_edit').val(data.emp.emp_nationality);
+                        $('#emp_name_edit').val(data.emp.emp_name);
 
-                    $('#emp_contact_no_edit').val(data.emp.emp_contact_no);
+                        $('#employee_id_check_edit').val(data.emp.emp_uid);
 
-                    $('#emp_home_contact_no_edit').val(data.emp.emp_home_contact_no);
+                        $('#emp_doj_edit').val(FormatDate(data.emp.emp_date_of_join));
 
-                    $('#emp_division_edit').val(data.emp.emp_division);
+                        $('#emp_designation_edit').val(data.emp.emp_designation);
 
-                    $('#emp_status_edit').val(data.emp.emp_status);
+                        $('#emp_nationality_edit').val(data.emp.emp_nationality);
 
+                        $('#emp_contact_no_edit').val(data.emp.emp_contact_no);
 
-                    //Salary Sec
+                        $('#emp_home_contact_no_edit').val(data.emp.emp_home_contact_no);
 
+                        $('#emp_division_edit').val(data.emp.emp_division);
 
-                    $('#basic_salary_edit').val(data.emp.emp_basic_salary);
-
-                    $('#hra_edit').val(data.emp.emp_house_rent_allow);
-
-                    $('#transport_allow_edit').val(data.emp.emp_transport_allow);
-
-                    $('#telephone_allow_edit').val(data.emp.emp_tel_allow);
-
-                    $('#food_allowance_edit').val(data.emp.emp_food_allow);
-
-                    $('#other_allowance_edit').val(data.emp.emp_other_allow);
-
-                    $('#edit_total_salary').val(data.emp.emp_total_salary);
-
-                    $('#mop_edit').val(data.emp.emp_mode_of_payment);
+                        $('#emp_status_edit').val(data.emp.emp_status);
 
 
+                        //Salary Sec
 
 
-                    if((data.emp.emp_mode_of_payment!=1) && (data.emp.emp_mode_of_payment!=null))
-                    {
-                    $('.edit_bank_sec').show();
+                        $('#basic_salary_edit').val(data.emp.emp_basic_salary);
 
-                    $('#account_no_edit').val(data.emp.emp_account_number);
+                        $('#hra_edit').val(data.emp.emp_house_rent_allow);
 
-                    $('#bank_edit').val(data.emp.emp_bank);
+                        $('#transport_allow_edit').val(data.emp.emp_transport_allow);
+
+                        $('#telephone_allow_edit').val(data.emp.emp_tel_allow);
+
+                        $('#food_allowance_edit').val(data.emp.emp_food_allow);
+
+                        $('#other_allowance_edit').val(data.emp.emp_other_allow);
+
+                        $('#edit_total_salary').val(data.emp.emp_total_salary);
+
+                        $('#mop_edit').val(data.emp.emp_mode_of_payment);
+
+
+
+
+                        if((data.emp.emp_mode_of_payment!=1) && (data.emp.emp_mode_of_payment!=null))
+                        {
+                        $('.edit_bank_sec').show();
+
+                        $('#account_no_edit').val(data.emp.emp_account_number);
+
+                        $('#bank_edit').val(data.emp.emp_bank);
+
+                        }
+                        else
+                        {
+                        $('.edit_bank_sec').hide();
+
+                        $('#account_no_edit').val('');
+
+                        $('#bank_edit').val('');
+
+                        }
+
+                        $('#vacation_taken_edit').val(data.emp.emp_vacation_taken);
+
+                        $('#air_ticket_due_edit').val(data.emp.emp_air_ticket_due_from);
+
+                        $('#vacation_pay_due_edit').val(data.emp.emp_vacation_pay_due_from);
+
+                        $('#indemnity_advance_edit').val(data.emp.emp_indemnity_advance);
+
+
+                        $('#air_ticket_per_year_edit').val(data.emp.emp_air_ticket_per_year);
+
+                        $('#budgeted_air_ticket_edit').val(data.emp.emp_budgeted_ticket_amount);
+
+
+                        //Doc Sec
+
+                        $('#passport_no_edit').val(data.emp.emp_passport_no);
+
+                        if(data.emp.emp_passport_expiry!=null)
+                        {
+                        $('#passport_expiry_edit').val(FormatDate(data.emp.emp_passport_expiry));
+                        }
+                        else
+                        {
+                        $('#passport_expiry_edit').val('').datepicker("refresh"); 
+                        }
+
+                        $('#passport_no_edit').val(data.emp.emp_passport_no);
+
+                        $('#visa_no_edit').val(data.emp.emp_visa_no);
+
+                        if(data.emp.emp_visa_expiry!=null)
+                        {
+                        $('#visa_expiry_edit').val(FormatDate(data.emp.emp_visa_expiry));
+                        }
+                        else
+                        {
+                        $('#visa_expiry_edit').val("").datepicker("refresh"); ;
+                        }
+
+                        $('#qatar_id_edit').val(data.emp.emp_qatar_id_no);
+
+
+                        if(data.emp.emp_qatar_id_expiry!=null)
+                        {
+                        $('#qatar_id_expiry_edit').val(FormatDate(data.emp.emp_qatar_id_expiry));
+                        }
+                        else
+                        {
+                        $('#qatar_id_expiry_edit').val("").datepicker("refresh");
+                        }
+
+                        if(data.emp.emp_contract_expiry!=null)
+                        {
+                        $('#contract_expiry_edit').val(FormatDate(data.emp.emp_contract_expiry));
+                        }
+                        else
+                        {
+
+                        $('#contract_expiry_edit').val('').datepicker("refresh");
+                        }
+
+                        $('#EditModal').modal('show');
+
+
 
                     }
-                    else
-                    {
-                    $('.edit_bank_sec').hide();
 
-                    $('#account_no_edit').val('');
-
-                    $('#bank_edit').val('');
-
-                    }
-
-                    $('#vacation_taken_edit').val(data.emp.emp_vacation_taken);
-
-                    $('#air_ticket_due_edit').val(data.emp.emp_air_ticket_due_from);
-
-                    $('#vacation_pay_due_edit').val(data.emp.emp_vacation_pay_due_from);
-
-                    $('#indemnity_advance_edit').val(data.emp.emp_indemnity_advance);
-
-
-                    $('#air_ticket_per_year_edit').val(data.emp.emp_air_ticket_per_year);
-
-                    $('#budgeted_air_ticket_edit').val(data.emp.emp_budgeted_ticket_amount);
-
-
-                    //Doc Sec
-
-                    $('#passport_no_edit').val(data.emp.emp_passport_no);
-
-                    if(data.emp.emp_passport_expiry!=null)
-                    {
-                    $('#passport_expiry_edit').val(FormatDate(data.emp.emp_passport_expiry));
-                    }
-                    else
-                    {
-                    $('#passport_expiry_edit').val('').datepicker("refresh"); 
-                    }
-
-                    $('#passport_no_edit').val(data.emp.emp_passport_no);
-
-                    $('#visa_no_edit').val(data.emp.emp_visa_no);
-
-                    if(data.emp.emp_visa_expiry!=null)
-                    {
-                    $('#visa_expiry_edit').val(FormatDate(data.emp.emp_visa_expiry));
-                    }
-                    else
-                    {
-                    $('#visa_expiry_edit').val("").datepicker("refresh"); ;
-                    }
-
-                    $('#qatar_id_edit').val(data.emp.emp_qatar_id_no);
-
-
-                    if(data.emp.emp_qatar_id_expiry!=null)
-                    {
-                    $('#qatar_id_expiry_edit').val(FormatDate(data.emp.emp_qatar_id_expiry));
-                    }
-                    else
-                    {
-                    $('#qatar_id_expiry_edit').val("").datepicker("refresh");
-                    }
-
-                    if(data.emp.emp_contract_expiry!=null)
-                    {
-                    $('#contract_expiry_edit').val(FormatDate(data.emp.emp_contract_expiry));
-                    }
-                    else
-                    {
-                    
-                    $('#contract_expiry_edit').val('').datepicker("refresh");
-                    }
-
-                    $('#EditModal').modal('show');
 
 
                 
-                    }
-                    else
-                    {
-                    alertify.error('Something went wrong!').delay(8).dismissOthers();  
-                    }
+                   
                     
                 }
 
@@ -3305,10 +3311,19 @@
                 data: {id: id},
 
                 success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                {   
+                    var data = JSON.parse(data);
+                    
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
-                    datatable.ajax.reload( null, false )
+                        datatable.ajax.reload(null,false);
+ 
+                    } else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                 }
 
 
@@ -3383,6 +3398,33 @@
             $('#add_form')[0].reset();
 
             $('.add_form')[0].reset();
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>HR/Employees/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
            
 

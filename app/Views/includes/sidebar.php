@@ -120,6 +120,27 @@
                                 
                                 ?>
 
+                                <?php
+
+                                    if(session()->get('admin_role')==1){ ?>
+
+
+                                        <li class="nav-item">
+
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="User") {echo "active" ;} ?>" href="<?php echo base_url();?>User" >
+                                            <i class="ri-user-3-fill"></i> <span data-key="t-human">User</span>
+                                        </a>
+
+                                        </li>
+
+
+                                <?php }  ?>
+                                
+                                
+                                
+                                
+                                
+
                                 
                             
 

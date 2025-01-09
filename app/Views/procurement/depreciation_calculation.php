@@ -337,7 +337,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Depreciation Calculation</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddDepreciationModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"   class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1816,6 +1816,33 @@
             $('#AddDepreciation').find('input[type="number"]').val(''); // Clear number inputs
             $('#AddDepreciation').find('.fixed_asset').html(''); // Assuming fixed_asset is dynamically loaded HTML
 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/DepreciationCalculation/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddDepreciationModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            })
+
 
             // $.ajax({
 
@@ -2376,49 +2403,57 @@
                 success: function(response) {
                     var data = JSON.parse(response);
 
-                    // Fetch the options for Select2 before trying to set the value
-                    $.ajax({
-                        url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
-                        method: "GET",
-                        dataType: 'json',
-                        success: function(fetchResponse) {
-                            // Clear and append new options
-                            var select = $('.edit_acc_head');
-                            select.empty(); // Clear existing options
+                    if(data.status === 0){
 
-                            // Populate select options
-                            $.each(fetchResponse.result, function(index, item) {
-                                var option = new Option(item.ah_account_name, item.ah_id, false, false);
-                                select.append(option);
-                            });
+                        alertify.error(data.msg).delay(3).dismissOthers();
+                    }
+                    else{
 
-                            // Set the selected option
-                            if (data.account_head) {
-                                select.val(data.account_head).trigger('change'); // Set the value and trigger Select2 update
+                        // Fetch the options for Select2 before trying to set the value
+                        $.ajax({
+                            url: "<?= base_url(); ?>Procurement/DepreciationCalculation/FetchTypes",
+                            method: "GET",
+                            dataType: 'json',
+                            success: function(fetchResponse) {
+                                // Clear and append new options
+                                var select = $('.edit_acc_head');
+                                select.empty(); // Clear existing options
+
+                                // Populate select options
+                                $.each(fetchResponse.result, function(index, item) {
+                                    var option = new Option(item.ah_account_name, item.ah_id, false, false);
+                                    select.append(option);
+                                });
+
+                                // Set the selected option
+                                if (data.account_head) {
+                                    select.val(data.account_head).trigger('change'); // Set the value and trigger Select2 update
+                                }
+
+                                // Disable the Select2 dropdown
+                                // select.prop('disabled', true).trigger('change'); // Disable it
+
+                                // Set other form fields
+                                $('.edit_acq_date').val(data.acquired_date);
+                                $('.edit_currentbalance').val(data.balance_amt);
+                                $('.edit_debit_account_select').val(data.debit_account).trigger('change');
+                                $('.edit_credit_account_select').val(data.credit_account).trigger('change');
+                                $('.edit_depriciation_input').val(data.depreciation);
+
+                                $('.edit_debit_account_select').prop('disabled', true).trigger('change');
+                                $('.edit_credit_account_select').prop('disabled', true).trigger('change');
+
+                                if (data.depreciation_det != '') {
+                                    $('.edit-assets-body').html(data.depreciation_det)
+                                    $('.edit_selected_table').css('display', 'block');
+
+                                }
+                                // Show the modal
+                                $('#EditModal').modal("show");
                             }
+                        });
+                    }
 
-                            // Disable the Select2 dropdown
-                            // select.prop('disabled', true).trigger('change'); // Disable it
-
-                            // Set other form fields
-                            $('.edit_acq_date').val(data.acquired_date);
-                            $('.edit_currentbalance').val(data.balance_amt);
-                            $('.edit_debit_account_select').val(data.debit_account).trigger('change');
-                            $('.edit_credit_account_select').val(data.credit_account).trigger('change');
-                            $('.edit_depriciation_input').val(data.depreciation);
-
-                            $('.edit_debit_account_select').prop('disabled', true).trigger('change');
-                            $('.edit_credit_account_select').prop('disabled', true).trigger('change');
-
-                            if (data.depreciation_det != '') {
-                                $('.edit-assets-body').html(data.depreciation_det)
-                                $('.edit_selected_table').css('display', 'block');
-
-                            }
-                            // Show the modal
-                            $('#EditModal').modal("show");
-                        }
-                    });
                 }
 
             });

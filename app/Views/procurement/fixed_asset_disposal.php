@@ -329,7 +329,7 @@
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">View Fixed Asset Disposal</h4>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddFixedAssetDisposal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                                        <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
@@ -1636,6 +1636,33 @@
             // Clear out any dynamically added fields (if you have dynamic form fields)
             $('#AddAssetDisposal').find('.view_selected_table').css('display', 'none'); // Example, adjust if needed
 
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>Procurement/FixedAssetDisposal/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddFixedAssetDisposal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
+
         });
 
         /*####*/
@@ -1843,73 +1870,83 @@
                     var data = JSON.parse(response);
                     var assetDisposed = data.assetdisposed;
 
-                    // Set other form fields
-                    $('.edit_id').val(assetDisposed.dfs_id);
-                    $('.edit_description').val(assetDisposed.dfs_description);
-                    $('.edit_acquired_date').val(assetDisposed.dfs_acquired_date);
-                    $('.edit_asset_amt').val(assetDisposed.dfs_asset_amount);
-                    $('.edit_depreciation').val(assetDisposed.dfs_depreciation);
-                    $('.edit_sale_price').val(assetDisposed.dfs_sales_price);
-                    $('.edit_profit').val(assetDisposed.dfs_profit);
-                    $('#edit_total_amount').text(assetDisposed.dfs_profit);
-                    $('.edit_dispose_date').val(assetDisposed.dfs_date_dispose);
-                    $('.edit_current_balance').val(assetDisposed.dfs_asset_balance);
+                    if(data.status === 0){
 
-                    // Fetch and populate account head Select2
-                    $.ajax({
-                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
-                        method: "GET",
-                        dataType: 'json',
-                        success: function(fetchResponse) {
-                            var selectAccountHead = $('.edit_account_head_select');
-                            selectAccountHead.empty(); // Clear existing options
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
-                            // Populate select options for account head
-                            $.each(fetchResponse.result, function(index, item) {
-                                var option = new Option(item.ah_account_name, item.ah_id, false, false);
-                                selectAccountHead.append(option);
-                            });
+                    }else{
+                       
+                        // Set other form fields
+                        $('.edit_id').val(assetDisposed.dfs_id);
+                        $('.edit_description').val(assetDisposed.dfs_description);
+                        $('.edit_acquired_date').val(assetDisposed.dfs_acquired_date);
+                        $('.edit_asset_amt').val(assetDisposed.dfs_asset_amount);
+                        $('.edit_depreciation').val(assetDisposed.dfs_depreciation);
+                        $('.edit_sale_price').val(assetDisposed.dfs_sales_price);
+                        $('.edit_profit').val(assetDisposed.dfs_profit);
+                        $('#edit_total_amount').text(assetDisposed.dfs_profit);
+                        $('.edit_dispose_date').val(assetDisposed.dfs_date_dispose);
+                        $('.edit_current_balance').val(assetDisposed.dfs_asset_balance);
 
-                            // Set the selected value and trigger the Select2 update
-                            if (assetDisposed.dfs_account_head) {
-                                selectAccountHead.val(assetDisposed.dfs_account_head).trigger('change');
+                        // Fetch and populate account head Select2
+                        $.ajax({
+                            url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchTypes",
+                            method: "GET",
+                            dataType: 'json',
+                            success: function(fetchResponse) {
+                                var selectAccountHead = $('.edit_account_head_select');
+                                selectAccountHead.empty(); // Clear existing options
+
+                                // Populate select options for account head
+                                $.each(fetchResponse.result, function(index, item) {
+                                    var option = new Option(item.ah_account_name, item.ah_id, false, false);
+                                    selectAccountHead.append(option);
+                                });
+
+                                // Set the selected value and trigger the Select2 update
+                                if (assetDisposed.dfs_account_head) {
+                                    selectAccountHead.val(assetDisposed.dfs_account_head).trigger('change');
+                                }
+
                             }
 
-                        }
 
+                        });
 
-                    });
+                        // Fetch and populate fixed asset Select2
+                        $.ajax({
+                            url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
+                            method: "GET",
+                            dataType: 'json',
+                            success: function(fetchResponse) {
+                                var selectFixedAsset = $('.edit_fixed_asset_select');
+                                selectFixedAsset.empty(); // Clear existing options
 
-                    // Fetch and populate fixed asset Select2
-                    $.ajax({
-                        url: "<?= base_url(); ?>Procurement/FixedAssetDisposal/FetchFixedAsset",
-                        method: "GET",
-                        dataType: 'json',
-                        success: function(fetchResponse) {
-                            var selectFixedAsset = $('.edit_fixed_asset_select');
-                            selectFixedAsset.empty(); // Clear existing options
+                                // Populate select options for fixed asset
+                                $.each(fetchResponse.result, function(index, item) {
+                                    var option = new Option(item.cfs_description, item.cfs_id, false, false);
+                                    selectFixedAsset.append(option);
+                                });
 
-                            // Populate select options for fixed asset
-                            $.each(fetchResponse.result, function(index, item) {
-                                var option = new Option(item.cfs_description, item.cfs_id, false, false);
-                                selectFixedAsset.append(option);
-                            });
-
-                            // Set the selected value and trigger the Select2 update
-                            if (assetDisposed.dfs_fixed_asset) {
-                                selectFixedAsset.val(assetDisposed.dfs_fixed_asset).trigger('change');
+                                // Set the selected value and trigger the Select2 update
+                                if (assetDisposed.dfs_fixed_asset) {
+                                    selectFixedAsset.val(assetDisposed.dfs_fixed_asset).trigger('change');
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    // Set other select fields that don't require fetching new options
-                    $('.edit_credit_acc').val(assetDisposed.dfs_credit_account).trigger('change');
-                    $('.edit_gi_account').val(assetDisposed.dfs_debit_account).trigger('change');
-
+                        // Set other select fields that don't require fetching new options
+                        $('.edit_credit_acc').val(assetDisposed.dfs_credit_account).trigger('change');
+                        $('.edit_gi_account').val(assetDisposed.dfs_debit_account).trigger('change');
 
 
-                    // Show the modal after all fields are set
-                    $('#EditModal').modal("show");
+
+                        // Show the modal after all fields are set
+                        $('#EditModal').modal("show");
+
+                    }
+
+                    
                 }
 
             });
@@ -1937,17 +1974,25 @@
 
                 success: function(data) {
                     //var data = JSON.parse(data);
+                    
+                    if(data.status === 1){
 
-                    rowToDelete.fadeOut(500, function() {
+                        rowToDelete.fadeOut(500, function() {
 
-                        $(this).remove();
+                            $(this).remove();
 
-                        alertify.error('Data Delete Successfully').delay(3).dismissOthers();
+                            alertify.success(data.msg).delay(2).dismissOthers();
 
+                            datatable.ajax.reload(null, false);
+                        });
 
+                    }
+                    else{
 
-                        datatable.ajax.reload(null, false);
-                    });
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
+
+                    
 
                 }
 

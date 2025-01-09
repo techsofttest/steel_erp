@@ -1386,6 +1386,7 @@ class PurchaseVoucher extends BaseController
         $join =  array(
             
             array(
+                
                 'table' => 'pro_purchase_order',
                 'pk'    => 'po_id',
                 'fk'    => 'mrn_purchase_order',
@@ -1416,7 +1417,6 @@ class PurchaseVoucher extends BaseController
 
         $update_data = [
 
-           
 
             'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('pv_date'))),
 
@@ -1426,12 +1426,9 @@ class PurchaseVoucher extends BaseController
 
             'pv_payment_term'    => $this->request->getPost('pv_payment_term'),
 
-            
 
         ];
-        
-       
-       
+      
 
         $this->common_model->EditData($update_data, array('pv_id' => $this->request->getPost('pv_id')), 'pro_purchase_voucher');
         

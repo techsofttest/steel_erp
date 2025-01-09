@@ -102,6 +102,9 @@
     content: "\ea09";
 }
 
+.ri-user-3-fill:before {
+    content: "\f255";
+}
 @font-face {
     font-family: boxicons;
     font-weight: 400;

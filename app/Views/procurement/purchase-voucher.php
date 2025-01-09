@@ -2343,7 +2343,7 @@
                     
                         var data = JSON.parse(data);
 
-                       // $('.add_contact_person').html(data.condact_data);
+                        $('.add_contact_person').html(data.condact_data);
 
                         $('.add_payment_term').val(data.payment_term);
                     }

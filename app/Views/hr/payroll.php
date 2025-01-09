@@ -513,7 +513,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">View Payroll</h4>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
+                    <button type="button"  class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="">
                         <!-- CSRF token --> 
@@ -766,10 +766,10 @@
 <script>
 
 
-     document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function(event) { 
 
 
-        $('#AddModal').modal('show');
+        //$('#AddModal').modal('show');
     
 
         $('.sec_btn').click(function(){
@@ -811,41 +811,41 @@
                             if(data.status=="1")
                             {
                        
-                            alertify.success('Timesheets fetched').delay(3).dismissOthers();
-                            // $('#add_form').attr('data-empid',data);
-                            //$('.added_id').val(data);
+                                alertify.success('Timesheets fetched').delay(3).dismissOthers();
+                                // $('#add_form').attr('data-empid',data);
+                                //$('.added_id').val(data);
 
-                            $('#timesheets_row').html(data.table);
+                                $('#timesheets_row').html(data.table);
 
-                            $('#staff_salary_add').html(data.staff_salary);
+                                $('#staff_salary_add').html(data.staff_salary);
 
-                            $('#salaries_and_wages_add').html(data.salaries_wages);
+                                $('#salaries_and_wages_add').html(data.salaries_wages);
 
-                            $('#overtime_add').html(data.total_ot);
+                                $('#overtime_add').html(data.total_ot);
 
-                            $('#transport_allow_add').html(data.transport_allow);
+                                $('#transport_allow_add').html(data.transport_allow);
 
-                            $('#hra_add').html(data.hra);
+                                $('#hra_add').html(data.hra);
 
-                            $('#telephone_allow_add').html(data.tel_allow);
+                                $('#telephone_allow_add').html(data.tel_allow);
 
-                            $('#food_allow_add').html(data.food_allow);
+                                $('#food_allow_add').html(data.food_allow);
 
-                            $('#other_allow_add').html(data.other_allow);
+                                $('#other_allow_add').html(data.other_allow);
 
-                            $('#total_salary_add').html(data.total_salary);
+                                $('#total_salary_add').html(data.total_salary);
 
-                            $('#timesheet_sec').show();
+                                $('#timesheet_sec').show();
 
                             }
                             else
                             {
 
-                            alertify.error(data.msg).delay(3).dismissOthers();
+                                alertify.error(data.msg).delay(3).dismissOthers();
 
-                            $('#timesheets_row').html('');
+                                $('#timesheets_row').html('');
 
-                            $('#timesheet_sec').hide();
+                                $('#timesheet_sec').hide();
 
                             }
 
@@ -1088,10 +1088,19 @@
                 data: {id: id},
 
                 success:function(data)
-                {
-                    alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                {  
+                    var data = JSON.parse(data);
+                    
+                    if(data.status === 1){
+                        
+                        alertify.success(data.msg).delay(2).dismissOthers();
 
-                    datatable.ajax.reload( null, false );
+                        datatable.ajax.reload(null,false);
+ 
+                    } else{
+
+                        alertify.error(data.msg).delay(2).dismissOthers();
+                    } 
                 }
 
 
@@ -1167,6 +1176,33 @@
             $('#timesheet_sec').hide();
 
             $('#timesheets_row').html('');
+
+            $.ajax({
+
+                url : "<?php echo base_url(); ?>HR/Payroll/AddAccess",
+
+                method : "POST",
+
+                success:function(data)
+                {
+
+                    var data = JSON.parse(data);
+
+                    if(data.status === 0){
+                    
+                        alertify.error(data.msg).delay(3).dismissOthers();
+
+                    }
+                    else{
+
+                        $('#AddModal').modal('show');
+
+                    }
+                    
+
+                }
+
+            });
 
 
         });

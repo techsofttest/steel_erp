@@ -1004,23 +1004,78 @@ class Payroll extends BaseController
     public function Delete()
     {
 
+        $adminId = session('admin_id');
 
-    $id = $this->request->getPost('id');
+        $segment1 = service('uri')->getSegment(1);
 
+        $segment2 = service('uri')->getSegment(2);
 
-    $cond = array('pr_id' => $id);
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_delete == 0){
+
+           $data['status'] = 0;
+           
+           $data['msg'] ="Access Denied: You do not have permission for this Action";
+
+           echo json_encode($data);
+
+           exit();
+        }
     
-    $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
-
-    $this->common_model->DeleteData('hr_payrolls',$cond);
-
-    $jv_cond = array('jv_id' => $payroll->pr_journal_id);
-
-    $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
-
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
+    
+    
+        $id = $this->request->getPost('id');
 
 
+        $cond = array('pr_id' => $id);
+        
+        $payroll = $this->common_model->SingleRow('hr_payrolls',$cond);
+
+        $this->common_model->DeleteData('hr_payrolls',$cond);
+
+        $jv_cond = array('jv_id' => $payroll->pr_journal_id);
+
+        $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
+
+        $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $payroll->pr_journal_id));
+
+        $data['status'] =1;
+
+        $data['msg'] ="Data Deleted Successfully";
+
+        echo json_encode($data);
+
+
+    }
+
+
+
+    public function AddAccess(){
+        
+        $data['status'] = "";
+
+        $data['msg'] ="";
+
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        if($check_module->up_add == 0){
+           
+            $data['status'] = 0 ;
+
+            $data['msg'] ="Access Denied: You do not have permission for this Action";
+ 
+
+        }
+        
+
+        echo json_encode($data); 
     }
 
 
