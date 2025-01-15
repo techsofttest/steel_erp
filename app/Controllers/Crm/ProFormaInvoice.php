@@ -335,16 +335,19 @@ class ProFormaInvoice extends BaseController
         $cond = array('pf_id' => $this->request->getPost('ID'));
 
         $joins = array(
+
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
                 'fk'    => 'pf_customer',
             ),
+
             array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
                 'fk'    => 'pf_sales_order',
             ),
+
             array(
                 'table' => 'executives_sales_executive',
                 'pk'    => 'se_id',
@@ -412,7 +415,7 @@ class ProFormaInvoice extends BaseController
             <td>'.$i.'</td>
             <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control text-end" readonly></td>
@@ -739,11 +742,11 @@ class ProFormaInvoice extends BaseController
 
             $data['project']              = $proforma->pf_project;
 
-            $data['total_amount']         = $proforma->pf_total_amount;
+            $data['total_amount']         = format_currency($proforma->pf_total_amount);
 
-            $data['current_claim']        = $proforma->pf_current_cliam;
+            $data['current_claim']        = format_currency($proforma->pf_current_cliam);
 
-            $data['current_claim_value']  = $proforma->pf_current_claim_value;
+            $data['current_claim_value']  = format_currency($proforma->pf_current_claim_value);
 
             $data['performa_id']          = $proforma->pf_id;
 
@@ -862,10 +865,10 @@ class ProFormaInvoice extends BaseController
                 <td class="si_no2">'.$i.'</td>
                 <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
                 <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.$prod_det->pp_quantity.'" class="form-control"  readonly></td>
-                <td> <input type="text" value="'.$prod_det->pp_rate.'"  class="form-control" readonly></td>
-                <td> <input type="text" value="'.$prod_det->pp_discount.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.$prod_det->pp_amount.'" class="form-control edit_total_amount" readonly></td>
+                <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control"  readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'"  class="form-control" readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control" readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control edit_total_amount" readonly></td>
                 <td style="width: 13%;">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
                     <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -994,7 +997,7 @@ class ProFormaInvoice extends BaseController
 
             $data['unit']     = $proforma_prod->pp_unit;
 
-            $data['qty']      = $proforma_prod->pp_quantity;
+            $data['qty']      = round($proforma_prod->pp_quantity);
     
             $data['rate']     = $proforma_prod->pp_rate;
     
@@ -1069,8 +1072,6 @@ class ProFormaInvoice extends BaseController
                 $total_amount = $performa_prod_amount->	pp_amount + $total_amount;
             }
 
-            
-             
             $performa = $this->common_model->SingleRow('crm_proforma_invoices',array('pf_id' => $performa_prod->pp_proforma));
 
             $current_claim = $performa->pf_current_cliam;

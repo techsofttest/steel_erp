@@ -56,7 +56,7 @@ class User extends BaseController
         foreach($records as $record){
 
            
-            $action = ' <a  href="javascript:void(0)" data-id="'.$record->user_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
+            $action = ' S
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->user_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->user_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
            ';
@@ -105,7 +105,6 @@ class User extends BaseController
 
         $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
         
-    
         return view('user',$data);
 
     }
@@ -141,6 +140,30 @@ class User extends BaseController
 
         echo json_encode($data);
         
+
+    }
+
+
+    public function ChangePassword()
+    {
+
+        if($this->request->getPost('user_id') != session()->get('admin_id'))
+        {
+
+            $cond = array('user_id' => $this->request->getPost('user_id'));
+
+            $update_data['user_password'] = sha1($this->request->getPost('user_password')); 
+
+            // Check if the 'account_id' key exists before unsetting it
+            if (array_key_exists('user_id', $update_data)) 
+            {
+                unset($update_data['user_id']);
+            }       
+
+            $this->common_model->EditData($update_data,$cond,'users');
+
+        }
+
 
     }
 

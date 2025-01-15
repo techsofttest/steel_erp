@@ -74,7 +74,7 @@ class CreditInvoice extends BaseController
               'cci_date'          => date('d-M-Y',strtotime($record->cci_date)),
               'cci_customer'      => $record->cc_customer_name,
               'cci_sales_order'   => $record->so_reffer_no,
-              'cci_total_amount'  => $record->cci_total_amount,
+              'cci_total_amount'  => format_currency($record->cci_total_amount),
               'action'            => $action,
            );
            $i++; 
@@ -583,7 +583,7 @@ class CreditInvoice extends BaseController
                                                 <td class="text-center">'.$delivery_prod->dn_reffer_no.'</td>
                                                 <td style="width:35%">'.$delivery_prod->product_details.'</td>
                                                 <td class="text-center">'.$delivery_prod->ipd_unit.'</td>
-                                                <td class="text-center">'.$delivery_prod->ipd_quantity.'</td>
+                                                <td class="text-center">'.format_currency($delivery_prod->ipd_quantity).'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_rate).'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_discount).'</td>
                                                 <td class="text-end" style="width:10%">'.format_currency($delivery_prod->ipd_amount).'</td>
@@ -1033,7 +1033,7 @@ class CreditInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td class=""><input type="text" value="'.$credit_invoice->cci_total_amount.'" class="form-control " readonly></td>
+                <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control " readonly></td>
                 
             </tr> ';
         
@@ -1131,10 +1131,10 @@ class CreditInvoice extends BaseController
                                                 <td>'.$delivery_prod->dn_reffer_no.'</td>
                                                 <td style="width: 35%">'.$delivery_prod->product_details.'</td>
                                                 <td>'.$delivery_prod->ipd_unit.'</td>
-                                                <td>'.$delivery_prod->ipd_quantity.'</td>
-                                                <td>'.$delivery_prod->ipd_rate.'</td>
-                                                <td>'.$delivery_prod->ipd_discount.'</td>
-                                                <td>'.$delivery_prod->ipd_amount.'</td>
+                                                <td>'.format_currency($delivery_prod->ipd_quantity).'</td>
+                                                <td>'.format_currency($delivery_prod->ipd_rate).'</td>
+                                                <td>'.format_currency($delivery_prod->ipd_discount).'</td>
+                                                <td>'.format_currency($delivery_prod->ipd_amount).'</td>
                                                 
                                             </tr>';
                                                     $i++;

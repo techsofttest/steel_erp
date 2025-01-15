@@ -627,7 +627,7 @@ class PurchaseVoucher extends BaseController
             <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control text-center" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control text-center" readonly></td>
-            <td style="width:7%"> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control text-center" readonly></td>
+            <td style="width:7%"> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control text-center" readonly></td>
@@ -712,7 +712,7 @@ class PurchaseVoucher extends BaseController
 
         $data['purchase_id']     = $purchase_voucher->pv_id;
 
-        $data['total_amount']     = $purchase_voucher->pv_total;
+        $data['total_amount']     = format_currency($purchase_voucher->pv_total);
         
         
         $join1 =  array(
@@ -744,11 +744,11 @@ class PurchaseVoucher extends BaseController
             <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_amount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control" readonly></td>
             ';
 
             if(empty($pur_vou_prod->pv_purchase_order)){

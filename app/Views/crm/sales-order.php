@@ -1932,7 +1932,7 @@
 	 
             $(this).parent().remove();
             
-           /* var jj = 0;
+            /* var jj = 0;
 
             $('body .sales_row_leng').each(function() {
                 

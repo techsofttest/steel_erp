@@ -13,6 +13,34 @@ class Reports extends BaseController
     public function Ledger()
     {   
 
+        /**/
+
+        $data['status'] = "";
+
+        $data['msg'] ="";
+        
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+        
+            
+            if($check_module->up_add == 0){
+            
+                $this->session->setFlashdata('error','Access Denied: You do not have permission for this Action');
+              
+                return redirect()->to('Home');
+            }
+
+        
+        
+        
+       
+        /**/
 
         $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
 
@@ -164,7 +192,7 @@ class Reports extends BaseController
         
                         $new_date = date('d-M-Y',strtotime($vc->transaction_date));
         
-                        $pdf_data .= "<tr > <td align='center'>{$new_date}</td>";
+                        $pdf_data .= "<tr> <td align='center'>{$new_date}</td>";
 
                         $pdf_data .= "<td align='center'>{$vc->reference}</td>";
 

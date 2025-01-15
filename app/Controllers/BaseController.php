@@ -111,27 +111,6 @@ abstract class BaseController extends Controller
         
         $this->data['permissions'] = $this->common_model->FetchWhereJoin('user_permission',array('up_user_id' => $adminId),$joins); 
 
-        
-
-        //print_r($this->data['permissions']); exit();
- 
-      
-
-        /*$joins1 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'dpd_prod_det',
-            ),
-
-        );
-
-
-       $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',$cond1,$joins1);*/
-
-     
-
-       
         // Share the data globally
         \Config\Services::renderer()->setData($this->data);
 

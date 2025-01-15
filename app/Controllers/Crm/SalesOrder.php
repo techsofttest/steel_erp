@@ -841,7 +841,7 @@ class SalesOrder extends BaseController
 
         $data['so_id']           = $sales_order->so_id;
 
-        $data['amount_total']    = $sales_order->so_amount_total;
+        $data['amount_total']    = format_currency($sales_order->so_amount_total);
 
         $data['file_name']       = $sales_order->so_file;
 
@@ -939,10 +939,10 @@ class SalesOrder extends BaseController
             <td class="delete_sino">'.$i.'</td>
             <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
             <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_quantity.'" class="form-control"  readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_rate.'"  class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.$prod_det->spd_amount.'" class="form-control edit_product_amount" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_quantity).'" class="form-control"  readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_rate).'"  class="form-control" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_discount).'" class="form-control" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_product_amount" readonly></td>
             <td style="width:15%">
                 <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 		        <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->spd_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -1085,9 +1085,9 @@ class SalesOrder extends BaseController
             <td class="si_no2">'.$i.'</td>
             <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="spd_quantity[]" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center"  readonly></td>
-            <td> <input type="text" name="spd_rate[]" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id text-center" readonly></td>
-            <td> <input type="text" name="spd_discount[]" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
+            <td> <input type="text" name="spd_quantity[]" value="'.format_currency($prod_det->spd_quantity).'" class="form-control qtn_clz_id text-center"  readonly></td>
+            <td> <input type="text" name="spd_rate[]" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-center" readonly></td>
+            <td> <input type="text" name="spd_discount[]" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
             <td> <input type="text" name="spd_amount[]" value="'.format_currency($prod_det->spd_amount).'"  class="form-control amount_clz_id text-end" readonly></td>
           
             </tr>'; 

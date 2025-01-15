@@ -566,8 +566,7 @@
 
 <!--vendor modal start-->
 
-<?= $this->include('procurement/add_vendor') ?>
-<?= $this->include('procurement/edit_vendor') ?>
+
 
 <!--vendor modal end-->
 

@@ -277,7 +277,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_project" class="form-control project_clz" required>
+                                                                        <input type="text" name="pf_project" class="form-control project_clz">
                                                                     </div>
 
                                                                 </div> 
@@ -1020,7 +1020,6 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        
                                                                        
                                                                         <input type="text" name="pf_delivery_terms" class="form-control edit_delivery datepicker" required>
                                                                         
@@ -1042,7 +1041,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_project" class="form-control edit_project" required>
+                                                                        <input type="text" name="pf_project" class="form-control edit_project">
                                                                     </div>
 
                                                                 </div> 

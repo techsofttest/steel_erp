@@ -18,6 +18,31 @@ class SalesQuotReports extends BaseController
         $data['customer_creation'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+
+        /**/
+
+        $data['status'] = "";
+
+        $data['msg'] ="";
+        
+        $adminId = session('admin_id'); 
+
+        $segment1 = service('uri')->getSegment(1);
+
+        $segment2 = service('uri')->getSegment(2);
+
+        $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
+
+       
+        if($check_module->up_add == 0){
+            
+            $this->session->setFlashdata('error','Access Denied: You do not have permission for this Action');
+          
+            return redirect()->to('Home');
+        }
+        
+       
+        /**/
         
         $data['content'] = view('crm/sales-quot_reports',$data);
 
@@ -125,6 +150,7 @@ class SalesQuotReports extends BaseController
 
     }
 
+   
 
     //fetch data
     public function GetData()
@@ -185,6 +211,7 @@ class SalesQuotReports extends BaseController
        
       
     }
+    
 
 
 

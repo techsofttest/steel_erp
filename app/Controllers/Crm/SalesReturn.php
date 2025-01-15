@@ -548,9 +548,9 @@ class SalesReturn extends BaseController
             <td>'.$i.'</td>
             <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->srp_discount).'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
              $i++;
@@ -1399,10 +1399,10 @@ class SalesReturn extends BaseController
                 <td>'.$i.'</td>
                 <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
                 <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->srp_quantity.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->srp_rate.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->srp_discount.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->srp_amount.'" class="form-control " readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control " readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control " readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_discount).'" class="form-control " readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control " readonly></td>
                 
                 </tr>'; 
                  $i++;

@@ -137,75 +137,8 @@
 
     </script>
 
-    <script>
-
-
-
-        /*function addAccess(){
-            var adminId = "<?= session('admin_id') ?>";
-            var url = window.location.href;
-            var segments = url.split('/');
-            var segment1 = segments[4];
-            var segment2 = segments[5];
-
-            $.ajax({
-                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
-                method: "POST",
-                data: {
-                    ID: adminId,
-                    segment1: segment1,
-                    segment2: segment2
-                },
-                success: function(data) {
-                    var responseData = JSON.parse(data);
-
-                    if (responseData.status_add === "true") {
-                        
-                        $(".add_model_btn").hide();
-                            
-                        return false;
-                    }
-
-                    
-                }
-            });
-            
-        }*/
-
-
-        /*function editAccess(){
-            var adminId = "<?= session('admin_id') ?>";
-            var url = window.location.href;
-            var segments = url.split('/');
-            var segment1 = segments[4];
-            var segment2 = segments[5];
-
-            $.ajax({
-                url: "<?php echo base_url(); ?>Crm/ProductHead/CheckModule",
-                method: "POST",
-                data: {
-                    ID: adminId,
-                    segment1: segment1,
-                    segment2: segment2
-                },
-                success: function(data) {
-                    var responseData = JSON.parse(data);
-
-                    if (responseData.status_edit === "true") {
-                        
-                        $(".edit_btn").hide();
-                            
-                        return false;
-                    }
-
-                    
-                }
-            });
-            
-        } */
-
-
-    </script>
+    
+   
 
 
     <script>

@@ -61,8 +61,63 @@
         text-align: center !important;
         
     }
+    
 
+    /* Tooltip container */
+    .custom-tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
 
+    /* Tooltip text */
+    .custom-tooltip::after {
+        content: attr(data-tooltip); /* Use the `data-tooltip` attribute value */
+        position: absolute;
+        bottom: 125%; /* Position above the element */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333; /* Tooltip background color */
+        color: #fff; /* Tooltip text color */
+        padding: 10px; /* Inner padding for better spacing */
+        border-radius: 8px; /* Rounded corners */
+        min-width: 150px; /* Minimum width to keep it readable */
+        min-height: 50px; /* Minimum height to maintain a rectangular or square feel */
+        text-align: center; /* Center align the text */
+        white-space: pre-wrap; /* Preserve spaces and line breaks */
+        display: inline-block; /* Ensure content determines size */
+        opacity: 0;
+        visibility: hidden;
+        z-index: 10;
+        transition: opacity 0.3s, visibility 0.3s;
+        font-size: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow */
+        overflow: hidden; /* Prevent overflowing text */
+    }
+
+    /* Tooltip arrow */
+    .custom-tooltip::before {
+        content: '';
+        position: absolute;
+        bottom: 115%; /* Position above the tooltip text */
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent #333 transparent;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 10;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    /* Show the tooltip text */
+    .custom-tooltip:hover::after,
+    .custom-tooltip:hover::before {
+        opacity: 1;
+        visibility: visible;
+    }
+   
     </style>
 
     
@@ -128,7 +183,11 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="FullPower" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all reports"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "1" class="change_pass"> Change Password</a>
+                                                                </td>
+                                                            
                                                             </tr>
 
                                                             <tr>
@@ -141,9 +200,13 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit all transaction & view all reports" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all reports"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "2" class="change_pass"> Change Password</a>
+                                                               </td>
                                                             
                                                             </tr>
+
 
                                                             <tr>
                                                                 <td>3</td>
@@ -155,7 +218,10 @@
                                                                 <td>No</td>
                                                                 <td>No</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Only view report from CRM & Procurement" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Only view report from CRM & Procurement"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "3" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             
                                                             </tr>
 
@@ -170,7 +236,10 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit all transaction & view all CRM reports" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all CRM reports"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "4" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             
                                                             </tr>
 
@@ -185,9 +254,13 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit all transaction & view all CRM reports" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all CRM reports"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "5" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             
                                                             </tr>
+                                                            
 
                                                             <tr>
                                                                 <td>6</td>
@@ -199,7 +272,10 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit Receipts from Accounts,can add  and edit all CRM Transactions & view all CRM  Transaction  & view all CRM reports  &  edit Material received note from Procurement" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                   <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit Receipts from Accounts,can add  and edit all CRM Transactions & view all CRM  Transaction  & view all CRM reports  &  edit Material received note from Procurement"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "6" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             
                                                             </tr>
 
@@ -214,7 +290,10 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit Receipts, Payments & Petty Cash from Accounts,can add and edit  all CRM  Transaction & view all CRM reports & can add & edit all Procurement transactions except Material received note & view Procurement report" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit Receipts, Payments & Petty Cash from Accounts,can add and edit  all CRM  Transaction & view all CRM reports & can add & edit all Procurement transactions except Material received note & view Procurement report"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "7" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             </tr>
 
 
@@ -228,7 +307,10 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>No</td>
-                                                                <td><a  href="javascript:void(0)" class="view view-color" data-toggle="tooltip" data-placement="top" title="Can add & edit Enquiry & Quotation & view all CRM reports" data-original-title="View"><i class="ri-eye-fill"></i></a></td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit Enquiry & Quotation & view all CRM reports"><i class="ri-eye-fill"></i></a>
+                                                                    <a href="javascript:void(0)" data-id = "8" class="change_pass"> Change Password</a>
+                                                                </td>
                                                             </tr>
 
 
@@ -258,6 +340,68 @@
                 </div>
             </div>
         </div>
+
+
+        <!--Edit Modal section start-->
+        <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="#" id="change_pass_form" class="Dashboard-form">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                
+                                        <div class="card-body">
+                                            <div class="live-preview">
+                                        
+                                                <div class="row align-items-center">
+
+                                                    <div class="row">
+                                                        <div class="col-col-md-3 col-lg-3">
+                                                            <label for="basiInput" class="form-label">New Password</label>
+                                                        </div>
+                                                        <div class="col-col-md-9 col-lg-9">
+                                                            <input type="password" id="" value="" name="user_password" class="form-control " required>
+                                                        </div>
+                                                    </div>
+                                            
+
+
+                                                    <!--end col-->
+                                                    <input type="hidden" name="user_id" class="user_id"  value="">
+                                                
+                                            
+                                                
+                                                </div>
+                                                <!--end row-->
+                                        
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="" class="btn btn btn-success">Save</button>
+                        </div>
+        
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!--Edit modal section end-->
          
  
 
@@ -306,104 +450,78 @@ if(session()->getFlashdata('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
     
-        
-        /*data table start*/ 
+        $("body").on('click', '.view_btn', function(){ 
 
-        /*function initializeDataTable() {
+            var id = $(this).data('id');
 
-        datatable = $('#DataTable').DataTable({
-        'stateSave': true,
-        'processing': true,
-        'serverSide': true,
-        'serverMethod': 'post',
-        'ajax': 
-        {
-            'url': "<?php echo base_url(); ?>User/FetchData",
-            'data': function (data) {
-                // CSRF Hash
-                var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-                var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+            $.ajax({
 
-                return {
-                    data: data,
-                    [csrfName]: csrfHash, // CSRF Token
-                };
-            },
-            dataSrc: function (data) {
-                // Update token hash
-                $('.txt_csrfname').val(data.token);
-                // Datatable data
-                return data.aaData;
-            }
-        },
-        'columns': [
-            { data: 'user_id'},
-            { data: 'user_name'},
-            { data: 'action'}
+                url : "<?php echo base_url(); ?>User/FetchDetails",
+
+                method : "POST",
+
+                data: {ID: id},
+
+                success:function(data)
+                {
+                
+                    var data = JSON.parse(data);
+
+                $('.user_data').html(data.user_details);
+
+                
+
+                
+                }
+
+            });
+
+            $('#viewModal').modal('show');
+
+        });
+
+
+        $("body").on('click', '.change_pass', function(){ 
             
-        ],
-        "initComplete": function () {
-
-            var dataId = '<?php echo isset($_GET['view_po']) ? $_GET['view_po'] : ''; ?>';
-
-            $('#DataTable').dataTable().fnFilter(dataId);
-
-        },
-
-        "drawCallback": function() {
-
-            $('.view_btn[data-id="<?php echo isset($_GET['view_po']) ? $_GET['view_po'] : ''; ?>"]').trigger('click');
-
-        }
-
-    });
-}*/
-
-/*$(document).ready(function () {
-    initializeDataTable();
-});*/
-
-
-/*###*/
-
-
-/**/
-
-$("body").on('click', '.view_btn', function(){ 
-
-    var id = $(this).data('id');
-
-    $.ajax({
-
-        url : "<?php echo base_url(); ?>User/FetchDetails",
-
-        method : "POST",
-
-        data: {ID: id},
-
-        success:function(data)
-        {
-        
-            var data = JSON.parse(data);
-
-           $('.user_data').html(data.user_details);
-
-          /* $(".add_contact_person").prop('required',true);
-
-           $('.delivery_note_clz').prop('required',true);*/
-
            
-        }
+            var id = $(this).data('id');
 
-    });
+            $('.user_id').val(id);
 
-    $('#viewModal').modal('show');
+            $('#changePassword').modal('show');
+
+        });
+
+        
+        $(function() {
+            $('#change_pass_form').validate({
+                rules: {
+                    required: 'required',
+                    
+                },
+                messages: {
+                    required: 'This field is required',
+                    
+                },
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>User/ChangePassword",
+                        method: "POST",
+                        data: $(form).serialize(),
+                        success: function(data) {
+                            
+                            alertify.success('Password Updated Successfully').delay(2).dismissOthers();
+                            $('#changePassword').modal('hide');
+                            //datatable.ajax.reload(null,false);
+                        }
+                    });
+                    return false; // prevent the form from submitting
+                }
+            });
+        });
+        
 
 
-});
-
-
-/**/
 
 
     });

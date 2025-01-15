@@ -753,10 +753,10 @@ class PurchaseReturn extends BaseController
             <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control text-center" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_qty).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_amount).'" class="form-control text-end" readonly></td>
             </tr>
             ';
@@ -830,7 +830,7 @@ class PurchaseReturn extends BaseController
 
         $data['payment_term']   = $purchase_return->pr_payment_term;
 
-        $data['total_amount']   = $purchase_return->pr_total_amount;
+        $data['total_amount']   = format_currency($purchase_return->pr_total_amount);
 
         $purchase_return_prod = $this->common_model->FetchWhere('pro_purchase_return_prod',array('prp_purchase_return_id' => $this->request->getPost('ID')));
         
@@ -845,11 +845,11 @@ class PurchaseReturn extends BaseController
             <td><input type="text" name=""  value="'.$pur_return_prod->prp_sales_order.'" class="form-control" readonly></td>
             <td style="width:30%"><input type="text" name=""  value="'.$pur_return_prod->prp_prod_desc.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_return_prod->prp_debit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_qty.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_qty).'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_return_prod->prp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_rate.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_discount.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_return_prod->prp_amount.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_rate).'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_discount).'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_return_prod->prp_amount).'" class="form-control" readonly></td>
             </tr>
             ';
             $i++; 

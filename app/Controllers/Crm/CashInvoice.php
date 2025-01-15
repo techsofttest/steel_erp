@@ -77,8 +77,8 @@ class CashInvoice extends BaseController
               'ci_date'         => date('d-M-Y',strtotime($record->ci_date)),
               'ci_customer'     => $record->cc_customer_name,
               'ci_sales_order'  => $record->so_reffer_no,
-              'ci_total_amount' => $record->ci_total_amount,
-              'ci_paid_amount'  => $record->ci_paid_amount,
+              'ci_total_amount' => format_currency($record->ci_total_amount),
+              'ci_paid_amount'  => format_currency($record->ci_paid_amount),
               'action'          => $action,
            );
            $i++; 
@@ -616,7 +616,7 @@ class CashInvoice extends BaseController
             <td>'.$i.'</td>
             <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.$rate.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
@@ -1435,7 +1435,7 @@ class CashInvoice extends BaseController
                 <td>'.$i.'</td>
                 <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
                 <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$prod_det->cipd_qtn.'" class="form-control " readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$rate.'" class="form-control " readonly></td>
                 <td style="width:10px"><input type="text" value="'.$discount.'" class="form-control " readonly></td>
                 <td><input type="text" value="'.$amount.'" class="form-control " readonly></td>
@@ -1837,7 +1837,7 @@ class CashInvoice extends BaseController
             $segment2 = service('uri')->getSegment(2);
     
             $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
-    
+
             if($check_module->up_add == 0){
                
                 $data['status'] = 0 ;
