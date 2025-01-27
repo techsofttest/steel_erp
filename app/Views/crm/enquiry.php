@@ -201,8 +201,8 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                     <select class="form-select " name="enquiry_assign_to" required>
                                                                         <option value="" selected disabled>Assigned To</option>
-                                                                        <?php foreach($employees as $employ){?> 
-                                                                            <option class="droup_color" value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
+                                                                        <?php foreach($sales_executive as $executive){?> 
+                                                                            <option class="droup_color" value="<?php echo $executive->se_id;?>"><?php echo $executive->se_name;?></option>
                                                                         <?php } ?>
                                                                 
                                                                      </select>
@@ -1287,7 +1287,7 @@
 
 
        /*Product Drop Down*/
-       function InitSelect2(){
+       /*function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
             theme : "default form-control- select_width",
@@ -1318,7 +1318,58 @@
                 },              
             }
         })
-        }
+        }*/
+
+        function InitSelect2() {
+            $(".ser_product_det:last").select2({
+            placeholder: "Select Product",
+            theme: "default form-control- select_width",
+            dropdownParent: $('#AddEnquiry'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function (data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) {
+                            // Truncate product_details to 50 characters for display
+                            let truncatedDetails = item.product_details.length > 50 
+                                ? item.product_details.substring(0, 50) + "..." 
+                                : item.product_details;
+
+                            // Return id, text, and set the title attribute for full details
+                            return {
+                                id: item.product_id,
+                                text: truncatedDetails,
+                                title: item.product_details // Full text for tooltip
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count // Assuming 10 records per page
+                        }
+                    };
+                },
+            }
+        }).on('select2:open', function () {
+            // Add the title attribute to each option dynamically after opening the dropdown
+            $(".select2-results__option").each(function () {
+                var $this = $(this);
+                $this.attr('title', $this.text()); // Set title to full text
+            });
+        });
+}
+
+
 
         InitSelect2();
 

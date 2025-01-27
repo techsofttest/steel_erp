@@ -882,7 +882,7 @@
                     "<select class='form-select ser_product_det' name='mrp_product_desc["+jj+"]' required>" +
                     "<option value='' selected disabled>Select Product Description</option>" +
                     "<?php foreach($products as $prod): ?>" +
-                    "<option value='<?php echo $prod->product_id; ?>'><?php echo $prod->product_details; ?></option>" +
+                    "<option value='<?php echo $prod->product_id; ?>'><?php echo addslashes($prod->product_details); ?></option>" +
                     "<?php endforeach; ?>" +
                     "</select>" +
                     "</td>" +

@@ -163,7 +163,7 @@ class Enquiry extends BaseController
         
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+        $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
         $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
         
@@ -256,8 +256,8 @@ class Enquiry extends BaseController
                 'fk'    => 'enquiry_contact_person',
             ),
             array(
-                'table' => 'employees',
-                'pk'    => 'employees_id',
+                'table' => 'executives_sales_executive',
+                'pk'    => 'se_id',
                 'fk'    => 'enquiry_assign_to',
             ),
 
@@ -288,7 +288,7 @@ class Enquiry extends BaseController
 
         $data['contact_person']     = $enquiry->contact_person;
 
-        $data['enquiry_assign_to']  = $enquiry->employees_name;
+        $data['enquiry_assign_to']  = $enquiry->se_name;
 
         $data['enquiry_source']     = $enquiry->enquiry_source;
 
@@ -473,7 +473,7 @@ class Enquiry extends BaseController
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
 
 
-        $employes = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+        $sales_executive = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
          
         $data['enquiry_reff']       = $enquiry->enquiry_reff;
 
@@ -525,17 +525,17 @@ class Enquiry extends BaseController
 
         $data['assigned_to'] ="";
 
-        foreach($employes as $employ)
+        foreach($sales_executive as $executive)
         {
-            $data['assigned_to'] .= '<option value="' .$employ->employees_id . '"'; 
+            $data['assigned_to'] .= '<option value="' .$executive->se_id. '"'; 
         
             // Check if the current product head is selected
-            if ($employ->employees_id    == $enquiry->enquiry_assign_to)
+            if ($executive->se_id     == $enquiry->enquiry_assign_to)
             {
                 $data['assigned_to'] .= ' selected'; 
             }
         
-            $data['assigned_to'] .= '>' . $employ->employees_name. '</option>';
+            $data['assigned_to'] .= '>' . $executive->se_name. '</option>';
         }
 
          
