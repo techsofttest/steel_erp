@@ -56,7 +56,8 @@ class Indemnity extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->id_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->id_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->id_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->id_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->id_credit_account));
 
@@ -143,21 +144,32 @@ class Indemnity extends BaseController
             foreach($employees as $emp)
             {
 
-                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
-
-                $diff = abs(strtotime($ticket_due_date) - strtotime($date));
+                $diff = abs(strtotime($emp->emp_date_of_join)-strtotime($date));
 
                 $years = floor($diff / (365*60*60*24));
                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-                $entitlement = $days;
-
+ 
+                $entitlement = $days*21/365;
+ 
+                $year_salary = $emp->emp_basic_salary*12;
+ 
+                $indemnity = $year_salary/365*$entitlement;
+ 
                 $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
-
+ 
                 $amount = $amount/365;
                 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
+
+                $insert_emp_arr['ide_emp_id'][$emp->emp_id] = $emp->emp_id;
+                $insert_emp_arr['ide_basic_salary'][$emp->emp_id] = $emp->emp_basic_salary ?? "2025-01-01";
+                $insert_emp_arr['ide_date_of_join'][$emp->emp_id] = $emp->emp_date_of_join ?? 0;
+                $insert_emp_arr['ide_entitlement'][$emp->emp_id] = $entitlement ?? 0;
+                $insert_emp_arr['ide_indemnity'][$emp->emp_id] = $indemnity;                                                                                                                          
+                $insert_emp_arr['ide_advance'][$emp->emp_id] = $emp->emp_indemnity_advance;
+                $insert_emp_arr['ide_amount'][$emp->emp_id] = $amount;
+
 
             }
 
@@ -175,7 +187,7 @@ class Indemnity extends BaseController
 
         $insert_indemnity['id_credit_account'] = $credit_account;
 
-        $insert_indemnity['id_current_balance'] = 0;
+        $insert_indemnity['id_current_balance'] = $data['current_balance'];
        
         $insert_indemnity['id_total'] = $data['total_amount'];
         
@@ -197,9 +209,29 @@ class Indemnity extends BaseController
 
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
 
-        $vt_id = $this->common_model->InsertData('hr_indemnity',$insert_indemnity);
+        $indem_id = $this->common_model->InsertData('hr_indemnity',$insert_indemnity);
 
-        $this->common_model->EditData(array('id_jv_id' => $journal_id),array('id_id' => $vt_id),'hr_indemnity');
+
+        //Insert idemnity employees
+
+        foreach ($insert_emp_arr['ide_emp_id'] as $emp_id)
+        {
+
+            $insert_emp_data['ide_emp_id'] = $insert_emp_arr['ide_emp_id'][$emp_id];
+            $insert_emp_data['ide_basic_salary']= $insert_emp_arr['ide_basic_salary'][$emp_id];
+            $insert_emp_data['ide_date_of_join'] = $insert_emp_arr['ide_date_of_join'][$emp_id];
+            $insert_emp_data['ide_entitlement'] = $insert_emp_arr['ide_entitlement'][$emp_id];
+            $insert_emp_data['ide_indemnity'] = $insert_emp_arr['ide_indemnity'][$emp_id];
+            $insert_emp_data['ide_advance'] = $insert_emp_arr['ide_advance'][$emp_id];
+            $insert_emp_data['ide_amount'] = $insert_emp_arr['ide_amount'][$emp_id];
+            $insert_emp_data['ide_main_id'] = $indem_id;
+        
+            $this->common_model->InsertData('hr_indemnity_employees',$insert_emp_data);
+
+        }
+
+
+        $this->common_model->EditData(array('id_jv_id' => $journal_id),array('id_id' => $indem_id),'hr_indemnity');
 
         //Insert Journal invoices
         
@@ -265,6 +297,7 @@ class Indemnity extends BaseController
 
            $data['total_amount'] = 0;
 
+           $ioo=0;
            foreach($employees as $emp)
            {
 
@@ -284,11 +317,13 @@ class Indemnity extends BaseController
 
                $amount = $amount/365;
 
+               
+
                $data['emp_row'] .="
                
                    <tr>
 
-                   <td></td>
+                   <td>".++$ioo."</td>
                    
                    <td>{$emp->emp_uid}</td>
 
@@ -412,7 +447,43 @@ class Indemnity extends BaseController
 
         $indemnity = $this->hr_model->FetchIDSingle($id);
 
-        $indemnity->vt_date = date('d M Y',strtotime($indemnity->id_date));
+        $indemnity->id_date = date('d M Y',strtotime($indemnity->id_date));
+
+        $indemnity->id_employees = "";
+
+        $io=0;
+
+        foreach($indemnity->employees as $emp)
+        {
+
+            $indemnity->id_employees .= '
+            <tr>
+        
+            <td class="text-end">'.++$io.'</td>
+    
+            <td class="text-end">'.$emp->emp_uid.'</td>
+    
+            <td class="text-end">'.$emp->emp_name.'</td>
+    
+            <td class="text-end">'.$emp->ide_basic_salary.'</td>
+    
+            <td class="text-end">'.date('d M Y',strtotime($emp->ide_date_of_join)).'</td>
+    
+            <td class="text-end">'.$emp->ide_entitlement.'</td>
+    
+            <td class="text-end">'.$emp->ide_indemnity.'</td>
+    
+            <td class="text-end">'.$emp->ide_advance.'</td>
+    
+            <td class="text-end">'.$emp->ide_amount.'</td>
+            
+            </tr>'
+            ;
+            
+
+        }
+
+
 
         echo json_encode($indemnity);
     
@@ -433,6 +504,8 @@ class Indemnity extends BaseController
 
     $this->common_model->DeleteData('hr_indemnity',$cond);
 
+    $this->common_model->DeleteData('hr_indemnity_employees',array('ide_main_id' => $id));
+    
     $jv_cond = array('jv_id' => $indemnity->id_jv_id);
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);

@@ -102,24 +102,6 @@ class BankRec extends BaseController
     } 
 
 
-    public function Dum()
-    {
-
-    $data['accounting_year'] = "This Year";
-
-
-    if($data != "That year")
-    {
-
-    $data ="Do That";
-
-    }
-
-
-    }
-
-
-
 
     //view page
 
@@ -153,7 +135,7 @@ class BankRec extends BaseController
     // add account head
     Public function Add()
     {   
-
+        
         $insert_data['br_date'] = date('Y-m-d',strtotime($this->request->getPost('add_br_date')));
 
         $insert_data['br_gl_balance'] = $this->request->getPost('gl_balance');
@@ -170,6 +152,20 @@ class BankRec extends BaseController
 
         $total_tran = count($this->request->getPost('complete_tran_id'));
 
+
+        if(empty($insert_data['br_account']))
+        {
+
+            $data['status'] = 0;
+
+            $data['msg'] = "Select account!";
+    
+            echo json_encode($data);
+    
+            exit;
+
+        }
+
         if($total_tran==0)
         {
 
@@ -182,6 +178,8 @@ class BankRec extends BaseController
         exit;
 
         }
+
+        
 
 
         //Check date

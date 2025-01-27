@@ -56,7 +56,8 @@ class VacationTravel extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->vt_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a>
+         <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vt_credit_account));
 
@@ -316,6 +317,15 @@ class VacationTravel extends BaseController
 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
+                //$insert_emp_data['vte_main_id'] = '';
+                $insert_emp_arr['vte_emp_id'][$emp->emp_id] = $emp->emp_id;
+                $insert_emp_arr['vte_ticket_due_from'][$emp->emp_id] = $emp->emp_air_ticket_due_from ?? "2025-01-01";
+                $insert_emp_arr['vte_ticket_rate'][$emp->emp_id] = $emp->emp_budgeted_ticket_amount ?? 0;
+                $insert_emp_arr['vte_ticket_per_year'][$emp->emp_id] = $emp->emp_air_ticket_per_year ?? 0;
+                $insert_emp_arr['vte_utilization'][$emp->emp_id] = '';                                                                                                                          
+                $insert_emp_arr['vte_entitlement'][$emp->emp_id] = $entitlement;
+                $insert_emp_arr['vte_amount'][$emp->emp_id] = $amount;
+
             }
 
             $jv_sl=0;
@@ -332,7 +342,7 @@ class VacationTravel extends BaseController
 
         $insert_vacation_travel['vt_credit_account'] = $credit_account;
 
-        $insert_vacation_travel['vt_current_balance'] = 0;
+        $insert_vacation_travel['vt_current_balance'] = $data['current_balance'];
        
         $insert_vacation_travel['vt_total'] = $data['total_amount'];
         
@@ -356,6 +366,26 @@ class VacationTravel extends BaseController
 
         $vt_id = $this->common_model->InsertData('hr_vacation_travel',$insert_vacation_travel);
 
+
+        foreach ($insert_emp_arr['vte_emp_id'] as $emp_id)
+        {
+
+            $insert_emp_data['vte_emp_id'] = $insert_emp_arr['vte_emp_id'][$emp_id];
+            $insert_emp_data['vte_ticket_due_from']= $insert_emp_arr['vte_ticket_due_from'][$emp_id];
+            $insert_emp_data['vte_ticket_rate'] = $insert_emp_arr['vte_ticket_rate'][$emp_id];
+            $insert_emp_data['vte_ticket_per_year'] = $insert_emp_arr['vte_ticket_per_year'][$emp_id];
+            $insert_emp_data['vte_utilization'] = $insert_emp_arr['vte_utilization'][$emp_id];
+            $insert_emp_data['vte_entitlement'] = $insert_emp_arr['vte_entitlement'][$emp_id];
+            $insert_emp_data['vte_amount'] = $insert_emp_arr['vte_amount'][$emp_id];
+            $insert_emp_data['vte_main_id'] = $vt_id;
+        
+            $this->common_model->InsertData('hr_vacation_travel_employees',$insert_emp_data);
+
+        }
+
+
+
+
         $this->common_model->EditData(array('vt_jv_id' => $journal_id),array('vt_id' => $vt_id),'hr_vacation_travel');
 
         //Insert Journal invoices
@@ -363,7 +393,7 @@ class VacationTravel extends BaseController
             for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
                 $account = $formData['jv_account'][$ji];
                 $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
-                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credits'][$ji] : 0;
+                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credit'][$ji] : 0;
                 $narration = $formData['jv_remarks'][$ji] ?? '';
 
                 $insert_journal_invoice = [
@@ -409,6 +439,45 @@ class VacationTravel extends BaseController
 
         $vacation_travel->vt_date = date('d M Y',strtotime($vacation_travel->vt_date));
 
+        $vacation_travel->vt_employees = "";
+
+        $io = 1;
+
+        foreach($vacation_travel->employees as $emp)
+        {
+
+        $vacation_travel->vt_employees .='
+        
+        <tr>
+        
+        <td class="text-end">'.$io.'</td>
+
+        <td class="text-end">'.$emp->emp_uid.'</td>
+
+        <td class="text-end">'.$emp->emp_name.'</td>
+
+        <td class="text-end">'.date('d M Y',strtotime($emp->vte_ticket_due_from)).'</td>
+
+        <td class="text-end">'.$emp->vte_ticket_rate.'</td>
+
+        <td class="text-end">'.$emp->vte_ticket_per_year.'</td>
+
+        <td class="text-end">'.$emp->vte_utilization.'</td>
+
+        <td class="text-end">'.$emp->vte_entitlement.'</td>
+
+        <td class="text-end">'.$emp->vte_amount.'</td>
+        
+        </tr>
+        
+        ';
+
+        $io++;
+
+        }
+
+
+
         echo json_encode($vacation_travel);
     
         }
@@ -430,6 +499,10 @@ class VacationTravel extends BaseController
     $vt = $this->common_model->SingleRow('hr_vacation_travel',$cond);
 
     $this->common_model->DeleteData('hr_vacation_travel',$cond);
+
+    //Delete VT Emp Tables
+
+    $this->common_model->DeleteData('hr_vacation_travel_employees',array('vte_main_id'=>    $id));
 
     $jv_cond = array('jv_id' => $vt->vt_jv_id);
 

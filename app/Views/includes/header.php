@@ -680,7 +680,50 @@ table.menu td{
 
 /* ##### */
 
+
+
+/* Common Action Button Styles */
+
+.ri-eye-fill,.ri-pencil-fill,.ri-file-pdf-2-line,.ri-delete-bin-fill
+{
+
+font-size:15px;
+
+}
+
+.ri-eye-fill:hover,.ri-pencil-fill:hover,.ri-file-pdf-2-line:hover,.ri-delete-bin-fill:hover
+{
+    transition: all .3s linear;
+    color: black !important;
+}
+
+
+.ri-eye-fill
+{
+color: #00f !important;
+}
+
+
+.ri-pencil-fill
+{
+color: darkorange !important;
+}
+
+.ri-file-pdf-2-line
+{
+color: green !important;
+}
+
+.ri-delete-bin-fill
+{
+
+
+}
+
+
 </style>
+
+
 
 </head>
 

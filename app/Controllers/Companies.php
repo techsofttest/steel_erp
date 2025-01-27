@@ -21,6 +21,8 @@ class Companies extends BaseController
             return redirect()->to('Login');
         }
 
+        $this->company_model = new \App\Models\CompanyModel();
+
     }
 
 
@@ -31,22 +33,17 @@ class Companies extends BaseController
 
     public function index()
     {
-
-
         $joins = array(
-
             array(
                 'table' => 'master_companies',
                 'pk'  => 'comp_id',
                 'fk'  => 'user_company',
             )
-
         );
 
-        $data['companies'] = $this->common_model->FetchWhereJoin('users',array(),$joins);
+        $data['companies'] = $this->company_model->FetchCompanies();
 
         return view('companies',$data);
-
     }
 
 

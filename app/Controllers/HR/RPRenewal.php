@@ -56,8 +56,8 @@ class RPRenewal extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->rpr_id.'" data-original-title=""><i class="ri-eye-fill"></i></a> 
-        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->rpr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->rpr_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->rpr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->rpr_credit_account));
 
@@ -192,21 +192,21 @@ class RPRenewal extends BaseController
                     <input type='hidden' name='amount[]' value='{$amount}'>
                     
 
-                    <td>{$slno}</td>
+                    <td class='text-end'>{$slno}</td>
                     
-                    <td>{$emp->emp_uid}</td>
+                    <td class='text-end'>{$emp->emp_uid}</td>
 
-                    <td>{$emp->emp_name}</td>
+                    <td class='text-end'>{$emp->emp_name}</td>
 
-                    <td>{$emp->emp_qatar_id_no}</td>
+                    <td class='text-end'>{$emp->emp_qatar_id_no}</td>
 
-                    <td>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
+                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_date_of_join))."</td>
 
-                    <td>".date('d M Y',strtotime($emp->emp_qatar_id_expiry))."</td>
+                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_qatar_id_expiry))."</td>
 
-                    <td align='right'>1,220.00</td>
+                    <td class='text-end'>1,220.00</td>
                     
-                    <td>".$entitlement."</td>
+                    <td class='text-end'>".$entitlement."</td>
 
                     <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
 
@@ -390,9 +390,7 @@ class RPRenewal extends BaseController
             foreach($employees as $emp)
             {
 
-
                 $expiry_date = date('Y-m-d',strtotime($emp->emp_qatar_id_expiry));
-
 
                 // Convert dates to DateTime objects
                 $expiryDateObj = new \DateTime($expiry_date);
@@ -429,28 +427,15 @@ class RPRenewal extends BaseController
                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
+                $charges = 1220;
 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
 
-
-
-                /*
-
-                $data['total_amount']+=number_format((float)$amount,2,'.','');
-
-                $insert_emp_data['vpe_vacation_due_from'][$emp->emp_id] = $vacation_pay_due_date;
-
-                $insert_emp_data['vpe_basic_salary'][$emp->emp_id] = $emp->emp_basic_salary ?? "";
-
-                $insert_emp_data['vpe_days_per_year'][$emp->emp_id] = $days_per_year;
-
-                $insert_emp_data['vpe_entitlement'][$emp->emp_id] = $entitlement;
-
-                $insert_emp_data['vpe_amount'][$emp->emp_id] = $amount;
-
-                $insert_emp_data['vpe_emp_id'][$emp->emp_id] = $emp->emp_id;
-
-                */
+                $insert_emp_arr['rr_emp_id'][$emp->emp_id] = $emp->emp_id;
+                $insert_emp_arr['rr_id_expiry_date'][$emp->emp_id] = $emp->emp_qatar_id_expiry;
+                $insert_emp_arr['rr_charges'][$emp->emp_id] = $charges;
+                $insert_emp_arr['rr_entitlement'][$emp->emp_id] = $entitlement;
+                $insert_emp_arr['rr_amount'][$emp->emp_id] = $amount;   
 
             }
 
@@ -467,7 +452,7 @@ class RPRenewal extends BaseController
 
             $insert_rp['rpr_debit_account'] = $credit_account;
 
-            $insert_rp['rpr_current_balance'] = 0;
+            $insert_rp['rpr_current_balance'] = $data['current_balance'];
         
             $insert_rp['rpr_total'] = $data['total_amount'];
         
@@ -489,28 +474,31 @@ class RPRenewal extends BaseController
 
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
 
-        $vp_id = $this->common_model->InsertData('hr_rp_renewals',$insert_rp);
+        $rp_id = $this->common_model->InsertData('hr_rp_renewals',$insert_rp);
 
 
         //Insert employee details
 
-        /*
-        foreach ($insert_emp_data['vpe_emp_id'] as $emp_id => $value) {
-            $vp_emp_data = [];
-            
-            foreach ($insert_emp_data as $column => $values) {
-                $vp_emp_data[$column] = $values[$emp_id];
-            }
-        
-            // Insert the data for this employee
-            $this->common_model->InsertData('hr_vacation_pay_employees', $vp_emp_data);
-        }
-        */
+       //Insert idemnity employees
+
+       foreach ($insert_emp_arr['rr_emp_id'] as $emp_id)
+       {
+
+           $insert_emp_data['rr_id_expiry_date'] = $insert_emp_arr['rr_id_expiry_date'][$emp_id];
+           $insert_emp_data['rr_charges'] = $insert_emp_arr['rr_charges'][$emp_id];
+           $insert_emp_data['rr_entitlement'] = $insert_emp_arr['rr_entitlement'][$emp_id];
+           $insert_emp_data['rr_amount'] = $insert_emp_arr['rr_amount'][$emp_id];
+           $insert_emp_data['rr_emp_id'] = $insert_emp_arr['rr_emp_id'][$emp_id];
+           $insert_emp_data['rr_main_id'] = $rp_id;
+       
+           $this->common_model->InsertData('hr_rp_renewals_employees',$insert_emp_data);
+
+       }
        
 
         
 
-        $this->common_model->EditData(array('rpr_jv_id' => $journal_id),array('rpr_id' => $vp_id),'hr_rp_renewals');
+        $this->common_model->EditData(array('rpr_jv_id' => $journal_id),array('rpr_id' => $rp_id),'hr_rp_renewals');
 
         //Insert Journal invoices
 
@@ -554,16 +542,51 @@ class RPRenewal extends BaseController
 
         $this->hr_model = new \App\Models\HRModel();
 
-        if($this->request->getPost('vp_id'))
+        if($this->request->getPost('rpr_id'))
         {
 
-        $id = $this->request->getPost('vp_id');
+        $id = $this->request->getPost('rpr_id');
 
-        $vacation_pay = $this->hr_model->FetchVTSingle($id);
+        $rp = $this->hr_model->FetchRPSingle($id);
 
-        $vacation_travel->vt_date = date('d M Y',strtotime($vacation_travel->vt_date));
+        $rp->rpr_date = date('d M Y',strtotime($rp->rpr_date));
 
-        echo json_encode($vacation_travel);
+        $rp->rp_employees = "";
+
+        $io=0;
+
+        foreach($rp->employees as $emp)
+        {
+
+            $rp->rp_employees .= '
+            <tr>
+        
+            <td class="text-end">'.++$io.'</td>
+    
+            <td class="text-end">'.$emp->emp_uid.'</td>
+    
+            <td class="text-end">'.$emp->emp_name.'</td>
+    
+            <td class="text-end">'.$emp->emp_qatar_id_no.'</td>
+    
+            <td class="text-end">'.date('d M Y',strtotime($emp->emp_date_of_join)).'</td>
+    
+            <td class="text-end">'.date('d M Y',strtotime($emp->rr_id_expiry_date)).'</td>
+    
+            <td class="text-end">'.format_currency($emp->rr_charges).'</td>
+    
+            <td class="text-end">'.format_currency($emp->rr_entitlement).'</td>
+    
+            <td class="text-end">'.format_currency($emp->rr_amount).'</td>
+            
+            </tr>'
+            ;
+            
+
+
+        }
+
+        echo json_encode($rp);
     
         }
 
@@ -582,7 +605,7 @@ class RPRenewal extends BaseController
 
     $this->common_model->DeleteData('hr_rp_renewals',$cond);
 
-    //$this->common_model->DeleteData('hr_vacation_pay_employees',array('vpe_vp_id' => $id));
+    $this->common_model->DeleteData('hr_rp_renewals_employees',array('rr_main_id' => $id));
 
     $jv_cond = array('jv_id' => $rpr->rpr_jv_id);
 

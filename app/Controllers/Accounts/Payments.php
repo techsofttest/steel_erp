@@ -1978,11 +1978,11 @@ class Payments extends BaseController
 
                     <td>{$cus_name}</td>
 
-                    <td>{$inv->pv_reffer_id}</td>
+                    <td>{$lv->pv_reffer_id}</td>
 
-                    <td>" .date('d-F-Y', strtotime($inv->pv_date)). "</td>
+                    <td>" .date('d M Y', strtotime($lv->pv_date)). "</td>
 
-                    <td>{$inv->pv_total}</td>
+                    <td>{$lv->pv_total}</td>
 
                     <td>-</td>
 

@@ -56,7 +56,8 @@ class VacationPay extends BaseController
 
         //$action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->pr_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->ts_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->ts_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
            
-        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vp_id.'" data-original-title=""><i class="ri-eye-fill"></i> View</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vt_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
+        $action='<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->vp_id.'" data-original-title=""><i class="ri-eye-fill"></i> </a> 
+        <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->vp_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
 
         $credit_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $record->vp_credit_account));
 
@@ -105,7 +106,7 @@ class VacationPay extends BaseController
 
 
 
-    //Fetch Employees
+         //Fetch Employees
 
          public function FetchEmployees()
          {
@@ -120,7 +121,7 @@ class VacationPay extends BaseController
 
             $debit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $debit_account));
 
-            $employees = $this->common_model->FetchAll('hr_employees');
+            $employees = $this->common_model->FetchWhere('hr_employees',array('emp_status' => 'Active'));
 
             $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="");
         
@@ -173,21 +174,21 @@ class VacationPay extends BaseController
                     <input type='hidden' name='amount[]' value='{$amount}'>
                     
 
-                    <td>{$slno}</td>
+                    <td class='text-end'>{$slno}</td>
                     
-                    <td>{$emp->emp_uid}</td>
+                    <td class='text-end'>{$emp->emp_uid}</td>
 
-                    <td>{$emp->emp_name}</td>
+                    <td class='text-end'>{$emp->emp_name}</td>
 
-                    <td>".date('d M Y',strtotime($emp->emp_date_of_join))." ({$total_years} Y)</td>
+                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_date_of_join))." ({$total_years} Y)</td>
 
-                    <td>".date('d M Y',strtotime($emp->emp_vacation_pay_due_from))."</td>
+                    <td class='text-end'>".date('d M Y',strtotime($emp->emp_vacation_pay_due_from))."</td>
 
-                    <td align='right'>".format_currency($emp->emp_basic_salary)."</td>
+                    <td class='text-end'>".format_currency($emp->emp_basic_salary)."</td>
 
-                    <td>{$days_per_year}</td>
+                    <td class='text-end'>{$days_per_year}</td>
 
-                    <td>{$entitlement}</td>
+                    <td class='text-end'>{$entitlement}</td>
 
                     <td class='text-end'>".number_format((float)$amount,2,'.','')."</td>
 
@@ -357,7 +358,7 @@ class VacationPay extends BaseController
 
             $debit_account_data = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $debit_account));
 
-            $employees = $this->common_model->FetchAll('hr_employees');
+            $employees = $this->common_model->FetchWhere('hr_employees',array('emp_status' => 'Active'));
 
             $gl_balance = $this->report_model->FetchGlBalance($date_from="", $date_to="", $account_head="", $account_type="", $credit_account, $time_frame="",$range_from="",$range_to="");
         
@@ -367,25 +368,47 @@ class VacationPay extends BaseController
 
             $data['total_amount'] = 0;
 
+            $insert_emp_data = [];
+
             foreach($employees as $emp)
             {
 
-                $ticket_due_date = date('Y-m-d',strtotime($emp->emp_air_ticket_due_from. "+ 1 day"));
+                $total_years = abs(strtotime($emp->emp_date_of_join) - strtotime($date));
 
-                $diff = abs(strtotime($ticket_due_date) - strtotime($date));
+                $total_years = floor($total_years / (365*60*60*24));
+
+
+                $days_per_year = $this->calculateLeave($date,$emp->emp_date_of_join);
+
+
+                $vacation_pay_due_date = date('Y-m-d',strtotime($emp->emp_vacation_pay_due_from. "+ 1 day"));
+
+                //Entitlement Calc
+                $diff = abs(strtotime($date) - strtotime($vacation_pay_due_date));
 
                 $years = floor($diff / (365*60*60*24));
                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                $entitlement = $days;
+                $entitlement = $days*$days_per_year/365;
 
-                $amount = $emp->emp_budgeted_ticket_amount*$emp->emp_air_ticket_per_year*$entitlement;
+                $entitlement = number_format($entitlement,2,'.');
 
-                $amount = $amount/365;
-
+                $amount = $emp->emp_basic_salary*12/365*$entitlement;
 
                 $data['total_amount']+=number_format((float)$amount,2,'.','');
+
+                $insert_emp_data['vpe_vacation_due_from'][$emp->emp_id] = $vacation_pay_due_date;
+
+                $insert_emp_data['vpe_basic_salary'][$emp->emp_id] = $emp->emp_basic_salary ?? "";
+
+                $insert_emp_data['vpe_days_per_year'][$emp->emp_id] = $days_per_year;
+
+                $insert_emp_data['vpe_entitlement'][$emp->emp_id] = $entitlement;
+
+                $insert_emp_data['vpe_amount'][$emp->emp_id] = $amount;
+
+                $insert_emp_data['vpe_emp_id'][$emp->emp_id] = $emp->emp_id;
 
             }
 
@@ -395,17 +418,17 @@ class VacationPay extends BaseController
 
 
 
-        //Insert Vacation Travel
+            //Insert Vacation Travel
 
-        $insert_vacation_pay['vp_date'] =  $date;
+            $insert_vacation_pay['vp_date'] =  $date;
 
-        $insert_vacation_pay['vp_debit_account'] =  $debit_account;
+            $insert_vacation_pay['vp_debit_account'] =  $debit_account;
 
-        $insert_vacation_pay['vp_credit_account'] = $credit_account;
+            $insert_vacation_pay['vp_credit_account'] = $credit_account;
 
-        $insert_vacation_pay['vp_current_balance'] = 0;
-       
-        $insert_vacation_pay['vp_total'] = $data['total_amount'];
+            $insert_vacation_pay['vp_current_balance'] = $data['current_balance'];
+        
+            $insert_vacation_pay['vp_total'] = $data['total_amount'];
         
 
         //Insert Journal voucher
@@ -425,16 +448,32 @@ class VacationPay extends BaseController
 
         $journal_id = $this->common_model->InsertData('accounts_journal_vouchers',$insert_journal);
 
-        $vt_id = $this->common_model->InsertData('hr_vacation_travel',$insert_vacation_travel);
+        $vp_id = $this->common_model->InsertData('hr_vacation_pay',$insert_vacation_pay);
 
-        $this->common_model->EditData(array('vt_jv_id' => $journal_id),array('vt_id' => $vt_id),'hr_vacation_travel');
+
+        //Insert employee details
+        foreach ($insert_emp_data['vpe_emp_id'] as $emp_id => $value) {
+            $vp_emp_data = [];
+            
+            foreach ($insert_emp_data as $column => $values) {
+                $vp_emp_data[$column] = $values[$emp_id];
+            }
+
+            $vp_emp_data['vpe_vp_id'] = $vp_id;
+        
+            // Insert the data for this employee
+            $this->common_model->InsertData('hr_vacation_pay_employees', $vp_emp_data);
+        }
+       
+
+        $this->common_model->EditData(array('vp_jv_id' => $journal_id),array('vp_id' => $vp_id),'hr_vacation_pay');
 
         //Insert Journal invoices
 
             for ($ji = 0; $ji < count($formData['jv_account']); $ji++) {
                 $account = $formData['jv_account'][$ji];
                 $debit = !empty($formData['jv_debit'][$ji]) ? $formData['jv_debit'][$ji] : 0;
-                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credits'][$ji] : 0;
+                $credit = !empty($formData['jv_credit'][$ji]) ? $formData['jv_credit'][$ji] : 0;
                 $narration = $formData['jv_remarks'][$ji] ?? '';
 
                 $insert_journal_invoice = [
@@ -445,7 +484,7 @@ class VacationPay extends BaseController
                     'ji_narration' => $narration
                 ];
 
-                $this->common_model->InsertData('accounts_journal_invoices', $insert_journal_invoice);
+            $this->common_model->InsertData('accounts_journal_invoices', $insert_journal_invoice);
 
             }
 
@@ -471,16 +510,53 @@ class VacationPay extends BaseController
 
         $this->hr_model = new \App\Models\HRModel();
 
-        if($this->request->getPost('vt_id'))
+        if($this->request->getPost('vp_id'))
         {
 
-        $id = $this->request->getPost('vt_id');
+        $id = $this->request->getPost('vp_id');
 
-        $vacation_travel = $this->hr_model->FetchVTSingle($id);
+        $vacation_pay = $this->hr_model->FetchVPaySingle($id);
 
-        $vacation_travel->vt_date = date('d M Y',strtotime($vacation_travel->vt_date));
+        $vacation_pay->vp_date = date('d M Y',strtotime($vacation_pay->vp_date));
 
-        echo json_encode($vacation_travel);
+        $vacation_pay->vp_employees = "";
+
+        $io=1;
+
+        foreach($vacation_pay->employees as $emp){
+
+        $vacation_pay->vp_employees .='
+        
+        <tr>
+        
+        <td class="text-end">'.$io.'</td>
+
+        <td class="text-end">'.$emp->emp_uid.'</td>
+
+        <td class="text-end">'.$emp->emp_name.'</td>
+
+        <td class="text-end">'.date('d M Y',strtotime($emp->emp_date_of_join)).'</td>
+
+        <td class="text-end">'.date('d M Y',strtotime($emp->vpe_vacation_due_from)).'</td>
+
+        <td class="text-end">'.$emp->vpe_basic_salary.'</td>
+
+        <td class="text-end">'.$emp->vpe_days_per_year.'</td>
+
+        <td class="text-end">'.$emp->vpe_entitlement.'</td>
+
+        <td class="text-end">'.$emp->vpe_amount.'</td>
+        
+        </tr>
+        
+        ';
+
+        $io++;
+        
+
+        }
+
+        echo json_encode($vacation_pay);
     
         }
 
@@ -491,22 +567,21 @@ class VacationPay extends BaseController
     public function Delete()
     {
 
-
-
     $id = $this->request->getPost('id');
 
-
-    $cond = array('vt_id' => $id);
+    $cond = array('vp_id' => $id);
     
-    $vt = $this->common_model->SingleRow('hr_vacation_travel',$cond);
+    $vp = $this->common_model->SingleRow('hr_vacation_pay',$cond);
 
-    $this->common_model->DeleteData('hr_vacation_travel',$cond);
+    $this->common_model->DeleteData('hr_vacation_pay',$cond);
 
-    $jv_cond = array('jv_id' => $vt->vt_jv_id);
+    $this->common_model->DeleteData('hr_vacation_pay_employees',array('vpe_vp_id' => $id));
+
+    $jv_cond = array('jv_id' => $vp->vp_jv_id);
 
     $this->common_model->DeleteData('accounts_journal_vouchers',$jv_cond);
 
-    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vt->vt_jv_id));
+    $this->common_model->DeleteData('accounts_journal_invoices',array('ji_voucher_id' => $vp->vp_jv_id));
 
 
     }

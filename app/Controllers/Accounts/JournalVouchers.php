@@ -503,7 +503,7 @@ class JournalVouchers extends BaseController
 
         $data['invoices'] .= "<tr class=\"so_row_edit\">
 
-        <td>".$i."
+        <td class='sl_no_edit'>".$i."
         <input type=\"hidden\" name=\"jv_invoice_id[]\" value=\"".$invoice->ji_id."\">
         </td>
 
@@ -530,7 +530,7 @@ class JournalVouchers extends BaseController
         <td><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
         <td><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control debit_amount_edit\" value=\"".$debit_amount."\"></td>
         <td><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control credit_amount_edit\" value=\"".$credit_amount."\" ></td>
-      
+        <th> <a href=\"javascript:void(0);\" class=\"del_elem_edit\" style=\"display:none;\"><i class='ri-close-line'></i></a></th>
         </tr>";
 
 
@@ -573,7 +573,7 @@ class JournalVouchers extends BaseController
         for($i=0;$i<count($this->request->getPost('jv_sale_invoice'));$i++)
         {
 
-            $invoice_id = $_POST['jv_invoice_id'][$i];
+            $invoice_id = $_POST['jv_invoice_id'][$i] ?? 0;
 
             $sales_invoice = $_POST['jv_sale_invoice'][$i];
 
@@ -597,8 +597,14 @@ class JournalVouchers extends BaseController
 
             $update_invoice['ji_voucher_id'] = $id;
 
+            if(!empty($invoice_id))
+            {
             $this->common_model->EditData($update_invoice,array('ji_id' => $invoice_id),'accounts_journal_invoices');
-
+            }
+            else
+            {
+            $this->common_model->InsertData('accounts_journal_invoices',$update_invoice);  
+            }
 
         }
 

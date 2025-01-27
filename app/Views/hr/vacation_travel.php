@@ -142,7 +142,69 @@
                                 
                                 </tbody>
 
+
                             </table>
+
+
+
+                            <table class="table table-bordered">
+
+
+                            <thead>
+
+                            <tr>
+
+                            <th class="text-end">Sl No</th>
+
+                            <th class="text-end">Emp Id</th>
+
+                            <th class="text-end">Name</th>
+
+                            <th class="text-end">Ticket Due From</th>
+
+                            <th class="text-end">Ticket Rate</th>
+
+                            <th class="text-end">Ticket Per year</th>
+
+                            <th class="text-end">Utilization</th>
+
+                            <th class="text-end">Entitlement</th>
+
+                            <th class="text-end">Amount</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody id="emp_rows_view">
+
+
+
+                            </tbody>
+
+
+                            <tfoot>
+
+
+                            <tr>
+
+                            <th class="text-end" colspan="8"><b>Total</b></th>
+
+                            <th class="text-end" id="total_vt_view"></th>
+
+                            </tr>
+
+
+
+                            </tfoot>
+
+
+                            </table>
+
+
+
+
+
 
 
                         </div>
@@ -247,25 +309,35 @@
 
 
 
-                    <div class="col-lg-6">
 
+
+                    <div class="col-lg-6">
 
 
                     <div class="row align-items-center mb-2" >
 
 
                     <div class="col-col-md-4 col-lg-4">
-                    
-                    <label>Current Balance</label>
+
+                    <label>Date</label>
                         
                     </div>
 
 
-                    <div class="col-col-md-8 col-lg-8">
-                    
-                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+                    <div class="col-col-md-4 col-lg-4">
+
+                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
 
                     </div>
+
+
+
+                    <div class="col-col-md-4 col-lg-4">
+
+                    <button class="btn btn-success generate_vt" type="button">Generate</button>
+
+                    </div>
+
 
 
                     </div>
@@ -309,7 +381,7 @@
 
 
 
-
+                    
                     <div class="col-lg-6">
 
 
@@ -319,31 +391,28 @@
 
                     <div class="col-col-md-4 col-lg-4">
                     
-                    <label>Date</label>
+                    <label>Current Balance</label>
                         
                     </div>
 
 
-                    <div class="col-col-md-4 col-lg-4">
+                    <div class="col-col-md-8 col-lg-8">
                     
-                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
+                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
 
                     </div>
-
-
-
-                    <div class="col-col-md-4 col-lg-4">
-
-                    <button class="btn btn-success generate_vt" type="button">Generate</button>
-
-                    </div>
-
 
 
                     </div>
 
 
                     </div>
+
+
+
+
+
+                   
                     
 
 
@@ -353,7 +422,7 @@
 
 
 
-                    <div class="row align-items-start" id="employee_sec">
+                    <div class="row align-items-start emp_sec" id="employee_sec">
 
 
                     
@@ -406,7 +475,7 @@
 
 
 
-                    <div class="row">
+                    <div class="row emp_sec">
 
 
 
@@ -490,7 +559,7 @@
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">View Indemnity</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">View Vacation Travel</h4>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="">
@@ -621,7 +690,7 @@
                         </div>
 
                           
-                        <div class="col-col-md-12 col-lg-12">
+                        <div class="col-col-md-12 col-lg-12 emp_sec">
 
 
                         <table class="table table-bordered" style="overflow-y:scroll;">
@@ -665,7 +734,7 @@
                         </div>
 
 
-                        <div class="row">
+                        <div class="row emp_sec">
 
 
 <div class="col-lg-12 text-center">
@@ -790,6 +859,8 @@
                             $('#current_balance').val(data.current_balance);
 
                             $('#emp_rows').html(data.emp_row);
+
+                            $('.emp_sec').show();
 
                             $('#total_amount_input').val(data.total_amount);
 
@@ -944,6 +1015,10 @@
 
                 $('#date_view').html(data.vt_date);
 
+                $('#emp_rows_view').html(data.vt_employees);
+
+                $('#total_vt_view').html(data.vt_total);
+
                 $('#ViewModal').modal('show');
 
             } catch (e) {
@@ -1091,6 +1166,8 @@
             $('.add_form')[0].reset();
 
             $('.account_select2').val('').trigger('change');
+
+            $('.emp_sec').hide();
 
             $('#emp_rows').html('');
 

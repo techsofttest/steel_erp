@@ -301,7 +301,15 @@ padding:5px 0px;
 
                                             foreach($c_accounts as $account){ ?>
 
-
+                                            <?php
+                                            if(empty($_GET['zero']))
+                                            {
+                                            if(($account->total_debit==0) && ($account->total_credit==0) && ($account->net_change==0) && ($account->ending_balance==0))
+                                            {
+                                            continue;
+                                            }
+                                            }
+                                            ?>
 
                                             <?php 
                                             // if( ($account->ending_balance==0) && (!empty($_GET['zero'])))

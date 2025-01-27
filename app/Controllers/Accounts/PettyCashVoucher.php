@@ -91,7 +91,7 @@ class PettyCashVoucher extends BaseController
               "pcv_date"=>date('d M Y',strtotime($record->pcv_date)),
               "pcv_pay_method"=>$record->rm_name,
               "bank_name"=>$record->bank_name ?? "-",
-              "pcv_total"=>$record->pcv_total,
+              "pcv_total"=>format_currency($record->pcv_total),
               "action" =>$action,
            );
            $i++; 
@@ -183,7 +183,7 @@ class PettyCashVoucher extends BaseController
 
                 if ($_FILES['p_cheque_copy']['name'] !== '') {
                     $ccAttachCrFileName = $this->uploadFile('p_cheque_copy', 'uploads/PettyCashVoucher');
-                    $update_data['pay_cheque_copy'] = $ccAttachCrFileName;
+                    $update_data['pcv_cheque_copy'] = $ccAttachCrFileName;
                 }
 
                 $id = $this->common_model->InsertData('accounts_petty_cash_voucher', $insert_data);
@@ -1803,7 +1803,7 @@ class PettyCashVoucher extends BaseController
             $id = 10;
         }
 
-        $cond = array('pay_id' => $id);
+        $cond = array('pcv_id' => $id);
 
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
@@ -1811,32 +1811,32 @@ class PettyCashVoucher extends BaseController
             array(
                 'table' => 'master_receipt_method',
                 'pk' => 'rm_id',
-                'fk' => 'pay_method',
+                'fk' => 'pcv_pay_method',
             ),
 
             array(
                 'table' => 'master_banks',
                 'pk' => 'bank_id',
-                'fk' => 'pay_bank',
+                'fk' => 'pcv_bank',
             ),
 
             array(
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
-                'fk' => 'pay_credit_account',
+                'fk' => 'pcv_credit_account',
             ),
 
         );
 
-        $payment = $this->common_model->SingleRowJoin('accounts_payments', $cond, $joins);
+        $pcv = $this->common_model->SingleRowJoin('accounts_petty_cash_voucher', $cond, $joins);
 
-        if ($payment->pay_method == "2") {
+        if ($pcv->pcv_pay_method == "2") {
             $bank_name = "-";
         }
     
         else
         {
-            $bank_name = $payment->bank_name;
+            $bank_name = $pcv->bank_name;
         }
     
     
@@ -1844,16 +1844,16 @@ class PettyCashVoucher extends BaseController
     
         $cheque_no = "-";
     
-        if ($payment->pay_method == "1") {
+        if ($pcv->pcv_pay_method == "1") {
     
-            $cheque_date = date('d-F-Y',strtotime($payment->pay_cheque_date));
+            $cheque_date = date('d M Y',strtotime($pcv->pcv_cheque_date));
     
-            $cheque_no =$payment->pay_cheque_no;
+            $cheque_no =$pcv->pcv_cheque_no;
     
         }
 
 
-        $total_amount = $payment->pay_amount; 
+        $total_amount = $pcv->pcv_total; 
 
 
         $joins_inv = array(
@@ -1861,17 +1861,16 @@ class PettyCashVoucher extends BaseController
             array(
                 'table' => 'accounts_charts_of_accounts',
                 'pk' => 'ca_id',
-                'fk' => 'pd_debit_account',
+                'fk' => 'pci_debit_account',
             )
 
         );
 
-        $invoices = $this->common_model->FetchWhereJoin('accounts_payment_debit', array('pd_payment' => $id), $joins_inv);
+        $invoices = $this->common_model->FetchWhereJoin('accounts_petty_cash_debits', array('pci_voucher_id' => $id), $joins_inv);
 
         $invoice_sec = "";
 
         $first = true;
-
 
         foreach ($invoices as $inv) {
 
@@ -1880,12 +1879,12 @@ class PettyCashVoucher extends BaseController
                 array(
                     'table' => 'pro_purchase_voucher',
                     'pk' => 'pv_id',
-                    'fk' => 'pdi_invoice',
+                    'fk' => 'pcdi_invoice',
                 )
 
             );
 
-            $linked_voucher = $this->common_model->FetchWhereJoin('accounts_payment_debit_invoices', array('pdi_debit_id' => $inv->pd_id), $joins_voucher);
+            $linked_voucher = $this->common_model->FetchWhereJoin('accounts_petty_cash_debit_invoices', array('pcdi_debit_id' => $inv->pci_id), $joins_voucher);
 
 
 
@@ -1912,7 +1911,7 @@ class PettyCashVoucher extends BaseController
 
                     <td>-</td>
 
-                    <td align='right'>{$inv->pd_payment_amount}</td>
+                    <td align='right'>{$inv->pci_payment_amount}</td>
                     
                     </tr>
 
@@ -1989,7 +1988,7 @@ class PettyCashVoucher extends BaseController
 
         <td width="120px">
         
-        ' . $payment->pay_ref_no . '
+        ' . $pcv->pcv_voucher_no . '
 
         </td>
 
@@ -2007,7 +2006,7 @@ class PettyCashVoucher extends BaseController
 
         <td width="120px">
         
-        '.$payment->rm_name.'
+        '.$pcv->rm_name.'
 
         </td>
       
@@ -2027,7 +2026,7 @@ class PettyCashVoucher extends BaseController
 
         <td>
         
-        ' . date('d-m-Y', strtotime($payment->pay_date)) . '
+        ' . date('d M Y', strtotime($pcv->pcv_date)) . '
 
         </td>
 
@@ -2099,7 +2098,7 @@ class PettyCashVoucher extends BaseController
 
         <td>
         
-        RV-2020-0418
+        
 
         </td>
 
@@ -2183,7 +2182,7 @@ class PettyCashVoucher extends BaseController
         
         <td colpsan="5" align="center"><b>Amount : ' . currency_to_words($total_amount) . '</b></td>
     
-        <td colspan="1" align="right" style="text-align:right;"><b>' . format_currency($payment->pay_amount) . '</b></td>
+        <td colspan="1" align="right" style="text-align:right;"><b>' . format_currency($pcv->pcv_total) . '</b></td>
     
         </tr>
     

@@ -1,6 +1,4 @@
-
- 
- <!--header section start-->
+<!--header section start-->
 
  <?php 
  if(empty($_GET))
@@ -281,6 +279,14 @@
                                             foreach($accounts as $account)
                                             {
 
+                                                if(empty($_GET['zero']))
+                                                {
+                                                if( ($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                                                { 
+                                                continue;
+                                                }
+                                                }
+
                                                 if($account->at_name=="Income")
                                                 {
 
@@ -296,9 +302,17 @@
                                             foreach($accounts as $account)
                                             {
 
+                                                if(empty($_GET['zero']))
+                                                {
+                                                if( ($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                                                {
+                                                continue;
+                                                }
+                                                }
+
                                                 if($account->at_name=="Cost of Sales")
                                                 {
-
+                                                    
                                                     $revenue_accounts[]=$account;  
 
                                                 }
@@ -310,6 +324,13 @@
 
                                             foreach($accounts as $account)
                                             {
+                                                if(empty($_GET['zero']))
+                                                {
+                                                if(($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                                                {
+                                                continue;
+                                                }
+                                                }
 
                                                 if($account->at_name=="Expenses")
                                                 {

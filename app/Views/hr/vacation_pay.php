@@ -28,6 +28,9 @@
     word-wrap: break-word;      /* Ensure the text wraps if it's too long */
     }
 
+    
+    
+
     </style>
     
 
@@ -82,7 +85,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Vacation Travel</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View Vacation Pay</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -136,13 +139,75 @@
                                 <td id="date_view"></td>
 
                                 </tr>
-
-
-
                                 
                                 </tbody>
 
+
                             </table>
+
+
+
+
+                            <table class="table table-bordered">
+
+                            <thead>
+
+                            <tr>
+
+                            <th class="text-end">Sl No</th>
+
+                            <th class="text-end">Emp Id</th>
+
+                            <th class="text-end">Name</th>
+
+                            <th class="text-end">Date Of Joining</th>
+
+                            <th class="text-end">Vacation Due From</th>
+
+                            <th class="text-end">Basic Salary</th>
+
+                            <th class="text-end">Days/Year</th>
+
+                            <th class="text-end">Entitlement</th>
+
+                            <th class="text-end">Amount</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody id="emp_rows_view">
+
+
+
+                            </tbody>
+
+
+
+
+                            <tfoot>
+
+
+                            <tr>
+
+                            <th class="text-end" colspan="8"><b>Total</b></th>
+
+                            <th class="text-end" id="total_vp_view"></th>
+
+                            </tr>
+
+
+
+                            </tfoot>
+
+
+                            </table>
+
+
+
+
+
+
 
 
                         </div>
@@ -251,27 +316,39 @@
 
 
 
-                    <div class="row align-items-center mb-2" >
+<div class="row align-items-center mb-2" >
 
 
-                    <div class="col-col-md-4 col-lg-4">
-                    
-                    <label>Current Balance</label>
-                        
-                    </div>
+<div class="col-col-md-4 col-lg-4">
+
+<label>Date</label>
+    
+</div>
 
 
-                    <div class="col-col-md-8 col-lg-8">
-                    
-                    <input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+<div class="col-col-md-4 col-lg-4">
 
-                    </div>
+<input id="date" type="text" name="date" class="form-control datepicker" readonly required>
 
-
-                    </div>
+</div>
 
 
-                    </div>
+
+<div class="col-col-md-4 col-lg-4">
+
+<button class="btn btn-success generate_vp" type="button">Generate</button>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+                   
 
 
 
@@ -314,36 +391,33 @@
 
 
 
-                    <div class="row align-items-center mb-2" >
+<div class="row align-items-center mb-2" >
 
 
-                    <div class="col-col-md-4 col-lg-4">
-                    
-                    <label>Date</label>
-                        
-                    </div>
+<div class="col-col-md-4 col-lg-4">
+
+<label>Current Balance</label>
+    
+</div>
 
 
-                    <div class="col-col-md-4 col-lg-4">
-                    
-                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
+<div class="col-col-md-8 col-lg-8">
 
-                    </div>
+<input id="current_balance" type="number" step="0.01" class="form-control" readonly>
+
+</div>
 
 
+</div>
 
-                    <div class="col-col-md-4 col-lg-4">
 
-                    <button class="btn btn-success generate_vp" type="button">Generate</button>
-
-                    </div>
+</div>
 
 
 
-                    </div>
 
 
-                    </div>
+                   
                     
 
 
@@ -353,7 +427,7 @@
 
 
 
-                    <div class="row align-items-start" id="employee_sec">
+                    <div class="row align-items-start generated_sec" id="employee_sec" style="display:none;">
 
 
                     
@@ -363,14 +437,14 @@
                     <thead>
                     
                     <tr>
-                        <td>Sl No</td>
-                        <td>Employee ID</td>
-                        <td>Name</td>
-                        <td>Date Of Joining</td>
-                        <td>Vacation Due From</td>
-                        <td>Basic Salary</td>
-                        <td>Days/Year</td>
-                        <td>Entitlement</td>
+                        <td class="text-end">Sl No</td>
+                        <td class="text-end">Employee ID</td>
+                        <td class="text-end">Name</td>
+                        <td class="text-end">Date Of Joining</td>
+                        <td class="text-end">Vacation Due From</td>
+                        <td class="text-end">Basic Salary</td>
+                        <td class="text-end">Days/Year</td>
+                        <td class="text-end">Entitlement</td>
                         <td class="text-end">Amount</td>
                     </tr>
 
@@ -406,7 +480,7 @@
 
 
 
-                    <div class="row">
+                    <div class="row generated_sec" style="display:none;">
 
 
 
@@ -753,6 +827,7 @@
 
             $('.generate_vp').click(function(){
 
+                
                 if (! $('#debit_account')[0].checkValidity()) {
                     $('#add_form')[0].reportValidity()
                     return false;
@@ -802,6 +877,8 @@
 
                             $('#total_amount_credit').val(data.total_amount);
                             $('#total_amount_credit_disp').html(data.total_amount);
+
+                            $('.generated_sec').show();
 
                             }
                             else
@@ -905,6 +982,8 @@
 
                             $('#AddToJournalModal').modal('hide');
 
+                            $('.generated_sec').hide();
+
                             }
 
                             //datatable.ajax.reload( null, false)
@@ -926,9 +1005,9 @@
         var id = $(this).data('id');
 
         $.ajax({
-        url: "<?php echo base_url(); ?>HR/VacationTravel/View",
+        url: "<?php echo base_url(); ?>HR/VacationPay/View",
         method: "POST",
-        data: { vt_id: id },
+        data: { vp_id: id },
         success: function (data) {
             try {
 
@@ -940,9 +1019,13 @@
 
                 $('#credit_account_view').html(data.credit_account_name);
 
-                $('#current_balance_view').html(data.vt_current_balance);
+                $('#current_balance_view').html(data.vp_current_balance);
 
-                $('#date_view').html(data.vt_date);
+                $('#date_view').html(data.vp_date);
+
+                $('#total_vp_view').html(data.vp_total);
+
+                $('#emp_rows_view').html(data.vp_employees);
 
                 $('#ViewModal').modal('show');
 
@@ -950,11 +1033,11 @@
                 console.error("Error parsing  data:", e);
                 alert("An error occurred while fetching  data.");
             }
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX Error:", status, error);
-            alert("Failed to fetch  data.");
-        }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+                alert("Failed to fetch  data.");
+            }
     });
 });
 
@@ -988,7 +1071,7 @@
 
             });
 
-
+            
 
             $('#AddModal').modal('hide');
 
@@ -1077,6 +1160,8 @@
 
             $('#emp_rows').html('');
 
+            $('.generated_sec').hide();
+
             //$('#save_to_jv_btn').hide();
 
 
@@ -1096,7 +1181,7 @@
         var id = $(this).data('id');
         $.ajax({
 
-            url: "<?php echo base_url(); ?>HR/VacationTravel/Delete",
+            url: "<?php echo base_url(); ?>HR/VacationPay/Delete",
 
             method: "POST",
 

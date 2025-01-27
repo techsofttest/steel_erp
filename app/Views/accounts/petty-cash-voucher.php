@@ -455,7 +455,7 @@
 
                                                         <div class="col-col-md-9 col-lg-9">
 
-                                                            <input type="file" name="p_cheque_copy" class="form-control" required>
+                                                            <input type="file" name="p_cheque_copy" class="form-control">
 
                                                         </div>
 
@@ -1663,7 +1663,7 @@
 
                         if ((data.pay.pcv_cheque_copy != "") && (data.pay.pcv_cheque_copy != null) ) {
                             
-                            $('#view_cheque_file').html('<a href="<?= base_url(); ?>uploads/Payments/' + data.pay.pcv_cheque_copy + '" target="_blank">View </a>');
+                            $('#view_cheque_file').html('<a href="<?= base_url(); ?>uploads/PettyCashVoucher/' + data.pay.pcv_cheque_copy + '" target="_blank">View </a>');
                         } else {
                             $('#view_cheque_file').html("-");
                         }
@@ -2941,7 +2941,7 @@
                 theme: "default form-control-",
                 dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
                 ajax: {
-                    url: "<?= base_url(); ?>Accounts/PettyCashVoucher/FetchAccounts",
+                    url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
                     dataType: 'json',
                     delay: 250,
                     cache: false,

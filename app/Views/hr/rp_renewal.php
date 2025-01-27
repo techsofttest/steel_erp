@@ -76,17 +76,16 @@
 <!-- View Modal -->
 
 
-
 <div class="modal fade" id="ViewModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">View Indemnity</h5>
+                <h5 class="modal-title" id="exampleModalLabel">View RP Renewal</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+        <div class="modal-body">
 
 
     <div class="row">
@@ -105,10 +104,9 @@
                         <div class="col-lg-12">
 
 
-                            <table id="view_vt_table" class="table table-bordered">
+                            <table id="view_rp_table" class="table table-bordered">
 
-                                <tbody id="view_vt_body">
-
+                                <tbody id="view_rp_body">
 
                                 <tr>
 
@@ -139,17 +137,13 @@
                                 </tr>
 
 
-
                                 
                                 </tbody>
 
                             </table>
 
-
-
-
+                            
                             <table class="table table-bordered">
-
 
                             <thead>
 
@@ -161,15 +155,15 @@
 
                             <th class="text-end">Name</th>
 
-                            <th class="text-end">Basic Salary</th>
+                            <th class="text-end">QID</th>
 
                             <th class="text-end">Date Of Joining</th>
 
+                            <th class="text-end">ID Expiry Date</th>
+
+                            <th class="text-end">Charges</th>
+
                             <th class="text-end">Entitlement</th>
-
-                            <th class="text-end">Indemnity</th>
-
-                            <th class="text-end">Advance</th>
 
                             <th class="text-end">Amount</th>
 
@@ -177,9 +171,8 @@
 
                             </thead>
 
+
                             <tbody id="emp_rows_view">
-
-
 
                             </tbody>
 
@@ -191,18 +184,15 @@
 
                             <th class="text-end" colspan="8"><b>Total</b></th>
 
-                            <th class="text-end" id="total_id_view"></th>
+                            <th class="text-end" id="total_vp_view"></th>
 
                             </tr>
 
 
-
                             </tfoot>
-
+                            
 
                             </table>
-
-
 
 
 
@@ -234,7 +224,6 @@
 
 
 
-
 <!-- ######### -->
 
 
@@ -254,7 +243,7 @@
             
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Indemnity</h5>
+                <h5 class="modal-title" id="exampleModalLabel">RP Renewal</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -274,9 +263,6 @@
 
                     <form  class="Dashboard-form class add_form" data-empid="" id="add_form">
                     
-                    <input class="added_id" type="hidden" name="emp_id" value="" autocomplete="off">
-            
-
 
                     <div class="row align-items-start form_sec">
 
@@ -312,8 +298,8 @@
 
 
 
-                    <div class="col-lg-6">
 
+                    <div class="col-lg-6">
 
 
                     <div class="row align-items-center mb-2" >
@@ -328,7 +314,7 @@
 
                     <div class="col-col-md-4 col-lg-4">
 
-                    <input id="date" type="text" name="date" class="form-control datepicker" readonly>
+                    <input id="date" type="text" name="date" class="form-control datepicker" readonly required>
 
                     </div>
 
@@ -336,7 +322,7 @@
 
                     <div class="col-col-md-4 col-lg-4">
 
-                    <button class="btn btn-success generate_id" type="button">Generate</button>
+                    <button class="btn btn-success generate_rp" type="button">Generate</button>
 
                     </div>
 
@@ -350,8 +336,7 @@
 
 
 
-                   
-
+                  
 
 
 
@@ -416,7 +401,9 @@
 
 
 
-                   
+
+
+                
                     
 
 
@@ -436,15 +423,15 @@
                     <thead>
                     
                     <tr>
-                        <td>Sl No</td>
-                        <td>Employee ID</td>
-                        <td>Name</td>
-                        <td>Basic Salary</td>
-                        <td>Date Of Joining</td>
-                        <td>Entitlement</td>
-                        <td>Indemnity</td>
-                        <td>Advance</td>
-                        <td>Amount</td>
+                        <td class="text-end">Sl No</td>
+                        <td class="text-end">Employee ID</td>
+                        <td class="text-end">Name</td>
+                        <td class="text-end">QID Number</td>
+                        <td class="text-end">Date Of Joining</td>
+                        <td class="text-end">ID Expiry Date</td>
+                        <td class="text-end">Charges</td>
+                        <td class="text-end">Entitlement</td>
+                        <td class="text-end">Amount</td>
                     </tr>
 
                     </thead>
@@ -457,6 +444,18 @@
                     </tbody>
 
 
+                    <tfoot>
+
+
+                    <td colspan="8" class="text-end">Total</td>
+
+                    
+
+                    <td id="total_amount_view" class="text-end"></td>
+
+                    </tfoot>
+
+
                     </table>
 
 
@@ -465,27 +464,28 @@
                     </div>
 
 
-                    
+
+
                     <div class="row emp_sec">
 
 
                     <div class="col-lg-12 text-center">
 
+
                     <button class="submit_btn btn btn-success" type="button" id="save_to_jv_btn">Generate JV</button>
-                                     
+                                                       
+                          
                     </div>
 
+
                     </div>
+
+
+
+
 
 
                     </form>
-
-
-                <!-- Salary Section End  -->
-
-
-
-
 
 
 
@@ -549,7 +549,7 @@
     <div class="row">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">View Indemnity</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">View RP Renewal</h4>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-primary py-1 add_model_btn">Add</button>
                 </div><!-- end card header -->
                 <div class="card-body" id="">
@@ -798,6 +798,8 @@
 <?php echo view('includes/footer'); ?>
 
 
+<script src="<?= base_url(); ?>public/assets/js/differenceHours.js"></script>
+
 <!--footer section end-->    
 
 <script>
@@ -806,14 +808,20 @@
      document.addEventListener("DOMContentLoaded", function(event) { 
 
 
-        $('.generate_id').click(function(){
 
 
-            if (! $('.account_select2')[0].checkValidity()) {
+        $('.generate_rp').click(function(){
+
+            if (! $('#debit_account')[0].checkValidity()) {
                 $('#add_form')[0].reportValidity()
                 return false;
             }
-           
+
+            if (! $('#credit_account')[0].checkValidity()) {
+                $('#add_form')[0].reportValidity()
+                return false;
+            }
+
             if($('#date').val()=="")
             {
             alertify.error('Enter date').delay('5').dismissOthers();
@@ -826,12 +834,10 @@
 
             var date = $('#date').val();
 
-
             $.ajax({
-                        url: "<?php echo base_url(); ?>HR/Indemnity/FetchEmployees",
+                        url: "<?php echo base_url(); ?>HR/RPRenewal/FetchEmployees",
                         method: "POST",
                         data : {account:credit_account,debit_account:debit_account,date:date},
-                        
                         success: function(data) 
                         {
 
@@ -840,11 +846,11 @@
                             if(data.status=="1")
                             {
 
-                            $('.emp_sec').show();
-
                             $('#current_balance').val(data.current_balance);
 
                             $('#emp_rows').html(data.emp_row);
+
+                            $('.emp_sec').show();
 
                             $('#total_amount_input').val(data.total_amount);
 
@@ -865,6 +871,7 @@
                             
 
                             }
+
                             //datatable.ajax.reload( null, false)
 
 
@@ -877,109 +884,112 @@
 
 
 
-       //$(".account_select2").select2({
-        $('.account_select2').each(function() {
-        $(this).select2({   
-        placeholder: "Select Account",
-        theme : "default form-control-",
-        dropdownParent: $(this).closest('.add_form'),
-        ajax: {
-                url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
-                dataType: 'json',
-                delay: 250,
-                cache: false,
-                minimumInputLength: 1,
-                allowClear: true,
-                data: function (params) {
-                    return {
-                        term: params.term,
-                        page: params.page || 1,
-                    };
-                },
-                processResults: function(data, params) {
-                
-                    var page = params.page || 1;
-                    return {
-                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
-                        pagination: {
-                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
-                            more: (page * 10) <= data.total_count
-                        }
-                    };
-                },              
-            }
-        })
+                        //$(".account_select2").select2({
+                        $('.account_select2').each(function() {
+                        $(this).select2({   
+                        placeholder: "Select Account",
+                        theme : "default form-control-",
+                        dropdownParent: $(this).closest('.add_form'),
+                        ajax: {
+                                url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
+                                dataType: 'json',
+                                delay: 250,
+                                cache: false,
+                                minimumInputLength: 1,
+                                allowClear: true,
+                                data: function (params) {
+                                    return {
+                                        term: params.term,
+                                        page: params.page || 1,
+                                    };
+                                },
+                                processResults: function(data, params) {
+                                
+                                    var page = params.page || 1;
+                                    return {
+                                        results: $.map(data.result, function (item) { return {id: item.ca_id, text: item.ca_name}}),
+                                        pagination: {
+                                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                            more: (page * 10) <= data.total_count
+                                        }
+                                    };
+                                },              
+                            }
+                        })
 
-    });
+                    });
 
 
        
 
-        /* Main Add */     
-   
+       
+
+
+
+
+        
         $('#add_journal_form').submit(function(e){
 
-        e.preventDefault();
+            e.preventDefault();
 
-        var journal_form = $(this).serialize();
+            var journal_form = $(this).serialize();
 
-        var credit_account = $('#credit_account').val();
+            var credit_account = $('#credit_account').val();
 
-        var debit_account = $('#debit_account').val();
+            var debit_account = $('#debit_account').val();
 
-        var date = $('#date').val();
+            var date = $('#date').val();
 
-        $.ajax({
-            url: "<?php echo base_url(); ?>HR/Indemnity/AddJournal",
-            method: "POST",
-            data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
-            success: function(data) 
-            {
-                var data = JSON.parse(data);
+            $.ajax({
+                        url: "<?php echo base_url(); ?>HR/RPRenewal/AddJournal",
+                        method: "POST",
+                        data: {journal_form:journal_form,credit_account:credit_account,debit_account:debit_account,date:date},
+                        success: function(data) 
+                        {
+                            var data = JSON.parse(data);
 
-                if(data.status==0)
-                {
-                 
-                alertify.error(data.msg).delay(3).dismissOthers();
+                            if(data.status==0)
+                            {
+                             
+                            alertify.error(data.msg).delay(3).dismissOthers();
 
-                return false;
-                    
-                }
+                            return false;
+                                
+                            }
 
-                if(data.status==1)
-                {
-                 
-                alertify.success(data.msg).delay(3).dismissOthers();
+                            if(data.status==1)
+                            {
+                             
+                            alertify.success(data.msg).delay(3).dismissOthers();
 
-                datatable.ajax.reload( null, false);
+                            datatable.ajax.reload( null, false);
 
-                $('#AddToJournalModal').modal('hide');
+                            $('#AddToJournalModal').modal('hide');
 
-                }
+                            }
 
-                //datatable.ajax.reload( null, false)
+                            //datatable.ajax.reload( null, false)
 
-            }
-           
+                        }
+                       
+                    });
+
+
+
+
+
         });
 
 
-
-
-
-        });
-
-
-        /*###*/
 
         $("body").on('click', '.view_btn', function () {
 
         var id = $(this).data('id');
 
         $.ajax({
-        url: "<?php echo base_url(); ?>HR/Indemnity/View",
+        url: "<?php echo base_url(); ?>HR/RPRenewal/View",
         method: "POST",
-        data: { id_id: id },
+        data: { rpr_id: id },
         success: function (data) {
             try {
 
@@ -991,27 +1001,31 @@
 
                 $('#credit_account_view').html(data.credit_account_name);
 
-                $('#current_balance_view').html(data.id_current_balance);
+                $('#current_balance_view').html(data.rpr_current_balance);
 
-                $('#date_view').html(data.id_date);
+                $('#date_view').html(data.rpr_date);
 
-                $('#emp_rows_view').html(data.id_employees);
+                $('#total_vp_view').html(data.rpr_total);
 
-                $('#total_id_view').html(data.id_total);
+                $('#emp_rows_view').html(data.rp_employees);
 
                 $('#ViewModal').modal('show');
 
             } catch (e) {
-                console.error("Error parsing data:", e);
-                alert("An error occurred while fetching data.");
+                console.error("Error parsing  data:", e);
+                alert("An error occurred while fetching  data.");
             }
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", status, error);
-                alert("Failed to fetch data.");
-            }
-            });
-            });
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+            alert("Failed to fetch  data.");
+        }
+    });
+});
+
+
+
+
 
         /*###*/
 
@@ -1019,10 +1033,10 @@
 
 
 
-            /* Save to jv button click start */
+        /* Save to jv button click start */
 
 
-            $('#save_to_jv_btn').click(function(){
+        $('#save_to_jv_btn').click(function(){
 
             $.ajax({
 
@@ -1039,14 +1053,34 @@
 
             });
 
+
+            /*
+            $.ajax({
+
+            url : "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference",
+
+            method : "GET",
+
+            success:function(data)
+            {
+
+            $('#uid').val(data);
+
+            }
+
+            });
+            */
+
+
             $('#AddModal').modal('hide');
 
             $('#AddToJournalModal').modal('show');
 
-            })
 
+        })
 
-            /* Save to jv button click end */
+       
+        /* Save to jv button click end */
 
 
 
@@ -1075,7 +1109,7 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url': "<?php echo base_url(); ?>HR/Indemnity/FetchData",
+                    'url': "<?php echo base_url(); ?>HR/RPRenewal/FetchData",
                     'data': function (data) {
                         // CSRF Hash
                         var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
@@ -1095,11 +1129,11 @@
                     }
                 },
                 'columns': [
-                    { data: 'id_id' },
-                    { data : "vt_date"},
-                    { data : "vt_debit_account" },
-                    { data : "vt_credit_account" },
-                    { data : "vt_total" },
+                    { data: 'rpr_id' },
+                    { data : "rpr_date"},
+                    { data : "rpr_debit_account" },
+                    { data : "rpr_credit_account" },
+                    { data : "rpr_total" },
                     { data: 'action' },
                 ]
                 
@@ -1121,13 +1155,13 @@
 
             $('.add_form')[0].reset();
 
-            $('#timesheet_sec').hide();
+            $('.account_select2').val('').trigger('change');
 
-            $('#timesheets_row').html('');
+            $('.emp_sec').hide();
 
             $('#emp_rows').html('');
 
-            $('.emp_sec').hide();
+            //$('#save_to_jv_btn').hide();
 
 
         });
@@ -1143,11 +1177,10 @@
         $("body").on('click', '.delete_btn', function() {
 
         if (!confirm('Are you absolutely sure you want to delete?')) return;
-
         var id = $(this).data('id');
         $.ajax({
 
-            url: "<?php echo base_url(); ?>HR/Indemnity/Delete",
+            url: "<?php echo base_url(); ?>HR/RPRenewal/Delete",
 
             method: "POST",
 

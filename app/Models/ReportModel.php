@@ -1250,8 +1250,8 @@ $query .= "UNION ALL
     jv.jv_voucher_no AS reference,
     ah.ah_head_id AS head_id,
     jv.jv_date AS transaction_date,
-    ji_credit AS credit_amount,
-    ji_debit AS debit_amount,
+    ji_debit AS credit_amount,
+    ji_credit AS debit_amount,
     'Journal Voucher' AS voucher_type,
     ca.ca_id AS account_id,
     ca.ca_name AS account_name
@@ -3129,7 +3129,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
            $query->groupEnd();
    
-           $query->orderBy('ca_name','asc');
+           $query->orderBy('ca_account_id','asc');
    
            $result = $query->get()->getResult();
    
@@ -3289,7 +3289,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
             $query->orWhere('accounts_account_types.at_name','Equity Retained Earnings');
 
 
-            $query->orderBy('ah_account_name','desc');
+            $query->orderBy('ah_account_name','ASC');
 
             $result = $query->get()->getResult();
 
@@ -3352,7 +3352,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
             $query->where('ca_account_type',$ah_id);
 
-            $query->orderBy('ca_name','asc');
+            $query->orderBy('ca_account_id','asc');
 
             $result = $query->get()->getResult();
 

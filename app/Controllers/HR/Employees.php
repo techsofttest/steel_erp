@@ -66,7 +66,9 @@ class Employees extends BaseController
         $i=1;
         foreach($records as $record ){
 
-           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->emp_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> View</a> <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->emp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a> <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->emp_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="View"  data-id="'.$record->emp_id.'" ><i class="ri-eye-fill"></i> </a> 
+           <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->emp_id.'"><i class="ri-pencil-fill"></i></a> 
+           <a  href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->emp_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
            $data[] = array( 
               "emp_id"=>$i,
@@ -74,7 +76,7 @@ class Employees extends BaseController
               "employee_name" => $record->emp_name,
               'division' => $record->div_name,
               'designation' => $record->emp_designation,
-              'date_of_join' => date('d-F-Y',strtotime($record->emp_date_of_join)),
+              'date_of_join' => date('d M Y',strtotime($record->emp_date_of_join)),
               "action" =>$action,
            );
            $i++; 

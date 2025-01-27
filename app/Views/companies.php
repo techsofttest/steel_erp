@@ -550,7 +550,9 @@
                             <tr>
                                 <th class="no-sort">Sl no</th>
                                 <th>Name</th>
-                                <th>Username</th>
+                                <th>CR No</th>
+                                <th>City</th>
+                                <th>Country</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -563,39 +565,20 @@
 
                             <td><?= $i++; ?></td>
 
-                            <td><?php echo $company->first_name." ".$company->last_name ?></td>
+                            <td><?php echo $company->comp_name ?></td>
 
-                            <td><?php echo $company->user_name; ?></td>
+                            <td><?php echo $company->comp_cr_no; ?></td>
+
+                            <td><?php echo $company->comp_city; ?></td>
+
+                            <td><?php echo $company->comp_country; ?></td>
 
                             <td>
 
-                            <?php 
 
-                            if($company->user_id != session()->get('admin_id'))
+                            <a href="javascript:void(0);" data-id="<?= $company->comp_id; ?>" class="edit_btn mr-1"><i class="ri-pencil-fill"></i> </a>
 
-                            {
-
-                            ?>
-
-<a href="javascript:void(0);" class="change_pass" data-id="<?php echo $company->user_id; ?>"><i class="ri-key-2-line"></i> Change Password</a>
-
-
-                            <?php } 
-
-
-                            else {
-                            ?>
-
-                          
-
-                            <?php } ?>
-
-
-                            <a href="javascript:void(0);" data-id="<?= $company->comp_id; ?>" class="edit_btn mr-1"><i class="ri-pencil-line"></i> Edit</a>
-
-                            <a href="javascript:void(0);" data-id="<?= $company->comp_id; ?>" class="view_btn mr-1"><i class="ri-eye-line"></i> View</a>
-
-                            
+                            <a href="javascript:void(0);" data-id="<?= $company->comp_id; ?>" class="view_btn mr-1"><i class="ri-eye-fill"></i> </a>
 
 
                             </td>

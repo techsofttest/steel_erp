@@ -520,6 +520,16 @@
 
 
 
+                                    <tr>
+                                        <td colspan="6">
+                                    <div class="col-lg-12 text-center">
+                                                            
+                                        <a class="add_more_edit" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
+                                                      
+                                    </div>
+                                        <td>
+                                    </tr>
+
 
                                     <!--
 
@@ -698,6 +708,59 @@
         });
 
         /**/
+
+
+        var tot_rows = $('body .so_row_edit').length;
+
+        $("body").on('click', '.add_more_edit', function(){
+
+        if(tot_rows < max_fieldcost){ 
+
+        tot_rows++;
+
+        var $clone =  $('.so_row_edit:first').clone();
+
+        $clone.find("input").val("");
+
+        $clone.find("select").val(0);
+
+        $clone.find(".sl_no_edit").html(tot_rows);
+
+        $clone.find(".del_elem_edit").show();
+
+        $clone.insertAfter('.so_row_edit:last');
+
+        $clone.find(".account_select2_edit").val('');
+
+        $clone.find(".account_select2_edit").removeAttr('data-select2-id');
+
+        $clone.find('.select2').remove();
+
+        $clone.find(".so_select2_edit").val('');
+
+        $clone.find(".so_select2_edit").removeAttr('data-select2-id');
+
+        $('.so_row_edit:last').find('.so_select2_edit').focus();
+
+        }
+
+        SOSelect2Edit();
+
+        AccountsSelect2Edit();
+
+        });
+
+
+        $(document).on("click", ".del_elem_edit", function() 
+        {
+            $(this).closest('.so_row_edit').remove();
+            cc--;
+            totalCalcutate();    
+        });
+
+
+
+
 
 
 
@@ -1290,8 +1353,7 @@ if (element.length === 0) {
     return;
 }
 
-// Only initialize if it is not already initialized
-if (!element.hasClass('select2-hidden-accessible')) {
+
     element.select2({
         placeholder: "Select Sales Order", // Placeholder text
         theme: "default form-control-",
@@ -1308,7 +1370,7 @@ if (!element.hasClass('select2-hidden-accessible')) {
                     term: params.term,
                     page: params.page || 1,
                 };
-            },
+            }, 
             processResults: function(data, params) {
                 const page = params.page || 1;
 
@@ -1329,7 +1391,7 @@ if (!element.hasClass('select2-hidden-accessible')) {
             },
         },
     });
-}
+
                            
                         }
                         SOSelect2();

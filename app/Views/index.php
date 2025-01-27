@@ -120,7 +120,7 @@
                                             <label class="text-uppercase fw-medium text-black text-truncate mb-0 counter-title">Accounting Period</label>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div class="col-6">
 
                                             <select class="form-control" name="ac_year" id="">
 
@@ -140,6 +140,7 @@
                                             </div>
 
 
+                                            <?php /*
                                             <div class="col-4">
 
 
@@ -174,6 +175,8 @@
 
 
                                             </div>
+
+                                            */ ?>
 
 
                                             </div>  

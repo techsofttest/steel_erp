@@ -3232,7 +3232,7 @@
                 theme: "default form-control-",
                 dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
                 ajax: {
-                    url: "<?= base_url(); ?>Accounts/Payments/FetchAccounts",
+                    url: "<?= base_url(); ?>Accounts/ChartsOfAccounts/FetchAccounts",
                     dataType: 'json',
                     delay: 250,
                     cache: false,

@@ -393,7 +393,7 @@ class ChartsOfAccounts extends BaseController
     
         // Build the WHERE clause for filtering
         if (!empty($term)) {
-            $where = "ca_name LIKE '%$term%'";
+            $where = "ca_name LIKE '%$term%'"; 
         }
     
         // Fetch paginated results
@@ -407,7 +407,8 @@ class ChartsOfAccounts extends BaseController
         );
     
         // Count the total matching records for pagination
-        $data['total_count'] = $this->common_model->CountWhere('accounts_charts_of_accounts', $where);
+        $where_array=array();
+        $data['total_count'] = $this->common_model->CountWhere('accounts_charts_of_accounts',$where);
     
         // Return the data as JSON
         return $this->response->setJSON($data);

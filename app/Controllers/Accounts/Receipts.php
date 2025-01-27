@@ -509,7 +509,14 @@ class Receipts extends BaseController
   
     $advance_paid = $this->common_model->SingleRowCol('crm_cash_invoice','ci_advance_amount',array('ci_id' => $id))->ci_advance_amount;
 
+    if(!empty($advance_paid))
+    {
     $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
+    }
+    else
+    {
+    $updated_invoice_paid = $updated_invoice_receipt;    
+    }
 
     $update_invoice['ci_paid_amount'] = $updated_invoice_paid;
 
@@ -523,7 +530,14 @@ class Receipts extends BaseController
 
     $advance_paid = $this->common_model->SingleRowCol('crm_credit_invoice','cci_advance_amount',array('cci_id' => $id))->cci_advance_amount;
 
+    if(!empty($advance_paid))
+    {
     $updated_invoice_paid = $updated_invoice_receipt+$advance_paid;
+    }
+    else
+    {
+    $updated_invoice_paid = $updated_invoice_receipt;  
+    }
     
     $update_invoice['cci_paid_amount'] = $updated_invoice_paid;
     

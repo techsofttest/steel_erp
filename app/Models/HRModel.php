@@ -113,9 +113,45 @@ class HRModel extends Model
             ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_vacation_travel.vt_credit_account', 'left');
         
         $result = $query->get()->getRow();
+
+      
+        $emp_query = $this->db->table('hr_vacation_travel_employees');
+        $emp_query->where('vte_main_id',$id);
+        $emp_query->join('hr_employees','hr_employees.emp_id = hr_vacation_travel_employees.vte_emp_id','left');
+        $emp_query->orderBy('emp_uid','asc');
+        $emp_result = $emp_query->get()->getResult();
+
+        $result->employees = $emp_result;
     
         return $result;
     }
+
+
+
+    public function FetchVPaySingle($id)
+    {
+    
+        $query = $this->db->table('hr_vacation_pay')
+            ->select('hr_vacation_pay.*, debit_account.ca_name AS debit_account_name, credit_account.ca_name AS credit_account_name') // Select specific columns
+            ->where('vp_id', $id)
+            ->join('accounts_charts_of_accounts AS debit_account', 'debit_account.ca_id = hr_vacation_pay.vp_debit_account', 'left')
+            ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_vacation_pay.vp_credit_account', 'left');
+        
+        $result = $query->get()->getRow();
+
+      
+        $emp_query = $this->db->table('hr_vacation_pay_employees');
+        $emp_query->where('vpe_vp_id',$id);
+        $emp_query->join('hr_employees','hr_employees.emp_id = hr_vacation_pay_employees.vpe_emp_id','left');
+        $emp_query->orderBy('emp_uid','asc');
+        $emp_result = $emp_query->get()->getResult();
+
+        $result->employees = $emp_result;
+    
+        return $result;
+
+    }
+
 
 
 
@@ -128,9 +164,40 @@ class HRModel extends Model
             ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_indemnity.id_credit_account', 'left');
         
         $result = $query->get()->getRow();
+
+        $emp_query = $this->db->table('hr_indemnity_employees');
+        $emp_query->where('ide_main_id',$id);
+        $emp_query->join('hr_employees','hr_employees.emp_id = hr_indemnity_employees.ide_emp_id','left');
+        $emp_query->orderBy('emp_uid','asc');
+        $emp_result = $emp_query->get()->getResult();
+
+        $result->employees = $emp_result;
     
         return $result;
     }
+
+
+    public function FetchRPSingle($id)
+    {
+        $query = $this->db->table('hr_rp_renewals')
+            ->select('hr_rp_renewals.*, debit_account.ca_name AS debit_account_name, credit_account.ca_name AS credit_account_name') // Select specific columns
+            ->where('rpr_id', $id)
+            ->join('accounts_charts_of_accounts AS debit_account', 'debit_account.ca_id = hr_rp_renewals.rpr_debit_account', 'left')
+            ->join('accounts_charts_of_accounts AS credit_account', 'credit_account.ca_id = hr_rp_renewals.rpr_credit_account', 'left');
+        
+        $result = $query->get()->getRow();
+
+        $emp_query = $this->db->table('hr_rp_renewals_employees');
+        $emp_query->where('rr_main_id',$id);
+        $emp_query->join('hr_employees','hr_employees.emp_id = hr_rp_renewals_employees.rr_emp_id','left');
+        $emp_query->orderBy('emp_uid','asc');
+        $emp_result = $emp_query->get()->getResult();
+
+        $result->employees = $emp_result;
+    
+        return $result;
+    }
+
 
 
 

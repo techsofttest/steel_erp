@@ -249,7 +249,7 @@
 
                                                 <tr>
 
-                                                    <th>Assets</th>
+                                                    <th class="text-center">Assets</th>
                                                     <th>Amount</th>
                                                     <th>%</th>
 
@@ -263,7 +263,73 @@
                                             <tbody class="tbody_data">
 
 
-                                            <?php foreach($account_heads as $ah){ ?>
+                                            <?php
+                                            
+                                            $asset_types = [
+                                                'Cash',
+                                                'Inventory',
+                                                'Accounts Receivable',
+                                                'Fixed Assets',
+                                                'Accumulated Depreciation',
+                                                'Other Current Assets'
+                                            ];
+
+
+                                            $liability_types = [
+                                                'Accounts Payable',
+                                                'Other Current Liabilities',
+                                                'Provisions & Accruals',
+                                                'Long Term Liabilities',
+                                                'Equity Doesn\'t Close',
+                                                'Equity Retained Earnings'
+                                            ];
+
+
+                                            $assets=[];
+
+                                            foreach($account_heads as $account)
+                                            {
+
+                                                if(in_array($account->at_name,$asset_types))
+                                                {
+
+                                                    $assets[]=$account;  
+
+                                                }
+
+                                            }
+
+
+                                            $liabilities=[];
+
+                                            foreach($account_heads as $account)
+                                            {
+
+                                                if(in_array($account->at_name,$liability_types))
+                                                {
+
+                                                    $liabilities[]=$account;  
+
+                                                }
+
+                                            }
+
+                                            ?>
+
+
+
+
+                                            <!-- Assets Section -->
+
+
+                                           
+
+
+                                            <?php 
+                                            $total_assets=0;
+                                            foreach($assets as $ah){ 
+                                           
+                                            ?>
 
                                             <tr>
 
@@ -288,7 +354,110 @@
                                                 <?php 
                                                 $total_perc = 0;
                                                 foreach($ah->Charts as $ca){ 
-                                                
+                                                $total_assets= $total_assets+$ca->balance;
+                                                if($ca->balance>0)
+                                                {
+                                                $perc = ($ca->balance/$total_bal)*100;
+                                                } else
+                                                {
+                                                $perc=0;
+                                                }
+                                                $total_perc= $total_perc+$perc;
+                                                ?>
+                                                    <tr>
+                                                        
+                                                    <td ><?= $ca->ca_name; ?></td>
+
+                                                    <td class="text-right"><?= $ca->balance; ?></td>
+
+                                                    <td class="text-right"><?= number_format($perc,2); ?>%</td>
+
+                                                    </tr>
+
+                                               <?php
+                                               } 
+                                               ?>
+
+
+                                                <tr>
+
+                                                <td align="center">Total <?php echo $ah->ah_account_name; ?></td>
+
+                                                <td class="text-right"><?= number_format($total_bal,2); ?></td>
+
+                                                <td class="text-right"><?= $total_perc ?>%</td>
+
+                                                </tr>
+
+
+
+                                                <tr>
+
+                                                <td></td>
+
+                                                <td></td>
+
+                                                <td></td>
+
+                                                </tr>
+
+
+                                            <?php } ?>
+
+                                            <tr>
+
+                                            <td><b>Total Assets</b></td>
+
+                                            <td><?= format_currency($total_assets); ?></td>
+
+                                            <td></td>
+
+
+                                            </tr>
+
+
+
+                                            <!-- Liabilities Section -->
+
+                                            <tr>
+
+                                            <td align="center"><b>Liabilities</b></td>
+
+                                            <td> </td>
+
+                                            <td></td>
+
+
+                                            </tr>
+
+                                            <?php 
+                                            $total_liabilities=0;
+                                            foreach($liabilities as $ah){ ?>
+
+                                            <tr>
+
+                                            <td align=""><b><?php echo $ah->ah_account_name; ?></b></td>
+
+                                            <td> </td>
+
+                                            <td></td>
+
+                                            
+                                            </tr>
+
+
+                                            <?php 
+                                            $total_bal = number_format(0,2);
+                                            foreach($ah->Charts as $ca){ 
+                                            $total_bal = $ca->balance + $total_bal;
+                                            }
+                                            ?>
+
+
+                                                <?php 
+                                                $total_perc = 0;
+                                                foreach($ah->Charts as $ca){ 
+                                                $total_liabilities = $total_liabilities+ $ca->balance;
                                                 if($ca->balance>0)
                                                 {
                                                 $perc = ($ca->balance/$total_bal)*100;
@@ -304,9 +473,9 @@
 
                                                     <td><?= $ca->ca_name; ?></td>
 
-                                                    <td><?= $ca->balance; ?></td>
+                                                    <td class="text-end"><?= format_currency($ca->balance); ?></td>
 
-                                                    <td><?= number_format($perc,2); ?>%</td>
+                                                    <td class="text-end"><?= number_format($perc,2); ?>%</td>
 
 
                                                     </tr>
@@ -324,9 +493,9 @@
 
                                                 <td align="center">Total <?php echo $ah->ah_account_name; ?></td>
 
-                                                <td><?= number_format($total_bal,2); ?></td>
+                                                <td class="text-end"><?= number_format($total_bal,2); ?></td>
 
-                                                <td><?= $total_perc ?>%</td>
+                                                <td class="text-end"><?= $total_perc ?>%</td>
 
 
                                                 </tr>
@@ -345,6 +514,23 @@
 
 
                                             <?php } ?>
+
+
+                                            <tr>
+
+                                            <td class="text-center"><b>Total Liablilities</b></td>
+
+                                            <td class="text-end"><?= format_currency($total_liabilities); ?></td>
+
+                                            <td></td>
+
+
+                                            </tr>
+
+
+
+
+
                                            
                                             </tbody>
 
