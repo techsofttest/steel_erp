@@ -850,19 +850,50 @@ class SalesOrder extends BaseController
 
         $data['customer_creation'] ="";
 
+       
         // customer craetion
-        foreach($customer_creation as $cus_creation)
-        {
+
+        if(!empty($sales_order->qd_reffer_no)){
+            foreach($customer_creation as $cus_creation)
+            {
+                
+                if ($cus_creation->cc_id  == $sales_order->so_customer)
+                {
+                    $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+                    $data['customer_creation'] .= ' selected'; 
+                    $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+                }
             
+            
+            }
+
+        }else{
+
+            foreach($customer_creation as $cus_creation)
+            {
+            
+            
+            $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
+
             if ($cus_creation->cc_id  == $sales_order->so_customer)
             {
-                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id.'"'; 
                 $data['customer_creation'] .= ' selected'; 
-                $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+
             }
-        
+            
+            $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name .'</option>';
+            
            
+            }
+
+
         }
+        
+       
+
+        
+
+
 
         //quotation_details
         

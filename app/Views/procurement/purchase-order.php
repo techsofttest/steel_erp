@@ -1747,7 +1747,7 @@
                     //console.log(data);
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.ven_id, text: item.ven_name}}),
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count

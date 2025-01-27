@@ -341,7 +341,7 @@ class MaterialReceivedNote extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('steel_pro_vendor','ven_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
       
 
         $data['total_count'] =count($data['result']);
@@ -373,8 +373,6 @@ class MaterialReceivedNote extends BaseController
     public function FetchPurchase()
     {
         $vendor_id  = $this->request->getPost('ID');
-
-        //$purchases = $this->common_model->FetchWHere('pro_purchase_order',array('po_vendor_name' => $vendor_id));
 
         $purchases = $this->common_model->CheckTwiceCond1('pro_purchase_order',array('po_vendor_name' => $vendor_id),array('po_delivered_status' => 0));
         
@@ -593,8 +591,8 @@ class MaterialReceivedNote extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'mrn_vendor_name',
             ),
 
@@ -614,7 +612,7 @@ class MaterialReceivedNote extends BaseController
 
         $data['date']           = date('d-M-Y',strtotime($material_received->mrn_date));
 
-        $data['vendor_name']    = $material_received->ven_name;
+        $data['vendor_name']    = $material_received->cc_customer_name;
 
         $data['purchase_order'] = $material_received->po_reffer_no;
 
@@ -722,8 +720,8 @@ class MaterialReceivedNote extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'mrn_vendor_name',
             ),
 
@@ -743,7 +741,7 @@ class MaterialReceivedNote extends BaseController
 
         $data['date']           = date('d-M-Y',strtotime($material_received->mrn_date));
 
-        $data['vendor_name']    = $material_received->ven_name;
+        $data['vendor_name']    = $material_received->cc_customer_name;
 
         $data['purchase_order'] = $material_received->po_reffer_no;
 

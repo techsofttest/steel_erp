@@ -1586,8 +1586,8 @@
                     return {
                         results: $.map(data.result, function(item) {
                             return {
-                                id: item.ven_id,
-                                text: item.ven_name
+                                id: item.cc_id,
+                                text: item.cc_customer_name	
                             }
                         }),
                         pagination: {

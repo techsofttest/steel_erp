@@ -218,7 +218,7 @@ class MaterialReqReport extends BaseController
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor', 'ven_id', 'desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation', 'cc_id', 'desc');
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders', $cond);
 
@@ -261,7 +261,7 @@ class MaterialReqReport extends BaseController
                 $border = "border-top: 2px solid";
                 $product_details = $order_data->product_orders;
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
+                $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->po_vendor_name]);
 
                 // Print vendor for debugging
                 // print_r($vendor);
@@ -272,7 +272,7 @@ class MaterialReqReport extends BaseController
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mr_reffer_no}</td>";
                 
                 // Fix: null coalescing operator should be outside the curly braces
-                $pdf_data .= "<td style='border-top: 2px solid'>" . ($vendor->ven_name ?? '') . "</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>" . ($vendor->cc_customer_name?? '') . "</td>";
                 
 
 

@@ -38,6 +38,11 @@
 {
     width: 93%;
 }
+
+.droup_color{
+
+color: black !important;
+}
 </style>
 
 

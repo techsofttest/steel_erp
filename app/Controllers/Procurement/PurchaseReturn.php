@@ -304,7 +304,7 @@ class PurchaseReturn extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('steel_pro_vendor','ven_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
       
 
         $data['total_count'] =count($data['result']);
@@ -614,8 +614,8 @@ class PurchaseReturn extends BaseController
 
             array(
 
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'pv_contact_person',
             ),
             
@@ -623,7 +623,7 @@ class PurchaseReturn extends BaseController
 
         $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher',array('pv_id' => $this->request->getPost('ID')),$joins);
         
-        $data['contact_person'] = $purchase_voucher->pro_con_person;
+        $data['contact_person'] = $purchase_voucher->contact_person;
 
         $data['payment_term']   = $purchase_voucher->pv_payment_term;
 
@@ -689,8 +689,8 @@ class PurchaseReturn extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'pr_vendor_name',
             ),
             array(
@@ -709,7 +709,7 @@ class PurchaseReturn extends BaseController
 
         $data['date']           = date('d-M-Y',strtotime($purchase_return->pr_date));
 
-        $data['vendor_name']    = $purchase_return->ven_name;
+        $data['vendor_name']    = $purchase_return->cc_customer_name;
 
         $data['vendor_inv']     = $purchase_return->pv_vendor_inv;
 
@@ -798,8 +798,8 @@ class PurchaseReturn extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'pr_vendor_name',
             ),
             array(
@@ -820,7 +820,7 @@ class PurchaseReturn extends BaseController
 
         $data['date']           = date('d-M-Y',strtotime($purchase_return->pr_date));
 
-        $data['vendor_name']    = $purchase_return->ven_name;
+        $data['vendor_name']    = $purchase_return->cc_customer_name;
 
         $data['vendor_inv']     = $purchase_return->pv_vendor_inv;
 

@@ -252,7 +252,7 @@
 
 
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
-                                                                                                                        echo $material_req->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                                                                        echo $material_req->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                                     } ?>
                                                             </td>
 

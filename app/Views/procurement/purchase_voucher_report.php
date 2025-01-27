@@ -127,7 +127,7 @@
                                                                                     <select class="form-select" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
-                                                                                            <option value="<?php echo $vendor->ven_id; ?>"><?php echo $vendor->ven_name; ?></option>
+                                                                                            <option value="<?php echo $vendor->cc_id; ?>"><?php echo $vendor->cc_customer_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -270,7 +270,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_vouc->pv_vendor_inv; ?></td>
 
                                                             <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
-                                                                                                            echo $pur_vouc->pv_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                                                            echo $pur_vouc->pv_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                         } ?>
                                                             </td>
 

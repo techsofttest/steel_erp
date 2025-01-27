@@ -326,7 +326,7 @@
                                                     <label for="basiInput" class="form-label">CR No</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_cr_no" class="form-control">
+                                                    <input type="number" name="cc_cr_number" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -342,7 +342,7 @@
                                                     <label for="basicInput" class="form-label">CR Attach</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="file" name="ven_cr_attach" class="form-control">
+                                                    <input type="file" name="cc_attach_cr" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -360,7 +360,7 @@
                                                     <label for="basicInput" class="form-label">	CR Expiry</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
+                                                    <input type="text" name="cc_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
                                                 </div>
                                             </div>
                                             
@@ -378,7 +378,7 @@
                                                     <label for="basicInput" class="form-label">Est.ID</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_est_id" class="form-control">
+                                                    <input type="number" name="cc_est_id" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -396,7 +396,7 @@
                                                     <label for="basicInput" class="form-label">Est.ID Attach</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="file" name="ven_est_attach" class="form-control">
+                                                    <input type="file" name="cc_est_id_attach" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -414,7 +414,7 @@
                                                     <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_est_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
+                                                    <input type="text" name="cc_est_id_expery" placeholder="dd-mm-yy" class="form-control datepicker">
                                                 </div>
                                             </div>
                                             
@@ -432,7 +432,7 @@
                                                     <label for="basicInput" class="form-label">Signatory Name</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_signature_name" class="form-control">
+                                                    <input type="text" name="cc_signatory_name" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -450,7 +450,7 @@
                                                     <label for="basicInput" class="form-label">QID Number</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_qid_no" class="form-control">
+                                                    <input type="number" name="cc_qid_number" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -468,7 +468,7 @@
                                                     <label for="basicInput" class="form-label">QID Attach</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="file" name="ven_qid_attach" class="form-control">
+                                                    <input type="file" name="cc_qid_attach" class="form-control">
                                                 </div>
                                             </div>
                                             
@@ -487,7 +487,7 @@
                                                     <label for="basicInput" class="form-label">QID Expiry</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
+                                                    <input type="text" name="cc_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker">
                                                 </div>
                                             </div>
                                             
@@ -496,7 +496,7 @@
 
                                         <!--####-->
 
-                                        <input type="hidden" class="vendor_hidden_id" name="ven_id">
+                                        <input type="hidden" class="vendor_hidden_id" name="cc_id">
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success vendor_once_form_submit3">Save</button>

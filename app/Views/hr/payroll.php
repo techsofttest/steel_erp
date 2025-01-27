@@ -1217,27 +1217,36 @@
        
         $("body").on('click', '.delete_btn', function() {
 
-        //if (!confirm('Are you absolutely sure you want to delete?')) return;
-        var id = $(this).data('id');
-        $.ajax({
+            //if (!confirm('Are you absolutely sure you want to delete?')) return;
+            var id = $(this).data('id');
+            $.ajax({
 
-            url: "<?php echo base_url(); ?>HR/Payroll/Delete",
+                url: "<?php echo base_url(); ?>HR/Payroll/Delete",
 
-            method: "POST",
+                method: "POST",
 
-            data: {
-                id: id
-            },
+                data: {
+                    id: id
+                },
 
-            success: function(data) {
+                success: function(data) {
 
-                alertify.success('Data Deleted Successfully').delay(8).dismissOthers();
+                    var data = JSON.parse(data);
+                        
+                        if(data.status === 1){
+                            
+                            alertify.success(data.msg).delay(2).dismissOthers();
 
-                datatable.ajax.reload(null, false)
-            }
+                            datatable.ajax.reload(null,false);
+    
+                        } else{
+
+                            alertify.error(data.msg).delay(2).dismissOthers();
+                        } 
+                }
 
 
-        });
+            });
 
         });
 

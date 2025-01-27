@@ -122,7 +122,7 @@
                                                                                     <select class="form-select" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
-                                                                                            <option value="<?php echo $vendor->ven_id; ?>"><?php echo $vendor->ven_name; ?></option>
+                                                                                            <option value="<?php echo $vendor->cc_id; ?>"><?php echo $vendor->cc_customer_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -316,7 +316,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:120px"><?php echo $pur_order->po_reffer_no; ?></td>
                                                             <td class="" style="width:275px"><?php foreach ($vendors as $vendor) {
-                                                                                                    echo $pur_order->po_vendor_name == $vendor->ven_id ? $vendor->ven_name : '';
+                                                                                                    echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                 } ?>
                                                             </td>
                                                             <td class="text-center" style="width:100px"><?php echo $pur_order->mrn_reffer; ?></td>

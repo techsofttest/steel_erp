@@ -21,7 +21,7 @@ class PurchaseOrderReport extends BaseController
 
         //$data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $cond = array('so_deliver_flag' => 0);
 
@@ -248,7 +248,7 @@ class PurchaseOrderReport extends BaseController
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $cond = array('so_deliver_flag' => 0);
 
@@ -300,7 +300,7 @@ class PurchaseOrderReport extends BaseController
                 
                 $total_amount = $total_amount + $order_data->po_amount;
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->po_vendor_name]);
+                $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->po_vendor_name]);
 
 
                 $new_date = date('d-m-Y',strtotime($order_data->po_date));
@@ -309,7 +309,7 @@ class PurchaseOrderReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
                 
                 // $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->so_reffer_no}</td>";
 

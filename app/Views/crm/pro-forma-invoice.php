@@ -11,6 +11,11 @@
     justify-content: unset !important;
 }
 
+.droup_color{
+
+color: black !important;
+}
+
 </style>
 
 <div class="tab-content text-muted">

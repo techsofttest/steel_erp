@@ -56,6 +56,7 @@
 
 
                                                                 <?php
+                                                                
                                                                 if (!empty($_GET['form_date'])) {
                                                                     $from_date = $_GET['form_date'];
                                                                 } else {

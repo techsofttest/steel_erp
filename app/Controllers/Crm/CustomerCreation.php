@@ -47,7 +47,7 @@ class CustomerCreation extends BaseController
             
         );
         ## Fetch records
-        $records = $this->common_model->GetRecord('crm_customer_creation','cc_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
+        $records = $this->common_model->GetRecord('crm_customer_creation','cc_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start,array('cc_status' => 0));
     
         $data = array();
 

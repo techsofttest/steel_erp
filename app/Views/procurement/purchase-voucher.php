@@ -850,9 +850,9 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_vendor_name" class="form-control edit_vendor_name" readonly>
+                                                                        <!--<input type="text" name="pv_vendor_name" class="form-control edit_vendor_name" readonly>-->
 
-                                                                        </select>
+                                                                        <select name="pv_vendor_name" class="form-control edit_vendor_name" ></select>
                                                                     </div>
 
                                                                 </div>
@@ -1798,7 +1798,7 @@
                     
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function (item) { return {id: item.ven_id, text: item.ven_name}}),
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
                         pagination: {
                         // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
                             more: (page * 10) <= data.total_count
@@ -2737,7 +2737,7 @@
 
                         $('.edit_date').val(data.date);
 
-                        $('.edit_vendor_name').val(data.vendor_name);
+                        $('.edit_vendor_name').html(data.vendor_name);
 
                         $('.edit_contact_person').val(data.contact_person);
 

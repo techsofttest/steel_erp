@@ -174,15 +174,15 @@
                                                         <tbody class="view_body">
 
                                                             <tr>
-                                                                <td>1</td>
+                                                                <td style="width:10px">1</td>
                                                                 <td>Shihab</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
+                                                                <td style="width:50px">Yes</td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all reports"><i class="ri-eye-fill"></i></a>
                                                                     <a href="javascript:void(0)" data-id = "1" class="change_pass"> Change Password</a>
@@ -512,7 +512,7 @@ if(session()->getFlashdata('success'))
                             
                             alertify.success('Password Updated Successfully').delay(2).dismissOthers();
                             $('#changePassword').modal('hide');
-                            //datatable.ajax.reload(null,false);
+                            
                         }
                     });
                     return false; // prevent the form from submitting

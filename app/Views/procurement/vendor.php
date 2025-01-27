@@ -625,10 +625,10 @@
                 }
             },
             'columns': [
-                { data: 'ven_id' },
-                { data: 'ven_name' },
-                { data :'ven_post_box'},
-                { data :'ven_telephone'},
+                { data: 'cc_id' },
+                { data: 'cc_customer_name' },
+                { data :'cc_post_box'},
+                { data :'cc_telephone'},
                 { data :'action'},
                 
                ]

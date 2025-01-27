@@ -533,13 +533,13 @@ class PurchaseVoucher extends BaseController
                 if(empty($check_advance))
                 {
 
-                $this->common_model->InsertData('pro_purchase_voucher_adjusted',$insert_data);
+                    $this->common_model->InsertData('pro_purchase_voucher_adjusted',$insert_data);
 
                 }
                 else
                 {
                 
-                $this->common_model->EditData(array('pva_id' => $check_advance->pva_id),$insert_data,'pro_purchase_voucher_adjusted');
+                    $this->common_model->EditData(array('pva_id' => $check_advance->pva_id),$insert_data,'pro_purchase_voucher_adjusted');
 
                 }
             
@@ -559,8 +559,8 @@ class PurchaseVoucher extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'pv_vendor_name',
             ),
 
@@ -573,8 +573,8 @@ class PurchaseVoucher extends BaseController
             ),
 
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'pv_contact_person',
             ),
 
@@ -587,9 +587,9 @@ class PurchaseVoucher extends BaseController
 
         $data['date']            = $purchase_voucher->pv_date;
 
-        $data['vendor_name']     = $purchase_voucher->ven_name;
+        $data['vendor_name']     = $purchase_voucher->cc_customer_name;
 
-        $data['contact_person']  = $purchase_voucher->pro_con_person;
+        $data['contact_person']  = $purchase_voucher->contact_person;
 
         $data['purchase_order']  = $purchase_voucher->po_reffer_no;
 
@@ -673,8 +673,8 @@ class PurchaseVoucher extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'pv_vendor_name',
             ),
 
@@ -685,22 +685,24 @@ class PurchaseVoucher extends BaseController
             ),
 
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'pv_contact_person',
             ),
 
         );
         
         $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')),$join);
+
+        $vendor_data = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
         
         $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
 
         $data['date']            = date('d-M-Y',strtotime($purchase_voucher->pv_date));
 
-        $data['vendor_name']     = $purchase_voucher->ven_name;
+        //$data['vendor_name']     = $purchase_voucher->ven_name;
 
-        $data['contact_person']  = $purchase_voucher->pro_con_person;
+        $data['contact_person']  = $purchase_voucher->contact_person;
 
         $data['purchase_order']  = $purchase_voucher->po_reffer_no;
 
@@ -713,6 +715,42 @@ class PurchaseVoucher extends BaseController
         $data['purchase_id']     = $purchase_voucher->pv_id;
 
         $data['total_amount']     = format_currency($purchase_voucher->pv_total);
+
+        $data['vendor_name']  = "";
+        /**/
+            if(!empty($purchase_voucher->pv_purchase_order)){
+
+                foreach($vendor_data as $vendor)
+                {
+                    
+                    if ($vendor->cc_id   == $purchase_voucher->pv_vendor_name)
+                    {
+                        $data['vendor_name'] .= '<option value="' .$vendor->cc_id.'"'; 
+                        $data['vendor_name'] .= ' selected'; 
+                        $data['vendor_name'] .= '>' . $vendor->cc_customer_name .'</option>';
+                    }
+                
+                
+                }
+
+            }else{
+                
+                foreach($vendor_data as $vendor)
+                {
+                    
+                    $data['vendor_name'] .= '<option value="' .$vendor->ven_id.'"'; 
+                    if ($vendor->ven_id  == $purchase_voucher->pv_vendor_name)
+                    {
+                        $data['vendor_name'] .= ' selected'; 
+                    }    
+                    $data['vendor_name'] .= '>' . $vendor->ven_name .'</option>';
+                
+                }
+
+            }
+
+            
+        /**/
         
         
         $join1 =  array(
@@ -872,7 +910,7 @@ class PurchaseVoucher extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('steel_pro_vendor','ven_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
       
 
         $data['total_count'] =count($data['result']);
@@ -973,9 +1011,9 @@ class PurchaseVoucher extends BaseController
         $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
         
         //payment term
-        $vendor = $this->common_model->SingleRow('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+        $vendor = $this->common_model->SingleRow('crm_customer_creation',array('cc_id' => $this->request->getPost('ID')));
         
-        $data['payment_term'] = $vendor->ven_credit_term;
+        $data['payment_term'] = $vendor->cc_credit_term;
        
 
         $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
@@ -992,8 +1030,8 @@ class PurchaseVoucher extends BaseController
         
         $joins = array(
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'po_contact_person',
             ),
 
@@ -1007,7 +1045,7 @@ class PurchaseVoucher extends BaseController
 
         foreach($contacts as $ven_contact)
         {
-            $data['condact_data'] .='<option value='.$ven_contact->pro_con_id.'>'.$ven_contact->pro_con_person.'</option>';
+            $data['condact_data'] .='<option value='.$ven_contact->contact_id.'>'.$ven_contact->contact_person.'</option>';
         }
         
         echo json_encode($data);
@@ -1261,8 +1299,8 @@ class PurchaseVoucher extends BaseController
             ),
 
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'po_contact_person',
             ),
             
@@ -1417,8 +1455,9 @@ class PurchaseVoucher extends BaseController
 
         $update_data = [
 
-
             'pv_date'            => date('Y-m-d',strtotime($this->request->getPost('pv_date'))),
+
+            'pv_vendor_name'     => $this->request->getPost('pv_vendor_name'),
 
             'pv_vendor_inv'      => $this->request->getPost('pv_vendor_inv'),
 

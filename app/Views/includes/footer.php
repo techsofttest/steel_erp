@@ -92,9 +92,11 @@
 
     <script src="<?php echo base_url(); ?>public/assets/js/jquery-ui.min.js"></script>
 
+    
+
     <script>
        
-       
+       document.addEventListener('contextmenu', event => event.preventDefault());
         //$('.add_model_btn').click(function(){
 
         function currency_format(orginalPrice){

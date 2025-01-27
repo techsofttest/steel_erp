@@ -32,7 +32,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_name" class="form-control edit_vendor_name" required>
+                                                <input type="text" name="cc_customer_name" class="form-control edit_vendor_name" required>
                                             </div>
 
                                         </div> 
@@ -54,7 +54,7 @@
                                             <div class="col-col-md-9 col-lg-9">
                                                 <!--<select class="form-select account_head_select account_head_clz edit_account_head"  name="ven_account_head"  required></select>-->
 
-                                                <input type="text" name="ven_account_head" class="form-control edit_account_head" readonly>
+                                                <input type="text" name="cc_account_head" class="form-control edit_account_head" readonly>
                                                 
                                             </div>
 
@@ -75,7 +75,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_account_id" class="form-control edit_account_id" readonly required>
+                                                <input type="text" name="cc_account_id" class="form-control edit_account_id" readonly required>
                                             </div>
 
                                         </div> 
@@ -95,7 +95,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_post_box" class="form-control edit_post_box">
+                                                <input type="text" name="cc_post_box" class="form-control edit_post_box">
                                             </div>
 
                                         </div>
@@ -115,7 +115,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_telephone" id="edit_telephone_id"  class="form-control edit_telephone"  required>
+                                                <input type="text" name="cc_telephone" id="edit_telephone_id"  class="form-control edit_telephone"  required>
                                             </div>
 
                                         </div> 
@@ -133,7 +133,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ven_fax" id="edit_fax_id" class="form-control edit_fax">
+                                                <input type="text" name="cc_fax" id="edit_fax_id" class="form-control edit_fax">
                                             </div>
 
                                         </div>
@@ -151,7 +151,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="email" name="ven_email" class="form-control edit_email" required>
+                                                <input type="email" name="cc_email" class="form-control edit_email" required>
                                             </div>
 
                                         </div> 
@@ -173,7 +173,7 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="text" name="ven_credit_term" class="form-control edit_credit_term" required>
+                                                    <input type="text" name="cc_credit_term" class="form-control edit_credit_term" required>
                                                 </div>
 
                                             </div> 
@@ -192,7 +192,7 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="number" name="ven_credit_period" class="form-control edit_credit_period" required>
+                                                    <input type="number" name="cc_credit_period" class="form-control edit_credit_period" required>
                                                 </div>
 
                                             </div> 
@@ -211,7 +211,7 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="number" name="ven_credit_limit" class="form-control edit_credit_limit" required>
+                                                    <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit" required>
                                                 </div>
 
                                             </div>
@@ -219,7 +219,7 @@
 
                                         <!-- ### -->
 
-                                        <input type="hidden" name="ven_id" class="edit_vendor_id">
+                                        <input type="hidden" name="cc_id" class="edit_vendor_id">
 
                                         <div class="modal-footer justify-content-center">
                                             <button  class="btn btn btn-success">Save</button>
@@ -331,7 +331,7 @@
                                                     <label for="basiInput" class="form-label">CR No</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_cr_no" class="form-control edit_ven_cr_no">
+                                                    <input type="number" name="cc_cr_number" class="form-control edit_ven_cr_no">
                                                 </div>
                                             </div>
                                             
@@ -350,7 +350,7 @@
                                                     <label for="basicInput" class="form-label">	CR Expiry</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_cr_expiry">
+                                                    <input type="text" name="cc_cr_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_cr_expiry">
                                                 </div>
                                             </div>
                                             
@@ -368,7 +368,7 @@
                                                     <label for="basicInput" class="form-label">Est.ID</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_est_id" class="form-control edit_ven_est_id">
+                                                    <input type="number" name="cc_est_id" class="form-control edit_ven_est_id">
                                                 </div>
                                             </div>
                                             
@@ -389,7 +389,7 @@
                                                     <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_est_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_est_expiry">
+                                                    <input type="text" name="cc_est_id_expery" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_est_expiry">
                                                 </div>
                                             </div>
                                             
@@ -407,7 +407,7 @@
                                                     <label for="basicInput" class="form-label">Signatory Name</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_signature_name" class="form-control edit_ven_signature_name">
+                                                    <input type="text" name="cc_signatory_name" class="form-control edit_ven_signature_name">
                                                 </div>
                                             </div>
                                             
@@ -425,7 +425,7 @@
                                                     <label for="basicInput" class="form-label">QID Number</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="ven_qid_no" class="form-control edit_ven_qid_no">
+                                                    <input type="number" name="cc_qid_number" class="form-control edit_ven_qid_no">
                                                 </div>
                                             </div>
                                             
@@ -444,7 +444,7 @@
                                                     <label for="basicInput" class="form-label">QID Expiry</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="text" name="ven_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_qid_expiry">
+                                                    <input type="text" name="cc_qid_expiry" placeholder="dd-mm-yy" class="form-control datepicker edit_ven_qid_expiry">
                                                 </div>
                                             </div>
                                             
@@ -474,19 +474,19 @@
                                                     <tr>
                                                         <td class="cust_img_rgt_border cust_img_text_stl" >CR Attach</td>
                                                         <td class="cust_img_rgt_border edit_cr_attach"></td>
-                                                        <td class=""><input type="file" name="ven_cr_attach"></td>
+                                                        <td class=""><input type="file" name="cc_attach_cr"></td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="cust_img_rgt_border  cust_img_text_stl" >Est.ID Attach</td>
                                                         <td class="cust_img_rgt_border edit_est_id_attach"></td>
-                                                        <td class=""><input type="file" name="ven_est_attach"></td>
+                                                        <td class=""><input type="file" name="cc_est_id_attach"></td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="cust_img_rgt_border  cust_img_text_stl" >QID Attach</td>
                                                         <td class="cust_img_rgt_border edit_qid_attach"></td>
-                                                        <td class=""><input type="file" name="ven_qid_attach"></td>
+                                                        <td class=""><input type="file" name="cc_qid_attach"></td>
                                                     </tr>
 
 
@@ -498,7 +498,7 @@
 
                                         <!--image section end-->
 
-                                        <input type="hidden" class="vendor_hidden_id" name="ven_id">
+                                        <input type="hidden" class="vendor_hidden_id" name="cc_id">
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success">Save</button>
@@ -556,7 +556,7 @@
                                             
                                     </table>
                                                 
-                                    <input type="hidden" class="vendor_hidden_id" name="pro_con_vendor">
+                                    <input type="hidden" class="vendor_hidden_id" name="contact_customer_creation">
                                     <div class="modal-footer justify-content-center">
                                     
                                         <button class="btn btn btn-success">Save</button>
@@ -612,10 +612,10 @@
                                             
                                             <tr>
            
-                                                <td><input type="text" name="pro_con_person"  value="" class="form-control" required></td>
-                                                <td><input type="text" name="pro_con_designation"  value="" class="form-control" required></td>
-                                                <td><input type="text" name="pro_con_mobile"  value="" class="form-control pro_con_mobile_clz" required></td>
-                                                <td> <input type="email" name="pro_con_email" value="" class="form-control" required></td>
+                                                <td><input type="text" name="contact_person"  value="" class="form-control" required></td>
+                                                <td><input type="text" name="contact_designation"  value="" class="form-control" required></td>
+                                                <td><input type="text" name="contact_mobile"  value="" class="form-control pro_con_mobile_clz" required></td>
+                                                <td> <input type="email" name="contact_email" value="" class="form-control" required></td>
                                                 
                                             </tr>
 
@@ -623,7 +623,7 @@
                                             
                                     </table>
                                                 
-                                    <input type="hidden" class="edit_contact_hidden_id" name="pro_con_vendor">
+                                    <input type="hidden" class="edit_contact_hidden_id" name="contact_customer_creation">
                                     <div class="modal-footer justify-content-center">
                                     
                                         <button class="btn btn btn-success">Save</button>
@@ -1108,6 +1108,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     $('.edit_ven_est_id').val(data.est_id);
 
                     $('.edit_ven_est_expiry').val(data.est_id_expiry);
+                    
 
                     $('.edit_ven_signature_name').val(data.signature_name);
 
@@ -1122,6 +1123,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     $('.edit_cr_attach').html(data.ven_cr_attach);
 
                     $('.edit_est_id_attach').html(data.ven_est_attach);
+
+                    
 
                     $('.edit_qid_attach').html(data.ven_qid_attach);
 

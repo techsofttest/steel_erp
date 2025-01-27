@@ -1041,17 +1041,35 @@ class SalesQuotation extends BaseController
         $data['customer_creation'] ="";
 
         
+        if(!empty($quotation_details->enquiry_reff)){
 
-
-        foreach($customer_creation as $cus_creation)
-        {
-            if ($cus_creation->cc_id  == $quotation_details->qd_customer)
-            {   
-                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"';
-                $data['customer_creation'] .= ' selected'; 
-                $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+            foreach($customer_creation as $cus_creation)
+            {
+                if ($cus_creation->cc_id  == $quotation_details->qd_customer)
+                {   
+                    $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"';
+                    $data['customer_creation'] .= ' selected'; 
+                    $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+                }
             }
+        }else{
+            
+            foreach($customer_creation as $cus_creation)
+            {
+                  
+                $data['customer_creation'] .= '<option value="' .$cus_creation->cc_id. '"';
+                if ($cus_creation->cc_id  == $quotation_details->qd_customer)
+                { 
+                    $data['customer_creation'] .= ' selected'; 
+                }
+                 $data['customer_creation'] .= '>' . $cus_creation->cc_customer_name . '</option>';
+                
+            }
+
         }
+
+
+        
 
 
         $data['enquiry_ref'] ="";

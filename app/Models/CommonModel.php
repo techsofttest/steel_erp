@@ -379,6 +379,22 @@ class CommonModel extends Model
         
     }
 
+    public function FetchAllLimitData($table, $order_key, $order, $term, $start, $end, $whereColumn1, $whereColumn2)
+    {
+        $query =  $this->db
+            ->table($table)
+            ->select('*')
+            ->groupStart() 
+                ->where($whereColumn1)
+                ->orWhere($whereColumn2) 
+            ->groupEnd() 
+            ->like($order_key, $term)
+            ->limit($end, $start) 
+            ->orderBy($order_key, $order);
+            $results = $query->get()->getResult();
+            return $results;
+    }
+
     //report  select two droup drown
     /*public function ReportFetchLimit($table, $order_key, $order, $term, $end, $start, $joins = [])
     {

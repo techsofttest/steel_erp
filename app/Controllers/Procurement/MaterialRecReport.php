@@ -17,7 +17,7 @@ class MaterialRecReport extends BaseController
     //view page
     public function index()
     {   
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
         
         $cond = array('so_deliver_flag' => 0);
 
@@ -237,7 +237,7 @@ class MaterialRecReport extends BaseController
 
         $cond = array('so_deliver_flag' => 0);
 
-        $data['vendors'] = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $data['vendors'] = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['sales_orders'] = $this->common_model->FetchWhere('crm_sales_orders',$cond);
 
@@ -296,7 +296,7 @@ class MaterialRecReport extends BaseController
                 $mrn_tot += $mrn_amount;
                 $total_amount = $total_amount + $mrn_amount;
 
-                $vendor = $this->common_model->SingleRow('pro_vendor', ['ven_id' => $order_data->mrn_vendor_name]);
+                $vendor = $this->common_model->SingleRow('crm_customer_creation', ['cc_id' => $order_data->mrn_vendor_name]);
 
                 $new_date = date('d-m-Y',strtotime($order_data->po_date));
 
@@ -304,7 +304,7 @@ class MaterialRecReport extends BaseController
 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->mrn_reffer}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->ven_name}</td>";
+                $pdf_data .= "<td style='border-top: 2px solid'>{$vendor->cc_customer_name}</td>";
                 
                 $pdf_data .= "<td style='border-top: 2px solid'>{$order_data->po_reffer_no}</td>";
 

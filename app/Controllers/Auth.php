@@ -27,6 +27,27 @@ class Auth extends BaseController
 	public function Check()
 	{   
         
+        $attempt = $this->session->get('attempt') ?? 0;
+
+        // Get the lock time and current time
+        $lockTime = $this->session->get('lock_time');
+        $currentTime = time();
+
+        // Check if lock period has expired (5 minutes = 300 seconds)
+        if ($lockTime && ($currentTime - $lockTime) >= 300) {
+            // Reset attempts and lock time after 5 minutes
+            $this->session->remove('attempt');
+            $this->session->remove('lock_time');
+            $attempt = 0; // Reset local variable as well
+        }
+
+        // Check if input is still locked
+        if ($lockTime && ($currentTime - $lockTime) < 300) {
+            $remainingTime = 300 - ($currentTime - $lockTime); // Calculate remaining lock time
+            $this->session->setFlashdata('error', 'Too many failed attempts. Please try again later.');
+            return redirect()->to('Login');
+        }
+
        
 		if($this->request->getMethod() === 'post')
         {
@@ -44,6 +65,8 @@ class Auth extends BaseController
                 return redirect()->to('Login');
 
             }
+
+            
             
             $username = $this->request->getPost('user_name');
 
@@ -70,10 +93,32 @@ class Auth extends BaseController
 
             else
             {
+                
 
-                $this->session->setFlashdata('error','Incorrect username/password');
+                // Increment the attempt counter
+                $attempt++;
+                $this->session->set('attempt', $attempt);
 
+                // Check if attempts exceed 5
+                if ($attempt >= 5) {
+
+                    // Set lock time if not already set
+                    if (!$lockTime) {
+                        $this->session->set('lock_time', $currentTime); // Store current timestamp
+                    }
+
+                    // Set flash message and redirect
+                    $this->session->setFlashdata('error', 'Too many failed attempts. Please try again later.');
+                    return redirect()->to('Login');
+
+                }
+
+                // Set flash error message for incorrect login
+                $this->session->setFlashdata('error', 'Incorrect username/password');
                 return redirect()->to('Login');
+
+                
+                
 
             }
 

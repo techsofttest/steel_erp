@@ -327,7 +327,7 @@ class PurchaseOrder extends BaseController
         $end = ($page - 1) * $resultCount;       
         $start = $end + $resultCount;
       
-        $data['result'] = $this->common_model->FetchAllLimit('steel_pro_vendor','ven_name','asc',$term,$start,$end);
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
       
 
         $data['total_count'] =count($data['result']);
@@ -338,18 +338,18 @@ class PurchaseOrder extends BaseController
 
     public function vendorFetch()
     {
-        $vendor = $this->common_model->SingleRow('pro_vendor',array('ven_id' => $this->request->getPost('ID')));
+        $vendor = $this->common_model->SingleRow('crm_customer_creation',array('cc_id' => $this->request->getPost('ID')));
 
-        $vendor_contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $this->request->getPost('ID')));
+        $vendor_contacts = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation' => $this->request->getPost('ID')));
         
         $data['condact_data'] = '<option value="" selected disabled>Select Contact Person</option>';
         
         foreach($vendor_contacts as $ven_contact)
         {
-            $data['condact_data'] .='<option value='.$ven_contact->pro_con_id.'>'.$ven_contact->pro_con_person.'</option>';
+            $data['condact_data'] .='<option value='.$ven_contact->contact_id.'>'.$ven_contact->contact_person.'</option>';
         }
         
-        $data['payment_term']= $vendor->ven_credit_term;
+        $data['payment_term']= $vendor->cc_credit_term;
 
         return json_encode($data);
     }
@@ -564,14 +564,14 @@ class PurchaseOrder extends BaseController
         $join =  array(
             
             array(
-                'table' => 'pro_vendor',
-                'pk'    => 'ven_id',
+                'table' => 'crm_customer_creation',
+                'pk'    => 'cc_id',
                 'fk'    => 'po_vendor_name',
             ),
 
             array(
-                'table' => 'pro_contact',
-                'pk'    => 'pro_con_id',
+                'table' => 'crm_contact_details',
+                'pk'    => 'contact_id',
                 'fk'    => 'po_contact_person',
             ),
 
@@ -591,9 +591,9 @@ class PurchaseOrder extends BaseController
 
         $data['date'] = date('d-M-Y',strtotime($material_requisition->po_date));
 
-        $data['vendor_name'] = $material_requisition->ven_name;
+        $data['vendor_name'] = $material_requisition->cc_customer_name;
 
-        $data['contact_person'] = $material_requisition->pro_con_person;
+        $data['contact_person'] = $material_requisition->contact_person;
 
         $data['mrn_reff'] = $material_requisition->mr_reffer_no;
 
@@ -723,42 +723,42 @@ class PurchaseOrder extends BaseController
        
         //fetch vendor
 
-        $vendors = $this->common_model->FetchAllOrder('pro_vendor','ven_id','desc');
+        $vendors = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
 
         $data['vendor_name'] = '';
 
         foreach($vendors as $vendor)
         {  
             
-            $data['vendor_name'] .= '<option value="' .$vendor->ven_id.'"'; 
+            $data['vendor_name'] .= '<option value="' .$vendor->cc_id.'"'; 
 
-            if($purchase_order->po_vendor_name == $vendor->ven_id)
+            if($purchase_order->po_vendor_name == $vendor->cc_id)
             {
                 $data['vendor_name'] .= ' selected'; 
             }
 
-		    $data['vendor_name'] .= '>' . $vendor->ven_name.'</option>';
+		    $data['vendor_name'] .= '>' . $vendor->cc_customer_name.'</option>';
         }
 
 
 
         //fetch contact
         
-        $contacts = $this->common_model->FetchWhere('pro_contact',array('pro_con_vendor' => $purchase_order->po_vendor_name));
+        $contacts = $this->common_model->FetchWhere('crm_contact_details',array('contact_customer_creation' => $purchase_order->po_vendor_name));
 
         $data['contact_person'] = '';
 
         foreach($contacts as $contact)
         {  
             
-            $data['contact_person'] .= '<option value="' .$contact->pro_con_id.'"'; 
+            $data['contact_person'] .= '<option value="' .$contact->contact_id.'"'; 
 
-            if($purchase_order->po_contact_person == $contact->pro_con_id)
+            if($purchase_order->po_contact_person == $contact->contact_id)
             {
                 $data['contact_person'] .= ' selected'; 
             }
 
-		    $data['contact_person'] .= '>' . $contact->pro_con_person.'</option>';
+		    $data['contact_person'] .= '>' . $contact->	contact_person.'</option>';
         }
 
 
