@@ -1001,11 +1001,15 @@ class CustomerCreation extends BaseController
 
     public function AddSingleContact()
     {
+       
+        
         $insert_data = $this->request->getPost();
 
         $this->common_model->InsertData('crm_contact_details',$insert_data);
 
         $data['cust_id'] = $this->request->getPost('contact_customer_creation');
+
+       // print_r( $this->request->getPost('contact_customer_creation')); exit();
         
         echo json_encode($data);
         

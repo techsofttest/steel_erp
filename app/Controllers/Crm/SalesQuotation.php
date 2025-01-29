@@ -1906,6 +1906,8 @@ class SalesQuotation extends BaseController
                     'pk'    => 'product_id',
                     'fk'    => 'qpd_product_description',
                 ),
+
+               
                
                 
             );
@@ -1927,9 +1929,9 @@ class SalesQuotation extends BaseController
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->qpd_quantity.'</td>';
+                $pdf_data .= '<td align="center">'.$prod_det->qpd_quantity.'</td>';
 
-                $pdf_data .= '<td align="left">'.$prod_det->qpd_unit.'</td>';
+                $pdf_data .= '<td align="center">'.$prod_det->qpd_unit.'</td>';
 
                 $pdf_data .= '<td align="right">'.$rate.'</td>';
 
@@ -1950,6 +1952,24 @@ class SalesQuotation extends BaseController
                     'pk'    => 'so_id',
                     'fk'    => 'ci_sales_order',
                 ),*/
+
+                array(
+                    'table' => 'crm_contact_details',
+                    'pk'    => 'contact_id',
+                    'fk'    => 'qd_contact_person',
+                ),
+
+                array(
+                    'table' => 'master_delivery_term',
+                    'pk'    => 'dt_id',
+                    'fk'    => 'qd_delivery_term',
+                ),
+
+                array(
+                    'table' => 'crm_enquiry',
+                    'pk'    => 'enquiry_id',
+                    'fk'    => 'qd_enq_ref',
+                ),
             );
             
 
@@ -1978,15 +1998,16 @@ class SalesQuotation extends BaseController
         
             <style>
             th, td {
-                padding-top: 10px;
-                padding-bottom: 10px;
+                padding-top: 5px;
+               
                 padding-left: 5px;
                 padding-right: 5px;
                 font-size: 12px;
             }
             p{
                 
-                font-size: 10px;
+                font-size: 12px;
+               margin-bottom: 13px;
 
             }
             .dec_width
@@ -2021,7 +2042,7 @@ class SalesQuotation extends BaseController
             </table>
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:-10px;">
             
         
             <tr width="100%">
@@ -2038,7 +2059,7 @@ class SalesQuotation extends BaseController
     
             <tr>
             
-                <td > </td>
+                <td width="13%";> </td>
                 
                 <td >'.$quotation_details->cc_customer_name.'</td>
             
@@ -2047,10 +2068,10 @@ class SalesQuotation extends BaseController
     
         <tr>
         
-        <td>Customer</td>
-        
+            <td>Customer</td>
             
-        <td >Tel : '.$quotation_details->cc_telephone.', Fax : '.$quotation_details->cc_fax.', Email : '.$quotation_details->cc_email.'</td>
+                
+            <td >Tel : '.$quotation_details->cc_telephone.', Fax : '.$quotation_details->cc_fax.', Email : '.$quotation_details->cc_email.'</td>
         
         </tr>
     
@@ -2068,7 +2089,7 @@ class SalesQuotation extends BaseController
         
         <td >Attention</td>
         
-        <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+        <td >Mr. '.$quotation_details->contact_person.' - Manager, Mobile:-'.$quotation_details->contact_mobile.', Email: - '.$quotation_details->contact_email.'</td>
         
         </tr>
     
@@ -2082,13 +2103,13 @@ class SalesQuotation extends BaseController
         
             <tr>
             
-                <th align="left" style="border-bottom:2px solid;" width="10%">Item No</th>
+                <th align="center" style="border-bottom:2px solid;" width="10%">Item No</th>
             
-                <th align="left" style="border-bottom:2px solid;" width="35%">Description</th>
+                <th align="center" style="border-bottom:2px solid;" width="45%">Description</th>
             
-                <th align="left" style="border-bottom:2px solid;">Qty</th>
+                <th align="center" style="border-bottom:2px solid;">Qty</th>
             
-                <th align="left" style="border-bottom:2px solid;">Unit</th>
+                <th align="center" style="border-bottom:2px solid;">Unit</th>
             
                 <th align="center" style="border-bottom:2px solid;"width="10%">Rate</th>
     
@@ -2108,17 +2129,14 @@ class SalesQuotation extends BaseController
         
         $footer = '
     
-            <table >
+            <table style="width:100%">
             
                 <tr>
                     <td>Quote Validity</td>
 
-                    <td width="59%">10 Days</td>
+                    <td width="59%">'.$quotation_details->qd_validity.'</td>
                 
-                    <td>Gross Total</td>
-        
-                    <td>'.$quotation_details->qd_sales_amount.'</td>
-            
+                   
                 </tr>
 
                
@@ -2127,10 +2145,12 @@ class SalesQuotation extends BaseController
                     <td>Currency</td>
                 
                     <td>Qatar Riyals</td>
-                   
-                    <td>Less. Special Discount</td>
+
+                    <td style="font-weight: bold;width: 15%;";>Net Quote Value</td>
         
-                    <td>-------</td>
+                    <td>'.format_currency($quotation_details->qd_sales_amount).'</td>
+                   
+                   
                 
                 </tr>
 
@@ -2144,9 +2164,7 @@ class SalesQuotation extends BaseController
                 
                     <td>'.$amount_in_words.'</td>
         
-                    <td style="font-weight: bold;">Net Quote Value</td>
-        
-                    <td>-----</td>
+                    
                 
                 </tr>
 
@@ -2160,7 +2178,7 @@ class SalesQuotation extends BaseController
 
                 <td style="width:15%">Enquiry Ref.</td>
 
-                <td style="width:32%">By Mail</td>
+                <td style="width:32%">'.$quotation_details->enquiry_reff.'</td>
 
                 <td style="width:9%">Payment:</td>
 
@@ -2173,11 +2191,9 @@ class SalesQuotation extends BaseController
 
                 <td style="width:15%">Delivery Period</td>
 
-                <td style="width:32%">4-5 Days</td>
+                <td style="width:32%">'.$quotation_details->dt_name.'</td>
 
-                <td style="width:9%">Delivery</td>
-
-                <td style="width:">Ex-works</td>
+               
 
                  
 
@@ -2222,11 +2238,12 @@ class SalesQuotation extends BaseController
         
             ';
         
-            
-            $mpdf->WriteHTML($html);
-            $mpdf->SetFooter($footer);
-            $this->response->setHeader('Content-Type', 'application/pdf');
-            $mpdf->Output($title . '.pdf', 'I');
+           // echo $html . $footer;
+           
+           $mpdf->WriteHTML($html);
+           $mpdf->SetFooter($footer);
+           $this->response->setHeader('Content-Type', 'application/pdf');
+           $mpdf->Output($title . '.pdf', 'I');
         
         }
 

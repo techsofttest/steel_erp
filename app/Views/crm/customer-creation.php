@@ -905,7 +905,8 @@
                                                             <td><input type="text" name="contact_designation" class="form-control" required></td>
                                                             <td><input type="text" name="contact_mobile" class="form-control cond_telephone" required></td>
                                                             <td> <input type="email" name="contact_email" class="form-control" required></td>
-                                                            <input type="hidden" name="contact_customer_creation" class="contact_add_cust">
+                                                            <input type="hidden" name="contact_customer_creation" class="contact_add_cust" value="">
+                                                            
                                                         </tr>
                                                         
                                                     </tbody>
@@ -1655,6 +1656,10 @@
         $(function() {
             
             var form = $('#edit_add_contact');
+
+            var customer = $('.edit_cc_id').val();
+
+            
             
             form.validate({
                 rules: {
@@ -1663,13 +1668,30 @@
                 messages: {
                     required: 'This field is required',
                 },
+
+               
                 errorPlacement: function(error, element) {} ,
                 submitHandler: function(currentForm) {
+
+                    //var formData = new FormData(currentForm);
+                   // formData.append("contact_customer_creation", customer);
+
+                 
+
+                   //var formData = new FormData(currentForm[0]); 
+                   //formData.append("contact_customer_creation", $('.edit_cc_id').val());
+
+                    
+
+                    
+
                     // Submit the form for the current tab
                     $.ajax({
                         url: "<?php echo base_url(); ?>Crm/CustomerCreation/AddSingleContact",
                         method: "POST",
                         data: $(currentForm).serialize(),
+                        //data: formData,
+                        
                         success: function(data) {
 
                             var responseData = JSON.parse(data);
@@ -1820,7 +1842,11 @@
 
             $('#EditAddContact').modal('show');
 
-            var contact_cust = $('.contact_cust').val();
+           /*var contact_cust = $('.contact_cust').val();
+
+            console.log(contact_cust);*/
+
+            var contact_cust = $('.edit_cc_id').val();
 
             $('.contact_add_cust').val(contact_cust);
 
