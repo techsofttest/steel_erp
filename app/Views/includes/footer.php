@@ -190,7 +190,7 @@
 
         $(document).ready(function(){
             $('.datepicker').datepicker({
-                dateFormat: "dd-MM-yy", // Specify the date format as "dd-MM-yy"
+                dateFormat: "dd-M-yy", // Specify the date format as "dd-MM-yy"
                 changeMonth: true, 
                 changeYear: true, 
                 yearRange: "-20:+15"
@@ -199,7 +199,7 @@
                     // '$(this)' refers to '$("#datepicker")'
                 });
             $('body').on('focus',".datepicker", function(){
-                $(this).datepicker({ dateFormat: "dd-MM-yy" });
+                $(this).datepicker({ dateFormat: "dd-M-yy" });
                 $(this).attr("autocomplete", "off");
             })
         });
@@ -211,14 +211,16 @@
 
         $(document).ready(function(){
             $('.datepicker_ap').datepicker({
-                dateFormat: "dd-MM-yy", 
+                dateFormat: "dd-M-yy", 
                 changeMonth: true,
+                changeYear: true, 
+                yearRange: "0:+1",
                 minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
             }).on('change', function() {
                     $(this).valid();  
                 });
             $('body').on('focus',".datepicker_ap", function(){
-            $(this).datepicker({ dateFormat: "dd-MM-yy" });
+            $(this).datepicker({ dateFormat: "dd-M-yy" });
             $(this).attr("autocomplete", "off");
             })
         });

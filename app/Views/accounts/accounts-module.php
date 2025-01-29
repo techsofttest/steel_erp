@@ -39,6 +39,8 @@
                 
                 <!--tab menu section start--> 
 
+                <?php echo view('accounts/main_header');?>  
+
                 <?php echo view('accounts/sub_header');?>  
 
 				<!--tab menu section end-->			

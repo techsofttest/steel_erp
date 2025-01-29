@@ -1,6 +1,19 @@
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 
-<ul class="nav nav-pills nav-custom-outline nav-primary mb-3" role="tablist">
+<?php if($uri->getSegment(3)!="Reports") { ?>
+
+<div class="row">
+
+<div class="col-lg-12">
+  
+<div class="card">
+
+<div class="card-body">
+
+
+
+
+<ul class="nav nav-tabs nav-border-top nav-border-top-primary mb-3" role="tablist">
     <li class="nav-item waves-effect waves-light">
         <a class="nav-link <?php if($uri->getSegment(3)=="AccountHead") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/AccountHead" >Account Head</a>
     </li>
@@ -28,3 +41,14 @@
     <a class="nav-link <?php if($uri->getSegment(3)=="Reports") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/Reports/Ledger" >Reports</a>
     </li>
 </ul>
+
+
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+<?php } ?>

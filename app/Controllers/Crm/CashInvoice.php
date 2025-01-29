@@ -794,7 +794,9 @@ class CashInvoice extends BaseController
 
         $sales_return = $this->common_model->fetchWhere('crm_sales_return',array('sr_invoice'=>$cash_invoice->ci_reffer_no));
         
-        if(empty($sales_return))
+        $receipts = $this->common_model->fetchWhere('accounts_receipt_invoice_data',array('rid_invoice'=>$cash_invoice->ci_id,'rid_invoice_type' => 'cash_invoice'));
+
+        if(empty($sales_return) && empty($receipts))
         {
             $update_data = ['so_deliver_flag' => 0];
 
