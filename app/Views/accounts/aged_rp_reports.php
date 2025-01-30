@@ -117,14 +117,15 @@
 
 
 
-                                                                            <tr id="Account" style="display:none;">
+                                                                            <tr id="Account" style="display:none;" class="account_parent">
 
                                                                             <td>Account</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account">
+                                                                            <select class="form-control account_select2_common" name="filter_account">
 
+                                                                            <?php /*
                                                                             <option value="">Select Account</option>
                                                                             
                                                                             <?php foreach($accounts as $account){ ?>
@@ -132,6 +133,7 @@
                                                                             <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
 
                                                                             <?php } ?>
+                                                                            */ ?>
 
                                                                             </select>
 
@@ -365,6 +367,8 @@
                                             {
                                             $c_balance = 0 ;
                                             }
+
+                                            $c_balance = 0 ;
                                            
                                             ?>
 
@@ -387,8 +391,8 @@
     
                                                 <?php if($trn->debit_amount !="") { 
                                                 echo  format_currency($trn->debit_amount);
-                                                $total_debit = $total_debit-$trn->debit_amount;
-                                                $c_balance = $c_balance - $trn->debit_amount;
+                                                $total_debit = $total_debit+$trn->debit_amount;
+                                                //$c_balance = $c_balance - $trn->debit_amount;
                                                 } else {?>
                                                     ---
                                                 <?php } ?>
@@ -410,26 +414,20 @@
                                                 <td align="right">
     
                                                 <?php 
-                                                /*
-                                                if($trn->cheque==1)
+                                                if($trn->method=="1")
                                                 {
-    
-                                                    if($trn->credit_amount !="") { 
-                                                        echo  $trn->credit_amount; 
-                                                        $pdc_total = $pdc_total + $trn->credit_amount;
-                                                    }
-                                                    else if($trn->debit_amount !="")
-                                                    {
-                                                        echo  $trn->debit_amount;
-                                                        $pdc_total = $pdc_total + $trn->debit_amount;
-                                                    }
-                                                    else
-                                                    {
-                                                        echo "---";
-                                                    }
-    
+                                                
+                                                if($trn->debit_amount !="") { 
+                                                echo  format_currency($trn->debit_amount);
+                                                $pdc_total = $pdc_total+$trn->debit_amount;
                                                 }
-                                                */
+
+                                                if($trn->credit_amount !="") { 
+                                                echo  format_currency($trn->credit_amount); 
+                                                $pdc_total = $pdc_total+$trn->credit_amount;
+                                                }
+
+                                                }
                                                 ?>
     
     

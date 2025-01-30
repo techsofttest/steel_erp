@@ -435,7 +435,6 @@
                                                     <th class="text-end">Debit Amount</th>
                                                     <th class="text-end">Credit Amount</th>
                                                     <th class="text-end">Balance</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             
@@ -456,7 +455,6 @@
 
 
                                             <tr>
-                                          
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -464,7 +462,6 @@
                                             <td></td>
                                             <td class="text-end"><b>Opening Balance</b></td>
                                             <td class="text-end"><?= format_currency($balance); ?></td>
-
                                             </tr>
 
 
@@ -475,6 +472,7 @@
                                             $year_change=false;
                                             $counter=0;
                                             $account_heading = "";
+
                                             foreach($vouchers as $vc){ 
                                                 
                                             if( ($year!="" && $year!=date('Y',strtotime($vc->transaction_date))) && $counter!=0)

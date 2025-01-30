@@ -1006,7 +1006,7 @@ class Reports extends BaseController
                 
 
 
-                    if($vc->debit_amount !="") { 
+                    if($vc->debit_amount !="") {     
 
                     $debit_am = format_currency($vc->debit_amount);
 
@@ -1055,6 +1055,17 @@ class Reports extends BaseController
                    
                     
                 }
+
+
+                $pdf_data .="<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>";
+
     
                 if(empty($start_date) && empty($end_date))
                 {
@@ -1063,12 +1074,12 @@ class Reports extends BaseController
                 }
                 else
                 {
-                   $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+                   $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date));
                 }
     
                 
     
-                $title = "General Ledger Report ".date('d-M-Y')."";
+                $title = "Aged RP Report ".date('d-M-Y')."";
 
 
                 $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -1274,6 +1285,82 @@ class Reports extends BaseController
     
             
                 ';
+
+
+                $pdc_data = '<table width="100%" style="margin-top:5px;">';
+                
+                $pdc_data .="
+                <tr>
+                <td colspan='6' align='center'>
+                Post date cheque details
+                </td>
+                </tr>
+                ";
+
+
+                $pdc_data .='
+                <tr>
+                <td style="border-top: 2px solid">Receipt No</td>
+                <td style="border-top: 2px solid">Receipt Date</td>
+                <td style="border-top: 2px solid">Cheque No</td>
+                <td style="border-top: 2px solid">Cheque Date</td>
+                <td style="border-top: 2px solid">Bank</td>
+                <td style="border-top: 2px solid">Amount</td>
+                </tr>
+                ';
+
+
+                //Total 
+
+                $pdc_data .='
+                <tr>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"><b>10,000</b></td>
+                </tr>
+                ';
+
+
+                $pdc_data .= "</table>";
+
+
+                //Buckets
+                $pdc_data .= '<table width="100%" style="border:3px solid;margin-top:5px;border-collapse:collapse;">';
+
+                $pdc_data .="
+                
+                <tr>
+                
+                <td width='12.5%' style='border:3px solid;'>0-30 Days</td>
+
+                <td width='12.5%' style='border:3px solid;'></td>
+
+                <td width='12.5%' style='border:3px solid;'>31-60 Days</td>
+
+                <td width='12.5%' style='border:3px solid;'></td>
+
+                <td width='12.5%' style='border:3px solid;'>61-90 Days</td>
+
+                <td width='12.5%' style='border:3px solid;'></td>
+
+                <td width='12.5%' style='border:3px solid;'>Above 90 Days</td>
+
+                <td width='12.5%' style='border:3px solid;'></td>
+
+                </tr>
+
+                ";
+
+
+                $pdc_data .= "</table>";
+
+
+                $html .= $pdc_data;
+
+                //echo $html; exit;
             
                 //$footer = '';
             
