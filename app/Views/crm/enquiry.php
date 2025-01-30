@@ -1,19 +1,27 @@
 <style>
     span.select2.customer_width {
         /*width: 80% !important;*/
+
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        width: 97% !important;
+        height: 40px !important;
+        background: whitesmoke;
+        padding: 0px;
+        display: block;
     } 
     .contact_more_modal
     {
         position: absolute;
-        right: 25px;
-        top: -16px;
-        font-size: 25px;
+        right: 4px;
+        top: -8px;
+        font-size: 24px;
         color: #ff0000b5;
-       
+        
     }
     .cust_more_modal
     {
-        font-size: 25px;
+        font-size: 30px;
         color: #ff0000b5;
         position: absolute;
         right: 25px;
@@ -22,13 +30,18 @@
     span.select2.select_width
     {
         width: 94% !important;
+        background: #f5f5f5;
+        border: none;
+        height: 37px !important;
     }
     .prod_add_more
     {
-        position: absolute;
+        /*position: absolute;
         left: 532px;
         font-size: 25px;
+        color: #ff0000b5;*/
         color: #ff0000b5;
+        font-size: 20px;
     }
     .zero_padding
     {
@@ -42,6 +55,68 @@
 
         color: black;
     }
+
+    .Dashboard-form .form-control {
+        
+        border: 1px solid #434343;
+        margin-bottom: 0px;
+        background: whitesmoke;
+        height: 40px;
+    }
+    .margin_zero{
+
+        margin-bottom: 0px !important;
+    }
+    .Dashboard-form .form-select {
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: whitesmoke;
+        height: 40px;
+        width: 97%;
+       
+    }
+    .table{
+
+        border: 1px solid #0000003b !important;  
+    }
+    .content_table thead{
+
+        background: #BDD7EE;
+        color: black;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .content_table{
+
+        padding: 0px 25px;
+        padding-top: 40px;
+    }
+
+    .content_table td{
+      
+        border: 1px solid black;
+    }
+
+    .content_table .form-control {
+       
+        border: unset !important;
+
+    }
+
+    .justify-content-center {
+        justify-content: flex-end !important;
+        margin-right: 26px;
+    }
+
+    .once_form_submit{
+
+        background: #00AF50;
+        padding: 10px 32px;
+    }
+
+
 </style>
 
 <div class="tab-content text-muted">
@@ -71,7 +146,9 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row" style="padding: 0px 25px;">
+
+                                                   
                                                  
                                                     <div class="col-lg-6">
 
@@ -79,7 +156,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
@@ -100,7 +177,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
@@ -120,13 +197,13 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Customer Name</label>
+                                                                        <label for="basicInput" class="form-label">Customer Name <span class="add_more_icon contact_more_modal ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8 zero_padding">
+                                                                    <div class="col-col-md-9 col-lg-9 ">
                                                                         <select class="form-select ser_customer" name="enquiry_customer" id="customer_id" required>
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                
@@ -134,11 +211,11 @@
                                                                     </div>
 
 
-                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
+                                                                    <!--<div class="col-col-md-1 col-lg-1 zero_padding">
 
                                                                         <span class="add_more_icon cust_more_modal ri-add-box-fill"></span>
 
-                                                                    </div>
+                                                                    </div>-->
 
                                                                 </div> 
 
@@ -150,14 +227,14 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3 ">
-                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8 zero_padding">
-                                                                        <select class="form-select " name="enquiry_contact_person" id="contact_person_id"  required>
+                                                                    <div class="col-col-md-9 col-lg-9 ">
+                                                                        <select class="form-select "  name="enquiry_contact_person" id="contact_person_id"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
@@ -167,11 +244,7 @@
                                                                     </div>
 
 
-                                                                    <div class="col-col-md-1 col-lg-1 zero_padding">
-
-                                                                        <span class="add_more_icon contact_more_modal ri-add-box-fill"></span>
-                                                                    
-                                                                    </div>
+                                                                   
 
                                                                     
 
@@ -192,7 +265,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
@@ -218,14 +291,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Source</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_source" class="form-control" required>
+                                                                        <input type="text" name="enquiry_source" class="form-control input_length"   required>
                                                                     </div>
 
                                                                 </div> 
@@ -237,14 +310,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control time_frame_date" value="" required>
+                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control time_frame_date input_length" value=""   required>
                                                                     </div>
 
                                                                 </div> 
@@ -257,14 +330,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_project" class="form-control" required>
+                                                                        <input type="text" name="enquiry_project" class="form-control input_length"   required>
                                                                     </div>
 
                                                                 </div> 
@@ -288,17 +361,18 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
+                                                <div class="mt-4 content_table" >
                                                     <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
+                                                        <thead>
                                                             <tr>
                                                                 <td>Serial No.</td>
-                                                                <td>Product Description</td>
-                                                                <td></td>
+                                                                <td>Product Description<span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td>Unit</td>
                                                                 <td>Quantity</td>
                                                                 <td>Action</td>
                                                             </tr>
+                                                        </thead>    
+                                                        <tbody class="travelerinfo">
                                                             <tr class="prod_row">
                                                                 <td style="width: 10%;"class="si_no">1</td>
                                                                 <td style="width:40%">
@@ -308,7 +382,7 @@
                                                                         
                                                                     </select>
                                                                 </td>
-                                                                <td><span class="add_more_icon prod_add_more ri-add-box-fill"></span></td>
+                                                               
                                                                 <td><input type="text" name="pd_unit[0]" class="form-control" required></td>
                                                                 <td><input type="number" name="pd_quantity[0]" class="form-control" required></td>
                                                                 <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
@@ -1252,7 +1326,7 @@
 			    pp++;
                 j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td style='width: 28%;'><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><span class='add_more_icon prod_add_more ri-add-box-fill'></span></td><td><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td style='width: 28%;'><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/

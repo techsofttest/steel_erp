@@ -1546,7 +1546,7 @@ class SalesOrder extends BaseController
                 $disc = number_format($prod_det->spd_discount, 2);
 
 
-                $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1706,7 +1706,7 @@ class SalesOrder extends BaseController
         
         <td >Attention</td>
         
-         <td >Mr. '.$sales_order->contact_person.' - Manager, Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
+         <td >'.$sales_order->contact_person.' - Manager, Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
         
         </tr>
     
@@ -1759,14 +1759,14 @@ class SalesOrder extends BaseController
 
                 <tr>
     
-                    <td>Notes</td>
+                    <td></td>
                 
                     <td></td>
                     
                     
-                     <td style="font-weight: bold;width: 17%;" >Net Invoice Value</td>
+                    <td style="font-weight: bold;width: 17%;" >Net Invoice Value</td>
         
-                    <td>'.$sales_order->so_amount_total.'</td>
+                    <td>'.format_currency($sales_order->so_amount_total).'</td>
                 
                 </tr>
 

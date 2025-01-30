@@ -245,10 +245,10 @@ class SalesQuotAnalysisReport extends BaseController
                 $new_date = date('d-M-Y', strtotime($quot_data->qd_date));
             
                 $pdf_data .= "  <tr>
-                                    <td style='border-top: 2px solid'  class='text-center' width='40px'>{$new_date}</td>
-                                    <td style='border-top: 2px solid'  class='text-center' width='100px'>{$quot_data->qd_reffer_no}</td>
-                                    <td style='border-top: 2px solid' width='200px'>{$quot_data->cc_customer_name}</td>
-                                    <td style='border-top: 2px solid' width='103px'>{$quot_data->se_name}</td>
+                                    <td style='border-top: 2px solid'  class='text-center' width='50px'>{$new_date}</td>
+                                    <td style='border-top: 2px solid'  class='text-center' width='50px'>{$quot_data->qd_reffer_no}</td>
+                                    <td style='border-top: 2px solid' width='50px'>{$quot_data->cc_customer_name}</td>
+                                    <td style='border-top: 2px solid' width='50px'>{$quot_data->se_name}</td>
 
                 
                                     <td colspan='8'  class='p-0' style='border-top: 2px solid'>
@@ -260,11 +260,11 @@ class SalesQuotAnalysisReport extends BaseController
                                                     $quot_amount = format_currency($quot_prod->qpd_amount);
 
                                                     $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                    <td class='rotate' width='300px'>{$quot_prod->product_details}</td>
-                                                                    <td class='rotate' width='80px' align='center'>{$quot_prod->qpd_quantity}</td>
-                                                                    <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
-                                                                    <td class='rotate '  width='80px' align='center'>{$quot_prod->qpd_discount}</td>
-                                                                    <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
+                                                                    <td class='rotate' width='50px'>{$quot_prod->product_details}</td>
+                                                                    <td class='rotate' width='50px' align='center'>{$quot_prod->qpd_quantity}</td>
+                                                                    <td class='rotate'  width='50px' align='right'>{$quot_rate}</td>
+                                                                    <td class='rotate '  width='50px' align='center'>{$quot_prod->qpd_discount}</td>
+                                                                    <td class='rotate' width='50px' align='right'>{$quot_amount}</td>";
 
                                                                     $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
 
@@ -280,8 +280,8 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
                                                                                                             
-                                                                                                        <td class='rotate' width='100px' align='center'>{$sal_ord->so_reffer_no}</td>
-                                                                                                        <td class='rotate' width='90px' align='right'>{$sales_amount}</td>";
+                                                                                                        <td class='rotate' width='50px' align='center'>{$sal_ord->so_reffer_no}</td>
+                                                                                                        <td class='rotate' width='50px' align='right'>{$sales_amount}</td>";
 
                                                                                                         $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount; 
 
@@ -291,7 +291,7 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                                         $diff = format_currency($diff);
 
-                                                                                                        $pdf_data .="<td class='rotate' width='90px' align='right'>{$diff}</td>";
+                                                                                                        $pdf_data .="<td class='rotate' width='50px' align='right'>{$diff}</td>";
                                                                                                         
                                                                                         
                                                                                         $pdf_data .= "</tr>";
@@ -301,9 +301,9 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
 
-                                                                                                          <td class='rotate' width='80px'></td>
-                                                                                                          <td class='rotate' width='90px'></td>
-                                                                                                          <td class='rotate' width='90px' align='right'>{$quot_prod->qpd_amount}</td>
+                                                                                                          <td class='rotate' width='50px'></td>
+                                                                                                          <td class='rotate' width='50px'></td>
+                                                                                                          <td class='rotate' width='50px' align='right'>{$quot_prod->qpd_amount}</td>
                                                                                         
                                                                                         </tr>";
 
@@ -419,6 +419,9 @@ class SalesQuotAnalysisReport extends BaseController
             {
                 color:red;
             }
+
+            
+            
             
             </style>
         
@@ -456,18 +459,18 @@ class SalesQuotAnalysisReport extends BaseController
 
            
         
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table style="font-size: 20px;"  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
             
         
             <tr>
             
-            <th align="center" width="40px" style="border-top: 2px solid">Date</th>
+            <th align="center" width="50px" style="border-top: 2px solid">Date</th>
         
-            <th align="center" width="100px" style="border-top: 2px solid">Quotation Ref.</th>
+            <th align="center" width="50px" style="border-top: 2px solid">Quotation Ref.</th>
         
-            <th align="center" width="200px" style="border-top: 2px solid">Customer</th>
+            <th align="center" width="50px" style="border-top: 2px solid">Customer</th>
         
-            <th align="center" width="103px" style="border-top: 2px solid">Sales Executive</th>
+            <th align="center" width="50px" style="border-top: 2px solid">Sales Executive</th>
 
             <th colspan="8"  class="p-0" style="border-top: 2px solid">
 
@@ -475,15 +478,15 @@ class SalesQuotAnalysisReport extends BaseController
                     
                     <tr>
 
-                        <th align="center"  width="300px">Product</th>
+                        <th align="center"  width="50px">Product</th>
 
-                        <th align="center" width="80px">Quantity</th>
+                        <th align="center" width="50px">Qty</th>
 
-                        <th align="center" width="80px">Rate</th>
+                        <th align="center" width="50px">Rate</th>
 
-                        <th align="center" width="80px">Discount</th>
+                        <th align="center" width="50px">Discount</th>
 
-                        <th align="center" width="100px">Amount</th>
+                        <th align="center" width="50px">Amount</th>
 
                         <th colspan="3"  class="p-0">
                             
@@ -491,11 +494,11 @@ class SalesQuotAnalysisReport extends BaseController
 
                                 <tr>
 
-                                   <th align="center" width="100px">Sales Order</th>
+                                   <th align="center" width="50px">Sales Order</th>
 
-                                <th align="center" width="90px">Amount</th>
+                                <th align="center" width="50px">Amount</th>
 
-                                <th align="center" width="80px">Difference</th>
+                                <th align="center" width="50px">Difference</th>
             
                                 
                                 </tr>
@@ -522,27 +525,27 @@ class SalesQuotAnalysisReport extends BaseController
 
             <tr>
 
-                <td style="border-top: 2px solid;" width="40px">Total</td>
-                <td style="border-top: 2px solid;" width="100px"></td>
-                <td style="border-top: 2px solid;" width="200px"></td>
-                <td style="border-top: 2px solid;" width="103px"></td>
+                <td style="border-top: 2px solid;" width="50px">Total</td>
+                <td style="border-top: 2px solid;" width="50px"></td>
+                <td style="border-top: 2px solid;" width="50px"></td>
+                <td style="border-top: 2px solid;" width="50px"></td>
                 <td colspan="8"  class="p-0" style="border-top: 2px solid">
                     <table>
                        <tr style="background: unset;border-bottom: hidden !important;">
 
-                            <td  width="300px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px" ></td>
-                            <td  width="100px" align="right"><b>'.$quot_prod_total.'</b></td>
+                            <td  width="50px"></td>
+                            <td  width="50px"></td>
+                            <td  width="50px"></td>
+                            <td  width="50px" ></td>
+                            <td  width="50px" align="right"><b>'.$quot_prod_total.'</b></td>
 
                             <td colspan="3"  class="p-0">
                                 <table>
                                     <tr style="background: unset;border-bottom: hidden !important;">
 
-                                        <td  width="100px" ></td>
-                                        <td  width="90px" align="right"><b>'.$sales_prod_total.'</b></td>
-                                        <td  width="80px" align="right"><b>'.$final_diff_total.'</b></td>
+                                        <td  width="50px" ></td>
+                                        <td  width="50px" align="right"><b>'.$sales_prod_total.'</b></td>
+                                        <td  width="50px" align="right"><b>'.$final_diff_total.'</b></td>
                                     
                                     </tr>
                                 
@@ -562,7 +565,7 @@ class SalesQuotAnalysisReport extends BaseController
 
         
             ';
-           // echo $html; exit();
+            //echo $html; exit();
         
             $mpdf->WriteHTML($html);
 

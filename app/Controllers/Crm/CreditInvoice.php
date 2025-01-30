@@ -1395,13 +1395,13 @@ class CreditInvoice extends BaseController
                     $disc = number_format($prod_det->ipd_discount, 2);
 
 
-                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->ipd_quantity.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->ipd_quantity.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->ipd_unit.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->ipd_unit.'</td>';
 
                     $pdf_data .= '<td align="right">'.$rate.'</td>';
 
@@ -1422,6 +1422,12 @@ class CreditInvoice extends BaseController
                         'table' => 'crm_sales_orders',
                         'pk'    => 'so_id',
                         'fk'    => 'cci_sales_order',
+                    ),
+
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'cci_contact_person',
                     ),
 
                    
@@ -1450,28 +1456,29 @@ class CreditInvoice extends BaseController
                 $html ='
             
                 <style>
-                th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 12px;
-                }
-                p{
-                    
-                    font-size: 10px;
-    
-                }
-                .dec_width
-                {
-                    width:30%
-                }
-                .disc_color
-                {
-                    color:red;
-                }
+            th, td {
+                padding-top: 5px;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
                 
-                </style>
+                font-size: 12px;
+                margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
             
                
                 <table><tr><td></td></tr></table>
@@ -1483,7 +1490,7 @@ class CreditInvoice extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:60px;">
                 
                 <tr width="100%">
                 <td width="10%"></td>
@@ -1529,7 +1536,7 @@ class CreditInvoice extends BaseController
             
             <td >Attention</td>
             
-            <td >Mr. Johnson - Manager, Mobile: -, Email: - </td>
+            <td > '.$credit_invoice->contact_person.' - Manager, Mobile:-'.$credit_invoice->contact_mobile.', Email: - '.$credit_invoice->contact_email.'</td>
             
             </tr>
         
@@ -1543,13 +1550,13 @@ class CreditInvoice extends BaseController
             
                 <tr>
                 
-                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:2px solid;">Item No</th>
                 
-                    <th align="left" style="border-bottom:2px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:2px solid;" width="40%">Description</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:2px solid;">Qty</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:2px solid;">Unit</th>
                 
                     <th align="center" style="border-bottom:2px solid;">Rate</th>
         
@@ -1569,16 +1576,14 @@ class CreditInvoice extends BaseController
             
             $footer = '
         
-                <table style="border-bottom:2px solid">
+                <table style="border-bottom:2px solid;width:100%">
                 
                     <tr>
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
                     
-                        <td>Gross Total</td>
-            
-                        <td>'.$credit_invoice->cci_total_amount.'</td>
+                        
                 
                     </tr>
     
@@ -1587,10 +1592,12 @@ class CreditInvoice extends BaseController
                         <td>Bank Details</td>
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-                       
-                        <td>Less. Special Discount</td>
+
+                        <td style="font-weight: bold;width: 18%;">Net Invoice Value</td>
             
-                        <td>-------</td>
+                        <td>'.format_currency($credit_invoice->cci_total_amount).'</td>
+                       
+                        
                     
                     </tr>
 
@@ -1612,11 +1619,9 @@ class CreditInvoice extends BaseController
         
                         <td>Amount in words</td>
                     
-                        <td>----------------------------------</td>
+                        <td style="width: 60%;">'.currency_to_words($credit_invoice->cci_total_amount).'</td>
             
-                        <td style="font-weight: bold;">Net Invoice Value</td>
-            
-                        <td>-----</td>
+                        
                     
                     </tr>
     
@@ -1630,11 +1635,11 @@ class CreditInvoice extends BaseController
 
                         <td style="width:15%">LPO Ref</td>
 
-                        <td style="width:30%">Waiting for PO</td>
+                        <td style="width:30%">'.$credit_invoice->cci_lpo_reff.'</td>
 
                        <td style="width:10%">Payment:</td>
 
-                        <td>Cash on delivery</td>
+                        <td>'.$credit_invoice->cci_payment_term.'</td>
                     
                     </tr>
 
@@ -1643,7 +1648,7 @@ class CreditInvoice extends BaseController
                         
                         <td style="width:15%"></td>
                         <td style="width:15%">Project:</td>
-                        <td style="width:30%">-</td>
+                        <td style="width:30%">'.$credit_invoice->cci_project.'</td>
                         <td style="width:10%">Invoice:</td>
                         <td>'.$credit_invoice->cci_reffer_no.'</td>
                     
@@ -1688,7 +1693,8 @@ class CreditInvoice extends BaseController
                 
                 </table>';
             
-                
+                //echo $html . $footer;
+
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);
                 $this->response->setHeader('Content-Type', 'application/pdf');
