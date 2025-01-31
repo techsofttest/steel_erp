@@ -724,6 +724,11 @@ color: green !important;
     border: 2px solid !important;
 }
 
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+
+    color: #444;
+}
+
 
 </style>
 

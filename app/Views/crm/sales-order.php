@@ -378,7 +378,7 @@ color: black !important;
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2">Amount in words</td>
+                                                                <td colspan="2"></td>
                                                                 <td colspan="3" class="sales_order_amount_in_word"></td>
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td>Total</td>
@@ -394,7 +394,8 @@ color: black !important;
                                                
 
                                                 <div class="row">
-                                                    <div class="col-lg-6">
+                                                    
+                                                    <!--<div class="col-lg-6">
                                                         
 
                                                         <div class="row row_align mb-4">
@@ -410,7 +411,7 @@ color: black !important;
 
 
                                                         
-                                                    </div>
+                                                    </div>--->
 
                                                     <div class="col-lg-6"></div>
                                                     <!--<div class="col-lg-6">
@@ -772,7 +773,7 @@ color: black !important;
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2">Amount in words</td>
+                                                                <td colspan="2"></td>
                                                                 <td colspan="3" class="sales_order_amount_in_word"></td>
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td>Total</td>
@@ -792,7 +793,7 @@ color: black !important;
                                                         
 
                                                       
-                                                        <div class="card-body edit_image_table"></div>
+                                                        <!--<div class="card-body edit_image_table"></div>--->
 
 
 

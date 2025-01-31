@@ -1663,10 +1663,10 @@ class DeliverNote extends BaseController
                 $product_details = $this->common_model->FetchWhereJoin('crm_delivery_product_details',array('dpd_delivery_id'=>$id),$joins1);
                    
                 $pdf_data = "";
-
+                 $k=1;
                 foreach($product_details as $prod_det)
                 {
-                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1675,6 +1675,8 @@ class DeliverNote extends BaseController
                     $pdf_data .= '<td align="center">'.$prod_det->dpd_order_qty.'</td>';
 
                     $pdf_data .= '<td align="center">'.$prod_det->dpd_current_qty.'</td>';
+
+                    $k++;
 
                 }
 
@@ -1760,15 +1762,15 @@ class DeliverNote extends BaseController
             
                 <tr width="100%">
                 <td width="10%"></td>
-                <td>Date : '.$date.'</td>
-                <td align="center">Delivery Note No : '.$delivery_note->dn_reffer_no.'</td>
+                <td width="20%">Date : '.$date.'</td>
+                <td align="center">'.$delivery_note->dn_reffer_no.'</td>
                 <td align="right"><h2>Delivery Note</h2></td>
             
                 </tr>
             
                 </table>
 
-            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
         
                 <tr>
                 
@@ -1802,7 +1804,7 @@ class DeliverNote extends BaseController
             
             <td >Attention</td>
             
-           <td >'.$delivery_note->contact_person.' - Manager, Mobile:-'.$delivery_note->contact_mobile.', Email: - '.$delivery_note->contact_email.'</td>
+           <td >'.$delivery_note->contact_person.' - '.$delivery_note->contact_designation.', Mobile:-'.$delivery_note->contact_mobile.', Email: - '.$delivery_note->contact_email.'</td>
             
             </tr>
         
@@ -1811,20 +1813,20 @@ class DeliverNote extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;">Item No</th>
                 
-                    <th align="center" style="border-bottom:2px solid;" width="60%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:1px solid;">Unit</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Qty Ordered</th>
+                    <th align="center" style="border-bottom:1px solid;">Qty Ordered</th>
         
-                    <th align="center" style="border-bottom:2px solid;">Delivery</th>
+                    <th align="center" style="border-bottom:1px solid;">Delivery</th>
         
                  
                 
@@ -1873,7 +1875,7 @@ class DeliverNote extends BaseController
                 </table>
     
     
-                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
     
                 <tr>
                 

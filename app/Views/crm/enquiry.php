@@ -117,7 +117,7 @@
     }
     thead td{
 
-        padding: 5px 0px !important;
+        padding: 1px 0px !important;
     }
 
 </style>

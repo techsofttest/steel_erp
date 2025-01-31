@@ -1546,7 +1546,7 @@ class SalesOrder extends BaseController
                 $disc = number_format($prod_det->spd_discount, 2);
 
 
-                $pdf_data .= '<tr><td align="center">'.$k++.'</td>';
+                $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1559,6 +1559,8 @@ class SalesOrder extends BaseController
                 $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
                 $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+
+                $k++;
             }
 
             $join =  array(
@@ -1711,7 +1713,7 @@ class SalesOrder extends BaseController
         
         <td >Attention</td>
         
-         <td >'.$sales_order->contact_person.' - Manager, Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
+         <td >'.$sales_order->contact_person.' - '.$sales_order->contact_designation.', Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
         
         </tr>
     

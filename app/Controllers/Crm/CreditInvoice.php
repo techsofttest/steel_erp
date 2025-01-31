@@ -1385,7 +1385,7 @@ class CreditInvoice extends BaseController
                     
                 
                 $pdf_data = "";
-
+                $k =1;
                 foreach($product_details as $prod_det)
                 {   
                     $rate = format_currency($prod_det->ipd_rate);
@@ -1395,7 +1395,7 @@ class CreditInvoice extends BaseController
                     $disc = number_format($prod_det->ipd_discount, 2);
 
 
-                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1408,6 +1408,8 @@ class CreditInvoice extends BaseController
                     $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
                     $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+
+                $k++;
                 }
 
                 $join =  array(
@@ -1493,16 +1495,16 @@ class CreditInvoice extends BaseController
                 <table width="100%" style="margin-top:60px;">
                 
                 <tr width="100%">
-                <td width="10%"></td>
-                <td>Date : '.$date.'</td>
-                <td>Credit Note No : '.$credit_invoice->cci_reffer_no.'</td>
+                <td width="9%"></td>
+                <td >Date : '.$date.'</td>
+                <td>'.$credit_invoice->cci_reffer_no.'</td>
                 <td align="right"><h2>Credit Note</h2></td>
             
                 </tr>
             
                 </table>
 
-            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
         
                 <tr>
                 
@@ -1536,7 +1538,7 @@ class CreditInvoice extends BaseController
             
             <td >Attention</td>
             
-            <td > '.$credit_invoice->contact_person.' - Manager, Mobile:-'.$credit_invoice->contact_mobile.', Email: - '.$credit_invoice->contact_email.'</td>
+            <td > '.$credit_invoice->contact_person.' - '.$credit_invoice->contact_designation.', Mobile:-'.$credit_invoice->contact_mobile.', Email: - '.$credit_invoice->contact_email.'</td>
             
             </tr>
         
@@ -1545,24 +1547,24 @@ class CreditInvoice extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;">Item No</th>
                 
-                    <th align="center" style="border-bottom:2px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="40%">Description</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:1px solid;">Unit</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Rate</th>
+                    <th align="center" style="border-bottom:1px solid;">Rate</th>
         
-                    <th align="center" style="border-bottom:2px solid;">Disc%</th>
+                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
         
-                    <th align="center" style="border-bottom:2px solid;">Amount</th>
+                    <th align="center" style="border-bottom:1px solid;">Amount</th>
         
                 
                 </tr>
@@ -1576,12 +1578,16 @@ class CreditInvoice extends BaseController
             
             $footer = '
         
-                <table style="border-bottom:2px solid;width:100%">
+                <table style="border-bottom:1px solid;width:100%">
                 
                     <tr>
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
+
+                        <td style="font-weight: bold;width: 18%;">Net Order Value</td>
+            
+                        <td>'.format_currency($credit_invoice->cci_total_amount).'</td>
                     
                         
                 
@@ -1593,11 +1599,6 @@ class CreditInvoice extends BaseController
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
-                        <td style="font-weight: bold;width: 18%;">Net Invoice Value</td>
-            
-                        <td>'.format_currency($credit_invoice->cci_total_amount).'</td>
-                       
-                        
                     
                     </tr>
 
@@ -1668,7 +1669,7 @@ class CreditInvoice extends BaseController
                </table>
     
     
-                <table style="border-top:2px solid;">
+                <table style="border-top:1px solid;">
     
                 <tr>
                 

@@ -1228,7 +1228,7 @@ class ProFormaInvoice extends BaseController
                 $product_details = $this->common_model->FetchWhereJoin('crm_proforma_product',array('pp_proforma'=>$id),$joins1);
                    
                 $pdf_data = "";
-
+                 $k =1;
                 foreach($product_details as $prod_det)
                 {
                     $rate = format_currency($prod_det->pp_rate);
@@ -1238,7 +1238,7 @@ class ProFormaInvoice extends BaseController
                     $disc = number_format($prod_det->pp_discount, 2);
     
 
-                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1251,7 +1251,8 @@ class ProFormaInvoice extends BaseController
                     $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
                     $pdf_data .= '<td align="right">'.$amount.'</td>';
-
+                    
+                    $k++;
                 }
 
                 $join =  array(
@@ -1332,16 +1333,16 @@ class ProFormaInvoice extends BaseController
                 
             
                 <tr width="100%">
-                <td width="10%"></td>
+                <td width="9%"></td>
                 <td>Date : '.$date.'</td>
-                <td align="center">Invoice No : '.$proforma_invoice->pf_reffer_no.'</td>
+                <td align="center" width="20%">'.$proforma_invoice->pf_reffer_no.'</td>
                 <td align="right"><h2>Pro-forma Invoice</h2></td>
             
                 </tr>
             
                 </table>
 
-            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
         
                 <tr>
                 
@@ -1375,7 +1376,7 @@ class ProFormaInvoice extends BaseController
             
             <td >Attention</td>
             
-            <td >'.$proforma_invoice->contact_person.' - Manager, Mobile:-'.$proforma_invoice->contact_mobile.', Email: - '.$proforma_invoice->contact_email.'</td>
+            <td >'.$proforma_invoice->contact_person.' - '.$proforma_invoice->contact_designation.', Mobile:-'.$proforma_invoice->contact_mobile.', Email: - '.$proforma_invoice->contact_email.'</td>
             
             </tr>
         
@@ -1384,24 +1385,24 @@ class ProFormaInvoice extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:2px solid;" width="10%">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;" width="10%">Item No</th>
                 
-                    <th align="center" style="border-bottom:2px solid;" width="45%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="45%">Description</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:1px solid;">Unit</th>
         
-                    <th align="center" style="border-bottom:2px solid;" width="10%">Rate</th>
+                    <th align="center" style="border-bottom:1px solid;" width="10%">Rate</th>
 
-                    <th align="center" style="border-bottom:2px solid;">Disc%</th>
+                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
 
-                    <th align="center" style="border-bottom:2px solid;">Amount</th>
+                    <th align="center" style="border-bottom:1px solid;">Amount</th>
         
                  
                 
@@ -1422,6 +1423,10 @@ class ProFormaInvoice extends BaseController
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
+
+                        <td style="width: 20%;">Net Order Value:</td>
+            
+                        <td>'.format_currency($proforma_invoice->pf_total_amount).'</td>
                     
                        
                 
@@ -1433,9 +1438,10 @@ class ProFormaInvoice extends BaseController
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
-                         <td style="width: 20%;">Net Order Value:</td>
-            
-                        <td>'.format_currency($proforma_invoice->pf_total_amount).'</td>
+                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
+
+                        <td>'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                        
                        
                         
                     </tr>
@@ -1447,9 +1453,9 @@ class ProFormaInvoice extends BaseController
                     
                         <td>SWIFT : CBQAQAQA</td>
 
-                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
+                        
             
-                        <td>'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                        
                        
                        
                     
@@ -1460,7 +1466,7 @@ class ProFormaInvoice extends BaseController
         
                         <td style="width: 15%;">Amount in words</td>
                     
-                        <td style="width: 58%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
+                        <td style="width: 59%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
             
                         
                     
@@ -1469,7 +1475,7 @@ class ProFormaInvoice extends BaseController
                 </table>
     
     
-                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
                 
                 <tr>
                     <td style="width:12%">Invoice Terms</td>
@@ -1512,7 +1518,7 @@ class ProFormaInvoice extends BaseController
                 </table>
     
     
-                <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+                <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
     
                 <tr>
                 
@@ -1544,7 +1550,7 @@ class ProFormaInvoice extends BaseController
             
                 ';
                 
-                //echo $html . $footer;
+                //echo $html . $footer; exit();
                 
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);

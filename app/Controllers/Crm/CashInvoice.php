@@ -1875,7 +1875,7 @@ class CashInvoice extends BaseController
                     
                 
                 $pdf_data = "";
-
+                $k=1;
                 foreach($product_details as $prod_det)
                 {   
                     $rate = format_currency($prod_det->cipd_rate);
@@ -1885,7 +1885,7 @@ class CashInvoice extends BaseController
                     $disc = number_format($prod_det->cipd_discount, 2);
 
 
-                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1898,6 +1898,8 @@ class CashInvoice extends BaseController
                     $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
 
                     $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+
+                    $k++;
                 }
 
                 
@@ -1978,14 +1980,14 @@ class CashInvoice extends BaseController
                 <tr width="100%">
                 <td width="10%"></td>
                 <td>Date : '.$date.'</td>
-                <td>Invoice No : '.$cash_invoice->ci_reffer_no.'</td>
+                <td>'.$cash_invoice->ci_reffer_no.'</td>
                 <td align="right"><h2>Cash Invoice</h2></td>
             
                 </tr>
             
                 </table>
 
-            <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-top:1px solid;">
         
                 <tr>
                 
@@ -2019,7 +2021,7 @@ class CashInvoice extends BaseController
             
             <td >Attention</td>
             
-             <td >'.$cash_invoice->contact_person.' - Manager, Mobile:-'.$cash_invoice->contact_mobile.', Email: - '.$cash_invoice->contact_email.'</td>
+             <td >'.$cash_invoice->contact_person.' - '.$cash_invoice->contact_designation.', Mobile:-'.$cash_invoice->contact_mobile.', Email: - '.$cash_invoice->contact_email.'</td>
             
             </tr>
         
@@ -2028,24 +2030,24 @@ class CashInvoice extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;">Item No</th>
                 
-                    <th align="center" style="border-bottom:2px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="40%">Description</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:1px solid;">Unit</th>
                 
-                    <th align="center" style="border-bottom:2px solid;">Rate</th>
+                    <th align="center" style="border-bottom:1px solid;">Rate</th>
         
-                    <th align="center" style="border-bottom:2px solid;">Disc%</th>
+                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
         
-                    <th align="center" style="border-bottom:2px solid;">Amount</th>
+                    <th align="center" style="border-bottom:1px solid;">Amount</th>
         
                 
                 </tr>
@@ -2059,12 +2061,16 @@ class CashInvoice extends BaseController
             
             $footer = '
         
-                <table style="border-bottom:2px solid;width:100%">
+                <table style="border-bottom:1px solid;width:100%">
                 
                     <tr>
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
+
+                        <td style="font-weight: bold;width: 20%;">Net Order Value</td>
+            
+                        <td>'.format_currency($cash_invoice->ci_total_amount).'</td>
                     
                         
                     </tr>
@@ -2075,9 +2081,7 @@ class CashInvoice extends BaseController
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
 
-                        <td style="font-weight: bold;width: 20%;">Net Invoice Value</td>
-            
-                        <td>'.format_currency($cash_invoice->ci_total_amount).'</td>
+                        
                        
                        
                     
@@ -2099,7 +2103,7 @@ class CashInvoice extends BaseController
         
                         <td>Amount in words</td>
                     
-                        <td style="width: 50%;">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
+                        <td style="width: 55%;">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
             
                         
                     
@@ -2137,7 +2141,7 @@ class CashInvoice extends BaseController
                 </table>
     
     
-                <table style="border-top:2px solid;">
+                <table style="border-top:1px solid;">
     
                 <tr>
                 

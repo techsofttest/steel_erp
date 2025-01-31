@@ -1916,7 +1916,7 @@ class SalesQuotation extends BaseController
                 
             
             $pdf_data = "";
-
+             $k=1;
             foreach($product_details as $prod_det)
             {   
                 $rate = format_currency($prod_det->qpd_rate);
@@ -1925,7 +1925,7 @@ class SalesQuotation extends BaseController
 
                 $disc = number_format($prod_det->qpd_discount, 2);
 
-                $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                $pdf_data .= '<tr><td align="center">'.$k.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1938,6 +1938,8 @@ class SalesQuotation extends BaseController
                 $pdf_data .= '<td align="center" style="color: red;"><i>'.$disc.'</i></td>';
 
                 $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+
+                $k++;
             }
 
             $join =  array(
@@ -2046,16 +2048,16 @@ class SalesQuotation extends BaseController
             
         
             <tr width="100%">
-            <td width="10%"></td>
-            <td>Date : '.$date.'</td>
-            <td align="center">Quote No : '.$quotation_details->qd_reffer_no.'</td>
+            <td width="9%"></td>
+            <td width="20%">Date : '.$date.'</td>
+            <td align="center">'.$quotation_details->qd_reffer_no.'</td>
             <td align="right"><h2>Sales Quotation</h2></td>
         
             </tr>
         
             </table>
 
-        <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        <table  width="100%" style="margin-top:2px;border-top:1px solid;">
     
             <tr>
             
@@ -2089,7 +2091,7 @@ class SalesQuotation extends BaseController
         
         <td >Attention</td>
         
-        <td >'.$quotation_details->contact_person.' - Manager, Mobile:-'.$quotation_details->contact_mobile.', Email: - '.$quotation_details->contact_email.'</td>
+        <td >'.$quotation_details->contact_person.' - '.$quotation_details->contact_designation.', Mobile:-'.$quotation_details->contact_mobile.', Email: - '.$quotation_details->contact_email.'</td>
         
         </tr>
     
@@ -2098,24 +2100,24 @@ class SalesQuotation extends BaseController
 
            
         
-        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
             
         
             <tr>
             
-                <th align="center" style="border-bottom:2px solid;" width="10%">Item No</th>
+                <th align="center" style="border-bottom:1px solid;" width="10%">Item No</th>
             
-                <th align="center" style="border-bottom:2px solid;" width="45%">Description</th>
+                <th align="center" style="border-bottom:1px solid;" width="45%">Description</th>
             
-                <th align="center" style="border-bottom:2px solid;">Qty</th>
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
             
-                <th align="center" style="border-bottom:2px solid;">Unit</th>
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
             
-                <th align="center" style="border-bottom:2px solid;"width="10%">Rate</th>
+                <th align="center" style="border-bottom:1px solid;"width="10%">Rate</th>
     
-                <th align="center" style="border-bottom:2px solid;">Disc%</th>
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
     
-                <th align="center" style="border-bottom:2px solid;">Amount</th>
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
     
             
             </tr>
@@ -2134,7 +2136,11 @@ class SalesQuotation extends BaseController
                 <tr>
                     <td>Quote Validity</td>
 
-                    <td width="59%">'.$quotation_details->qd_validity.'</td>
+                    <td width="63%">'.$quotation_details->qd_validity.'</td>
+
+                    <td style="font-weight: bold;width: 15%;";>Net Order Value</td>
+        
+                    <td>'.format_currency($quotation_details->qd_sales_amount).'</td>
                 
                    
                 </tr>
@@ -2146,9 +2152,7 @@ class SalesQuotation extends BaseController
                 
                     <td>Qatar Riyals</td>
 
-                    <td style="font-weight: bold;width: 15%;";>Net Quote Value</td>
-        
-                    <td>'.format_currency($quotation_details->qd_sales_amount).'</td>
+                   
                    
                    
                 
@@ -2171,7 +2175,7 @@ class SalesQuotation extends BaseController
             </table>
 
 
-            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
                 <td style="width:12%">Quote Terms</td>
@@ -2202,7 +2206,7 @@ class SalesQuotation extends BaseController
             </table>
 
 
-            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
 
             <tr>
             
