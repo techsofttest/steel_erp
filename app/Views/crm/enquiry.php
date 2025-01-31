@@ -115,7 +115,10 @@
         background: #00AF50;
         padding: 10px 32px;
     }
+    thead td{
 
+        padding: 5px 0px !important;
+    }
 
 </style>
 

@@ -1536,7 +1536,7 @@ class SalesOrder extends BaseController
                 
             
             $pdf_data = "";
-
+             $k=1;
             foreach($product_details as $prod_det)
             {   
                 $rate = format_currency($prod_det->spd_rate);
@@ -1546,7 +1546,7 @@ class SalesOrder extends BaseController
                 $disc = number_format($prod_det->spd_discount, 2);
 
 
-                $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
+                $pdf_data .= '<tr><td align="center">'.$k++.'</td>';
 
                 $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
@@ -1614,6 +1614,11 @@ class SalesOrder extends BaseController
             $html ='
         
             <style>
+            tbody  td{
+            
+               padding-top: unset;
+
+            }
             th, td {
                 padding-top: 5px;
                
@@ -1663,16 +1668,16 @@ class SalesOrder extends BaseController
             
         
             <tr width="100%">
-            <td width="10%"></td>
-            <td>Date : '.$date.'</td>
-            <td align="center">Sales Order No : '.$sales_order->so_reffer_no.'</td>
+            <td width="9%"></td>
+            <td width="20%">Date : '.$date.'</td>
+            <td align="center">'.$sales_order->so_reffer_no.'</td>
             <td align="right"><h2>Sales Order</h2></td>
         
             </tr>
         
             </table>
 
-        <table  width="100%" style="margin-top:2px;border-top:2px solid;">
+        <table  width="100%" style="margin-top:2px;border-top:1px solid;">
     
             <tr>
             
@@ -1715,24 +1720,24 @@ class SalesOrder extends BaseController
 
            
         
-        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
             
         
             <tr>
             
-                <th align="center" style="border-bottom:2px solid;" width="10%">Item No</th>
+                <th align="center" style="border-bottom:1px solid;" width="10%">Item No</th>
             
-                <th align="center" style="border-bottom:2px solid;" width="45%">Description</th>
+                <th align="center" style="border-bottom:1px solid;" width="45%">Description</th>
             
-                <th align="center" style="border-bottom:2px solid;">Qty</th>
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
             
-                <th align="center" style="border-bottom:2px solid;">Unit</th>
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
             
-                <th align="center" style="border-bottom:2px solid;">Rate</th>
+                <th align="center" style="border-bottom:1px solid;">Rate</th>
     
-                <th align="center" style="border-bottom:2px solid;">Disc%</th>
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
     
-                <th align="center" style="border-bottom:2px solid;">Amount</th>
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
     
             
             </tr>
@@ -1753,6 +1758,10 @@ class SalesOrder extends BaseController
 
                     <td >'.$delivery_date.'</td>
 
+                    <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
+        
+                    <td>'.format_currency($sales_order->so_amount_total).'</td>
+
                     
                    
                 </tr>
@@ -1764,9 +1773,7 @@ class SalesOrder extends BaseController
                     <td></td>
                     
                     
-                    <td style="font-weight: bold;width: 17%;" >Net Invoice Value</td>
-        
-                    <td>'.format_currency($sales_order->so_amount_total).'</td>
+                    
                 
                 </tr>
 
@@ -1778,7 +1785,7 @@ class SalesOrder extends BaseController
     
                     <td>Amount in words</td>
                 
-                    <td style="width: 50%;">'.currency_to_words($sales_order->so_amount_total).'</td>
+                    <td style="width: 60%;">'.currency_to_words($sales_order->so_amount_total).'</td>
 
                    
                    
@@ -1788,7 +1795,7 @@ class SalesOrder extends BaseController
             </table>
 
 
-            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
                 <td style="width:12%">Order Terms</td>
@@ -1817,7 +1824,7 @@ class SalesOrder extends BaseController
             </table>
 
 
-            <table style="border-top:2px solid; border-collapse: collapse; width: 100%;">
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
 
             <tr>
             
@@ -1847,7 +1854,7 @@ class SalesOrder extends BaseController
         
             ';
         
-             //echo $html . $footer;
+            //echo $html . $footer; exit();
 
             $mpdf->WriteHTML($html);
             $mpdf->SetFooter($footer);
