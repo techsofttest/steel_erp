@@ -1,4 +1,9 @@
-<?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
+<?php  
+//$uri = new \CodeIgniter\HTTP\URI(current_url());
+
+$uri = service('request')->uri;
+
+?>
 
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
@@ -69,7 +74,7 @@
                                 
                                     <li class="nav-item">
 
-                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Accounts") {echo "active" ;} ?>" href="<?= base_url() ?>Accounts/AccountHead">
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(1)=="Accounts") {echo "active" ;} ?>" href="<?= base_url() ?>Accounts/AccountHead">
                                             <i class="ri-pie-chart-line"></i> <span data-key="t-accounts">Accounts Module</span>
                                         </a>
 
@@ -82,7 +87,7 @@
 
                                     <li class="nav-item">
                                     
-                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(1)=="Crm") {echo "active" ;} ?>" href="<?= base_url() ?>Crm/ProductHead" >
                                             <i class="ri-compasses-2-line"></i> <span data-key="t-crm">CRM Module</span>
                                         </a>
                         
@@ -109,7 +114,7 @@
 
                                     <li class="nav-item">
 
-                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(1)=="HR") {echo "active" ;} ?>" href="<?php echo base_url();?>HR/Employees" >
                                             <i class="ri-stack-line"></i> <span data-key="t-human">Human Resource</span>
                                         </a>
 
@@ -127,7 +132,7 @@
 
                                         <li class="nav-item">
 
-                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="User") {echo "active" ;} ?>" href="<?php echo base_url();?>User" >
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(1)=="User") {echo "active" ;} ?>" href="<?php echo base_url();?>User" >
                                             <i class="ri-user-3-fill"></i> <span data-key="t-human">User</span>
                                         </a>
 
@@ -156,7 +161,7 @@
                             ?>
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Companies") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Companies" >
+                                <a class="nav-link menu-link <?php if($uri->getSegment(1)=="Companies") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Companies" >
                                     <i class="ri-layout-grid-line"></i> <span data-key="t-company">Company</span>
                                 </a>
                                 
@@ -167,7 +172,7 @@
                             
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Executives") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Executives">
+                                <a class="nav-link menu-link <?php if($uri->getSegment(1)=="Executives") {echo "active" ;} ?>" href="<?php echo base_url(); ?>Executives">
                                     <i class="ri-file-list-3-line"></i> <span data-key="t-executives">Executives</span>
                                 </a>
                                 
