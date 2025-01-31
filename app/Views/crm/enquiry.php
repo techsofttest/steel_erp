@@ -120,6 +120,11 @@
         padding: 1px 0px !important;
     }
 
+    .table-bordered tr {
+   
+        text-align: center;
+    }
+
 </style>
 
 <div class="tab-content text-muted">
@@ -247,9 +252,6 @@
                                                                     </div>
 
 
-                                                                   
-
-                                                                    
 
                                                                 </div> 
 
