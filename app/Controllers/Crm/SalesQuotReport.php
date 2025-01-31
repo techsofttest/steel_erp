@@ -537,7 +537,7 @@ class SalesQuotReport extends BaseController
 
             <th align="left">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="left">Qty</th>
 
             <th align="center">Rate</th>
 

@@ -1238,13 +1238,13 @@ class ProFormaInvoice extends BaseController
                     $disc = number_format($prod_det->pp_discount, 2);
     
 
-                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->pp_quantity.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->pp_quantity.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->pp_unit.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->pp_unit.'</td>';
 
                     $pdf_data .= '<td align="right">'.$rate.'</td>';
 
@@ -1266,6 +1266,13 @@ class ProFormaInvoice extends BaseController
                         'pk'    => 'so_id',
                         'fk'    => 'pf_sales_order',
                     ),
+
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'pf_contact_person',
+                    ),
+
                 );
                 
 
@@ -1288,27 +1295,28 @@ class ProFormaInvoice extends BaseController
             
                 <style>
                 th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 12px;
-                }
-                p{
-                    
-                    font-size: 10px;
-    
-                }
-                .dec_width
-                {
-                    width:30%
-                }
-                .disc_color
-                {
-                    color:red;
-                }
+                padding-top: 5px;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
                 
-                </style>
+                font-size: 12px;
+               margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
             
                
                 <table><tr><td></td></tr></table>
@@ -1320,7 +1328,7 @@ class ProFormaInvoice extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:90px;">
                 
             
                 <tr width="100%">
@@ -1367,7 +1375,7 @@ class ProFormaInvoice extends BaseController
             
             <td >Attention</td>
             
-            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+            <td >'.$proforma_invoice->contact_person.' - Manager, Mobile:-'.$proforma_invoice->contact_mobile.', Email: - '.$proforma_invoice->contact_email.'</td>
             
             </tr>
         
@@ -1381,13 +1389,13 @@ class ProFormaInvoice extends BaseController
             
                 <tr>
                 
-                    <th align="left" style="border-bottom:2px solid;" width="10%">Item No</th>
+                    <th align="center" style="border-bottom:2px solid;" width="10%">Item No</th>
                 
-                    <th align="left" style="border-bottom:2px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:2px solid;" width="45%">Description</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:2px solid;">Qty</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:2px solid;">Unit</th>
         
                     <th align="center" style="border-bottom:2px solid;" width="10%">Rate</th>
 
@@ -1408,16 +1416,14 @@ class ProFormaInvoice extends BaseController
             
             $footer = '
         
-                <table>
+                <table style="width:100%">
                 
                     <tr>
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
                     
-                        <td>Gross Total</td>
-            
-                        <td>'.$proforma_invoice->pf_total_amount.'</td>
+                       
                 
                     </tr>
     
@@ -1426,11 +1432,12 @@ class ProFormaInvoice extends BaseController
                         <td>Bank Details</td>
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-                       
-                        <td>Less. Special Discount</td>
+
+                         <td style="width: 20%;">Net Order Value:</td>
             
-                        <td>-------</td>
-                    
+                        <td>'.format_currency($proforma_invoice->pf_total_amount).'</td>
+                       
+                        
                     </tr>
 
 
@@ -1439,23 +1446,23 @@ class ProFormaInvoice extends BaseController
                         <td></td>
                     
                         <td>SWIFT : CBQAQAQA</td>
-                       
-                        <td>Net Order Value:</td>
+
+                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
             
-                        <td>------</td>
+                        <td>'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                       
+                       
                     
                     </tr>
     
     
-                    <tr>
+                    <tr style="width:100%";>
         
-                        <td>Amount in words</td>
+                        <td style="width: 15%;">Amount in words</td>
                     
-                        <td>'.$proforma_invoice->pf_total_amount_in_words.'</td>
+                        <td style="width: 58%;">'.currency_to_words($proforma_invoice->pf_total_amount).'</td>
             
-                        <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
-            
-                        <td>-----</td>
+                        
                     
                     </tr>
     
@@ -1469,11 +1476,11 @@ class ProFormaInvoice extends BaseController
     
                     <td style="width:20%">LPO Ref:</td>
     
-                    <td style="width:30%">Waiting for PO</td>
+                    <td style="width:30%">'.$proforma_invoice->pf_lpo_ref.'</td>
     
                     <td style="width:10%">Payment:</td>
     
-                    <td style="width:">Cash on delivery</td>
+                    <td style="width:">'.$proforma_invoice->pf_payment_terms.'</td>
                     
                 </tr>
 
@@ -1483,11 +1490,9 @@ class ProFormaInvoice extends BaseController
     
                     <td style="width:20%">Project:</td>
     
-                    <td style="width:30%">-</td>
+                    <td style="width:30%">'.$proforma_invoice->pf_project.'</td>
     
-                    <td style="width:10%">Delivery: </td>
-    
-                    <td style="width:">: Ex- Factory</td>
+                    
                     
                 </tr>
     
@@ -1538,7 +1543,8 @@ class ProFormaInvoice extends BaseController
             
             
                 ';
-            
+                
+                //echo $html . $footer;
                 
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);

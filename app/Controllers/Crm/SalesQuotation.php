@@ -2089,7 +2089,7 @@ class SalesQuotation extends BaseController
         
         <td >Attention</td>
         
-        <td >Mr. '.$quotation_details->contact_person.' - Manager, Mobile:-'.$quotation_details->contact_mobile.', Email: - '.$quotation_details->contact_email.'</td>
+        <td >'.$quotation_details->contact_person.' - Manager, Mobile:-'.$quotation_details->contact_mobile.', Email: - '.$quotation_details->contact_email.'</td>
         
         </tr>
     

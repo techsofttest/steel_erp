@@ -1885,13 +1885,13 @@ class CashInvoice extends BaseController
                     $disc = number_format($prod_det->cipd_discount, 2);
 
 
-                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->cipd_qtn.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->cipd_qtn.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->cipd_unit.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->cipd_unit.'</td>';
 
                     $pdf_data .= '<td align="right">'.$rate.'</td>';
 
@@ -1899,6 +1899,8 @@ class CashInvoice extends BaseController
 
                     $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
                 }
+
+                
 
                 $join =  array(
 
@@ -1913,10 +1915,18 @@ class CashInvoice extends BaseController
                         'pk'    => 'so_id',
                         'fk'    => 'ci_sales_order',
                     ),
+
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'ci_contact_person',
+                    ),
                 );
                 
 
                 $cash_invoice = $this->common_model->SingleRowJoin('crm_cash_invoice',array('ci_id'=>$id),$join);
+
+                $date = date('d-M-Y',strtotime($cash_invoice->ci_date));
 
                 // Set the title of the PDF
                 $title = 'CIN - '.$cash_invoice->ci_reffer_no;
@@ -1928,28 +1938,29 @@ class CashInvoice extends BaseController
                 $html ='
             
                 <style>
-                th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 12px;
-                }
-                p{
-                    
-                    font-size: 10px;
-    
-                }
-                .dec_width
-                {
-                    width:30%
-                }
-                .disc_color
-                {
-                    color:red;
-                }
+            th, td {
+                padding-top: 5px;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
                 
-                </style>
+                font-size: 12px;
+                margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
             
                
                 <table><tr><td></td></tr></table>
@@ -1961,12 +1972,12 @@ class CashInvoice extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:70px;">
                 
             
                 <tr width="100%">
                 <td width="10%"></td>
-                <td>Date : '.$cash_invoice->ci_date.'</td>
+                <td>Date : '.$date.'</td>
                 <td>Invoice No : '.$cash_invoice->ci_reffer_no.'</td>
                 <td align="right"><h2>Cash Invoice</h2></td>
             
@@ -2008,7 +2019,7 @@ class CashInvoice extends BaseController
             
             <td >Attention</td>
             
-            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+             <td >'.$cash_invoice->contact_person.' - Manager, Mobile:-'.$cash_invoice->contact_mobile.', Email: - '.$cash_invoice->contact_email.'</td>
             
             </tr>
         
@@ -2022,13 +2033,13 @@ class CashInvoice extends BaseController
             
                 <tr>
                 
-                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:2px solid;">Item No</th>
                 
-                    <th align="left" style="border-bottom:2px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:2px solid;" width="40%">Description</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Qty</th>
+                    <th align="center" style="border-bottom:2px solid;">Qty</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:2px solid;">Unit</th>
                 
                     <th align="center" style="border-bottom:2px solid;">Rate</th>
         
@@ -2048,17 +2059,14 @@ class CashInvoice extends BaseController
             
             $footer = '
         
-                <table style="border-bottom:2px solid">
+                <table style="border-bottom:2px solid;width:100%">
                 
                     <tr>
                         <td></td>
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
                     
-                        <td>Gross Total</td>
-            
-                        <td>'.$cash_invoice->ci_total_amount.'</td>
-                
+                        
                     </tr>
     
                     <tr>
@@ -2066,10 +2074,12 @@ class CashInvoice extends BaseController
                         <td>Bank Details</td>
                     
                         <td>Commercial Bank of Qatar, Industrial Area Branch, Doha - Qatar</td>
-                       
-                        <td>Less. Special Discount</td>
+
+                        <td style="font-weight: bold;width: 20%;">Net Invoice Value</td>
             
-                        <td>-------</td>
+                        <td>'.format_currency($cash_invoice->ci_total_amount).'</td>
+                       
+                       
                     
                     </tr>
 
@@ -2080,22 +2090,18 @@ class CashInvoice extends BaseController
                     
                         <td>SWIFT : CBQAQAQA</td>
                        
-                        <td></td>
-            
-                        <td></td>
+                        
                     
                     </tr>
     
     
-                    <tr>
+                    <tr style="width:100%";>
         
                         <td>Amount in words</td>
                     
-                        <td>----------------------------------</td>
+                        <td style="width: 50%;">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
             
-                        <td style="font-weight: bold;">Net Invoice Value</td>
-            
-                        <td>-----</td>
+                        
                     
                     </tr>
     
@@ -2109,11 +2115,11 @@ class CashInvoice extends BaseController
     
                     <td style="width:20%">Project:</td>
     
-                    <td style="width:30%">-</td>
+                    <td style="width:30%">'.$cash_invoice->ci_project.'</td>
     
                     <td style="width:12%">Payment:</td>
     
-                    <td>Cash on delivery</td>
+                    <td>'.$cash_invoice->ci_payment_term.'</td>
                     
                 </tr>
     
@@ -2124,9 +2130,7 @@ class CashInvoice extends BaseController
     
                     <td style="width:30%">'.$cash_invoice->so_reffer_no.'</td>
     
-                    <td style="width:12%">Delivery</td>
-    
-                    <td >Ex-works</td>
+                    
     
                 </tr>
                 
@@ -2165,7 +2169,8 @@ class CashInvoice extends BaseController
             
                 ';
             
-                
+                //echo $html . $footer;
+
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);
                 $this->response->setHeader('Content-Type', 'application/pdf');

@@ -1666,11 +1666,11 @@ class DeliverNote extends BaseController
 
                 foreach($product_details as $prod_det)
                 {
-                    $pdf_data .= '<tr><td align="left">'.$prod_det->product_code.'</td>';
+                    $pdf_data .= '<tr><td align="center">'.$prod_det->product_code.'</td>';
 
                     $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
 
-                    $pdf_data .= '<td align="left">'.$prod_det->dpd_unit.'</td>';
+                    $pdf_data .= '<td align="center">'.$prod_det->dpd_unit.'</td>';
 
                     $pdf_data .= '<td align="center">'.$prod_det->dpd_order_qty.'</td>';
 
@@ -1690,6 +1690,13 @@ class DeliverNote extends BaseController
                         'pk'    => 'so_id',
                         'fk'    => 'dn_sales_order_num',
                     ),
+
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'dn_conact_person',
+                    ),
+    
                 );
                 
 
@@ -1714,28 +1721,29 @@ class DeliverNote extends BaseController
                 $html ='
             
                 <style>
-                th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 12px;
-                }
-                p{
-                    
-                    font-size: 10px;
-    
-                }
-                .dec_width
-                {
-                    width:30%
-                }
-                .disc_color
-                {
-                    color:red;
-                }
+            th, td {
+                padding-top: 5px;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
                 
-                </style>
+                font-size: 12px;
+                margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
             
                
                 <table><tr><td></td></tr></table>
@@ -1747,7 +1755,7 @@ class DeliverNote extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:10px;">
+                <table width="100%" style="margin-top:100px;">
                 
             
                 <tr width="100%">
@@ -1794,7 +1802,7 @@ class DeliverNote extends BaseController
             
             <td >Attention</td>
             
-            <td >Mr. Johnson - Manager, Mobile: -, Email: -</td>
+           <td >'.$delivery_note->contact_person.' - Manager, Mobile:-'.$delivery_note->contact_mobile.', Email: - '.$delivery_note->contact_email.'</td>
             
             </tr>
         
@@ -1808,11 +1816,11 @@ class DeliverNote extends BaseController
             
                 <tr>
                 
-                    <th align="left" style="border-bottom:2px solid;">Item No</th>
+                    <th align="center" style="border-bottom:2px solid;">Item No</th>
                 
                     <th align="center" style="border-bottom:2px solid;" width="60%">Description</th>
                 
-                    <th align="left" style="border-bottom:2px solid;">Unit</th>
+                    <th align="center" style="border-bottom:2px solid;">Unit</th>
                 
                     <th align="center" style="border-bottom:2px solid;">Qty Ordered</th>
         
@@ -1837,28 +1845,28 @@ class DeliverNote extends BaseController
                 <table>
                 
                 <tr>
-                    <td style="width:10%">Order Terms</td>
+                    <td >Order Terms</td>
     
                     <td style="width:15%">LPO Ref:</td>
     
-                    <td style="width:30%">Waiting for PO</td>
+                    <td style="width:30%">'.$delivery_note->dn_lpo_reference.'</td>
 
                     <td style="width:12%">Payment:</td>
     
-                    <td style="">Cash on delivery</td>
+                    <td >'.$delivery_note->dn_payment_terms.'</td>
                     
                 </tr>
     
                 <tr>
-                    <td style="width:10%"></td>
+                    <td ></td>
     
                     <td style="width:15%">Project:</td>
     
-                    <td style="width:30%">-</td>
+                    <td style="width:30%">'.$delivery_note->dn_project.'</td>
 
                     <td style="width:12%">Sales Order:</td>
     
-                    <td style="">'.$delivery_note->so_reffer_no.'</td>
+                    <td >'.$delivery_note->so_reffer_no.'</td>
     
                 </tr>
                 
@@ -1898,7 +1906,8 @@ class DeliverNote extends BaseController
             
                 ';
             
-                
+                //echo $html . $footer;
+
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);
                 $this->response->setHeader('Content-Type', 'application/pdf');

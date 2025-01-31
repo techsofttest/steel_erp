@@ -96,7 +96,7 @@
 
     <script>
        
-       document.addEventListener('contextmenu', event => event.preventDefault());
+       //document.addEventListener('contextmenu', event => event.preventDefault());
         //$('.add_model_btn').click(function(){
 
         function currency_format(orginalPrice){
