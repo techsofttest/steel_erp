@@ -102,7 +102,7 @@ $uri = service('request')->uri;
 
                                     <li class="nav-item">
 
-                                        <a class="nav-link menu-link <?php if($uri->getSegment(2)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
+                                        <a class="nav-link menu-link <?php if($uri->getSegment(1)=="Procurement") {echo "active" ;} ?>" href="<?php echo base_url();?>Procurement/Vendor" >
                                             <i class="ri-map-pin-line"></i> <span data-key="t-procurement">Procurement Module</span>
                                         </a>
 
