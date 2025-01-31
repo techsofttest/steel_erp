@@ -720,6 +720,10 @@ color: green !important;
 
 }
 
+.nav-border-top-primary .nav-link.active {
+    border: 2px solid !important;
+}
+
 
 </style>
 
