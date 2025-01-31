@@ -120,7 +120,7 @@
         padding: 1px 0px !important;
     }
 
-    .table-bordered tr {
+    .content_table tr {
    
         text-align: center;
     }
