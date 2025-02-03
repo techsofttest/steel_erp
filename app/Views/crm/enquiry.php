@@ -1398,6 +1398,7 @@
             }
         })
         }
+        
 
         /*function InitSelect2() {
             $(".ser_product_det:last").select2({

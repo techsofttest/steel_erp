@@ -221,6 +221,7 @@ class SalesOrder extends BaseController
 
             'so_added_date'             => date('Y-m-d'),
         ];
+        
 
         // Handle file upload
         /*if ($_FILES['so_file']['name'] !== '') 
