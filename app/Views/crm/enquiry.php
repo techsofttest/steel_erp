@@ -390,7 +390,7 @@
                                                                
                                                                 <td style="width: 8%;"><input type="text" name="pd_unit[0]" class="form-control" required></td>
                                                                 <td style="width: 8%;"><input type="number" name="pd_quantity[0]" class="form-control" required></td>
-                                                                <td style="width: 8%;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                                                <td style="width:10% ;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
@@ -1366,7 +1366,7 @@
 
 
        /*Product Drop Down*/
-       /*function InitSelect2(){
+       function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
             theme : "default form-control- select_width",
@@ -1397,9 +1397,9 @@
                 },              
             }
         })
-        }*/
+        }
 
-        function InitSelect2() {
+        /*function InitSelect2() {
             $(".ser_product_det:last").select2({
             placeholder: "Select Product",
             theme: "default form-control- select_width",
@@ -1446,7 +1446,7 @@
                 $this.attr('title', $this.text()); // Set title to full text
             });
         });
-}
+}*/
 
 
 

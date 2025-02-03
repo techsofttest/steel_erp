@@ -1381,7 +1381,6 @@ color: black !important;
                                                     <th>Reference</th>
                                                     <th>Date</th>
                                                     <th>Customer</th>
-                                                    <th>Quotation Ref</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -1770,7 +1769,6 @@ color: black !important;
                 { data: 'so_reffer_no' },
                 { data: 'so_date'},
                 { data: 'so_customer'},
-                { data: 'so_quotation_ref'},
                 { data: 'action'},
                 
                ],

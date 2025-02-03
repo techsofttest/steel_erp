@@ -55,6 +55,9 @@ class SalesOrder extends BaseController
                 'fk'    => 'so_quotation_ref',
             )
         );
+        
+        //$searchColumns = array('so_reffer_no','cc_customer_name');
+
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_sales_orders','so_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -80,14 +83,13 @@ class SalesOrder extends BaseController
             }
 
 
-           $data[] = array( 
-              "so_id"            =>$i,
-              'so_reffer_no'      => $reffer_num,
+            $data[] = array( 
+              "so_id"            => $i,
+              'so_reffer_no'     => $reffer_num,
               'so_date'          => date('d-M-Y',strtotime($record->so_date)),
               'so_customer'      => $record->cc_customer_name,
-              'so_quotation_ref' => $record->qd_reffer_no,
               "action"           => $action,
-           );
+            );
            $i++; 
         }
  
@@ -140,7 +142,7 @@ class SalesOrder extends BaseController
       
         $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
 
-        $data['total_count'] =count($data['result']);
+        $data['total_count'] = count($data['result']);
 
         return json_encode($data);
 
@@ -157,14 +159,10 @@ class SalesOrder extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
         
-        
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-     
         $data['contacts'] = $this->common_model->FetchAllOrder('crm_contact_details','contact_id','desc');
         
-        
-
         $data['content'] = view('crm/sales-order',$data);
 
         return view('crm/crm-module',$data);
@@ -225,13 +223,13 @@ class SalesOrder extends BaseController
         ];
 
         // Handle file upload
-        if ($_FILES['so_file']['name'] !== '') 
+        /*if ($_FILES['so_file']['name'] !== '') 
 		{   
            
 
             $soAttachFileName = $this->uploadFile('so_file','uploads/SalesOrder');
             $insert_data['so_file'] = $soAttachFileName;
-        }
+        }*/
 
         $sales_order_id = $this->common_model->InsertData('crm_sales_orders',$insert_data);
 
