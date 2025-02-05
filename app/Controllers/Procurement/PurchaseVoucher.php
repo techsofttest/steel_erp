@@ -738,12 +738,12 @@ class PurchaseVoucher extends BaseController
                 foreach($vendor_data as $vendor)
                 {
                     
-                    $data['vendor_name'] .= '<option value="' .$vendor->ven_id.'"'; 
-                    if ($vendor->ven_id  == $purchase_voucher->pv_vendor_name)
+                    $data['vendor_name'] .= '<option value="' .$vendor->cc_id.'"'; 
+                    if ($vendor->cc_id  == $purchase_voucher->pv_vendor_name)
                     {
                         $data['vendor_name'] .= ' selected'; 
                     }    
-                    $data['vendor_name'] .= '>' . $vendor->ven_name .'</option>';
+                    $data['vendor_name'] .= '>' . $vendor->cc_customer_name .'</option>';
                 
                 }
 

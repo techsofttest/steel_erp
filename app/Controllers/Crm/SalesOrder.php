@@ -431,8 +431,8 @@ class SalesOrder extends BaseController
             $prod_det->qpd_amount;
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
-            <td class="si_no2">'.$i.'</td>
-            <td style="width:40%">
+            <td class="si_no2 text-center" style="border">'.$i.'</td>
+            <td >
                 <select class="form-select droup_product add_prod" name="spd_product_details['.$si.']" required>';
                     
                     foreach($products as $prod){
@@ -449,7 +449,7 @@ class SalesOrder extends BaseController
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
             <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">
-            <td class="row_remove remove-btnpp" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i>Remove</td>
+            <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i></td>
             </tr>'; 
             $i++;
             $si++; 
@@ -966,14 +966,14 @@ class SalesOrder extends BaseController
             
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove edit_product_row" id="'.$prod_det->spd_id.'">
-            <td class="delete_sino">'.$i.'</td>
-            <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
-            <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_quantity).'" class="form-control"  readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_rate).'"  class="form-control" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_discount).'" class="form-control" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_product_amount" readonly></td>
-            <td style="width:15%">
+            <td class="delete_sino text-center" style="padding: 10px 10px;">'.$i.'</td>
+            <td ><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+            <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_quantity).'" class="form-control text-center"  readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_rate).'"  class="form-control text-end" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_discount).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_product_amount text-end" readonly></td>
+            <td style="width:15%;padding: 10px 10px;">
                 <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 		        <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->spd_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
@@ -1112,7 +1112,7 @@ class SalesOrder extends BaseController
            
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
-            <td class="si_no2">'.$i.'</td>
+            <td class="si_no2 text-center" style="padding-top: 10px;">'.$i.'</td>
             <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="spd_quantity[]" value="'.format_currency($prod_det->spd_quantity).'" class="form-control qtn_clz_id text-center"  readonly></td>
@@ -1299,7 +1299,7 @@ class SalesOrder extends BaseController
         $data['prod_details'] ="";
         
             $data['prod_details'] .='<tr class="edit_prod_row">
-            <td>1</td>
+           
            
             <td style="width:34%"><select class="form-select droup_product" name="spd_product_details	" required>';
                     
@@ -1311,11 +1311,11 @@ class SalesOrder extends BaseController
 						
             $data['prod_details'] .='</select></td>
 
-            <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control " required></td>
-            <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty" required></td>
-            <td> <input type="text" name="spd_rate" value="'.$prod_det->spd_rate.'" class="form-control edit_prod_rate" required></td>
-            <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount" required></td>
-            <td> <input type="text" name="spd_amount" value="'.$prod_det->spd_amount.'" class="form-control edit_prod_amount" readonly></td>
+            <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
+            <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
+            <td> <input type="text" name="spd_rate" value="'.$prod_det->spd_rate.'" class="form-control edit_prod_rate text-end" required></td>
+            <td> <input type="text" name="spd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->spd_discount.'" class="form-control edit_prod_discount text-center" required></td>
+            <td> <input type="text" name="spd_amount" value="'.$prod_det->spd_amount.'" class="form-control edit_prod_amount text-end" readonly></td>
            <input type="hidden" name="spd_id" class="edit_prod_id" value="'.$prod_det->spd_id.'">
            </tr>'; 
 

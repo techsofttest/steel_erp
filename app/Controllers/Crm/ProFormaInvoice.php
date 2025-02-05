@@ -65,7 +65,7 @@ class ProFormaInvoice extends BaseController
             
             $action = '<a  href="javascript:void(0)" data-id="'.$record->pf_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->pf_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
-            <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
+            <a href="javascript:void(0)" target="_blank" data-id="'.$record->pf_id.'" class="print_color" title="Print"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->pf_id.'"   data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
             
             
@@ -638,7 +638,7 @@ class ProFormaInvoice extends BaseController
               
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
-                                            <td class="si_no">'.$i.'</td>
+                                            <td class="si_no text-center">'.$i.'</td>
                                             <td style="width:40%">
                                                 <select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
                                                 
@@ -651,12 +651,12 @@ class ProFormaInvoice extends BaseController
 
                    $data['sales_order_contact'] .=  '</select>
                                             </td>
-                                            <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id" required></td>
-                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id" required></td>
-                                            <td><input type="number" name="pp_rate['.$j.']" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id" required></td>
-                                            <td><input type="number" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id" required></td>
-                                            <td><input type="number" name="pp_amount['.$j.']" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id" readonly></td>
-                                            <td class="row_remove remove-btnpp" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i>Remove</td>
+                                            <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
+                                            <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
+                                            <td><input type="number" name="pp_rate['.$j.']" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id text-end" required></td>
+                                            <td><input type="number" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" required></td>
+                                            <td><input type="number" name="pp_amount['.$j.']" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id text-end" readonly></td>
+                                            <td class="row_remove remove-btnpp" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i></td>
                                         </tr>';
                                         $i++;
                                         $j++;

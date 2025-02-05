@@ -11,9 +11,23 @@
     justify-content: unset !important;
 }
 
+
+
+.tecs span {
+    font-size: 14px;
+}
+
 .droup_color{
 
 color: black !important;
+margin-bottom: 0px;
+width: 100% !important;
+padding: 0px;
+display: block;
+border-radius: 4px;
+background: #f5f5f5bd;
+border: none !important;
+height: 37px !important;
 }
 
 </style>
@@ -46,7 +60,7 @@ color: black !important;
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -56,14 +70,14 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_reffer_no" id="pfid" value="" class="form-control" required readonly>
+                                                                        <input type="text" name="pf_reffer_no" id="pfid" value="" class="form-control input_length " required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -76,14 +90,14 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker" required readonly>
+                                                                        <input type="text" name="pf_date" autocomplete="off" class="form-control datepicker input_length " required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -97,7 +111,7 @@ color: black !important;
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                     <label for="basicInput" class="form-label">Customer</label>
@@ -106,7 +120,7 @@ color: black !important;
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
 
-                                                                        <select class="form-select customer_sel customer_clz_id" name="pf_customer" id="customer_id" required>
+                                                                        <select class="form-select customer_sel customer_clz_id input_length " name="pf_customer" id="customer_id " required>
                                                                
                                                                         </select>
                                                                     </div>
@@ -124,7 +138,7 @@ color: black !important;
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Sales Order Number</label>
@@ -132,7 +146,7 @@ color: black !important;
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <select class="form-select sales_order_add_clz" name="pf_sales_order"  required>
+                                                                        <select class="form-select sales_order_add_clz input_length " name="pf_sales_order"  required>
 
                                                             
                                                             
@@ -150,14 +164,14 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">LPO Reference</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_lpo_ref" class="form-control lpo_reff" required>
+                                                                        <input type="text" name="pf_lpo_ref" class="form-control lpo_reff input_length " required>
                                                                     </div>
 
                                                                 </div> 
@@ -183,7 +197,7 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Sales Executive</label>
@@ -191,7 +205,7 @@ color: black !important;
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select sales_excutive_clz"  name="pf_sales_executive" required></select>
+                                                                        <select class="form-select sales_excutive_clz input_length"  name="pf_sales_executive" required></select>
                                                                        
                                                                     </div>
 
@@ -205,7 +219,7 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person</label>
@@ -213,7 +227,7 @@ color: black !important;
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select contact_person_clz" name="pf_contact_person" id="contact_person_id" required>
+                                                                        <select class="form-select contact_person_clz input_length " name="pf_contact_person" id="contact_person_id" required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
@@ -233,14 +247,14 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Terms</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz" required>
+                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz input_length " required>
                                                                     </div>
 
                                                                 </div> 
@@ -253,7 +267,7 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Terms</label>
@@ -262,7 +276,7 @@ color: black !important;
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
                                                                        
-                                                                        <input type="text" name="pf_delivery_terms" class="form-control delivery_term" required>
+                                                                        <input type="text" name="pf_delivery_terms" class="form-control delivery_term input_length " required>
                                                                         
                                                                     </div>
 
@@ -275,14 +289,14 @@ color: black !important;
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_project" class="form-control project_clz">
+                                                                        <input type="text" name="pf_project" class="form-control project_clz input_length ">
                                                                     </div>
 
                                                                 </div> 
@@ -305,18 +319,18 @@ color: black !important;
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td style="width:5%">SI No.</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
-                                                                <td>Action</td>
+                                                                <td style="width:6%">Unit</td>
+                                                                <td style="width:5%">Qty</td>
+                                                                <td style="width:8%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
+                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width:5%">Action</td>
                                                             </tr>
                                                             
                                                            
@@ -325,36 +339,40 @@ color: black !important;
                                                         <tbody  class="travelerinfo product-more2"></tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                                                <td colspan="8" align="center" class="tecs" style="padding: 10px 10px;">
+                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add Product</span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3"></td>
+                                                               
+                                                                <td colspan="5"></td>
                                                                 
                                                                 <td>Total Order value</td>
-                                                                <td><input type="text" name="pf_total_amount" class="amount_total form-control" readonly></td>
+                                                                <td><input type="text" name="pf_total_amount" class="amount_total form-control text-end" readonly></td>
+                                                                <td></td>
+                                                            
                                                             </tr>
 
 
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3"></td>
+                                                               
+                                                                <td colspan="5"></td>
                                                                 
                                                                 <td>Current Claim %</td>
                                                                 <td><input type="number" name="pf_current_cliam" onkeyup="currentClaim()" class="form-control current_cliam_clz" required></td>
+                                                                <td></td>
                                                             </tr>
 
 
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3" class=""></td>
+                                                                
+                                                                <td colspan="5" class=""></td>
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
                                                                 <td>Current Claim Value -QAR</td>
                                                                 <td><input type="number" name="pf_current_claim_value" class="form-control claim_qar" readonly></td>
+                                                                <td></td>
                                                             </tr>
                                                             
                                                           
@@ -366,7 +384,7 @@ color: black !important;
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         
-                                                        <div class="row row_align mb-4">
+                                                        <!--<div class="row row_align mb-4">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Attach</label>
                                                             </div>
@@ -375,7 +393,7 @@ color: black !important;
                                                                 <input type="file" name="pf_file"  class="form-control" >
                                                             </div>
 
-                                                        </div>
+                                                        </div>--->
 
 
                                                         
@@ -413,7 +431,7 @@ color: black !important;
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
-                                            <span><button class="btn btn btn-success once_form_submit" name="print_btn" type="submit" value="1">Preview</button></span>
+                                            <span><button class="btn btn btn-success once_form_submit" name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
 
@@ -1670,7 +1688,7 @@ color: black !important;
         /*customer droup drown search*/
         $(".customer_sel").select2({
             placeholder: "Select Customer",
-            theme : "default form-control-",
+            theme : "default form-control- customer_width",
             dropdownParent: $('#PerformaInvoice'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/ProFormaInvoice/FetchCustomers",
@@ -1922,7 +1940,7 @@ color: black !important;
     
             pp++;
             
-            $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td style='width:40%'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+            $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td style='width:40%'><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
         }
 
@@ -1978,7 +1996,7 @@ color: black !important;
 
         $('body .prod_row').each(function() {
 
-            $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+            $(this).find('.si_no').html('<td class="si_no text-center" style="border: unset;">' + pp + '</td>');
 
             pp++;
         });

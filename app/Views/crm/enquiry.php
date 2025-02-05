@@ -1,36 +1,11 @@
 <style>
-    span.select2.customer_width {
-        /*width: 80% !important;*/
-
-        border: 1px solid #434343 !important;
-        margin-bottom: 0px;
-        width: 97% !important;
-        height: 40px !important;
-        background: whitesmoke;
-        padding: 0px;
-        display: block;
-    } 
-    .contact_more_modal
-    {
-        position: absolute;
-        right: 4px;
-        top: -8px;
-        font-size: 24px;
-        color: #ff0000b5;
-        
-    }
-    .cust_more_modal
-    {
-        position: absolute;
-        right: 4px;
-        top: -8px;
-        font-size: 24px;
-        color: #ff0000b5;
-    }
+   
+   
+    
     span.select2.select_width
     {
-        width: 94% !important;
-        background: #f5f5f5;
+        width: 100% !important;
+        background: #f5f5f5bd;
         border: none;
         height: 37px !important;
     }
@@ -47,83 +22,27 @@
     {
         padding: 0px 0px;
     }
-    .input_length
-    {
-        width: 97%;
-    }
+   
     .droup_color{
 
         color: black;
     }
 
-    .Dashboard-form .form-control {
-        
-        border: 1px solid #434343;
-        margin-bottom: 0px;
-        background: whitesmoke;
-        height: 40px;
-    }
-    .margin_zero{
-
-        margin-bottom: 0px !important;
-    }
-    .Dashboard-form .form-select {
-        border: 1px solid #434343 !important;
-        margin-bottom: 0px;
-        background: whitesmoke;
-        height: 40px;
-        width: 97%;
-       
-    }
+    
+  
+   
     .table{
 
         border: 1px solid #0000003b !important;  
     }
-    .content_table thead{
 
-        background: #BDD7EE;
-        color: black;
-        font-size: 14px;
-        text-align: center;
-        font-weight: 500;
-    }
 
-    .content_table{
+    
+    /*.table>:not(caption)>*>* {
+        padding: 0px;
 
-        padding: 0px 25px;
-        padding-top: 40px;
-    }
+    }*/
 
-    .content_table td{
-      
-        border: 1px solid black;
-    }
-
-    .content_table .form-control {
-       
-        border: unset !important;
-
-    }
-
-    .justify-content-center {
-        justify-content: flex-end !important;
-        margin-right: 26px;
-    }
-
-    .once_form_submit{
-
-        background: #00AF50;
-        padding: 10px 32px;
-    }
-    thead td{
-
-        padding: 1px 0px !important;
-    }
-
-    .content_table tr {
-   
-        text-align: center;
-    }
 
 </style>
 
@@ -154,7 +73,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row" style="padding: 0px 25px;">
+                                                <div class="row row_padding">
 
                                                    
                                                  
@@ -367,7 +286,7 @@
 
                                                 <!--table section start-->
                                                 <div class="mt-4 content_table" >
-                                                    <table class="table table-bordered table-striped delTable">
+                                                    <table class="table table-bordered table-striped delTable add_table">
                                                         <thead>
                                                             <tr>
                                                                 <td>SI</td>
@@ -390,7 +309,7 @@
                                                                
                                                                 <td style="width: 8%;"><input type="text" name="pd_unit[0]" class="form-control" required></td>
                                                                 <td style="width: 8%;"><input type="number" name="pd_quantity[0]" class="form-control" required></td>
-                                                                <td style="width:10% ;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                                                <td style="width:8% ;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
@@ -481,7 +400,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -489,7 +408,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
@@ -510,7 +429,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
@@ -530,7 +449,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
@@ -550,7 +469,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person</label>
@@ -581,7 +500,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
@@ -601,7 +520,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Source</label>
@@ -620,7 +539,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
@@ -640,7 +559,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
@@ -671,14 +590,14 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
+                                                <div class="mt-4 content_table">
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td style="width: 4%;">SI No.</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Quantity</td>
+                                                                <td style="width: 8%;">Unit</td>
+                                                                <td style="width: 8%;">Quantity</td>
                                                                
                                                             </tr>
                                                            
@@ -732,7 +651,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -740,14 +659,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_reff" class="form-control edit_reff"  required readonly>
+                                                                        <input type="text" name="enquiry_reff" class="form-control edit_reff input_length"  required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -761,14 +680,14 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control edit_date datepicker_ap" required readonly>
+                                                                        <input type="text" name="enquiry_date" autocomplete="off" class="form-control edit_date datepicker_ap input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -781,7 +700,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
@@ -804,7 +723,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person</label>
@@ -837,14 +756,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select edit_assign_to" name="enquiry_assign_to" required>
+                                                                    <select class="form-select edit_assign_to" name="enquiry_assign_to " required>
                                                                         
                                                                 
                                                                      </select>
@@ -860,14 +779,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Source</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_source" class="form-control edit_source" required>
+                                                                        <input type="text" name="enquiry_source" class="form-control edit_source input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -879,14 +798,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control edit_time_frame" required>
+                                                                        <input type="text" name="enquiry_time_frame" autocomplete="off" class="form-control edit_time_frame input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -899,14 +818,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_project" class="form-control edit_project" required>
+                                                                        <input type="text" name="enquiry_project" class="form-control edit_project input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -930,15 +849,15 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
+                                                <div class="mt-4 content_table">
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td style="width: 5%;">SI No.</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Quantity</td>
-                                                                <td>Action</td>
+                                                                <td style="width: 8%;">Unit</td>
+                                                                <td style="width: 8%;">Quantity</td>
+                                                                <td style="width: 15%;">Action</td>
                                                             </tr>
                                                             
                                                         </thead>
@@ -946,7 +865,7 @@
                                                           <!--<tbody>-->
                                                           <tr>
                                                                 <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon add_single_product"><i class="ri-add-circle-line"></i>Add </span>
+                                                                    <span class="add_icon add_single_product"><i class="ri-add-circle-line"></i> </span>
                                                                 </td>
                                                             </tr>
                                                         <!--</tbody>--->
@@ -1006,11 +925,11 @@
                                         </div>
 				                        <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                            
 
-                                            <div class="live-preview">
+                                            <div class="live-preview edit_add_content_table">
                                                 <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                                    <thead class="travelerinfo">
                                                         <tr>
                                                             <td >No</td>
                                                             <td>Product Description</td>
@@ -1021,7 +940,7 @@
                                                             
                                                         </tr>
                                                        
-                                                    </tbody>
+                                                    </thead>
                                                     
                                                     <tbody class="single_contact_edit" class="travelerinfo">
                                                         
@@ -1061,27 +980,27 @@
                                         </div>
 				                        <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                           
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview edit_add_content_table">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
-                                                            <td >No</td>
+                                                            
                                                             <td>Product Description</td>
-                                                            <td>Unit</td>
-                                                            <td>Quantity</td>
+                                                            <td style="width: 8%;">Unit</td>
+                                                            <td style="width: 8%;">Quantity</td>
                                                            
                                                         </tr>
                                                        
-                                                    </tbody>
+                                                    </thead>
                                                     
                                                     <tbody class="" class="travelerinfo">
 
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td style="width:40%">
-                                                                <select class="edit_add_prod" name="pd_product_detail" required>
+                                                          
+                                                            <td>
+                                                                <select class="edit_add_prod form-control" name="pd_product_detail" required>
                                                                     <option value="" selected disabled>select</option>
                                                                 </select>
                                                             </td>
@@ -1331,7 +1250,7 @@
 			    pp++;
                 j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td style='width: 8%;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td style='width: 8%;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/
@@ -2025,7 +1944,7 @@
             
             $(".edit_add_prod").select2({
             placeholder: "Select Customer",
-            theme : "default form-control- customer_width",
+            theme : "default form-control- select_width",
             dropdownParent: $('#EditAddProduct'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",

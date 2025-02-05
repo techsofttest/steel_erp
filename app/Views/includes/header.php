@@ -314,11 +314,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     {
         color: green;
         cursor: pointer;
+        font-size: 18px;
     }
     .remainpass
     {
         color: var(--theme-color);
         cursor: pointer;
+        font-size: 18px;
     }
     .travelerinfo td
     {
@@ -493,19 +495,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     /* New Layout Input Style */
 
-.Dashboard-form .form-control {
+/*.Dashboard-form .form-control {
 border: unset;
 border-bottom: 1px solid #0000003b;
 border-radius: 0px;
 margin-bottom: 5px;
-}
+}*/
 
-.Dashboard-form .form-select {
+/*.Dashboard-form .form-select {
 margin-bottom:5px;
 border: unset;
 border-bottom: 1px solid #0000003b;
 border-radius: 0px;
-}
+}*/
 
 .Dashboard-form label {
 margin: 0;
@@ -728,6 +730,186 @@ color: green !important;
 
     color: #444;
 }
+
+
+/*new style start*/
+
+.content_table thead{
+
+background: #BDD7EE;
+color: black;
+font-size: 14px;
+text-align: center;
+font-weight: 500;
+}
+
+.content_table{
+
+padding: 0px 25px;
+padding-top: 40px;
+}
+
+.content_table td{
+
+border: 1px solid black;
+color: var(--vz-body-color);
+}
+
+.content_table .form-control {
+
+border: unset !important;
+
+}
+
+.justify-content-center {
+    justify-content: flex-end !important;
+    margin-right: 26px;
+}
+
+.once_form_submit{
+
+    background: #00AF50;
+    padding: 10px 32px;
+}
+thead td{
+
+    padding: 10px 0px !important;
+}
+
+.content_table tr {
+
+    text-align: center;
+}
+
+
+
+.form-control-{
+
+margin-bottom: 0px;
+}
+.select2-container{
+
+vertical-align: bottom;
+}
+.tecs{
+
+padding-top: 8px;
+}
+.row_padding{
+
+padding: 0px 25px;
+}
+.add_table>:not(caption)>*>* {
+
+padding: 0px;
+
+}
+.edit_add_content_table{
+
+padding: 0px 25px;
+
+}
+
+.edit_add_content_table thead {
+background: #BDD7EE;
+color: black;
+font-size: 14px;
+text-align: center;
+font-weight: 500;
+
+}
+
+.edit_add_content_table td {
+
+border: 1px solid black;
+color: var(--vz-body-color);
+}
+
+.edit_add_content_table .form-control {
+border: unset !important;
+text-align: center;
+
+
+}
+
+
+
+.Dashboard-form .form-control {
+        
+    border: 1px solid #434343;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    border-radius: 4px;
+}
+.margin_zero{
+
+    margin-bottom: 0px !important;
+}
+.Dashboard-form .form-select {
+        
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        background: #f5f5f56e;
+        height: 40px;
+        width: 97%;
+        border-radius: 4px;
+       
+    }
+    span.select2.customer_width {
+        /*width: 80% !important;*/
+
+        border: 1px solid #434343 !important;
+        margin-bottom: 0px;
+        width: 97% !important;
+        height: 40px !important;
+        background: #f5f5f56e;
+        padding: 0px;
+        display: block;
+        border-radius: 4px;
+    } 
+    .content_table .form-select{
+
+        border: unset !important;
+        border: unset !important;
+        width: 100% !important;
+        background: #f5f5f5bd;
+        border: none;
+        height: 37px !important;
+    }
+    
+    .single_contact_edit .form-select{
+
+        border: 0px !important;
+    }
+    .cust_more_modal
+    {
+        position: absolute;
+        right: 4px;
+        top: -8px;
+        font-size: 24px;
+        color: #ff0000b5;
+    }
+    .input_length
+    {
+        width: 97%;
+    }
+    .contact_more_modal
+    {
+        position: absolute;
+        right: 4px;
+        top: -8px;
+        font-size: 24px;
+        color: #ff0000b5;
+        
+    }
+    .row_remove {
+    color: red !important;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/*new style end*/
 
 
 </style>

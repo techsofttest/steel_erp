@@ -758,7 +758,7 @@ class PurchaseOrder extends BaseController
                 $data['contact_person'] .= ' selected'; 
             }
 
-		    $data['contact_person'] .= '>' . $contact->	contact_person.'</option>';
+		    $data['contact_person'] .= '>' . $contact->contact_person.'</option>';
         }
 
 

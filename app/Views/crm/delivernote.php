@@ -363,7 +363,7 @@
 
                                         <div class="modal-footer justify-content-center">
                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
-                                            <span class="print_btn_clz once_form_submit" ><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Preview</button></span>
+                                            <span class="print_btn_clz once_form_submit" ><button class="btn btn btn-success"  name="print_btn" type="submit" value="1">Print</button></span>
                                         </div>
 
 

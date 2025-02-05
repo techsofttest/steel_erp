@@ -304,10 +304,10 @@ class Enquiry extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td><input type="text"   value="'.$i.'" class="form-control" readonly></td>
-            <td style="width:40%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-            <td><input type="text"   value="'.$prod_det->pd_unit.'" class="form-control" readonly></td>
-            <td> <input type="email" value="'.$prod_det->pd_quantity.'" class="form-control" readonly></td>
+            <td>'.$i.'</td>
+            <td style="width:40%">'.$prod_det->product_details.'</td>
+            <td>'.$prod_det->pd_unit.'</td>
+            <td>'.$prod_det->pd_quantity.'</td>
             </tr>'; 
 
             $i++;  
