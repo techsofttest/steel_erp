@@ -154,8 +154,8 @@
             var dateObj = new Date(rawDate);
 
             // Array to convert month number to month name
-            var monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
             ];
 
             // Format the date
@@ -216,13 +216,30 @@
                 changeYear: true, 
                 yearRange: "0:+1",
                 minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
-            }).on('change', function() {
-                    $(this).valid();  
-                });
+            }).on('change', function(dateText) {
+                    $(this).valid(); 
+
+                    if ($("#uid").length) {
+                    let selectedDate = $(this).val(); // Get the selected date as a string
+                    let parsedDate = $.datepicker.parseDate("dd-M-yy", selectedDate); // Convert to Date object
+
+                    if (parsedDate) {
+                        let selectedYear = parsedDate.getFullYear();
+                        let uidNumber = $("#uid").val();
+                        let updatedUidNumber = uidNumber.replace(/\d{4}/, selectedYear);
+                        $("#uid").val(updatedUidNumber);
+                    }
+                    }
+
+            });
             $('body').on('focus',".datepicker_ap", function(){
             $(this).datepicker({ dateFormat: "dd-M-yy" });
             $(this).attr("autocomplete", "off");
             })
+
+
+
+
         });
 
 
@@ -371,7 +388,7 @@
             const $inputs = parent.find('input,select, button,.select2-hidden-accessible');
             const $form = $('#add_form');
 
-            //console.log($inputs);
+            //console.log($inputs);==
 
             /*
             $inputs.on('keydown', function(event) {

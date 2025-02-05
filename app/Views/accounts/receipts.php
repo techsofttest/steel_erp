@@ -63,7 +63,7 @@
 
                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                        <input type="text" id="ruid" name="r_ref_no" class="form-control" required>
+                                                        <input type="text" id="uid" name="r_ref_no" class="form-control" required>
 
                                                     </div>
 
@@ -4034,7 +4034,7 @@
 
                 success: function(data) {
 
-                    $('#ruid').val(data);
+                    $('#uid').val(data);
 
                 }
 
