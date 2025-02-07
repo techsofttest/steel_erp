@@ -535,7 +535,7 @@
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td style="width:8%">Unit</td>
                                                                 <td style="width:8%">Qty</td>
-                                                                <td style="width:7%">Price Check</td>
+                                                                <td style="width:10%">Price Check</td>
                                                                 <td style="width:9%">Rate</td>
                                                                 <td style="width:10%">Amount</td>
                                                                 <td style="width:5%"></td>
@@ -543,7 +543,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr class="cost_cal_row cost_cal_row2">
-                                                                <td class="cost_ci_no">1</td>
+                                                                <td class="cost_ci_no text-center" style="padding: 10px 10px;">1</td>
                                                                 <td >
                                                                     <select class="form-select cost_service_clz cost_product_det" name="qc_material[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -552,13 +552,13 @@
                                                                         <?php } ?>-
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz" required></td>
-                                                                <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz" required></td>
-                                                                <td><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
-                                                                <td><input type="number" name="qc_rate[0]"  class="form-control cost_rate_clz" required></td>
+                                                                <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz text-center" required></td>
+                                                                <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
+                                                                <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
+                                                                <td><input type="number" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount[0]" class="form-control cost_amount_clz" readonly></td>
-                                                                <td><div class="tecs"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i> </span></div></td>
+                                                                <td><input type="number" name="qc_amount[0]" class="form-control cost_amount_clz text-end" readonly></td>
+                                                                <td><div class="tecs" style="text-align: center;"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i> </span></div></td>
                                                                 <input type="hidden" name="qc_quotation_id" class="quotation_hidden_id">
                                                             </tr>
                                                            
@@ -574,8 +574,8 @@
                                                                 
                                                                                                    
                                                                 
-                                                                <td style="text-align: center;">Total</td>
-                                                                <td><input type="text" name="qd_cost_amount" class="total_cost_cal form-control" readonly></td>
+                                                                <td style="text-align: center;padding: 10px 10px;">Total</td>
+                                                                <td><input type="text" name="qd_cost_amount" class="total_cost_cal form-control text-end" readonly></td>
                                                                 <td></td>
                                                                 <input type="hidden" name="qd_percentage" value="" class="total_percent">
                                                             </tr>
@@ -1109,14 +1109,14 @@
                                                 
                                                 <!--table section start-->
                                                 <div class="mt-4  content_table" style="padding-top:0px">
-                                                    <table class="table table-bordered table-striped delTable add_table">
+                                                    <table class="table table-bordered table-striped delTable ">
                                                         <thead class="travelerinfo">
                                                             <tr>
                                                                 
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Price Check</td>
+                                                                <td style="width: 10%;">Price Check</td>
                                                                 <td style="width: 7%;">Rate</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -1133,7 +1133,7 @@
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control edit_cost_unit text-center" required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_cost_qty text-center" required></td>
-                                                                <td style="padding-top: 10px;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
+                                                                <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
                                                                 <td><input type="number" name="qc_rate"  class="form-control edit_cost_rate text-end" required></td>
                                                                 
                                                                 <td><input type="number" name="qc_amount" class="form-control edit_cost_amount text-end" readonly></td>
@@ -2908,7 +2908,11 @@
             
             cc++;    
 
-                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                //$(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no text-center' style='padding:10px 10px;'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz text-center' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz text-center' required=''></td><td style='text-align: center;padding: 10px 10px;'><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz text-end' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz text-end' readonly></td><td class='remove-btncc text-center' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                
+                
                 InitCostSelect();
             }
         });

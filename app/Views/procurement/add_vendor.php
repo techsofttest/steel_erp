@@ -25,7 +25,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Vendor Name</label>
@@ -45,7 +45,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
@@ -66,7 +66,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Account ID</label>
@@ -86,7 +86,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Post Box No</label>
@@ -106,7 +106,7 @@
                                     <!-- Single Row Start -->
 
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Telephone</label>
@@ -124,7 +124,7 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Fax</label>
@@ -142,7 +142,7 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Email</label>
@@ -164,7 +164,7 @@
                                 <div class="row">
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Term</label>
@@ -183,7 +183,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Period (Days)</label>
@@ -202,7 +202,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Limit</label>
@@ -254,11 +254,11 @@
 
                     <div class="modal-body">
 
-                        <div class="card-seprate_divider"></div>
+                        
 
-                            <div class="live-preview">
-                                <table  class="table table-bordered table-striped delTable">
-                                    <tbody class="travelerinfo">
+                            <div class="live-preview content_table" style="padding-top:0px">
+                                <table  class="table table-bordered table-striped delTable add_table">
+                                    <thead class="travelerinfo">
                                         <tr>
                                             <td >No</td>
                                             <td>Contact Person</td>
@@ -267,13 +267,15 @@
                                             <td>Email</td>
                                             <td>Action</td>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         <tr class="prod_row">
-                                            <td class=" si_no">1</td>
-                                            <td><input type="text" name="pro_con_person[0]" class="form-control"></td>
-                                            <td><input type="text" name="pro_con_designation[0]" class="form-control"></td>
-                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz"></td>
-                                            <td> <input type="email" name="pro_con_email[0]" class="form-control"></td>
-                                            <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                            <td class=" si_no" style="padding:10px 10px;">1</td>
+                                            <td><input type="text" name="pro_con_person[0]" class="form-control text-center"></td>
+                                            <td><input type="text" name="pro_con_designation[0]" class="form-control text-center"></td>
+                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz text-center"></td>
+                                            <td> <input type="email" name="pro_con_email[0]" class="form-control text-center"></td>
+                                            <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                         </tr>
                                     </tbody>
 
@@ -321,7 +323,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basiInput" class="form-label">CR No</label>
                                                 </div>
@@ -337,7 +339,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">CR Attach</label>
                                                 </div>
@@ -355,7 +357,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">	CR Expiry</label>
                                                 </div>
@@ -373,7 +375,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Est.ID</label>
                                                 </div>
@@ -391,7 +393,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Est.ID Attach</label>
                                                 </div>
@@ -409,7 +411,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                 </div>
@@ -427,7 +429,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Signatory Name</label>
                                                 </div>
@@ -445,7 +447,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">QID Number</label>
                                                 </div>
@@ -463,7 +465,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">QID Attach</label>
                                                 </div>
@@ -482,7 +484,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">QID Expiry</label>
                                                 </div>
@@ -779,9 +781,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
             y++;
             i++;
 
-            //$(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control ' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control ' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
             
-            $(".person-more").append("<tr class='prod_row prod_row_remove'><td class='si_no'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+           // $(".person-more").append("<tr class='prod_row prod_row_remove'><td class='si_no' style='padding:10px 10px;'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
+            
+           $(".person-more").append("<tr class='prod_row prod_row_remove'><td class='si_no' style='padding:10px 10px;'>"+y+"</td><td><input type='text' name='pro_con_person["+i+"]' class='form-control pro_con_per_clz text-center' required></td><td><input type='text' name='pro_con_designation["+i+"]' class='form-control pro_con_des_clz text-center' required></td><td><input type='text' name='pro_con_mobile["+i+"]' class='form-control contact_mobile_clz text-center' required></td><td><input type='email' name='pro_con_email["+i+"]' class='form-control pro_con_email_clz text-center' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
+            
             
             slno();
 
@@ -810,7 +814,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         
         $('body .prod_row').each(function() {
 
-            $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+            $(this).find('.si_no').html('<td class="si_no" style="border:unset;">' + pp + '</td>');
 
             pp++;
 

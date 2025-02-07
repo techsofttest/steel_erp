@@ -38,10 +38,8 @@ class CreditInvoice extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('cci_reffer_no');
+        $searchColumns = array('cci_reffer_no','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_credit_invoice','cci_id',$searchValue,$searchColumns);
-    
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
@@ -56,6 +54,10 @@ class CreditInvoice extends BaseController
             ),
            
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_credit_invoice','cci_id',$searchValue,$searchColumns,'',$joins);
+    
+        
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_credit_invoice','cci_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     

@@ -97,7 +97,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Vendor Name</label>
@@ -117,7 +117,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Account Head</label>
@@ -140,7 +140,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Account ID</label>
@@ -160,7 +160,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Post Box No</label>
@@ -180,7 +180,7 @@
                                                             <!-- Single Row Start -->
 
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Telephone</label>
@@ -198,7 +198,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Fax</label>
@@ -216,7 +216,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Email</label>
@@ -240,7 +240,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Term</label>
@@ -259,7 +259,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Period (Days)</label>
@@ -278,7 +278,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Limit</label>
@@ -332,11 +332,11 @@
 				                        <div class="modal-body">
 
                                           
-                                            <div class="card-seprate_divider"></div>
+                                            
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table" style="padding-top:0px">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
                                                             <td>No</td>
                                                             <td>Contact Person</td>
@@ -346,7 +346,7 @@
                                                             
                                                         </tr>
                                                         
-                                                    </tbody>
+                                                    </thead>
 
                                                     <tbody class="view_contact" class="travelerinfo"></tbody>
                 
@@ -392,7 +392,7 @@
 
                                                     <!--Single Row Start-->
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basiInput" class="form-label">CR No</label>
                                                             </div>
@@ -410,7 +410,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">	CR Expiry</label>
                                                             </div>
@@ -428,7 +428,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID</label>
                                                             </div>
@@ -449,7 +449,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                             </div>
@@ -467,7 +467,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Signatory Name</label>
                                                             </div>
@@ -485,7 +485,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Number</label>
                                                             </div>
@@ -505,7 +505,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Expiry</label>
                                                             </div>
@@ -527,14 +527,14 @@
                                             
                                             <!--image section start-->
 
-                                            <div class="card-body">
-                                                <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;">
+                                            <div class="card-body content_table">
+                                                <table id="" class="table table-bordered table-striped delTable display  add_table" style="border: 1px solid #9E9E9E;">
                                                     <thead>
                                                         <tr>
                                                             
-                                                            <th class="cust_img_rgt_border">CR  Attach</th>
-                                                            <th class="cust_img_rgt_border">Est.ID Attach</th>
-                                                            <th>QID Attach</th>
+                                                            <td class="cust_img_rgt_border text-center">CR  Attach</td>
+                                                            <td class="cust_img_rgt_border text-center">Est.ID Attach</td>
+                                                            <td class="text-center"> QID Attach</th>
                                                             
                                                         </tr>
                                                     </thead>

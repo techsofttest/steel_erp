@@ -70,7 +70,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="sr_reffer_no" id="ciid" value="" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="sr_reffer_no" id="uid" value="" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -90,7 +90,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="sr_date" autocomplete="off" class="form-control datepicker input_length" required readonly>
+                                                                        <input type="text" name="sr_date" autocomplete="off" class="form-control datepicker_ap input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -2376,7 +2376,7 @@
             success:function(data)
             {
 
-                $('#ciid').val(data);
+                $('#uid').val(data);
 
             }
         });

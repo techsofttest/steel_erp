@@ -420,13 +420,13 @@ class Vendor extends BaseController
         foreach($contact_data as $contact){
 
             $data['contact'] .='<tr class="prod_row_edit" id="'.$contact->contact_id .'">
-            <td class="si_no_edit">'.$i.'</td>
-            <td><input type="text" name="contact_person[]"  value="'.$contact->contact_person.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control" readonly></td>
-            <td> <input type="email" name="contact_email[]" value="'.$contact->contact_email.'" class="form-control" readonly></td>
-            <td class="row_remove delete_contact" data-id="'.$contact->contact_id .'"><i class="ri-close-line"></i>Remove</td>
-            <td class="row_contact_edit row_edit" data-id="'.$contact->contact_id .'"><i class="ri-pencil-fill"></i>Edit</td>
+            <td class="si_no_edit text-center"  style="padding:10px 10px;">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$contact->contact_person.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control text-center" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$contact->contact_email.'" class="form-control text-center" readonly></td>
+            <td class="row_remove delete_contact" data-id="'.$contact->contact_id .'"><i class="ri-close-line"></i></td>
+            <td class="row_contact_edit row_edit" data-id="'.$contact->contact_id .'"><i class="ri-pencil-fill"></i></td>
            
             </tr>
             <input type="hidden" class="edit_con_ven_id" value="'.$contact->contact_customer_creation.'">
@@ -504,11 +504,11 @@ class Vendor extends BaseController
 
 
             $data['contact'] .='<tr class="edit_prod_row" id="'.$contact->contact_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name="contact_person[]"  value="'.$contact->contact_person.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control" readonly></td>
-            <td> <input type="email" name="contact_email[]" value="'.$contact->	contact_email.'" class="form-control" readonly></td>
+            <td class="si_no1 text-center" style="padding:10px 10px;">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$contact->contact_person.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control text-center" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$contact->	contact_email.'" class="form-control text-center" readonly></td>
            
             </tr>
             <input type="hidden" class="contact_cust" value="">
@@ -595,11 +595,11 @@ class Vendor extends BaseController
     {
         $contact_edit = $this->common_model->SingleRow('crm_contact_details',array('contact_id' => $this->request->getPost('ID')));
         
-        $data['contact'] ='<tr class="edit_prod_row" id="'.$contact_edit->contact_id .'">
-            <td><input type="text" name="contact_person"  value="'.$contact_edit->contact_person .'" class="form-control" required></td>
-            <td><input type="text" name="contact_designation"  value="'.$contact_edit->contact_designation .'" class="form-control" required></td>
-            <td><input type="text" name="contact_mobile"  value="'.$contact_edit->contact_mobile .'" class="form-control edit_contact" required></td>
-            <td> <input type="email" name="contact_email" value="'.$contact_edit->contact_email .'" class="form-control" required></td>
+        $data['contact'] ='<tr class="edit_prod_row text-center" id="'.$contact_edit->contact_id .'">
+            <td><input type="text" name="contact_person"  value="'.$contact_edit->contact_person .'" class="form-control text-center" required></td>
+            <td><input type="text" name="contact_designation"  value="'.$contact_edit->contact_designation .'" class="form-control text-center" required></td>
+            <td><input type="text" name="contact_mobile"  value="'.$contact_edit->contact_mobile .'" class="form-control edit_contact text-center" required></td>
+            <td> <input type="email" name="contact_email" value="'.$contact_edit->contact_email .'" class="form-control text-center" required></td>
             </tr>
             <input type="hidden" class="contact_cust" name="contact_id" value="'.$contact_edit->contact_id.'">
             '; 

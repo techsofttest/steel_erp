@@ -922,11 +922,11 @@ class DeliverNote extends BaseController
             foreach($sales_order_details as $sales_det){
 
                 $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$sales_det->spd_id.'">
-                                                <td class="si_no">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
                                                 <td style="width:40%"><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control"  readonly></td>
-                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
+                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
+                                                <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td class="text-center" style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
                                                     
                                                     
                                                     
@@ -1043,13 +1043,13 @@ class DeliverNote extends BaseController
                 
                 foreach($sales_order_details as $sales_det){
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
-                                                <td class="si_no">'.$i.'</td>
-                                                <td style="width:40%"><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                <td class="si_no text-center">'.$i.'</td>
+                                                <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                 <input type="hidden" name="dpd_prod_det[]" value="'.$sales_det->product_id.'">
-                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="number" name="dpd_delivery_qty[]" value="'.$sales_det->spd_delivered_qty.'"  class="form-control delivery_qty" readonly ></td>
-                                                <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery" required></td>
+                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
+                                                <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td><input type="number" name="dpd_delivery_qty[]" value="'.$sales_det->spd_delivered_qty.'"  class="form-control delivery_qty text-center" readonly ></td>
+                                                <td><input type="number" name="dpd_current_qty[]"  class="form-control current_delivery text-center" required></td>
                                                 <input type="hidden" name="sales_prod_id[]" value="'.$sales_det->spd_id.'" class="form-control" required>
                                                 <input type="hidden" name="dpd_rate_qty[]" value="'.$sales_det->spd_rate.'" class="form-control rate_clz_id" required>
                                                 <input type="hidden" name="dicount[]" value="'.$sales_det->spd_discount.'" class="form-control dicount_clz_id" required>

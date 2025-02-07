@@ -25,7 +25,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Vendor Name</label>
@@ -45,7 +45,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
@@ -68,7 +68,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Account ID</label>
@@ -88,7 +88,7 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Post Box No</label>
@@ -108,7 +108,7 @@
                                     <!-- Single Row Start -->
 
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Telephone</label>
@@ -126,7 +126,7 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Fax</label>
@@ -144,7 +144,7 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Email</label>
@@ -166,7 +166,7 @@
                                 <div class="row">
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Term</label>
@@ -185,7 +185,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Period (Days)</label>
@@ -204,7 +204,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
 
                                                 <div class="col-col-md-3 col-lg-3">
                                                     <label for="basicInput" class="form-label">Credit Limit</label>
@@ -258,28 +258,28 @@
 
                     <div class="modal-body">
 
-                        <div class="card-seprate_divider"></div>
-
-                            <div class="live-preview">
-                                <table  class="table table-bordered table-striped delTable">
-                                    <tbody class="travelerinfo">
+                        
+                            <div class="live-preview content_table" style="padding-top:0px;">
+                                <table  class="table table-bordered table-striped delTable add_table">
+                                    <thead class="travelerinfo">
                                         <tr>
                                             <td >No</td>
                                             <td>Contact Person</td>
                                             <td>Designation</td>
                                             <td>Mobile</td>
                                             <td>Email</td>
-                                            <td>Action</td>
+                                            <td colspan="2">Action</td>
+                                            <td></td>
                                         </tr>
                                         
-                                    </tbody>
+                                    </thead>
 
                                     <tbody class="person-more edit_contact" class="travelerinfo"></tbody>
                                     
                                     <tbody>
                                         <tr>
-                                            <td colspan="8" align="center" class="tecs">
-                                                <span class="add_icon edit_add_con"><i class="ri-add-circle-line"></i>Add </span>
+                                            <td colspan="8" align="center" class="tecs" style="padding: 5px 10px;">
+                                                <span class="add_icon edit_add_con"><i class="ri-add-circle-line"></i> </span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -326,7 +326,7 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basiInput" class="form-label">CR No</label>
                                                 </div>
@@ -345,7 +345,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">	CR Expiry</label>
                                                 </div>
@@ -363,7 +363,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Est.ID</label>
                                                 </div>
@@ -384,7 +384,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                 </div>
@@ -402,7 +402,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">Signatory Name</label>
                                                 </div>
@@ -420,7 +420,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">QID Number</label>
                                                 </div>
@@ -439,7 +439,7 @@
                                         <!--Single Row Start-->
                                         
                                         <div class="col-lg-12">
-                                            <div class="row align-items-center mb-2">
+                                            <div class="row align-items-center mb-2 margin_zero">
                                                 <div class="col-lg-3">
                                                     <label for="basicInput" class="form-label">QID Expiry</label>
                                                 </div>
@@ -455,15 +455,15 @@
 
                                         <!--image section start-->
 
-                                        <div class="card-body">
-                                            <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;">
+                                        <div class="card-body content_table">
+                                            <table id="" class="table table-bordered table-striped delTable  add_table" >
                                                 <thead>
                                                                 
                                                     <tr>
                                                         
-                                                        <th class="cust_img_rgt_border cust_img_text_stl" style="width:50%">Name</th>
-                                                        <th class="cust_img_rgt_border cust_img_text_stl" style="width:40%">View</th>
-                                                        <th class="cust_img_text_stl">Edit</th>
+                                                        <td class="cust_img_rgt_border cust_img_text_stl" style="width:50%">Name</td>
+                                                        <td class="cust_img_rgt_border cust_img_text_stl" style="width:40%">View</td>
+                                                        <td class="cust_img_text_stl">Edit</td>
                                                         
                                                     </tr>
 
@@ -536,11 +536,11 @@
 
                             <div class="modal-body">
 
-                                <div class="card-seprate_divider"></div>
+                                
 
-                                <div class="live-preview">
-                                    <table  class="table table-bordered table-striped delTable">
-                                        <tbody class="travelerinfo">
+                                <div class="live-preview content_table" style="padding-top:0px;">
+                                    <table  class="table table-bordered table-striped delTable add_table">
+                                        <thead class="travelerinfo">
                                             <tr>
                                                 
                                                 <td>Contact Person</td>
@@ -550,7 +550,7 @@
                                                 
                                             </tr>
                                             
-                                        </tbody>
+                                        </thead>
 
                                         <tbody class="person-more edit_single_contact_person" class="travelerinfo"></tbody>
                                             
@@ -592,11 +592,11 @@
 
                             <div class="modal-body">
 
-                                <div class="card-seprate_divider"></div>
+                                
 
-                                <div class="live-preview">
-                                    <table  class="table table-bordered table-striped delTable">
-                                        <tbody class="travelerinfo">
+                                <div class="live-preview content_table" style="padding-top:10px;">
+                                    <table  class="table table-bordered table-striped delTable add_table">
+                                        <thead class="travelerinfo">
                                             <tr>
                                                 
                                                 <td>Contact Person</td>
@@ -606,7 +606,7 @@
                                                 
                                             </tr>
                                             
-                                        </tbody>
+                                        </thead>
 
                                         <tbody class="" class="travelerinfo">
                                             
