@@ -214,11 +214,10 @@
                 dateFormat: "dd-M-yy", 
                 changeMonth: true,
                 changeYear: true, 
-                yearRange: "0:+1",
+                yearRange: "<?= $accounting_year ?>:<?= $accounting_year + 1 ?>",
                 minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
             }).on('change', function(dateText) {
                     $(this).valid(); 
-
                     if ($("#uid").length) {
                     let selectedDate = $(this).val(); // Get the selected date as a string
                     let parsedDate = $.datepicker.parseDate("dd-M-yy", selectedDate); // Convert to Date object
@@ -232,6 +231,7 @@
                     }
 
             });
+
             $('body').on('focus',".datepicker_ap", function(){
             $(this).datepicker({ dateFormat: "dd-M-yy" });
             $(this).attr("autocomplete", "off");

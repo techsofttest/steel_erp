@@ -856,7 +856,7 @@ text-align: center;
         border-radius: 4px;
        
     }
-    span.select2.customer_width {
+    span.select2.customer_width,span.select2 {
         /*width: 80% !important;*/
 
         border: 1px solid #434343 !important;
@@ -910,6 +910,40 @@ text-align: center;
 }
 
 /*new style end*/
+
+
+
+/* Common New Style */
+
+
+.no_margin_rows .row
+{
+
+margin-bottom: 0px !important;
+
+}
+
+
+.add_more_table
+{
+padding: 0px 25px;
+padding-top: 40px;
+}
+
+.add_more_table td {
+    border: 1px solid black;
+    color: var(--vz-body-color);
+}
+
+.add_more_table thead
+{
+    background: #BDD7EE;
+    color: black;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500
+}
+
 
 
 </style>
