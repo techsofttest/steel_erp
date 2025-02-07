@@ -38,10 +38,8 @@ class Enquiry extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('enquiry_reff');
+        $searchColumns = array('enquiry_reff','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_enquiry','enquiry_id',$searchValue,$searchColumns);
-    
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
@@ -50,6 +48,10 @@ class Enquiry extends BaseController
                 'fk'    => 'enquiry_customer',
             )
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_enquiry','enquiry_id',$searchValue,$searchColumns,'',$joins);
+    
+       
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_enquiry','enquiry_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     

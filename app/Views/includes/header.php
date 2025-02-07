@@ -859,7 +859,7 @@ text-align: center;
     span.select2.customer_width,span.select2 {
         /*width: 80% !important;*/
 
-        border: 1px solid #434343 !important;
+        border: 1px solid #434343 ;
         margin-bottom: 0px;
         width: 97% !important;
         height: 40px !important;

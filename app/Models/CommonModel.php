@@ -535,11 +535,22 @@ class CommonModel extends Model
         return $query->countAllResults();
     }
 
-    public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum,$cond="")
+    public function GetTotalRecordwithFilter($table,$coloum,$searchValue,$searchColoum,$cond="",$joins="")
     {
         $query = $this->db->table($table);
         
         $query->select($coloum);
+
+        if(!empty($joins))
+        {
+            foreach($joins as $join)
+            {
+    
+            $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table.'.'.$join['fk'].'', 'left');
+    
+            }
+        }
+
 
         $query->groupStart();
         foreach($searchColoum as $col){
@@ -547,10 +558,14 @@ class CommonModel extends Model
         }
         $query->groupEnd();
 
+        
+
         if($cond!="")
         {
         $query->where($cond);
         }
+
+        
 
         return $query->countAllResults();
  

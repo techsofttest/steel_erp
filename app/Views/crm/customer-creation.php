@@ -44,14 +44,14 @@
                                             <div class="card-seprate_divider"></div>
 
                                             <div class="live-preview">
-                                                <div class="row">
+                                                <div class="row ">
                                                     <div class="col-lg-6">
                                                         <div class="row">
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Customer Name</label>
@@ -71,7 +71,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Account Head</label>
@@ -91,7 +91,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Account ID</label>
@@ -111,7 +111,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Post Box</label>
@@ -129,7 +129,7 @@
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Telephone</label>
@@ -147,7 +147,7 @@
 
                                                              <!--Single Row Start-->
                                                              <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Fax</label>
@@ -165,7 +165,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Email</label>
@@ -186,7 +186,7 @@
                                                         <div class="row">
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Term</label>
@@ -205,7 +205,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Period (Days)</label>
@@ -224,7 +224,7 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Limit</label>
@@ -274,11 +274,11 @@
 				                        <div class="modal-body">
 
                                           
-                                            <div class="card-seprate_divider"></div>
+                                            
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
                                                             <td>No</td>
                                                             <td>Contact Person</td>
@@ -288,7 +288,7 @@
                                                             
                                                         </tr>
                                                         
-                                                    </tbody>
+                                                    </thead>
 
                                                     <tbody class="view_contact_data" class="travelerinfo"></tbody>
                 
@@ -324,20 +324,20 @@
 
                                           
                                             
-                                            <div class="card-seprate_divider"></div>
+                                            
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
 
                                                     <!--Single Row Start-->
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basiInput" class="form-label">CR No</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number"   class="form-control view_cr_no" required>
+                                                                <input type="number"   class="form-control view_cr_no" required readonly>
                                                             </div>
                                                         </div>
                                                         
@@ -350,12 +350,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">	CR Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text"  class="form-control view_cr_expiry" required>
+                                                                <input type="text"  class="form-control view_cr_expiry" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -368,12 +368,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number" class="form-control view_est_id" required>
+                                                                <input type="number" class="form-control view_est_id" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -389,12 +389,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" class="form-control view_est_id_expery" required>
+                                                                <input type="text" class="form-control view_est_id_expery" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -407,12 +407,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Signatory Name</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text"  class="form-control view_signature_name" required>
+                                                                <input type="text"  class="form-control view_signature_name" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -425,12 +425,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Number</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="number" class="form-control view_qid_num" required>
+                                                                <input type="number" class="form-control view_qid_num" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -445,12 +445,12 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Expiry</label>
                                                             </div>
                                                             <div class="col-lg-9">
-                                                                <input type="text" class="form-control view_qid_expiry" required>
+                                                                <input type="text" class="form-control view_qid_expiry" required readonly>
                                                             </div>
                                                         </div>
                                                       
@@ -467,14 +467,14 @@
                                             
                                             <!--image section start-->
 
-                                            <div class="card-body">
-                                                <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;">
+                                            <div class="card-body content_table">
+                                                <table id="" class="table table-bordered table-striped delTable display  add_table" style="border: 1px solid #9E9E9E;">
                                                     <thead>
                                                         <tr>
                                                             
-                                                            <th class="cust_img_rgt_border">CR No Attach</th>
-                                                            <th class="cust_img_rgt_border">Est.ID Attach</th>
-                                                            <th>QID Number</th>
+                                                            <td class="cust_img_rgt_border text-center">CR No Attach</td>
+                                                            <td class="cust_img_rgt_border text-center">Est.ID Attach</td>
+                                                            <td class="text-center">QID Number</td>
                                                             
                                                         </tr>
                                                     </thead>
@@ -534,21 +534,21 @@
                                             <div class="card-seprate_divider"></div>
 
                                             <div class="live-preview">
-                                                <div class="row">
+                                                <div class="row ">
                                                     <div class="col-lg-6">
                                                         <div class="row">
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Customer Name</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_customer_name" class="form-control edit_customer_name" required>
+                                                                        <input type="text" name="cc_customer_name" class="form-control edit_customer_name input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -561,14 +561,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Account Head</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select edit_account_head_select account_head_clz edit_account_head" name="cc_account_head"  required>
+                                                                        <select class="form-select edit_account_head_select account_head_clz edit_account_head input_length" name="cc_account_head"  required>
 
 
                                                                         </select>
@@ -585,14 +585,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Account ID</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_account_id" class="form-control edit_account_id" required readonly>
+                                                                        <input type="text" name="cc_account_id" class="form-control edit_account_id input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -605,14 +605,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Post Box</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_post_box" class="form-control edit_post_box" required>
+                                                                        <input type="number" name="cc_post_box" class="form-control edit_post_box input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -623,14 +623,14 @@
 
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Telephone</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_telephone" id=""  class="form-control edit_telephone"  required>
+                                                                        <input type="text" name="cc_telephone" id=""  class="form-control edit_telephone input_length"  required>
                                                                     </div>
 
                                                                 </div> 
@@ -641,14 +641,14 @@
 
                                                              <!--Single Row Start-->
                                                              <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Fax</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_fax" id="" class="form-control edit_fax" required>
+                                                                        <input type="text" name="cc_fax" id="" class="form-control edit_fax input_length"  required>
                                                                     </div>
 
                                                                 </div>
@@ -659,14 +659,14 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Email</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="email" name="cc_email" class="form-control edit_email" required>
+                                                                        <input type="email" name="cc_email" class="form-control edit_email input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -680,14 +680,14 @@
                                                         <div class="row">
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Term</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_credit_term" class="form-control edit_credit_term" required>
+                                                                        <input type="text" name="cc_credit_term" class="form-control edit_credit_term input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -699,14 +699,14 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Period (Days)</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_period" class="form-control edit_credit_period" required>
+                                                                        <input type="number" name="cc_credit_period" class="form-control edit_credit_period input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -718,14 +718,14 @@
 
                                                             <!--Single Row Start-->
                                                             <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Credit Limit</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit" required>
+                                                                        <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit input_length" required>
                                                                     </div>
 
                                                                 </div>
@@ -775,28 +775,28 @@
                                         </div>
 				                        <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                            
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table" style="padding-top:0px;">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
-                                                            <td >No</td>
+                                                            <td>No</td>
                                                             <td>Contact Person</td>
                                                             <td>Designation</td>
                                                             <td>Mobile</td>
                                                             <td>Email</td>
-                                                            <td>Action</td>
+                                                            <td colspan="2">Action</td>
                                                             <td></td>
                                                         </tr>
                                                        
-                                                    </tbody>
+                                                    </thead>
                                                     
                                                     <tbody class="edit_product-more" class="travelerinfo"></tbody>
 
                                                     <tr>
                                                         <td colspan="8" align="center" class="tecs">
-                                                            <span class="add_icon edit_add_prod"><i class="ri-add-circle-line"></i>Add </span>
+                                                            <span class="add_icon edit_add_prod"><i class="ri-add-circle-line"></i> </span>
                                                         </td>
                                                     </tr>
                 
@@ -825,13 +825,13 @@
                                         </div>
 				                        <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                           
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table" style="padding-top:0px;">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
-                                                            <td >No</td>
+                                                           
                                                             <td>Contact Person</td>
                                                             <td>Designation</td>
                                                             <td>Mobile</td>
@@ -840,7 +840,7 @@
                                                             
                                                         </tr>
                                                        
-                                                    </tbody>
+                                                    </thead>
                                                     
                                                     <tbody class="single_contact_edit" class="travelerinfo">
                                                         
@@ -881,13 +881,13 @@
                                         </div>
 				                        <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                           
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table" style="padding-top:0px;">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
-                                                            <td >No</td>
+                                                            
                                                             <td>Contact Person</td>
                                                             <td>Designation</td>
                                                             <td>Mobile</td>
@@ -895,17 +895,17 @@
                                                            
                                                         </tr>
                                                        
-                                                    </tbody>
+                                                    </thead>
                                                     
                                                     <tbody class="" class="travelerinfo">
 
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td><input type="text" name="contact_person" class="form-control" required></td>
-                                                            <td><input type="text" name="contact_designation" class="form-control" required></td>
-                                                            <td><input type="text" name="contact_mobile" class="form-control cond_telephone" required></td>
-                                                            <td> <input type="email" name="contact_email" class="form-control" required></td>
-                                                            <input type="hidden" name="contact_customer_creation" class="contact_add_cust" value="">
+                                                           
+                                                            <td><input type="text" name="contact_person" class="form-control text-center" required></td>
+                                                            <td><input type="text" name="contact_designation" class="form-control text-center" required></td>
+                                                            <td><input type="text" name="contact_mobile" class="form-control cond_telephone text-center" required></td>
+                                                            <td> <input type="email" name="contact_email" class="form-control text-center" required></td>
+                                                            <input type="hidden" name="contact_customer_creation" class="contact_add_cust text-center" value="">
                                                             
                                                         </tr>
                                                         
@@ -952,15 +952,15 @@
 				                        <div class="modal-body">
                                 
                                             
-                                            <div class="card-seprate_divider"></div>
+                                            
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
 
                                                     <!--Single Row Start-->
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basiInput" class="form-label">CR No</label>
                                                             </div>
@@ -979,7 +979,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">	CR Expiry</label>
                                                             </div>
@@ -997,7 +997,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID</label>
                                                             </div>
@@ -1018,7 +1018,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Est.ID Expery</label>
                                                             </div>
@@ -1036,7 +1036,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">Signatory Name</label>
                                                             </div>
@@ -1054,7 +1054,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                      <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Number</label>
                                                             </div>
@@ -1076,7 +1076,7 @@
                                                     <!--Single Row Start-->
                                                     
                                                     <div class="col-lg-12">
-                                                        <div class="row align-items-center mb-2">
+                                                        <div class="row align-items-center mb-2 margin_zero">
                                                             <div class="col-lg-3">
                                                                 <label for="basicInput" class="form-label">QID Expiry</label>
                                                             </div>
@@ -1092,15 +1092,15 @@
 
                                                     <!--image section start-->
 
-                                                    <div class="card-body">
-                                                        <table id="" class="table table-bordered table-striped delTable display dataTable" style="border: 1px solid #9E9E9E;">
+                                                    <div class="card-body content_table">
+                                                        <table id="" class="table  table-striped delTable display " >
                                                             <thead>
                                                                 
                                                                 <tr>
                                                                     
-                                                                    <th class="cust_img_rgt_border cust_img_text_stl" style="width:50%">Name</th>
-                                                                    <th class="cust_img_rgt_border cust_img_text_stl" style="width:40%">View</th>
-                                                                    <th class="cust_img_text_stl">Edit</th>
+                                                                    <td class="cust_img_rgt_border cust_img_text_stl" style="width:50%">Name</td>
+                                                                    <td class="cust_img_rgt_border cust_img_text_stl" style="width:40%">View</td>
+                                                                    <td class="cust_img_text_stl">Edit</td>
                                                                     
                                                                 </tr>
 

@@ -261,13 +261,13 @@ class ProFormaInvoice extends BaseController
             'pf_added_on'               => date('Y-m-d'),
         ];
 
-        if ($_FILES['pf_file']['name'] !== '') 
+        /*if ($_FILES['pf_file']['name'] !== '') 
 		{   
            
 
             $AttachFileName = $this->uploadFile('pf_file','uploads/ProformaInvoice');
             $insert_data['pf_file'] = $AttachFileName;
-        }
+        }*/
 
         $sales_order_id = $this->common_model->InsertData('crm_proforma_invoices',$insert_data);
 
@@ -412,11 +412,11 @@ class ProFormaInvoice extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td>'.$i.'</td>
-            <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td class="text-center" style="padding: 10px 10px;">'.$i.'</td>
+            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'" class="form-control text-end" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
@@ -639,7 +639,7 @@ class ProFormaInvoice extends BaseController
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td style="width:40%">
+                                            <td>
                                                 <select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
                                                 
                                                 foreach($products as $prod){
@@ -656,7 +656,7 @@ class ProFormaInvoice extends BaseController
                                             <td><input type="number" name="pp_rate['.$j.']" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id text-end" required></td>
                                             <td><input type="number" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" required></td>
                                             <td><input type="number" name="pp_amount['.$j.']" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id text-end" readonly></td>
-                                            <td class="row_remove remove-btnpp" data-id="'.$prod_det->spd_id .'"><i class="ri-close-line"></i></td>
+                                            <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->spd_id .'" style="padding: 10px 10px;"><i class="ri-close-line"></i></td>
                                         </tr>';
                                         $i++;
                                         $j++;
@@ -862,14 +862,14 @@ class ProFormaInvoice extends BaseController
                 
 
                 $data['prod_details'] .='<tr class="prod_row2 performa_remove" id="'.$prod_det->pp_id.'">
-                <td class="si_no2">'.$i.'</td>
-                <td style="width:34%"><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
-                <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control"  readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'"  class="form-control" readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control edit_total_amount" readonly></td>
-                <td style="width: 13%;">
+                <td class="si_no2 text-center" style="padding:10px 10px;">'.$i.'</td>
+                <td ><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
+                <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
+                <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control text-center"  readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'"  class="form-control text-end" readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
+                <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control edit_total_amount text-end" readonly></td>
+                <td  style="padding:10px 10px;">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
                     <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
                 </td>

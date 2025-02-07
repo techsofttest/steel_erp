@@ -20,21 +20,21 @@
                     <div class="card-seprate_divider"></div>
 
                     <div class="live-preview">
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-lg-6">
                                 <div class="row">
 
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Customer Name</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_customer_name" class="form-control" required>
+                                                <input type="text" name="cc_customer_name" class="form-control input_length" required>
                                             </div>
 
                                         </div> 
@@ -47,14 +47,14 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Account Head</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9 select_parent">
-                                                <select class="form-select account_head_select account_head_clz" name="cc_account_head"  required>
+                                                <select class="form-select account_head_select account_head_clz input_length" name="cc_account_head"  required>
                                                     
                                                 </select>
                                                 
@@ -70,14 +70,14 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Account ID</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_account_id" class="form-control account_id" readonly required>
+                                                <input type="text" name="cc_account_id" class="form-control account_id input_length" readonly required>
                                             </div>
 
                                         </div> 
@@ -90,14 +90,14 @@
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Post Box</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="number" name="cc_post_box" class="form-control" required>
+                                                <input type="number" name="cc_post_box" class="form-control input_length" required>
                                             </div>
 
                                         </div>
@@ -109,14 +109,14 @@
 
                                     <!-- Single Row Start -->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Telephone</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_telephone" id="cc_telephone"  class="form-control"  required>
+                                                <input type="text" name="cc_telephone" id="cc_telephone"  class="form-control input_length"  required>
                                             </div>
 
                                         </div> 
@@ -127,14 +127,14 @@
 
                                         <!--Single Row Start-->
                                         <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Fax</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_fax" id="cc_fax" class="form-control">
+                                                <input type="text" name="cc_fax" id="cc_fax" class="form-control input_length">
                                             </div>
 
                                         </div>
@@ -145,14 +145,14 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Email</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="email" name="cc_email" class="form-control" required>
+                                                <input type="email" name="cc_email" class="form-control input_length" required>
                                             </div>
 
                                         </div> 
@@ -166,14 +166,14 @@
                                 <div class="row">
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Credit Term</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_credit_term" class="form-control" required>
+                                                <input type="text" name="cc_credit_term" class="form-control input_length" required>
                                             </div>
 
                                         </div> 
@@ -185,14 +185,14 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Credit Period (Days)</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="number" name="cc_credit_period" class="form-control" required>
+                                                <input type="number" name="cc_credit_period" class="form-control input_length" required>
                                             </div>
 
                                         </div> 
@@ -204,14 +204,14 @@
 
                                     <!--Single Row Start-->
                                     <div class="col-lg-12">
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basicInput" class="form-label">Credit Limit</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="number" name="cc_credit_limit" class="form-control" required>
+                                                <input type="number" name="cc_credit_limit" class="form-control input_length" required>
                                             </div>
 
                                         </div>
@@ -253,11 +253,11 @@
                 </div>
 				<div class="modal-body">
 
-                    <div class="card-seprate_divider"></div>
+                   
 
-                    <div class="live-preview">
-                        <table  class="table table-bordered table-striped delTable">
-                            <tbody class="travelerinfo">
+                    <div class="live-preview content_table" style="padding:0px;">
+                        <table  class="table table-bordered table-striped delTable add_table">
+                            <thead class="travelerinfo">
                                 <tr>
                                     <td >No</td>
                                     <td>Contact Person</td>
@@ -266,13 +266,15 @@
                                     <td>Email</td>
                                     <td>Action</td>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr class="prod_row">
                                     <td class=" si_no">1</td>
                                     <td><input type="text" name="contact_person[0]" class="form-control " required></td>
                                     <td><input type="text" name="contact_designation[0]" class="form-control " required></td>
                                     <td><input type="text" name="contact_mobile[0]"  class="form-control contact_mobile_clz" required></td>
                                     <td> <input type="email" name="contact_email[0]" class="form-control " required></td>
-                                    <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                    <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                 </tr>
                             </tbody>
                             <tbody class="person-more" class="travelerinfo"></tbody>
@@ -314,20 +316,20 @@
                     
                         
                     
-                    <div class="card-seprate_divider"></div>
+                   
 
                     <div class="live-preview">
                         
-                        <div class="row">
+                        <div class="row ">
 
                             <!--Single Row Start-->
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basiInput" class="form-label">CR No</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="number" name="cc_cr_number" class="form-control">
+                                        <input type="number" name="cc_cr_number" class="form-control input_length">
                                     </div>
                                 </div>
                                 
@@ -338,12 +340,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">	CR Attach</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="file" name="cc_attach_cr" class="form-control">
+                                        <input type="file" name="cc_attach_cr" class="form-control input_length">
                                     </div>
                                 </div>
                                 
@@ -356,12 +358,12 @@
                             <!--Single Row Start-->
                             
                                 <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">	CR Expiry</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_cr_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_cr_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker input_length">
                                     </div>
                                 </div>
                                 
@@ -374,12 +376,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">Est.ID</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="number" name="cc_est_id" class="form-control">
+                                        <input type="number" name="cc_est_id" class="form-control input_length">
                                     </div>
                                 </div>
                                 
@@ -392,12 +394,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">Est.ID Attach</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="file" name="cc_est_id_attach" class="form-control">
+                                        <input type="file" name="cc_est_id_attach" class="form-control input_length ">
                                     </div>
                                 </div>
                                 
@@ -410,12 +412,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">Est.ID Expery</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker input_length ">
                                     </div>
                                 </div>
                                 
@@ -428,12 +430,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">Signatory Name</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_signatory_name" class="form-control">
+                                        <input type="text" name="cc_signatory_name" class="form-control input_length ">
                                     </div>
                                 </div>
                                 
@@ -446,12 +448,12 @@
                             <!--Single Row Start-->
                             
                                 <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">QID Number</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="number" name="cc_qid_number" class="form-control">
+                                        <input type="number" name="cc_qid_number" class="form-control input_length input_length ">
                                     </div>
                                 </div>
                                 
@@ -465,12 +467,12 @@
                             
                             <div class="col-lg-12">
                                 
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">QID Attach</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="file" name="cc_qid_attach" class="form-control">
+                                        <input type="file" name="cc_qid_attach" class="form-control input_length ">
                                     </div>
                                 </div>
                                 
@@ -484,12 +486,12 @@
                             <!--Single Row Start-->
                             
                             <div class="col-lg-12">
-                                <div class="row align-items-center mb-2">
+                                <div class="row align-items-center mb-2 margin_zero">
                                     <div class="col-lg-3">
                                         <label for="basicInput" class="form-label">QID Expiry</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_qid_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker">
+                                        <input type="text" name="cc_qid_expiry" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker input_length ">
                                     </div>
                                 </div>
                                 
@@ -755,7 +757,7 @@
 			if(y < max_fieldss){ //max input box allowed
 				y++;
                 i++;
-	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control contact_per_clz' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control cont_desig_clz' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control contact_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>");
+	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control contact_per_clz' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control cont_desig_clz' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control contact_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
                 slno();
 			}
 	    });
@@ -789,7 +791,7 @@
             
             $('body .prod_row').each(function() {
 
-                $(this).find('.si_no').html('<td class="si_no">' + pp + '</td>');
+                $(this).find('.si_no').html('<td class="si_no" style="border:unset;padding: 10px 10px;">' + pp + '</td>');
 
                 $(this).find('.contact_per_clz').attr("name", "contact_person["+rp+"]");
 
@@ -852,7 +854,7 @@
         
         $('body ' + classname + ':last').select2({
                 placeholder: "select Account Name",
-                theme: "default form-control-",
+                theme: "default form-control- customer_width",
                 dropdownParent: $($('' + classname + ':last').closest('' + parent + '')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/CustomerCreation/FetchTypes",

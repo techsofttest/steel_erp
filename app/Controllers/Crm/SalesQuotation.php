@@ -38,10 +38,8 @@ class SalesQuotation extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('qd_reffer_no');
+        $searchColumns = array('qd_reffer_no','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_quotation_details','qd_id',$searchValue,$searchColumns);
-    
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
@@ -57,6 +55,10 @@ class SalesQuotation extends BaseController
             )
 
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_quotation_details','qd_id',$searchValue,$searchColumns,'',$joins);
+    
+        
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_quotation_details','qd_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
@@ -455,12 +457,12 @@ class SalesQuotation extends BaseController
             {
 
                 $data['cost_details'] .='<tr>
-                <td><input type="text"  value="'.$j.'" class="form-control " readonly></td>
+                <td><input type="text"  value="'.$j.'" class="form-control text-center" readonly></td>
                 <td colspan="2"><input type="text"  value="'.$cost_cal_data->product_details.'" class="form-control" readonly></td>
-                <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control" readonly></td>
-                <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control" readonly></td>
+                <td><input type="text"  value="'.$cost_cal_data->qc_unit.'" class="form-control text-center" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_qty.'" class="form-control text-center" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_rate.'" class="form-control text-end" readonly></td>
+                <td> <input type="text" value="'.$cost_cal_data->qc_amount.'" class="form-control text-end" readonly></td>
                 </tr>'; 
 
                 $j++;
@@ -934,7 +936,7 @@ class SalesQuotation extends BaseController
             {
 
             $data['product_detail'] .=  '<tr class="prod_row enq_remove quot_row_leng" id="'.$prod_det->pd_id.'">
-                <td style="width: 5%;" class="si_no"><input type="text"  value="'.$i.'" class="form-control " readonly></td>
+                <td style="width: 5%;" class="si_no "><input type="text"  value="'.$i.'" class="form-control " readonly></td>
                 <td>
                     <select class="form-select droup_product add_prod" name="qpd_product_description['.$k.']" required>';
                     
@@ -945,14 +947,14 @@ class SalesQuotation extends BaseController
                         }
                     $data['product_detail'] .='</select>
                 </td>
-                <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id" required></td>
-                <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id" required></td>
-                <td><input type="number" name="qpd_rate['.$k.']"  class="form-control rate_clz_id" required></td>
-                <td><input type="number" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id" required></td>
-                <td><input type="number" name="qpd_amount['.$k.']" class="form-control amount_clz_id" readonly></td>
+                <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id " required></td>
+                <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id " required></td>
+                <td><input type="number" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>
+                <td><input type="number" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id " required></td>
+                <td><input type="number" name="qpd_amount['.$k.']" class="form-control amount_clz_id text-end" readonly></td>
                 <input type="hidden" name="qpd_prod_id['.$k.']" class="rename_prod_id" value="'.$prod_det->pd_id.'">
                 <input type="hidden" name="enquiry_id['.$k.']" class="rename_enq_id" value="'.$prod_det->pd_enquiry_id.'">
-                <td class="remove-btnpp row_remove" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i></td>
+                <td class="remove-btnpp row_remove text-center" style="padding:10px 10px;" data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i></td>
             </tr>';
             $i++;
             $k++;
@@ -1176,7 +1178,7 @@ class SalesQuotation extends BaseController
             <td> <input type="text" value="'.format_currency($prod_det->qpd_rate).'" class="form-control text-end" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->qpd_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->qpd_amount).'" class="form-control edit_prod_total_amount text-end" readonly></td>
-            <td style="width:15%;padding-top: 10px;">
+            <td style="width:15%;padding: 10px 10px;">
                 <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
@@ -1214,7 +1216,7 @@ class SalesQuotation extends BaseController
            
             <td><input type="text" value="'.format_currency($cost_prod->qc_rate).'" class="form-control text-end" readonly></td>
             <td><input type="text" value="'.format_currency($cost_prod->qc_amount).'" class="form-control edit_cal_amount text-end" readonly></td>
-            <td style="width:15%;padding-top: 10px;">
+            <td style="width:15%;padding: 10px 10px;">
                 <a href="javascript:void(0)" class="edit edit-color edit_cost_cal_btn" data-id="'.$cost_prod->qc_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_cost_cal_btn" data-id="'.$cost_prod->qc_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>

@@ -38,12 +38,10 @@ class DeliverNote extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('dn_reffer_no');
+        $searchColumns = array('dn_reffer_no','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_delivery_note','dn_id',$searchValue,$searchColumns);
-    
-        ##Joins if any //Pass Joins as Multi dim array
-        $joins = array(
+         ##Joins if any //Pass Joins as Multi dim array
+         $joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -51,6 +49,10 @@ class DeliverNote extends BaseController
             ),
            
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_delivery_note','dn_id',$searchValue,$searchColumns,'',$joins);
+    
+       
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_delivery_note','dn_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -556,11 +558,11 @@ class DeliverNote extends BaseController
 
        foreach($product_details as $prod_det){
         $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$prod_det->dpd_id.'">
-                                        <td class="si_no">'.$i.'</td>
-                                        <td style="width:40%"><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-                                        <td><input type="text" name="dpd_unit[]" value="'.$prod_det->dpd_unit.'" class="form-control" readonly></td>
-                                        <td><input type="number" name="dpd_order_qty[]" value="'.$prod_det->dpd_order_qty.'"  class="form-control " readonly></td>
-                                        <td><input type="number" name="dpd_delivery_qty[]" value="'.$prod_det->dpd_current_qty.'"  class="form-control " readonly ></td>
+                                        <td class="si_no text-center">'.$i.'</td>
+                                        <td><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
+                                        <td><input type="text" name="dpd_unit[]" value="'.$prod_det->dpd_unit.'" class="form-control text-center" readonly></td>
+                                        <td><input type="number" name="dpd_order_qty[]" value="'.$prod_det->dpd_order_qty.'"  class="form-control text-center" readonly></td>
+                                        <td><input type="number" name="dpd_delivery_qty[]" value="'.$prod_det->dpd_current_qty.'"  class="form-control text-center" readonly ></td>
                                         
                                             
                                         </tr>';

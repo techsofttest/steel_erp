@@ -35,6 +35,10 @@
 .content_table tr {
     text-align: unset;
 }
+.prod_add_more {
+    color: #ff0000b5;
+    font-size: 20px;
+}
 
 </style>
 
@@ -83,7 +87,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_reffer_no" id="soid" value="" class="form-control input_length" required >
+                                                                        <input type="text" name="so_reffer_no" id="uid" value="" class="form-control input_length" required >
                                                                     </div>
 
                                                                 </div> 
@@ -103,7 +107,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker input_length" required readonly>
+                                                                        <input type="text" name="so_date" id="" autocomplete="off" class="form-control datepicker_ap input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -344,7 +348,7 @@
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 <td style="width: 5%;">SI No.</td>
-                                                                <td>Product Description</td>
+                                                                <td>Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td style="width: 8%;">Unit</td>
                                                                 <td style="width: 5%;">Qty</td>
                                                                 <td style="width: 8%;">Rate</td>
@@ -370,7 +374,7 @@
                                                                 <td colspan="5" class="sales_order_amount_in_word"></td>
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
                                                                 <td style="padding: 10px 10px;text-align: center;">Total</td>
-                                                                <td><input type="text" name="so_amount_total" class="amount_total form-control" readonly></td>
+                                                                <td><input type="text" name="so_amount_total" class="amount_total form-control text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
                                                             
@@ -1352,6 +1356,14 @@
                         <!--contact detail modal section end-->
 
 
+
+                         <!--add product modal start-->
+                       
+                            <?= $this->include('crm/add_product_modal') ?>
+
+                        <!--#######-->
+
+
                       
                         <!--second contact detail modal section start-->
                          
@@ -1504,6 +1516,29 @@
         });
 		
         /*###*/
+
+
+          /*Add New Product start*/
+
+        $("body").on('click', '.prod_add_more', function(){ 
+	        
+            $('#AddSalesOrder').modal('hide');
+
+            $('#AddProdModal').modal('show');
+
+        });
+
+
+        
+        /*close product modal (open enquiry modal)*/
+
+        $('#AddProdModal').on('hidden.bs.modal', function () {
+
+            $('#AddSalesOrder').modal('show')
+
+        })
+
+/*#####*/
 
 
 
@@ -1698,6 +1733,8 @@
               
                 $('#ContactDeatils2').modal('show');
 
+                $('#AddSalesOrder').modal('hide')
+
                 $('.customer_creation_id2').val(customer_id);
 
                 $('.droup_customer_id').val('').trigger('change');
@@ -1725,7 +1762,10 @@
         });
 
         /*###### */
-        
+
+
+      
+
 
 
 
@@ -1915,7 +1955,7 @@
                 
                 pp++;
                 
-                $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td style='width:40%'><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
 			}
 
@@ -2206,7 +2246,7 @@
                 success:function(data)
                 {
 
-                $('#soid').val(data);
+                $('#uid').val(data);
 
                 }
 

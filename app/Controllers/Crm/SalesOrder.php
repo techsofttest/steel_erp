@@ -38,12 +38,10 @@ class SalesOrder extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('so_reffer_no');
+        $searchColumns = array('so_reffer_no','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_sales_orders','so_id',$searchValue,$searchColumns);
-    
-        ##Joins if any //Pass Joins as Multi dim array
-        $joins = array(
+         ##Joins if any //Pass Joins as Multi dim array
+         $joins = array(
             array(
                 'table' => 'crm_customer_creation',
                 'pk'    => 'cc_id',
@@ -56,6 +54,10 @@ class SalesOrder extends BaseController
             )
         );
         
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_sales_orders','so_id',$searchValue,$searchColumns,'',$joins);
+    
+       
         //$searchColumns = array('so_reffer_no','cc_customer_name');
 
         ## Fetch records
@@ -444,9 +446,9 @@ class SalesOrder extends BaseController
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id" required></td>
             <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id"  required></td>
-            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id" step="0.01"  required></td>
+            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end" step="0.01 "  required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id" required></td>
-            <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id" readonly></td>
+            <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
             <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">
             <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->qpd_id.'"><i class="ri-close-line"></i></td>

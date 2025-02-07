@@ -97,7 +97,7 @@
                                                                     
                                         <!-- Single Row Start -->
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -107,7 +107,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text"   name="product_details" class="form-control edit_product_name" required>
+                                                <input type="text"   name="product_details" class="form-control edit_product_name input_length" required>
 
                                             </div>
 
@@ -118,7 +118,7 @@
 
                                         <!-- Single Row Start -->
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -128,7 +128,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <select class="form-select edit_product_head_select product_head edit_product_head"  name="product_product_head" required></select>
+                                                <select class="form-select edit_product_head_select product_head edit_product_head input_length"  name="product_product_head" required></select>
 
                                             </div>
 
@@ -139,7 +139,7 @@
 
                                         <!-- Single Row Start -->
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
 
                                             <div class="col-col-md-3 col-lg-3">
 
@@ -149,7 +149,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
 
-                                                <input type="text"   name="product_code"  class="form-control edit_produt_code" required readonly>
+                                                <input type="text"   name="product_code"  class="form-control edit_produt_code input_length" required readonly>
 
                                             </div>
 
@@ -451,7 +451,7 @@
          /*droupdrown*/
         $(".edit_product_head_select").select2({
         placeholder: "Select Product Head",
-        theme : "default form-control-",
+        theme : "default form-control- customer_width",
         dropdownParent: $('#EditProdModal'),
         ajax: {
                 url: "<?= base_url(); ?>Crm/Products/FetchTypes",

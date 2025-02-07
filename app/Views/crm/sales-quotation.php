@@ -60,7 +60,7 @@
         /*color: black !important;*/
         width: 100% !important;
         background: #f5f5f5bd;
-        border: none;
+        border: none !important;
         height: 37px !important;
     }
     .selectize-input{
@@ -133,11 +133,11 @@
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basiInput" class="form-label">Referance</label>
+                                                                        <label for="basiInput" class="form-label">Reference</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_reffer_no" id="sqid"  value="<?php echo $sales_quotation_id; ?>" class="form-control input_length" required readonly>
+                                                                        <input type="text" name="qd_reffer_no" id="uid"  value="<?php echo $sales_quotation_id; ?>" class="form-control input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -157,7 +157,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker input_length" required readonly>
+                                                                        <input type="text" name="qd_date" autocomplete="off"  class="form-control datepicker_ap input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -439,22 +439,22 @@
                                                                 
                                                                 <td colspan="5" class=""></td>
                                                                 <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                                                <td>Total</td>
-                                                                <td><input type="text" name="qd_sales_amount" class="amount_total form-control" readonly></td>
+                                                                <td style="text-align: center;padding: 10px 10px;">Total</td>
+                                                                <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 
                                                                 <td colspan="5"></td>
-                                                                <td>Cost</td>
-                                                                <td><input type="text" class="form-control total_cost_cal" readonly></td>
+                                                                <td style="text-align: center;padding: 10px 10px;">Cost</td>
+                                                                <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 
                                                                 <td colspan="5"></td>
-                                                                <td>Percentage</td>
-                                                                <td><input type="text" class="form-control total_percent" readonly></td>
+                                                                <td style="text-align: center;padding: 10px 10px;">Percentage</td>
+                                                                <td><input type="text" class="form-control total_percent text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
                                                         </tbody>
@@ -1035,19 +1035,19 @@
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3" class=""></td>
                                                                 <!--<input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">-->
-                                                                <td style="padding-top: 10px;">Product</td>
+                                                                <td style="padding: 10px 10px;">Product</td>
                                                                 <td><input type="text" name="" class="edit_total_prod form-control text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
-                                                                <td style="padding-top: 10px;">Cost</td>
+                                                                <td style="padding:10px 10px;">Cost</td>
                                                                 <td><input type="text" class="form-control edit_total_cost_cal text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"></td>
                                                                 <td colspan="3"></td>
-                                                                <td style="padding-top: 10px;">Percentage</td>
+                                                                <td style="padding: 10px 10px;">Percentage</td>
                                                                 <td class="edit_total_percent"><input type="text" class="form-control edit_total_percent text-end" readonly></td>
                                                             </tr>
                                                         </tbody>
@@ -1756,19 +1756,19 @@
                                                                
                                                                 <td colspan="5" class=""></td>
                                                                 
-                                                                <td>Product</td>
+                                                                <td class="text-center" style="padding:10px 10px">Product</td>
                                                                 <td><input type="text" name="" class="view_btn_total_prod form-control text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 
                                                                 <td colspan="5"></td>
-                                                                <td>Cost</td>
+                                                                <td class="text-center" style="padding:10px 10px">Cost</td>
                                                                 <td><input type="text" class="form-control view_btn_total_cost_cal text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 
                                                                 <td colspan="5"></td>
-                                                                <td>Percentage</td>
+                                                                <td class="text-center" style="padding:10px 10px">Percentage</td>
                                                                 <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent text-end" readonly></td>
                                                             </tr>
                                                         </tbody>
@@ -2192,13 +2192,13 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td>Serial No.</td>
+                                        <td style="width: 5%;">SI No.</td>
                                         <td>Product Description</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
-                                        <td>Discount</td>
-                                        <td>Amount</td>
+                                        <td style="width: 8%;">Unit</td>
+                                        <td style="width: 5%;">Qty</td>
+                                        <td style="width: 8%;">Rate</td>
+                                        <td style="width: 8%;">Discount</td>
+                                        <td style="width: 10%;">Amount</td>
                                        
                                     </tr>
                                     
@@ -2217,18 +2217,18 @@
 
 
 
-                        <div class="mt-4 content_table" >
+                        <div class="mt-4 content_table" style="padding-top: 0px;">
                                                     
                             <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5>
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td>Serial No.</td>
+                                        <td style="width: 5%;">SI No.</td>
                                         <td colspan="2">Cost Of Materials / Services</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
-                                        <td>Amount</td>
+                                        <td style="width: 8%;">Unit</td>
+                                        <td style="width: 5%;">Qty</td>
+                                        <td style="width: 8%;">Rate</td>
+                                        <td style="width: 10%;">Amount</td>
                                         
                                     </tr>
                                     
@@ -2249,23 +2249,23 @@
                                        
                                         <td colspan="5" class="sales_quotation_amount_in_word"></td>
                                         <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                        <td>Product</td>
-                                        <td><input type="text" name="qd_sales_amount" class="amount_total form-control" readonly></td>
-                                        <td></td>
+                                        <td style="text-align: center;padding: 10px 10px;">Product</td>
+                                        <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
+                                        
                                     </tr>
                                     <tr>
                                         
                                         <td colspan="5"></td>
-                                        <td>Cost</td>
-                                        <td><input type="text" class="form-control total_cost_cal" readonly></td>
-                                        <td></td>
+                                        <td style="text-align: center;padding: 10px 10px;">Cost</td>
+                                        <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
+                                        
                                     </tr>
                                     <tr>
                                         
                                         <td colspan="5"></td>
-                                        <td>Percentage</td>
-                                        <td><input type="text" class="form-control total_percent" readonly></td>
-                                        <td></td>
+                                        <td style="text-align: center;padding: 10px 10px;">Percentage</td>
+                                        <td><input type="text" class="form-control total_percent text-end" readonly></td>
+                                       
                                     </tr>
                                 </tbody>
                                 
@@ -2739,7 +2739,7 @@
                 success:function(data)
                 {
 
-                    $('#sqid').val(data);
+                    $('#uid').val(data);
 
                 }
 
@@ -2749,6 +2749,15 @@
 
 
         /*####*/
+
+        /*close product modal (open enquiry modal)*/
+
+        $('#ContactDeatils2').on('hidden.bs.modal', function () {
+
+            $('#AddSalesQuotation').modal('show')
+        })
+
+/*#####*/
 
 
 
@@ -2773,7 +2782,7 @@
               
             pp++; 
  
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no' style='width: 5%;'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no' style='width: 5%;'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             

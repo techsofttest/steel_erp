@@ -546,10 +546,10 @@ class SalesReturn extends BaseController
         {
             $data['prod_details'] .='<tr>
             <td>'.$i.'</td>
-            <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control text-end" readonly></td>
             <td><input type="text" value="'.format_currency($prod_det->srp_discount).'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control text-end" readonly></td>
             </tr>'; 
@@ -1070,12 +1070,12 @@ class SalesReturn extends BaseController
                 {
 
                     $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$cash_invoice_prod->cipd_id.'">
-                                                <td class="si_no">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding:10px 10px">'.$i.'</td>
                                                 
-                                                <td><input type="text" name="dpd_prod_det[]" value="'.$cash_invoice_prod->product_details.'" class="form-control"  readonly></td>
+                                                <td><input type="text" name="dpd_prod_det[]" value="'.$cash_invoice_prod->product_details.'" class="form-control text-center"  readonly></td>
                                             
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$cash_invoice_prod->cipd_qtn.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$cash_invoice_prod->cipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="number" name="dpd_order_qty[]" value="'.$cash_invoice_prod->cipd_qtn.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td style="padding:10px 10px"><input type="checkbox"  name="product_select[]" id="'.$cash_invoice_prod->cipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -1089,12 +1089,12 @@ class SalesReturn extends BaseController
                 {
 
                     $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$credit_invoice_prod->ipd_id.'">
-                                                <td class="si_no">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding:10px 10px">'.$i.'</td>
                                                 
                                                 <td><input type="text" name="dpd_prod_det[]" value="'.$credit_invoice_prod->product_details.'" class="form-control"  readonly></td>
                                             
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$credit_invoice_prod->ipd_quantity.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="number" name="dpd_order_qty[]" value="'.$credit_invoice_prod->ipd_quantity.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td style="padding:10px 10px"><input type="checkbox" name="product_select[]" id="'.$credit_invoice_prod->ipd_reffer_no.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                 
                                             </tr>';
                                                 $i++;
@@ -1161,13 +1161,13 @@ class SalesReturn extends BaseController
                         $qty = $sales_det->cipd_qtn - $sales_det->cipd_delivered_qty;
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sales_det->cipd_id.'">
-                                                        <td class="si_no">'.$i.'</td>
-                                                        <td style="width:40%"><input type="text"   value="'.$sales_det->product_details.'" class="form-control" readonly></td>
-                                                        <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id" ></td>
-                                                        <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
-                                                        <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id" readonly></td>
-                                                        <td><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id" required readonly></td>
+                                                        <td class="si_no text-center" style="padding:10px 10px">'.$i.'</td>
+                                                        <td><input type="text"   value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control text-center" readonly></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" ></td>
+                                                        <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td style="padding:10px 10px"><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" name="cash_id[]" value="'.$sales_det->cipd_id.'"> 
                                                         <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'">
@@ -1189,13 +1189,13 @@ class SalesReturn extends BaseController
                         $new_qty = $sale_det->ipd_quantity - $sale_det->ipd_delivered_qty;
 
                         $data['product_detail'] .='<tr class="prod_row sales_return_remove" id="'.$sale_det->ipd_id.'">
-                                                        <td class="si_no">'.$i.'</td>
-                                                        <td style="width:40%"><input type="text"    value="'.$sale_det->product_details.'" class="form-control" readonly></td>
-                                                        <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id"></td>
-                                                        <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id"  readonly></td>
-                                                        <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id" readonly></td>
-                                                        <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id" required readonly></td>
+                                                        <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
+                                                        <td "><input type="text"    value="'.$sale_det->product_details.'" class="form-control" readonly></td>
+                                                        <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control text-center" readonly></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center"></td>
+                                                        <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'">
                                                         <input type="hidden" name="credit_id[]" value="'.$sale_det->ipd_id.'"> 
                                                         <input type="hidden" name="credit_main_table[]" value="'.$sale_det->ipd_credit_invoice.'">  
@@ -1396,13 +1396,13 @@ class SalesReturn extends BaseController
             foreach($product_details_data as $prod_det)
             {
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
-                <td>'.$i.'</td>
-                <td style="width: 40%;"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-                <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control " readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control " readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->srp_discount).'" class="form-control " readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control " readonly></td>
+                <td class="text-center" style="padding:10px 10px">'.$i.'</td>
+                <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+                <td><input type="text"  value="'.$prod_det->srp_unit.'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_quantity).'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_rate).'" class="form-control text-end" readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_discount).'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->srp_amount).'" class="form-control text-end" readonly></td>
                 
                 </tr>'; 
                  $i++;

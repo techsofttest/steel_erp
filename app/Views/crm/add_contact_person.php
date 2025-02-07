@@ -10,9 +10,9 @@
                 </div>
 				<div class="modal-body">
                     <div class="card-seprate_divider"></div>
-                        <div class="live-preview">
+                        <div class="live-preview content_table" style="padding-top:0px">
                             <table  class="table table-bordered table-striped delTable">
-                                <tbody class="travelerinfo">
+                                <thead class="travelerinfo">
                                     <tr>
                                         <td >No</td>
                                         <td>Contact Person </td>
@@ -21,6 +21,8 @@
                                         <td>Email</td>
                                         
                                     </tr>
+                                </thead>
+                                <tbody>
                                     <tr>
                                         <td>1</td>
                                         <td><input type="text" name="contact_person" class="form-control " required></td>

@@ -31,7 +31,7 @@
                                                         <div class="card-body">
                                                             <div class="live-preview">
                                                                 <!-- Single Row Start -->
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
                                                                     
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Code</label>
@@ -46,7 +46,7 @@
                                                                 
                                                                 <!--Single Row Start-->
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
                                                                     
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Product Head</label>
@@ -157,14 +157,14 @@
                                 <div class="card-body">
                                     <div class="live-preview">
                                         <!-- Single Row Start -->
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
                                             
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput" class="form-label">Code</label>
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ph_code"  class="form-control edit_prod_code" required>
+                                                <input type="text" name="ph_code"  class="form-control edit_prod_code " required>
                                             </div>
                                                     
                                         </div> 
@@ -172,7 +172,7 @@
                                         
                                         <!--Single Row Start-->
 
-                                        <div class="row align-items-center mb-2">
+                                        <div class="row align-items-center mb-2 margin_zero">
                                             
                                             <div class="col-col-md-3 col-lg-3">
                                                 <label for="basiInput"  class="form-label">Product Head</label>

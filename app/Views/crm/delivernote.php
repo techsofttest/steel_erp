@@ -1,5 +1,5 @@
 <style>
-.cust_more_modal {
+/*.cust_more_modal {
     
     position: absolute;
     right: 32px;
@@ -17,19 +17,19 @@
     display: flex;
     align-items: center;
     justify-content: unset !important;
-}
-.input_length
+}*/
+/*.input_length
 {
     width: 95% !important;
-}
-.select2.select2-container{
+}*/
+/*.select2.select2-container{
     width: 95% !important;
 }
 .disabled-span{
     pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed;
-}
+}*/
 </style>
 
 
@@ -67,7 +67,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -77,14 +77,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="dnid" value="" class="form-control input_length" required>
+                                                                        <input type="text" name="dn_reffer_no" id="uid" value="" class="form-control input_length" required>
                                                                     </div>
 
                                                                 </div> 
@@ -97,7 +97,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
@@ -118,7 +118,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2 select_data">
+                                                                <div class="row align-items-center mb-2 select_data margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
@@ -145,7 +145,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Sales Order</label>
@@ -192,7 +192,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">LPO Ref</label>
@@ -215,7 +215,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                     <label for="basicInput" class="form-label">Contact Person</label>
@@ -239,7 +239,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Terms</label>
@@ -261,7 +261,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
@@ -319,7 +319,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         
-                                                        <div class="row row_align mb-4">
+                                                        <div class="row row_align mb-4" style="display:none;">
                                                             <div class="col-lg-2">
                                                                 <label for="basicInput" class="form-label">Attach</label>
                                                             </div>
@@ -398,7 +398,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -408,14 +408,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                                                        <input type="text" name="" id="" class="form-control view_ref input_length" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -428,14 +428,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control view_date" readonly>
+                                                                        <input type="text" name="" class="form-control view_date input_length" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -449,7 +449,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Customer Name</label>
@@ -457,7 +457,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                     
-                                                                     <input type="text" name="" class="form-control view_customer" readonly>
+                                                                     <input type="text" name="" class="form-control view_customer input_length" readonly>
                                                                
                                                                     </select>
                                                                     </div>
@@ -475,7 +475,7 @@
                                                             
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Sales Order </label>
@@ -483,7 +483,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                       
-                                                                        <input type="text" name="" class="form-control view_sales" readonly>
+                                                                        <input type="text" name="" class="form-control view_sales input_length" readonly>
                                                                         
                                                                     </div>
 
@@ -512,7 +512,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">LPO Ref</label>
@@ -520,7 +520,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="" class="form-control view_lpo" readonly>
+                                                                        <input type="text" name="" class="form-control view_lpo input_length" readonly>
                                                                     
                                                                     </div>
 
@@ -535,7 +535,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                     <label for="basicInput" class="form-label">Contact Person</label>
@@ -543,7 +543,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                        
-                                                                       <input type="text" name="" class="form-control view_contact" readonly>
+                                                                       <input type="text" name="" class="form-control view_contact input_length" readonly>
                                                                        
                                                                     </div>
 
@@ -559,14 +559,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Terms</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control view_payment" readonly>
+                                                                        <input type="text" name="" class="form-control view_payment input_length" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -581,14 +581,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Project</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name=""  class="form-control view_project" readonly>
+                                                                        <input type="text" name=""  class="form-control view_project input_length" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -608,15 +608,15 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td>Serial No.</td>
+                                                                <td style="width: 5%;">SI No.</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Order Qty</td>
-                                                                <td>Delivered Qty</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 8%;">Order Qty</td>
+                                                                <td style="width: 10%;">Delivered Qty</td>
                                                                
                                                                 
                                                             </tr>
@@ -1531,7 +1531,7 @@
         /*customer droup drown search*/
         $(".customer_sel").select2({
             placeholder: "Select Customer",
-            theme : "default form-control- input_length",
+            theme : "default form-control- ",
             dropdownParent: $('.select_data'),
             ajax: {
                 url: "<?= base_url(); ?>Crm/DeliverNote/FetchCustomers",
@@ -1981,7 +1981,7 @@
             success:function(data)
             {
 
-                $('#dnid').val(data);
+                $('#uid').val(data);
 
             }
 

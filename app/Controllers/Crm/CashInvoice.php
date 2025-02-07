@@ -38,10 +38,8 @@ class CashInvoice extends BaseController
  
         ## Total number of records with filtering
        
-        $searchColumns = array('ci_reffer_no');
+        $searchColumns = array('ci_reffer_no','cc_customer_name');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_cash_invoice','ci_id',$searchValue,$searchColumns);
-    
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             array(
@@ -56,6 +54,10 @@ class CashInvoice extends BaseController
             ),
            
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('crm_cash_invoice','ci_id',$searchValue,$searchColumns,'',$joins);
+    
+        
         ## Fetch records
         $records = $this->common_model->GetRecord('crm_cash_invoice','ci_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
     
@@ -580,7 +582,7 @@ class CashInvoice extends BaseController
             <td></td>
             <td></td>
             <td></td>
-            <td>Total</td>
+            <td class="text-center" style="padding:10px 10px">Total</td>
             <td><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
             
         </tr> ';
@@ -613,11 +615,11 @@ class CashInvoice extends BaseController
             $amount  = format_currency($prod_det->cipd_amount);
 
             $data['prod_details'] .='<tr>
-            <td>'.$i.'</td>
-            <td style="width:40%"><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+            <td class="text-center" style="padding:10px 10px;">'.$i.'</td>
+            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
             <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$rate.'" class="form-control text-center" readonly></td>
+            <td><input type="text" value="'.$rate.'" class="form-control text-end" readonly></td>
             <td><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
             </tr>'; 
@@ -1109,12 +1111,12 @@ class CashInvoice extends BaseController
                 $new_qty = $sales_det->spd_quantity - $sales_det->spd_delivered_qty;
 
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
-                                                <td class="si_no">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding: 10px 10px;">'.$i.'</td>
                                                
-                                                <td style="width:40%"><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
-                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$new_qty.'"  class="form-control order_qty" readonly></td>
-                                                <td><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                                <td><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
+                                                <td><input type="number" name="dpd_order_qty[]" value="'.$new_qty.'"  class="form-control order_qty text-center" readonly></td>
+                                                <td style="padding: 10px 10px;"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                     
                                                     
                                                 </tr>';
@@ -1181,13 +1183,13 @@ class CashInvoice extends BaseController
                     
 
                     $data['product_detail'] .='<tr class="prod_row cash_invoice_remove" id="'.$sales_det->spd_id.'">
-                                                        <td class="si_no">'.$i.'</td>
-                                                        <td style="width:40%"><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
-                                                        <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control" readonly></td>
-                                                        <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id" ></td>
-                                                        <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id"  readonly></td>
-                                                        <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id" readonly></td>
-                                                        <td><input type="number" name="cipd_amount[]" value="'.$amount.'" class="form-control amount_clz_id" required readonly></td>
+                                                        <td class="si_no text-center" style="padding:10px 10px">'.$i.'</td>
+                                                        <td ><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
+                                                        <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id text-center" ></td>
+                                                        <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="number" name="cipd_amount[]" value="'.$amount.'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="cipd_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" class="selected_sales_prod" name="cipd_sales_prod[]" value="'.$sales_det->spd_id.'">
                                                         <input type="hidden" name="sales_order_id[]" value="'.$sales_det->spd_sales_order.'">
@@ -1317,8 +1319,9 @@ class CashInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total</td>
-                <td class=""><input type="text" value="'.$total_amount.'" class="form-control " readonly></td>
+                <td class="text-center" style="padding:10px 10px;">Total</td>
+                <td class=""><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
+                <td></td>
                 
             </tr> ';
 
@@ -1434,14 +1437,14 @@ class CashInvoice extends BaseController
                 $amount = format_currency($prod_det->cipd_amount);
 
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
-                <td>'.$i.'</td>
-                <td style="width:40%"><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-                <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$rate.'" class="form-control " readonly></td>
-                <td style="width:10px"><input type="text" value="'.$discount.'" class="form-control " readonly></td>
-                <td><input type="text" value="'.$amount.'" class="form-control " readonly></td>
-                <td style="width:15%"><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
+                <td class="text-center" style="padding:10px 10px;">'.$i.'</td>
+                <td ><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
+                <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.$rate.'" class="form-control text-end" readonly></td>
+                <td ><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
+                <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
+                <td style="padding:10px 10px;"><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
                 <input type="hidden" value="'.$prod_det->cipd_cash_invoice.'" class="edit_ci_prod_id">
                 <input type="hidden" value="'.$prod_det->cipd_id.'" class="hidden_cash_prod_id">
                 </tr>'; 
@@ -1499,8 +1502,8 @@ class CashInvoice extends BaseController
            $data['add_more'] ="";
 
            $data['add_more'] .='<tr>
-                            <td colspan="8" align="center" class="tecs">
-                                <span class="add_icon add_more_product"><i class="ri-add-circle-line"></i>Add </span>
+                            <td colspan="7" align="center" class="tecs">
+                                <span class="add_icon add_more_product"><i class="ri-add-circle-line"></i> </span>
                             <td>
                         </tr>';
         }
@@ -1554,13 +1557,13 @@ class CashInvoice extends BaseController
                 $new_qty = $cash_prod->spd_quantity - $cash_prod->spd_delivered_qty;
                 
                 $data['product_detail'] .='<tr class="prod_row select_prod_remove edit_select_div" id="'.$cash_prod->spd_id.'">
-                                                <td class="si_no">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
                                                 <td><input type="text"  value="'.$cash_prod->product_details.'" class="form-control"  readonly></td>
-                                                <td><input type="text" name="cipd_unit[]" value="'.$cash_prod->spd_unit.'" class="form-control" readonly></td>
-                                                <td><input type="number" name="cipd_qtn[]" value="'.$new_qty.'"  class="form-control edit_order_qty" readonly></td>
+                                                <td><input type="text" name="cipd_unit[]" value="'.$cash_prod->spd_unit.'" class="form-control text-center" readonly></td>
+                                                <td><input type="number" name="cipd_qtn[]" value="'.$new_qty.'"  class="form-control edit_order_qty text-center" readonly></td>
                                                
                                                
-                                                <td><input type="checkbox" name="sales_prod_id['.$cash_prod->spd_id.']" value="'.$cash_prod->spd_id.'"></td>
+                                                <td class="text-center" style="padding:10px 10px;"><input type="checkbox"  name="sales_prod_id['.$cash_prod->spd_id.']" value="'.$cash_prod->spd_id.'"></td>
                                                 
                                                 <input type="hidden" name="sales_prod_id2[]" value="'.$cash_prod->spd_id.'">
                                                 <input type="hidden" name="cipd_prod_det[]" value="'.$cash_prod->product_id.'">

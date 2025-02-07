@@ -1,12 +1,12 @@
 <style>
    
    
-    
+    /*in use in enquiry add*/
     span.select2.select_width
     {
         width: 100% !important;
         background: #f5f5f5bd;
-        border: none;
+        border: none !important;
         height: 37px !important;
     }
     .prod_add_more
@@ -90,7 +90,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="enquiry_reff" id="enqid" class="form-control input_length" value="<?php echo $enquiry_id; ?>" required readonly>
+                                                                        <input type="text" name="enquiry_reff" id="uid" class="form-control input_length" value="<?php echo $enquiry_id; ?>" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -298,7 +298,7 @@
                                                         </thead>    
                                                         <tbody class="travelerinfo">
                                                             <tr class="prod_row">
-                                                                <td style="width: 4%;"class="si_no">1</td>
+                                                                <td style="width: 4%;padding:10px 10px;"class="si_no">1</td>
                                                                 <td style="">
                                                                 <!--<span class="add_more_icon prod_add_more">New</span>--->
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[0]" required>
@@ -307,8 +307,8 @@
                                                                     </select>
                                                                 </td>
                                                                
-                                                                <td style="width: 8%;"><input type="text" name="pd_unit[0]" class="form-control" required></td>
-                                                                <td style="width: 8%;"><input type="number" name="pd_quantity[0]" class="form-control" required></td>
+                                                                <td style="width: 8%;"><input type="text" name="pd_unit[0]" class="form-control text-center" required></td>
+                                                                <td style="width: 8%;"><input type="number" name="pd_quantity[0]" class="form-control text-center" required></td>
                                                                 <td style="width:8% ;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                                             </tr>
                                                         </tbody>
@@ -763,7 +763,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select edit_assign_to" name="enquiry_assign_to " required>
+                                                                    <select class="form-select edit_assign_to" name="enquiry_assign_to" required>
                                                                         
                                                                 
                                                                      </select>
@@ -1250,7 +1250,7 @@
 			    pp++;
                 j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz' required=''></td><td style='width: 8%;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 10px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/
@@ -1512,7 +1512,7 @@
 
                 success:function(data)
                 {  
-                    $('#enqid').val(data);
+                    $('#uid').val(data);
                     $('.once_form_submit').attr('disabled', false); // Disable this input.
                 
                 }
