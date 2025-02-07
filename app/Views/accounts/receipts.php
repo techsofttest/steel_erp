@@ -47,7 +47,7 @@
 
                                     <div class="live-preview">
 
-                                        <div class="row align-items-start">
+                                        <div class="row align-items-start no_margin_rows">
 
                                             <!-- Section 1 -->
 
@@ -290,9 +290,9 @@
 
 
 
-                                            <div class="col-col-md-12 col-lg-12">
+                                            <div class="col-col-md-12 col-lg-12 add_more_container">
 
-
+                                
                                                 <table class="table table-bordered" style="overflow-y:scroll;">
 
                                                     <thead>
@@ -302,6 +302,7 @@
                                                             <th>Amount</th>
                                                             <th>Link</th>
                                                             <th>Narration</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
 
@@ -347,10 +348,10 @@
                                                             </td>
 
 
-                                                            <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+                                                            <td> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
 
 
-                                                        </tr>
+                                                            </tr>
 
 
 
@@ -378,9 +379,9 @@
 
                                                         <td colspan="1"></td>
 
-                                                        <td colspan="3" align="left" class="amount_in_words_add"></td>
+                                                        <td colspan="2" align="left" class="amount_in_words_add"></td>
 
-                                                        <td align="right" colspan="3">Total</td>
+                                                        <td align="right" colspan="2">Total</td>
 
                                                         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
 
@@ -781,7 +782,7 @@
 
                                     <div class="live-preview">
 
-                                        <div class="row align-items-start">
+                                        <div class="row align-items-start no_margin_rows">
 
                                             <!-- Section 1 -->
 
@@ -1053,7 +1054,7 @@
 
 
 
-        <div class="col-col-md-12 col-lg-12">
+        <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
             <table class="table table-bordered" style="overflow-y:scroll;">
@@ -1065,7 +1066,7 @@
                         <th>Invoice</th>
                         <th>Narration</th>
                         <th>Amount</th>
-
+                        <th>Actions</th>
                     </tr>
                 </thead>
 

@@ -593,7 +593,7 @@ class Reports extends BaseController
             }
             else
             {
-                $dates = date('d-F-Y',strtotime($start_date)) . " to " . date('d-F-Y',strtotime($end_date));
+                $dates = date('d M Y',strtotime($start_date)) . " to " . date('d M Y',strtotime($end_date));
             }
 
             foreach($data['vouchers']['vouchers'] as $vc){ 
@@ -622,7 +622,7 @@ class Reports extends BaseController
                 
                 <td align="">'.$vc->reference.'</td>
                 
-                <td align="center">'.date('d-m-Y',strtotime($vc->transaction_date)).'</td>
+                <td align="center">'.date('d M Y',strtotime($vc->transaction_date)).'</td>
                 
                 <td align="right">'.format_currency($vc->debit_amount).'</td>
                 
@@ -951,16 +951,27 @@ class Reports extends BaseController
 
         }
 
+
+        $type="";
+        if(!empty($this->request->getGet('ac_type')))
+        {
+
+        $type = $this->request->getGet('ac_type');
+
+        }
+
         
         //$data['payments'] = $this->report_model->ARPPayments($start_date,$account_head,$account_type,$account);
 
         //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
 
-        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account);
+        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account,$type);
 
-        $data['post_dated_cheques'] = $this->report_model->ARPReceiptPDC($start_date,$account_head,$account_type,$account);
+        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$account_head,$account_type,$account,$type);
 
-        $data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
+        //$data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
+
+        $data['c_balance'] = 0;
 
         //echo $data['c_balance']; exit;
 
@@ -984,9 +995,6 @@ class Reports extends BaseController
                 foreach($data['transactions'] as $vc)
                 {   
 
-                    if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
-
-                    if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
 
                     $q=1;
 
@@ -1002,7 +1010,7 @@ class Reports extends BaseController
 
                     $pdf_data .= " <td align='center'>{$new_date}</td>";
 
-                    $pdf_data .= "<td align='center'>-</td>";
+                    $pdf_data .= "<td align='center'>{$vc->purchase_order}</td>";
                 
 
 
@@ -1047,7 +1055,7 @@ class Reports extends BaseController
     
                     $pdf_data .= "<td align='right'>{$credit_am}</td>";
                     
-                    $pdf_data .= "<td align='right'>-</td>";
+                    $pdf_data .= "<td align='right'>".format_currency($vc->pdc_amount)."</td>";
 
                     $pdf_data .= "<td  align='right'>(".format_currency($balance).")</td>";
                     
@@ -1312,6 +1320,27 @@ class Reports extends BaseController
 
                 //Total 
 
+               foreach($data['post_dated_cheques'] as $pdc){
+                
+               $pdc_data .='
+                    <tr>
+
+                        <td>'.$pdc->reference.'</td>
+
+                        <td>'.date('d M Y',strtotime($pdc->transaction_date)).'</td>
+
+                        <td>'.$pdc->cheque_no.'</td>
+
+                        <td>'.date('d M Y',strtotime($pdc->cheque_date)).'</td>
+
+                        <td>'.$pdc->bank.'</td>
+
+                        <td align="right">'.format_currency($pdc->amount).'</td>
+
+                    </tr>';
+
+                 } 
+
                 $pdc_data .='
                 <tr>
                 <td style="border-top: 2px solid"></td>
@@ -1319,7 +1348,7 @@ class Reports extends BaseController
                 <td style="border-top: 2px solid"></td>
                 <td style="border-top: 2px solid"></td>
                 <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"><b>10,000</b></td>
+                <td style="border-top: 2px solid"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
                 </tr>
                 ';
 
@@ -1852,6 +1881,13 @@ $accounts = $data['accounts'];
 
             foreach($accounts as $account)
             {
+                if(empty($_GET['zero']))
+                {
+                if( ($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                { 
+                continue;
+                }
+                }
 
                 if($account->at_name=="Income")
                 {
@@ -1867,6 +1903,13 @@ $accounts = $data['accounts'];
 
             foreach($accounts as $account)
             {
+                if(empty($_GET['zero']))
+                {
+                if( ($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                { 
+                continue;
+                }
+                }
 
                 if($account->at_name=="Cost of Sales")
                 {
@@ -1882,6 +1925,13 @@ $accounts = $data['accounts'];
 
             foreach($accounts as $account)
             {
+                if(empty($_GET['zero']))
+                {
+                if( ($account->ending_balance_month==0) && ($account->ending_balance_year==0))
+                { 
+                continue;
+                }
+                }
 
                 if($account->at_name=="Expenses")
                 {

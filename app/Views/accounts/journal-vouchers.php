@@ -45,7 +45,7 @@
         <div class="card-body">
             <div class="live-preview">
             
-                    <div class="row align-items-start justify-content-start">
+                    <div class="row align-items-start justify-content-start no_margin_rows">
 
                     <div class="col-lg-6">
 
@@ -88,7 +88,7 @@
                         </div>
 
                           
-                        <div class="col-col-md-12 col-lg-12">
+                        <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
                         <table class="table table-bordered" style="overflow-y:scroll;">
@@ -101,6 +101,7 @@
                                         <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
+                                        <th>Actions</th>
                                         </tr>
                                     </thead>
 
@@ -145,7 +146,7 @@
 
                                     <tr>
 
-                                    <td colspan="6">
+                                    <td colspan="7">
 
                                     <div class="col-lg-12 text-center">
                                                             
@@ -441,7 +442,7 @@
             </div>
             <div class="modal-body">
                 
-                    <div class="row">
+                    <div class="row no_margin_rows">
                         <div class="col-lg-12">
                             <div class="card">
                                 
@@ -496,7 +497,7 @@
                         </div>
 
                           
-                        <div class="col-col-md-12 col-lg-12">
+                        <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
                         <table class="table table-bordered" style="overflow-y:scroll;">
@@ -509,6 +510,7 @@
                                         <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
+                                        <th>Actions</th>
                                         </tr>
                                     </thead>
 
@@ -554,9 +556,9 @@
 
                                     <td colspan="4" align="right">Total</td>
                                    
-                                    <th id="total_amount_debit_disp_edit">0</th>
+                                    <th id="total_amount_debit_disp_edit" class="text-end">0</th>
 
-                                    <th  id="total_amount_credit_disp_edit">0</th>
+                                    <th  id="total_amount_credit_disp_edit" class="text-end">0</th>
                                     
                                     <input type="hidden" id="total_amount_debit_edit" name="total_debit">
 

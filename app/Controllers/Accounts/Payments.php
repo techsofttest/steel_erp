@@ -497,7 +497,7 @@ class Payments extends BaseController
         <td>Debit</td>
         <td>-</td>
         <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
-        <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pd_payment_amount."' class='form-control'></td>
+        <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pd_payment_amount."' class='form-control text-end'></td>
         <!--<td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";
 
@@ -534,7 +534,7 @@ class Payments extends BaseController
 
             <td></td>
 
-            <td><input name='linked_pv_paid[$invoice->pd_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pdi_payment_amount."' class='form-control'></td>
+            <td><input name='linked_pv_paid[$invoice->pd_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pdi_payment_amount."' class='form-control text-end'></td>
             
             <td></td>
 
@@ -588,7 +588,7 @@ class Payments extends BaseController
             <input type='hidden' name='advance_invoice_id[$invoice->pd_id][]' value='".$advance->pa_id."'>
             <input type='hidden' name='advance_po_id[$invoice->pd_id][]' value='".$advance->pa_purchase_order."'>
 
-            <input type='number' step='0.01' class='form-control' max='".$max_po_payable."' name='advance_payment_amount[$invoice->pd_id][]' value='".$advance->pa_advance_amount."'>
+            <input type='number' step='0.01' class='form-control text-end' max='".$max_po_payable."' name='advance_payment_amount[$invoice->pd_id][]' value='".$advance->pa_advance_amount."'>
             
             </td>
 

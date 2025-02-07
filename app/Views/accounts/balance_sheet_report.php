@@ -290,6 +290,8 @@
                                             foreach($account_heads as $account)
                                             {
 
+                                              
+
                                                 if(in_array($account->at_name,$asset_types))
                                                 {
 
@@ -304,6 +306,8 @@
 
                                             foreach($account_heads as $account)
                                             {
+
+                                               
 
                                                 if(in_array($account->at_name,$liability_types))
                                                 {
@@ -354,6 +358,15 @@
                                                 <?php 
                                                 $total_perc = 0;
                                                 foreach($ah->Charts as $ca){ 
+
+                                                if(empty($_GET['zero']))
+                                                {
+                                                if( ($ca->balance==0))
+                                                { 
+                                                continue;
+                                                }
+                                                }
+                                                    
                                                 $total_assets= $total_assets+$ca->balance;
                                                 if($ca->balance>0)
                                                 {
@@ -438,7 +451,7 @@
 
                                             <td align=""><b><?php echo $ah->ah_account_name; ?></b></td>
 
-                                            <td> </td>
+                                            <td></td>
 
                                             <td></td>
 
@@ -457,6 +470,13 @@
                                                 <?php 
                                                 $total_perc = 0;
                                                 foreach($ah->Charts as $ca){ 
+                                                if(empty($_GET['zero']))
+                                                {
+                                                if( ($ca->balance==0))
+                                                { 
+                                                continue;
+                                                }
+                                                }
                                                 $total_liabilities = $total_liabilities+ $ca->balance;
                                                 if($ca->balance>0)
                                                 {

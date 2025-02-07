@@ -924,18 +924,25 @@ margin-bottom: 0px !important;
 }
 
 
-.add_more_table
+.add_more_container
 {
-padding: 0px 25px;
-padding-top: 40px;
+ padding: 0px 25px;
+ padding-top: 40px;
 }
 
-.add_more_table td {
+.add_more_container table
+{
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid black;
+}
+
+.add_more_container td, .add_more_container th{
     border: 1px solid black;
     color: var(--vz-body-color);
 }
 
-.add_more_table thead
+.add_more_container thead
 {
     background: #BDD7EE;
     color: black;

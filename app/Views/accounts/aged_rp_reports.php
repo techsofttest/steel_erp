@@ -225,7 +225,7 @@
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Adjusted <input type="checkbox" name="" value="">
+                                                                    Adjusted <input type="checkbox" name="adjust_type" value="adjusted">
                                                                     </div>                                         
 
                                                                     </div>
@@ -239,7 +239,7 @@
                                                                     </div>  
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Semi Adjusted <input type="checkbox" name="" value="">
+                                                                    Semi Adjusted <input type="checkbox" name="adjust_type" value="semi_adjusted">
                                                                     </div>
 
                                                                     </div>
@@ -253,7 +253,7 @@
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Un-Adjusted <input type="checkbox" name="" value="">
+                                                                    Un-Adjusted <input type="checkbox" name="adjust_type" value="non_adjusted" value="">
                                                                     </div>
 
                                                                     </div>
@@ -339,7 +339,7 @@
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="" class="table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
 
@@ -385,7 +385,7 @@
     
                                                 <td><?php echo date('d M Y',strtotime($trn->transaction_date)); ?></td>
     
-                                                <td></td>
+                                                <td><?php if(!empty($trn->purchase_order)) { echo $trn->purchase_order; } ?></td>
     
                                                 <td align="right" class="text-end"> 
     
@@ -413,23 +413,17 @@
     
                                                 <td align="right">
     
-                                                <?php 
-                                                if($trn->method=="1")
-                                                {
-                                                
-                                                if($trn->debit_amount !="") { 
-                                                echo  format_currency($trn->debit_amount);
-                                                $pdc_total = $pdc_total+$trn->debit_amount;
-                                                }
+                                               <?php 
+                                               
+                                               if(!empty($trn->pdc_amount))
+                                               {
+                                               echo format_currency($trn->pdc_amount);
 
-                                                if($trn->credit_amount !="") { 
-                                                echo  format_currency($trn->credit_amount); 
-                                                $pdc_total = $pdc_total+$trn->credit_amount;
-                                                }
+                                               $pdc_total = $pdc_total + $trn->pdc_amount;
 
-                                                }
-                                                ?>
-    
+                                               }
+
+                                               ?>
     
                                                 </td>
     
@@ -485,7 +479,7 @@
 
                                                 <th>Bank</th>
 
-                                                <th>Amount</th>
+                                                <th class="text-end">Amount</th>
 
                                             </tr>
 
@@ -499,17 +493,17 @@
 
                                     <tr>
 
-                                        <td><?= $pdc->r_ref_no; ?></td>
+                                        <td><?= $pdc->reference; ?></td>
 
-                                        <td><?= date('d-m-Y',strtotime($pdc->r_date)); ?></td>
+                                        <td><?= date('d M Y',strtotime($pdc->transaction_date)); ?></td>
 
-                                        <td><?= $pdc->r_cheque_no; ?></td>
+                                        <td><?= $pdc->cheque_no; ?></td>
 
-                                        <td><?= date('d-m-Y',strtotime($pdc->r_cheque_date)); ?></td>
+                                        <td><?= date('d M Y',strtotime($pdc->cheque_date)); ?></td>
 
-                                        <td><?= $pdc->bank_name ?></td>
+                                        <td><?= $pdc->bank ?></td>
 
-                                        <td><?= $pdc->r_amount ?></td>
+                                        <td align="right"><?= format_currency($pdc->amount) ?></td>
 
                                     </tr>
 

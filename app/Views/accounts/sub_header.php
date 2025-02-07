@@ -40,9 +40,6 @@ $uri = service('request')->uri;
         <a class="nav-link <?php if($uri->getSegment(2)=="BankRec") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/BankRec" >Bank Reconciliation</a>
     </li>
 
-    <li class="nav-item waves-effect waves-light">
-    <a class="nav-link <?php if($uri->getSegment(2)=="Reports") {echo "active" ;} ?>" href="<?= base_url(); ?>Accounts/Reports/Ledger" >Reports</a>
-    </li>
 </ul>
 
 

@@ -250,7 +250,7 @@
                                     
                                     <div class="card-body">
                                         
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable0" class="table table-bordered table-striped delTable display dataTable">
                                             
 
                                             <thead>

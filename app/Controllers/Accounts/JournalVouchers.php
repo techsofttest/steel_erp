@@ -528,8 +528,8 @@ class JournalVouchers extends BaseController
         </td>
         
         <td><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
-        <td><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control debit_amount_edit\" value=\"".$debit_amount."\"></td>
-        <td><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control credit_amount_edit\" value=\"".$credit_amount."\" ></td>
+        <td><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control text-end debit_amount_edit\" value=\"".$debit_amount."\"></td>
+        <td><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control text-end credit_amount_edit\" value=\"".$credit_amount."\" ></td>
         <th> <a href=\"javascript:void(0);\" class=\"del_elem_edit\" style=\"display:none;\"><i class='ri-close-line'></i></a></th>
         </tr>";
 

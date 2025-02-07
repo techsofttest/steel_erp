@@ -101,7 +101,7 @@
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account">
+                                                                            <select class="form-control" name="filter_account" required>
 
                                                                             <option value="">Select Account</option>
                                                                             

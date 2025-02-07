@@ -271,6 +271,8 @@ class AccountsModel extends Model
             ->groupEnd();
 
         // Fetch and return the results
+        
+
         return $query->get()->getResult();
     }
 

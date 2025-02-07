@@ -374,7 +374,7 @@
                                     <div class="card-body">
                                         <div class="live-preview">
 
-                                            <div class="row align-items-start">
+                                            <div class="row align-items-start no_margin_rows">
 
 
 
@@ -458,7 +458,7 @@
 
                                                         <div class="col-col-md-9 col-lg-9">
 
-                                                            <input type="file" name="p_cheque_copy" class="form-control" required>
+                                                            <input type="file" name="p_cheque_copy" class="form-control">
 
                                                         </div>
 
@@ -578,7 +578,7 @@
                                                 <input id="total_amount_val" type="hidden" name="p_amount" class="form-control" value="">
 
 
-                                                <div class="col-col-md-12 col-lg-12">
+                                                <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
                                                     <table class="table table-bordered" style="overflow-y:scroll;">
@@ -590,6 +590,7 @@
                                                                 <th>Amount</th>
                                                                 <th>Link</th>
                                                                 <th>Narration</th>
+                                                                <th>Actions</th>
                                                             </tr>
                                                         </thead>
 
@@ -635,7 +636,7 @@
                                                                 </td>
 
 
-                                                                <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+                                                                <td> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
 
 
                                                             </tr>
@@ -666,9 +667,9 @@
 
                                                             <td colspan="1"></td>
 
-                                                            <td colspan="3" align="left" class="sales_quotation_amount_in_word1"></td>
+                                                            <td colspan="2" align="left" class="sales_quotation_amount_in_word1"></td>
 
-                                                            <td align="right" colspan="3">Total</td>
+                                                            <td align="right" colspan="2">Total</td>
 
 
                                                             <th id="total_amount">0</th>
@@ -943,7 +944,7 @@
                                 <div class="card-body">
                                     <div class="live-preview">
 
-                                        <div class="row align-items-start">
+                                        <div class="row align-items-start no_margin_rows">
 
 
 
@@ -1166,7 +1167,7 @@
                                             <input type="hidden" name="p_amount" class="form-control" value="">
 
 
-                                            <div class="col-col-md-12 col-lg-12">
+                                            <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
                                                 <table class="table table-bordered" style="overflow-y:scroll;">
@@ -1178,6 +1179,7 @@
                                                             <th>Invoice</th>
                                                             <th>Narration</th>
                                                             <th>Amount</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
 
