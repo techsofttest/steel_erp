@@ -951,6 +951,12 @@ margin-bottom: 0px !important;
     font-weight: 500
 }
 
+.add_more_container input,.add_more_container select,.add_more_container input:focus,.add_more_container select:focus
+,.add_more_container .select2-container
+{
+border:unset !important;
+}
+
 
 
 </style>
