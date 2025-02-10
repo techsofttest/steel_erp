@@ -297,7 +297,7 @@
 
                                                     <thead>
                                                         <tr>
-                                                            <th>Sl No</th>
+                                                            <th>Sl</th>
                                                             <th>Credit Account</th>
                                                             <th>Amount</th>
                                                             <th>Link</th>
@@ -360,7 +360,7 @@
 
                                                             <td colspan="6">
 
-                                                                <div class="col-lg-12 text-end">
+                                                                <div class="col-lg-12 text-center">
 
                                                                     <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
 
@@ -377,11 +377,8 @@
 
                                                     <tr>
 
-                                                        <td colspan="1"></td>
-
-                                                        <td colspan="2" align="left" class="amount_in_words_add"></td>
-
-                                                        <td align="right" colspan="2">Total</td>
+                                                     
+                                                        <td align="right" colspan="5">Total</td>
 
                                                         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
 
@@ -403,7 +400,7 @@
                                             <div class="row">
 
 
-                                                <div class="col-lg-12 text-center">
+                                                <div class="col-lg-12 text-end">
 
 
                                                     <div style="">
@@ -417,7 +414,7 @@
                                                             -->
                                                             <tr>
 
-                                                                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                                                                <button class="btn btn-success once_form_submit submit_btn" name="main_submit" type="submit">Save</button>
                                                                 <!--<td><button class="submit_btn">PDF</button></td>-->
                                                             </tr>
                                                         </table>
@@ -496,14 +493,14 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10">
+                                                    <div class="col-lg-10 add_more_container p-0">
 
                                                         <table class="table table-bordered" id="add_invoice_data_sec">
 
 
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Sl No</th>
+                                                                    <th>Sl</th>
                                                                     <th>Date</th>
                                                                     <th>Invoice No</th>
                                                                     <th>LPO Ref</th>
@@ -642,7 +639,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10">
+                                                    <div class="col-lg-10 add_more_contai p-0">
 
                                                         <table class="table table-bordered" id="">
 
@@ -651,7 +648,7 @@
 
                                                                 <tr>
 
-                                                                    <th>Sl No</th>
+                                                                    <th>Sl</th>
                                                                     <th>Invoice No</th>
                                                                     <th>LPO Ref</th>
                                                                     <th>Amount</th>
@@ -1150,11 +1147,9 @@
 
                 <tr class="d-none">
 
-                    <td colspan="1"></td>
+                    
 
-                    <td colspan="3" align="left" class="amount_in_words_edit"></td>
-
-                    <td align="right" colspan="3">Total</td>
+                    <td align="right" colspan="5">Total</td>
 
                     <th id="total_amount_edit">0</th>
 
@@ -1177,14 +1172,14 @@
 
 
 
-                         <div class="col-lg-12 text-center">
+                         <div class="col-lg-12 text-end">
 
 
                                  <div style="">
                                                        
 
                                                             
-                                        <button class="submit_btn btn btn-success" type="submit">Update</button></td>
+                                        <button class="submit_btn btn btn-success once_form_submit" type="submit">Update</button></td>
                                                            
                                                         
                                 </div>
@@ -1266,7 +1261,7 @@
 
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Sl No</th>
+                                                                    <th>Sl</th>
                                                                     <th>Credit Account</th>
                                                                     <th>Amount</th>
                                                                     <th>Link</th>
@@ -1410,7 +1405,7 @@
 
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Sl No</th>
+                                                                    <th>Sl</th>
                                                                     <th>Date</th>
                                                                     <th>Invoice No</th>
                                                                     <th>LPO Ref</th>

@@ -24,11 +24,11 @@
     <div class="card">
        
         <div class="card-body">
-            <div class="live-preview">
+            <div class="live-preview no_margin_rows">
                
             
 
-                         <div class="row align-items-center mb-2">
+                         <div class="row align-items-center mb-2 no_margin_rows">
 
                         <div class="col-col-md-3 col-lg-3">
                                 <label for="basiInput" class="form-label">Account Name</label>
@@ -102,7 +102,7 @@
 
 </div>
             <div class="modal-footer justify-content-center">
-                <button type="submit" data-plus-as-tab="false" class="btn btn btn-success">Save</button>
+                <button type="submit" data-plus-as-tab="false" class="btn btn btn-success once_form_submit">Save</button>
             </div>
         </div>
         </form>
@@ -181,11 +181,10 @@
                             <div class="card">
                                 
                                 <div class="card-body">
-                                    <div class="live-preview">
+                                    <div class="live-preview no_margin_rows">
                                         
                                             <div class="row align-items-end">
 
-                                                
 
                                                     
                                                 <div class="row">
@@ -254,7 +253,7 @@
                 
             </div>
             <div class="modal-footer">
-                <button type="submit" name="submit" class="btn btn btn-success">Save</button>
+                <button type="submit" name="submit" class="btn btn btn-success once_form_submit">Save</button>
             </div>
         </div>
         </form>

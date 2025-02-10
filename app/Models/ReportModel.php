@@ -3050,6 +3050,20 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
        $query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_method = 1 OR `{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL) ";
 
+       if($adjusted=="non_adjusted")
+       {
+       //$query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL)";
+       $query .= "AND (`{$cash_invoice_table}`.ci_paid_status = 0)";
+       }
+       else if($adjusted=="semi_adjusted")
+       {
+       $query .= "AND (`{$cash_invoice_table}`.ci_paid_status = 1)";
+       }
+       else if ($adjusted=="adjusted")
+       {
+       $query .= "AND (`{$cash_invoice_table}`.ci_paid_status = 2)";
+       }
+
 
         if ($date_to != "") {
             $query .= " AND ";
@@ -3115,6 +3129,21 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         //$query .="{$credit_invoice_table}.cci_paid_status != 3";
 
         $query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_method = 1 OR `{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL) ";
+
+
+        if($adjusted=="non_adjusted")
+        {
+        //$query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL)";
+        $query .= "AND (`{$credit_invoice_table}`.cci_paid_status = 0)";
+        }
+        else if($adjusted=="semi_adjusted")
+        {
+        $query .= "AND (`{$credit_invoice_table}`.cci_paid_status = 1)";
+        }
+        else if ($adjusted=="adjusted")
+        {
+        $query .= "AND (`{$credit_invoice_table}`.cci_paid_status = 2)";
+        }
 
 
         if ($date_to != "") {
@@ -3188,6 +3217,20 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         //if payables
 
         $query .= " (`{$this->db->getPrefix()}accounts_payments`.pay_method = 1 OR `{$this->db->getPrefix()}accounts_payments`.pay_id IS NULL) ";
+
+        if($adjusted=="non_adjusted")
+        {
+        //$query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL)";
+        $query .= "AND (`{$pv_table}`.pv_status = 0)";
+        }
+        else if($adjusted=="semi_adjusted")
+        {
+        $query .= "AND (`{$pv_table}`.pv_status = 1)";
+        }
+        else if ($adjusted=="adjusted")
+        {
+        $query .= "AND (`{$pv_table}`.pv_status = 2)";
+        }
 
         if ($date_to != "") {
             $query .= " AND ";

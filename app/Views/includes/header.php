@@ -241,9 +241,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     {
 
     color: white !important;
-    position: relative;
+    position: absolute;
     top: -45px;
-
+    width:100%;
     }
 
 
@@ -949,6 +949,10 @@ margin-bottom: 0px !important;
     font-size: 14px;
     text-align: center;
     font-weight: 500
+}
+
+.add_more_container thead td{
+    padding: 10px 0px !important;
 }
 
 .add_more_container input,.add_more_container select,.add_more_container input:focus,.add_more_container select:focus

@@ -234,7 +234,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10">
+                                                    <div class="col-lg-10 add_more_container p-0">
 
                                                         <table class="table table-bordered">
 
@@ -654,7 +654,7 @@
 
                                                             <tr>
 
-                                                                <td colspan="6">
+                                                                <td colspan="7">
 
                                                                     <div class="col-lg-12 text-center">
 
@@ -675,11 +675,9 @@
 
                                                         <tr>
 
-                                                            <td colspan="1"></td>
+                                                         
 
-                                                            <td colspan="2" align="left" class="sales_quotation_amount_in_word1"></td>
-
-                                                            <td align="right" colspan="2">Total</td>
+                                                            <td align="right" colspan="6">Total</td>
 
 
                                                             <th id="total_amount">0</th>
@@ -703,7 +701,7 @@
                                             <div class="row">
 
 
-<div class="col-lg-12 text-center">
+<div class="col-lg-12 text-end">
 
 
     <div style="">
@@ -717,7 +715,7 @@
             -->
             <tr>
 
-                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <button class="btn btn-success submit_btn once_form_submit" name="main_submit" type="submit">Save</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -794,7 +792,7 @@
                                             <div class="row align-items-end">
 
 
-                                                <div class="col-col-md-12 col-lg-12">
+                                                <div class="col-col-md-12 col-lg-12 add_more_container">
 
                                                     <table class="table table-bordered" style="overflow-y:scroll;">
 
@@ -815,7 +813,7 @@
                                                         </tbody>
 
 
-                                                        <tbody>
+                                                        <tbody> 
 
                                                         <tr>
                                                                 <td>Total</td>
@@ -1207,8 +1205,8 @@
 
                                             <div class="col-lg-12">
 
-                                            <div style="" class="text-center">
-                                                    <button class=" btn btn-success" type="submit">Update</button>
+                                            <div style="" class="text-end">
+                                                    <button class=" btn btn-success once_form_submit" type="submit">Update</button>
                                             </div>
 
                                             </div>

@@ -28,7 +28,7 @@
             <div class="modal-body">
 
 
-                <div class="row">
+                <div class="row no_margin_rows">
 
 
                     <div class="col-lg-12">
@@ -234,7 +234,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10">
+                                                    <div class="col-lg-10 add_more_container p-0">
 
                                                         <table class="table table-bordered">
 
@@ -665,11 +665,8 @@
 
                                                         <tr>
 
-                                                            <td colspan="1"></td>
-
-                                                            <td colspan="2" align="left" class="sales_quotation_amount_in_word1"></td>
-
-                                                            <td align="right" colspan="2">Total</td>
+                                                           
+                                                            <td align="right" colspan="5">Total</td>
 
 
                                                             <th id="total_amount">0</th>
@@ -693,7 +690,7 @@
                                             <div class="row">
 
 
-<div class="col-lg-12 text-center">
+<div class="col-lg-12 text-end">
 
 
     <div style="">
@@ -707,7 +704,7 @@
             -->
             <tr>
 
-                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <button class="btn btn-success submit_btn once_form_submit" name="main_submit" type="submit">Save</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -1094,7 +1091,6 @@
 
                                                         </select>
 
-
                                                     </div>
 
                                                 </div>
@@ -1198,8 +1194,8 @@
 
                                             <div class="col-lg-12">
 
-                                            <div style="" class="text-center">
-                                                    <button class=" btn btn-success" type="submit">Update</button>
+                                            <div style="" class="text-end">
+                                                    <button class=" btn btn-success once_form_submit" type="submit">Update</button>
                                             </div>
 
                                             </div>
@@ -1275,13 +1271,13 @@
 
                                     <div class="live-preview">
 
-                                        <div class="row align-items-end">
+                                        <div class="row align-items-end no_margin_rows">
 
                                             <div class="col-col-md-12 col-lg-12">
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10">
+                                                    <div class="col-lg-10 add_more_container p-0">
 
                                                         <table class="table table-bordered">
 
