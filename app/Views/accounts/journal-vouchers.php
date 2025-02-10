@@ -186,7 +186,7 @@
                         <div class="row">
 
 
-<div class="col-lg-12 text-center">
+<div class="col-lg-12 text-end">
 
 
     <div style="">
@@ -200,7 +200,7 @@
             -->
             <tr>
 
-                <button class="btn btn-success submit_btn" name="main_submit" type="submit">Save</button>
+                <button class="btn btn-success submit_btn once_form_submit" name="main_submit" type="submit">Save</button>
                 <!--<td><button class="submit_btn">PDF</button></td>-->
             </tr>
         </table>
@@ -579,7 +579,7 @@
                         <div class="row">
 
 
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-end">
 
 
                 <div style="">
@@ -587,7 +587,7 @@
 
                                                     
                                                        
-                             <button type="submit" class="btn btn-success">Update</button>
+                             <button type="submit" class="btn btn-success once_form_submit">Update</button>
                                                           
                                                         
 

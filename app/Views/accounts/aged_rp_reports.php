@@ -225,7 +225,7 @@
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Adjusted <input type="checkbox" name="adjust_type" value="adjusted">
+                                                                    Adjusted <input type="radio" name="adjust_type" value="adjusted">
                                                                     </div>                                         
 
                                                                     </div>
@@ -239,7 +239,7 @@
                                                                     </div>  
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Semi Adjusted <input type="checkbox" name="adjust_type" value="semi_adjusted">
+                                                                    Semi Adjusted <input type="radio" name="adjust_type" value="semi_adjusted">
                                                                     </div>
 
                                                                     </div>
@@ -253,7 +253,7 @@
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Un-Adjusted <input type="checkbox" name="adjust_type" value="non_adjusted" value="">
+                                                                    Un-Adjusted <input type="radio" name="adjust_type" value="non_adjusted" value="">
                                                                     </div>
 
                                                                     </div>
@@ -392,7 +392,7 @@
                                                 <?php if($trn->debit_amount !="") { 
                                                 echo  format_currency($trn->debit_amount);
                                                 $total_debit = $total_debit+$trn->debit_amount;
-                                                //$c_balance = $c_balance - $trn->debit_amount;
+                                                $c_balance = $c_balance + $trn->debit_amount;
                                                 } else {?>
                                                     ---
                                                 <?php } ?>
@@ -419,7 +419,13 @@
                                                {
                                                echo format_currency($trn->pdc_amount);
 
+
+
+                                               $c_balance = $c_balance - $trn->pdc_amount;
+
+
                                                $pdc_total = $pdc_total + $trn->pdc_amount;
+
 
                                                }
 
@@ -513,6 +519,24 @@
 
                                     </table>
 
+
+
+                                    <table class="table table-bordered">
+
+
+                                <thead>
+
+                                    <tr>
+
+                                    <th class="text-center"><b>Net Amount Due : <?= currency_to_words($c_balance); ?></b></th>
+
+                                    <tr>
+
+
+
+                                    </thead>
+
+                                    </table>
 
 
                 

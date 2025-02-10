@@ -20,7 +20,7 @@
             <div class="card">
                
                 <div class="card-body">
-                    <div class="live-preview">
+                    <div class="live-preview no_margin_rows">
                        
                            
 
@@ -74,7 +74,7 @@
 
 
                                 <div class="col-col-md-9 col-lg-9">
-                                <select class="form-select" name="ah_account_type" required>
+                                <select class="form-select w-100" name="ah_account_type" required>
                                             <option value="" selected disabled>Select Account Type</option>
                                             <?php foreach($account_types as $account_type){?> 
                                                 <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
@@ -98,9 +98,9 @@
         <!--end col-->
     </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer justify-content-end">
                 
-                <button type="submit" name="" class="btn btn btn-success">Save</button>
+                <button type="submit" name="" class="btn btn btn-success once_form_submit">Save</button>
             </div>
         
         </form>
@@ -179,7 +179,7 @@
                             <div class="card">
                                 
                                 <div class="card-body">
-                                    <div class="live-preview">
+                                    <div class="live-preview no_margin_rows">
                                         
                                             <div class="row align-items-center">
 
@@ -221,7 +221,7 @@
 
 
                                                     <div class="col-col-md-9 col-lg-9">
-                                                        <select class="form-select" id="edit_account_type" name="ah_account_type" required>
+                                                        <select class="form-select w-100" id="edit_account_type" name="ah_account_type" required>
                                                         <option value="" selected disabled>Select Account Type</option>
                                                         <?php foreach($account_types as $account_type){?> 
                                                             <option value="<?php echo $account_type->at_id;?>"><?php echo $account_type->at_name;?></option>
@@ -250,8 +250,8 @@
                     </div>
                 
                     </div>
-            <div class="modal-footer">
-                <button type="submit" name="" class="btn btn btn-success">Save</button>
+            <div class="modal-footer justify-content-end">
+                <button type="submit" name="" class="btn btn btn-success once_form_submit">Save</button>
             </div>
         
         </form>

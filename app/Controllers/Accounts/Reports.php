@@ -960,14 +960,23 @@ class Reports extends BaseController
 
         }
 
+
+        $adjust_type="";
+        if(!empty($this->request->getGet('adjust_type')))
+        {
+
+        $adjust_type = $this->request->getGet('adjust_type');
+
+        }
+
         
         //$data['payments'] = $this->report_model->ARPPayments($start_date,$account_head,$account_type,$account);
 
         //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
 
-        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account,$type);
+        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account,$type,$adjust_type);
 
-        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$account_head,$account_type,$account,$type);
+        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$account_head,$account_type,$account,$type,$adjust_type);
 
         //$data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
 
@@ -990,6 +999,8 @@ class Reports extends BaseController
 
                 $total_credit = 0;
 
+                $total_pdc = 0;
+
                 $balance = 0;
 
                 foreach($data['transactions'] as $vc)
@@ -1003,6 +1014,8 @@ class Reports extends BaseController
                     $total_debit = $total_debit + $vc->debit_amount;
 
                     $total_credit = $total_credit + $vc->credit_amount;
+
+                    $total_pdc = $total_pdc + $vc->pdc_amount;
     
                     $new_date = date('d-M-Y',strtotime($vc->transaction_date));
     
@@ -1282,7 +1295,7 @@ class Reports extends BaseController
                     <td style="border-top: 2px solid;"></td>
                     <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_debit).'</b></td>
                     <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_credit).'</b></td>
-                    <td align="right" style="border-top: 2px solid"></td>
+                    <td align="right" style="border-top: 2px solid"><b>'.format_currency($total_pdc).'</b></td>
                     <td align="right" style="border-top: 2px solid;"><b>'.format_currency($balance).'</b></td>
                     
                 </tr>    
@@ -1295,12 +1308,12 @@ class Reports extends BaseController
                 ';
 
 
-                $pdc_data = '<table width="100%" style="margin-top:5px;">';
+                $pdc_data = '<table width="100%" style="margin-top:5px;border-collapse: collapse; border-spacing: 0;">';
                 
                 $pdc_data .="
                 <tr>
                 <td colspan='6' align='center'>
-                Post date cheque details
+                <b>Post Dated Cheque Details</b>
                 </td>
                 </tr>
                 ";
@@ -1308,12 +1321,12 @@ class Reports extends BaseController
 
                 $pdc_data .='
                 <tr>
-                <td style="border-top: 2px solid">Receipt No</td>
-                <td style="border-top: 2px solid">Receipt Date</td>
-                <td style="border-top: 2px solid">Cheque No</td>
-                <td style="border-top: 2px solid">Cheque Date</td>
-                <td style="border-top: 2px solid">Bank</td>
-                <td style="border-top: 2px solid">Amount</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt No</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt Date</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque No</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque Date</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Bank</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="right">Amount</td>
                 </tr>
                 ';
 
@@ -1325,15 +1338,15 @@ class Reports extends BaseController
                $pdc_data .='
                     <tr>
 
-                        <td>'.$pdc->reference.'</td>
+                        <td align="center">'.$pdc->reference.'</td>
 
-                        <td>'.date('d M Y',strtotime($pdc->transaction_date)).'</td>
+                        <td align="center">'.date('d M Y',strtotime($pdc->transaction_date)).'</td>
 
-                        <td>'.$pdc->cheque_no.'</td>
+                        <td align="center">'.$pdc->cheque_no.'</td>
 
-                        <td>'.date('d M Y',strtotime($pdc->cheque_date)).'</td>
+                        <td align="center">'.date('d M Y',strtotime($pdc->cheque_date)).'</td>
 
-                        <td>'.$pdc->bank.'</td>
+                        <td align="center">'.$pdc->bank.'</td>
 
                         <td align="right">'.format_currency($pdc->amount).'</td>
 
@@ -1357,27 +1370,27 @@ class Reports extends BaseController
 
 
                 //Buckets
-                $pdc_data .= '<table width="100%" style="border:3px solid;margin-top:5px;border-collapse:collapse;">';
+                $pdc_data .= '<table width="100%" style="border:2px solid;margin-top:5px;border-collapse:collapse;">';
 
                 $pdc_data .="
                 
                 <tr>
                 
-                <td width='12.5%' style='border:3px solid;'>0-30 Days</td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>0-30 Days</td>
 
-                <td width='12.5%' style='border:3px solid;'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
 
-                <td width='12.5%' style='border:3px solid;'>31-60 Days</td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>31-60 Days</td>
 
-                <td width='12.5%' style='border:3px solid;'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
 
-                <td width='12.5%' style='border:3px solid;'>61-90 Days</td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>61-90 Days</td>
 
-                <td width='12.5%' style='border:3px solid;'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
 
-                <td width='12.5%' style='border:3px solid;'>Above 90 Days</td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>Above 90 Days</td>
 
-                <td width='12.5%' style='border:3px solid;'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
 
                 </tr>
 
@@ -1385,6 +1398,41 @@ class Reports extends BaseController
 
 
                 $pdc_data .= "</table>";
+
+
+                $pdc_data .='
+                
+                <table width="100%" style="margin-top:10px;border-collapse:collapse;">
+
+                <tr>
+                
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="center">Net Amount Due : '.currency_to_words($balance).'</td>
+
+                </tr>
+
+                </table>
+
+                ';
+
+
+                $pdc_data .='
+                
+                <table width="100%" style="margin-top:10px;border-collapse:collapse;">
+
+                <tr>
+                
+                <td style="border-right:2px solid;" align="right">Contact Person</td>
+
+                <td>
+                Mohammed Raphy, Chief Accountant<br><br>
+                Mob : 7743 4520, Email : raphy@alfuzailgroup.com, accounts@alfuzailgroup.com
+                </td>
+
+                </tr>
+
+                </table>
+
+                ';
 
 
                 $html .= $pdc_data;
