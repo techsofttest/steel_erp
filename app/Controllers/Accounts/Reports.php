@@ -1003,8 +1003,40 @@ class Reports extends BaseController
 
                 $balance = 0;
 
+
+                 // Initialize Aging Bucket Totals
+                 $aging_totals = [
+                    "30" => 0,
+                    "60" => 0,
+                    "90" => 0,
+                    "90+" => 0
+                ];
+
+
                 foreach($data['transactions'] as $vc)
                 {   
+
+
+                    if(empty($start_date))
+                    {
+
+                    $start_date = date('Y-m-d');
+
+                    }
+
+                    $days_due = (strtotime(date($start_date)) - strtotime($vc->transaction_date)) / (60 * 60 * 24);
+                                                    
+                    // Determine Aging Bucket
+                    if ($days_due <= 30) {
+                        $aging_bucket = "30";
+                    } elseif ($days_due <= 60) {
+                        $aging_bucket = "60";
+                    } elseif ($days_due <= 90) {
+                        $aging_bucket = "90";
+                    } else {
+                        $aging_bucket = "90+";
+                    }
+
 
 
                     $q=1;
@@ -1035,13 +1067,17 @@ class Reports extends BaseController
 
                     $total_debit = $total_debit+$vc->debit_amount;
 
+                    $aging_totals[$aging_bucket] += $vc->debit_amount;
+
+
                     } else if($vc->credit_amount<0) {
 
                     $debit_am = format_currency($vc->credit_amount); 
 
-                    $balance = $balance-$vc->credit_amount;
+                    $balance = $balance+$vc->credit_amount;
 
                     $total_debit = $total_debit+$vc->credit_amount;
+                    
                         
                     }
                     else
@@ -1056,9 +1092,11 @@ class Reports extends BaseController
 
                         $credit_am = format_currency($vc->credit_amount);
 
-                        $balance = $balance-$vc->credit_amount; 
+                        $balance = $balance+$vc->credit_amount; 
 
                         $total_credit = $total_credit+$vc->credit_amount;
+
+                        $aging_totals[$aging_bucket] += $vc->credit_amount;
 
                     } else {
 
@@ -1069,6 +1107,19 @@ class Reports extends BaseController
                     $pdf_data .= "<td align='right'>{$credit_am}</td>";
                     
                     $pdf_data .= "<td align='right'>".format_currency($vc->pdc_amount)."</td>";
+
+
+                    if(!empty($vc->pdc_amount))
+                    {
+
+                            $balance = $balance - $vc->pdc_amount;
+
+                            $aging_totals[$aging_bucket] -= $vc->pdc_amount;
+
+                            $total_pdc = $total_pdc + $vc->pdc_amount;
+
+                    }
+
 
                     $pdf_data .= "<td  align='right'>(".format_currency($balance).")</td>";
                     
@@ -1378,19 +1429,19 @@ class Reports extends BaseController
                 
                 <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>0-30 Days</td>
 
-                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>".format_currency($aging_totals["30"])."</td>
 
                 <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>31-60 Days</td>
 
-                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>".format_currency($aging_totals["60"])."</td>
 
                 <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>61-90 Days</td>
 
-                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>".format_currency($aging_totals["90"])."</td>
 
                 <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>Above 90 Days</td>
 
-                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'></td>
+                <td width='12.5%' style='border:2px solid;padding:5px;' align='center'>".format_currency($aging_totals["90+"])."</td>
 
                 </tr>
 

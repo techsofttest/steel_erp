@@ -377,7 +377,37 @@
                                             $total_debit=number_format(0,2);
 
 
-                                            foreach($transactions as $trn){ ?>
+                                            // Initialize Aging Bucket Totals
+                                            $aging_totals = [
+                                                "30" => 0,
+                                                "60" => 0,
+                                                "90" => 0,
+                                                "90+" => 0
+                                            ];
+
+
+                                            foreach($transactions as $trn){ 
+
+
+                                                $days_due = (strtotime(date('Y-m-d')) - strtotime($trn->transaction_date)) / (60 * 60 * 24);
+                                                    
+                                                    // Determine Aging Bucket
+                                                    if ($days_due <= 30) {
+                                                        $aging_bucket = "30";
+                                                    } elseif ($days_due <= 60) {
+                                                        $aging_bucket = "60";
+                                                    } elseif ($days_due <= 90) {
+                                                        $aging_bucket = "90";
+                                                    } else {
+                                                        $aging_bucket = "90+";
+                                                    }
+
+                                                    
+
+                                                ?>
+
+
+
 
                                                 <tr>
     
@@ -393,6 +423,9 @@
                                                 echo  format_currency($trn->debit_amount);
                                                 $total_debit = $total_debit+$trn->debit_amount;
                                                 $c_balance = $c_balance + $trn->debit_amount;
+
+                                                $aging_totals[$aging_bucket] += $trn->debit_amount;
+
                                                 } else {?>
                                                     ---
                                                 <?php } ?>
@@ -405,6 +438,9 @@
                                                 echo  format_currency($trn->credit_amount); 
                                                 $total_credit=$total_credit+$trn->credit_amount;
                                                 $c_balance = $c_balance + $trn->credit_amount;
+
+                                                $aging_totals[$aging_bucket] += $trn->credit_amount;
+
                                                 } else {?>
                                                 ---
                                                 <?php } ?>
@@ -419,13 +455,11 @@
                                                {
                                                echo format_currency($trn->pdc_amount);
 
-
-
                                                $c_balance = $c_balance - $trn->pdc_amount;
 
+                                               $aging_totals[$aging_bucket] -= $trn->pdc_amount;
 
                                                $pdc_total = $pdc_total + $trn->pdc_amount;
-
 
                                                }
 
@@ -524,7 +558,7 @@
                                     <table class="table table-bordered">
 
 
-                                <thead>
+                                    <thead>
 
                                     <tr>
 
@@ -537,6 +571,36 @@
                                     </thead>
 
                                     </table>
+
+
+
+
+                                    <table class="table table-bordered">
+
+
+                                    <thead>
+
+                                    <tr>
+
+                                    <td>0- 30 Days</td> <td><?= format_currency($aging_totals["30"]) ?></td>
+
+                                    <td>31 - 60 Days</td> <td><?= format_currency($aging_totals["60"]) ?></td>
+
+                                    <td>61 - 90 Days</td> <td><?= format_currency($aging_totals["90"]) ?></td>
+
+                                    <td>Above 90 Days</td> <td><?= format_currency($aging_totals["90+"]) ?></td>
+
+                                  
+                                    <tr>
+
+
+
+                                    </thead>
+
+                                    </table>
+
+
+
 
 
                 
