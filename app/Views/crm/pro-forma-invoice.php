@@ -2900,7 +2900,7 @@ height: 37px !important;
 
         $('body .performa_remove').each(function() {
 
-            $(this).find('.si_no2').html('<td class="si_no2">' + pp + '</td>');
+            $(this).find('.si_no2').html('<td class="si_no2" style="border:unset;">' + pp + '</td>');
 
             pp++;
 

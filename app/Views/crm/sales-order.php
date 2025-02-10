@@ -2963,7 +2963,7 @@
 
             $('body .edit_product_row').each(function() {
 
-                $(this).find('.delete_sino').html('<td class="delete_sino">' + pp + '</td>');
+                $(this).find('.delete_sino').html('<td class="delete_sino" style="border:unset;">' + pp + '</td>');
 
                 pp++;
             });

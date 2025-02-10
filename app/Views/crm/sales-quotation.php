@@ -1382,12 +1382,12 @@
                                                                        
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="qpd_unit"  class="form-control " required></td>
-                                                                <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty" required></td>
-                                                                <td><input type="number" name="qpd_rate" class="form-control edit_add_prod_rate" required></td>
-                                                                <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis" required></td>
+                                                                <td><input type="text" name="qpd_unit"  class="form-control text-center" required></td>
+                                                                <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
+                                                                <td><input type="number" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
+                                                                <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
                                                                 
-                                                                <td><input type="number" name="qpd_amount" class="form-control edit_add_prod_amount" readonly></td>
+                                                                <td><input type="number" name="qpd_amount" class="form-control edit_add_prod_amount text-end" readonly></td>
                                                                
                                                                 <input type="hidden" name="qpd_quotation_details" class="edit_add_quot_id">
                                                             </tr>
@@ -3839,7 +3839,7 @@
 
             $('body .edt_cost_row').each(function() {
 
-                $(this).find('.edit_cost_si_no').html('<td class="si_no text-center">' + pp + '</td>');
+                $(this).find('.edit_cost_si_no').html('<td class="si_no text-center" style="border:unset;">' + pp + '</td>');
 
                 pp++;
 
@@ -4186,7 +4186,7 @@
 
             $('body .edit_add_prod_row').each(function() {
 
-                $(this).find('.edit_add_prod_si_no').html('<td class="si_no text-center" >' + pp + '</td>');
+                $(this).find('.edit_add_prod_si_no').html('<td class="si_no"  style="border:unset;">' + pp + '</td>');
 
                 pp++;
             });

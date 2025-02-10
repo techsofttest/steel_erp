@@ -1171,7 +1171,7 @@ class SalesQuotation extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr class="edit_add_prod_row">
-            <td class="edit_add_prod_si_no"><input type="text"  value="'.$i.'" class="form-control text-center" readonly></td>
+            <td class="edit_add_prod_si_no text-center" style="padding:0px 10px;"><input type="text"  value="'.$i.'" class="form-control text-center" readonly></td>
             <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
             <td><input type="text"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" readonly></td>
             <td> <input type="text" value="'.format_currency($prod_det->qpd_quantity).'" class="form-control text-center" readonly></td>
@@ -1209,7 +1209,7 @@ class SalesQuotation extends BaseController
         foreach($cost_product_detail as $cost_prod)
         {
             $data['cost_prod_det'] .='<tr class="edt_cost_row">
-            <td class="edit_cost_si_no text-center" style="padding-top: 10px;">'.$j.'</td>
+            <td class="edit_cost_si_no text-center" style="padding: 10px 10px;">'.$j.'</td>
             <td><input type="text" value="'.$cost_prod->product_details.'" class="form-control" readonly></td>
             <td><input type="text" value="'.$cost_prod->qc_unit.'" class="form-control text-center" readonly></td>
             <td><input type="text" value="'.format_currency($cost_prod->qc_qty).'" class="form-control text-center" readonly></td>
