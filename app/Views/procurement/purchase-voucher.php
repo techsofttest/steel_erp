@@ -14,8 +14,8 @@
         border: 1px solid #0000003b;*/
 
         position: absolute;
-        right: 32px;
-        top: -16px;
+        right: 0px;
+        top: -8px;
         font-size: 25px;
         color: #ff0000b5;
 
@@ -40,9 +40,7 @@
         justify-content: unset !important;
     }
   
-    .input_length {
-        width: 95% !important;
-    }
+  
     .add_contact{
         position: absolute;
         right: 32px;
@@ -66,16 +64,27 @@
     .droup_color{
 
         color: black !important;
+        margin-bottom: 0px;
+        width: 100% !important;
+        padding: 0px;
+        display: block;
+        border-radius: 4px;
+        background: #f5f5f5bd;
+        border: none !important;
+        height: 37px !important;
     }
     .add_new {
         font-size: 25px;
         color: #ff0000b5;
         position: absolute;
-        right: 34px;
-        top: -16px;
+        right: 5px;
+        top: -10px;
     }
     .add_more_icon {
         cursor: pointer;
+    }
+    .content_table tr {
+        text-align: unset;
     }
 </style>
 
@@ -106,7 +115,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -114,14 +123,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_reffer_no" id="pv_id" class="form-control input_length voucher_reff" value="" required readonly>
+                                                                        <input type="text" name="purchase_reffer_no" id="uid" class="form-control input_length voucher_reff" value="" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -135,7 +144,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
@@ -156,27 +165,23 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
-                                                                        <label for="basicInput" class="form-label">Vendor Name</label>
+                                                                        <label for="basicInput" class="form-label">Vendor Name <span class="add_more_icon add_new vendor_new_modal  ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                    <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select select_vendor add_vendor vendor_data" name="purchase_vendor_name" id=""  required>
+                                                                        <select class="form-select select_vendor add_vendor vendor_data input_length" name="purchase_vendor_name" id=""  required>
                                                                             
                                                                             <option value="" selected disabled>Select Customer</option>
                                                                            
                                                                         </select>
                                                                     </div>
 
-                                                                    <div class="col-col-md-1 col-lg-1">
-                                                                        
-                                                                        <span class="add_more_icon add_new vendor_new_modal  ri-add-box-fill"></span>
-                                                                    
-                                                                    </div>
+                                                                   
 
                                                                 </div> 
 
@@ -189,17 +194,17 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
         
-                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
+                                                                        <label for="basicInput" class="form-label">Purchase Order <span class="add_more_icon cust_more_modal ri-add-line" id="blink"></span></label>
         
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                    <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select select_purchase purchase_order" name="purchase_order" id="">
+                                                                        <select class="form-select select_purchase purchase_order input_length" name="purchase_order" id="">
                                                                             
                                                                             <option value="" selected="" disabled="">Select Purchase Order</option>
 
@@ -209,11 +214,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-col-md-1 col-lg-1">
-
-                                                                        <span class="add_more_icon cust_more_modal ri-add-box-fill" id="blink"></span>
-
-                                                                    </div>
+                                                                    
 
                                                                 </div> 
 
@@ -282,25 +283,23 @@
 
                                                            <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
-                                                                        <label for="basicInput" class="form-label">Contact Person</label>
+                                                                        <label for="basicInput" class="form-label">Contact Person <span class="add_more_icon add_new contact_new_modal ri-add-line"></span></label>
                                                                     
                                                                     </div>
 
-                                                                    <div class="col-col-md-8 col-lg-8">
+                                                                    <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id="" style="width: 100% !important;"></select>
+                                                                        <select class="form-select add_contact_person input_length" name="purchase_contact_person" id=""></select>
                                                                         
                                                                         <!--<input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>-->
 
                                                                     </div>
 
-                                                                    <div class="col-col-md-1 col-lg-1">
-                                                                        <span class="add_more_icon add_new contact_new_modal ri-add-box-fill"></span>
-                                                                    </div>
+                                                                   
 
 
    
@@ -318,7 +317,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
@@ -328,7 +327,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="purchase_vendor" class="form-control input_length2 vendor_inv_ref" value="" required>   
+                                                                        <input type="text" name="purchase_vendor" class="form-control input_length vendor_inv_ref" value="" required>   
 
                                                                     </div>
 
@@ -341,14 +340,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-item-scenter mb-2">
+                                                                <div class="row align-item-scenter mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Note</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length2 delivery_note_clz" value="">
+                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">
                                                                     </div>
 
                                                                 </div> 
@@ -362,14 +361,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Term</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text " name="purchase_payment_term" class="form-control add_payment_term input_length2" value="" required>
+                                                                        <input type="text " name="purchase_payment_term" class="form-control add_payment_term input_length" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -396,24 +395,25 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable ">
-                                                        <tbody class="travelerinfo">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
+                                                        <thead class="travelerinfo">
                                                             
                                                             <tr>
                                                                 
-                                                                <td>Sales Order Ref</td>
-                                                                <td>Product Description</td>
-                                                                <td>Debit A/C</td>
-                                                                <td>Qty</td>
-                                                                <td>Unit</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td style="width:15%">Sales Order</td>
+                                                                <td >Product Description</td>
+                                                                <td style="width:15%">Debit A/C</td>
+                                                                <td style="width:8%">Qty</td>
+                                                                <td style="width:8%">Unit</td>
+                                                                <td style="width:8%">Rate</td>
+                                                                <td style="width:8%">Discount</td>
+                                                                <td style="width:10%">Amount</td>
+                                                                <td style="width:11%;display:none" class="show_action">Action</td> 
 
                                                             </tr>
                                                             
-                                                        </tbody>
+                                                        </thead>
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
 
@@ -421,8 +421,9 @@
 
                                                             <tr>
                                                                 <td colspan="6" class=""></td>
-                                                                <td>Total</td>
-                                                                <td><input type="text" name="total_vou_amount" class="total_prod_amount form-control" readonly=""></td>
+                                                                <td style="padding: 10px 10px;" class="text-center">Total</td>
+                                                                <td><input type="text" name="total_vou_amount" class="total_prod_amount form-control text-end" readonly=""></td>
+                                                                <td style="display:none;" class="show_td"></td>
                                                              </tr>
                                                         
                                                         </tbody>
@@ -435,7 +436,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         
-                                                        <div class="row row_align mb-4">
+                                                        <div class="row row_align mb-4" style="display:none;">
                                                             
                                                             <div class="col-lg-2">
                                                                 <label for="basicInput" class="form-label">Attach</label>
@@ -452,7 +453,7 @@
                                                     
                                                     <div class="col-lg-6 tecs">
 
-                                                        <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add </span>
+                                                        <span class="add_icon add_product2"><i class="ri-add-circle-line"></i> </span>
                                                                
                                                             
                                                     </div>
@@ -503,7 +504,7 @@
 
                                             <div class="live-preview">
 
-                                                <div class="row">
+                                                <div class="row row_padding">
 
                                                     <div class="col-lg-6">
 
@@ -513,14 +514,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" id="" class="form-control view_ref" readonly>
+                                                                        <input type="text" name="" id="" class="form-control view_ref input_length" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -532,14 +533,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control view_date" readonly>
+                                                                        <input type="text" name="" class="form-control view_date input_length" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -553,7 +554,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Vendor Name</label>
@@ -561,7 +562,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_vendor_name" readonly>
+                                                                        <input type="text" name="" class="form-control view_vendor_name input_length" readonly>
 
                                                                         </select>
                                                                     </div>
@@ -577,7 +578,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person</label>
@@ -585,7 +586,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_contact_person" readonly>
+                                                                        <input type="text" name="" class="form-control view_contact_person input_length" readonly>
 
                                                                         </select>
                                                                     </div>
@@ -613,7 +614,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Purchase Order</label>
@@ -621,7 +622,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_purchase_order" readonly>
+                                                                        <input type="text" name="" class="form-control view_purchase_order input_length" readonly>
 
                                                                     </div>
 
@@ -635,7 +636,7 @@
 
                                                              <!-- Single Row Start -->
                                                              <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Vendor Inv Ref</label>
@@ -643,7 +644,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_vendor_inv_ref" readonly>
+                                                                        <input type="text" name="" class="form-control view_vendor_inv_ref input_length" readonly>
 
                                                                     </div>
 
@@ -656,7 +657,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Note</label>
@@ -664,7 +665,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="" class="form-control view_delivery_note" readonly>
+                                                                        <input type="text" name="" class="form-control view_delivery_note input_length" readonly>
 
                                                                     </div>
 
@@ -682,14 +683,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Term</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="" class="form-control view_payment_term" readonly>
+                                                                        <input type="text" name="" class="form-control view_payment_term input_length" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -707,19 +708,19 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center">Serial No</td>
-                                                                <td class="text-center">Sales Order</td>
+                                                                <td class="text-center" style="width: 5%;">SI No</td>
+                                                                <td class="text-center" style="width: 10%;">Sales Order</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center">Debit A/C</td>
-                                                                <td class="text-center">Qty</td>
-                                                                <td class="text-center">Unit</td>
-                                                                <td class="text-center">Rate</td>
-                                                                <td class="text-center">Discount</td>
-                                                                <td class="text-center">Amount</td>
+                                                                <td class="text-center" style="width: 8%;">Debit A/C</td>
+                                                                <td class="text-center" style="width: 5%;">Qty</td>
+                                                                <td class="text-center" style="width: 5%;">Unit</td>
+                                                                <td class="text-center" style="width: 8%;">Rate</td>
+                                                                <td class="text-center" style="width: 7%;">Discount</td>
+                                                                <td class="text-center" style="width: 8%;">Amount</td>
 
 
 
@@ -734,7 +735,7 @@
 
                                                             <tr>
                                                                 <td colspan="7" class=""></td>
-                                                                <td>Total</td>
+                                                                <td style="padding:10px 10px;" class="text-center">Total</td>
                                                                 <td><input type="text" name="" class=" form-control view_total_amount text-end" readonly=""></td>
                                                              </tr>
                                                         
@@ -792,7 +793,7 @@
 
                                             <div class="live-preview">
 
-                                                <div class="row">
+                                                <div class="row row_padding">
 
                                                     <div class="col-lg-6">
 
@@ -802,14 +803,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pv_reffer_id" id="" class="form-control edit_ref" readonly>
+                                                                        <input type="text" name="pv_reffer_id" id="" class="form-control edit_ref input_length" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -821,14 +822,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pv_date" class="form-control edit_date mr_date datepicker_ap" readonly>
+                                                                        <input type="text" name="pv_date" class="form-control edit_date mr_date datepicker_ap input_length" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -842,7 +843,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Vendor Name</label>
@@ -852,7 +853,7 @@
 
                                                                         <!--<input type="text" name="pv_vendor_name" class="form-control edit_vendor_name" readonly>-->
 
-                                                                        <select name="pv_vendor_name" class="form-control edit_vendor_name" ></select>
+                                                                        <select name="pv_vendor_name" class="form-control edit_vendor_name input_length" ></select>
                                                                     </div>
 
                                                                 </div>
@@ -866,7 +867,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person</label>
@@ -874,7 +875,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_contact_person" class="form-control edit_contact_person" readonly>
+                                                                        <input type="text" name="pv_contact_person" class="form-control edit_contact_person input_length" readonly>
 
                                                                         </select>
                                                                     </div>
@@ -902,7 +903,7 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Purchase Order</label>
@@ -910,7 +911,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_purchase_order" class="form-control edit_purchase_order" readonly>
+                                                                        <input type="text" name="pv_purchase_order" class="form-control edit_purchase_order input_length" readonly>
 
                                                                     </div>
 
@@ -924,7 +925,7 @@
 
                                                              <!-- Single Row Start -->
                                                              <div class="col-lg-12">
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Vendor Inv Ref</label>
@@ -932,7 +933,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_vendor_inv" class="form-control edit_vendor_inv_ref">
+                                                                        <input type="text" name="pv_vendor_inv" class="form-control edit_vendor_inv_ref input_length">
 
                                                                     </div>
 
@@ -945,7 +946,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Note</label>
@@ -953,7 +954,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_delivery_note" class="form-control edit_delivery_note">
+                                                                        <input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">
 
                                                                     </div>
 
@@ -971,14 +972,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Payment Term</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pv_payment_term" class="form-control edit_payment_term">
+                                                                        <input type="text" name="pv_payment_term" class="form-control edit_payment_term input_length">
                                                                     </div>
 
                                                                 </div>
@@ -996,19 +997,20 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
                                                                 
-                                                                <td>Sales Order Ref</td>
+                                                                <td style="width: 10%;">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td>Debit A/C</td>
-                                                                <td>Qty</td>
-                                                                <td>Unit</td>
-                                                                <td>Rate</td>
-                                                                <td>Discount</td>
-                                                                <td>Amount</td>
+                                                                <td style="width: 10%;">Debit A/C</td>
+                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 8%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 8%;">Amount</td>
+                                                                <td style="width: 10%;" class="edit_action">Action</td>
                                                                 
 
 
@@ -1024,8 +1026,9 @@
 
                                                             <tr>
                                                                 <td colspan="6" class=""></td>
-                                                                <td>Total</td>
-                                                                <td><input type="text" name="total_vou_amount" class=" form-control edit_total_amount" readonly="" ></td>
+                                                                <td class="text-center" style="padding:10px 10px;">Total</td>
+                                                                <td><input type="text" name="total_vou_amount" class=" form-control edit_total_amount text-end" readonly="" ></td>
+                                                                <td class="edit_td"></td>
                                                              </tr>
                                                         
                                                         </tbody>
@@ -1138,17 +1141,17 @@
 
                     <div class="live-preview">
                                                 
-                        <div class="mt-4">
+                        <div class="mt-4 content_table">
                             
-                            <table class="table table-bordered table-striped delTable">
+                            <table class="table table-bordered table-striped delTable add_table">
                                 
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td>Serial No.</td>
+                                        <td style="width:5%">SI No.</td>
                                         <td>Product Description</td>
-                                        <td>Vendor DN Ref</td>
-                                        <td>Tick</td>
+                                        <td style="width:11%">Vendor DN </td>
+                                        <td sstyle="width:5%">Tick</td>
                                     </tr>
                                                             
                                                            
@@ -1279,21 +1282,21 @@
 
                     <div class="live-preview">
                                                 
-                        <div class="mt-4">
+                        <div class="mt-4 content_table">
                             
-                            <table class="table table-bordered table-striped delTable">
+                            <table class="table table-bordered table-striped delTable add_table">
                                 
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td>Sales Order Ref</td>
+                                        <td style="width: 14%;">Sales Order</td>
                                         <td>Product Description</td>
-                                        <td>Debit A/C</td>
-                                        <td>Unit</td>
-                                        <td>Qty</td>
-                                        <td>Rate</td>
-                                        <td>Discount</td>
-                                        <td>Amount</th>
+                                        <td style="width: 14%;">Debit A/C</td>
+                                        <td style="width: 5%;">Unit</td>
+                                        <td style="width: 5%;">Qty</td>
+                                        <td style="width: 8%;">Rate</td>
+                                        <td style="width: 7%;">Discount</td>
+                                        <td style="width: 8%;">Amount</th>
                                        
                                     </tr>
                                                             
@@ -1764,7 +1767,7 @@
                 {
                    
 
-                    $('#pv_id').val(data);
+                    $('#uid').val(data);
 
                     //$('.select_purchase').html(data.pur_reff);
 
@@ -2476,6 +2479,11 @@
 
         $("body").on('click', '.add_product2', function(){
 
+            $(".show_action").show();
+
+            $(".show_td").show();
+
+
             var pp = $('.prod_row').length
 
             var qj  = $('.quot_row_leng').length
@@ -2485,10 +2493,11 @@
             
             pp++;
             
-            //$(".product-more2").append("<tr class='prod_row quot_row_leng'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo $prod->product_details;?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
+           
+           // $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-            $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
-                
+           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+              
 
             }
 
@@ -2711,6 +2720,10 @@
 
             var id = $(this).data('id');
 
+            $('.edit_action').show();
+
+            $('.edit_td').show();
+
            
 
             $.ajax({
@@ -2735,6 +2748,8 @@
                         
                         $('.edit_ref').val(data.reffer_id);
 
+                        
+
                         $('.edit_date').val(data.date);
 
                         $('.edit_vendor_name').html(data.vendor_name);
@@ -2743,6 +2758,15 @@
 
                         $('.edit_purchase_order').val(data.purchase_order);
 
+                        console.log(data.purchase_order);
+
+                        if (data.purchase_order && data.purchase_order.trim() !== "") {
+                                
+                            $('.edit_action').hide();
+
+                            $('.edit_td').hide();
+                        }
+
                         $('.edit_vendor_inv_ref').val(data.vendor_inv);
 
                         $('.edit_delivery_note').val(data.delivery_note);
@@ -2750,6 +2774,8 @@
                         $('.edit_payment_term').val(data.payment_term);
 
                         $('.edit_prod_data').html(data.prod_desc);
+
+                      
 
                         $('.edit_purchase_id').val(data.purchase_id);
 

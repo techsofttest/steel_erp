@@ -39,10 +39,8 @@ class MaterialReceivedNote extends BaseController
         
         ## Total number of records with filtering
        
-        $searchColumns = array('mrn_reffer');
+        $searchColumns = array('mrn_reffer','po_reffer_no');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_material_received_note','mrn_id',$searchValue,$searchColumns);
-    
         ##Joins if any //Pass Joins as Multi dim array
         $joins = array(
             
@@ -53,6 +51,10 @@ class MaterialReceivedNote extends BaseController
             ), 
            
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_material_received_note','mrn_id',$searchValue,$searchColumns,'',$joins);
+    
+        
         ## Fetch records
         $records = $this->common_model->GetRecord('pro_material_received_note','mrn_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
@@ -445,11 +447,11 @@ class MaterialReceivedNote extends BaseController
 
             $data['product_detail'] .='<tr class="" id="'.$prod->pop_id.'">
                                             
-                                            <td class="si_no">'.$i.'</td>
+                                            <td class="si_no text-center" stye="padding:10px 10px;">'.$i.'</td>
                                             <td><input type="text" name="dpd_prod_det[]" value="'.$prod->product_details.'" class="form-control"  readonly></td>
-                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->pop_unit.'" class="form-control" readonly></td>
-                                            <td><input type="number" name="dpd_order_qty[]" value="'.$prod->pop_qty.'"  class="form-control order_qty" readonly></td>
-                                            <td><input type="checkbox" name="product_select[]" id="'.$prod->pop_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->pop_unit.'" class="form-control text-center" readonly></td>
+                                            <td><input type="number" name="dpd_order_qty[]" value="'.$prod->pop_qty.'"  class="form-control order_qty text-center" readonly></td>
+                                            <td calss="text=center" style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$prod->pop_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
                                         </tr>';
                                             $i++;
@@ -503,17 +505,17 @@ class MaterialReceivedNote extends BaseController
                
 
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->pop_id.'">
-                                            <td class="si_no">'.$i.'</td>
-                                            <td><input type="text" name="sales_order[]" value="'.$product->so_reffer_no.'" class="form-control" readonly></td>
-                                            <td style="width:40%"><input type="text" name="prod_desc[]" value="'.$product->product_details.'" class="form-control" readonly></td>
-                                            <td><input type="text" name="pop_unit[]" value="'.$product->pop_unit.'" class="form-control" required></td>
-                                            <td><input type="number" name="pop_qty[]" value="'.$product->pop_qty.'"  class="form-control add_order_qty" readonly required></td>
-                                            <td><input type="text" name="delivered_qty[]" value="'.$product->pop_delivered_order.'"  class="form-control add_delivery_qty" required readonly></td>
-                                            <td><input type="text" name="current_qty[]" value=""  class="form-control add_current_qty" required></td>
-                                            <td><input type="hidden" name="purchase_id[]" value="'.$product->pop_id.'"></td>
-                                            <td><input type="hidden" name="purchase_org_id[]" value="'.$product->pop_purchase_order.'"></td>
-                                            <td><input type="hidden" name="rate[]" value="'.$product->pop_rate.'"></td>
-                                            td><input type="hidden" name="discount[]" value="'.$product->pop_discount.'"></td>
+                                            <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
+                                            <td><input type="text" name="sales_order[]" value="'.$product->so_reffer_no.'" class="form-control text-center" readonly></td>
+                                            <td><input type="text" name="prod_desc[]" value="'.$product->product_details.'" class="form-control" readonly></td>
+                                            <td><input type="text" name="pop_unit[]" value="'.$product->pop_unit.'" class="form-control text-center" required></td>
+                                            <td><input type="number" name="pop_qty[]" value="'.$product->pop_qty.'"  class="form-control add_order_qty text-center" readonly required></td>
+                                            <td><input type="text" name="delivered_qty[]" value="'.$product->pop_delivered_order.'"  class="form-control add_delivery_qty text-center" required readonly></td>
+                                            <td><input type="text" name="current_qty[]" value=""  class="form-control add_current_qty text-center" required></td>
+                                            <input type="hidden" name="purchase_id[]" value="'.$product->pop_id.'">
+                                            <input type="hidden" name="purchase_org_id[]" value="'.$product->pop_purchase_order.'">
+                                            <input type="hidden" name="rate[]" value="'.$product->pop_rate.'">
+                                            <input type="hidden" name="discount[]" value="'.$product->pop_discount.'">
                                            
                                         </tr>';
  
@@ -652,12 +654,12 @@ class MaterialReceivedNote extends BaseController
         foreach($material_received_product as $material_received_prod)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
-            <td style="width:40%"><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
+            <td class="si_no1 text-center" style="padding:10px 10px">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control text-center" readonly></td>
            </tr>
             ';
             $i++; 
@@ -764,16 +766,16 @@ class MaterialReceivedNote extends BaseController
         foreach($material_received_product as $material_received_prod)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$material_received_prod->rnp_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control" readonly></td>
-            <td style="width:30%"><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control" readonly></td>
+            <td class="si_no1 text-center" style="padding:10px 10px">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_sales_order.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_product_desc.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$material_received_prod->rnp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_order_qty.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$material_received_prod->rnp_current_delivery.'" class="form-control text-center" readonly></td>
             
             
            
-            <td >
+            <td style="display:none;">
                 <a href="javascript:void(0)" style="display:none;" class="delete delete-color sales_delete" data-id="'.$material_received_prod->rnp_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
             </tr>

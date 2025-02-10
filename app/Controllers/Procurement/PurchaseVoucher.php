@@ -39,12 +39,10 @@ class PurchaseVoucher extends BaseController
         
         ## Total number of records with filtering
        
-        $searchColumns = array('pv_reffer_id');
+        $searchColumns = array('pv_reffer_id','po_reffer_no');
 
-        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_purchase_voucher','pv_id',$searchValue,$searchColumns);
-    
-        ##Joins if any //Pass Joins as Multi dim array
-        $joins = array(
+         ##Joins if any //Pass Joins as Multi dim array
+         $joins = array(
             
             array(
                 'table' => 'pro_purchase_order',
@@ -54,6 +52,10 @@ class PurchaseVoucher extends BaseController
 
            
         );
+
+        $totalRecordwithFilter = $this->common_model->GetTotalRecordwithFilter('pro_purchase_voucher','pv_id',$searchValue,$searchColumns,'',$joins);
+    
+       
         ## Fetch records
         $records = $this->common_model->GetRecord('pro_purchase_voucher','pv_id',$searchValue,$searchColumns,$columnName,$columnSortOrder,$joins,$rowperpage,$start);
         
@@ -623,13 +625,13 @@ class PurchaseVoucher extends BaseController
         foreach($purchase_voucher_product as $pur_vou_prod)
         {
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
-            <td class="si_no1">'.$i.'</td>
+            <td class="si_no1 text-center" style="padding:10px 10px;">'.$i.'</td>
             <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control text-center" readonly></td>
-            <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td ><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control text-center" readonly></td>
-            <td style="width:7%"> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control text-center" readonly></td>
+            <td "> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control text-end" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control text-center" readonly></td>
             <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control text-end" readonly></td>
             </tr>
@@ -779,19 +781,19 @@ class PurchaseVoucher extends BaseController
         foreach($purchase_voucher_product as $pur_vou_prod)
         {
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
-            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control" readonly></td>
-            <td style="width:30%"><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_sales_order.'" class="form-control text-center" readonly></td>
+            <td><input type="text" name=""  value="'.$pur_vou_prod->pvp_prod_dec.'" class="form-control" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->ca_name.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_qty).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_rate).'" class="form-control text-end" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_discount).'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.format_currency($pur_vou_prod->pvp_amount).'" class="form-control text-end" readonly></td>
             ';
 
             if(empty($pur_vou_prod->pv_purchase_order)){
 
-            $data['prod_desc'] .='<td style="width:10%;"><a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-toggle="tooltip" data-placement="top" title="edit" data-id="'.$pur_vou_prod->pvp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a></td>';
+            $data['prod_desc'] .='<td class="text-center" style="padding:10px 10px;"><a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-toggle="tooltip" data-placement="top" title="edit" data-id="'.$pur_vou_prod->pvp_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a></td>';
 
             }
 
@@ -835,7 +837,7 @@ class PurchaseVoucher extends BaseController
 
         $data['prod_desc'] .= '<tr class="edit_single_prod_row" id="'.$pur_vou_prod->pvp_id.'">
         
-                <td style="width:15%">
+                <td>
                     <select class="form-select" name="pvp_sales_order" required>';
                     
                         foreach($sales_orders as $sales_order){
@@ -871,16 +873,12 @@ class PurchaseVoucher extends BaseController
 
                 </td>
 
-
-        
        
-       
-       
-        <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control" readonly></td>
-        <td> <input type="text" name="pvp_qty" value="'.$pur_vou_prod->pvp_qty.'" class="form-control edit_prod_qty" ></td>
-        <td> <input type="text" name="pvp_rate" value="'.$pur_vou_prod->pvp_rate.'" class="form-control edit_prod_rate" ></td>
-        <td> <input type="text" name="pvp_discount" value="'.$pur_vou_prod->pvp_discount.'" class="form-control edit_prod_dis" ></td>
-        <td> <input type="text" name="pvp_amount" value="'.$pur_vou_prod->pvp_amount.'" class="form-control edit_prod_amount" readonly></td>
+        <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>
+        <td> <input type="text" name="pvp_qty" value="'.$pur_vou_prod->pvp_qty.'" class="form-control edit_prod_qty text-center" ></td>
+        <td> <input type="text" name="pvp_rate" value="'.$pur_vou_prod->pvp_rate.'" class="form-control edit_prod_rate text-end" ></td>
+        <td> <input type="text" name="pvp_discount" value="'.$pur_vou_prod->pvp_discount.'" class="form-control edit_prod_dis text-center" ></td>
+        <td> <input type="text" name="pvp_amount" value="'.$pur_vou_prod->pvp_amount.'" class="form-control edit_prod_amount text-end" readonly></td>
         <input type="hidden" name="pvp_id" value="'.$pur_vou_prod->pvp_id.'">
         </tr>';
 
@@ -1151,10 +1149,10 @@ class PurchaseVoucher extends BaseController
 
             $data['product_detail'] .='<tr class="" id="'.$prod->rnp_id.'">
                                             
-                                            <td class="si_no">'.$i.'</td>
+                                            <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
                                             <td><input type="text" name="dpd_prod_det[]" value="'.$prod->rnp_product_desc.'" class="form-control"  readonly></td>
-                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->mrn_reffer.'" class="form-control" readonly></td>
-                                            <td><input type="checkbox" name="product_select[]" id="'.$prod->rnp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->mrn_reffer.'" class="form-control text-center" readonly></td>
+                                            <td class="text-center" style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$prod->rnp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                           
                                         </tr>';
                                             $i++;
@@ -1211,8 +1209,8 @@ class PurchaseVoucher extends BaseController
 
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove prod_row quot_row_leng" id="'.$product->rnp_id.'">
                                             
-                                            <td><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control" readonly></td>
-                                            <td style="width:30%"><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
+                                            <td><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control text-center" readonly></td>
+                                            <td style=""><input type="text" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'" class="form-control" readonly></td>
                                             <td>
                                                <select class="form-select" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';
@@ -1223,11 +1221,11 @@ class PurchaseVoucher extends BaseController
                                                    }
                         $data['product_detail'] .='</select>
                                             </td>
-                                            <td><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty"  required readonly></td>
-                                            <td><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control" required readonly></td>
-                                            <td><input type="number" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate" required ></td>
-                                            <td><input type="number" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount" required ></td>
-                                            <td><input type="amount" name="pvp_amount[]" value="'.$product->rnp_amount.'"  class="form-control add_prod_amount" required readonly></td>
+                                            <td><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty text-center"  required readonly></td>
+                                            <td><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control text-center" required readonly></td>
+                                            <td><input type="number" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate text-end" required ></td>
+                                            <td><input type="number" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount text-center" required ></td>
+                                            <td><input type="amount" name="pvp_amount[]" value="'.$product->rnp_amount.'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="rnp_id[]" value="'.$product->rnp_id.'">
                                             <input type="hidden" name="material_received_id[]" value="'.$product->rnp_material_received_note.'">
                                         </tr>';

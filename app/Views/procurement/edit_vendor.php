@@ -1011,7 +1011,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         
         $('body .prod_row_edit').each(function() {
 
-            $(this).find('.si_no_edit').html('<td class="si_no_edit">' + pp + '</td>');
+            $(this).find('.si_no_edit').html('<td class="si_no_edit" style="border:unset;">' + pp + '</td>');
 
             pp++;
 

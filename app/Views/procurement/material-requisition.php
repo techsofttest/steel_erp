@@ -33,6 +33,17 @@
         border: 1px solid black;
         border: 1px solid #0000003b;
     }
+    .droup_color {
+        color: black !important;
+        margin-bottom: 0px;
+        /*width: 100% !important;*/
+        padding: 0px;
+        display: block;
+        border-radius: 4px;
+        background: #f5f5f5bd;
+        border: none !important;
+        height: 37px !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -62,7 +73,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -70,14 +81,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_reffer_no" id="mr_id" class="form-control" value="" required readonly>
+                                                                        <input type="text" name="mr_reffer_no" id="uid" class="form-control input_length" value="" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -91,14 +102,14 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker" required readonly>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker_ap  input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -123,14 +134,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date datepicker" value="" required>
+                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date datepicker input_length" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -143,14 +154,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                    <select class="form-select add_assigned_to" name="mr_assigned_to"  required>
+                                                                    <select class="form-select add_assigned_to input_length" name="mr_assigned_to"  required>
                                                                         <option value="" selected disabled>Assigned To</option>
                                                                         <?php foreach($employees as $employ){?> 
                                                                             <option value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
@@ -187,21 +198,23 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
+                                                        <thead class="travelerinfo">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>sales Order Ref</td>
-                                                                <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Action</td>
+                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 9%;">Sales Order </td>
+                                                                <td style="width: 5%;">Product Description</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 5%;">Action</td>
                                                             </tr>
+                                                        </thead>
+                                                        <tbody>
                                                             <tr class="prod_row prod_row_lenght">
-                                                                <td style="width: 10%;"class="si_no">1</td>
+                                                                <td class="si_no text-center" style="padding:10px 10px;">1</td>
                                                                 <td>
-                                                                    <select class="form-select add_sales_order" name="mrp_sales_order[0]" required>
+                                                                    <select class="form-select add_sales_order " name="mrp_sales_order[0]" required>
                                                                          <option value="" selected disabled>Select Sales Order Ref</option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
                                                                          <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>
@@ -215,9 +228,9 @@
                                                                         
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="mrp_unit[0]" class="form-control mrp_unit_clz" required></td>
-                                                                <td><input type="number" name="mrp_qty[0]" class="form-control mrp_qty_clz" required></td>
-                                                                <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i>Add </span></div></td>
+                                                                <td><input type="text" name="mrp_unit[0]" class="form-control mrp_unit_clz text-center" required></td>
+                                                                <td><input type="number" name="mrp_qty[0]" class="form-control mrp_qty_clz text-center" required></td>
+                                                                <td><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
@@ -270,7 +283,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -278,14 +291,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_reffer_no"  class="form-control view_reffer_no"  readonly>
+                                                                        <input type="text" name="mr_reffer_no"  class="form-control view_reffer_no input_length"  readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -299,14 +312,14 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date  view_date" readonly>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date  view_date input_length" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -331,14 +344,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date  view_time_frame" value="" readonly>
+                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date  view_time_frame input_length" value="" readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -351,7 +364,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
@@ -359,7 +372,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                    <input type="text" name="mr_time_frame" class="form-control view_assigned_to" value="" readonly>
+                                                                    <input type="text" name="mr_time_frame" class="form-control view_assigned_to input_length" value="" readonly>
 
                                                                
                                                                     </div>
@@ -386,19 +399,19 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
+                                                        <thead class="travelerinfo">
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>sales Order Ref</td>
+                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 10%;">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 5%;">Qty</td>
                                                                 
                                                             </tr>
                                                             
-                                                        </tbody>
+                                                        </thead>
                                                         <tbody class="view_products"></tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
                                                     </table>
@@ -444,7 +457,7 @@
 
                                             <div class="live-preview">
                                                 
-                                                <div class="row">
+                                                <div class="row row_padding">
                                                  
                                                     <div class="col-lg-6">
 
@@ -452,14 +465,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Referance</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_reffer_no"  class="form-control edit_reffer_no"  required readonly>
+                                                                        <input type="text" name="mr_reffer_no"  class="form-control edit_reffer_no input_length"  required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -473,14 +486,14 @@
 
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basiInput" class="form-label">Date</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker edit_date" required readonly>
+                                                                        <input type="text" name="mr_date" class="form-control mr_date datepicker edit_date input_length" required readonly>
                                                                     </div>
 
                                                                 </div> 
@@ -505,14 +518,14 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Time Frame</label>
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date datepicker edit_time_frame" value="" required>
+                                                                        <input type="text" name="mr_time_frame" class="form-control time_frame_date datepicker edit_time_frame input_length" value="" required>
                                                                     </div>
 
                                                                 </div> 
@@ -525,7 +538,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-items-center mb-2">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Assigned To</label>
@@ -534,7 +547,7 @@
                                                                     <div class="col-col-md-9 col-lg-9">
 
                                                                       <!--<input type="text" name="mr_time_frame" class="form-control edit_assigned_to" value="" required>--->
-                                                                      <select class="form-select edit_assigned_to" name="mr_assigned_to" required="" aria-required="true"></select>
+                                                                      <select class="form-select edit_assigned_to input_length" name="mr_assigned_to" required="" aria-required="true"></select>
                                                                
                                                                     </div>
 
@@ -562,26 +575,26 @@
 
 
                                                 <!--table section start-->
-                                                <div class="mt-4">
-                                                    <table class="table table-bordered table-striped delTable">
-                                                        <tbody class="travelerinfo">
+                                                <div class="mt-4 content_table">
+                                                    <table class="table table-bordered table-striped delTable add_table">
+                                                        <thead class="travelerinfo">
                                                             
                                                             <tr>
-                                                                <td>Serial No.</td>
-                                                                <td>sales Order Ref</td>
+                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 10%;">sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td>Unit</td>
-                                                                <td>Qty</td>
-                                                                <td>Action</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 14%;">Action</td>
                                                                
                                                             </tr>
                                                             
-                                                        </tbody>
+                                                        </thead>
                                                         <tbody class="edit_products"></tbody>
                                                         <tbody id="product-more" class="travelerinfo">
                                                             <tr>
-                                                                <td colspan="8" align="center" class="tecs">
-                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i>Add</span>
+                                                                <td colspan="8" align="center" class="tecs" style="padding: 6px 10px;">
+                                                                    <span class="add_icon add_product2"><i class="ri-add-circle-line"></i></span>
                                                                 </td>
                                                                 
                                                             </tr>
@@ -630,21 +643,21 @@
 
                                         <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                           
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
                                                             
-                                                            <td>Sales Order</td>
+                                                            <td style="width:14%">Sales Order</td>
                                                             <td>Product Description</td>
-                                                            <td>Unit</td>
-                                                            <td>Qty</td>
+                                                            <td style="5%">Unit</td>
+                                                            <td style="5%">Qty</td>
                                                             
                                                         </tr>
                                                         
-                                                    </tbody>
+                                                    </thead>
 
                                                     <tbody class="person-more edit_single_sales_order" class="travelerinfo"></tbody>
                                                 
@@ -685,21 +698,21 @@
 
                                         <div class="modal-body">
 
-                                            <div class="card-seprate_divider"></div>
+                                           
 
-                                            <div class="live-preview">
-                                                <table  class="table table-bordered table-striped delTable">
-                                                    <tbody class="travelerinfo">
+                                            <div class="live-preview content_table">
+                                                <table  class="table table-bordered table-striped delTable add_table">
+                                                    <thead class="travelerinfo">
                                                         <tr>
                                                             
-                                                            <td>Sales Order</td>
+                                                            <td style="width:14%">Sales Order</td>
                                                             <td>Product Description</td>
-                                                            <td>Unit</td>
-                                                            <td>Qty</td>
+                                                            <td style="width:5%">Unit</td>
+                                                            <td style="width:5%">Qty</td>
                                                             
                                                         </tr>
                                                         
-                                                    </tbody>
+                                                    </thead>
 
                                                     <tbody class="" class="travelerinfo">
                                                         
@@ -869,7 +882,7 @@
                 
                $("#product-more").append(
                     "<tr class='prod_row mr_remove prod_row_lenght'>" +
-                    "<td class='si_no'><input type='number' value='" + pp + "' name='pd_serial_no["+jj+"]' class='form-control' required='' readonly></td>" +
+                    "<td class='si_no text-center' style='padding:10px; 10px;'><input type='number' value='" + pp + "' name='pd_serial_no["+jj+"]' class='form-control' required='' readonly></td>" +
                     "<td>" +
                     "<select class='form-select add_sales_order' name='mrp_sales_order["+jj+"]' required>" +
                     "<option value='' selected disabled>Select Sales Order Ref</option>" +
@@ -886,9 +899,9 @@
                     "<?php endforeach; ?>" +
                     "</select>" +
                     "</td>" +
-                    "<td><input type='text' name='mrp_unit["+jj+"]' class='form-control mrp_unit_clz' required></td>" +
-                    "<td><input type='number' name='mrp_qty["+jj+"]' class='form-control mrp_qty_clz' required></td>" +
-                    "<td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td>" +
+                    "<td><input type='text' name='mrp_unit["+jj+"]' class='form-control mrp_unit_clz text-center' required></td>" +
+                    "<td><input type='number' name='mrp_qty["+jj+"]' class='form-control mrp_qty_clz text-center' required></td>" +
+                    "<td class='remove-btnpp text-center' colspan='6' padding:'10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td>" +
                     "</tr>"
                 );
 
@@ -946,7 +959,7 @@
         function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
-            theme : "default form-control- select_width",
+            theme : "default form-control- droup_color",
             dropdownParent: $('#AddMaterialRequisition'),
             ajax: {
                 url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
@@ -1076,7 +1089,9 @@
 
                 success:function(data)
                 {  
-                    $('#mr_id').val(data);
+                    $('#uid').val(data);
+
+                    console.log(data);
                 
                 }
 
@@ -1207,7 +1222,7 @@
                 success:function(data)
                 {
 
-                    $('#mr_id').val(data);
+                    $('#uid').val(data);
 
                 }
             });
@@ -1612,7 +1627,7 @@
             
             $('body .edit_prod_row').each(function() {
 
-                $(this).find('.si_no_edit').html('<td class="edit_prod_row">' + pp + '</td>');
+                $(this).find('.si_no_edit').html('<td class="edit_prod_row" style="border:unset;">' + pp + '</td>');
 
                 pp++;
 

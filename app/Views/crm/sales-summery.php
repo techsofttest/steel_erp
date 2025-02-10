@@ -60,9 +60,9 @@
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control"></td>
-                                                                                <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control"></td>
+                                                                                <td style="padding: 0px !important;"><input type="date" name="form_date" id="" onclick="this.showPicker();"  class="form-control"></td>
+                                                                                <td style="width: 10% !important;text-align: center;">To</td>
+                                                                                <td style="padding: 0px !important;"><input type="date" name="to_date" id="" onclick="this.showPicker();" class="form-control"></td>
                                                                             
                                                                             </tr>
                                                                             

@@ -276,11 +276,11 @@ class MaterialRequisition extends BaseController
         foreach($material_requisition as $mat_req)
         {
             $data['sales_order'] .= '<tr class="" id="'.$mat_req->mrp_id.'">
-            <td class="si_no1">'.$i.'</td>
-            <td><input type="text" name="contact_person[]"  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
-            <td style="width:40%"><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name="contact_mobile[]"  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
-            <td> <input type="email" name="contact_email[]" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
+            <td class="si_no1 text-center" style="padding:10px 10px;">'.$i.'</td>
+            <td><input type="text" name="contact_person[]"  value="'.$mat_req->so_reffer_no.'" class="form-control text-center" readonly></td>
+            <td ><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control " readonly></td>
+            <td><input type="text" name="contact_mobile[]"  value="'.$mat_req->mrp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="email" name="contact_email[]" value="'.$mat_req->mrp_qty.'" class="form-control text-center" readonly></td>
             </tr>
             ';
             $i++; 
@@ -384,12 +384,12 @@ class MaterialRequisition extends BaseController
         foreach($material_requisition as $mat_req)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$mat_req->mrp_id.'">
-            <td class="si_no_edit">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$mat_req->so_reffer_no.'" class="form-control" readonly></td>
-            <td style="width:30%"><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$mat_req->mrp_unit.'" class="form-control" readonly></td>
-            <td> <input type="text" name="" value="'.$mat_req->mrp_qty.'" class="form-control" readonly></td>
-            <td style="width:15%">
+            <td class="si_no_edit text-center" style="padding:10px 10px;">'.$i.'</td>
+            <td><input type="text" name=""  value="'.$mat_req->so_reffer_no.'" class="form-control text-center" readonly></td>
+            <td ><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
+            <td><input type="text" name=""  value="'.$mat_req->mrp_unit.'" class="form-control text-center" readonly></td>
+            <td> <input type="text" name="" value="'.$mat_req->mrp_qty.'" class="form-control text-center" readonly></td>
+            <td class="text-center" style="padding:10px 10px;">
                 <a href="javascript:void(0)" class="edit edit-color edit_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
@@ -474,8 +474,8 @@ class MaterialRequisition extends BaseController
             
         </td>
 
-        <td><input type="text" name="mrp_unit"  value="'.$material_requisition->mrp_unit.'" class="form-control edit_contact" required></td>
-        <td> <input type="number" name="mrp_qty" value="'.$material_requisition->mrp_qty.'" class="form-control" required></td>
+        <td><input type="text" name="mrp_unit"  value="'.$material_requisition->mrp_unit.'" class="form-control edit_contact text-center" required></td>
+        <td> <input type="number" name="mrp_qty" value="'.$material_requisition->mrp_qty.'" class="form-control text-center" required></td>
         </tr>
         <input type="hidden" class="contact_cust" name="mrp_id" value="'.$material_requisition->mrp_id.'">
         '; 
