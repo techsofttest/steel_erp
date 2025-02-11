@@ -3037,7 +3037,7 @@
 
         $('body').on('click', '#add_poadvance_btn', function() {
 
-            var vendor_id = $(this).data('vendor');
+            var vendor_id = $(this).sdata('vendor');
 
             var debit_id = $(this).data('debitid');
 

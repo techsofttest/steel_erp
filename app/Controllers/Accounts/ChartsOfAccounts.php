@@ -320,7 +320,7 @@ class ChartsOfAccounts extends BaseController
         $check_module = $this->common_model->CheckModule($adminId,$segment1,$segment2);
 
         if($check_module->up_delete == 0){
-
+                                                                                                                                            
            $return['status'] = 0;
            
            $return['msg'] ="Access Denied: You do not have permission for this Action";

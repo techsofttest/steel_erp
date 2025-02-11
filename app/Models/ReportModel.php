@@ -3520,105 +3520,6 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
 
 
-
-        //Trial Balance Report
-
-
-        /*
-        public function TrialBalance($time_frame,$date_from,$date_to)
-        {
-
-        $today = date('Y-m-d');
-
-        $query = $this->db->table('master_transactions');
-
-        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_id=master_transactions.tran_account','left');
-
-        $query->groupBy('master_transactions.tran_account');
-
-        $query->orderBy('accounts_charts_of_accounts.ca_name','asc');
-
-        if($time_frame!="")
-        {
-
-            if($time_frame=="Range")
-            {
-                if($date_from!="")
-                {
-                $query->where('tran_datetime>=',$date_from);
-                }
-
-                if($date_to!="")
-                {
-                $query->where('tran_datetime<=',$date_to);
-                }
-            }
-
-            if($time_frame=="Month")
-            {
-
-                $date_from = date("Y-m-01", strtotime($today));
-
-                $date_to = date("Y-m-t", strtotime($today));
-
-                $query->where('tran_datetime>=',$date_from);
-                $query->where('tran_datetime<=',$date_to);
-
-            }
-
-            if($time_frame=="Year")
-            {
-
-                $date_from = date("Y-01-01", strtotime($today));
-
-                $date_to = date("Y-12-t", strtotime($today));
-
-                $query->where('tran_datetime>=',$date_from);
-                $query->where('tran_datetime<=',$date_to);
-
-            }
-
-        }
-
-        $result = $query->get()->getResult();
-
-        $i=0;
-
-        foreach($result as $ac)
-        {
-
-        //$result[$i]->start_balance = $this->StartBalance($ac->tran_account,$date_from);
-
-        $result[$i]->total_credit = $this->FetchSum('master_transactions','tran_credit',array('tran_account' => $ac->tran_account,'tran_datetime>=' => $date_from,'tran_datetime<=' =>$date_to));
-
-        $result[$i]->total_debit = $this->FetchSum('master_transactions','tran_debit',array('tran_account' => $ac->tran_account,'tran_datetime>=' => $date_from,'tran_datetime<=' =>$date_to));
-
-        $result[$i]->start_balance = $this->StartBalance($ac->tran_account,$date_from);
-
-        $net_change = $result[$i]->total_credit-$result[$i]->total_debit;
-
-        $balance = $result[$i]->total_credit-$result[$i]->total_debit+$result[$i]->start_balance;
-
-        $result[$i]->balance = number_format($balance,2);
-        
-        $result[$i]->net_change = number_format($net_change,2);
-
-        $i++;
-
-        }
-
-        // echo "<pre>";
-        // print_r($result); exit;
-        // echo "</pre>";
-
-        return $result;
-
-        }
-
-        */
-
-
-
         public function TrialBalance($time_frame,$date_from,$date_to)
         {
 
@@ -3976,16 +3877,6 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
 
 
-
-
-           public function TotalCredit()
-           {
-
-
-           }
-
-
-
         //Receivable Payable Summery
 
         public function RPSummery($account,$date,$type)
@@ -4002,41 +3893,33 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         if($account!="")
         $query->where('ah_id',$account);
 
+        /*
         if($type=="receivable")
         $query->where('at_name',"Accounts Receivable");
         else
         $query->orWhere('at_name',"Accounts Payable");
-
-        /*
-        $query->where('at_name',"Expenses");
-
-        $query->orWhere('at_name',"Cost of Sales");
-
-        $query->orWhere('at_name',"Income");
-
         */
-
-        //$query->groupEnd();
 
         $query->orderBy('ca_name','asc');
 
         $result = $query->get()->getResult();
         
-
         $i=0;
 
         foreach($result as $res)
         {
 
-         $result[$i]->Receivables = $this->RPTotalDue($date,$res->ca_id); // $this->FetchSum('crm_cash_invoice','ci_total_amount',array('ci_customer' => $res->cc_id,'ci_paid_status' => 0,'ci_date<=' => $date));
+            foreach ($result as &$res) {
+                $res->Invoices = $this->RPDues($date, $res->ca_id, $type);
+            }
+            unset($res);
+         //$result[$i]->ThirtyDays = $this->RPDueDated($res->ca_id,$date,"0","30");
 
-         $result[$i]->ThirtyDays = $this->RPDueDated($res->ca_id,$date,"0","30");
+         //$result[$i]->SixtyDays = $this->RPDueDated($res->ca_id,$date,"31","60");
 
-         $result[$i]->SixtyDays = $this->RPDueDated($res->ca_id,$date,"31","60");
+          //$result[$i]->NinetyDays = $this->RPDueDated($res->ca_id,$date,"61","90");
 
-         $result[$i]->NinetyDays = $this->RPDueDated($res->ca_id,$date,"61","90");
-
-         $result[$i]->AboveNinetyDays = $this->RPDueDated($res->ca_id,$date,"90","above");
+         //$result[$i]->AboveNinetyDays = $this->RPDueDated($res->ca_id,$date,"90","above");
 
         $i++;
 
@@ -4055,90 +3938,304 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
 
 
-        public function RPTotalDue($date,$account)
+        public function RPDues($date_to,$account,$type="")
         {
 
-        //Unpaid Purchase Voucher
 
-        $query = $this->db->table('pro_purchase_voucher');
-
-        $query->select('SUM(pv_total) - SUM(pv_paid) as pv_due');
-
-        //$query = $this->db->query('SELECT SUM(pv_total) - SUM(pv_paid) AS total_balance FROM '.$this->db->getPrefix().'pro_purchase_voucher');
-
-        //$result = $query->getRow();
-
-        //echo $result->total_balance; exit;
-
-
-        $query->join('pro_vendor','pro_vendor.ven_id=pro_purchase_voucher.pv_vendor_name','left');
-
-        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=pro_vendor.ven_id and accounts_charts_of_accounts,ca_type = "VENDOR"','left');
-
-        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
-
-        if($account!="")
-        $query->where('accounts_charts_of_accounts.ca_id',$account);
-
-        
-        if($date!="")
-        $query->where('pv_date<=',$date);
+              
+            if(empty($date_to))
+            {
+    
+            $date_to = date('Y-m-d');
+    
+            }
+    
+    
+            $cash_invoice_table = "{$this->db->getPrefix()}crm_cash_invoice";
+    
+            $credit_invoice_table = "{$this->db->getPrefix()}crm_credit_invoice";
+      
+            $pv_table = "{$this->db->getPrefix()}pro_purchase_voucher";
+    
+            $query = "";
 
 
-        $pv_due = $query->get()->getRow()->pv_due;
+            $query1= 'SELECT 
+            SUM(CASE WHEN DATEDIFF('.$date_to.', transaction_date) BETWEEN 0 AND 30 THEN debit_amount ELSE 0 END) AS "0_30_days",
+            SUM(CASE WHEN DATEDIFF('.$date_to.', transaction_date) BETWEEN 31 AND 60 THEN debit_amount ELSE 0 END) AS "31_60_days",
+            SUM(CASE WHEN DATEDIFF('.$date_to.', transaction_date) BETWEEN 61 AND 90 THEN debit_amount ELSE 0 END) AS "61_90_days",
+            SUM(CASE WHEN DATEDIFF('.$date_to.', transaction_date) > 90 THEN debit_amount ELSE 0 END) AS "90_plus_days",
+            SUM(debit_amount) AS total_amount
+            ';
 
-        //echo $pv_due; exit;
 
+            $query1=" FROM(";
 
-        //Unpaid Cash Invoices
+    
+            //Cash Invoices Fetch
 
-        $query = $this->db->table('crm_cash_invoice');
-
-        $query->select('SUM(ci_total_amount) - SUM(ci_paid_amount) as ci_due');
-
-        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_cash_invoice.ci_customer','left');
-
-        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=crm_customer_creation.cc_id and accounts_charts_of_accounts,ca_type = "CUSTOMER"','left');
-
-        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
-
-        if($account!="")
-        $query->where('accounts_charts_of_accounts.ca_id',$account);
-
-        //$query->where('ci_customer',$account);
-
-        if($date!="")
-        $query->where('ci_date<=',$date);
-
-        $ci_due = $query->get()->getRow()->ci_due;
-
+            $pv_union = "";
+            if($type=="b" || $type=="")
+            {
+            $pv_union="UNION ALL";
+            }
             
-        //Unpaid Credit Invoices
+            if($type=="r" || $type=="b" || $type=="")
+            {
+            $query .= " 
+            (SELECT 
+                {$cash_invoice_table}.ci_id  AS id,
+                {$cash_invoice_table}.ci_reffer_no AS reference,
+                {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
+                {$cash_invoice_table}.ci_date AS transaction_date,
+                {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt as pdc_amount,
+                NULL AS purchase_order,
+                NULL AS method,
+                {$cash_invoice_table}.ci_total_amount AS total_dues,
+                NULL AS credit_amount,
+                {$cash_invoice_table}.ci_total_amount AS debit_amount,
 
-        $query = $this->db->table('crm_credit_invoice');
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$cash_invoice_table}.ci_date) BETWEEN 0 AND 30 THEN {$cash_invoice_table}.ci_total_amount 
+                ELSE 0 
+                END AS '0_30_days',
 
-        $query->select('SUM(cci_total_amount) - SUM(cci_paid_amount) as cr_due');
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$cash_invoice_table}.ci_date) BETWEEN 31 AND 60 THEN {$cash_invoice_table}.ci_total_amount 
+                ELSE 0 
+                END AS '31_60_days',
 
-        $query->join('crm_customer_creation','crm_customer_creation.cc_id=crm_credit_invoice.cci_customer','left');
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$cash_invoice_table}.ci_date) BETWEEN 61 AND 90 THEN {$cash_invoice_table}.ci_total_amount 
+                ELSE 0 
+                END AS '61_90_days',
 
-        $query->join('accounts_charts_of_accounts','accounts_charts_of_accounts.ca_customer=crm_customer_creation.cc_id and accounts_charts_of_accounts,ca_type = "CUSTOMER"','left');
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$cash_invoice_table}.ci_date) > 90 THEN {$cash_invoice_table}.ci_total_amount 
+                ELSE 0 
+                END AS '90_plus_days',
 
-        $query->join('accounts_account_heads','accounts_account_heads.ah_id=accounts_charts_of_accounts.ca_account_type','left');
+                'Cash Invoice' as voucher_type,
+                {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+                {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+            FROM {$this->db->getPrefix()}crm_cash_invoice
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$cash_invoice_table}.ci_customer
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_customer = {$cash_invoice_table}.ci_customer
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice = {$cash_invoice_table}.ci_id AND {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice_type = 'cash_invoice'
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_id = {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipts ON {$this->db->getPrefix()}accounts_receipts.r_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt
+            ";
 
-        if($account!="")
-        $query->where('accounts_charts_of_accounts.ca_id',$account);
+            $query .= "WHERE ";
+    
+            $query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_method = 1 OR `{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL) ";
+    
+    
+            if ($date_to != "") {
+                $query .= " AND ";
+                $query .= "{$cash_invoice_table}.ci_date <= '{$date_to}' ";
+            }
+    
+                
+          
+    
+            if ($account != "") {
+                if ($date_to != "") {
+                    $query .= " AND ";
+                }
+    
+            $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+    
+            }
+    
+            $query .= ")";  
+    
+    
+            //Credit Invoices Fetch
+    
+            $query .= "UNION ALL 
+            (SELECT 
+            {$credit_invoice_table}.cci_id   AS id,
+            {$credit_invoice_table}.cci_reffer_no AS reference,
+            {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
+            {$credit_invoice_table}.cci_date AS transaction_date,
+            {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt as pdc_amount,
+            NULL AS purchase_order,
+            NULL AS method,
+            {$credit_invoice_table}.cci_total_amount AS total_dues,
+            NULL AS credit_amount,
+            {$credit_invoice_table}.cci_total_amount AS debit_amount,
 
-        //$query->where('cci_customer',$account);
+            CASE 
+                WHEN DATEDIFF(CURDATE(), {$credit_invoice_table}.cci_date) BETWEEN 0 AND 30 THEN {$credit_invoice_table}.cci_total_amount 
+                ELSE 0 
+                END AS '0_30_days',
 
-        if($date!="")
-        $query->where('cci_date<=',$date);
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$credit_invoice_table}.cci_date) BETWEEN 31 AND 60 THEN {$credit_invoice_table}.cci_total_amount 
+                ELSE 0 
+                END AS '31_60_days',
 
-        $cr_due = $query->get()->getRow()->cr_due;
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$credit_invoice_table}.cci_date) BETWEEN 61 AND 90 THEN {$credit_invoice_table}.cci_total_amount 
+                ELSE 0 
+                END AS '61_90_days',
 
-        $total_due = $pv_due+$ci_due+$cr_due;
+                CASE 
+                WHEN DATEDIFF(CURDATE(), {$credit_invoice_table}.cci_date) > 90 THEN {$credit_invoice_table}.cci_total_amount 
+                ELSE 0 
+                END AS '90_plus_days',
+
+            'Credit Invoice' as voucher_type,
+            {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+            {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+            FROM {$this->db->getPrefix()}crm_credit_invoice
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$credit_invoice_table}.cci_customer
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_customer = {$credit_invoice_table}.cci_customer
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice = {$credit_invoice_table}.cci_id AND {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice_type = 'credit_invoice'
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_id = {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice
+            LEFT JOIN {$this->db->getPrefix()}accounts_receipts ON {$this->db->getPrefix()}accounts_receipts.r_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt
+            ";
+    
+    
+            $query .= "WHERE ";
+    
+            //$query .="{$credit_invoice_table}.cci_paid_status != 3";
+    
+            $query .= " (`{$this->db->getPrefix()}accounts_receipts`.r_method = 1 OR `{$this->db->getPrefix()}accounts_receipts`.r_id IS NULL) ";
+    
+    
+            if ($date_to != "") {
+                $query .= " AND ";
+                $query .= "{$credit_invoice_table}.cci_date <= '{$date_to}' ";
+            }
+    
+            if ($account != "") {
+                if ($date_to != "") {
+                    $query .= " AND ";
+                }
+    
+            $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+    
+            }
+    
+            $query .= ")";
+    
+    
+            }
+    
+            //PV Start
+    
+            if($type=="p" || $type=="b" || $type=="")
+            {
+    
+            $query .= "{$pv_union} 
+            (SELECT 
+            {$pv_table}.pv_id AS id, 
+            {$pv_table}.pv_reffer_id AS reference, 
+            {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
+            {$pv_table}.pv_date AS transaction_date,
+            {$this->db->getPrefix()}accounts_payment_debit_invoices.pdi_payment_amount as pdc_amount,
+            {$this->db->getPrefix()}pro_purchase_order.po_reffer_no AS purchase_order,
+            NULL AS method,
+            {$pv_table}.pv_total AS total_dues,
+            {$pv_table}.pv_total AS credit_amount,
+            NULL AS debit_amount,
+
+            CASE 
+            WHEN DATEDIFF(CURDATE(), {$pv_table}.pv_date) BETWEEN 0 AND 30 THEN {$pv_table}.pv_total 
+            ELSE 0 
+            END AS '0_30_days',
+
+            CASE 
+            WHEN DATEDIFF(CURDATE(), {$pv_table}.pv_date) BETWEEN 31 AND 60 THEN {$pv_table}.pv_total 
+            ELSE 0 
+            END AS '31_60_days',
+
+            CASE 
+            WHEN DATEDIFF(CURDATE(), {$pv_table}.pv_date) BETWEEN 61 AND 90 THEN {$pv_table}.pv_total 
+            ELSE 0 
+            END AS '61_90_days',
+
+            CASE 
+            WHEN DATEDIFF(CURDATE(), {$pv_table}.pv_date) > 90 THEN {$pv_table}.pv_total 
+            ELSE 0 
+            END AS '90_plus_days',
+
+            'Purchase Voucher' as voucher_type,
+            {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
+            {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
+            FROM {$this->db->getPrefix()}pro_purchase_voucher
+            LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name AND {$this->db->getPrefix()}accounts_charts_of_accounts.ca_type = 'VENDOR'
+            LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
+            LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
+            LEFT JOIN {$this->db->getPrefix()}accounts_payment_debit_invoices ON {$this->db->getPrefix()}accounts_payment_debit_invoices.pdi_invoice = {$pv_table}.pv_id
+            LEFT JOIN {$this->db->getPrefix()}accounts_payment_debit ON {$this->db->getPrefix()}accounts_payment_debit.pd_id = {$this->db->getPrefix()}accounts_payment_debit_invoices.pdi_debit_id
+            LEFT JOIN {$this->db->getPrefix()}accounts_payments ON {$this->db->getPrefix()}accounts_payments.pay_id = {$this->db->getPrefix()}accounts_payment_debit.pd_payment
+            ";
+            //
+            //
+    
+            $query .= "WHERE ";
+    
+            //if payables
+    
+            $query .= " (`{$this->db->getPrefix()}accounts_payments`.pay_method = 1 OR `{$this->db->getPrefix()}accounts_payments`.pay_id IS NULL) ";
+    
+            
+
+            if ($date_to != "") {
+                $query .= " AND ";
+                $query .= "{$pv_table}.pv_date <= '{$date_to}' ";
+            }
+    
+           
+    
+            if ($account != "") {
+                if ($date_to != "") {
+                    $query .= " AND ";
+                }
+    
+            $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
+    
+            }
+    
+            $query .="GROUP BY {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id";
+    
+            $query .= ")";
+    
+            }
 
 
-        return $total_due;
+            $query1=") AS aging_data GROUP BY account_name;";
+
+
+    
+            $result = $this->db->query($query)->getRow();
+
+
+            if (!$result) {
+                return (object) [
+                    '0_30_days' => 0,
+                    '31_60_days' => 0,
+                    '61_90_days' => 0,
+                    '90_plus_days' => 0,
+                    'total_dues' => 0,
+                    'total_amount' => 0
+                ];
+            }
+
+
+         
+            return $result;
+
+       
 
         }
 

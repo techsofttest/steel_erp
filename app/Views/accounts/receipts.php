@@ -1653,7 +1653,7 @@
                                             </tr>
 
 
-                                            <tbody>
+                                            <thead>
 
 
                                                 <tr>
@@ -1670,7 +1670,7 @@
 
                                                 </tr>
 
-                                            </tbody>
+                                            </thead>
 
                                             <tbody id="view_receipt_invoices">
 

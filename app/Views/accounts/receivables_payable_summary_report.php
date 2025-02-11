@@ -146,11 +146,11 @@
                                                                      <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Receivable <input type="radio" name="type" value="receivable">
+                                                                    Receivable <input type="radio" name="type" value="r">
                                                                     </div>
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Payable <input type="radio" name="type" value="payable">
+                                                                    Payable <input type="radio" name="type" value="p">
                                                                     </div>                                                  
 
                                                                     </div>
@@ -238,7 +238,7 @@
 
 
                                     <div class="card-body">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table id="DataTable0" class="table table-bordered table-striped delTable display dataTable">
                                             
                                             <thead>
 
@@ -272,41 +272,43 @@
 
                                             $grand_total = 0;
 
+
+                                            $totals = [
+                                                'total_dues' => 0,
+                                                '0_30_days' => 0,
+                                                '31_60_days' => 0,
+                                                '61_90_days' => 0,
+                                                '90_plus_days' => 0
+                                            ];
+
                                             foreach($all_accounts as $ac) {
                                                 
                                             
-                                            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
-
+                                                if (!isset($ac->Invoices)) {
+                                                    continue;
+                                                }
+                                            
+                                                // Accumulate totals
+                                                $totals['total_dues'] += $ac->Invoices->total_dues ?? 0;
+                                                $totals['0_30_days'] += $ac->Invoices->{"0_30_days"} ?? 0;
+                                                $totals['31_60_days'] += $ac->Invoices->{"31_60_days"} ?? 0;
+                                                $totals['61_90_days'] += $ac->Invoices->{"61_90_days"} ?? 0;
+                                                $totals['90_plus_days'] += $ac->Invoices->{"90_plus_days"} ?? 0;
+                                                
                                             ?>
 
                                             <tr> 
 
-                                                <td><?= $ac->ca_name; ?></td>
-                                                <td class="text-end"><?php echo empty($ac->Receivables) ? "---" : format_currency($ac->Receivables); ?></td>
-                                                <td class="text-end"><?php echo empty($ac->ThirtyDays) ? "---" : format_currency($ac->ThirtyDays); ?></td>
-                                                <td class="text-end"><?php echo empty($ac->SixtyDays) ? "---" : format_currency($ac->SixtyDays); ?></td>
-                                                <td class="text-end"><?php echo empty($ac->NinetyDays) ? "---" : format_currency($ac->NinetyDays); ?></td>
-                                                <td class="text-end"><?php echo empty($ac->AboveNinetyDays) ? "---" : format_currency($ac->AboveNinetyDays); ?></td>
+                                                <td><?= $ac->ca_name ?></td>
+                                                <td class="text-end"><?php echo format_currency($ac->Invoices->total_dues); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->Invoices->{"0_30_days"}) ? "---" : format_currency($ac->Invoices->{"0_30_days"}); ?></td>
+                                                <td class="text-end"><?php echo empty($ac->Invoices->{"31_60_days"}) ? "---" : format_currency($ac->Invoices->{"31_60_days"});  ?></td>
+                                                <td class="text-end"><?php echo empty($ac->Invoices->{"61_90_days"}) ? "---" : format_currency($ac->Invoices->{"61_90_days"});  ?></td>
+                                                <td class="text-end"><?php echo empty($ac->Invoices->{"90_plus_days"}) ? "---" : format_currency($ac->Invoices->{"90_plus_days"});  ?></td>
 
                                             </tr>
 
-                                            <?php 
-                                        
-                                            if($grand_total>0)
-                                            {
-                                            $total_rec = $total_rec+$grand_total;
-                                            }
-
-                                            $total_thirty = $total_thirty+$ac->ThirtyDays;
-                                           
-                                            $total_sixty  =  $total_sixty+$ac->SixtyDays;
-                                            
-                                            $total_ninety = $total_ninety+$ac->NinetyDays;
-
-                                            $total_above = $total_above+$ac->AboveNinetyDays;
-
-
-                                        } ?>
+                                            <?php } ?>
 
                                              
 
@@ -319,11 +321,11 @@
                                             <tr class="no-sort">
                                            
                                             <td><b style="font-size:20px;">Total</b></td>
-                                            <td class="text-end"><b><?= format_currency($total_rec) ?></b></td>
-                                            <td class="text-end"><b><?= format_currency($total_thirty) ?></b></td>
-                                            <td class="text-end"><b><?= format_currency($total_sixty) ?></b></td>
-                                            <td class="text-end"><b><?= format_currency($total_ninety) ?></b></td>
-                                            <td class="text-end"><b><?= format_currency($total_above) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($totals['total_dues']) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($totals['0_30_days']) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($totals['31_60_days']) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($totals['61_90_days']) ?></b></td>
+                                            <td class="text-end"><b><?= format_currency($totals['90_plus_days']) ?></b></td>
 
                                             </tfoot>
 
