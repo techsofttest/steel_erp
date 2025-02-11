@@ -1653,6 +1653,14 @@
                                             </tr>
 
 
+
+                                           </table>
+
+
+
+                                            <table class="table table-bordered add_more_container">
+
+
                                             <thead>
 
 
@@ -1682,10 +1690,8 @@
                                             <tfoot>
 
                                             <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-end">Total Receipt : </td>
+                                            
+                                            <td class="text-end" colspan="4">Total Receipt : </td>
                                             <td class='text-end' style=""><b><span id="total_receipt_amount_view"></span></b></td>
                                             </tr>
 

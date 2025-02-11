@@ -121,7 +121,14 @@
                             </tr>
 
 
-                                            <tbody>
+
+                                            </table>
+
+
+                                            <table class="table table-bordered add_more_container">
+
+
+                                            <thead>
 
 
                                                 <tr>
@@ -138,7 +145,7 @@
 
                                                 </tr>
 
-                                            </tbody>
+                                            </thead>
 
                                             <tbody id="view_payment_invoices">
 
@@ -149,10 +156,8 @@
                                             <tfoot>
 
                                             <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-end">Total Payment : </td>
+                                           
+                                            <td class="text-end" colspan="4">Total Payment : </td>
                                             <td class='text-end' style=""><b><span id="total_payment_amount_view"></span></b></td>
                                             </tr>
 
