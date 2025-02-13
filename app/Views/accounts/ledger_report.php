@@ -267,7 +267,7 @@
                                                                             </td>
 
 
-                                                                            <td>Date To</td>
+                                                                            <td class="text-center">Date To</td>
 
                                                                             <td>
                                                                             <input class="form-control datepicker" type="text"  name="end_date" readonly disabled/>
@@ -298,7 +298,7 @@
 
                                                                             </td>
 
-                                                                            <td>Range To</td>
+                                                                            <td class="text-center">Range To</td>
 
                                                                             <td>
                                                                             

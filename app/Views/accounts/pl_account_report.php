@@ -132,7 +132,7 @@
                                                                             </td>
 
 
-                                                                            <td>Date To</td>
+                                                                            <td class="text-center">Date To</td>
 
                                                                             <td>
                                                                             <input class="form-control datepicker" type="text"  name="end_date" readonly disabled/>
@@ -152,11 +152,11 @@
 
                                                                      <div class="row my-2">
 
-                                                                    <div class="col-lg-6 text-center">
+                                                                    <!--<div class="col-lg-6 text-center">
                                                                     Monthwise <input type="checkbox" name="month" value="1">
-                                                                    </div>
+                                                                    </div>-->
 
-                                                                    <div class="col-lg-6 text-center">
+                                                                    <div class="col-lg-12 text-center">
                                                                     Zero Balance <input type="checkbox" name="zero" value="1">
                                                                     </div>                                                  
 

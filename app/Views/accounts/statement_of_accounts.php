@@ -398,6 +398,10 @@
 
 
 
+                                        <?php if(!empty($_GET['pdc']))
+
+                                        {
+                                        ?>
 
                                         <table class="table table-bordered">
 
@@ -449,6 +453,9 @@
                                     </tbody>
 
                                     </table>
+
+
+                                    <?php } ?>
 
 
 
