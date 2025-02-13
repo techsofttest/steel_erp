@@ -1,3 +1,4 @@
+
 <?php 
  if(empty($_GET))
  {
@@ -40,12 +41,9 @@
    
    /* #### */
    
-   
    </style>
    
     <?php } ?>
-
-
 <!--header section end-->
 
 
@@ -92,24 +90,21 @@
                                                                         <thead class="travelerinfo contact_tbody">
 
 
-                                                                        
 
 
-                                                                            <tr>
 
-                                                                            <td>GL Account</td>
+                                                                       
+
+
+
+                                                                            <tr id="Account"  class="account_parent">
+
+                                                                            <td>Account</td>
 
                                                                             <td>
 
-                                                                            <select class="form-control" name="filter_account" required>
-
-                                                                            <option value="">Select Account</option>
-                                                                            
-                                                                            <?php foreach($accounts as $account){ ?>
-
-                                                                            <option value="<?= $account->ca_id; ?>"><?= $account->ca_name; ?></option>
-
-                                                                            <?php } ?>
+                                                                            <select class="form-control account_select2_common" name="filter_account">
+                     
 
                                                                             </select>
 
@@ -117,22 +112,17 @@
 
 
                                                                             </tr>
-                                                                      
-
 
 
 
                                                                             <tr>
 
 
-                                                                            <td>Date From</td>
+                                                                            <td>Date Range</td>
 
                                                                             <td>
                                                                             <input class="form-control datepicker" type="text"  name="start_date" readonly/>
                                                                             </td>
-
-
-                                                                            <td>Date To</td>
 
                                                                             <td>
                                                                             <input class="form-control datepicker" type="text"  name="end_date" readonly/>
@@ -140,59 +130,52 @@
 
 
                                                                             </tr>
-                                                                            
+
+
                                                                         
                                                                         </thead>
                                                                      
                                                                     
+                                                                    </table>
+
+
+
+                                                                    <div class="row my-2">
+
+                                                                    <div class="col-lg-6 text-center">
+                                                                    Receivable <input type="radio" name="ac_type" value="r">
+                                                                    </div>
                                                                     
-                                                                     </table>
-
-
-
-
-                                                                    <div class="row">
-
-
-                                                                    <div class="col-lg-6">
-
-
-                                                                    <div class="row my-2">
 
                                                                     <div class="col-lg-6 text-center">
-                                                                    Receivable <input type="checkbox" name="receivable" value="1">
-                                                                    
-                                                                    </div> 
+                                                                    Post Date Cheques <input type="checkbox" name="pdc" value="pdc">
+                                                                    </div>                                         
 
                                                                     </div>
 
                                                                     <div class="row my-2">
+
+                                                                   
+
                                                                     <div class="col-lg-6 text-center">
-                                                                    Payable <input type="checkbox" name="payable" value="1">
+                                                                    Payable <input type="radio" name="ac_type" value="p">
                                                                     </div>  
+                                                                    <div class="col-lg-6 text-center"></div>
+
+                                                                   
+
                                                                     </div>
+
+
 
                                                                     <div class="row my-2">
+
                                                                     <div class="col-lg-6 text-center">
-                                                                    Both <input type="checkbox" name="both" value="1">
+                                                                    Both <input type="radio" name="ac_type" value="b">
                                                                     </div>  
-                                                                    </div>
+                                                                    <div class="col-lg-6 text-center"></div>                                           
 
                                                                     </div>
-
-
-                                                                    <div class="col-lg-6">
-
-                                                                    <div class="col-lg-6 text-center">
-                                                                    Post Dated Cheques <input type="checkbox" name="pdc" value="1">
-                                                                    </div> 
-
-
-                                                                    </div>
-
-
-                                                                    </div>
-
 
 
 
@@ -207,7 +190,7 @@
                                                                             <!--<td><button>Excel</button></td>
                                                                             <td><button>PDF</button></td>
                                                                             <td><button>Email</button></td>-->
-                                                                            <td><button type="submit" data-bs-dismiss="modal">View</button></td>
+                                                                            <td><button type="submit">View</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             
@@ -246,7 +229,8 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">View Statement Of Accounts</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1 text-center">View Statement Of Accounts</h4>
+
 
                                         <?php if(!empty($_GET)) { ?>
 
@@ -266,8 +250,9 @@
 
                                         <button id="email_button" class="email_button report_button">Email</button>
 
-                                       
+
                                         <?php } ?>
+
 
 
                                         <button type="button" data-bs-toggle="modal" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
@@ -292,268 +277,120 @@
                                             
                                             <tbody class="tbody_data">
 
-                                                <?php
-                                                if(!empty($open_balance))
-                                                {
-                                                $balance=$open_balance;
-                                                }
-                                                else
-                                                {
-                                                $balance=0;
-                                                }
+
+                                            <?php 
+                                            $total_credit=number_format(0,2);
+                                            $pdc_total = number_format(0,2);
+                                            if(empty($c_balance))
+                                            {
+                                            $c_balance = 0 ;
+                                            }
+
+                                            $c_balance = 0 ;
+                                           
+                                            ?>
+
+                                            <?php 
+
+                                            $total_debit=number_format(0,2);
+
+
+                                            // Initialize Aging Bucket Totals
+                                            $aging_totals = [
+                                                "30" => 0,
+                                                "60" => 0,
+                                                "90" => 0,
+                                                "90+" => 0
+                                            ];
+
+
+                                            foreach($transactions as $trn){ 
+
+
+                                                $days_due = (strtotime(date('Y-m-d')) - strtotime($trn->transaction_date)) / (60 * 60 * 24);
+                                                    
+                                                    // Determine Aging Bucket
+                                                    if ($days_due <= 30) {
+                                                        $aging_bucket = "30";
+                                                    } elseif ($days_due <= 60) {
+                                                        $aging_bucket = "60";
+                                                    } elseif ($days_due <= 90) {
+                                                        $aging_bucket = "90";
+                                                    } else {
+                                                        $aging_bucket = "90+";
+                                                    }
 
                                                 ?>
+
+
 
 
                                                 <tr>
+    
+                                                <td><?= $trn->reference; ?></td>
+    
+                                                <td><?php echo date('d M Y',strtotime($trn->transaction_date)); ?></td>
+    
+                                                <td><?php if(!empty($trn->purchase_order)) { echo $trn->purchase_order; } ?></td>
+    
+                                                <td align="right" class="text-end"> 
+    
+                                                <?php if($trn->debit_amount !="") { 
+                                                echo  format_currency($trn->debit_amount);
+                                                $total_debit = $total_debit+$trn->debit_amount;
+                                                $c_balance = $c_balance + $trn->debit_amount;
 
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-end"><b>Opening Balance</b></td>
-                                                <td class="text-end"><?= format_currency($balance); ?></td>
+                                                $aging_totals[$aging_bucket] += $trn->debit_amount;
 
-                                                </tr>
-
-
-                                                <?php 
-                                                $total_credit=0;
-                                                $total_debit=0;
-                                                $year="";
-                                                $year_change=false;
-                                                $counter=0;
-                                                $account_heading = "";
-
-                                                
-                                                foreach($vouchers['vouchers'] as $vc){ 
-                                                    
-                                                if( ($year!="" && $year!=date('Y',strtotime($vc->transaction_date))) && $counter!=0)
-                                                {
-                                                $year=date('Y',strtotime($vc->transaction_date));
-                                                $year_change=true;
-                                                }
-                                                $year = date('Y',strtotime($vc->transaction_date));
-
-
-                                                if($vc->voucher_type=="Journal Voucher")
-                                                {
-                                                if($vc->debit_amount<1){ $vc->debit_amount = NULL; }
-                                                if($vc->credit_amount<1){ $vc->credit_amount = NULL; }
-                                                }
-
-
-                                                $counter++;
-                                                ?>
-
-                                                <?php if($year_change==true){ ?>
-
-
-                                                <tr class="no-sort">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                
-                                                <td class="text-end"><b>Ending Balance</b></td>
-                                                <td class="text-end"><b ></b></td> 
-
-                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
-                                                </tr>
-
-
-                                                <tr class="no-sort">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-end"><b>Opening Balance</b></td>
-                                                <td class="text-end"><b ></b></td> 
-
-                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
-                                                </tr>
-
-
-                                                <?php 
-                                                $year_change=false;
-                                                } 
-                                                ?>
-
-
-                                                <?php
-
-                                                if($account_heading != $vc->account_name)
-                                                {
-
-                                                if(empty($_GET['filter_account'])){
-
-
-                                                ?>
-
-
-                                                <tr class="no-sort">
-                                                <td><b style="font-size:23px;"><?= $vc->account_name ?></b></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-end"></td>
-                                                <td class="text-end"></td> 
-
-                                                <td class="text-end"></td>
-                                                </tr>
-
-
-                                                <?php 
-                                                $account_heading = $vc->account_name;
-                                                } 
-                                                }
-
-                                                ?>
-
-
-                                                <tr>
-
-                                                <td>
-                                                <?php if(($vc->voucher_type=="Receipt")){
-                                                $href="Accounts/Receipts";
-                                                } 
-                                                else if($vc->voucher_type=="Cash Invoice")
-                                                {
-                                                $href="Crm/CashInvoice";
-                                                }
-                                                else if($vc->voucher_type=="Credit Invoice")
-                                                {
-                                                $href="Crm/CreditInvoice";
-                                                }
-                                                else if($vc->voucher_type=="Payment")
-                                                {
-                                                $href="Accounts/Payments";
-                                                }
-                                                else if($vc->voucher_type=="Sales Return")
-                                                {
-                                                $href="Crm/SalesReturn";
-                                                }
-                                                else if($vc->voucher_type=="Purchase Voucher")
-                                                {
-                                                 $href="Procurement/PurchaseVoucher";   
-                                                }
-                                                else
-                                                {
-                                                $href="";
-                                                }
-                                                ?>
-                                                <a target="_blank" href="<?= base_url(); ?><?= $href ?>?view=<?= $vc->id; ?>">
-                                                <?= $vc->reference; ?>
-                                                </a>
-
+                                                } else {?>
+                                                    ---
+                                                <?php } ?>
+                                            
                                                 </td>
+    
+                                                <td align="right">
+    
+                                                <?php if($trn->credit_amount !="") { 
+                                                echo  format_currency($trn->credit_amount); 
+                                                $total_credit=$total_credit+$trn->credit_amount;
+                                                $c_balance = $c_balance + $trn->credit_amount;
 
+                                                $aging_totals[$aging_bucket] += $trn->credit_amount;
 
-                                                <td><?php echo date('d-M-Y',strtotime($vc->transaction_date)); ?></td>
-
-                                                
-                                                <td>
-                                                    <?php
-                                                     
-                                                     if($vc->voucher_type=="Purchase Voucher")
-                                                     //echo $vc->pv_purchase_order;
-                                                     
-                                                     
-                                                     ?>
-                                                
+                                                } else {?>
+                                                ---
+                                                <?php } ?>
+    
                                                 </td>
-
-
-                                                <td class="currency_format1 text-end">
-
-                                                <?php if($vc->debit_amount !="" && $vc->debit_amount>0) { 
-
-                                                    echo  format_currency($vc->debit_amount);
-
-                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
-
-                                                    $total_debit = (float)$total_debit+(float)$vc->debit_amount;
-
-                                                } else if($vc->credit_amount<0) {
-                                                    
-                                                    echo  format_currency(abs($vc->credit_amount)); 
-
-                                                    $vc->credit_amount === "" ? "" : $vc->credit_amount;
-
-                                                    $total_debit=(float)$total_debit+(float)abs($vc->credit_amount);
-
-                                                    
+    
+                                               
+    
+                                                <td class="text-end"><?= format_currency($c_balance); ?></td>
+    
+                                                </tr>
+    
+                                                <?php 
+    
                                                 } ?>
-
-                                                </td>
-
-                                                <td class="currency_format1 text-end"> 
-                                                    
-                                                <?php if($vc->credit_amount !="" && $vc->credit_amount>0) { 
-
-                                                    echo  format_currency($vc->credit_amount); 
-
-                                                    $total_credit=$total_credit+$vc->credit_amount;
-                                                    
-                                                } else if($vc->debit_amount<0) {
-                                                    
-                                                    echo  format_currency(abs($vc->debit_amount));
-
-                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
-
-                                                    $total_credit = (float)$total_credit+(float)abs($vc->debit_amount);
-
-                                                    } ?></td>
-
-                                                <td class="currency_format1 text-end">
-
-                                                <?php
-                                                    
-                                                    if(!empty($vc->debit_amount))
-                                                    {
-                                                    $vc->debit_amount === "" ? "" : $vc->debit_amount;
-                                                    
-                                                    $balance = (float)$balance+(float)$vc->debit_amount;
-                                                    
-                                                    }
-                                                    else
-                                                    {
-                                                    $vc->credit_amount === "" ? "" : $vc->credit_amount;
-                                                    $balance = (float)$balance-(float)$vc->credit_amount; 
-                                                    }
-
-                                                    echo format_currency($balance);
-
-                                                ?>
-                                                
-
-                                                </td>
+                                            
 
 
-                                                </tr>
+                                            </tbody>
 
 
-                                                <?php }  ?>
+                                            <tfoot>
 
+                                            <tr class="no-sort">
+                                           
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($total_debit); ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($total_credit); ?></b></td>
+                                            <td align="right" class="text-end"><b style="text-align:right"><?= format_currency($c_balance); ?></b></td>
+                                            </tr>
 
-
-                                                </tbody>
-
-
-
-                                                <tfoot>
-
-                                                <tr class="no-sort">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-
-                                                <td class="text-end"><b><?= format_currency($total_debit); ?></b></td>
-
-                                                <td class="text-end"><b ><?= format_currency($total_credit); ?></b></td> 
-
-                                                <td class="text-end"><b ><?= format_currency($balance); ?></b></td>
-                                                </tr>
-
-                                                </tfoot>
-
+                                            </tfoot>
 
 
 
@@ -561,121 +398,76 @@
 
 
 
-                            
 
-                            <table class="table table-bordered">
-
-
-                             <?php if(!empty($_GET['pdc'])) { ?>
-
-                                <thead>
-
-                                <tr>
-
-                                    <th>Receipt No</th>
-
-                                    <th>Receipt Date</th>
-
-                                    <th>Cheque No</th>
-
-                                    <th>Cheque Date</th>
-
-                                    <th>Bank</th>
-
-                                    <th class="text-end">Amount</th>
-
-                                </tr> 
-
-                                </thead>
-
-                                <tbody>
-
-                                <?php
-
-                                
-                                foreach($vouchers['pdc'] as $pdatecheque){
-
-                                ?>
+                                        <table class="table table-bordered">
 
 
-                                <tr class="">
+                                        <thead>
 
-                                    <th></th>
+                                            <tr>
 
-                                    <th></th>
+                                                <th>Receipt No</th>
 
-                                    <th></th>
+                                                <th>Receipt Date</th>
 
-                                    <th></th>
+                                                <th>Cheque No</th>
 
-                                    <th></th>
+                                                <th>Cheque Date</th>
 
-                                    <th class="text-end"></th>
+                                                <th>Bank</th>
 
-                                </tr>
+                                                <th class="text-end">Amount</th>
 
-                                </tbody>
+                                            </tr>
 
-                               <?php
-
-                               }
-                               
-                               ?>
+                                            </thead>
 
 
-
-                                    <?php
-                                    
-                                    $total_due = $balance - array_sum(array_column($vouchers['pdc'],'amount'));
-
-                                    $total_due = format_currency($total_due);
+                                        <tbody>
 
 
-                                    ?>
+                                    <?php foreach($post_dated_cheques as $pdc){?>
 
+                                    <tr>
 
-                                <?php } 
+                                        <td><?= $pdc->reference; ?></td>
 
-                                else
-                                {
+                                        <td><?= date('d M Y',strtotime($pdc->transaction_date)); ?></td>
 
-                                $total_due = format_currency($balance);
+                                        <td><?= $pdc->cheque_no; ?></td>
 
-                                }
-                                
-                                
-                                ?>
+                                        <td><?= date('d M Y',strtotime($pdc->cheque_date)); ?></td>
 
+                                        <td><?= $pdc->bank ?></td>
 
-
-                                    <tr class="">
-
-
-                                    <th></th>
-
-                                    <th></th>
-
-                                    <th></th>
-
-                                    <th></th>
-
-                                    <th></th>
-
-                                    <th class="text-end"><b><?= $total_due ?></b></th>
-
-
+                                        <td align="right"><?= format_currency($pdc->amount) ?></td>
 
                                     </tr>
 
+                                    <?php } ?>
+
+                                    </tbody>
+
+                                    </table>
 
 
 
-                                
+                                    <table class="table table-bordered">
 
 
-                                </table>
+                                    <thead>
 
-                               
+                                    <tr>
+
+                                    <th class="text-center"><b>Net Amount Due : <?= currency_to_words($c_balance); ?></b></th>
+
+                                    <tr>
+
+
+
+                                    </thead>
+
+                                    </table>
 
 
 
@@ -768,11 +560,11 @@
 
         if(val !="Range")
         {
-        $('.datepicker').attr('disabled',true);
+        //$('.datepicker').attr('disabled',true);
         }
         else
         {
-        $('.datepicker').attr('disabled',false);    
+        //$('.datepicker').attr('disabled',false);    
         }
 
         });
@@ -817,91 +609,7 @@
         })
         /**/
 
-        /*fetch  sales executive by  customer*/   
-
-        $("body").on('change', '.customer_clz', function(){ 
-
-
-            var id = $(this).val();
-
-
-            $.ajax({
-
-                url : "<?php echo base_url(); ?>Crm/SalesQuotReport/FetchData",
-
-                method : "POST",
-
-                data:{ID: id},
-
-                success:function(data)
-                {   
-                    var data = JSON.parse(data);
-
-                    //console.log(data.prod_details);
-                    $('.executive_clz').html(data.quot_det);
-                    
-                    $('.product_clz').html(data.quot_prod);
-
-                }
-
-
-            });
-        });
-        
-        /*####*/
-
-        /*quot report form submit*/
-        $(function() {
-            var form = $('#sales_quot_report_form');
-            
-            form.validate({
-                rules: {
-                    required: 'required',
-                },
-                messages: {
-                    required: 'This field is required',
-                },
-                errorPlacement: function(error, element) {} ,
-                submitHandler: function(currentForm) {
-
-                 
-                    // Submit the form for the current tab
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>Crm/SalesQuotReport/GetData",
-                        method: "POST",
-                        data: $(currentForm).serialize(),
-                        success: function(data) {
-                            var responseData = JSON.parse(data);
-
-                            if(responseData.status ==='False')
-                            {
-                                alertify.error('No Data Found').delay(3).dismissOthers();
-                            }
-                         
-                            $('.tbody_data').html(responseData.product_data);
-
-                            $("#SalesQuotReport").modal('hide');
-
-                            $('#sales_quot_report_form')[0].reset();
-
-                            $('.customer_clz').val('').trigger('change');
-
-                            $('.executive_clz').val('').trigger('change');
-
-                            $('.product_clz').val('').trigger('change');
-
-                            datatable.ajax.reload(null, false);
-
-                            
-                        
-                        }
-                    });
-                }
-            });
-        });
-
-        /*####*/
-
+   
 
 
         $('#DataTable').DataTable( {
@@ -912,88 +620,99 @@
         } );
 
 
+
+
+
+
         
-$(document).ready(function(){
-    $("#btnExport").click(
-                function () {
-                    tableToExcel('DataTable','Statement Of Accounts','Statement Of Accounts');
-                }            
-            );
-    })
-    function getIEVersion()
-    // Returns the version of Windows Internet Explorer or a -1
-    // (indicating the use of another browser).
-    {
-        var rv = -1; // Return value assumes failure.
-        if (navigator.appName == 'Microsoft Internet Explorer') {
-            var ua = navigator.userAgent;
-            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-            if (re.exec(ua) != null)
-                rv = parseFloat(RegExp.$1);
-        }
-        return rv;
-    }
-    
-    function tableToExcel(table, sheetName, fileName) {
-        
-    
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+
+
+
+
+        $(document).ready(function(){
+        $(".excel_button").click(
+                    function () {
+                        tableToExcel('DataTable','Aged Recievables Payables Summary','Aged Recievables Payables Summary');
+                    }            
+        );
+        })
+        function getIEVersion()
+        // Returns the version of Windows Internet Explorer or a -1
+        // (indicating the use of another browser).
         {
-            return fnExcelReport(table, fileName);
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null)
+                    rv = parseFloat(RegExp.$1);
+            }
+            return rv;
         }
+
+
+
+
+
+
+        function tableToExcel(table, sheetName, fileName) {
     
-        var uri = 'data:application/vnd.ms-excel;base64,',
-            templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
-            base64Conversion = function (s) { return window.btoa(unescape(encodeURIComponent(s))) },
-            formatExcelData = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-    
-        $("tbody > tr[data-level='0']").show();
-    
-        if (!table.nodeType)
-            table = document.getElementById(table)
-    
-        var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML }
-    
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
-        element.setAttribute('download', fileName);
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-    
-        $("tbody > tr[data-level='0']").hide();
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        return fnExcelReport(table, fileName);
     }
+
+    var uri = 'data:application/vnd.ms-excel;base64,',
+        templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+        base64Conversion = function (s) { return window.btoa(unescape(encodeURIComponent(s))) },
+        formatExcelData = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+
+    $("tbody > tr[data-level='0']").show();
+
+    if (!table.nodeType)
+        table = document.getElementById(table)
+
+    var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML }
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + base64Conversion(formatExcelData(templateData, ctx)));
+    element.setAttribute('download', fileName);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    $("tbody > tr[data-level='0']").hide();
+}
+
+function fnExcelReport(table, fileName) {
     
-    function fnExcelReport(table, fileName) {
-        
-        var tab_text = "<table border='2px'>";
-        var textRange;
-    
-        if (!table.nodeType)
-            table = document.getElementById(table)
-    
-        $("tbody > tr[data-level='0']").show();
-        tab_text =  tab_text + table.innerHTML;
-    
-        tab_text = tab_text + "</table>";
-        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-    
-        txtArea1.document.open("txt/html", "replace");
-        txtArea1.document.write(tab_text);
-        txtArea1.document.close();
-        txtArea1.focus();
-        sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
-        $("tbody > tr[data-level='0']").hide();
-        return (sa);
+    var tab_text = "<table border='2px'>";
+    var textRange;
+
+    if (!table.nodeType)
+        table = document.getElementById(table)
+
+    $("tbody > tr[data-level='0']").show();
+    tab_text =  tab_text + table.innerHTML;
+
+    tab_text = tab_text + "</table>";
+    tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+    tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    txtArea1.document.open("txt/html", "replace");
+    txtArea1.document.write(tab_text);
+    txtArea1.document.close();
+    txtArea1.focus();
+    sa = txtArea1.document.execCommand("SaveAs", false, fileName + ".xls");
+    $("tbody > tr[data-level='0']").hide();
+    return (sa);
+
     }
-    
-    
-    
 
 
 
@@ -1004,51 +723,13 @@ $(document).ready(function(){
     });
 
 
-    
-
-
-</script>
 
 
 
-<script>
-
-
-document.getElementById("email_button").addEventListener("click", function() {
-    // Select the table element
-    var range = document.createRange();
-    range.selectNode(document.getElementById("DataTable"));
-    window.getSelection().removeAllRanges();  // Clear any existing selections
-    window.getSelection().addRange(range);    // Select the table content
-
-    try {
-        // Copy the selected content to clipboard
-        var successful = document.execCommand('copy');
-        if (successful) {
-            // Alert to notify the user
-            alertify.success("Table copied to clipboard! Please paste it in the email composer.");
-
-            // Email subject and body message
-            var subject = encodeURIComponent("General Ledger Report");
-            var body = encodeURIComponent("Please paste the copied table here:\n\n");
-
-            // Open the email composer
-            window.location.href = "mailto:?subject=" + subject + "&body=" + body;
-
-            // Optionally clear the selection after copying
-            window.getSelection().removeAllRanges();
-        } else {
-            alertify.error("Failed to copy table.");
-        }
-    } catch (err) {
-            alertify.error("Error in copying table: ", err);
-    }
-});
 
 
 
 </script>
-
 
 
 

@@ -2986,10 +2986,10 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
 
 
-        public function AgedRPTransactions($date_to,$account_head,$account_type,$account,$type="",$adjusted="")
+        public function AgedRPTransactions($date_from="",$date_to,$account_head,$account_type,$account,$type="",$adjusted="")
         {   
 
-            
+        
         if(empty($date_to))
         {
 
@@ -3063,6 +3063,13 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
        {
        $query .= "AND (`{$cash_invoice_table}`.ci_paid_status = 2)";
        }
+
+
+        if($date_from !="")
+        {
+        $query .= " AND ";
+        $query .= "{$cash_invoice_table}.ci_date >= '{$date_from}' ";
+        }
 
 
         if ($date_to != "") {
@@ -3143,6 +3150,13 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         else if ($adjusted=="adjusted")
         {
         $query .= "AND (`{$credit_invoice_table}`.cci_paid_status = 2)";
+        }
+
+
+        if($date_from !="")
+        {
+        $query .= " AND ";
+        $query .= "{$credit_invoice_table}.cci_date >= '{$date_from}' ";
         }
 
 
@@ -3232,6 +3246,12 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         $query .= "AND (`{$pv_table}`.pv_status = 2)";
         }
 
+        if($date_from !="")
+        {
+        $query .= " AND ";
+        $query .= "{$pv_table}.pv_date >= '{$date_from}' ";
+        }
+
         if ($date_to != "") {
             $query .= " AND ";
             $query .= "{$pv_table}.pv_date <= '{$date_to}' ";
@@ -3275,7 +3295,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         }
 
-        public function AgedRPPDC($date_from,$account_head,$account_type,$account,$type)
+        public function AgedRPPDC($date_from,$date_to,$account_head,$account_type,$account,$type)
         {
     
         $pf = $this->db->getPrefix();
@@ -3332,6 +3352,13 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         $query .= "`{$this->db->getPrefix()}accounts_receipts`.r_method = 1";
 
+        
+        if ($date_from != "") {
+            $query .= " AND ";
+            $query .= "{$cash_invoice_table}.ci_date >= '{$date_from}' ";
+        }
+
+        
         if ($date_to != "") {
             $query .= " AND ";
             $query .= "{$cash_invoice_table}.ci_date <= '{$date_to}' ";
@@ -3393,6 +3420,12 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         //$query .="{$credit_invoice_table}.cci_paid_status != 3";
 
         $query .= "`{$this->db->getPrefix()}accounts_receipts`.r_method = 1";
+
+
+        if ($date_from != "") {
+            $query .= " AND ";
+            $query .= "{$credit_invoice_table}.cci_date >= '{$date_from}' ";
+        }
 
 
         if ($date_to != "") {
@@ -3468,6 +3501,11 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         //if payables
 
         $query .= "`{$this->db->getPrefix()}accounts_payments`.pay_method = 1";
+
+        if ($date_from != "") {
+            $query .= " AND ";
+            $query .= "{$pv_table}.pv_date >= '{$date_from}' ";
+        }
 
         if ($date_to != "") {
             $query .= " AND ";

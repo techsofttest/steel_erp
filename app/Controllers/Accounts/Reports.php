@@ -523,7 +523,7 @@ class Reports extends BaseController
 
  
 
-    public function StatementOfAccounts()
+    public function StatementOfAccounts1()
     {   
 
         $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
@@ -909,7 +909,7 @@ class Reports extends BaseController
 
         if(!empty($this->request->getGet('start_date')))
         {
-        $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
+        $end_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
         }
 
         $filter_type = $this->request->getGet('filter_type');
@@ -941,11 +941,34 @@ class Reports extends BaseController
 
         $account = $this->request->getGet('filter_account');
 
-        $data['account_name'] = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $account),array())->ca_name;
+        $cus_join = array(
+
+            array(
+                'table' => 'crm_customer_creation',
+                'pk' => 'cc_id',
+                'fk' => 'ca_customer',
+              )
+
+        );
+
+        $data['account_name'] = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $account),$cus_join);
+
+        $ac_name_pdf = "";
 
         if(!empty($data['account_name']))
         {
-        $account_name = $data['account_name'];
+
+        $account_name = "{$data['account_name']->ca_name}<br>";
+
+        if(!empty($data['account_name']->cc_telephone))
+        $account_name .= "<br>Tel : {$data['account_name']->cc_telephone}";
+
+        if(!empty($data['account_name']->cc_fax))
+        $account_name .= ", Fax : {$data['account_name']->cc_fax}";
+
+        if(!empty($data['account_name']->cc_fax))
+        $account_name .=", Email : {$data['account_name']->cc_fax}";
+                       
         }
 
 
@@ -974,9 +997,9 @@ class Reports extends BaseController
 
         //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
 
-        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$account_head,$account_type,$account,$type,$adjust_type);
+        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
 
-        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$account_head,$account_type,$account,$type,$adjust_type);
+        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
 
         //$data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
 
@@ -1146,7 +1169,7 @@ class Reports extends BaseController
                 }
                 else
                 {
-                   $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date));
+                   $dates = date('d-M-Y',strtotime($end_date));
                 }
     
                 
@@ -1538,6 +1561,627 @@ class Reports extends BaseController
 
         }
 
+
+
+
+    }
+
+
+
+
+
+    public function StatementOfAccounts(){
+
+
+           
+
+
+        $data['account_heads'] = $this->common_model->FetchAllOrder('accounts_account_heads','ah_id','asc');
+
+        $data['account_types'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','asc');
+ 
+        $data['accounts'] = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_name','asc');
+
+        if(!empty($_GET))
+        {
+
+        $start_date = "";
+        $end_date =date('Y-m-d');
+
+
+        if(!empty($this->request->getGet('start_date')))
+        {
+        $start_date = date('Y-m-d',strtotime($this->request->getGet('start_date')));
+        }
+
+        if(!empty($this->request->getGet('end_date')))
+        {
+        $end_date = date('Y-m-d',strtotime($this->request->getGet('end_date')));
+        }
+
+        $filter_type = $this->request->getGet('filter_type');
+
+        $account_head="";
+
+        if($filter_type=="Account_Head")
+        {
+
+        $account_head = $this->request->getGet('filter_account_head');
+
+        }
+
+        $account_type="";
+
+        if($filter_type=="Account_Type")
+        {
+
+        $account_type = $this->request->getGet('filter_account_type');
+
+        }
+
+        $account = "";
+
+        $account_name="";
+
+        $filter_type="Account";
+
+        if($filter_type=="Account")
+        {
+
+        $account = $this->request->getGet('filter_account');
+
+        $cus_join = array(
+
+            array(
+                'table' => 'crm_customer_creation',
+                'pk' => 'cc_id',
+                'fk' => 'ca_customer',
+              )
+
+        );
+
+        $data['account_name'] = $this->common_model->SingleRowJoin('accounts_charts_of_accounts',array('ca_id' => $account),$cus_join);
+
+        $ac_name_pdf = "";
+
+        if(!empty($data['account_name']))
+        {
+        
+        $ac_name_pdf = "<br>{$data['account_name']->ca_name}";
+
+        $account_name = "{$data['account_name']->ca_name}<br>";
+
+        if(!empty($data['account_name']->cc_telephone))
+        $account_name .= "<br>Tel : {$data['account_name']->cc_telephone}";
+
+        if(!empty($data['account_name']->cc_fax))
+        $account_name .= ", Fax : {$data['account_name']->cc_fax}";
+
+        if(!empty($data['account_name']->cc_fax))
+        $account_name .=", Email : {$data['account_name']->cc_fax}";
+                       
+        }
+
+
+        }
+
+
+        $type="";
+        if(!empty($this->request->getGet('ac_type')))
+        {
+
+        $type = $this->request->getGet('ac_type');
+
+        }
+
+
+        $adjust_type="";
+        if(!empty($this->request->getGet('adjust_type')))
+        {
+
+        $adjust_type = $this->request->getGet('adjust_type');
+
+        }
+
+        
+        //$data['payments'] = $this->report_model->ARPPayments($start_date,$account_head,$account_type,$account);
+
+        //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
+
+        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
+
+        $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
+
+        //$data['c_balance'] = $this->report_model->AgedRPBalance($start_date,$account_head,$account_type,$account);
+
+        $data['c_balance'] = 0;
+
+        //echo $data['c_balance']; exit;
+
+
+
+        if (!empty($_POST['pdf']) || (isset($_GET['action']) && $_GET['action'] == "Print")) 
+        {
+
+        
+        
+            if(!empty($data['transactions']))
+            {   
+                $pdf_data = "";
+
+                $total_debit = 0;
+
+                $total_credit = 0;
+
+                $total_pdc = 0;
+
+                $balance = 0;
+
+
+                 // Initialize Aging Bucket Totals
+                 $aging_totals = [
+                    "30" => 0,
+                    "60" => 0,
+                    "90" => 0,
+                    "90+" => 0
+                ];
+
+
+                foreach($data['transactions'] as $vc)
+                {   
+
+
+                    if(empty($start_date))
+                    {
+
+                    $start_date = date('Y-m-d');
+
+                    }
+                          
+
+                    $q=1;
+
+                    $border="border-top: 2px solid";
+                   
+                    $total_debit = $total_debit + $vc->debit_amount;
+
+                    $total_credit = $total_credit + $vc->credit_amount;
+
+                    $total_pdc = $total_pdc + $vc->pdc_amount;
+    
+                    $new_date = date('d-M-Y',strtotime($vc->transaction_date));
+    
+                    $pdf_data .= "<tr ><td align='center'>{$vc->reference}</td>";
+
+                    $pdf_data .= " <td align='center'>{$new_date}</td>";
+
+                    $pdf_data .= "<td align='center'>{$vc->purchase_order}</td>";
+                
+
+
+                    if($vc->debit_amount !="") {     
+
+                    $debit_am = format_currency($vc->debit_amount);
+
+                    $balance = $balance+$vc->debit_amount; 
+
+                    $total_debit = $total_debit+$vc->debit_amount;
+
+                 
+
+                    } else if($vc->credit_amount<0) {
+
+                    $debit_am = format_currency($vc->credit_amount); 
+
+                    $balance = $balance+$vc->credit_amount;
+
+                    $total_debit = $total_debit+$vc->credit_amount;
+                    
+                        
+                    }
+                    else
+                    {
+                    $debit_am="";
+                    }
+
+                    $pdf_data .= "<td align='right' >{$debit_am}</td>";
+
+
+                    if($vc->credit_amount !="" && $vc->credit_amount>0) {
+
+                        $credit_am = format_currency($vc->credit_amount);
+
+                        $balance = $balance+$vc->credit_amount; 
+
+                        $total_credit = $total_credit+$vc->credit_amount;
+
+                     
+                    } else {
+
+                        $credit_am ="";
+
+                    }
+    
+                    $pdf_data .= "<td align='right'>{$credit_am}</td>";
+                    
+
+                    $pdf_data .= "<td  align='right'>(".format_currency($balance).")</td>";
+                    
+                    $pdf_data .="</tr>";
+                   
+                    
+                }
+
+
+                $pdf_data .="<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>";
+
+    
+                if(empty($start_date) && empty($end_date))
+                {
+                 
+                   $dates = "-";
+                }
+                else
+                {
+                   $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date));
+                }
+    
+                
+    
+                $title = "Statement Of Account ".date('d-M-Y')."";
+
+
+                $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+                $fontDirs = $defaultConfig['fontDir'];
+     
+                $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+                $fontData = $defaultFontConfig['fontdata'];
+
+    
+                $mpdf = new \Mpdf\Mpdf([
+                    'format' => 'Letter', // Custom page size in millimeters
+                    //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
+                    'default_font_size' => 9, 
+                    'margin_left' => 5, 
+                    'margin_right' => 5,
+                    'fontDir' => array_merge($fontDirs, [
+                        __DIR__ . '/fonts'
+                    ]),
+                    'fontdata' => $fontData + [
+                        'bentonsans' => [
+                          
+                            'R' => 'OpenSans-Regular.ttf',
+                            'B' => 'OpenSans-Bold.ttf',
+                        ],
+                    ],
+                    'default_font' => 'bentonsans'
+                    
+                ]);
+    
+             
+    
+                $mpdf->SetTitle('Statement Of Account'); // Set the title
+    
+                $html ='
+            
+                <style>
+                th, td {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+            
+                <table>
+                
+                <tr>
+                
+                
+            
+                <td>
+            
+                <h3>Al Fuzail Engineering Services WLL</h3>
+                <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                
+                
+                </td>
+                
+                </tr>
+            
+                </table>
+            
+            
+            
+                <table width="100%" style="margin-top:5px;">
+                
+            
+                <tr width="100%">
+
+                <td width="100%" colspan="5" align="right"><h3>Statement Of Account</h3></td>
+            
+                
+
+                </tr>
+
+
+                <tr width="100%">
+
+                <td width="15%">
+                Customer : 
+                </td>
+
+                <td>
+
+                '.$account_name.'
+
+                </td>
+
+                </tr>
+
+
+
+                <tr width="100%">
+
+                <td width="15%">
+                Period :
+                </td>
+
+                <td >
+                
+                '.$dates.'
+
+                </td>
+
+                </tr>
+
+
+                <tr width="100%">
+
+                <td width="15%">
+                Division :    
+                </td>
+
+                <td>
+                
+                Al Fuzail
+
+                </td>
+
+                </tr>
+
+
+
+            
+                </table>
+               
+            
+                <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                
+            
+                <tr>
+                
+                <td align="center">Voucher No</td>
+
+                <td align="center">Date</td>
+            
+                <td align="center">Purchase Order</td>
+            
+                <td align="right">Debit Amt</td>
+    
+                <td align="right">Credit Amt</td>
+
+                <td align="right">Balance</td>
+    
+                </tr>
+
+
+               
+
+                <tr>
+
+                <td align="left" style="border-top: 2px solid">Op. Balance</td>
+            
+                <td align="left" style="border-top: 2px solid"></td>
+            
+                <td align="left" style="border-top: 2px solid"></td>
+            
+                <td align="right" style="border-top: 2px solid"></td>
+    
+                <td align="right" style="border-top: 2px solid"></td>
+    
+                <td align="right" style="border-top: 2px solid">-</td>
+                
+                </tr>
+                
+                '.$pdf_data.'
+    
+                <tr>
+
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td style="border-top: 2px solid;"></td>
+                    <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_debit).'</b></td>
+                    <td align="right" style="border-top: 2px solid;"><b>'.format_currency($total_credit).'</b></td>
+                    <td align="right" style="border-top: 2px solid;"><b>'.format_currency($balance).'</b></td>
+                    
+                </tr>    
+               
+                
+                </table>
+    
+    
+            
+                ';
+
+
+                $pdc_data = '<table width="100%" style="margin-top:5px;border-collapse: collapse; border-spacing: 0;">';
+                
+                $pdc_data .="
+                <tr>
+                <td colspan='6' align='center'>
+                <b>Post Dated Cheque Details</b>
+                </td>
+                </tr>
+                ";
+
+
+                $pdc_data .='
+                <tr>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt No</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt Date</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque No</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque Date</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Bank</td>
+                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="right">Amount</td>
+                </tr>
+                ';
+
+
+                //Total 
+
+               foreach($data['post_dated_cheques'] as $pdc){
+                
+               $pdc_data .='
+                    <tr>
+
+                        <td align="center">'.$pdc->reference.'</td>
+
+                        <td align="center">'.date('d M Y',strtotime($pdc->transaction_date)).'</td>
+
+                        <td align="center">'.$pdc->cheque_no.'</td>
+
+                        <td align="center">'.date('d M Y',strtotime($pdc->cheque_date)).'</td>
+
+                        <td align="center">'.$pdc->bank.'</td>
+
+                        <td align="right">'.format_currency($pdc->amount).'</td>
+
+                    </tr>';
+
+                 } 
+
+                $pdc_data .='
+                <tr>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"></td>
+                <td style="border-top: 2px solid"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
+                </tr>
+                ';
+
+
+                $pdc_data .= "</table>";
+
+
+                $pdc_data .='
+                
+                <table width="100%" style="margin-top:10px;border-collapse:collapse;">
+
+                <tr>
+                
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="center">Net Amount Due : '.currency_to_words($balance).'</td>
+
+                </tr>
+
+                </table>
+
+                ';
+
+
+                $pdc_data .='
+                
+                <table width="100%" style="margin-top:10px;border-collapse:collapse;">
+
+                <tr>
+                
+                <td style="border-right:2px solid;" align="right">Contact Person</td>
+
+                <td>
+                Mohammed Raphy, Chief Accountant<br><br>
+                Mob : 7743 4520, Email : raphy@alfuzailgroup.com, accounts@alfuzailgroup.com
+                </td>
+
+                </tr>
+
+                </table>
+
+                ';
+
+
+                $html .= $pdc_data;
+
+                //echo $html; exit;
+            
+                //$footer = '';
+            
+                
+                $mpdf->WriteHTML($html);
+               
+               // $mpdf->SetFooter($footer);
+
+                $this->response->setHeader('Content-Type', 'application/pdf');
+
+                $mpdf->Output($title . '.pdf', 'I');
+
+                exit();
+            
+            }
+
+
+        }
+    
+           
+
+
+        $data['content'] = view('accounts/statement_of_accounts',$data);
+
+        return view('accounts/report-module',$data);
+
+        }
+        else
+        {
+
+        //$data['payments'] = array();
+
+        //$data['receipts'] = array();
+
+        $data['transactions'] = array();
+
+        $data['post_dated_cheques'] = array();
+
+        $data['c_balance'] = array();
+
+        
+        $data['content'] = view('accounts/statement_of_accounts',$data);
+
+        return view('accounts/accounts-module',$data);
+
+        }
 
 
 
@@ -2501,85 +3145,51 @@ EOD;
 
         $pdf_data ="";
 
-        $total_rec    = number_format(0,2);
 
-            $total_thirty = number_format(0,2);
 
-            $total_sixty  = number_format(0,2);
-            
-            $total_ninety = number_format(0,2);
+        $totals = [
+            'total_dues' => 0,
+            '0_30_days' => 0,
+            '31_60_days' => 0,
+            '61_90_days' => 0,
+            '90_plus_days' => 0
+        ];
 
-            $total_above = number_format(0,2);
+    
+
 
             foreach($data['all_accounts'] as $ac) {
+
+
+            if (!isset($ac->Invoices)) {
+                continue;
+            
+            }
+
+
+            // Accumulate totals
+            $totals['total_dues'] += $ac->Invoices->total_dues ?? 0;
+            $totals['0_30_days'] += $ac->Invoices->{"0_30_days"} ?? 0;
+            $totals['31_60_days'] += $ac->Invoices->{"31_60_days"} ?? 0;
+            $totals['61_90_days'] += $ac->Invoices->{"61_90_days"} ?? 0;
+            $totals['90_plus_days'] += $ac->Invoices->{"90_plus_days"} ?? 0;
                 
-            $grand_total = 0;
-
-            $grand_total = $ac->ThirtyDays+$ac->SixtyDays+$ac->NinetyDays+$ac->AboveNinetyDays;
-
-
-            if(empty($ac->ThirtyDays))
-            {
-            $ac_30 = "---";
-            }
-            else
-            {
-            $ac_30 = $ac->ThirtyDays;
-            }
-
-            if(empty($ac->SixtyDays))
-            {
-            $ac_60 ="---";
-            }
-            else
-            {
-            $ac_60 = $ac->SixtyDays;    
-            }
-
-            if(empty($ac->NinetyDays))
-            {
-            $ac_90 ="---";
-            }
-            else
-            {
-            $ac_90 = $ac->NinetyDays;    
-            }
-
-            if(empty($ac->AboveNinetyDays))
-            {
-            $ac_a90 ="---";
-            }
-            else
-            {
-            $ac_a90 = $ac->AboveNinetyDays;    
-            }
 
             $pdf_data .='
             
             <tr> 
                 <td align="left" class="border-top">'.$ac->ca_name.'</td>
-                <td align="right" class="border-top">'.format_currency($grand_total).'</td>
-                <td align="right" class="border-top">'.$ac_30.'</td>
-                <td align="right" class="border-top">'.$ac_60.'</td>
-                <td align="right" class="border-top">'.$ac_90.'</td>
-                <td align="right" class="border-top">'.$ac_a90.'</td>
+                <td align="right" class="border-top">'.format_currency($ac->Invoices->total_dues).'</td>
+                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"0_30_days"}).'</td>
+                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"31_60_days"}).'</td>
+                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"61_90_days"}).'</td>
+                <td align="right" class="border-top">'.format_currency($ac->Invoices->{"90_plus_days"}).'</td>
+                
             </tr>
 
             ';
 
-
-            if($grand_total>0)
-            {
-            $total_rec = $total_rec+$grand_total;
-            }
-
-            $total_thirty = $total_thirty+$ac->ThirtyDays;
-           
-            $total_sixty  =  $total_sixty+$ac->SixtyDays;
             
-            $total_ninety = $total_ninety+$ac->NinetyDays;
-
-            $total_above = $total_above+$ac->AboveNinetyDays;
         }   
 
 
@@ -2590,11 +3200,11 @@ EOD;
         <tr class="no-sort">
        
         <td class="border-top"><b style="font-size:20px;" align="right">Total</b></td>
-        <td align="right" class="border-top"><b>'.format_currency($total_rec).'</b></td>
-        <td align="right" class="border-top"><b>'.format_currency($total_thirty).'</b></td>
-        <td align="right" class="border-top"><b>'.format_currency($total_sixty).'</b></td>
-        <td align="right" class="border-top"><b>'.format_currency($total_ninety).'</b></td>
-        <td align="right" class="border-top"><b>'.format_currency($total_above).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($totals['total_dues']).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($totals['0_30_days']).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($totals['31_60_days']).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($totals['61_90_days']).'</b></td>
+        <td align="right" class="border-top"><b>'.format_currency($totals['90_plus_days']).'</b></td>
 
         </tfoot>
         ';
