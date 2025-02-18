@@ -936,7 +936,7 @@ margin-bottom: 0px !important;
 {
   width: 100%;
   border-collapse: collapse;
-  border: 2px solid black;
+  border: 1px solid black;
 }
 
 .add_more_container td, .add_more_container th{
@@ -992,7 +992,7 @@ td.total_label
 {
 width:50%;
 text-align:center;
-border-right:2px solid black !important;
+border-right:1px solid black !important;
 }
 
 th.total_amount
