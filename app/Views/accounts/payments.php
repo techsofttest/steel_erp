@@ -583,7 +583,7 @@
                                                 <div class="col-col-md-12 col-lg-12 add_more_container">
 
 
-                                                    <table class="table table-bordered" style="overflow-y:scroll;">
+                                                    <table class="table table-bordered" style="overflow-y:scroll;margin-bottom:unset;">
 
                                                         <thead>
                                                             <tr>
@@ -592,7 +592,7 @@
                                                                 <th>Amount</th>
                                                                 <th>Link</th>
                                                                 <th>Narration</th>
-                                                                <th>Actions</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
 
@@ -602,16 +602,14 @@
                                                             <tr class="invoice_row">
 
 
-                                                                <td width="5%">
+                                                            <td width="3%" class="px-0">
 
-                                                                    <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
+                                                                    <input class="credit_sl_no form-control text-center" type="number" name="credit_sl_no[]" value="1" readonly>
 
-
-
-                                                                </td>
+                                                            </td>
 
 
-                                                                <td width="35%">
+                                                                <td width="55%" class="px-0">
 
                                                                     <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
@@ -620,25 +618,26 @@
                                                                 </td>
 
 
-                                                                <td>
+                                                                <td width="5%" class="px-0">
 
                                                                     <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
 
                                                                 </td>
 
 
-                                                                <td>
+                                                                <td width="4%" class="px-0 py-3 text-center">
                                                                     <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
                                                                 </td>
 
-                                                                <td>
+
+                                                                <td class="px-0">
 
                                                                     <input class="form-control credit_narration" type="text" name="narration[]" />
 
                                                                 </td>
 
 
-                                                                <td> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
+                                                                <td width="2%"> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
 
 
                                                             </tr>
@@ -663,20 +662,20 @@
 
 
 
+                                                    </table>
 
 
-                                                        <tr>
+                                                    <table class="total_table">
 
-                                                           
-                                                            <td align="right" colspan="5">Total</td>
+                                                    <tr>
+
+                                                            <td align="right" class="total_label">Total</td>
 
 
-                                                            <th id="total_amount">0</th>
+                                                            <th id="total_amount" class="total_amount">0</th>
 
 
                                                         </tr>
-
-
                                                     </table>
 
 

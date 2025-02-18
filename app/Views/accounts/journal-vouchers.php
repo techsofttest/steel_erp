@@ -101,7 +101,7 @@
                                         <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Actions</th>
+                                        <th></th>
                                         </tr>
                                     </thead>
 
@@ -112,9 +112,10 @@
 
                                         <input type="hidden" name="jv_invoice[]" value="1">
 
-                                        <th class="sl_no">1</th>
+                                        <th width="3%" class="sl_no px-0 text-center">1</th>
+
                                         
-                                        <th class="so_select2_parent_add" width="20%">
+                                        <th class="so_select2_parent_add px-0" width="15%">
 
                                         <select name="jv_sale_invoice[]" class="form-control so_select_add so_select2_add">
 
@@ -122,22 +123,21 @@
 
                                         </th>
 
-                                        <th class="select2_parent" width="35%"> 
+                                        <th class="select2_parent px-0" width="35%"> 
                                             
                                         <select name="jv_account[]" class="form-control account_select2" required>
 
                                         </select>
 
                                         </th>
-
                                         
-                                        <th><input name="jv_remarks[]" type="text" class="form-control" ></th>
+                                        <th class="px-0" width="20%"><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th><input name="jv_debit[]" step="0.01" type="number" class="form-control debit_amount" ></th>
+                                        <th width="10%" class="px-0"><input name="jv_debit[]" step="0.01" type="number" class="form-control debit_amount" ></th>
 
-                                        <th><input name="jv_credit[]" step="0.01" type="number" class="form-control credit_amount" ></th>
+                                        <th width="10%" class="px-0"><input name="jv_credit[]" step="0.01" type="number" class="form-control credit_amount" ></th>
 
-                                        <th> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+                                        <th width="5%"> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
 
                                     </tr>
 
@@ -174,7 +174,6 @@
                                     <input type="hidden" id="total_amount_credit" name="total_credit">
                                     
                                     </tr>
-
 
 
                         </table>

@@ -8,6 +8,8 @@
     .cheque_sec_view {
         display: none;
     }
+
+  
 </style>
 
 
@@ -293,7 +295,7 @@
                                             <div class="col-col-md-12 col-lg-12 add_more_container">
 
                                 
-                                                <table class="table table-bordered" style="overflow-y:scroll;">
+                                                <table class="table table-bordered" style="overflow-y:scroll;margin-bottom:unset">
 
                                                     <thead>
                                                         <tr>
@@ -302,7 +304,7 @@
                                                             <th>Amount</th>
                                                             <th>Link</th>
                                                             <th>Narration</th>
-                                                            <th>Actions</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
 
@@ -312,17 +314,16 @@
                                                         <tr class="invoice_row">
 
 
-                                                            <td width="5%">
+                                                            <td width="3%" class="px-0">
 
 
-                                                                <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
-
+                                                                <input class="credit_sl_no form-control text-center" type="number" name="credit_sl_no[]" value="1" readonly>
 
 
                                                             </td>
 
 
-                                                            <td width="35%" class="select2_parent">
+                                                            <td width="55%" class="select2_parent px-0">
 
                                                                 <select class="form-control credit_account credit_account_select2" name="r_credit_account[]" data-max="">
 
@@ -330,25 +331,28 @@
                                                             </td>
 
 
-                                                            <td>
+                                                            <td width="5%" class="px-0">
 
                                                                 <input class="form-control credit_amount" type="number" name="inv_amount[]" value="">
 
                                                             </td>
 
 
-                                                            <td>
+                                                            <td width="4%" class="px-0 py-3 text-center">
                                                                 <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
                                                             </td>
 
-                                                            <td>
+
+                                                            <td class="px-0">
 
                                                                 <input class="form-control credit_narration" type="text" name="narration[]" />
 
                                                             </td>
 
 
-                                                            <td> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
+                                                            <td width="2%"> 
+                                                                
+                                                            <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
 
 
                                                             </tr>
@@ -356,9 +360,10 @@
 
 
 
-                                                        <tr>
 
-                                                            <td colspan="6">
+                                                        <tr class="no-border">
+
+                                                            <td colspan="6" width="5%" class="px-0">
 
                                                                 <div class="col-lg-12 text-center">
 
@@ -375,21 +380,21 @@
 
 
 
-                                                    <tr>
 
-                                                     
-                                                        <td align="right" colspan="5">Total</td>
+                                                </table>
+
+                                                <table class="total_table">
+
+                                                <tr>
+
+                                                        <td align="right" class="total_label">Total</td>
 
                                                         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
 
-                                                        <th id="total_amount">0</th>
+                                                        <th id="total_amount" class="total_amount">0</th>
 
 
                                                     </tr>
-
-
-
-
                                                 </table>
 
 
@@ -1063,7 +1068,7 @@
                         <th>Invoice</th>
                         <th>Narration</th>
                         <th>Amount</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
 

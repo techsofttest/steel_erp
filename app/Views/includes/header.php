@@ -928,6 +928,8 @@ margin-bottom: 0px !important;
 {
  padding: 0px 25px;
  padding-top: 40px;
+ text-align:center;
+ 
 }
 
 .add_more_container table
@@ -960,6 +962,46 @@ margin-bottom: 0px !important;
 {
 border:unset !important;
 }
+
+
+
+
+/* New Total */
+
+.add_invoices
+    {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+
+.total_table
+{
+    width: 30% !important;
+    margin-left: auto;
+    margin-bottom: 10px;
+    border-top: unset !important;
+}
+
+.total_table td,.total_table th
+{
+    border:unset !important;
+}
+
+td.total_label
+{
+width:50%;
+text-align:center;
+border-right:2px solid black !important;
+}
+
+th.total_amount
+{
+width:50%;
+text-align:right;
+
+}
+
 
 
 

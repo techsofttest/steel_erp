@@ -1112,17 +1112,22 @@ class PettyCashVoucher extends BaseController
             
             $isl++;
 
+
+            if($first==true)
+            {
+            $account_name = $inv->ca_name;
+            }
+            else
+            {
+            $account_name = "";
+            }
+
+
+
             if(!empty($linked_voucher))
             {
 
-                if($first==true)
-                {
-                $account_name = $inv->ca_name;
-                }
-                else
-                {
-                $account_name = "";
-                }
+                
 
 
             foreach($linked_voucher as $lv){
@@ -1175,13 +1180,15 @@ class PettyCashVoucher extends BaseController
             }
 
             $data['invoices'] .="<tr>
-            <td></td>
+            <td>".$account_name."</td>
             <td>Advance</td>
             <td>".$advance->po_reffer_no." ".$remarks."</td>
             <td></td>
             <td class='text-end'>".format_currency($advance->pca_advance_amount)."</td>
             </tr>";
         
+            $first=false;
+
             }
 
             $sales_order = "-";
@@ -1193,7 +1200,7 @@ class PettyCashVoucher extends BaseController
 
             <tr>
             
-            <td></td>
+            <td>".$account_name."</td>
 
             <td>Debit</td>
 
@@ -1206,6 +1213,9 @@ class PettyCashVoucher extends BaseController
             </tr>
             
             ";
+
+
+            $first=false;
 
 
         }
