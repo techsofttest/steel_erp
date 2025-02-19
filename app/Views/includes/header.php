@@ -932,6 +932,18 @@ margin-bottom: 0px !important;
  
 }
 
+.add_more_container th
+{
+vertical-align: middle;
+}
+
+.add_more_container td
+{
+vertical-align: middle;
+}
+
+
+
 .add_more_container table
 {
   width: 100%;
@@ -955,6 +967,7 @@ margin-bottom: 0px !important;
 
 .add_more_container thead td{
     padding: 10px 0px !important;
+    vertical-align: middle;
 }
 
 .add_more_container input,.add_more_container select,.add_more_container input:focus,.add_more_container select:focus
