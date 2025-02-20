@@ -1424,7 +1424,7 @@ class Receipts extends BaseController
     <td>Debit</td>
     <td>-</td>
     <td><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
-    <td><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control text-end'></td>
+    <td width='10%'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control text-end'></td>
     <td><!--<a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a>--></td>
     </tr>";
 
@@ -1468,7 +1468,7 @@ class Receipts extends BaseController
             <td>
                 <input type='hidden' name='linked_invoice_id[$invoice->ri_id][]' value='{$invoice->ri_id}'>
                 <input type='hidden' name='linked_receipt_id[$invoice->ri_id][]' value='{$ridId}'>
-                <input name='linked_receipt_amount[$invoice->ri_id][]' class='form-control text-end linked_amount_edit' type='number' step='0.01' max='{$max_payable}' value='{$ridReceipt}'>
+                <input width='10%' name='linked_receipt_amount[$invoice->ri_id][]' class='form-control text-end linked_amount_edit' type='number' step='0.01' max='{$max_payable}' value='{$ridReceipt}'>
             </td>
 
             <td></td>
@@ -1502,7 +1502,7 @@ class Receipts extends BaseController
     <td>
     <input type='hidden' name='advance_invoice_id[$invoice->ri_id][]' value='$advance->rso_id'>
     <input type='hidden' name='advance_so_id[$invoice->ri_id][]' value='$advance->so_id'>
-    <input type='number' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='form-control text-end' max='".$max_so_payable."' value='".$advance->rso_receipt_amount."'></td>
+    <input width='10%' type='number' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='form-control text-end' max='".$max_so_payable."' value='".$advance->rso_receipt_amount."'></td>
     <td></td>
     </tr>";
 
@@ -2841,10 +2841,19 @@ class Receipts extends BaseController
 
 
 
-    public function FetchReference($type="e")
-    {
+    public function FetchReference($type="e",$year="")
+    {   
 
-    $uid = $this->common_model->FetchNextId('accounts_receipts',"RV-{$this->data['accounting_year']}-");
+    if($year=="")
+    {
+    $year = $this->data['accounting_year'];
+    }
+    else
+    {
+    $year = date('Y',strtotime($year));
+    }
+
+    $uid = $this->common_model->FetchNextId('accounts_receipts','r_ref_no',"RV-{$year}-",$year);
 
     if($type=="e")
     echo $uid;

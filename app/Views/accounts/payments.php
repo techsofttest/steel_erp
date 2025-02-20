@@ -3362,6 +3362,35 @@
 
 
 
+                    //Reset Uid
+
+                    $('.datepicker_ap').change(function(){
+
+                    var date = $(this).val();
+
+                    $.ajax({
+
+                    url: "<?php echo base_url(); ?>Accounts/Payments/FetchReference/r/"+date+"",
+
+                    method: "POST",
+
+                    success: function(data) {
+                        
+                    $('#uid').val(data);
+
+                    }
+                    });
+
+
+                    })
+
+
+
+
+
+
+
+
     });
 
 

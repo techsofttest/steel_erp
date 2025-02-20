@@ -492,11 +492,11 @@ class PettyCashVoucher extends BaseController
         $data['invoices'] .="<tr>
 
         <input type='hidden' name='pd_id[]' value='".$invoice->pci_id."'>
-        <td>{$invoice->ca_name}</td>
+        <td class='px-0'>{$invoice->ca_name}</td>
         <td>Debit</td>
         <td>-</td>
-        <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pci_narration}' class='form-control'></td>
-        <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pci_amount."' class='form-control'></td>
+        <td class='px-0'><input name='pay_inv_notes[]' type='text' value='{$invoice->pci_narration}' class='form-control'></td>
+        <td width='10%'><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pci_amount."' class='form-control'></td>
         <!--<td><a href='javascript:void(0)' data-id='{$invoice->pci_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";
 
@@ -533,7 +533,7 @@ class PettyCashVoucher extends BaseController
 
             <td></td>
 
-            <td><input name='linked_pv_paid[$invoice->pci_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pcdi_payment_amount."' class='form-control'></td>
+            <td width='10%'><input name='linked_pv_paid[$invoice->pci_id][]' type='number' step='0.01' max='".$max_payable."' value='".$dl->pcdi_payment_amount."' class='form-control'></td>
             
             <td></td>
 
@@ -582,7 +582,7 @@ class PettyCashVoucher extends BaseController
 
             <td></td>
 
-            <td class=''>
+            <td class='' width='10%'>
             <input type='hidden' name='advance_invoice_id[$invoice->pci_id][]' value='".$advance->pca_id."'>
             <input type='hidden' name='advance_po_id[$invoice->pci_id][]' value='".$advance->pca_purchase_order."'>
 
@@ -732,6 +732,7 @@ class PettyCashVoucher extends BaseController
         $total_invoices=$total_linked_invoice+$total_advance_amount;
 
 
+        
         if($total_invoices!=$update_invoice_data['pci_amount'])
         {
 
@@ -1568,19 +1569,22 @@ class PettyCashVoucher extends BaseController
 
 
 
+    public function FetchReference($type="e",$year="")
+    {   
 
-
-
-
-    public function FetchReference($type="e")
+    if($year=="")
     {
+    $year = $this->data['accounting_year'];
+    }
+    else
+    {
+    $year = date('Y',strtotime($year));
+    }
 
-    $uid = $this->common_model->FetchNextId('accounts_petty_cash_voucher',"PCV-{$this->data['accounting_year']}-");
+    $uid = $this->common_model->FetchNextId('accounts_petty_cash_voucher','pcv_voucher_no',"PCV-{$year}-",$year);
 
     if($type=="e")
-    {
     echo $uid;
-    }
     else
     {
     return $uid;

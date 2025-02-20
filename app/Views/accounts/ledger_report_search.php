@@ -396,7 +396,7 @@
                                            
                                             <td><?php echo date('d-m-Y',strtotime($vc->transaction_date)); ?></td>
 
-                                            <td><?= $vc->reference; ?></td>
+                                            <td><?= $vc->reference; ?></td> 
 
                                             <td>
 

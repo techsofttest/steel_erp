@@ -149,15 +149,23 @@ class JournalVouchers extends BaseController
 
 
 
-    public function FetchReference($type="e")
-    {
 
-    $uid = $this->common_model->FetchNextId('accounts_journal_vouchers',"JV-{$this->data['accounting_year']}-");
+    public function FetchReference($type="e",$year="")
+    {   
+
+    if($year=="")
+    {
+    $year = $this->data['accounting_year'];
+    }
+    else
+    {
+    $year = date('Y',strtotime($year));
+    }
+
+    $uid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_voucher_no',"JV-{$year}-",$year);
 
     if($type=="e")
-    {
     echo $uid;
-    }
     else
     {
     return $uid;
@@ -507,7 +515,7 @@ class JournalVouchers extends BaseController
         <input type=\"hidden\" name=\"jv_invoice_id[]\" value=\"".$invoice->ji_id."\">
         </td>
 
-        <td class=\"so_select2_parent_edit\" width='20%'>
+        <td class=\"so_select2_parent_edit px-0\" width='20%'>
         
         <select name=\"jv_sale_invoice[]\" class=\"form-control so_select2_edit\">
         
@@ -517,7 +525,7 @@ class JournalVouchers extends BaseController
         
         </td>
 
-        <td class=\"select2_parent_edit\" width='35%'>
+        <td class=\"select2_parent_edit px-0\" width='35%'>
 
         <select name=\"jv_account[]\" class=\"form-control account_select2_edit\">
         
@@ -527,9 +535,9 @@ class JournalVouchers extends BaseController
         
         </td>
         
-        <td><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
-        <td><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control text-end debit_amount_edit\" value=\"".$debit_amount."\"></td>
-        <td><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control text-end credit_amount_edit\" value=\"".$credit_amount."\" ></td>
+        <td class='px-0'><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
+        <td width='10%' class='px-0'><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control text-end debit_amount_edit\" value=\"".$debit_amount."\"></td>
+        <td width='10%' class='px-0'><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control text-end credit_amount_edit\" value=\"".$credit_amount."\" ></td>
         <th> <a href=\"javascript:void(0);\" class=\"del_elem_edit\" style=\"display:none;\"><i class='ri-close-line'></i></a></th>
         </tr>";
 

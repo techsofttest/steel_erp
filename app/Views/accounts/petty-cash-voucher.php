@@ -690,7 +690,8 @@
                                                             <th id="total_amount" class="total_amount">0</th>
 
 
-                                                        </tr>
+                                                    </tr>
+                                                    
                                                     </table>
 
 
@@ -3113,6 +3114,33 @@
 
 
                     });
+
+
+
+
+
+
+                    //Reset Uid
+
+                    $('.datepicker_ap').change(function(){
+
+                    var date = $(this).val();
+
+                    $.ajax({
+
+                    url: "<?php echo base_url(); ?>Accounts/PettyCashVoucher/FetchReference/r/"+date+"",
+
+                    method: "POST",
+
+                    success: function(data) {
+                        
+                    $('#uid').val(data);
+
+                    }
+                    });
+
+
+                    })
 
 
 

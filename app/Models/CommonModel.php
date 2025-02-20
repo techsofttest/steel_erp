@@ -635,18 +635,42 @@ class CommonModel extends Model
    
     //For Next Autoincrement
 
-    public function FetchNextId($table,$prefix)
+    public function FetchNextId($table,$col,$prefix,$year)
     {
+        //$query = $this->db->query('SHOW TABLE STATUS WHERE `name` LIKE "'. $this->db->getPrefix().''.$table.'";');
 
-        $query = $this->db->query('SHOW TABLE STATUS WHERE `name` LIKE "'. $this->db->getPrefix().''.$table.'";');
+        //$row = $query->getRow();
 
-        $row = $query->getRow();
+        //$id = $row->Auto_increment;
 
-        $id = $row->Auto_increment;
+        $ref = $this->db->table($table);
 
-        $uid = $prefix.str_pad($id, 4, '0', STR_PAD_LEFT);
+        $ref->select($col);
 
-        return $uid;
+        $ref->like($col,$prefix,'after');
+
+        $ref->orderBy($col);
+
+        $ref->limit(1);
+
+        $lastReference = $ref->get()->getRow();
+
+        if ($lastReference && isset($lastReference->{$col})) {
+            // Extract last serial number
+            $lastSerial = (int) substr($lastReference->{$col}, -4); // Get last 4 digits
+            $newSerial = $lastSerial + 1;
+        } else {
+            // Start from 1 if no records exist for the current year
+            $newSerial = 1;
+        }
+    
+        // Format serial number (e.g., 0001, 0010, etc.)
+        $formattedSerial = str_pad($newSerial, 4, '0', STR_PAD_LEFT);
+    
+        // Construct new reference
+        return "{$prefix}{$formattedSerial}";
+
+        //return $uid;
 
     }
 

@@ -9,6 +9,20 @@
         display: none;
     }
 
+    /*
+    .invoice_row
+    {
+    position:relative;
+    }
+
+    .del_elem
+    {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    }
+    */
   
 </style>
 
@@ -343,17 +357,19 @@
                                                             </td>
 
 
-                                                            <td class="px-0">
+                                                            <td>
 
-                                                                <input class="form-control credit_narration" type="text" name="narration[]" />
+                                                            <input class="form-control credit_narration" type="text" name="narration[]" />
 
                                                             </td>
 
 
-                                                            <td width="2%"> 
-                                                                
-                                                            <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
+                                                            <td class="px-0">
 
+                                                            <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a>
+
+                                                            </td>
+                                                            
 
                                                             </tr>
 
@@ -4257,6 +4273,28 @@
 
 
 
+        $('.datepicker_ap').change(function(){
+
+          var date = $(this).val();
+
+          $.ajax({
+
+            url: "<?php echo base_url(); ?>Accounts/Receipts/FetchReference/r/"+date+"",
+
+            method: "POST",
+
+            success: function(data) {
+                
+            $('#uid').val(data);
+
+            }
+            });
+
+
+        })
+
+
+
 
 
 
@@ -4366,27 +4404,7 @@
 
         });
 
-
-
-
-
-        /*
-        $('body').on('change','.so_row',function(){
-
-        var so_parent = $(this).closest('.so_row');
-
-            var so_id = $(this).val();
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Receipts/FetchSoDetails",
-
-
-            });
-
-            });
-
-        */
+        
 
 
         $('body').on('click', '.tick_check', function() {

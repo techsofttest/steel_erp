@@ -1344,6 +1344,38 @@ $('#uid').val(data);
 });
 
 
+
+
+//Reset Uid
+
+$('.datepicker_ap').change(function(){
+
+var date = $(this).val();
+
+$.ajax({
+
+url: "<?php echo base_url(); ?>Accounts/JournalVouchers/FetchReference/r/"+date+"",
+
+method: "POST",
+
+success: function(data) {
+    
+$('#uid').val(data);
+
+}
+});
+
+
+})
+
+
+
+
+
+
+
+
+
                         function SOSelect2() {
                            
                             const element = $('.so_select2_add:last');

@@ -1629,27 +1629,30 @@ class Payments extends BaseController
 
 
 
+   
 
 
+    public function FetchReference($type="e",$year="")
+    {   
 
-
-
-
-
-
-
-    public function FetchReference($type="e")
+    if($year=="")
     {
+    $year = $this->data['accounting_year'];
+    }
+    else
+    {
+    $year = date('Y',strtotime($year));
+    }
 
-        $uid = $this->common_model->FetchNextId('accounts_payments', "BPV-{$this->data['accounting_year']}-");
-        if($type=="e")
-        {
-        echo $uid;
-        }
-        else
-        {
-        return $uid;
-        }
+    $uid = $this->common_model->FetchNextId('accounts_payments','pay_ref_no',"BPV-{$year}-",$year);
+
+    if($type=="e")
+    echo $uid;
+    else
+    {
+    return $uid;
+    }
+
     }
 
 

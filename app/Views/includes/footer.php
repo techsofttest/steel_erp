@@ -216,7 +216,9 @@
                 changeYear: true, 
                 yearRange: "<?= $accounting_year ?>:<?= $accounting_year + 1 ?>",
                 minDate: new Date(<?= $accounting_year ?>, <?= $accounting_month-1 ?>, 1) 
-            }).on('change', function(dateText) {
+            })
+            /*
+            .on('change', function(dateText) {
                     $(this).valid(); 
                     if ($("#uid").length) {
                     let selectedDate = $(this).val(); // Get the selected date as a string
@@ -231,6 +233,7 @@
                     }
 
             });
+            */
 
             $('body').on('focus',".datepicker_ap", function(){
             $(this).datepicker({ dateFormat: "dd-M-yy" });
