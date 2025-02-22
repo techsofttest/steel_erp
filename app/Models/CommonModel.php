@@ -649,7 +649,7 @@ class CommonModel extends Model
 
         $ref->like($col,$prefix,'after');
 
-        $ref->orderBy($col);
+        $ref->orderBy($col,'DESC');
 
         $ref->limit(1);
 
