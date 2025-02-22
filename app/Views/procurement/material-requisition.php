@@ -202,26 +202,26 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
-                                                                <td style="width: 9%;">Sales Order </td>
-                                                                <td style="width: 5%;">Product Description</td>
-                                                                <td style="width: 5%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 5%;">Action</td>
+                                                                <td style="width: 4%;">SI</td>
+                                                                <td style="width: 10%;">Sales Order </td>
+                                                                <td >Product Description</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 4%;"></td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr class="prod_row prod_row_lenght">
                                                                 <td class="si_no text-center" style="padding:10px 10px;">1</td>
                                                                 <td>
-                                                                    <select class="form-select add_sales_order " name="mrp_sales_order[0]" required>
+                                                                    <select class="form-select add_sales_order" name="mrp_sales_order[0]" required>
                                                                          <option value="" selected disabled>Select Sales Order Ref</option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
                                                                          <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>
                                                                          <?php } ?>
                                                                     </select>
                                                                 </td>
-                                                                <td style="width:40%">
+                                                                <td>
                                                                
                                                                     <select class="form-select  ser_product_det" name="mrp_product_desc[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -403,11 +403,11 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td style="width: 10%;">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 5%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                 
                                                             </tr>
                                                             
@@ -580,11 +580,11 @@
                                                         <thead class="travelerinfo">
                                                             
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td style="width: 10%;">sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 5%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 14%;">Action</td>
                                                                
                                                             </tr>

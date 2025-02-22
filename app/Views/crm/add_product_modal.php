@@ -1,3 +1,12 @@
+<style>
+
+span.select2.customer_width, span.select2 {
+   
+    display: flex;
+    align-items: center;
+   
+}
+</style>
 <!-- add product modal content start-->
 <div class="modal fade" id="AddProdModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

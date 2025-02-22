@@ -1,3 +1,11 @@
+<style>
+.extra_contact_add td{
+
+    padding: 0px;
+    text-align: center;
+}
+</style>
+
 <!--second contact detail modal section start-->
                          
 <div class="modal fade" id="ContactDeatils2" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -11,10 +19,10 @@
 				<div class="modal-body">
                     <div class="card-seprate_divider"></div>
                         <div class="live-preview content_table" style="padding-top:0px">
-                            <table  class="table table-bordered table-striped delTable">
+                            <table  class="table table-bordered table-striped delTable extra_contact_add">
                                 <thead class="travelerinfo">
                                     <tr>
-                                        <td >No</td>
+                                       
                                         <td>Contact Person </td>
                                         <td>Designation</td>
                                         <td>Mobile</td>
@@ -24,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
+                                      
                                         <td><input type="text" name="contact_person" class="form-control " required></td>
                                         <td><input type="text" name="contact_designation" class="form-control " required></td>
                                         <td><input type="text" name="contact_mobile"  class="form-control contact_mobile_clz" required></td>

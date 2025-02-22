@@ -449,11 +449,11 @@ class CustomerCreation extends BaseController
 
         $data['credit_period']      = $cus_creation->cc_credit_period;
 
-        $data['credit_limit']       = $cus_creation->cc_credit_limit;
+        $data['credit_limit']       = format_currency($cus_creation->cc_credit_limit);
        
         $data['signatory_name']     = $cus_creation->cc_signatory_name;
 
-        
+       
 
         if($cus_creation->cc_qid_expiry == "0000-00-00")
         {
@@ -537,8 +537,8 @@ class CustomerCreation extends BaseController
 
         foreach($contact_details as $contact)
         {
-            $data['contact'] .='<tr class="prod_row">
-            <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
+            $data['contact'] .='<tr class="per_row">
+            <td class="si_no_contact text-center" style="padding-top: 8px;">'.$i.'</td>
             <td><input type="text"   value="'.$contact->contact_person.'" class="form-control text-center" readonly></td>
             <td><input type="text"   value="'.$contact->contact_designation.'" class="form-control text-center" readonly></td>
             <td><input type="text"   value="'.$contact->contact_mobile.'" class="form-control text-center" readonly></td>
@@ -615,7 +615,7 @@ class CustomerCreation extends BaseController
 
         $data['credit_period']    = $customer_creation->cc_credit_period;
 
-        $data['credit_limit']     = $customer_creation->cc_credit_limit;
+        $data['credit_limit']     = format_currency($customer_creation->cc_credit_limit);
 
         $data['cust_id']          = $customer_creation->cc_id;
 
@@ -734,8 +734,8 @@ class CustomerCreation extends BaseController
             <td><input type="text" name="contact_designation[]"  value="'.$contact->contact_designation.'" class="form-control text-center" readonly></td>
             <td><input type="text" name="contact_mobile[]"  value="'.$contact->contact_mobile.'" class="form-control text-center" readonly></td>
             <td> <input type="email" name="contact_email[]" value="'.$contact->contact_email.'" class="form-control text-center" readonly></td>
-            <td class="row_remove delete_contact" data-id="'.$contact->contact_id.'"><i class="ri-close-line"></i></td>
-            <td class="row_contact_edit row_edit" data-id="'.$contact->contact_id.'"><i class="ri-pencil-fill"></i></td>
+            <td class="row_remove delete_contact" data-id="'.$contact->contact_id.'" style="text-align: center;padding-top: 4px;"><i class="ri-close-line"></i></td>
+            <td class="row_contact_edit row_edit" data-id="'.$contact->contact_id.'" style="text-align: center;padding-top: 4px;"><i class="ri-pencil-fill"></i></td>
            
             </tr>
             <input type="hidden" class="contact_cust" value="'.$contact->contact_customer_creation.'">

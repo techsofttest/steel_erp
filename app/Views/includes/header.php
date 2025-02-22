@@ -753,6 +753,7 @@ padding-top: 40px;
 
 border: 1px solid black;
 color: var(--vz-body-color);
+vertical-align: middle;
 }
 
 .content_table .form-control {
@@ -802,6 +803,7 @@ padding: 0px 25px;
 .add_table>:not(caption)>*>* {
 
 padding: 0px;
+
 
 }
 .edit_add_content_table{
@@ -1014,6 +1016,35 @@ width:50%;
 text-align:right;
 
 }
+
+
+/**/
+
+.select2-container .select2-selection--single
+{
+height:100%;
+}
+
+span.select2.select_width
+{
+    height: 100% !important;
+    overflow:visible;
+    border: unset;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered
+{
+height:100% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+    max-height: unset;
+    overflow: visible;
+}
+
+
+/**/
 
 
 

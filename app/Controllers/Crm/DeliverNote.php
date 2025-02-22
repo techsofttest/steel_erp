@@ -558,7 +558,7 @@ class DeliverNote extends BaseController
 
        foreach($product_details as $prod_det){
         $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$prod_det->dpd_id.'">
-                                        <td class="si_no text-center">'.$i.'</td>
+                                        <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
                                         <td><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
                                         <td><input type="text" name="dpd_unit[]" value="'.$prod_det->dpd_unit.'" class="form-control text-center" readonly></td>
                                         <td><input type="number" name="dpd_order_qty[]" value="'.$prod_det->dpd_order_qty.'"  class="form-control text-center" readonly></td>
@@ -922,11 +922,11 @@ class DeliverNote extends BaseController
             foreach($sales_order_details as $sales_det){
 
                 $data['product_detail'] .='<tr class="prod_row select_prod_remove" id="'.$sales_det->spd_id.'">
-                                                <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
-                                                <td style="width:40%"><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control"  readonly></td>
-                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty text-center" readonly></td>
-                                                <td class="text-center" style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
+                                                <td class="si_no text-center" >'.$i.'</td>
+                                                <td style="text-align: left;">'.$sales_det->product_details.'</td>
+                                                <td class="text-center">'.$sales_det->spd_unit.'</td>
+                                                <td class="text-center">'.$sales_det->spd_quantity.'</td>
+                                                <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark" required></td>
                                                     
                                                     
                                                     
@@ -1043,7 +1043,7 @@ class DeliverNote extends BaseController
                 
                 foreach($sales_order_details as $sales_det){
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
-                                                <td class="si_no text-center">'.$i.'</td>
+                                                <td class="si_no text-center" style="padding:10px;">'.$i.'</td>
                                                 <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
                                                 <input type="hidden" name="dpd_prod_det[]" value="'.$sales_det->product_id.'">
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
@@ -1329,18 +1329,27 @@ class DeliverNote extends BaseController
        
 
 
-        public function FetchReference($type="e")
-        {
-    
-            $uid = $this->common_model->FetchNextId('crm_delivery_note',"DN-{$this->data['accounting_year']}-");
-        
+        public function FetchReference($type="e",$year="")
+        {     
+
+            if($year=="")
+            {
+                $year = $this->data['accounting_year'];
+            }
+            else
+            {
+                $year = date('Y',strtotime($year));
+            }
+
+            $uid = $this->common_model->FetchNextId('crm_delivery_note','dn_reffer_no',"DN-{$year}-",$year);
+
             if($type=="e")
                 echo $uid;
             else
             {
                 return $uid;
             }
-    
+
         }
         
 

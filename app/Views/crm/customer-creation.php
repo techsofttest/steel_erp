@@ -231,7 +231,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" class="form-control view_credit_limit" readonly>
+                                                                        <input type="text" class="form-control view_credit_limit" readonly>
                                                                     </div>
 
                                                                 </div>
@@ -648,7 +648,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cc_fax" id="" class="form-control edit_fax input_length"  required>
+                                                                        <input type="text" name="cc_fax" id="" class="form-control edit_fax input_length">
                                                                     </div>
 
                                                                 </div>
@@ -725,7 +725,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit input_length" required>
+                                                                        <input type="text" name="cc_credit_limit" class="form-control edit_credit_limit input_length" required>
                                                                     </div>
 
                                                                 </div>
@@ -1785,7 +1785,7 @@
             
             $('body .edit_prod_row').each(function() {
 
-                $(this).find('.si_no1').html('<td class="si_no1">' + pp + '</td>');
+                $(this).find('.si_no1').html('<td class="si_no1" style="border: unset;">' + pp + '</td>');
 
                 pp++;
 

@@ -577,12 +577,9 @@ class CashInvoice extends BaseController
         $total_amount = format_currency($cash_invoice->ci_total_amount);
 
         $data['total_amount'] = '<tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-center" style="padding:10px 10px">Total</td>
+            
+            
+            <td align="right" class="total_label">Total</td>
             <td><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
             
         </tr> ';
@@ -1314,12 +1311,8 @@ class CashInvoice extends BaseController
             $total_amount = format_currency($cash_invoice->ci_total_amount);
 
             $data['total_amount'] = '<tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="text-center" style="padding:10px 10px;">Total</td>
+                
+                <td align="right" class="total_label">Total</td>
                 <td class=""><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
                 <td></td>
                 

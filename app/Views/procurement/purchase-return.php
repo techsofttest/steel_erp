@@ -278,15 +278,15 @@
                                                         <thead class="travelerinfo">
                                                             
                                                             <tr>
-                                                                <td style="width:5%">SI No.</td>
-                                                                <td style="width:15%">Sales Order</td>
+                                                                <td style="width:4%">SI</td>
+                                                                <td style="width:11%">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:15%">Debit A/C</td>
-                                                                <td style="width:8%">Qty</td>
-                                                                <td style="width:8%">Unit</td>
-                                                                <td style="width:10%">Rate</td>
-                                                                <td style="width:10%">Discount</td>
-                                                                <td style="width:10%">Amount</td>
+                                                                <td style="width:11%">Debit A/C</td>
+                                                                <td style="width:6%">Qty</td>
+                                                                <td style="width:6%">Unit</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
+                                                                <td style="width:9%">Amount</td>
                                                             </tr>
                                                             
                                                             
@@ -432,10 +432,10 @@
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td style="width:5%;">SI No.</td>
+                                        <td style="width:4%;">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width:5%;">Qty</td>
-                                        <td style="width:5%;">Tick</td>
+                                        <td style="width:6%;">Qty</td>
+                                        <td style="width:4%;">Tick</td>
                                     </tr>
                                                             
                                                            
@@ -781,15 +781,15 @@
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         
-                                        <td class="text-center" style="width: 5%;">SI No.</td>
+                                        <td class="text-center" style="width: 4%;">SI</td>
                                         <td class="text-center" style="width: 10%;">Sales Order</td>
                                         <td class="text-center">Product Description</td>
                                         <td class="text-center" style="width: 8%;">Credit A/C</td>
-                                        <td class="text-center" style="width: 5%;">Qty</td>
-                                        <td class="text-center" style="width: 5%;">Unit</td>
-                                        <td class="text-center" style="width: 8%;">Rate</td>
+                                        <td class="text-center" style="width: 6%;">Qty</td>
+                                        <td class="text-center" style="width: 6%;">Unit</td>
+                                        <td class="text-center" style="width: 6%;">Rate</td>
                                         <td class="text-center" style="width: 7%;">Discount</td>
-                                        <td class="text-center" style="width: 8%;">Amount</td>
+                                        <td class="text-center" style="width: 9%;">Amount</td>
                                        
                                     </tr>
                                     
@@ -1054,15 +1054,15 @@
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
                                         
-                                        <td style="width: 5%;">SI No.</td>
+                                        <td style="width: 4%;">SI</td>
                                         <td style="width: 10%;">Sales Order</td>
                                         <td>Product Description</td>
                                         <td style="width: 8%;">Credit A/C</td>
-                                        <td style="width: 5%;">Qty</td>
-                                        <td style="width: 5%;">Unit</td>
-                                        <td style="width: 8%;">Rate</td>
+                                        <td style="width: 6%;">Qty</td>
+                                        <td style="width: 6%;">Unit</td>
+                                        <td style="width: 6%;">Rate</td>
                                         <td style="width: 7%;">Discount</td>
-                                        <td style="width: 8%;">Amount</td>
+                                        <td style="width: 9%;">Amount</td>
                                        
                                     </tr>
                                     

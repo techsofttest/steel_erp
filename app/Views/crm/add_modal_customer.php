@@ -1,3 +1,13 @@
+<style>
+    .sub_heading{
+        margin-top: unset;
+    }
+    span.select2.customer_width, span.select2 {
+   
+        display: flex;
+        align-items: center;
+    }
+</style>
 <!--Customer Creation modal content start-->
 <div class="modal fade" id="AddCustomerCreation" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
@@ -259,7 +269,7 @@
                         <table  class="table table-bordered table-striped delTable add_table">
                             <thead class="travelerinfo">
                                 <tr>
-                                    <td >No</td>
+                                    <td >SI</td>
                                     <td>Contact Person</td>
                                     <td>Designation</td>
                                     <td>Mobile</td>
@@ -268,13 +278,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="prod_row">
-                                    <td class=" si_no">1</td>
+                                <tr class="per_row">
+                                    <td class="si_no_contact" style="padding: 7px;text-align: center;">1</td>
                                     <td><input type="text" name="contact_person[0]" class="form-control " required></td>
                                     <td><input type="text" name="contact_designation[0]" class="form-control " required></td>
                                     <td><input type="text" name="contact_mobile[0]"  class="form-control contact_mobile_clz" required></td>
                                     <td> <input type="email" name="contact_email[0]" class="form-control " required></td>
-                                    <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
+                                    <td><div class="tecs" style="text-align: center;"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                 </tr>
                             </tbody>
                             <tbody class="person-more" class="travelerinfo"></tbody>
@@ -757,8 +767,8 @@
 			if(y < max_fieldss){ //max input box allowed
 				y++;
                 i++;
-	            $(".person-more").append("<tr class='prod_row'><td class='si_no'>"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control contact_per_clz' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control cont_desig_clz' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control contact_email_clz' required></td><td class='remove-btnnp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
-                slno();
+	            $(".person-more").append("<tr class='per_row'><td class='si_no_contact' >"+y+"</td><td><input type='text' name='contact_person["+i+"]' class='form-control contact_per_clz' required></td><td><input type='text' name='contact_designation["+i+"]' class='form-control cont_desig_clz' required></td><td><input type='text' name='contact_mobile["+i+"]' class='form-control contact_mobile_clz' required></td><td><input type='email' name='contact_email["+i+"]' class='form-control contact_email_clz' required></td><td class='remove-btnnp' colspan='6' style='text-align: center;padding-top: 4px;'><div class='remainpass'><i class='ri-close-line'></i></div></td>");
+                si_no_contact();
 			}
 	    });
 
@@ -769,7 +779,7 @@
 	        //y--;
 
 
-            slno();
+            si_no_contact();
 
 
 
@@ -781,7 +791,7 @@
 
         /*serial no correction section start*/
           
-        function slno(){
+        function si_no_contact(){
             
             var pp =1;
 
@@ -789,9 +799,11 @@
             var rp = 0;
             
             
-            $('body .prod_row').each(function() {
+            $('body .per_row').each(function() {
 
-                $(this).find('.si_no').html('<td class="si_no" style="border:unset;padding: 10px 10px;">' + pp + '</td>');
+                //$(this).find('.si_no_contact').html('<td class="si_no_contact" style="border:unset;">' + pp + '</td>');
+
+                $(this).find('.si_no_contact').replaceWith('<td class="si_no_contact" style="padding: 7px;text-align: center;">' + pp + '</td>');
 
                 $(this).find('.contact_per_clz').attr("name", "contact_person["+rp+"]");
 

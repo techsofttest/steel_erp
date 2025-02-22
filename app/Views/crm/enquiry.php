@@ -7,7 +7,7 @@
         width: 100% !important;
         background: #f5f5f5bd;
         border: none !important;
-        height: 37px !important;
+       
     }
     .prod_add_more
     {
@@ -33,7 +33,9 @@
    
     .table{
 
-        border: 1px solid #0000003b !important;  
+        border: 1px solid #0000003b !important; 
+
+        vertical-align: middle;
     }
 
 
@@ -42,6 +44,28 @@
         padding: 0px;
 
     }*/
+    .single_contact_edit td{
+
+        padding: 0px;
+    }
+    
+    span.select2.select_width{
+        
+        display: flex;
+        align-items: center;
+        
+       
+    }
+
+    .content_table tr {
+
+        text-align: unset;
+    }
+
+
+
+    /*modal body*/
+  
 
 
 </style>
@@ -292,14 +316,14 @@
                                                                 <td>SI</td>
                                                                 <td>Product Description<span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td>Unit</td>
-                                                                <td>Quantity</td>
+                                                                <td>Qty</td>
                                                                 <td>Action</td>
                                                             </tr>
                                                         </thead>    
                                                         <tbody class="travelerinfo">
                                                             <tr class="prod_row">
-                                                                <td style="width: 4%;padding:10px 10px;"class="si_no">1</td>
-                                                                <td style="">
+                                                                <td style="width: 4%;padding:10px 15px;"class="si_no">1</td>
+                                                                <td style="height:auto;">
                                                                 <!--<span class="add_more_icon prod_add_more">New</span>--->
                                                                     <select class="form-select ser_product_det" name="pd_product_detail[0]" required>
                                                                         <option value=""  selected disabled>Select Product Description</option>
@@ -307,9 +331,9 @@
                                                                     </select>
                                                                 </td>
                                                                
-                                                                <td style="width: 8%;"><input type="text" name="pd_unit[0]" class="form-control text-center" required></td>
-                                                                <td style="width: 8%;"><input type="number" name="pd_quantity[0]" class="form-control text-center" required></td>
-                                                                <td style="width:8% ;"><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
+                                                                <td style="width: 6%;"><input type="text" name="pd_unit[0]" class="form-control text-center" required></td>
+                                                                <td style="width: 6%;"><input type="number" name="pd_quantity[0]" class="form-control text-center" required></td>
+                                                                <td style="width:8% ;text-align: center;" ><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
@@ -594,10 +618,10 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width: 4%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 8%;">Quantity</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                
                                                             </tr>
                                                            
@@ -853,11 +877,11 @@
                                                     <table class="table table-bordered table-striped delTable">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 8%;">Quantity</td>
-                                                                <td style="width: 15%;">Action</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 14%;">Action</td>
                                                             </tr>
                                                             
                                                         </thead>
@@ -931,10 +955,10 @@
                                                 <table  class="table table-bordered table-striped delTable">
                                                     <thead class="travelerinfo">
                                                         <tr>
-                                                            <td >No</td>
+                                                            <td style="width:4%">SI</td>
                                                             <td>Product Description</td>
-                                                            <td>Unit</td>
-                                                            <td>Quantity</td>
+                                                            <td style="width:6%">Unit</td>
+                                                            <td  style="width:6%">Qty</td>
                                                            
                                                             
                                                             
@@ -988,8 +1012,8 @@
                                                         <tr>
                                                             
                                                             <td>Product Description</td>
-                                                            <td style="width: 8%;">Unit</td>
-                                                            <td style="width: 8%;">Quantity</td>
+                                                            <td style="width: 6%;">Unit</td>
+                                                            <td style="width: 6%;">Qty</td>
                                                            
                                                         </tr>
                                                        
@@ -1250,7 +1274,9 @@
 			    pp++;
                 j++;
 	           
-                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 10px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                //$("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 15px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;text-align: center;padding-top: 6px;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                
+                $("#product-more").append("<tr class='prod_row enquiry_remove'><td class='si_no' style='width: 4%;padding:10px 15px'><input type='number' value='"+pp+"' name='pd_serial_no["+j+"]' class='form-control' required='' readonly></td><td><select class='form-select ser_product_det' style='width:97%' name='pd_product_detail["+j+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td style='width: 8%;'><input type='text' name='pd_unit["+j+"]' class='form-control unit_clz text-center' required=''></td><td style='width: 8%;'><input type='number' name='pd_quantity["+j+"]' class='form-control qty_clz text-center' required=''></td><td style='width: 8%;text-align: center;padding-top: 6px;' class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
                 slno_add();
                 /*customer droup drown search*/
@@ -1638,6 +1664,8 @@
                         $('.edit_contact_detail').html(data.prod_details);
 
                         $('#EditEnquiry').modal('show');
+
+                        ProductSelect2Edit();
                     }
 
                     
@@ -1715,7 +1743,7 @@
 
                     $('.single_contact_edit').html(data.prod_details);
                     
-                   
+                    ProductSelect2Edit()
                 
                 }
 
@@ -2258,6 +2286,71 @@
         });
 
         /**/
+
+
+        function ProductSelect2Edit() {
+                $('body .prod_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.edit_single_prod')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/Enquiry/FetchProdDes",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+
+
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Crm/Enquiry/FetchReference/r/"+date+"",
+
+            method: "POST",
+
+            success: function(data) {
+                
+            $('#uid').val(data);
+
+            }
+            });
+
+
+        })
 
 
 

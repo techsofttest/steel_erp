@@ -279,10 +279,10 @@
                                                         <thead class="travelerinfo">
 
                                                             <tr>
-                                                                <td style="width:5%">SI No.</td>
-                                                                <td style="width:11%">Sales Order</td>
+                                                                <td style="width:4%">SI</td>
+                                                                <td style="width:10%">Sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:5%">Unit</td>
+                                                                <td style="width:6%">Unit</td>
                                                                 <td style="width:7%">Order Qty</td>
                                                                 <td style="width:9%">Delivery Qty</td>
                                                                 <td style="width:11%">Current Delivery</td>
@@ -595,10 +595,10 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td style="width:5%">SI No.</td>
+                                        <td style="width:4%">SI</td>
                                         <td style="width:10%">Sales Order</td>
                                         <td>Product Description</td>
-                                        <td style="width:5%">Unit</td>
+                                        <td style="width:6%">Unit</td>
                                         <td style="width:8%">Order Qty</td>
                                         <td style="width:10%">Delivered Qty</td>
 
@@ -847,10 +847,10 @@
                                 <thead class="travelerinfo">
 
                                     <tr>
-                                        <td style="width:5%">SI No.</td>
+                                        <td style="width:4%">SI</td>
                                         <td style="width:10%">Sales Order</td>
                                         <td>Product Description</td>
-                                        <td style="width:5%">Unit</td>
+                                        <td style="width:6%">Unit</td>
                                         <td style="width:8%">Order Qty</td>
                                         <td style="width:10%">Delivered Qty</td>
                                         
@@ -923,11 +923,11 @@
                                 <thead class="travelerinfo contact_tbody">
 
                                     <tr>
-                                        <td style="width:5%">SI No.</td>
+                                        <td style="width:4%">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width:5%">Unit</td>
-                                        <td style="width:5%">Qty</td>
-                                        <td style="width:5%">Tick</td>
+                                        <td style="width:6%">Unit</td>
+                                        <td style="width:6%">Qty</td>
+                                        <td style="width:4%">Tick</td>
                                     </tr>
 
                                 </thead>

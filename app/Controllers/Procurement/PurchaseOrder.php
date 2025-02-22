@@ -503,7 +503,7 @@ class PurchaseOrder extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->mrp_id.'">
                                             <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control text-center" readonly></td>
-                                            <td style="width:40%;"><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
+                                            <td><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" ></td>
                                             <td><input type="number" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>

@@ -39,7 +39,30 @@
     color: #ff0000b5;
     font-size: 20px;
 }
+.content_table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.add_table {
+    margin-bottom: 0px;
+}
+.total_table {
+    width: 22% !important;
+   
+}
+.view_product_data td{
 
+   padding:10px 10px;
+   vertical-align: middle;
+
+}
+.edit_product_row td{
+
+    padding:10px 10px;
+   vertical-align: middle;
+
+}
 </style>
 
 
@@ -347,14 +370,14 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 10%;">Amount</td>
-                                                                <td style="width: 5%;">Action</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
+                                                                <td style="width: 4%;"></td>
                                                             </tr>
                                                             
                                                            
@@ -368,14 +391,17 @@
                                                                 </td>
                                                             </tr>
                                                         </tbody>
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class="sales_order_amount_in_word"></td>
+                                                                
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
-                                                                <td style="padding: 10px 10px;text-align: center;">Total</td>
+                                                                <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="so_amount_total" class="amount_total form-control text-end" readonly></td>
-                                                                <td></td>
+                                                                
                                                             </tr>
                                                             
                                                           
@@ -644,11 +670,10 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <select class="form-select edit_contact_person input_length" name="so_contact_person "  required>
+                                                                        <select class="form-select edit_contact_person input_length" name="so_contact_person"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                             
                                                                         </select>
-                                                                       
                                                                        
                                                                     </div>
 
@@ -743,14 +768,14 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:5%">SI No.</td>
+                                                                <td style="width:4%">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:8%">Unit</td>
-                                                                <td style="width:5%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:8%">Discount</td>
-                                                                <td style="width:10%">Amount</td>
-                                                                <td style="width:5%">Action</td>
+                                                                <td style="width:6%">Unit</td>
+                                                                <td style="width:6%">Qty</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
+                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width:14%">Action</td>
                                                             </tr>
                                                             
                                                            
@@ -764,12 +789,15 @@
                                                                 </td>
                                                             </tr>
                                                         </tbody>
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class="sales_order_amount_in_word"></td>
+                                                               
                                                                 <input type="hidden" name="so_amount_total_in_words" class="sales_order_amount_in_word_val">
-                                                                <td class="text-center" style="padding:10px 10px;">Total</td>
+                                                                <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="so_amount_total" class="edit_amount_total form-control text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
@@ -864,11 +892,11 @@
                                                             <tr>
                                                                 
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 6%;">Amount</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
 
@@ -951,12 +979,12 @@
                                                             
                                                             <tr>
                                                                 
-                                                                <td style="width: 5%;">Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 8%;">Amount</td>
+                                                                <td >Product Description</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
 
@@ -1275,13 +1303,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 5%;">SI No.</td>
+                                                                <td class="text-center" style="width: 4%;">SI</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center" style="width: 8%;">Unit</td>
-                                                                <td class="text-center" style="width: 5%;">Qty</td>
-                                                                <td class="text-center" style="width: 8%;">Rate</td>
-                                                                <td class="text-center" style="width: 8%;">Discount</td>
-                                                                <td class="text-center" style="width: 10%;">Amount</td>
+                                                                <td class="text-center" style="width: 6%;">Unit</td>
+                                                                <td class="text-center" style="width: 6%;">Qty</td>
+                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 7%;">Discount</td>
+                                                                <td class="text-center" style="width: 9%;">Amount</td>
                                                                
                                                             </tr>
                                                             
@@ -1290,19 +1318,20 @@
                                                         
                                                         <tbody  class="travelerinfo view_product_data"></tbody>
 
+                                                        
+                                                        
+                                                       
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class=""></td>
-                                                                
-                                                                <td style="text-align: center;padding-top: 10px;">Total</td>
+                                                                <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="" class="view_total_amount form-control text-end" readonly=""></td>
                                                             </tr>
                                                             
                                                           
                                                         </tbody>
-                                                        
-                                                       
                                                     </table>
                                                 </div>
 
@@ -1594,10 +1623,10 @@
 
         /*select product for add start*/
 
-        function InitProductSelectAdd(){
+        /*function InitProductSelectAdd(){
             $(".add_prod:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color",
+                theme : "default form-control- droup_color select_width",
                 dropdownParent: $($('.add_prod:last').closest('.prod_row2')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
@@ -1627,10 +1656,58 @@
             })
         }
 
+        InitProductSelectAdd();*/
+
+
+        function InitProductSelectAdd() {
+                $('body .add_prod').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.prod_row2')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+        
         InitProductSelectAdd();
 
-
         /*select product for add end*/
+
+
+    
+        
 
 
 
@@ -1926,6 +2003,10 @@
 
                         reName();
 
+                        InitProductSelectAdd();
+
+                        
+
                     }
 
 
@@ -1955,7 +2036,9 @@
                 
                 pp++;
                 
-                $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+               // $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+               
+               $(".product-more2").append("<tr class='prod_row2 sales_row_leng'><td class='si_no2'><input type='number' value="+pp+" name='qpd_serial_no[]' class='form-control non_border_input' required=''></td><td><select class='form-select add_prod'  name='spd_product_details["+so+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='spd_unit["+so+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='spd_quantity["+so+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='number' name='spd_rate["+so+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='spd_discount["+so+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required=''></td><td><input type='number' name='spd_amount["+so+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
 			}
 
@@ -2057,7 +2140,7 @@
 
             $('body .prod_row2').each(function() {
 
-                $(this).find('.si_no2').html('<td class="si_no2 text-center" style="border:unset;" >' + pp + '</td>');
+                $(this).find('.si_no2').html('<td class="si_no2 text-center" style="border:unset;padding:10px 10px;" >' + pp + '</td>');
                 
                 //var lenght = $('.si_no2').val().length;
 
@@ -2083,7 +2166,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.prod_row2').find('.discount_clz_id').val())||0;
+            var discount = parseFloat($discountSelect.closest('.prod_row2').find('.discount_clz_id').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.prod_row2').find('.rate_clz_id');
 
@@ -2091,7 +2174,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.prod_row2').find('.qtn_clz_id');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -2351,7 +2434,7 @@
         function InitProductSelect2(){
             $(".edit_product_det:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color",
+                theme : "default form-control- droup_color select_width",
                 dropdownParent: $($('.edit_product_det:last').closest('.edit_add_prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
@@ -2444,7 +2527,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
+            var discount = parseFloat($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_rate');
 
@@ -2452,7 +2535,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -2703,6 +2786,8 @@
 
                     $(".edit_product_table").html(data.prod_details);
 
+                    ProductSelect2Edit();
+
                    
                 }
 
@@ -2721,7 +2806,9 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
+            //var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
+
+            var discount = parseFloat($discountSelect.closest('.edit_prod_row').find('.edit_prod_discount').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
 
@@ -2729,7 +2816,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -3046,6 +3133,79 @@
             };
 
         });
+
+
+
+        /**/
+
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Crm/SalesOrder/FetchReference/r/"+date+"",
+
+            method: "POST",
+
+            success: function(data) {
+                
+            $('#uid').val(data);
+
+            }
+            });
+
+
+        })
+
+
+        /**/
+
+
+
+        /**/
+        function ProductSelect2Edit() {
+                $('body .product_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.edit_prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+        /**/
 
 
 

@@ -168,7 +168,9 @@ class Enquiry extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
-        $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+        //$data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+
+        $data['enquiry_id'] = $this->FetchReference("r");
         
       
         $data['content'] = view('crm/enquiry',$data);
@@ -306,10 +308,10 @@ class Enquiry extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td>'.$i.'</td>
-            <td style="width:40%">'.$prod_det->product_details.'</td>
-            <td>'.$prod_det->pd_unit.'</td>
-            <td>'.$prod_det->pd_quantity.'</td>
+            <td class="text-center">'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>
+            <td class="text-center">'.$prod_det->pd_unit.'</td>
+            <td class="text-center">'.$prod_det->pd_quantity.'</td>
             </tr>'; 
 
             $i++;  
@@ -549,10 +551,10 @@ class Enquiry extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr class="prod_row1">
-            <td class="si_no1">'.$i.'</td>
+            <td class="si_no1;text-center">'.$i.'</td>
             <td>'.$prod_det->product_details.'</td>R
-            <td>'.$prod_det->pd_unit.'</td>
-            <td>'.$prod_det->pd_quantity.'</td>
+            <td class="text-center">'.$prod_det->pd_unit.'</td>
+            <td class="text-center">'.$prod_det->pd_quantity.'</td>
             <td>
                 <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pd_id.'" data-toggle="tooltip"  data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -621,14 +623,8 @@ class Enquiry extends BaseController
 
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-       
 
-        $data['prod_details'] ="";  
-
-       
-            $data['prod_details'] .='<tr>
-            <td><input type="text"   value="1" class="form-control " readonly></td>
-            <td> 
+        /*<td> 
                     <select class="form-select" name="pd_product_detail" required>';
                             
                     foreach($products as $prod){
@@ -637,6 +633,17 @@ class Enquiry extends BaseController
                         $data['prod_details'] .='>'.$prod->product_details.'</option>';
                     }
                 $data['prod_details'] .='</select>
+            </td>*/
+        
+            $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
+
+            $data['prod_details'] ="";  
+
+       
+            $data['prod_details'] .='<tr class="edit_single_prod">
+            <td><input type="text"   value="1" class="form-control " readonly></td>
+            <td> 
+                <select name="pd_product_detail" class="form-control prod_select2_edit">'.$options_product.'</select>
             </td>
 
             <td><input type="text" name="pd_unit"  value="'.$prod_det->pd_unit.'" class="form-control " required></td>
@@ -732,10 +739,19 @@ class Enquiry extends BaseController
 
 
 
-    public function FetchReference($type="e")
-    {
+    public function FetchReference($type="e",$year="")
+    {   
 
-        $uid = $this->common_model->FetchNextId('crm_enquiry',"ENQ-{$this->data['accounting_year']}-");
+        if($year=="")
+        {
+            $year = $this->data['accounting_year'];
+        }
+        else
+        {
+            $year = date('Y',strtotime($year));
+        }
+
+        $uid = $this->common_model->FetchNextId('crm_enquiry','enquiry_reff',"ENQ-{$year}-",$year);
 
         if($type=="e")
             echo $uid;

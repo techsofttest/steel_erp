@@ -31,6 +31,7 @@ height: 37px !important;
 }
 .content_table tr {
     text-align: unset !important;
+    border: 1px solid black !important;
 }
 
 .droup_color{
@@ -45,7 +46,32 @@ background: #f5f5f5bd;
 border: none !important;
 height: 37px !important;
 }
+.content_table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.add_table {
+    margin-bottom: 0px;
+}
+.total_table {
+    width: 22% !important;
+   
+}
+span.select2.customer_width, span.select2 {
+   
+    display: flex;
+    align-items: center;
 
+}
+.view_prod td{
+
+    padding:10px 10px;
+}
+.edit_prod td{
+
+    padding:10px 10px;
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -339,14 +365,14 @@ height: 37px !important;
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:5%">SI No.</td>
+                                                                <td style="width:4%">SI</td>
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
-                                                                <td style="width:5%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:8%">Discount</td>
-                                                                <td style="width:8%">Amount</td>
-                                                                <td style="width:5%">Action</td>
+                                                                <td style="width:6%">Qty</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
+                                                                <td style="width:9%">Amount</td>
+                                                                <td style="width:4%"></td>
                                                             </tr>
                                                             
                                                            
@@ -360,12 +386,14 @@ height: 37px !important;
                                                                 </td>
                                                             </tr>
                                                         </tbody>
+                                                       
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                
-                                                                <td colspan="5"></td>
                                                                 
-                                                                <td class="text-center">Total Order value</td>
+                                                                <td align="right" class="total_label">Total Order value</td>
                                                                 <td><input type="text" name="pf_total_amount" class="amount_total form-control text-end" readonly></td>
                                                                 <td></td>
                                                             
@@ -374,9 +402,8 @@ height: 37px !important;
 
                                                             <tr>
                                                                
-                                                                <td colspan="5"></td>
                                                                 
-                                                                <td class="text-center">Current Claim %</td>
+                                                                <td align="right" class="total_label">Current Claim %</td>
                                                                 <td><input type="number" name="pf_current_cliam" onkeyup="currentClaim()" class="form-control current_cliam_clz text-end" required></td>
                                                                 <td></td>
                                                             </tr>
@@ -384,11 +411,12 @@ height: 37px !important;
 
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class=""></td>
+                                                               
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                                                <td class="text-center">Current Claim Value -QAR</td>
+                                                                <td align="right" class="total_label">Current Claim Value -QAR</td>
                                                                 <td><input type="number" name="pf_current_claim_value" class="form-control claim_qar text-end" readonly></td>
                                                                 <td></td>
+
                                                             </tr>
                                                             
                                                           
@@ -731,13 +759,13 @@ height: 37px !important;
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 5%;">SI No.</td>
+                                                                <td class="text-center" style="width: 4%;">SI</td>
                                                                 <td class="text-center">Product Description</td>
-                                                                <td class="text-center" style="width: 8%;">Unit</td>
-                                                                <td class="text-center" style="width: 5%;">Qty</td>
-                                                                <td class="text-center" style="width: 8%;">Rate</td>
-                                                                <td class="text-center" style="width: 8%;">Discount</td>
-                                                                <td class="text-center" style="width: 10%;">Amount</td>
+                                                                <td class="text-center" style="width: 6%;">Unit</td>
+                                                                <td class="text-center" style="width: 6%;">Qty</td>
+                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 7%;">Discount</td>
+                                                                <td class="text-center" style="width: 9%;">Amount</td>
                                                               
                                                             </tr>
                                                             
@@ -746,29 +774,32 @@ height: 37px !important;
                                                         
                                                         <tbody  class="travelerinfo view_prod"></tbody>
                                                        
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5"></td>
+                                                               
                                                                 
-                                                                <td class="text-center">Total Order value</td>
+                                                                <td align="right" class="total_label">Total Order value</td>
                                                                 <td><input type="text" class="view_amount_total form-control text-end" readonly></td>
                                                             </tr>
 
 
                                                             <tr>
                                                                
-                                                                <td colspan="5"></td>
                                                                 
-                                                                <td class="text-center">Current Claim %</td>
+                                                                
+                                                                <td align="right" class="total_label">Current Claim %</td>
                                                                 <td><input type="number" class="form-control view_current_claim text-end" readonly></td>
                                                             </tr>
 
 
                                                             <tr>
                                                                
-                                                                <td colspan="5" class=""></td>
-                                                                <td class="text-center">Current Claim Value</td>
+                                                               
+                                                                <td align="right" class="total_label">Current Claim Value</td>
                                                                 <td><input type="text" class="form-control view_current_claim_value text-end" readonly></td>
                                                             </tr>
                                                             
@@ -1109,14 +1140,14 @@ height: 37px !important;
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 7%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
-                                                                <td style="width: 13%;">Action</td>
+                                                                <td style="width: 14%;">Action</td>
                                                             </tr>
                                                             
                                                            
@@ -1130,12 +1161,14 @@ height: 37px !important;
                                                                 </td>
                                                             </tr>
                                                         </tbody>
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5"></td>
-                                                                
-                                                                <td class="text-center">Total Order value</td>
+                                                               
+                                                                <td align="right" class="total_label">Total Order value</td>
                                                                 <td><input type="text" name="" class="form-control edit_total_order text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
@@ -1143,9 +1176,8 @@ height: 37px !important;
 
                                                             <tr>
                                                                 
-                                                                <td colspan="5"></td>
                                                                 
-                                                                <td class="text-center">Current Claim %</td>
+                                                                <td align="right" class="total_label">Current Claim %</td>
                                                                 <td><input type="number" name="pf_current_cliam" class="form-control edit_current_claim text-end" required></td>
                                                                 <td></td>
                                                             </tr>
@@ -1153,9 +1185,9 @@ height: 37px !important;
 
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class=""></td>
+                                                                
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="">
-                                                                <td class="text-center">Current Claim Value -QAR</td>
+                                                                <td align="right" class="total_label">Current Claim Value -QAR</td>
                                                                 <td><input type="text" name="" class="form-control edit_current_claim_value text-end" readonly></td>
                                                                 <td></td>
                                                             </tr>
@@ -1242,11 +1274,11 @@ height: 37px !important;
                                                             <tr>
                                                                
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 10%;">Amount</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
                                                         </thead>
@@ -1330,11 +1362,11 @@ height: 37px !important;
                                                             <tr>
                                                                 
                                                                 <td>Product Description</td>
-                                                                <td style="width: 7%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 7%;">Rate</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
-                                                                <td style="width: 10%;">Amount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
                                                         </thead>
@@ -1589,6 +1621,8 @@ height: 37px !important;
 
                         TotalAmount();
 
+                        InitProductSelectAdd2();
+
                     
                         
                     }
@@ -1748,10 +1782,10 @@ height: 37px !important;
 
         /* add product select start*/
 
-        function InitProductSelectAdd(){
+        /*function InitProductSelectAdd(){
             $(".add_prod:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color",
+                theme : "default form-control- droup_color select_width",
                 dropdownParent: $($('.add_prod:last').closest('.prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
@@ -1781,9 +1815,148 @@ height: 37px !important;
             })
         }
 
-        InitProductSelectAdd();
+        InitProductSelectAdd();*/
 
+        function InitProductSelectAdd() {
+                $('body .add_prod').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- droup_color select_width",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+        InitProductSelectAdd()
         /*add product select end*/
+
+
+        /**/
+
+        function InitProductSelectAdd2() {
+                $('body .add_prod2').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- droup_color select_width",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+        /**/
+
+
+        /**/
+
+        function InitProductSelectEdit() {
+                $('body .edit_cost_product_det').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- droup_color select_width",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+        /**/
+
+        
 
 
 
@@ -1817,6 +1990,8 @@ height: 37px !important;
                     $('.payment_term_clz').removeClass("error"); 
 
                     $("#contact_person_id").html(data.customer_name);
+
+                  
 
                 }
 
@@ -1878,7 +2053,7 @@ height: 37px !important;
            
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
+            var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
             
             var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
@@ -1886,7 +2061,7 @@ height: 37px !important;
 
             var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -2022,7 +2197,7 @@ height: 37px !important;
 
         $('body .prod_row').each(function() {
 
-            $(this).find('.si_no').html('<td class="si_no text-center" style="border: unset;">' + pp + '</td>');
+            $(this).find('.si_no').html('<td class="si_no text-center" style="border: unset;padding:10px 10px;">' + pp + '</td>');
 
             pp++;
         });
@@ -2478,7 +2653,7 @@ height: 37px !important;
     function InitProductSelect2(){
         $(".edit_product_det:last").select2({
             placeholder: "Select Product",
-            theme : "default form-control- droup_color",
+            theme : "default form-control- droup_color select_width",
             dropdownParent: $($('.edit_product_det:last').closest('.edit_add_prod_row')),
             ajax: {
                 url: "<?= base_url(); ?>Crm/ProFormaInvoice/FetchProducts",
@@ -2517,7 +2692,7 @@ height: 37px !important;
            
         var $discountSelect = $(this);
 
-        var discount = parseInt($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
+        var discount = parseFloat($discountSelect.closest('.edit_add_prod_row').find('.edit_add_discount').val())||0;
         
         var $discountSelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_rate');
 
@@ -2525,7 +2700,7 @@ height: 37px !important;
 
         var $quantitySelectElement = $discountSelect.closest('.edit_add_prod_row').find('.edit_add_qty');
 
-        var quantity = parseInt($quantitySelectElement.val())||0;
+        var quantity = parseFloat($quantitySelectElement.val())||0;
 
         var parsedRate = parseFloat(rate);
 
@@ -2628,6 +2803,9 @@ height: 37px !important;
                 $(".forma_edit_amount").val(data.amount);
 
                 
+                InitProductSelectEdit();
+
+                
 
             }
 
@@ -2641,7 +2819,7 @@ height: 37px !important;
            
            var $discountSelect = $(this);
    
-           var discount = parseInt($discountSelect.closest('.edit_product_row').find('.forma_edit_discount').val())||0;
+           var discount = parseFloat($discountSelect.closest('.edit_product_row').find('.forma_edit_discount').val())||0;
            
            var $discountSelectElement = $discountSelect.closest('.edit_product_row').find('.forma_edit_rate');
    
@@ -2649,7 +2827,7 @@ height: 37px !important;
    
            var $quantitySelectElement = $discountSelect.closest('.edit_product_row').find('.forma_edit_qty');
    
-           var quantity = parseInt($quantitySelectElement.val())||0;
+           var quantity = parseFloat($quantitySelectElement.val())||0;
    
            var parsedRate = parseFloat(rate);
    
@@ -2941,13 +3119,12 @@ height: 37px !important;
 
                         datatable.ajax.reload(null,false);
                     }); 
+
                 }else{
                    
                    alertify.error(data.msg).delay(3).dismissOthers();
 
                 }
-
-                
 
 
             }
@@ -2974,6 +3151,29 @@ height: 37px !important;
     
 
     /*delete section end*/
+
+
+    /**/
+    $('.datepicker_ap').change(function(){
+
+        var date = $(this).val();
+
+        $.ajax({
+
+            url: "<?php echo base_url(); ?>Crm/ProFormaInvoice/FetchReference/r/"+date+"",
+
+            method: "POST",
+
+            success: function(data) {
+                
+                $('#uid').val(data);
+
+            }
+        });
+
+
+    })
+    /**/
 
 
     });
@@ -3005,12 +3205,11 @@ height: 37px !important;
 
      /*calculate current claim */
 
-     function editCurrentClaim()
+    function editCurrentClaim()
         {   
             
             var current_claim = $('.edit_current_claim').val();
 
-          
             var amountTotal = $('.edit_total_order').val();
 
             var discountAmount = (current_claim/100)*amountTotal
@@ -3067,9 +3266,6 @@ height: 37px !important;
         });
 
 
-    		
-
-
-
+    	
 
 </script>

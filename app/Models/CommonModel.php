@@ -1224,6 +1224,30 @@ class CommonModel extends Model
  
     }
 
+
+    public function CheckTwiceCondJoin1($table, $cond1, $cond2, $joins)
+    {
+        $query = $this->db->table($table)
+            ->select('*')
+            ->where($cond1)
+            ->where($cond2);
+
+        if (!empty($joins)) {
+            foreach ($joins as $join) {
+                $table2 = $table;
+                if (!empty($join['table2'])) {
+                    $table2 = $join['table2'];
+                }
+                $query->join($join['table'], "{$join['table']}.{$join['pk']} = {$table2}.{$join['fk']}", 'left');
+            }
+        }
+
+        $query = $query->get(); // Move get() outside the loop
+
+        return $query->getResult();
+    }
+
+
     public function TwiceCondWithJoin($table,$cond1,$cond2,$joins)
     {
         $query = $this->db->table($table)

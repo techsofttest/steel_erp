@@ -35,6 +35,22 @@
     background: #00af50;
     padding: 10px 20px;
 }
+.product-more2 td{
+
+    padding:0px;
+}
+span.select2.customer_width, span.select2 {
+    
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+.select_prod_add td{
+
+    padding:10px 10px;
+
+
+}
 
 </style>
 
@@ -90,7 +106,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_reffer_no" id="uid" value="" class="form-control input_length" required>
+                                                                        <input type="text" name="dn_reffer_no" id="uid" value="" class="form-control input_length">
                                                                     </div>
 
                                                                 </div> 
@@ -270,7 +286,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="dn_project"  class="form-control project_clz input_length" required>
+                                                                        <input type="text" name="dn_project"  class="form-control project_clz input_length">
                                                                     </div>
 
                                                                 </div> 
@@ -299,9 +315,9 @@
                                                     <table class="table table-bordered table-striped delTable selected_table" style="display:none;">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:5%">SI No.</td>
+                                                                <td style="width:4%">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:5%">Unit</td>
+                                                                <td style="width:6%">Unit</td>
                                                                 <td style="width:7%">Order Qty</td>
                                                                 <td style="width:10%">Delivered Qty</td>
                                                                 <td style="width:11%">Current Delivery</td>
@@ -614,9 +630,9 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 8%;">Order Qty</td>
                                                                 <td style="width: 10%;">Delivered Qty</td>
                                                                
@@ -1079,11 +1095,11 @@
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td style="width:5%">Serial No.</td>
+                                        <td style="width:4%">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width:5%">Unit</td>
-                                        <td style="width:5%">Qty</td>
-                                        <td style="width:5%">Tick</td>
+                                        <td style="width:6%">Unit</td>
+                                        <td style="width:6%">Qty</td>
+                                        <td style="width:4%">Tick</td>
                                     </tr>
                                                             
                                                            
@@ -2511,6 +2527,30 @@
             };
 
         });
+
+
+        /**/
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+            url: "<?php echo base_url(); ?>Crm/DeliverNote/FetchReference/r/"+date+"",
+
+            method: "POST",
+
+            success: function(data) {
+                
+            $('#uid').val(data);
+
+            }
+            });
+
+
+        })
+
+        /**/
 
     
 

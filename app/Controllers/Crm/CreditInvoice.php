@@ -546,13 +546,8 @@ class CreditInvoice extends BaseController
             $data['contact_person']    = $credit_invoice->contact_person;
 
             $data['total_amount'] = '<tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="text-center">Total</td>
+               
+                <td align="right" class="total_label">Total</td>
                 <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
             </tr> ';
@@ -1028,13 +1023,8 @@ class CreditInvoice extends BaseController
             $data['credit_invoice_id'] = $credit_invoice->cci_id;
 
             $data['total_amount'] = '<tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Total</td>
+                
+                <td align="right" class="total_label">Total</td>
                 <td><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
             </tr> ';

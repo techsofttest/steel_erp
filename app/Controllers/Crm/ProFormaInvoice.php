@@ -412,13 +412,13 @@ class ProFormaInvoice extends BaseController
         foreach($product_details_data as $prod_det)
         {
             $data['prod_details'] .='<tr>
-            <td class="text-center" style="padding: 10px 10px;">'.$i.'</td>
-            <td><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'" class="form-control text-end" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control text-end" readonly></td>
+            <td class="text-center">'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>
+            <td class="text-center">'.$prod_det->pp_unit.'</td>
+            <td class="text-center">'.round($prod_det->pp_quantity).'</td>
+            <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
+            <td class="text-center">'.format_currency($prod_det->pp_discount).'</td>
+            <td class="text-end">'.format_currency($prod_det->pp_amount).'</td>
             </tr>'; 
 
             $i++;
@@ -579,10 +579,23 @@ class ProFormaInvoice extends BaseController
 
             $cond1 =  array('spd_sales_order'=> $sales_order->so_id);
 
-            $sales_prod_det = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
+            //$sales_prod_det = $this->common_model->FetchWhere('crm_sales_product_details',$cond1);
+
+            $joins = array(
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'spd_product_details',
+                ),
+                
+    
+            );
+
+            $sales_prod_det = $this->common_model->FetchWhereJoin('crm_sales_product_details',$cond1,$joins);
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
-
+            
+            
             
             $proforma_invoice = $this->common_model->FetchWhere('crm_proforma_invoices',array('pf_sales_order' => $this->request->getPost('ID')));
             
@@ -629,27 +642,29 @@ class ProFormaInvoice extends BaseController
 
             //table section start
 
+            /*<select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
+                                                
+            foreach($products as $prod){
+
+                $data['sales_order_contact'] .= '<option value="'.$prod->product_id.'"';
+                if($prod->product_id  == $prod_det->spd_product_details){  $data['sales_order_contact'] .= "selected"; }
+                $data['sales_order_contact'] .='>'.$prod->product_details.'</option>';
+            }  
+
+            $data['sales_order_contact'] .=  '</select>*/
+
             $i=1;
             $j=0; 
             $data['sales_order_contact'] ='';
         
             foreach($sales_prod_det as $prod_det){
 
-              
+                $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
+               
 
             $data['sales_order_contact'] .= '<tr class="prod_row performa_remove performa_row_lenght" id="'.$prod_det->spd_id.'">
                                             <td class="si_no text-center">'.$i.'</td>
-                                            <td>
-                                                <select class="form-select add_prod2" name="pp_product_det['.$j.']" required>';
-                                                
-                                                foreach($products as $prod){
-
-                                                    $data['sales_order_contact'] .= '<option value="'.$prod->product_id.'"';
-                                                    if($prod->product_id  == $prod_det->spd_product_details){  $data['sales_order_contact'] .= "selected"; }
-                                                    $data['sales_order_contact'] .='>'.$prod->product_details.'</option>';
-                                                }  
-
-                   $data['sales_order_contact'] .=  '</select>
+                                            <td><select name="pp_product_det['.$j.']" class="form-control add_prod2">'.$options_product.'</select>
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
                                             <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
@@ -862,14 +877,14 @@ class ProFormaInvoice extends BaseController
                 
 
                 $data['prod_details'] .='<tr class="prod_row2 performa_remove" id="'.$prod_det->pp_id.'">
-                <td class="si_no2 text-center" style="padding:10px 10px;">'.$i.'</td>
-                <td ><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
-                <td><input type="text"  value="'.$prod_det->pp_unit.'" class="form-control text-center" readonly></td>
-                <td> <input type="text" value="'.round($prod_det->pp_quantity).'" class="form-control text-center"  readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_rate).'"  class="form-control text-end" readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_discount).'" class="form-control text-center" readonly></td>
-                <td> <input type="text" value="'.format_currency($prod_det->pp_amount).'" class="form-control edit_total_amount text-end" readonly></td>
-                <td  style="padding:10px 10px;">
+                <td class="si_no2 text-center">'.$i.'</td>
+                <td >'.$prod_det->product_details.'</td>
+                <td class="text-center">'.$prod_det->pp_unit.'</td>
+                <td class="text-center">'.round($prod_det->pp_quantity).'</td>
+                <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
+                <td class="text-center">'.format_currency($prod_det->pp_discount).'</td>
+                <td class="text-end">'.format_currency($prod_det->pp_amount).'</td>
+                <td class="text-center">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
                     <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
                 </td>
@@ -980,9 +995,10 @@ class ProFormaInvoice extends BaseController
 
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
+
             $data['product'] ="";
 
-            foreach($products as $prod)
+            /*foreach($products as $prod)
             {
                 $data['product'] .= '<option value="' .$prod->product_id. '"'; 
             
@@ -993,7 +1009,11 @@ class ProFormaInvoice extends BaseController
                 }
             
                 $data['product'] .= '>' . $prod->product_details . '</option>';
-            }
+            }*/
+
+            $data['product'] = '<option value="'.$proforma_prod->product_id.'" selected>'.$proforma_prod->product_details.'</option>';
+
+
 
             $data['unit']     = $proforma_prod->pp_unit;
 
@@ -1101,18 +1121,27 @@ class ProFormaInvoice extends BaseController
        
 
 
-        public function FetchReference($type="e")
-        {
-    
-            $uid = $this->common_model->FetchNextId('crm_proforma_invoices',"PI-{$this->data['accounting_year']}-");
-    
+        public function FetchReference($type="e",$year="")
+        {     
+
+            if($year=="")
+            {
+                $year = $this->data['accounting_year'];
+            }
+            else
+            {
+                $year = date('Y',strtotime($year));
+            }
+
+            $uid = $this->common_model->FetchNextId('crm_proforma_invoices','pf_reffer_no',"PI-{$year}-",$year);
+
             if($type=="e")
                 echo $uid;
             else
             {
                 return $uid;
             }
-    
+
         }
        
         public function Claim()
@@ -1390,9 +1419,9 @@ class ProFormaInvoice extends BaseController
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:1px solid;" width="10%">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
                 
-                    <th align="center" style="border-bottom:1px solid;" width="45%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
                 
                     <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
@@ -1424,7 +1453,7 @@ class ProFormaInvoice extends BaseController
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
 
-                        <td style="width: 20%;">Net Order Value:</td>
+                        <td style="width: 19%;">Net Order Value:</td>
             
                         <td>'.format_currency($proforma_invoice->pf_total_amount).'</td>
                     

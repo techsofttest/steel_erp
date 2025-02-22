@@ -41,6 +41,18 @@
     
     padding: 8px 16px;
 }
+.content_table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.add_table {
+    margin-bottom: 0px;
+}
+.total_table {
+    width: 28% !important;
+   
+}
 </style>
 
 
@@ -331,12 +343,12 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:10%">DN No.</td>
+                                                                <td style="width:5%">DN No.</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width:8%">Unit</td>
-                                                                <td style="width:7%">Qty</td>
-                                                                <td style="width:8%">Rate</td>
-                                                                <td style="width:8%">Discount</td>
+                                                                <td style="width:6%">Unit</td>
+                                                                <td style="width:6%">Qty</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 
 
@@ -352,18 +364,22 @@
                                                                 </td>
                                                             </tr>
                                                         </tbody>--->
+                                                        
+                                                       
+                                                    </table>
+
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                 
-                                                                <td colspan="5" class="performa_amount_in_word_val"></td>
+                                                                
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
-                                                                <td class="text-center" style="padding:10px 10px;">Total</td>
+                                                                <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="cci_total_amount" class="amount_total form-control text-end" readonly></td>
                                                             </tr>
                                                             
                                                           
                                                         </tbody>
-                                                       
                                                     </table>
                                                 </div>
 
@@ -518,11 +534,11 @@
                                 <thead class="travelerinfo contact_tbody">
                                     
                                     <tr>
-                                        <td style="width: 5%;">SI No.</td>
+                                        <td style="width: 4%;">SI</td>
                                         <td>Product Description</td>
                                         <td style="width: 10%;">Delivery Note</td>
-                                        <td style="width: 8%;">Quantity</td>
-                                        <td style="width: 8%;">Tick</td>
+                                        <td style="width: 6%;">Qty</td>
+                                        <td style="width: 4%;">Tick</td>
                                     </tr>
                                                             
                                                            
@@ -816,17 +832,17 @@
 
                     <!--table section start-->
                     <div class="mt-4 content_table">
-                        <table class="table table-bordered table-striped delTable ">
+                        <table class="table table-bordered table-striped delTable" style="margin:0px">
                             <thead class="travelerinfo contact_tbody">
                                 <tr>
-                                    <td style="width: 5%;">SI No.</td>
+                                    <td style="width: 4%;">SI</td>
                                     <td style="width: 11%;">DN NO</td>
                                     <td>Product Description</td>
-                                    <td style="width: 7%;">Unit</td>
-                                    <td style="width: 5%;">Qty</td>
+                                    <td style="width: 6%;">Unit</td>
+                                    <td style="width: 6%;">Qty</td>
                                     <td style="width: 8%;">Rate</td>
-                                    <td style="width: 8%;">Discount</td>
-                                    <td style="width: 8%;">Amount</td>
+                                    <td style="width: 7%;">Discount</td>
+                                    <td style="width: 9%;">Amount</td>
                                     
                                     
 
@@ -836,9 +852,12 @@
                             
                             <tbody  class="travelerinfo edit_product_table"></tbody>
 
-                            <tbody  class="travelerinfo edit_total_amount"></tbody>
+                            
                            
                             
+                        </table>
+                        <table class="total_table">
+                            <tbody  class="travelerinfo edit_total_amount"></tbody>
                         </table>
                     </div>
 
@@ -1201,17 +1220,17 @@
 
                         <!--table section start-->
                         <div class="mt-4 content_table">
-                            <table class="table table-bordered table-striped delTable ">
+                            <table class="table table-bordered table-striped delTable " style="margin:0px;">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td class="text-center" style="width: 5%;">SI No.</td>
+                                        <td class="text-center" style="width: 4%;">SI</td>
                                         <td class="text-center" style="width: 11%;">Delivery Reffer</td>
                                         <td class="text-center">Product Description</td>
                                         <td class="text-center" style="width: 6%;">Unit</td>
                                         <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 8%;">Rate</td>
+                                        <td class="text-center" style="width: 6%;">Rate</td>
                                         <td class="text-center" style="width: 7%;">Discount</td>
-                                        <td class="text-center" style="width: 8%;">Amount</td>
+                                        <td class="text-center" style="width: 9%;">Amount</td>
                                         
 
                                     </tr>
@@ -1221,10 +1240,16 @@
                                 <tbody  class="travelerinfo view_prod_table"></tbody>
 
 
-                                <tbody  class="travelerinfo view_total_amount" ></tbody>
+                               
                                                        
                                 
                                                        
+                            </table>
+
+                            <table class="total_table">
+                                 
+                                <tbody  class="travelerinfo view_total_amount" ></tbody>
+
                             </table>
                             
                         </div>

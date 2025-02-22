@@ -223,6 +223,8 @@ class SalesOrder extends BaseController
 
             'so_added_date'             => date('Y-m-d'),
         ];
+
+        
         
 
         // Handle file upload
@@ -420,21 +422,22 @@ class SalesOrder extends BaseController
 
         $product_details_data = $this->common_model->FetchWhereJoin('crm_quotation_product_details',$cond1,$joins1);*/
 
-        $product_details_data = $this->common_model->CheckTwiceCond1('crm_quotation_product_details',$cond1,array('qpd_status'=>0));
+        $joins = array(
+            array(
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'qpd_product_description',
+            ),
+            
+
+        );
+
+
+        $product_details_data = $this->common_model->CheckTwiceCondJoin1('crm_quotation_product_details',$cond1,array('qpd_status'=>0),$joins);
 
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-         
-        $data['prod_details'] ='';
-        $i =1; 
-        $si=0;
-        foreach($product_details_data as $prod_det)
-        {   
-            $prod_det->qpd_amount;
-
-            $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
-            <td class="si_no2 text-center" style="border">'.$i.'</td>
-            <td >
+        /*<td >
                 <select class="form-select droup_product add_prod" name="spd_product_details['.$si.']" required>';
                     
                     foreach($products as $prod){
@@ -443,11 +446,27 @@ class SalesOrder extends BaseController
                         $data['prod_details'] .='>'.$prod->product_details.'</option>';
                     }
             $data['prod_details'] .='</select>
+            </td>*/
+
+       
+
+        $data['prod_details'] ='';
+        $i =1; 
+        $si=0;
+        foreach($product_details_data as $prod_det)
+        {   
+            $prod_det->qpd_amount;
+
+            $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>'; 
+
+            $data['prod_details'] .='<tr class="prod_row2 sales_remove sales_row_leng" id="'.$prod_det->qpd_id.'">
+            <td class="si_no2 text-center" style="border">'.$i.'</td>
+            <td><select name="spd_product_details['.$si.']" class="form-control droup_product add_prod">'.$options_product.'</select>
             </td>
-            <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id" required></td>
-            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id"  required></td>
+            <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
+            <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id text-center"  required></td>
             <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end" step="0.01 "  required></td>
-            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id" required></td>
+            <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
             <input type="hidden" name="quotation_id['.$si.']" class="quotation_id_clz" value="'.$prod_det->qpd_quotation_details.'">
@@ -968,14 +987,14 @@ class SalesOrder extends BaseController
             
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove edit_product_row" id="'.$prod_det->spd_id.'">
-            <td class="delete_sino text-center" style="padding: 10px 10px;">'.$i.'</td>
-            <td ><input type="text"   value="'.$prod_det->product_details.'" class="form-control " readonly></td></td>
-            <td><input type="text"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_quantity).'" class="form-control text-center"  readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_rate).'"  class="form-control text-end" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_discount).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" value="'.format_currency($prod_det->spd_amount).'" class="form-control edit_product_amount text-end" readonly></td>
-            <td style="width:15%;padding: 10px 10px;">
+            <td class="delete_sino text-center">'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>
+            <td class="text-center">'.$prod_det->spd_unit.'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
+            <td class="text-center"> '.format_currency($prod_det->spd_rate).'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_amount).'</td>
+            <td class="text-center">
                 <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 		        <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->spd_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
@@ -1114,13 +1133,13 @@ class SalesOrder extends BaseController
            
 
             $data['prod_details'] .='<tr class="prod_row2 sales_remove" id="'.$prod_det->spd_id.'">
-            <td class="si_no2 text-center" style="padding-top: 10px;">'.$i.'</td>
-            <td style="width:40%"><input type="text"  name="spd_unit[]"  value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-            <td><input type="text"  name="spd_unit[]"  value="'.$prod_det->spd_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="spd_quantity[]" value="'.format_currency($prod_det->spd_quantity).'" class="form-control qtn_clz_id text-center"  readonly></td>
-            <td> <input type="text" name="spd_rate[]" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-center" readonly></td>
-            <td> <input type="text" name="spd_discount[]" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
-            <td> <input type="text" name="spd_amount[]" value="'.format_currency($prod_det->spd_amount).'"  class="form-control amount_clz_id text-end" readonly></td>
+            <td class="si_no2 text-center">'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>
+            <td class="text-center">'.$prod_det->spd_unit.'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_rate).'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
+            <td class="text-center">'.format_currency($prod_det->spd_amount).'</td>
           
             </tr>'; 
             $i++; 
@@ -1275,10 +1294,19 @@ class SalesOrder extends BaseController
 
 	}*/
 
-    public function FetchReference($type="e")
-    {
+    public function FetchReference($type="e",$year="")
+    {   
 
-        $uid = $this->common_model->FetchNextId('crm_sales_orders',"SO-{$this->data['accounting_year']}-");
+        if($year=="")
+        {
+            $year = $this->data['accounting_year'];
+        }
+        else
+        {
+            $year = date('Y',strtotime($year));
+        }
+
+            $uid = $this->common_model->FetchNextId('crm_sales_orders','so_reffer_no',"SO-{$year}-",$year);
 
         if($type=="e")
             echo $uid;
@@ -1289,29 +1317,43 @@ class SalesOrder extends BaseController
 
     }
 
-
     public function EditProduct()
     {
         $cond = array('spd_id' => $this->request->getPost('ID'));
 
-        $prod_det = $this->common_model->SingleRow('crm_sales_product_details',$cond);
+        $joins = array(
+
+            array(
+                
+                'table' => 'crm_products',
+                'pk'    => 'product_id',
+                'fk'    => 'spd_product_details',
+            ),
+           
+        );
+
+        $prod_det = $this->common_model->SingleRowJoin('crm_sales_product_details',$cond,$joins);
 
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
+
+        $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
+
+        /*<td ><select class="form-select droup_product" name="spd_product_details	" required>';
+                    
+        foreach($products as $prod){
+            $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
+            if($prod->product_id == $prod_det->spd_product_details){ $data['prod_details'] .= "selected"; }
+            $data['prod_details'] .='>'.$prod->product_details.'</option>';
+        }
+                
+        $data['prod_details'] .='</select></td>*/
 
         $data['prod_details'] ="";
         
             $data['prod_details'] .='<tr class="edit_prod_row">
            
            
-            <td style="width:34%"><select class="form-select droup_product" name="spd_product_details	" required>';
-                    
-                foreach($products as $prod){
-                    $data['prod_details'] .='<option value="'.$prod->product_id.'" '; 
-                    if($prod->product_id == $prod_det->spd_product_details){ $data['prod_details'] .= "selected"; }
-                    $data['prod_details'] .='>'.$prod->product_details.'</option>';
-                }
-						
-            $data['prod_details'] .='</select></td>
+            <td> <select name="spd_product_details" class="form-control product_select2_edit droup_product">'.$options_product.'</select></td>
 
             <td><input type="text" name="spd_unit"  value="'.$prod_det->spd_unit.'" class="form-control text-center" required></td>
             <td> <input type="text" name="spd_quantity" value="'.$prod_det->spd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
@@ -1728,9 +1770,9 @@ class SalesOrder extends BaseController
         
             <tr>
             
-                <th align="center" style="border-bottom:1px solid;" width="10%">Item No</th>
+                <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
             
-                <th align="center" style="border-bottom:1px solid;" width="45%">Description</th>
+                <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
             
                 <th align="center" style="border-bottom:1px solid;">Qty</th>
             

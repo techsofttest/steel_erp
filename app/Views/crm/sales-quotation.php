@@ -85,13 +85,64 @@
         border-radius: 4px;
         background: #f5f5f5bd;
         border: none !important;
-        height: 37px !important;
+        /*height: 37px !important;*/
+        height: 100% !important;
+        overflow: visible;
     }
     .content_table tr {
         text-align: unset;
+        border: 1px solid black !important;
     }
-   
-    
+    .edit_cost_cal_row td{
+
+        padding: 0px;
+    }
+
+    .content_table table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+    .add_table{
+
+        margin-bottom: 0px;
+        vertical-align: middle;
+    }
+    .total_table {
+        
+        width: 27% !important;
+    }
+    .cost_data td{
+
+        vertical-align: middle !important;
+        padding: 10px 10px;
+    }
+    .product-more4{
+
+        vertical-align: middle !important;
+        padding: 10px 10px;
+    }
+    .view_prod_det td{
+
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+    .view_cost_cal td{
+       
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+    .total_table td{
+            border: 1px solid black !important;
+    }
+    .edit_product-more td {
+        
+        padding: 10px 10px !important;
+    }
+    .edit_cost_cal td{
+
+        padding: 10px 10px !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -361,7 +412,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_project" id="" class="form-control enqinput project_clz input_length2" required>
+                                                                        <input type="text" name="qd_project" id="" class="form-control enqinput project_clz input_length2">
                                                                     </div>
 
                                                                 </div> 
@@ -388,13 +439,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td >Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 10%;">Amount</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 4%;"></td>
                                                             </tr>
                                                             
@@ -434,7 +485,8 @@
                                                                 </td>
                                                             </tr>
                                                         </tbody>
-                                                        <tbody>
+
+                                                        <!--<tbody>
                                                             <tr>
                                                                 
                                                                 <td colspan="5" class=""></td>
@@ -456,6 +508,33 @@
                                                                 <td style="text-align: center;padding: 10px 10px;">Percentage</td>
                                                                 <td><input type="text" class="form-control total_percent text-end" readonly></td>
                                                                 <td></td>
+                                                            </tr>
+                                                        </tbody>--->
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
+                                                        <tbody>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
+                                                                <td align="right" class="total_label">Total</td>
+                                                                <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td style="padding: 10px 10px;" align="right" class="total_label">Cost</td>
+                                                                <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                
+                                                            
+                                                                <td style="padding: 10px 10px;" align="right" class="total_label">Percentage</td>
+                                                                <td><input type="text" class="form-control total_percent text-end" readonly></td>
+                                                               
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -531,13 +610,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo">
                                                             <tr>
-                                                                <td style="width:10%">SI No.</td>
+                                                                <td style="width:4%">SI</td>
                                                                 <td>Cost Of Materials / Services</td>
-                                                                <td style="width:8%">Unit</td>
-                                                                <td style="width:8%">Qty</td>
+                                                                <td style="width:6%">Unit</td>
+                                                                <td style="width:6%">Qty</td>
                                                                 <td style="width:10%">Price Check</td>
-                                                                <td style="width:9%">Rate</td>
-                                                                <td style="width:10%">Amount</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:9%">Amount</td>
                                                                 <td style="width:5%"></td>
                                                             </tr>
                                                         </thead>
@@ -942,7 +1021,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="qd_project" id="" class="form-control edit_project input_length" required>
+                                                                        <input type="text" name="qd_project" id="" class="form-control edit_project input_length">
                                                                     </div>
 
                                                                     <input type="hidden" class="quoat_id" name="qd_id">
@@ -972,14 +1051,14 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Discount</td>
-                                                                <td style="width: 10%;">Amount</td>
-                                                                <td style="width: 5%;">Action</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
+                                                                <td style="width: 14%;">Action</td>
                                                             </tr>
                                                            
                                                         </thead>
@@ -1009,13 +1088,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width: 5%;">SI No.</td>
+                                                                <td style="width: 4%;">SI</td>
                                                                 <td>Cost Of Materials / Services</td>
-                                                                <td style="width: 8%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Amount</td>
-                                                                <td style="width: 5%;">Action</td>
+                                                                <td style="width: 6%;">Unit</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 9%;">Amount</td>
+                                                                <td style="width: 14%;">Action</td>
                                                             </tr>
                                                            
                                                         </thead>
@@ -1030,28 +1109,30 @@
                                                             </tr>
                                                         <!--</tbody>--->
 
+                                                        
+                                                        
+                                                    </table>
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3" class=""></td>
-                                                                <!--<input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">-->
-                                                                <td style="padding: 10px 10px;">Product</td>
+                                                                
+                                                               
+                                                            <td align="right" class="total_label">Product</td>
                                                                 <td><input type="text" name="" class="edit_total_prod form-control text-end" readonly></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3"></td>
-                                                                <td style="padding:10px 10px;">Cost</td>
+                                                                
+                                                                
+                                                            <td align="right" class="total_label">Cost</td>
                                                                 <td><input type="text" class="form-control edit_total_cost_cal text-end" readonly></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"></td>
-                                                                <td colspan="3"></td>
-                                                                <td style="padding: 10px 10px;">Percentage</td>
+                                                                
+                                                               
+                                                            <td align="right" class="total_label">Percentage</td>
                                                                 <td class="edit_total_percent"><input type="text" class="form-control edit_total_percent text-end" readonly></td>
                                                             </tr>
                                                         </tbody>
-                                                        
                                                     </table>
                                                 </div>
 
@@ -1115,9 +1196,9 @@
                                                                 
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 10%;">Price Check</td>
-                                                                <td style="width: 7%;">Rate</td>
+                                                                <td style="width: 6%;">Rate</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
@@ -1133,7 +1214,7 @@
                                                                 </td>
                                                                 <td><input type="text" name="qc_unit"  class="form-control edit_cost_unit text-center" required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_cost_qty text-center" required></td>
-                                                                <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
+                                                                <td style="text-align: center;padding: 10px 10px;background: #f5f5f56e;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
                                                                 <td><input type="number" name="qc_rate"  class="form-control edit_cost_rate text-end" required></td>
                                                                 
                                                                 <td><input type="number" name="qc_amount" class="form-control edit_cost_amount text-end" readonly></td>
@@ -1205,10 +1286,10 @@
                                                                 
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
+                                                                <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 9%;">Price Check</td>
-                                                                <td style="width: 8%;">Rate</td>
-                                                                <td style="width: 8%;">Amount</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
                                                         </thead>
@@ -1223,12 +1304,12 @@
                                                                         <?php } ?>-
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="qc_unit"  class="form-control " required></td>
-                                                                <td><input type="number" name="qc_qty" class="form-control edit_add_qty" required></td>
-                                                                <td style="padding-top: 10px;"><a href="javascript:void(0)" onclick="editAddCostVendor.call(this)" >Click</a></td>
-                                                                <td><input type="number" name="qc_rate"  class="form-control edit_add_rate" required></td>
+                                                                <td><input type="text" name="qc_unit"  class="form-control text-center" required></td>
+                                                                <td><input type="number" name="qc_qty" class="form-control edit_add_qty text-center" required></td>
+                                                                <td style="padding-top: 10px;" class="text-center"><a href="javascript:void(0)" onclick="editAddCostVendor.call(this)" class="text-center">Click</a></td>
+                                                                <td><input type="number" name="qc_rate"  class="form-control edit_add_rate text-end" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount" class="form-control edit_add_amount" readonly></td>
+                                                                <td><input type="number" name="qc_amount" class="form-control edit_add_amount text-end" readonly></td>
                                                                 <!--<td><div class="tecs"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i>Add </span></div></td>-->
                                                                 <input type="hidden" name="qc_quotation_id" class="edit_add_qtn_id">
                                                             </tr>
@@ -1296,10 +1377,10 @@
                                                                
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 5%;">Qty</td>
-                                                                <td style="width: 7%;">Rate</td>
-                                                                <td style="width: 6%;">Discount</td>
-                                                                <td style="width: 7%;">Amount</td>
+                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 7%;">Discount</td>
+                                                                <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
 
@@ -1366,10 +1447,10 @@
                                                                 
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
-                                                                <td style="width:5%">Qty</td>
-                                                                <td style="width:7%">Rate</td>
-                                                                <td style="width:6%">Discount</td>
-                                                                <td style="width:7%">Amount</td>
+                                                                <td style="width:6%">Qty</td>
+                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:7%">Discount</td>
+                                                                <td style="width:9%">Amount</td>
                                                                
                                                             </tr>
                                                         </thead>
@@ -1705,13 +1786,13 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 5%;">SI No.</td>
+                                                                <td class="text-center" style="width: 4%;">SI</td>
                                                                 <td class="text-center">Product Description</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
-                                                                <td class="text-center" style="width: 5%;">Qty</td>
-                                                                <td class="text-center" style="width: 7%;">Rate</td>
-                                                                <td class="text-center" style="width: 6%;">Discount</td>
-                                                                <td class="text-center" style="width: 7%;">Amount</td>
+                                                                <td class="text-center" style="width: 6%;">Qty</td>
+                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 7%;">Discount</td>
+                                                                <td class="text-center" style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
                                                            
@@ -1737,12 +1818,12 @@
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td class="text-center" style="width: 5%;">SI No.</td>
+                                                                <td class="text-center" style="width: 4%;">SI</td>
                                                                 <td colspan="2" class="text-center">Cost Of Materials / Services</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
-                                                                <td class="text-center" style="width: 5%;">Qty</td>
-                                                                <td class="text-center"  style="width: 7%;">Rate</td>
-                                                                <td class="text-center" style="width: 7%;">Amount</td>
+                                                                <td class="text-center" style="width: 6%;">Qty</td>
+                                                                <td class="text-center"  style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
                                                            
@@ -1751,28 +1832,30 @@
                                                         
                                                         <tbody  class="travelerinfo view_cost_cal"></tbody>
                                                         
+                                                        
+                                                        
+                                                    </table>
+
+                                                    <table class="total_table">
                                                         <tbody>
                                                             <tr>
                                                                
-                                                                <td colspan="5" class=""></td>
                                                                 
-                                                                <td class="text-center" style="padding:10px 10px">Product</td>
+                                                                <td align="right" class="total_label">Product</td>
                                                                 <td><input type="text" name="" class="view_btn_total_prod form-control text-end" readonly></td>
                                                             </tr>
                                                             <tr>
-                                                                
-                                                                <td colspan="5"></td>
-                                                                <td class="text-center" style="padding:10px 10px">Cost</td>
+                                                                 
+                                                               <td align="right" class="total_label">Cost</td>
                                                                 <td><input type="text" class="form-control view_btn_total_cost_cal text-end" readonly></td>
                                                             </tr>
                                                             <tr>
                                                                 
-                                                                <td colspan="5"></td>
-                                                                <td class="text-center" style="padding:10px 10px">Percentage</td>
+                                                                
+                                                                <td align="right" class="total_label">Percentage</td>
                                                                 <td class="view_total_percent"><input type="text" class="form-control view_btn_total_percent text-end" readonly></td>
                                                             </tr>
                                                         </tbody>
-                                                        
                                                     </table>
                                                 </div>
 
@@ -2192,13 +2275,13 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td style="width: 5%;">SI No.</td>
+                                        <td style="width: 4%;">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width: 8%;">Unit</td>
-                                        <td style="width: 5%;">Qty</td>
-                                        <td style="width: 8%;">Rate</td>
-                                        <td style="width: 8%;">Discount</td>
-                                        <td style="width: 10%;">Amount</td>
+                                        <td style="width: 6%;">Unit</td>
+                                        <td style="width: 6%;">Qty</td>
+                                        <td style="width: 6%;">Rate</td>
+                                        <td style="width: 7%;">Discount</td>
+                                        <td style="width: 9%;">Amount</td>
                                        
                                     </tr>
                                     
@@ -2223,12 +2306,12 @@
                             <table class="table table-bordered table-striped delTable add_table">
                                 <thead class="travelerinfo contact_tbody">
                                     <tr>
-                                        <td style="width: 5%;">SI No.</td>
+                                        <td style="width: 4%;">SI</td>
                                         <td colspan="2">Cost Of Materials / Services</td>
-                                        <td style="width: 8%;">Unit</td>
-                                        <td style="width: 5%;">Qty</td>
-                                        <td style="width: 8%;">Rate</td>
-                                        <td style="width: 10%;">Amount</td>
+                                        <td style="width: 6%;">Unit</td>
+                                        <td style="width: 6%;">Qty</td>
+                                        <td style="width: 6%;">Rate</td>
+                                        <td style="width: 9%;">Amount</td>
                                         
                                     </tr>
                                     
@@ -2244,33 +2327,35 @@
                                         </td>
                                     </tr>--->
                                 <!--</tbody>--->
+                                
+                                
+                               
+                                
+                            </table>
+
+                            <table class="total_table">
                                 <tbody>
                                     <tr>
                                        
-                                        <td colspan="5" class="sales_quotation_amount_in_word"></td>
                                         <input type="hidden" name="qd_sales_quot_amount_in_words" class="sales_quotation_amount_in_word_val">
-                                        <td style="text-align: center;padding: 10px 10px;">Product</td>
+                                        <td align="center" class="total_table">Product</td>
                                         <td><input type="text" name="qd_sales_amount" class="amount_total form-control text-end" readonly></td>
                                         
                                     </tr>
                                     <tr>
-                                        
-                                        <td colspan="5"></td>
-                                        <td style="text-align: center;padding: 10px 10px;">Cost</td>
+                                      
+                                        <td align="center" class="total_table">Cost</td>
                                         <td><input type="text" class="form-control total_cost_cal text-end" readonly></td>
                                         
                                     </tr>
                                     <tr>
                                         
-                                        <td colspan="5"></td>
-                                        <td style="text-align: center;padding: 10px 10px;">Percentage</td>
+                                        
+                                        <td align="center" class="total_table">Percentage</td>
                                         <td><input type="text" class="form-control total_percent text-end" readonly></td>
                                        
                                     </tr>
                                 </tbody>
-                                
-                               
-                                
                             </table>
                         </div>
 
@@ -2782,7 +2867,9 @@
               
             pp++; 
  
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no' style='width: 5%;'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -2798,27 +2885,6 @@
             
             $(this).parent().remove();
 
-            /*var jj = 0;
-
-            $('body .quot_row_leng').each(function(){
-                  
-                var  rate =  $(this).closest('.quot_row_leng').find('.rate_clz_id').val();
-
-                $(this).closest('.quot_row_leng').find('.add_prod').attr('name', 'qpd_product_description['+jj+']');
-
-                $(this).closest('.quot_row_leng').find('.unit_clz_id').attr('name', 'qpd_unit['+jj+']');
-
-                $(this).closest('.quot_row_leng').find('.qtn_clz_id').attr('name', 'qpd_quantity['+jj+']');
-                      
-                $(this).closest('.quot_row_leng').find('.rate_clz_id').attr('name', 'qpd_rate['+jj+']');
-
-                $(this).closest('.quot_row_leng').find('.discount_clz_id').attr('name', 'qpd_discount['+jj+']');
-
-                $(this).closest('.quot_row_leng').find('.amount_clz_id').attr('name', 'qpd_amount['+jj+']');
-
-                jj++;
-
-            });*/
 
             reName();
             
@@ -2841,7 +2907,7 @@
                 
                 var  rate =  $(this).closest('.quot_row_leng').find('.rate_clz_id').val();
 
-                $(this).closest('.quot_row_leng').find('.add_prod').attr('name', 'qpd_product_description['+jj+']');
+                $(this).closest('.quot_row_leng').find('.add_select2_prod').attr('name', 'qpd_product_description['+jj+']');
 
                 $(this).closest('.quot_row_leng').find('.unit_clz_id').attr('name', 'qpd_unit['+jj+']');
 
@@ -2871,7 +2937,7 @@
 
             $('body .prod_row').each(function() {
 
-                $(this).find('.si_no').html('<td class="si_no" style="border: unset;">' + pp + '</td>');
+                $(this).find('.si_no').html('<td class="si_no" style="border: unset;display: flex;align-items: center;justify-content: center;">' + pp + '</td>');
 
                 
 
@@ -2961,7 +3027,7 @@
         function InitCostSelect(){
             $(".cost_product_det:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color",
+                theme : "default form-control- droup_color select_width",
                 //dropdownParent: $('#CostCalculation'),
                 dropdownParent: $($('.cost_product_det:last').closest('.cost_cal_row')),
                 ajax: {
@@ -3003,6 +3069,46 @@
         /*####*/
 
 
+        /**/
+
+
+        function EditCostProdDet(){
+            $(".edit_cost_product_det:last").select2({
+                placeholder: "Select Product",
+                theme : "default form-control- droup_color select_width",
+                //dropdownParent: $('#CostCalculation'),
+                dropdownParent: $($('.edit_cost_product_det:last').closest('.edit_cost_cal_row')),
+                ajax: {
+                    url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                    dataType: 'json',
+                    delay: 250,
+                    cache: false,
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    data: function (params) {
+                        return {
+                            term: params.term,
+                            page: params.page || 1,
+                        };
+                    },
+                    processResults: function(data, params) {
+                    
+                        var page = params.page || 1;
+                        return {
+                            results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                            pagination: {
+                            // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                                more: (page * 10) <= data.total_count
+                            }
+                        };
+                    },              
+                }
+            })
+        }
+        
+        /**/
+
+
 
         /* Product Init Select 2 */
 
@@ -3010,7 +3116,7 @@
         function InitProductSelect2(){
             $(".add_prod:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color ",
+                theme : "default form-control- droup_color select_width",
                 dropdownParent: $($('.add_prod:last').closest('.prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
@@ -3094,6 +3200,8 @@
                         
                         reName();
 
+                        ProductSelect2Edit();
+
                     }
 
 
@@ -3126,7 +3234,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
+            var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
             
             var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
@@ -3134,7 +3242,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -3278,6 +3386,9 @@
         })
         /**/
 
+      
+        
+        /**/
 
         
  
@@ -3476,7 +3587,7 @@
                     var data = JSON.parse(data);
 
                 
-                   // $(".edit_contact_person").html(data.contact_person);
+                    $(".edit_contact_person").html(data.contact_person);
 
                     //$(".edit_enquiry").html(data.enquiry_ref);
 
@@ -3536,6 +3647,8 @@
                 }
 
             });
+
+            EditCostProdDet();
 
 
         });
@@ -3898,9 +4011,14 @@
 
                     $('.edit_prod_tbody').html(data.prod_details);
 
+                    ProductsSelect2Edit();
+
                 }
 
             });
+
+            
+            
           
 
         });
@@ -3913,7 +4031,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.edit_prod_row').find('.edit_prod_dis').val())||0;
+            var discount = parseFloat($discountSelect.closest('.edit_prod_row').find('.edit_prod_dis').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_rate');
 
@@ -3921,7 +4039,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.edit_prod_row').find('.edit_prod_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -4012,7 +4130,7 @@
 
         /*edit add  quotation prod det*/
         $(".edit_add_quot_prod").select2({
-            placeholder: "Select Customer",
+            placeholder: "Select Product",
             theme : "default form-control- customer_width1 ",
             dropdownParent: $('#EditAddProd'),
 
@@ -4045,6 +4163,55 @@
 
         /**/
 
+
+        /**/
+        function ProductsSelect2Edit() {
+            $('body .product_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width",
+                    dropdownParent: $($(this).closest('.edit_prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id,
+                                        text: item.product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+
+        /**/
+
+
+
         /*calculation of edit add product detail*/
 
 
@@ -4052,7 +4219,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.edit_add_prod_det_row').find('.edit_add_prod_dis').val())||0;
+            var discount = parseFloat($discountSelect.closest('.edit_add_prod_det_row').find('.edit_add_prod_dis').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.edit_add_prod_det_row').find('.edit_add_prod_rate');
 
@@ -4060,7 +4227,7 @@
 
             var $quantitySelectElement = $discountSelect.closest('.edit_add_prod_det_row').find('.edit_add_prod_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -4506,6 +4673,50 @@
         });
 
 
+        
+        function ProductSelect2Edit() {
+                $('body .add_select2_prod').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+
 
        
 
@@ -4672,6 +4883,27 @@
   
 
       /*total amount calculation section start*/
+
+
+    $('.datepicker_ap').change(function(){
+
+        var date = $(this).val();
+
+        $.ajax({
+
+        url: "<?php echo base_url(); ?>Crm/SalesQuotation/FetchReference/r/"+date+"",
+
+        method: "POST",
+
+        success: function(data) {
+            
+        $('#uid').val(data);
+
+        }
+        });
+
+
+    })
 
 
       
