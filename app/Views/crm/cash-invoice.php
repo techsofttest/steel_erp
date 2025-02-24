@@ -43,6 +43,25 @@
     width: 28% !important;
    
 }
+span.select2.customer_width, span.select2 {
+    
+    align-items: center;
+    display: flex;
+
+}
+.select_prod_add td{
+
+    padding:10px 10px;
+    vertical-align: middle;
+
+}
+.view_product td{
+
+    padding:10px 10px;
+    vertical-align: middle;
+
+}
+
 </style>
 
 
@@ -1992,7 +2011,7 @@
            
            var $discountSelect = $(this);
 
-           var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
+           var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
            
            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
@@ -2000,7 +2019,7 @@
 
            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
-           var quantity = parseInt($quantitySelectElement.val())||0;
+           var quantity = parseFloat($quantitySelectElement.val())||0;
 
            var parsedRate = parseFloat(rate);
 
@@ -2660,6 +2679,32 @@
             };
 
         });
+
+
+        /**/
+        
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Crm/CashInvoice/FetchReference/r/"+date+"",
+
+                method: "POST",
+
+                success: function(data) {
+                    
+                    $('#uid').val(data);
+
+                }
+            });
+
+
+        })
+
+
+        /**/
 
 
 

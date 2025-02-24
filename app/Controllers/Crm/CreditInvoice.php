@@ -928,12 +928,11 @@ class CreditInvoice extends BaseController
                                                                 }
                                                             $data['product_detail'] .= '</select>
                                                         </td>
-                                                            <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control text-center" required></td>
-                                                            <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control text-center" required></td>
-                                                            <td style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
-                                                        
-                                                            
-                                                        </tr>';
+                                                        <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control text-center" required></td>
+                                                        <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control text-center" required></td>
+                                                        <td style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                      
+                                                    </tr>';
                                                         $i++;
                     }
 
@@ -1256,18 +1255,27 @@ class CreditInvoice extends BaseController
 
 
        
-        public function FetchReference($type="e")
-        {
-    
-            $uid = $this->common_model->FetchNextId('crm_credit_invoice',"CRINV-{$this->data['accounting_year']}-");
-        
-            if($type=="e")
-                echo $uid;
+        public function FetchReference($type="e",$year="")
+        {   
+
+            if($year=="")
+            {
+            $year = $this->data['accounting_year'];
+            }
             else
             {
-                return $uid;
+            $year = date('Y',strtotime($year));
             }
-    
+
+            $uid = $this->common_model->FetchNextId('crm_credit_invoice','cci_reffer_no',"CRINV-{$year}-",$year);
+
+            if($type=="e")
+            echo $uid;
+            else
+            {
+            return $uid;
+            }
+
         }
 
 

@@ -559,10 +559,10 @@ class DeliverNote extends BaseController
        foreach($product_details as $prod_det){
         $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$prod_det->dpd_id.'">
                                         <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
-                                        <td><input type ="" name="" value="'.$prod_det->product_details.'" class="form-control" readonly></td>
-                                        <td><input type="text" name="dpd_unit[]" value="'.$prod_det->dpd_unit.'" class="form-control text-center" readonly></td>
-                                        <td><input type="number" name="dpd_order_qty[]" value="'.$prod_det->dpd_order_qty.'"  class="form-control text-center" readonly></td>
-                                        <td><input type="number" name="dpd_delivery_qty[]" value="'.$prod_det->dpd_current_qty.'"  class="form-control text-center" readonly ></td>
+                                        <td style="text-align:left;">'.$prod_det->product_details.'</td>
+                                        <td class="text-center;">'.$prod_det->dpd_unit.'</td>
+                                        <td class="text-center;">'.$prod_det->dpd_order_qty.'</td>
+                                        <td class="text-center;">'.$prod_det->dpd_current_qty.'</td>
                                         
                                             
                                         </tr>';
@@ -1044,7 +1044,7 @@ class DeliverNote extends BaseController
                 foreach($sales_order_details as $sales_det){
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no text-center" style="padding:10px;">'.$i.'</td>
-                                                <td><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                <td style="overflow: visible;height: 100%;text-align: left;"><texarea type="text" name="" class="form-control" style="height: 100%;"></textarea>'.$sales_det->product_details.'</td>
                                                 <input type="hidden" name="dpd_prod_det[]" value="'.$sales_det->product_id.'">
                                                 <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
                                                 <td><input type="number" name="dpd_order_qty[]" value="'.$sales_det->spd_quantity.'"  class="form-control order_qty text-center" readonly></td>
@@ -1829,7 +1829,7 @@ class DeliverNote extends BaseController
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:1px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
                 
                     <th align="center" style="border-bottom:1px solid;" width="60%">Description</th>
                 
@@ -1871,7 +1871,7 @@ class DeliverNote extends BaseController
                 </tr>
     
                 <tr>
-                    <td ></td>
+                    <td></td>
     
                     <td style="width:15%">Project:</td>
     

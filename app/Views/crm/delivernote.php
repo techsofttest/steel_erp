@@ -51,7 +51,12 @@ span.select2.customer_width, span.select2 {
 
 
 }
+.view_prod_data td{
+   
+    padding:10px 10px;
+    vertical-align: middle;
 
+}
 </style>
 
 

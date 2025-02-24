@@ -612,13 +612,13 @@ class CashInvoice extends BaseController
             $amount  = format_currency($prod_det->cipd_amount);
 
             $data['prod_details'] .='<tr>
-            <td class="text-center" style="padding:10px 10px;">'.$i.'</td>
-            <td><input type="text" value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-            <td><input type="text" value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$rate.'" class="form-control text-end" readonly></td>
-            <td><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
-            <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
+            <td class="text-center" >'.$i.'</td>
+            <td>'.$prod_det->product_details.'</td>
+            <td class="text-center">'.$prod_det->cipd_unit.'</td>
+            <td class="text-center">'.format_currency($prod_det->cipd_qtn).'</td>
+            <td class="text-center">'.$rate.'</td>
+            <td class="text-center">'.$discount.'</td>
+            <td class="text-center">'.$amount.'</td>
             </tr>'; 
              $i++;
         }
@@ -1110,10 +1110,10 @@ class CashInvoice extends BaseController
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                 <td class="si_no text-center" style="padding: 10px 10px;">'.$i.'</td>
                                                
-                                                <td><input type="text" name="dpd_prod_det[]" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
-                                                <td><input type="text" name="dpd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
-                                                <td><input type="number" name="dpd_order_qty[]" value="'.$new_qty.'"  class="form-control order_qty text-center" readonly></td>
-                                                <td style="padding: 10px 10px;"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                <td>'.$sales_det->product_details.'</td>
+                                                <td class="text-center">'.$sales_det->spd_unit.'</td>
+                                                <td class="text-center">'.$new_qty.'</td>
+                                                <td class="text-center"><input type="checkbox" name="product_select[]" id="'.$sales_det->spd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                     
                                                     
                                                 </tr>';
@@ -1181,7 +1181,7 @@ class CashInvoice extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row cash_invoice_remove" id="'.$sales_det->spd_id.'">
                                                         <td class="si_no text-center" style="padding:10px 10px">'.$i.'</td>
-                                                        <td ><input type="text" name="" value="'.$sales_det->product_details.'" class="form-control" readonly></td>
+                                                        <td height: 100%;overflow: visible;><texarea type="text" name=""  class="form-control" readonly style="height: 100%;">'.$sales_det->product_details.'</texarea></td>
                                                         <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
                                                         <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id text-center" ></td>
                                                         <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
@@ -1219,20 +1219,28 @@ class CashInvoice extends BaseController
 
 
        
-        public function FetchReference($type="e")
-        {
+        public function FetchReference($type="e",$year="")
+        {   
     
-            $uid = $this->common_model->FetchNextId('crm_cash_invoice',"CAINV-{$this->data['accounting_year']}-");
-    
-            if($type=="e")
-                echo $uid;
+            if($year=="")
+            {
+            $year = $this->data['accounting_year'];
+            }
             else
             {
-                return $uid;
+            $year = date('Y',strtotime($year));
             }
-    
+        
+            $uid = $this->common_model->FetchNextId('crm_cash_invoice','ci_reffer_no',"CAINV-{$year}-",$year);
+        
+            if($type=="e")
+            echo $uid;
+            else
+            {
+            return $uid;
+            }
+        
         }
-
 
         public function Edit()
         {

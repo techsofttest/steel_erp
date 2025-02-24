@@ -53,6 +53,11 @@
     width: 28% !important;
    
 }
+span.select2.customer_width, span.select2 {
+    
+    display: flex;
+    align-items: center;
+}
 </style>
 
 
@@ -2612,6 +2617,28 @@
             };
 
         });
+
+
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Crm/CreditInvoice/FetchReference/r/"+date+"",
+
+                method: "POST",
+
+                success: function(data) {
+                    
+                    $('#uid').val(data);
+
+                }
+            });
+
+
+        })
+
 
 
        

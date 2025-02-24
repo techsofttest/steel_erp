@@ -2987,6 +2987,32 @@
 
 
 
+        /**/
+
+        $('.datepicker_ap').change(function(){
+
+            var date = $(this).val();
+
+            $.ajax({
+
+                url: "<?php echo base_url(); ?>Procurement/PurchaseVoucher/FetchReference/r/"+date+"",
+
+                method: "POST",
+
+                success: function(data) {
+                    
+                    $('#uid').val(data);
+
+                }
+            });
+
+
+        })
+
+        /**/
+
+
+
 
     });
 

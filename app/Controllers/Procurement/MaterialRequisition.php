@@ -194,18 +194,25 @@ class MaterialRequisition extends BaseController
 
    
     
-    public function FetchReference($type="e")
-    {
+    public function FetchReference($type="e",$year="")
+    {   
 
-        $uid = $this->common_model->FetchNextId('pro_material_requisition',"MR-{$this->data['accounting_year']}-");
-
-        if($type=="e")
-
-            echo $uid;
-
+        if($year=="")
+        {
+        $year = $this->data['accounting_year'];
+        }
         else
         {
-            return $uid;
+        $year = date('Y',strtotime($year));
+        }
+
+        $uid = $this->common_model->FetchNextId('pro_material_requisition','mr_reffer_no',"MR-{$year}-",$year);
+
+        if($type=="e")
+        echo $uid;
+        else
+        {
+        return $uid;
         }
 
     }

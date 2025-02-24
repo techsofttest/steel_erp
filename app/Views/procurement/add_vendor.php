@@ -1,3 +1,9 @@
+<style>
+    .sub_heading{
+
+        margin-top: unset;
+    }
+</style>
 <!--add vendor start-->
 <div class="modal fade" id="AddVendor" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
