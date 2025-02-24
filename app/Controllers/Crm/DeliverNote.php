@@ -1824,7 +1824,7 @@ class DeliverNote extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
                 
             
                 <tr>
