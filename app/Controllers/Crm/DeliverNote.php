@@ -1806,7 +1806,7 @@ class DeliverNote extends BaseController
             
             <td ></td>
             
-            <td >Post Box : -, Doha - '.$delivery_note->cc_post_box.'</td>
+            <td >Post Box : '.$delivery_note->cc_post_box.'</td>
             
             </tr>
         

@@ -115,7 +115,6 @@ class CreditInvoice extends BaseController
         
         $data['status_invoice'] = $this->common_model->FetchAllOrder('master_status_invoice','msi_id','desc');
 
-
         $data['content'] = view('crm/credit-invoice',$data);
 
         return view('crm/crm-module',$data);

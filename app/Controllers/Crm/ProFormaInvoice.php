@@ -1396,7 +1396,7 @@ class ProFormaInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box : -, Doha - '.$proforma_invoice->cc_post_box.'</td>
+            <td >Post Box :  '.$proforma_invoice->cc_post_box.'</td>
             
             </tr>
         

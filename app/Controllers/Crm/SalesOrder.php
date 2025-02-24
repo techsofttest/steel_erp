@@ -1747,7 +1747,7 @@ class SalesOrder extends BaseController
         
         <td ></td>
         
-        <td >Post Box : -, Doha - '.$sales_order->cc_post_box.'</td>
+        <td >Post Box :  '.$sales_order->cc_post_box.'</td>
         
         </tr>
     

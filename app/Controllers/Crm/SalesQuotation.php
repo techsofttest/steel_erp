@@ -2140,7 +2140,7 @@ class SalesQuotation extends BaseController
         
         <td ></td>
         
-        <td >Post Box : -, Doha - '.$quotation_details->cc_post_box.'</td>
+        <td >Post Box :'.$quotation_details->cc_post_box.'</td>
         
         </tr>
     
