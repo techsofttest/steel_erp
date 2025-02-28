@@ -1778,6 +1778,8 @@ span.select2.customer_width, span.select2 {
 
                         var $qtyElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id');
 
+                        var $currencyNullElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id'); // Define the element
+
                         $currencyNullElement.val(qtyNull);
                     }
 
