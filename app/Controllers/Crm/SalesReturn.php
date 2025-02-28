@@ -806,11 +806,18 @@ class SalesReturn extends BaseController
            
             
         }
+         
+        if(!empty($sales_return->sr_id)){
        
-       
-        $this->common_model->DeleteData('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
+            $this->common_model->DeleteData('crm_sales_return_prod_det',array('srp_sales_return' => $sales_return->sr_id));
 
-        $this->common_model->DeleteData('crm_sales_return',$cond);
+            $this->common_model->DeleteData('crm_sales_return',$cond);
+
+            $data['status'] =1;
+
+            $data['msg'] ="Data Deleted Successfully";
+
+        }
 
         echo json_encode($data);
 
@@ -1162,7 +1169,7 @@ class SalesReturn extends BaseController
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td style="text-align:left">'.$sales_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control text-center" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" ></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
@@ -1190,7 +1197,7 @@ class SalesReturn extends BaseController
                                                         <td class="si_no text-center">'.$i.'</td>
                                                         <td style="text-align:left">'.$sale_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control text-center" readonly></td>
-                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center"></td>
+                                                        <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center" required></td>
                                                         <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
                                                         <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
                                                         <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
