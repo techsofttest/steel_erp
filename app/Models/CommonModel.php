@@ -1762,6 +1762,24 @@ class CommonModel extends Model
 
     }
 
+    public function pdf_credit_fetch($cond){
+          
+        $query = $this->db->table('crm_credit_invoice_prod_det')
+        
+        ->select('*');
+
+        $query->join('crm_delivery_note','crm_delivery_note.dn_id   = crm_credit_invoice_prod_det.ipd_delivery_id','left');
+
+        $query->where($cond);
+
+        $query->groupBy('crm_credit_invoice_prod_det.ipd_delivery_id');
+
+        $result = $query->get()->getResult();
+
+        return $result;
+
+    }
+
 
     /*public function FetchUserDet($userId){
         

@@ -1534,11 +1534,13 @@ class CreditInvoice extends BaseController
 
                 //$delivery_reffer_id = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
 
-                $delivery_reffer_id = $this->common_model->FetchWhere('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
+                $delivery_reffer = $this->common_model->pdf_credit_fetch(array('ipd_credit_invoice' =>$id));
+
+                //$delivery_reffer_id = $this->common_model->FetchWhere('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
 
                 $del_data = [];
 
-               foreach($delivery_reffer_id as $del_reff){
+               foreach($delivery_reffer as $del_reff){
                 
 
                       // $del_data .= "'.$del_reff->dn_reffer_no.'";
