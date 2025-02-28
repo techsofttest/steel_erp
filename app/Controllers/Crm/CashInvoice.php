@@ -576,12 +576,18 @@ class CashInvoice extends BaseController
 
         $total_amount = format_currency($cash_invoice->ci_total_amount);
 
+        $advance_paid = format_currency($cash_invoice->ci_advance_amount);
+
         $data['total_amount'] = '<tr>
             
             
             <td align="right" class="total_label">Total</td>
             <td><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
+           
             
+        </tr><tr>
+         <td align="right" class="total_label">Advance Paid</td>
+            <td><input type="text" value="'.$advance_paid.'" class="form-control text-end" readonly></td>
         </tr> ';
 
         //product table
@@ -616,9 +622,9 @@ class CashInvoice extends BaseController
             <td>'.$prod_det->product_details.'</td>
             <td class="text-center">'.$prod_det->cipd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->cipd_qtn).'</td>
-            <td class="text-center">'.$rate.'</td>
+            <td class="text-end">'.$rate.'</td>
             <td class="text-center">'.$discount.'</td>
-            <td class="text-center">'.$amount.'</td>
+            <td class="text-end">'.$amount.'</td>
             </tr>'; 
              $i++;
         }
@@ -1318,13 +1324,22 @@ class CashInvoice extends BaseController
              
             $total_amount = format_currency($cash_invoice->ci_total_amount);
 
+            $advance_paid = format_currency($cash_invoice->ci_advance_amount);
+
             $data['total_amount'] = '<tr>
                 
                 <td align="right" class="total_label">Total</td>
                 <td class=""><input type="text" value="'.$total_amount.'" class="form-control text-end" readonly></td>
                 <td></td>
                 
-            </tr> ';
+            </tr><tr>
+
+              <td align="right" class="total_label">Total</td>
+              <td class=""><input type="text" value="'.$advance_paid.'" class="form-control text-end" readonly></td>
+              <td></td>
+            
+            
+            </tr>';
 
 
             // customer craetion
@@ -1438,14 +1453,14 @@ class CashInvoice extends BaseController
                 $amount = format_currency($prod_det->cipd_amount);
 
                 $data['prod_details'] .='<tr class="delete_cash_invoice">
-                <td class="text-center" style="padding:10px 10px;">'.$i.'</td>
-                <td ><input type="text"  value="'.$prod_det->product_details.'" class="form-control " readonly></td>
-                <td><input type="text"  value="'.$prod_det->cipd_unit.'" class="form-control text-center" readonly></td>
-                <td><input type="text" value="'.format_currency($prod_det->cipd_qtn).'" class="form-control text-center" readonly></td>
-                <td><input type="text" value="'.$rate.'" class="form-control text-end" readonly></td>
-                <td ><input type="text" value="'.$discount.'" class="form-control text-center" readonly></td>
-                <td><input type="text" value="'.$amount.'" class="form-control text-end" readonly></td>
-                <td style="padding:10px 10px;"><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
+                <td class="text-center">'.$i.'</td>
+                <td style="text-align: left;">'.$prod_det->product_details.'</td>
+                <td>'.$prod_det->cipd_unit.'</td>
+                <td>'.format_currency($prod_det->cipd_qtn).'</td>
+                <td>'.$rate.'</td>
+                <td >'.$discount.'</td>
+                <td>'.$amount.'</td>
+                <td><a href="javascript:void(0)" class="delete delete-color del_prod_remove" data-id="215" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a></td>
                 <input type="hidden" value="'.$prod_det->cipd_cash_invoice.'" class="edit_ci_prod_id">
                 <input type="hidden" value="'.$prod_det->cipd_id.'" class="hidden_cash_prod_id">
                 </tr>'; 
@@ -1932,12 +1947,32 @@ class CashInvoice extends BaseController
 
                 $cash_invoice = $this->common_model->SingleRowJoin('crm_cash_invoice',array('ci_id'=>$id),$join);
 
+                $joins1 = array(
+
+                    array(
+                        'table' => 'master_country',
+                        'pk'    => 'country_id',
+                        'fk'    => 'cc_country',
+                    ),
+                    
+                );
+    
+                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $cash_invoice->ci_customer),$joins1);
+
                 $date = date('d-M-Y',strtotime($cash_invoice->ci_date));
 
                 // Set the title of the PDF
                 $title = 'CIN - '.$cash_invoice->ci_reffer_no;
                
-                $mpdf = new \Mpdf\Mpdf();
+                //$mpdf = new \Mpdf\Mpdf();
+
+                
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,     // Reduce top margin
+                    'margin_bottom' => 5,  // Reduce bottom margin
+                    'margin_left' => 5,    // Reduce left margin
+                    'margin_right' => 5,   // Reduce right margin
+                ]);
 
                 $mpdf->SetTitle($title); // Set the title
     
@@ -2016,7 +2051,7 @@ class CashInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box : -, Doha - '.$cash_invoice->cc_post_box.'</td>
+            <td >Post Box :  '.$cash_invoice->cc_post_box.' , '.$customers->country_name.'</td>
             
             </tr>
         
@@ -2034,14 +2069,14 @@ class CashInvoice extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:1px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
                 
-                    <th align="center" style="border-bottom:1px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
                 
                     <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
@@ -2072,7 +2107,7 @@ class CashInvoice extends BaseController
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
 
-                        <td style="font-weight: bold;width: 20%;">Net Order Value</td>
+                        <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
             
                         <td>'.format_currency($cash_invoice->ci_total_amount).'</td>
                     
@@ -2159,7 +2194,7 @@ class CashInvoice extends BaseController
     
                     <td><i>Finance Dept:</i></td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                     <td><i>Workshop Manager</i></td>
     
@@ -2177,7 +2212,7 @@ class CashInvoice extends BaseController
             
                 ';
             
-                //echo $html . $footer;
+                //echo $html . $footer; exit();
 
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);

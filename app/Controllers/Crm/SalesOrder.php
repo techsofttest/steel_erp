@@ -1637,6 +1637,20 @@ class SalesOrder extends BaseController
             
 
             $sales_order = $this->common_model->SingleRowJoin('crm_sales_orders',array('so_id'=>$id),$join);
+
+            $joins1 = array(
+
+                array(
+                    'table' => 'master_country',
+                    'pk'    => 'country_id',
+                    'fk'    => 'cc_country',
+                ),
+                
+            );
+
+            $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $sales_order->so_customer),$joins1);
+
+           
             
             $date = date('d-M-Y',strtotime($sales_order->so_date));
 
@@ -1747,7 +1761,7 @@ class SalesOrder extends BaseController
         
         <td ></td>
         
-        <td >Post Box :  '.$sales_order->cc_post_box.'</td>
+        <td >Post Box :  '.$sales_order->cc_post_box.' ,  '.$customers->country_name.'</td>
         
         </tr>
     

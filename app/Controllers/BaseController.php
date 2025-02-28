@@ -111,6 +111,8 @@ abstract class BaseController extends Controller
         
         $this->data['permissions'] = $this->common_model->FetchWhereJoin('user_permission',array('up_user_id' => $adminId),$joins); 
 
+        $this->data['countryies'] = $this->common_model->FetchAllOrder('master_country','country_id','desc');
+
         // Share the data globally
         \Config\Services::renderer()->setData($this->data);
 

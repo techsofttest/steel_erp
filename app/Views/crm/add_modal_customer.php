@@ -229,6 +229,31 @@
 
                                     <!-- ### -->
 
+
+                                    <!---->
+
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-2 margin_zero">
+
+                                            <div class="col-col-md-3 col-lg-3">
+                                                <label for="basicInput" class="form-label">Country</label>
+                                            </div>
+
+                                            <div class="col-col-md-9 col-lg-9">
+                                                <select class="form-select  input_length" name="cc_country"  required>
+                                                    <option value="" selected disabled>Select Country</option>
+                                                    <?php foreach($countryies as $country){?>
+                                                        <option value="<?php echo $country->country_id;?>"><?php echo $country->country_name;?></option>
+                                                    <?php } ?>
+                                                    
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div> 
+
+                                    <!---->
+
                                     <div class="modal-footer justify-content-center">
                                         <button  class="btn btn btn-success">Save</button>
                                     </div>

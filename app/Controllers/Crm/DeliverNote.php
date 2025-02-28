@@ -1715,6 +1715,17 @@ class DeliverNote extends BaseController
 
                 $delivery_note = $this->common_model->SingleRowJoin('crm_delivery_note',array('dn_id'=>$id),$join);
 
+                $joins1 = array(
+                    array(
+                        'table' => 'master_country',
+                        'pk'    => 'country_id',
+                        'fk'    => 'cc_country',
+                    ),
+            
+                );
+
+                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $delivery_note->dn_customer),$joins1);
+
                 $date = date('d-M-Y',strtotime($delivery_note->dn_date));
 
                 $title = 'DN-'.$delivery_note->dn_reffer_no;
@@ -1806,7 +1817,7 @@ class DeliverNote extends BaseController
             
             <td ></td>
             
-            <td >Post Box : '.$delivery_note->cc_post_box.'</td>
+            <td >Post Box : '.$delivery_note->cc_post_box.' , '.$customers->country_name.'</td>
             
             </tr>
         
@@ -1839,7 +1850,6 @@ class DeliverNote extends BaseController
         
                     <th align="center" style="border-bottom:1px solid;">Delivery</th>
         
-                 
                 
                 </tr>
 

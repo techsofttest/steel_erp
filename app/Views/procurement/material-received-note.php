@@ -47,8 +47,22 @@
         border: 1px solid black;
         border: 1px solid #0000003b;
     }
+    .select_prod_add td{
 
-    
+        padding: 10px 10px !important;
+        vertical-align: middle;
+    }
+    .add_prod_row td{
+
+        padding: 10px 10px !important;
+        vertical-align: middle;
+    }
+    .edit_prod_row td{
+        
+        padding: 10px 10px !important;
+        vertical-align: middle;
+
+    }
 </style>
 
 <div class="tab-content text-muted">

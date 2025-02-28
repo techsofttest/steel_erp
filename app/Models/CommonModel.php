@@ -1426,6 +1426,9 @@ class CommonModel extends Model
             }
             $query->join($join['table'], ''.$join['table'].'.'.$join['pk'].' = '.$table2.'.'.$join['fk'].'', 'left');
         }
+
+        $query->join('crm_products', 'crm_products.product_id = crm_delivery_product_details.dpd_prod_det', 'left'); // Use 'left', 'right', or 'inner' as needed
+
        
         $result = $query->get()->getResult();
         

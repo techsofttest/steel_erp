@@ -48,7 +48,31 @@
         font-size: 25px;
         color: #ff0000b5;
     }
-    
+    .select_prod_add td{
+
+        padding: 10px 10px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .add_prod_row  td{
+
+        padding: 10px 10px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .view_prod_data td{
+
+        padding: 10px 10px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .edit_prod_data td{
+        
+        padding: 10px 10px;
+        vertical-align: middle;
+        text-align: center;
+
+    }
 </style>
 
 <div class="tab-content text-muted">

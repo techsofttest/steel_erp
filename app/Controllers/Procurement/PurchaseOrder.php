@@ -147,7 +147,9 @@ class PurchaseOrder extends BaseController
         
         if(empty($this->request->getPost('po_id')))
         {   
-            $uid = $this->common_model->FetchNextId('pro_purchase_order',"PO");
+            //$uid = $this->common_model->FetchNextId('pro_purchase_order',"PO");
+
+            $uid = $this->FetchReference("r");
 
             $insert_data = [
 
@@ -393,11 +395,11 @@ class PurchaseOrder extends BaseController
 
         if($year=="")
         {
-        $year = $this->data['accounting_year'];
+            $year = $this->data['accounting_year'];
         }
         else
         {
-        $year = date('Y',strtotime($year));
+            $year = date('Y',strtotime($year));
         }
 
         $uid = $this->common_model->FetchNextId('pro_purchase_order','po_reffer_no',"PO-{$year}-",$year);
@@ -447,11 +449,11 @@ class PurchaseOrder extends BaseController
         foreach($products as $prod){
 
             $data['product_details'] .='<tr class="" id="'.$prod->mrp_id.'">
-                                            <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
-                                            <td><input type="text" name="dpd_prod_det[]" value="'.$prod->product_details.'" class="form-control"  readonly></td>
-                                            <td><input type="text" name="dpd_unit[]" value="'.$prod->mrp_unit.'" class="form-control text-center" readonly></td>
-                                            <td><input type="number" name="dpd_order_qty[]" value="'.$prod->mrp_qty.'"  class="form-control order_qty text-center" readonly></td>
-                                            <td class="text-center" style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$prod->mrp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
+                                            <td class="si_no text-center">'.$i.'</td>
+                                            <td style="text-align:left">'.$prod->product_details.'</td>
+                                            <td class="text-center"><input type="text" name="dpd_unit[]" value="'.$prod->mrp_unit.'" class="form-control text-center" readonly></td>
+                                            <td class="text-center"><input type="number" name="dpd_order_qty[]" value="'.$prod->mrp_qty.'"  class="form-control order_qty text-center" readonly></td>
+                                            <td class="text-center" ><input type="checkbox" name="product_select[]" id="'.$prod->mrp_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark"></td>
                                                
                                         </tr>';
                                             $i++;
@@ -505,9 +507,9 @@ class PurchaseOrder extends BaseController
                 $current_qty = $product->mrp_qty - $product->mrp_delivered_qty;
 
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove" id="'.$product->mrp_id.'">
-                                            <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
+                                            <td class="si_no text-center">'.$i.'</td>
                                             <td><input type="text" name="" value="'.$product->so_reffer_no.'" class="form-control text-center" readonly></td>
-                                            <td><input type="text" name="" value="'.$product->product_details.'" class="form-control" readonly></td>
+                                            <td style="text-align: left;">'.$product->product_details.'</td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" ></td>
                                             <td><input type="number" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
@@ -639,14 +641,14 @@ class PurchaseOrder extends BaseController
         foreach($purchase_order_product as $pur_order_prod)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
-            <td class="si_no1 text-center" style="padding:10px 10px;">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
-            <td ><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
-            <td > <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'"  class="form-control text-end" readonly></td>
+            <td class="si_no1 text-center">'.$i.'</td>
+            <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
+            <td style="text-align: left;">'.$pur_order_prod->product_details.'</td>
+            <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'"  class="form-control text-end" readonly></td>
             </tr>
             ';
             $i++; 
@@ -807,15 +809,15 @@ class PurchaseOrder extends BaseController
         foreach($purchase_order_product as $pur_order_prod)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$pur_order_prod->pop_id.'">
-            <td class="si_no1 delete_sino text-center" style="padding:10px 10px;">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control edit_amount text-end" style="text-align: right;" readonly></td>
-            <td style="padding:10px 10px" class="text-center">
+            <td class="si_no1 delete_sino text-center">'.$i.'</td>
+            <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
+            <td style="text-align: left;">'.$pur_order_prod->product_details.'</td>
+            <td class="text-center"><input type="text" name=""  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_qty).'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_rate).'" class="form-control text-end" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_discount).'" class="form-control text-center" readonly></td>
+            <td class="text-center"> <input type="text" name="" value="'.format_currency($pur_order_prod->pop_amount).'" class="form-control edit_amount text-end" style="text-align: right;" readonly></td>
+            <td  class="text-center">
                <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$pur_order_prod->pop_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
             </td>
            
@@ -927,7 +929,7 @@ class PurchaseOrder extends BaseController
             $data['sales_order'] .= '<tr class="edit_single_prod_row" id="'.$pur_order_prod->pop_id.'">
            
             <td><input type="text" name=""  value="'.$pur_order_prod->so_reffer_no.'" class="form-control text-center" readonly></td>
-            <td><input type="text" name=""  value="'.$pur_order_prod->product_details.'" class="form-control" readonly></td>
+            <td style="text-align: left">'.$pur_order_prod->product_details.'</td>
             <td><input type="text"  name="pop_unit"  value="'.$pur_order_prod->pop_unit.'" class="form-control text-center"></td>
             <td> <input type="text" name="pop_qty" value="'.$pur_order_prod->pop_qty.'" class="form-control edit_prod_qty edit_qty_update text-center"></td>
             <td> <input type="text" name="pop_rate" value="'.$pur_order_prod->pop_rate.'" class="form-control edit_prod_rate text-end"></td>

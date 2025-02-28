@@ -32,6 +32,29 @@
     width: 22% !important;
    
 }
+span.select2.customer_width, span.select2 {
+  
+    align-items: center;
+    display: flex;
+}
+.select_prod_add td{
+
+    padding:10px 10px;
+}
+.prod_row td{
+
+    padding:10px 10px;
+
+}
+.view_product td{
+
+    padding:10px 10px;
+}
+.edit_product td{
+ 
+    padding:10px 10px;
+
+}
 </style>
 
 
@@ -1753,7 +1776,7 @@
 
                         var qtyNull = $qtySelectElement.val("");
 
-                        var $qtyElement = $cashSelect.closest('.prod_row').find('.qtn_clz_id');
+                        var $qtyElement = $dataSelect.closest('.prod_row').find('.qtn_clz_id');
 
                         $currencyNullElement.val(qtyNull);
                     }

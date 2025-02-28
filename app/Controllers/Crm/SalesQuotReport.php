@@ -433,7 +433,6 @@ class SalesQuotReport extends BaseController
                 ]),
                 'fontdata' => $fontData + [
                     'bentonsans' => [
-                      
                         'R' => 'OpenSans-Regular.ttf',
                         'B' => 'OpenSans-Bold.ttf',
                     ],

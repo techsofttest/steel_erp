@@ -1304,9 +1304,21 @@ class ProFormaInvoice extends BaseController
                     ),
 
                 );
-                
 
+                $joins1 = array(
+
+                    array(
+                        'table' => 'master_country',
+                        'pk'    => 'country_id',
+                        'fk'    => 'cc_country',
+                    ),
+                    
+                );
+    
                 $proforma_invoice = $this->common_model->SingleRowJoin('crm_proforma_invoices',array('pf_id'=>$id),$join);
+
+                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $proforma_invoice->pf_customer),$joins1);
+		  
 
                 $date = date('d-M-Y',strtotime($proforma_invoice->pf_date));
 
@@ -1396,7 +1408,7 @@ class ProFormaInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box :  '.$proforma_invoice->cc_post_box.'</td>
+            <td >Post Box :  '.$proforma_invoice->cc_post_box.', '.$customers->country_name.'</td>
             
             </tr>
         

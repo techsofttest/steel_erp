@@ -99,7 +99,23 @@ class CreditInvoice extends BaseController
 
         /*pagination end*/
     } 
+    
+    public function FetchProducts()
+    {
 
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
     //view page
     public function index()
     {     
@@ -223,6 +239,8 @@ class CreditInvoice extends BaseController
                     'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
         
                     'cci_credit_account' => $this->request->getPost('ci_credit_account'),
+
+                    'cci_advance_amount' => $this->request->getPost('cci_advance_amount'),
         
                     'cci_added_by'       => 0,
         
@@ -549,7 +567,12 @@ class CreditInvoice extends BaseController
                 <td align="right" class="total_label">Total</td>
                 <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
-            </tr> ';
+            </tr><tr>
+               
+                <td align="right" class="total_label">Advance Amount</td>
+                <td class=""><input type="text" value="'.format_currency($credit_invoice->cci_advance_amount).'" class="form-control text-end" readonly></td>
+                
+            </tr>';
 
             //product section 
             
@@ -577,7 +600,7 @@ class CreditInvoice extends BaseController
                                                 
                                                 <td class="si_no">'.$i.'</td>
                                                 <td class="text-center">'.$delivery_prod->dn_reffer_no.'</td>
-                                                <td>'.$delivery_prod->product_details.'</td>
+                                                <td style="text-align:left;">'.$delivery_prod->product_details.'</td>
                                                 <td class="text-center">'.$delivery_prod->ipd_unit.'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_quantity).'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_rate).'</td>
@@ -805,7 +828,7 @@ class CreditInvoice extends BaseController
 
         public function FetchSalesData()
         {
-            $cond = array('so_id' => $this->request->getPost('ID'));
+            $cond = array('so_id' => $sales_id = $this->request->getPost('ID'));
 
             $sales_order = $this->common_model->SingleRow('crm_sales_orders',$cond);
 
@@ -820,6 +843,9 @@ class CreditInvoice extends BaseController
             $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
 
             $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
+
+            $data['sales_order_advance'] = $this->common_model->FetchSum('accounts_receipts_sales_orders','rso_receipt_amount',array('rso_sales_order' => $sales_id,'rso_status' => 0));
+
 
             $data['contact_person'] = "<option value ='' selected disabled>Select Contact Person</option>";
 
@@ -899,6 +925,9 @@ class CreditInvoice extends BaseController
                     'pk'    => 'dpd_delivery_id',
                     'fk'    => 'dn_id',
                 ),
+
+                
+    
     
             );
 
@@ -911,25 +940,59 @@ class CreditInvoice extends BaseController
             $i = 1; 
             
             $data['product_detail'] ="";
+
+            
                 
                 if(!empty($delivery_notes)){
 
                     foreach($delivery_notes as $del_note){
-                        $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'">
-                                                        <td class="si_no text-center" style="padding:10px 10px;">'.$i.'</td>
-                                                        <td>
-                                                            <select class="form-select ipd_prod_detl " required>';
-                                                                        
-                                                            foreach($products as $prod){
-                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                                if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
-                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                                }
-                                                            $data['product_detail'] .= '</select>
-                                                        </td>
-                                                        <td><input type="text"  value="'.$del_note->dn_reffer_no.'" class="form-control text-center" required></td>
+
+                        /* orginal one = <td>
+                        <select class="form-select ipd_prod_detl " required>';
+                                    
+                        foreach($products as $prod){
+                            $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                            if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
+                            $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                            }
+                        $data['product_detail'] .= '</select>
+                    </td>*/
+
+                    /*$data_selected_prod = '<td>
+                    <select class="form-select ipd_prod_detl " required>';
+                                
+                    foreach($products as $prod){
+                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                        if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
+                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                        }
+                    $data['product_detail'] .= '</select>
+                </td>';*/
+
+                /*$data_selected_prod = '
+                <select class="form-select ipd_prod_detl " required>';
+                            
+                foreach($products as $prod){
+                    $data_selected_prod  .='<option value="'.$prod->product_id.'"'; 
+                    if($prod->product_id == $del_note->dpd_prod_det){ $data_selected_prod  .= "selected"; }
+                    $data_selected_prod  .='>'.$prod->product_details.'</option>';
+                    }
+                    $data_selected_prod  .= '</select>
+            ';*/
+
+            
+		 $options_product = '<option value="'.$del_note->product_id.'" selected>'.$del_note->product_details.'</option>';
+        
+                                
+                   
+
+
+                        $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'" style="text-align:center">
+                                                        <td class="si_no text-center">'.$i.'</td>
+                                                        <td class="product_select2_edit" style="text-align: left !important;">'.$options_product.' </td>
+                                                        <td style="padding: 0px !important;">'.$del_note->dn_reffer_no.'</td>
                                                         <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control text-center" required></td>
-                                                        <td style="padding:10px 10px;"><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
+                                                        <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
                                                       
                                                     </tr>';
                                                         $i++;
@@ -1025,7 +1088,14 @@ class CreditInvoice extends BaseController
                 <td align="right" class="total_label">Total</td>
                 <td><input type="text" value="'.format_currency($credit_invoice->cci_total_amount).'" class="form-control text-end" readonly></td>
                 
-            </tr> ';
+            </tr>
+            <tr>
+                
+                <td align="right" class="total_label">Advance Amount</td>
+                <td><input type="text" value="'.format_currency($credit_invoice->cci_advance_amount).'" class="form-control text-end" readonly></td>
+                
+            </tr>
+            ';
         
 
 
@@ -1119,7 +1189,7 @@ class CreditInvoice extends BaseController
                 $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$delivery_prod->ipd_id.'">
                                                 <td class="si_no  text-center">'.$i.'</td>
                                                 <td class="text-center">'.$delivery_prod->dn_reffer_no.'</td>
-                                                <td>'.$delivery_prod->product_details.'</td>
+                                                <td style="text-align:left;">'.$delivery_prod->product_details.'</td>
                                                 <td class"text-center">'.$delivery_prod->ipd_unit.'</td>
                                                 <td class="text-center">'.format_currency($delivery_prod->ipd_quantity).'</td>
                                                 <td class="text-end">'.format_currency($delivery_prod->ipd_rate).'</td>
@@ -1222,16 +1292,22 @@ class CreditInvoice extends BaseController
 
                     $amount = number_format((float)$orginalPrice, 2, '.', '');  // Outputs -> 105.00
 
+                    
+                    /*<select class="form-select ser_product_det" name="ipd_prod_detl[]" required>';
+                    foreach($products as $prod){
+                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
+                        if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
+                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
+                        }
+                $data['product_detail'] .= '</select>*/
+
+                    $options_products = '<option value="'.$sales_det->product_id.'" selected>'.$sales_det->product_details.'</option>';
+                    
+
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                     <td class="si_no"><input type="text" name="ipd_delivery[]" value ="'.$sales_det->dn_reffer_no.'" class="form-control  text-center" readonly></td>
-                                                    <td >
-                                                        <select class="form-select ser_product_det" name="ipd_prod_detl[]" required>';
-                                                            foreach($products as $prod){
-                                                                $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                                                                if($prod->product_id == $sales_det->spd_product_details){ $data['product_detail'] .= "selected"; }
-                                                                $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                                                                }
-                                                        $data['product_detail'] .= '</select>
+                                                    <td style="text-align: left;">
+                                                        <select class="form-select ser_product_det product_select2_edit" name="ipd_prod_detl[]" required>'.$options_products.'</select>
                                                     </td>
                                                     <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control  text-center" readonly></td>
                                                     <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->dpd_current_qty.'"  class="form-control order_qty  text-center" readonly></td>
@@ -1437,6 +1513,18 @@ class CreditInvoice extends BaseController
                 
 
                 $credit_invoice = $this->common_model->SingleRowJoin('crm_credit_invoice',array('cci_id'=>$id),$join);
+
+                $joins1 = array(
+
+                    array(
+                        'table' => 'master_country',
+                        'pk'    => 'country_id',
+                        'fk'    => 'cc_country',
+                    ),
+                    
+                );
+    
+                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $credit_invoice->cci_customer),$joins1);
                 
                 $credit_prod = $this->common_model->SingleRow('crm_credit_invoice_prod_det',array('ipd_credit_invoice'=>$id));
 
@@ -1444,13 +1532,33 @@ class CreditInvoice extends BaseController
 
                 $delivery_prod_id = $this->common_model->SingleRow('crm_delivery_product_details',array('dpd_id' =>$credit_prod_id));
 
-                $delivery_reffer_id = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
+                //$delivery_reffer_id = $this->common_model->SingleRow('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
 
+                $delivery_reffer_id = $this->common_model->FetchWhere('crm_delivery_note',array('dn_id' =>$delivery_prod_id->dpd_delivery_id));
+
+                $del_data = [];
+
+               foreach($delivery_reffer_id as $del_reff){
+                
+
+                      // $del_data .= "'.$del_reff->dn_reffer_no.'";
+
+                    $del_data[]  =  $del_reff->dn_reffer_no;
+               }
+
+               $del_data_string = implode(", ", $del_data); 
+
+                 
                 $date = date('d-M-Y',strtotime($credit_invoice->cci_date));
 
                 $title = 'CRN - '.$credit_invoice->cci_reffer_no;
 
-                $mpdf = new \Mpdf\Mpdf();
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,     // Reduce top margin
+                    'margin_bottom' => 5,  // Reduce bottom margin
+                    'margin_left' => 5,    // Reduce left margin
+                    'margin_right' => 5,   // Reduce right margin
+                ]);
 
                 $mpdf->SetTitle($title); // Set the title
     
@@ -1528,7 +1636,7 @@ class CreditInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box : -, Doha - '.$credit_invoice->cc_post_box.'</td>
+            <td >Post Box : '.$credit_invoice->cc_post_box.' , '.$customers->country_name.'</td>
             
             </tr>
         
@@ -1546,14 +1654,14 @@ class CreditInvoice extends BaseController
     
                
             
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
                 
             
                 <tr>
                 
-                    <th align="center" style="border-bottom:1px solid;">Item No</th>
+                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
                 
-                    <th align="center" style="border-bottom:1px solid;" width="40%">Description</th>
+                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
                 
                     <th align="center" style="border-bottom:1px solid;">Qty</th>
                 
@@ -1584,7 +1692,7 @@ class CreditInvoice extends BaseController
 
                         <td>IBAN : QA97CBQA000000004570407137001</td>
 
-                        <td style="font-weight: bold;width: 18%;">Net Order Value</td>
+                        <td style="font-weight: bold;width: 18%;">Total Invoice value</td>
             
                         <td>'.format_currency($credit_invoice->cci_total_amount).'</td>
                     
@@ -1661,7 +1769,7 @@ class CreditInvoice extends BaseController
                         <td style="width:15%">Sales Order:</td>
                         <td style="width:30%">'.$credit_invoice->so_reffer_no.'</td>
                         <td style="width:10%">DN No:</td>
-                        <td>'.$delivery_reffer_id->dn_reffer_no.'</td>
+                        <td>'.$del_data_string.'</td>
                 
                     </tr>
                 
@@ -1682,7 +1790,7 @@ class CreditInvoice extends BaseController
     
                     <td><i>Finance Dept:</i></td>
 
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                     <td><i>Workshop Manager</i></td>
     

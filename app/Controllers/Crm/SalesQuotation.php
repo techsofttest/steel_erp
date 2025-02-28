@@ -2030,10 +2030,23 @@ class SalesQuotation extends BaseController
                     'pk'    => 'enquiry_id',
                     'fk'    => 'qd_enq_ref',
                 ),
+                
             );
             
 
             $quotation_details = $this->common_model->SingleRowJoin('crm_quotation_details',array('qd_id'=>$id),$join);
+
+            $joins1 = array(
+
+                array(
+                    'table' => 'master_country',
+                    'pk'    => 'country_id',
+                    'fk'    => 'cc_country',
+                ),
+                
+            );
+
+            $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $quotation_details->cc_id),$joins1);
 
             $amount_in_words =currency_to_words($quotation_details->qd_sales_amount); // outputs "fifty dollars ninety nine cents"
 
@@ -2140,7 +2153,7 @@ class SalesQuotation extends BaseController
         
         <td ></td>
         
-        <td >Post Box :'.$quotation_details->cc_post_box.'</td>
+        <td >Post Box :'.$quotation_details->cc_post_box.' , '.$customers->country_name.'</td>
         
         </tr>
     

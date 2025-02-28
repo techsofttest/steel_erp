@@ -283,11 +283,11 @@ class MaterialRequisition extends BaseController
         foreach($material_requisition as $mat_req)
         {
             $data['sales_order'] .= '<tr class="" id="'.$mat_req->mrp_id.'">
-            <td class="si_no1 text-center" style="padding:10px 10px;">'.$i.'</td>
-            <td><input type="text" name="contact_person[]"  value="'.$mat_req->so_reffer_no.'" class="form-control text-center" readonly></td>
-            <td ><input type="text" name="contact_designation[]"  value="'.$mat_req->product_details.'" class="form-control " readonly></td>
-            <td><input type="text" name="contact_mobile[]"  value="'.$mat_req->mrp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="email" name="contact_email[]" value="'.$mat_req->mrp_qty.'" class="form-control text-center" readonly></td>
+            <td class="si_no1 text-center" >'.$i.'</td>
+            <td class="text-center">'.$mat_req->so_reffer_no.'</td>
+            <td style="text-align: left;">'.$mat_req->product_details.'</td>
+            <td class="text-center">'.$mat_req->mrp_unit.'</td>
+            <td class="text-center">'.$mat_req->mrp_qty.'</td>
             </tr>
             ';
             $i++; 
@@ -391,12 +391,12 @@ class MaterialRequisition extends BaseController
         foreach($material_requisition as $mat_req)
         {
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$mat_req->mrp_id.'">
-            <td class="si_no_edit text-center" style="padding:10px 10px;">'.$i.'</td>
-            <td><input type="text" name=""  value="'.$mat_req->so_reffer_no.'" class="form-control text-center" readonly></td>
-            <td ><input type="text" name=""  value="'.$mat_req->product_details.'" class="form-control" readonly></td>
-            <td><input type="text" name=""  value="'.$mat_req->mrp_unit.'" class="form-control text-center" readonly></td>
-            <td> <input type="text" name="" value="'.$mat_req->mrp_qty.'" class="form-control text-center" readonly></td>
-            <td class="text-center" style="padding:10px 10px;">
+            <td class="si_no_edit text-center">'.$i.'</td>
+            <td class="text-center">'.$mat_req->so_reffer_no.'</td>
+            <td style="text-align: left;">'.$mat_req->product_details.'</td>
+            <td class="text-center">'.$mat_req->mrp_unit.'</td>
+            <td class="text-center">'.$mat_req->mrp_qty.'</td>
+            <td class="text-center">
                 <a href="javascript:void(0)" class="edit edit-color edit_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_sales_btn" data-id="'.$mat_req->mrp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
             </td>
@@ -452,11 +452,27 @@ class MaterialRequisition extends BaseController
 
         //$products = $this->common_model->FetchWherejoin('crm_sales_product_details',array('spd_sales_order' => $material_requisition->mrp_sales_order),$joins);
 
+        /*<select class="form-select edit_prod_desc" name="mrp_product_desc" required>';
+                            
+        foreach($products as $prod){
+            $data['sales_order'] .='<option value="'.$prod->product_id .'" '; 
+            if($prod->product_id == $material_requisition->mrp_product_desc){ $data['sales_order'] .= "selected"; }
+            $data['sales_order'] .='>'.$prod->product_details.'</option>';
+        }
+    $data['sales_order'] .='</select>*/
+
+    $options_product = '<option value="'.$material_requisition->product_id.'" selected>'.$material_requisition->product_details.'</option>';
+
         $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $data['sales_order'] ='<tr class="" id="'.$material_requisition->mrp_id.'">
 
-        <td>
+      
+       
+
+         
+
+       <td class="text-center">
         
             <select class="form-select edit_sales_order" name="mrp_sales_order" required>';
                             
@@ -469,20 +485,13 @@ class MaterialRequisition extends BaseController
         
         </td>
         
-        <td>
-              <select class="form-select edit_prod_desc" name="mrp_product_desc" required>';
-                            
-                    foreach($products as $prod){
-                        $data['sales_order'] .='<option value="'.$prod->product_id .'" '; 
-                        if($prod->product_id == $material_requisition->mrp_product_desc){ $data['sales_order'] .= "selected"; }
-                        $data['sales_order'] .='>'.$prod->product_details.'</option>';
-                    }
-                $data['sales_order'] .='</select>
+        <td class="prod_desc_data" style="text-align: left;">
+              <select class="form-select edit_prod_desc product_select2_edit" name="mrp_product_desc" required>'.$options_product.'</select>
             
         </td>
 
-        <td><input type="text" name="mrp_unit"  value="'.$material_requisition->mrp_unit.'" class="form-control edit_contact text-center" required></td>
-        <td> <input type="number" name="mrp_qty" value="'.$material_requisition->mrp_qty.'" class="form-control text-center" required></td>
+        <td class="text-center"><input type="text" name="mrp_unit"  value="'.$material_requisition->mrp_unit.'" class="form-control edit_contact text-center" required></td>
+        <td class="text-center"> <input type="number" name="mrp_qty" value="'.$material_requisition->mrp_qty.'" class="form-control text-center" required></td>
         </tr>
         <input type="hidden" class="contact_cust" name="mrp_id" value="'.$material_requisition->mrp_id.'">
         '; 

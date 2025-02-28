@@ -3,6 +3,11 @@
 
         margin-top: unset;
     }
+    span.select2.customer_width, span.select2 {
+    
+        display: flex;
+        align-items: center;
+    }
 </style>
 <!--add vendor start-->
 <div class="modal fade" id="AddVendor" aria-labelledby="exampleModalLabel" aria-hidden="true">

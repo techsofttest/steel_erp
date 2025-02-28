@@ -61,6 +61,12 @@ span.select2.customer_width, span.select2 {
     vertical-align: middle;
 
 }
+.edit_product td{
+
+    padding:10px 10px;
+    vertical-align: middle;
+    text-align: center;
+}
 
 </style>
 
@@ -325,7 +331,7 @@ span.select2.customer_width, span.select2 {
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="ci_project"  class="form-control project_clz input_length" required>
+                                                                        <input type="text" name="ci_project"  class="form-control project_clz input_length" >
                                                                     </div>
 
                                                                 </div> 
@@ -1212,7 +1218,7 @@ span.select2.customer_width, span.select2 {
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="ci_project"  class="form-control edit_project input_length" required>
+                                                <input type="text" name="ci_project"  class="form-control edit_project input_length">
                                             </div>
 
                                         </div> 

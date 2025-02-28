@@ -44,6 +44,23 @@
         border: none !important;
         height: 37px !important;
     }
+    .view_products td{
+
+        vertical-align: middle;
+        padding: 10px 10px !important;
+
+    }
+    .edit_products td{
+
+        vertical-align: middle;
+        padding: 10px 10px !important;
+    }
+    .edit_single_sales_order td{
+           
+        vertical-align: middle;
+        padding: 10px 10px !important;
+
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -213,7 +230,7 @@
                                                         <tbody>
                                                             <tr class="prod_row prod_row_lenght">
                                                                 <td class="si_no text-center" style="padding:10px 10px;">1</td>
-                                                                <td>
+                                                                <td >
                                                                     <select class="form-select add_sales_order" name="mrp_sales_order[0]" required>
                                                                          <option value="" selected disabled>Select Sales Order Ref</option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
@@ -221,7 +238,7 @@
                                                                          <?php } ?>
                                                                     </select>
                                                                 </td>
-                                                                <td>
+                                                                <td style="text-align: left;">
                                                                
                                                                     <select class="form-select  ser_product_det" name="mrp_product_desc[0]" required>
                                                                         <option value="" selected disabled>Select Product Description</option>
@@ -404,7 +421,7 @@
                                                         <thead class="travelerinfo">
                                                             <tr>
                                                                 <td style="width: 4%;">SI</td>
-                                                                <td style="width: 10%;">Sales Order</td>
+                                                                <td style="width: 11%;">Sales Order</td>
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
@@ -581,7 +598,7 @@
                                                             
                                                             <tr>
                                                                 <td style="width: 4%;">SI</td>
-                                                                <td style="width: 10%;">sales Order</td>
+                                                                <td style="width: 11%;">sales Order</td>
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
@@ -727,7 +744,7 @@
                                                                 </select>
 
                                                             </td>
-                                                            <td>
+                                                            <td style="text-align: left;">
                                                                 <select class="form-select edit_add_prod_desc" name="mrp_product_desc"  required>
                                                                     
                                                                 </select>
@@ -891,7 +908,7 @@
                     "<?php endforeach; ?>" +
                     "</select>" +
                     "</td>" +
-                    "<td style='width: 40%;'>" +
+                    "<td style='text-align: left;'>" +
                     "<select class='form-select ser_product_det' name='mrp_product_desc["+jj+"]' required>" +
                     "<option value='' selected disabled>Select Product Description</option>" +
                     "<?php foreach($products as $prod): ?>" +
@@ -959,7 +976,7 @@
         function InitSelect2(){
           $(".ser_product_det:last").select2({
             placeholder: "Select Product",
-            theme : "default form-control- droup_color",
+            theme : "default form-control- droup_color select_width",
             dropdownParent: $('#AddMaterialRequisition'),
             ajax: {
                 url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
@@ -992,6 +1009,46 @@
         InitSelect2();
 
         /*###*/
+
+
+        /*Product Edit droup down*/
+
+        function InitSelect3(){
+          $(".edit_add_prod_desc:last").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- droup_color select_width",
+            dropdownParent: $('#SingleAddSales'),
+            ajax: {
+                url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                   
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+        })
+        }
+
+        InitSelect3();
+
+        /*#####*/
 
 
 
@@ -1347,6 +1404,8 @@
                     var data = JSON.parse(data);
 
                     $('.edit_single_sales_order').html(data.sales_order);
+
+                    ProductsSelect2Edit();
 
 
                 }
@@ -1775,6 +1834,54 @@
 
             });
         })
+
+
+
+        /**/
+        function ProductsSelect2Edit() {
+            $('body .product_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width",
+                    dropdownParent: $($(this).closest('.prod_desc_data')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Procurement/MaterialRequisition/FetchProd",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id,
+                                        text: item.product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+
+
+        /**/
 
         
 

@@ -52,11 +52,24 @@
 .total_table {
     width: 28% !important;
    
+   
 }
 span.select2.customer_width, span.select2 {
     
     display: flex;
     align-items: center;
+}
+.select_prod_add td{
+
+    padding: 10px 10px !important;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.total_table td{
+    
+    border: 1px solid black !important;
+   
 }
 </style>
 
@@ -348,7 +361,7 @@ span.select2.customer_width, span.select2 {
                                                     <table class="table table-bordered table-striped delTable add_table">
                                                         <thead class="travelerinfo contact_tbody">
                                                             <tr>
-                                                                <td style="width:5%">DN No.</td>
+                                                                <td style="width:10%">DN No.</td>
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
@@ -382,6 +395,21 @@ span.select2.customer_width, span.select2 {
                                                                 <td align="right" class="total_label">Total</td>
                                                                 <td><input type="text" name="cci_total_amount" class="amount_total form-control text-end" readonly></td>
                                                             </tr>
+
+                                                            <tr>
+                                                                
+                                                                <td align="right" class="total_label">Advance Paid</td>
+                                                                <td><input type="text" name="cci_advance_amount" class="amount_advance form-control text-end" readonly></td>
+                                                            </tr>
+
+
+                                                            <!--<tr>
+                                                                
+                                                                
+                                                                <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
+                                                                <td align="right" class="total_label">Total</td>
+                                                                <td><input type="text" name="cci_total_amount" class="amount_total form-control text-end" readonly></td>
+                                                            </tr>-->
                                                             
                                                           
                                                         </tbody>
@@ -1661,6 +1689,10 @@ span.select2.customer_width, span.select2 {
 
                     $(".cont_person").html(data.contact_person);
 
+                    $('.amount_advance').val(data.sales_order_advance);
+
+                    console.log(data.sales_order_advance);
+
                     $(".lpo_ref").removeClass("error")
 
                     $(".cont_person").removeClass("error")
@@ -2181,6 +2213,9 @@ span.select2.customer_width, span.select2 {
                                     }
 
                                     
+		                            ProductsSelect2Edit();
+
+                                    
                                 }   
 
                             });
@@ -2237,6 +2272,8 @@ span.select2.customer_width, span.select2 {
                     checkedIds.length = 0;
 
                     TotalAmount();
+
+                    ProductsSelect2Edit();
                 }
 
             });
@@ -2638,6 +2675,51 @@ span.select2.customer_width, span.select2 {
 
 
         })
+
+
+        /**/
+        function ProductsSelect2Edit() {
+            $('body .product_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width",
+                    dropdownParent: $($(this).closest('.prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/CreditInvoice/FetchProducts",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id,
+                                        text: item.product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
+        /**/
 
 
 

@@ -180,17 +180,16 @@
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
-                                                                    <div class="col-col-md-3 col-lg-3 ">
+                                                                    <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Contact Person<span class="add_more_icon contact_more_modal ri-add-line"></span></label>
                                                                     </div>
 
-                                                                    <div class="col-col-md-9 col-lg-9 ">
-                                                                        <select class="form-select "  name="enquiry_contact_person" id="contact_person_id"  required>
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <select class="form-select"  name="enquiry_contact_person" id="contact_person_id"  required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
-
-                                                                        
+                                               
                                                                         
                                                                     </div>
 

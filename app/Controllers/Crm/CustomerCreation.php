@@ -113,7 +113,7 @@ class CustomerCreation extends BaseController
         
         $data['accounts_type'] = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
 
-       
+        
 
         $data['content'] = view('crm/customer-creation',$data);
 
@@ -418,6 +418,11 @@ class CustomerCreation extends BaseController
             'pk'    => 'ah_id',
             'fk'    => 'cc_account_head',
             ),
+            array(
+                'table' => 'master_country',
+                'pk'    => 'country_id',
+                'fk'    => 'cc_country',
+                ),
 
         );
 
@@ -452,6 +457,8 @@ class CustomerCreation extends BaseController
         $data['credit_limit']       = format_currency($cus_creation->cc_credit_limit);
        
         $data['signatory_name']     = $cus_creation->cc_signatory_name;
+
+        $data['country']            = $cus_creation->country_name;
 
        
 
@@ -593,6 +600,8 @@ class CustomerCreation extends BaseController
 
         $account_types = $this->common_model->FetchAllOrder('accounts_account_types','at_id','desc');
 
+        $countries = $this->common_model->FetchAllOrder('master_country','country_id','desc');
+
         $cond1 = array('contact_customer_creation' => $this->request->getPost('ID'));
 
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond1);
@@ -719,7 +728,17 @@ class CustomerCreation extends BaseController
         
             
         }
+        
+        $data['country'] = "";
 
+        foreach($countries as $country){
+
+              // Check if the current product head is selected
+           
+                $selected = ($country->country_id == $customer_creation->cc_country) ? ' selected' : '';
+                $data['country'] .= '<option value="' . $country->country_id . '"' . $selected . '>' . $country->country_name . '</option>';
+            
+        }
 
 
         /*contact table start*/

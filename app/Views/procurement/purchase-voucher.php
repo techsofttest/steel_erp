@@ -98,6 +98,35 @@
         width: 22% !important;
     
     }
+    .select_prod_add td{
+
+        padding:10px 10px;
+        vertical-align: middle;
+    }
+    .quot_row_leng td{
+
+        padding:10px 10px;
+        vertical-align: middle;
+    }
+    .view_prod_data td{
+
+        padding:10px 10px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .edit_prod_data td{
+
+        padding:10px 10px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .edit_single_prod td{
+       
+        padding:10px 10px;
+        vertical-align: middle;
+        text-align: center;
+
+    }
 </style>
 
 <div class="tab-content text-muted">
