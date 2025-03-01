@@ -5,7 +5,7 @@
     span.select2.select_width
     {
         width: 100% !important;
-        background: #f5f5f5bd;
+        /*background: #f5f5f5bd;*/
         border: none !important;
        
     }
@@ -359,10 +359,6 @@
                                             </div>  
                                             
                                             
-                                             
-
-
-					                           
 						                    
 				                        </div>
 
