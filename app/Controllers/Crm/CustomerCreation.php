@@ -729,7 +729,7 @@ class CustomerCreation extends BaseController
             
         }
         
-        $data['country'] = "<option value='' selected disabled>Select Country</option>";
+        $data['country'] = '<option value="" selected disabled>Select Country</option>';
 
         foreach($countries as $country){
 
