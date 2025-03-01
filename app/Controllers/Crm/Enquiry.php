@@ -168,6 +168,9 @@ class Enquiry extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
+        $data['master_assigned'] = $this->common_model->FetchAllOrder('master_assign','as_id','desc');
+
+
         //$data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
 
         $data['enquiry_id'] = $this->FetchReference("r");
@@ -265,6 +268,11 @@ class Enquiry extends BaseController
                 'pk'    => 'se_id',
                 'fk'    => 'enquiry_assign_to',
             ),
+            array(
+                'table' => 'master_assign',
+                'pk'    => 'as_id',
+                'fk'    => 'enquiry_assign_to',
+            ),
 
         );
 
@@ -293,7 +301,7 @@ class Enquiry extends BaseController
 
         $data['contact_person']     = $enquiry->contact_person;
 
-        $data['enquiry_assign_to']  = $enquiry->se_name;
+        $data['enquiry_assign_to']  = $enquiry->as_name;
 
         $data['enquiry_source']     = $enquiry->enquiry_source;
 
@@ -478,7 +486,7 @@ class Enquiry extends BaseController
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
 
 
-        $sales_executive = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
+        $sales_executive = $this->common_model->FetchAllOrder('master_assign','as_id','desc');
          
         $data['enquiry_reff']       = $enquiry->enquiry_reff;
 
@@ -532,15 +540,15 @@ class Enquiry extends BaseController
 
         foreach($sales_executive as $executive)
         {
-            $data['assigned_to'] .= '<option value="' .$executive->se_id. '"'; 
+            $data['assigned_to'] .= '<option value="' .$executive->as_id. '"'; 
         
             // Check if the current product head is selected
-            if ($executive->se_id     == $enquiry->enquiry_assign_to)
+            if ($executive->as_id     == $enquiry->enquiry_assign_to)
             {
                 $data['assigned_to'] .= ' selected'; 
             }
         
-            $data['assigned_to'] .= '>' . $executive->se_name. '</option>';
+            $data['assigned_to'] .= '>' . $executive->as_name. '</option>';
         }
 
          

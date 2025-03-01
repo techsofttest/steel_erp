@@ -78,28 +78,28 @@
     .select_prod_add td{
 
         vertical-align: middle;
-        padding: 10px 10px;
+        padding: 0px 10px;
     }
     .add_prod_row td{
 
         vertical-align: middle;
-        padding: 10px 10px;
+        padding: 0px 10px;
     }
     .view_prod_data td{
 
         vertical-align: middle;
-        padding: 10px 10px;
+        
     }
     .edit_products td{
          
         vertical-align: middle;
-        padding: 10px 10px;
+        
 
     }
     .edit_single_prod_row td{
 
         vertical-align: middle;
-        padding: 10px 10px;
+        
     }
 </style>
 

@@ -474,7 +474,7 @@ class MaterialRequisition extends BaseController
 
        <td class="text-center">
         
-            <select class="form-select edit_sales_order" name="mrp_sales_order" required>';
+            <select class="form-control edit_sales_order text-center" name="mrp_sales_order" required>';
                             
                     foreach($sales_orders as $sales){
                         $data['sales_order'] .='<option value="'.$sales->so_id.'" '; 

@@ -875,7 +875,7 @@ text-align: center;
         border: unset !important;
         border: unset !important;
         width: 100% !important;
-        background: #f5f5f5bd;
+        /*background: #f5f5f5bd;*/
         border: none;
         height: 37px !important;
     }
@@ -1156,7 +1156,6 @@ height:100% !important;
                                             </a>
                                         </li>
                                     
-
                                     </ul>
                                 </div>
 

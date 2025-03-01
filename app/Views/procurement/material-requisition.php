@@ -58,7 +58,7 @@
     .edit_single_sales_order td{
            
         vertical-align: middle;
-        padding: 10px 10px !important;
+        
 
     }
 </style>

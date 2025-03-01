@@ -221,8 +221,8 @@
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                     <select class="form-select " name="enquiry_assign_to" required>
                                                                         <option value="" selected disabled>Assigned To</option>
-                                                                        <?php foreach($sales_executive as $executive){?> 
-                                                                            <option class="droup_color" value="<?php echo $executive->se_id;?>"><?php echo $executive->se_name;?></option>
+                                                                        <?php foreach($master_assigned as $assigned){?> 
+                                                                            <option class="droup_color" value="<?php echo $assigned->as_id;?>"><?php echo $assigned->as_name;?></option>
                                                                         <?php } ?>
                                                                 
                                                                      </select>
