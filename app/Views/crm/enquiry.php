@@ -333,6 +333,7 @@
                                                                 <td style="width: 6%;"><input type="text" name="pd_unit[0]" class="form-control text-center" required></td>
                                                                 <td style="width: 6%;"><input type="number" name="pd_quantity[0]" class="form-control text-center" required></td>
                                                                 <td style="width:8% ;text-align: center;" ><div class="tecs"><span id="add_product" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
+                                                                
                                                             </tr>
                                                         </tbody>
                                                         <tbody id="product-more" class="travelerinfo"></tbody>
