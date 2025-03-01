@@ -729,7 +729,7 @@ class CustomerCreation extends BaseController
             
         }
         
-       
+        $data['country'] = '';
 
         foreach($countries as $country){
 
