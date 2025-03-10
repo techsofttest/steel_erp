@@ -53,7 +53,7 @@
     .edit_products td{
 
         vertical-align: middle;
-        padding: 10px 10px !important;
+        
     }
     .edit_single_sales_order td{
            
@@ -181,7 +181,7 @@
                                                                     <select class="form-select add_assigned_to input_length" name="mr_assigned_to"  required>
                                                                         <option value="" selected disabled>Assigned To</option>
                                                                         <?php foreach($employees as $employ){?> 
-                                                                            <option value="<?php echo $employ->employees_id;?>"><?php echo $employ->employees_name;?></option>
+                                                                            <option value="<?php echo $employ->as_id;?>"><?php echo $employ->as_name;?></option>
                                                                         <?php } ?>
                                                                 
                                                                      </select>
@@ -220,7 +220,7 @@
                                                         <thead class="travelerinfo">
                                                             <tr>
                                                                 <td style="width: 4%;">SI</td>
-                                                                <td style="width: 10%;">Sales Order </td>
+                                                                <td style="width: 14%;">Sales Order </td>
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
@@ -231,7 +231,7 @@
                                                             <tr class="prod_row prod_row_lenght">
                                                                 <td class="si_no text-center" style="padding:10px 10px;">1</td>
                                                                 <td >
-                                                                    <select class="form-select add_sales_order" name="mrp_sales_order[0]" required>
+                                                                    <select class="form-control add_sales_order" name="mrp_sales_order[0]" required>
                                                                          <option value="" selected disabled>Select Sales Order Ref</option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
                                                                          <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>

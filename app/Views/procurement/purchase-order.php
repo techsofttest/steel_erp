@@ -83,7 +83,7 @@
     .add_prod_row td{
 
         vertical-align: middle;
-        padding: 0px 10px;
+       
     }
     .view_prod_data td{
 
@@ -1969,7 +1969,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.add_prod_row').find('.add_discount').val())||0;
+            var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
 
@@ -1977,15 +1977,15 @@
 
             var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var $totalqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_total_qty');
 
-            var total_qty = parseInt($totalqtySelectElement.val())||0;
+            var total_qty = parseFloat($totalqtySelectElement.val())||0;
 
             var $deliveredqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_delivered_qty');
 
-            var delivered_qty = parseInt($deliveredqtySelectElement.val())||0;
+            var delivered_qty = parseFloat($deliveredqtySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -2306,7 +2306,7 @@
 
             var $discountSelect = $(this);
 
-            var discount = parseInt($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_discount').val())||0;
+            var discount = parseFloat($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_discount').val())||0;
 
             var $discountSelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_rate');
 
@@ -2314,19 +2314,19 @@
 
             var $quantitySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
 
-            var quantity = parseInt($quantitySelectElement.val())||0;
+            var quantity = parseFloat($quantitySelectElement.val())||0;
 
             var $totalqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_total_qty');
 
-            var total_qty = parseInt($totalqtySelectElement.val())||0;
+            var total_qty = parseFloat($totalqtySelectElement.val())||0;
 
             var $deliveredqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_delivered_qty');
 
-            var delivered_qty = parseInt($deliveredqtySelectElement.val())||0;
+            var delivered_qty = parseFloat($deliveredqtySelectElement.val())||0;
 
             var $actqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_actual_qty');
 
-            var act_qty = parseInt($actqtySelectElement.val())||0;
+            var act_qty = parseFloat($actqtySelectElement.val())||0;
 
             var parsedRate = parseFloat(rate);
 
@@ -2670,6 +2670,21 @@
         })
 
         /***/
+
+        $('body').on('click','.print_color',function(e){
+    
+            id = $(this).attr('data-id');
+            // Open the PDF generation script in a new window
+
+            var pdfWindow = window.open('<?= base_url()?>Procurement/PurchaseOrder/Pdf/'+id, '_blank');
+
+            // Automatically print when the PDF is loaded
+            pdfWindow.onload = function() {
+                pdfWindow.print();
+            };
+
+        });
+
 
 
 

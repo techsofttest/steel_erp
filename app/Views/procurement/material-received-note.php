@@ -54,12 +54,12 @@
     }
     .add_prod_row td{
 
-        padding: 10px 10px !important;
+        /*padding: 10px 10px !important;*/
         vertical-align: middle;
     }
     .edit_prod_row td{
         
-        padding: 10px 10px !important;
+        /*padding: 10px 10px !important;*/
         vertical-align: middle;
 
     }

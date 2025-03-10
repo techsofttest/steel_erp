@@ -64,6 +64,7 @@ class PurchaseOrder extends BaseController
             $action = ' <a  href="javascript:void(0)" data-id="'.$record->po_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->po_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->po_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->po_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
            ';
            
            $data[] = array( 
@@ -1239,6 +1240,378 @@ class PurchaseOrder extends BaseController
         
 
         echo json_encode($data); 
+    }
+
+
+    public function Pdf($id)
+    {   
+        if(!empty($id))
+        {   
+           
+            $joins1 = array(
+            
+                array(
+                    'table' => 'crm_products',
+                    'pk'    => 'product_id',
+                    'fk'    => 'pop_prod_desc',
+                ),
+                
+            );
+
+            $product_details = $this->common_model->FetchWhereJoin('pro_purchase_order_product',array('pop_purchase_order'=>$id),$joins1);
+             
+            $pdf_data = "";
+            $k=1;
+            foreach($product_details as $prod_det)
+            {   
+                $rate = format_currency($prod_det->pop_rate);
+
+                $amount = format_currency($prod_det->pop_amount);
+
+                $disc = number_format($prod_det->pop_discount, 2);
+
+
+                $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+
+                $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+
+                $pdf_data .= '<td align="center">'.$prod_det->pop_qty.'</td>';
+
+                $pdf_data .= '<td align="center">'.$prod_det->pop_unit.'</td>';
+
+                $pdf_data .= '<td align="right">'.$rate.'</td>';
+
+                $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+
+                $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+
+                $k++;
+            }
+
+            $join =  array(
+                
+                array(
+                    'table' => 'crm_customer_creation',
+                    'pk'    => 'cc_id',
+                    'fk'    => 'po_vendor_name',
+                ),
+
+                array(
+                    'table' => 'crm_contact_details',
+                    'pk'    => 'contact_id',
+                    'fk'    => 'po_contact_person',
+                ),
+
+
+                /*array(
+                    'table' => 'crm_quotation_details',
+                    'pk'    => 'qd_id',
+                    'fk'    => 'so_quotation_ref',
+                ),
+
+                
+
+                array(
+                    'table' => 'master_delivery_term',
+                    'pk'    => 'dt_id',
+                    'fk'    => 'so_delivery_term',
+                ),*/
+
+               
+            );
+            
+
+            $purchase_order = $this->common_model->SingleRowJoin('pro_purchase_order',array('po_id'=>$id),$join);
+
+            $joins1 = array(
+
+                array(
+                    'table' => 'master_country',
+                    'pk'    => 'country_id',
+                    'fk'    => 'cc_country',
+                ),
+                
+            );
+
+            $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $purchase_order->po_vendor_name),$joins1);
+
+           
+            
+         
+
+            $delivery_date = date('d-M-Y',strtotime($purchase_order->po_delivery_date));
+
+            $date = date('d-M-Y',strtotime($purchase_order->po_date));
+
+            $title = $purchase_order->po_reffer_no;
+
+            //$mpdf = new \Mpdf\Mpdf();
+
+            
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 5,     // Reduce top margin
+                'margin_bottom' => 5,  // Reduce bottom margin
+                'margin_left' => 5,    // Reduce left margin
+                'margin_right' => 5,   // Reduce right margin
+            ]);
+
+            $mpdf->SetTitle($title); // Set the title
+
+            $html ='
+        
+            <style>
+            tbody  td{
+            
+               padding-top: unset;
+
+            }
+            th, td {
+                padding-top: 5px;
+               
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
+            }
+            p{
+                
+                font-size: 12px;
+                margin-bottom: 13px;
+
+            }
+            .dec_width
+            {
+                width:30%
+            }
+            .disc_color
+            {
+                color:red;
+            }
+            
+            </style>
+           
+           
+            <table>
+        
+                <tr>
+                    
+                    <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
+        
+                    <td>
+                
+                    <h2>Al Fuzail Engineering Services WLL</h2>
+                    <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    
+                    
+                    </td>
+                
+                </tr>
+        
+            </table>
+        
+        
+            <table width="100%" style="margin-top:-10px;">
+            
+        
+            <tr width="100%">
+            <td width="9%"></td>
+            <td width="20%">Date : '.$date.'</td>
+            <td align="center">'.$purchase_order->po_reffer_no.'</td>
+            <td align="right"><h2>Sales Order</h2></td>
+        
+            </tr>
+        
+            </table>
+
+        <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
+    
+            <tr>
+            
+                <td > </td>
+                
+                <td >'.$purchase_order->cc_customer_name.'</td>
+            
+            </tr>
+    
+    
+        <tr>
+        
+        <td>Customer</td>
+        
+            
+        <td >Tel : '.$purchase_order->cc_telephone.', Fax : '.$purchase_order->cc_fax.', Email : '.$purchase_order->cc_email.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td ></td>
+        
+        <td >Post Box :  '.$purchase_order->cc_post_box.' ,  '.$customers->country_name.'</td>
+        
+        </tr>
+    
+    
+        <tr>
+        
+        <td >Attention</td>
+        
+         <td >'.$purchase_order->contact_person.' - '.$purchase_order->contact_designation.', Mobile:-'.$purchase_order->contact_mobile.', Email: - '.$purchase_order->contact_email.'</td>
+        
+        </tr>
+    
+    
+        </table>
+
+           
+        
+        <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
+            
+        
+            <tr>
+            
+                <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+            
+                <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Qty</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Unit</th>
+            
+                <th align="center" style="border-bottom:1px solid;">Rate</th>
+    
+                <th align="center" style="border-bottom:1px solid;">Disc%</th>
+    
+                <th align="center" style="border-bottom:1px solid;">Amount</th>
+    
+            
+            </tr>
+
+
+            '.$pdf_data.'
+
+             
+            
+        </table>';
+        
+        $footer = '
+
+                <table style="width:100%">
+            
+                <tr>
+                    <td>Notes</td>
+
+                    <td ></td>
+
+                    <td style="font-weight: bold;width: 17%;" >Net Order Value</td>
+        
+                    <td>'.format_currency($purchase_order->po_amount).'</td>
+
+                    
+                   
+                </tr>
+
+                <tr>
+    
+                    <td></td>
+                
+                    <td></td>
+                    
+                    
+                    
+                
+                </tr>
+
+
+                
+
+
+                <tr  style="width:100%";>
+    
+                    <td>Amount in words</td>
+                
+                    <td style="width: 60%;">'.currency_to_words($purchase_order->po_amount).'</td>
+
+                   
+                   
+                
+                </tr>
+
+            </table>
+
+
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+            
+            <tr>
+                <td style="width:12%">Order Terms</td>
+
+                <td style="width:15%">Payment</td>
+
+                <td style="width:29%">'.$purchase_order->po_payment_term.'</td>
+
+               <td style="width:10%">Vendor Ref:</td>
+
+                <td style="">'.$purchase_order->po_vendor_ref.'</td>
+                
+            </tr>
+
+            <tr>
+                <td style="width:12%"></td>
+
+                <td style="width:15%">Delivery</td>
+
+                <td style="width:29%">'.$delivery_date.'</td>
+
+                
+
+            </tr>
+            
+            </table>
+
+
+            <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
+
+            <tr>
+            
+               <td>Ubais Usman - Accounts Assistant, Mob : +974 5013 0377</td>
+               <td></td><td></td><td></td><td></td><td></td><td></td>
+               <td>Justin Jose - Operations Manager</td>
+              
+
+            </tr>
+
+
+            <tr>
+            
+                <td>Muhammed Raphy - Chief Accountant, Mob : +974 7743 4520</td>
+                <td></td><td></td><td></td><td></td><td></td><td></td>
+                <td>Mob : +974 3381 6185, justin@alfuzailgroup.com</td>
+           
+
+            </tr>
+
+
+            
+            
+            
+            </table>
+    
+           
+        
+        
+            ';
+        
+            //echo $html . $footer; exit();
+
+            $mpdf->WriteHTML($html);
+            $mpdf->SetFooter($footer);
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $mpdf->Output($title . '.pdf', 'I');
+        
+        }
+
+       
     }
 
    

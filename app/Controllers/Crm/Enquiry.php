@@ -168,7 +168,7 @@ class Enquiry extends BaseController
 
         $data['sales_executive'] = $this->common_model->FetchAllOrder('executives_sales_executive','se_id','desc');
 
-        $data['master_assigned'] = $this->common_model->FetchAllOrder('master_assign','as_id','desc');
+        $data['master_assigned'] = $this->common_model->FetchWhere('master_assign',array('as_status' => 0));
 
 
         //$data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
@@ -486,7 +486,7 @@ class Enquiry extends BaseController
         $contact_details = $this->common_model->FetchWhere('crm_contact_details',$cond2);
 
 
-        $sales_executive = $this->common_model->FetchAllOrder('master_assign','as_id','desc');
+        $sales_executive = $this->common_model->FetchWhere('master_assign',array('as_status' => 0));
          
         $data['enquiry_reff']       = $enquiry->enquiry_reff;
 

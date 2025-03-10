@@ -115,7 +115,7 @@ class MaterialRequisition extends BaseController
        
         $data['products'] = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
-        $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
+        $data['employees'] = $this->common_model->FetchWhere('master_assign',array('as_status' => 1));
 
         $cond = array('so_deliver_flag' => 0);
 
@@ -239,8 +239,8 @@ class MaterialRequisition extends BaseController
         $join =  array(
                     
             array(
-                'table' => 'employees',
-                'pk'    => 'employees_id',
+                'table' => 'master_assign',
+                'pk'    => 'as_id',
                 'fk'    => 'mr_assigned_to',
             ),
 
@@ -255,7 +255,7 @@ class MaterialRequisition extends BaseController
 
         $data['mr_time_frame']   = date('d-M-Y',strtotime($material_requisition->mr_time_frame));
 
-        $data['mr_assigned_to']  = $material_requisition->employees_name;
+        $data['mr_assigned_to']  = $material_requisition->as_name;
 
 
         $joins = array(
@@ -329,14 +329,14 @@ class MaterialRequisition extends BaseController
         $join =  array(
                     
             array(
-                'table' => 'employees',
-                'pk'    => 'employees_id',
+                'table' => 'master_assign',
+                'pk'    => 'as_id',
                 'fk'    => 'mr_assigned_to',
             ),
 
         );
 
-        $employess = $this->common_model->FetchAllOrder('steel_employees','employees_id','desc');
+        $employess = $this->common_model->FetchWhere('master_assign',array('as_status' => 1));
 
         $material_requisition = $this->common_model->SingleRowJoin('pro_material_requisition', array('mr_id' => $this->request->getPost('ID')),$join);
         
@@ -353,14 +353,14 @@ class MaterialRequisition extends BaseController
         foreach($employess as $employ)
         {  
             
-                $data['mr_assigned_to'] .= '<option value="' .$employ->employees_id.'"'; 
+                $data['mr_assigned_to'] .= '<option value="' .$employ->as_id.'"'; 
 
-                if($material_requisition->mr_assigned_to == $employ->employees_id)
+                if($material_requisition->mr_assigned_to == $employ->as_id)
                 {
                     $data['mr_assigned_to'] .= ' selected'; 
                 }
 
-                $data['mr_assigned_to'] .= '>' . $employ->employees_name .'</option>';
+                $data['mr_assigned_to'] .= '>' . $employ->as_name .'</option>';
             
 
             
@@ -393,7 +393,7 @@ class MaterialRequisition extends BaseController
             $data['sales_order'] .= '<tr class="edit_prod_row" id="'.$mat_req->mrp_id.'">
             <td class="si_no_edit text-center">'.$i.'</td>
             <td class="text-center">'.$mat_req->so_reffer_no.'</td>
-            <td style="text-align: left;">'.$mat_req->product_details.'</td>
+            <td style="text-align: left;padding: 8px;">'.$mat_req->product_details.'</td>
             <td class="text-center">'.$mat_req->mrp_unit.'</td>
             <td class="text-center">'.$mat_req->mrp_qty.'</td>
             <td class="text-center">
