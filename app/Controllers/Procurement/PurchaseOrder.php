@@ -1417,7 +1417,7 @@ class PurchaseOrder extends BaseController
             <td width="9%"></td>
             <td width="20%">Date : '.$date.'</td>
             <td align="center">'.$purchase_order->po_reffer_no.'</td>
-            <td align="right"><h2>Sales Order</h2></td>
+            <td align="right"><h2>Purchase Order</h2></td>
         
             </tr>
         
