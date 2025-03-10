@@ -24,7 +24,7 @@
     {
         width: 70% !important;
     }
-    .prod_add_more
+    /*.prod_add_more
     {
         position: absolute;
         left: 340px;
@@ -32,7 +32,7 @@
         z-index: 999;
         border: 1px solid black;
         border: 1px solid #0000003b;
-    }
+    }*/
     .row_align
     {
         display: flex;
@@ -105,29 +105,39 @@
     }
     .quot_row_leng td{
 
-        padding:10px 10px;
+        /*padding:10px 10px;*/
         vertical-align: middle;
     }
     .view_prod_data td{
 
-        padding:10px 10px;
+        /*padding:10px 10px;*/
         vertical-align: middle;
         text-align: center;
     }
     .edit_prod_data td{
 
-        padding:10px 10px;
+        /*padding:10px 10px;*/
         vertical-align: middle;
         text-align: center;
     }
     .edit_single_prod td{
        
-        padding:10px 10px;
+        /*padding:10px 10px;*/
         vertical-align: middle;
         text-align: center;
 
     }
+    .prod_add_more {
+        color: #ff0000b5;
+        font-size: 20px;
+    }
 </style>
+
+ <!--add product modal start-->
+                       
+ <?= $this->include('crm/add_product_modal') ?>
+
+<!--#######-->
 
 <div class="tab-content text-muted">
 								
@@ -322,7 +332,7 @@
 
                                                            <!-- Single Row Start -->
 
-                                                           <div class="col-lg-12">
+                                                           <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -336,8 +346,7 @@
                                                                         
                                                                         <select class="form-select add_contact_person input_length" name="purchase_contact_person" id=""></select>
                                                                         
-                                                                        <!--<input type="text" name="purchase_contact_person" class="form-control add_contact_person input_length" required>-->
-
+                                                                        
                                                                     </div>
 
                                                                    
@@ -347,7 +356,7 @@
 
                                                                 </div> 
 
-                                                            </div>    
+                                                            </div>--->   
 
                                                             <!-- ### -->
 
@@ -381,7 +390,7 @@
                                                             <!-- Single Row Start -->
                                                             <div class="col-lg-12">
 
-                                                                <div class="row align-item-scenter mb-2 margin_zero">
+                                                                <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Delivery Note</label>
@@ -443,7 +452,7 @@
                                                             <tr>
                                                                 
                                                                 <td style="width:10%">Sales Order</td>
-                                                                <td >Product Description</td>
+                                                                <td >Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td style="width:15%">Debit A/C</td>
                                                                 <td style="width:6%">Qty</td>
                                                                 <td style="width:6%">Unit</td>
@@ -622,7 +631,7 @@
 
                                                             <!-- Single Row Start -->
 
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -639,9 +648,35 @@
 
                                                                 </div>
 
-                                                            </div>
+                                                            </div>--->
 
                                                             <!-- ### -->
+
+                                                             <!-- Single Row Start -->
+
+
+                                                             <div class="col-lg-12">
+
+<div class="row align-items-center mb-2 margin_zero">
+
+    <div class="col-col-md-3 col-lg-3">
+        <label for="basicInput" class="form-label">Purchase Order</label>
+    </div>
+
+    <div class="col-col-md-9 col-lg-9">
+
+        <input type="text" name="" class="form-control view_purchase_order input_length" readonly>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- ### -->
+
+
 
 
 
@@ -655,31 +690,7 @@
 
                                                         <div class="row">
 
-                                                            <!-- Single Row Start -->
-
-
-                                                            <div class="col-lg-12">
-
-                                                                <div class="row align-items-center mb-2 margin_zero">
-
-                                                                    <div class="col-col-md-3 col-lg-3">
-                                                                        <label for="basicInput" class="form-label">Purchase Order</label>
-                                                                    </div>
-
-                                                                    <div class="col-col-md-9 col-lg-9">
-
-                                                                        <input type="text" name="" class="form-control view_purchase_order input_length" readonly>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-
-
-                                                            <!-- ### -->
-
-
+                                                           
                                                              <!-- Single Row Start -->
                                                              <div class="col-lg-12">
                                                                 <div class="row align-items-center mb-2 margin_zero">
@@ -916,7 +927,7 @@
 
                                                             <!-- Single Row Start -->
 
-                                                            <div class="col-lg-12">
+                                                            <!--<div class="col-lg-12">
 
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
@@ -933,21 +944,9 @@
 
                                                                 </div>
 
-                                                            </div>
+                                                            </div>--->
 
                                                             <!-- ### -->
-
-
-
-                                                            
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <div class="col-lg-6">
-
-                                                        <div class="row">
 
                                                             <!-- Single Row Start -->
 
@@ -972,6 +971,20 @@
 
 
                                                             <!-- ### -->
+
+
+
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+
+                                                            
 
 
                                                              <!-- Single Row Start -->
@@ -1199,8 +1212,8 @@
                                     <tr>
                                         <td style="width:4%">SI</td>
                                         <td>Product Description</td>
-                                        <td style="width:11%">Vendor DN </td>
-                                        <td sstyle="width:4%">Tick</td>
+                                        <td style="width:11%">MRN Ref </td>
+                                        <td style="width:4%">Tick</td>
                                     </tr>
                                                             
                                                            
@@ -1947,7 +1960,7 @@
 
         function InitDebitSelectAdd(){
             $(".debit_account:last").select2({
-                placeholder: "Select Product",
+                placeholder: "Select Debit",
                 theme : "default form-control- droup_color",
                 dropdownParent: $($('.debit_account:last').closest('.add_prod_row')),
                 ajax: {
@@ -2107,6 +2120,8 @@
                     $('#purchase_form').attr('data_fill','true');
 
                     $('.add_product2').hide();
+
+                    InitDebitSelectAdd();
 
 
                 }
@@ -3130,6 +3145,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
             alertify.error('Something went wrong. Please try again later').delay(3).dismissOthers();
         }
     });
+
+
+    $("body").on('click', '.prod_add_more', function(){ 
+	        
+        $('#AddPurchaseVoucher').modal('hide');
+
+        $('#AddProdModal').modal('show');
+
+    });
+
+
+     /*close product modal (open enquiry modal)*/
+
+     $('#AddProdModal').on('hidden.bs.modal', function () {
+
+        $('#AddPurchaseVoucher').modal('show')
+
+    })
+
+    /*#####*/
 
 
 });

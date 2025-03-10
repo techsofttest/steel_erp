@@ -627,7 +627,7 @@ class PurchaseVoucher extends BaseController
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td class="si_no1 text-center" >'.$i.'</td>
             <td>'.$pur_vou_prod->pvp_sales_order.'</td>
-            <td style="text-align:left">'.$pur_vou_prod->pvp_prod_dec.'</td>
+            <td style="text-align:left;padding:10px;">'.$pur_vou_prod->pvp_prod_dec.'</td>
             <td> '.$pur_vou_prod->ca_name.'</td>
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
@@ -782,7 +782,7 @@ class PurchaseVoucher extends BaseController
         {
             $data['prod_desc'] .= '<tr class="edit_prod_row" id="'.$pur_vou_prod->pvp_id.'">
             <td>'.$pur_vou_prod->pvp_sales_order.'</td>
-            <td style="text-align:left">'.$pur_vou_prod->pvp_prod_dec.'</td>
+            <td style="text-align:left;padding:10px;">'.$pur_vou_prod->pvp_prod_dec.'</td>
             <td>'.$pur_vou_prod->ca_name.'</td>
             <td>'.format_currency($pur_vou_prod->pvp_qty).'</td>
             <td>'.$pur_vou_prod->pvp_unit.'</td>
@@ -838,7 +838,7 @@ class PurchaseVoucher extends BaseController
         $data['prod_desc'] .= '<tr class="edit_single_prod_row" id="'.$pur_vou_prod->pvp_id.'">
         
                 <td>
-                    <select class="form-select" name="pvp_sales_order" required>';
+                    <select class="form-control" name="pvp_sales_order" required>';
                     
                         foreach($sales_orders as $sales_order){
                             $data['prod_desc'] .='<option class="droup_color" value="'.$sales_order->so_reffer_no.'" '; 
@@ -859,6 +859,7 @@ class PurchaseVoucher extends BaseController
                         }
                     $data['prod_desc'] .='</select>
                 </td>
+                
 
 
                 <td>
@@ -1219,9 +1220,9 @@ class PurchaseVoucher extends BaseController
                 $data['product_detail'] .='<tr class="add_prod_row add_prod_remove prod_row quot_row_leng" id="'.$product->rnp_id.'">
                                             
                                             <td class="text-center"><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control text-center" readonly></td>
-                                            <td style="">'.$product->rnp_product_desc.'</td>
+                                            <td style="padding:10px;">'.$product->rnp_product_desc.'</td>
                                             <td class="text-center">
-                                               <select class="form-select" name="debit_account[]" required>
+                                               <select class="form-control debit_account" style="" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';
                                                    foreach($debit_accounts as $debit_account){
 
