@@ -2868,8 +2868,6 @@
 
             var id = $(this).data('id');
 
-
-
             $.ajax({
 
                 url : "<?php echo base_url(); ?>Procurement/PurchaseVoucher/EditSingleProd",
@@ -2885,7 +2883,6 @@
 
                     $('.edit_single_prod').html(data.prod_desc);
 
-                    
 
                 }
             });
@@ -2894,7 +2891,7 @@
 
             $('#EditModal').modal('hide');
 
-
+            ProductSelect2Edit();
 
         });
 
@@ -3054,6 +3051,49 @@
         })
 
         /**/
+
+
+        function ProductSelect2Edit() {
+                $('body .product_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width ",
+                    dropdownParent: $($(this).closest('.edit_single_prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.product_id ,
+                                        text: item.	product_details
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+        }
 
 
 

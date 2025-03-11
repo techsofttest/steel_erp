@@ -667,7 +667,7 @@
                                                     <thead class="travelerinfo">
                                                         <tr>
                                                             
-                                                            <td style="width:14%">Sales Order</td>
+                                                            <td style="width:11%">Sales Order</td>
                                                             <td>Product Description</td>
                                                             <td style="5%">Unit</td>
                                                             <td style="5%">Qty</td>

@@ -380,7 +380,8 @@ class PurchaseVoucher extends BaseController
                           
                             $this->common_model->EditData(array('mrn_status' => 1), array('mrn_id' =>$_POST['material_received_id'][$j]), 'pro_material_received_note');
                         }
-
+                         
+                        
                         /*$material_req_prod3 = $this->common_model->FetchWhere('pro_material_received_note_prod' ,array('rnp_purchase_id' => $material_req_prod_single->rnp_purchase_id));
 
                         $material_req_prod4 = $this->common_model->CheckTwiceCond1('pro_material_received_note_prod' ,array('rnp_purchase_id' => $material_req_prod_single->rnp_purchase_id),array('rnp_status' => 1));
@@ -831,6 +832,8 @@ class PurchaseVoucher extends BaseController
         $products     = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
         $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
+
+        $options_product = '<option value="'.$pur_vou_prod->pvp_prod_dec.'" selected>'.$pur_vou_prod->pvp_prod_dec.'</option>';
     
 
         $data['prod_desc'] = '';
@@ -849,16 +852,9 @@ class PurchaseVoucher extends BaseController
                 </td>
 
 
-                <td>
-                    <select class="form-select" name="pvp_prod_dec" required>';
-                    
-                        foreach($products as $product){
-                            $data['prod_desc'] .='<option class="droup_color" value="'.$product->product_details.'" '; 
-                            if($product->product_details == $pur_vou_prod->pvp_prod_dec){ $data['prod_desc'] .= "selected"; }
-                            $data['prod_desc'] .='>'.$product->product_details.'</option>';
-                        }
-                    $data['prod_desc'] .='</select>
-                </td>
+               
+
+                <td> <select name="pvp_prod_dec" class="form-control product_select2_edit  droup_color">'.$options_product.'</select></td>
                 
 
 
