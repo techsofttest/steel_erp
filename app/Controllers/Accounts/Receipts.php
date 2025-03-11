@@ -715,9 +715,11 @@ class Receipts extends BaseController
      </th>
      </tr>';
     
+     $data['status']=1;
+
     }
 
-     $data['status']=1;
+     
  
      }
 
@@ -744,6 +746,8 @@ class Receipts extends BaseController
      $remaining_amount = $remaining_amount - $sales_return_amount;
 
      $remaining_amount = max($remaining_amount,0);
+
+     if($remaining_amount !=0 ){
      
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
@@ -763,6 +767,8 @@ class Receipts extends BaseController
      </tr>';
  
      $data['status']=1;
+     
+     }
  
      }
 
