@@ -1203,7 +1203,7 @@
 
                     <div class="live-preview">
                                                 
-                        <div class="mt-4 content_table">
+                        <div class="mt-4 content_table" style="padding-top: 0px;">
                             
                             <table class="table table-bordered table-striped delTable add_table">
                                 
