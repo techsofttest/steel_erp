@@ -580,6 +580,10 @@
                                              {
                                              $href="Crm/SalesReturn";
                                              }
+                                             else if($vc->voucher_type=="Purchase Voucher")
+                                             {
+                                             $href="Procurement/PurchaseVoucher";
+                                             }
                                              else
                                              {
                                              $href="";
