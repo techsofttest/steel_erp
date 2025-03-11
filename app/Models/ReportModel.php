@@ -1702,7 +1702,7 @@ NULL AS credit_amount,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
 FROM {$this->db->getPrefix()}pro_purchase_voucher
 LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
-LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name AND {$this->db->getPrefix()}accounts_charts_of_accounts.ca_type = 'VENDOR'
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name
 LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
 LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS debit_account_pv ON debit_account_pv.ca_id = {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_debit  
 LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = debit_account_pv.ca_account_type
@@ -1812,7 +1812,7 @@ FROM {$this->db->getPrefix()}pro_purchase_voucher
 LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
 LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_debit  
 LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order
-LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS credit_account_pv ON credit_account_pv.ca_customer = {$pv_table}.pv_vendor_name AND credit_account_pv.ca_type = 'VENDOR'
+LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS credit_account_pv ON credit_account_pv.ca_customer = {$pv_table}.pv_vendor_name
 LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = credit_account_pv.ca_account_type
 LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
 ";
