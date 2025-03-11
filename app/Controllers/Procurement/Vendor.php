@@ -149,29 +149,37 @@ class Vendor extends BaseController
 
     public function AddTab2()
     {
-       
+         
         if($_POST)
         {
 	        if(!empty($_POST['pro_con_person']))
 			{
 			    $count =  count($_POST['pro_con_person']);
-					
+			
 				if($count!=0)
 			    {  
 					for($j=0;$j<=$count-1;$j++)
-					{
-				        $insert_data  	= array(  
-							
-                            'contact_person'              =>  $_POST['pro_con_person'][$j],
-							'contact_designation'         =>  $_POST['pro_con_designation'][$j],
-							'contact_mobile'              =>  $_POST['pro_con_mobile'][$j],
-						    'contact_email'               =>  $_POST['pro_con_email'][$j],
-                            'contact_customer_creation'   =>  $_POST['pro_con_vendor'],
-	  
-					    );
+					{   
+                        
+                        if(!empty($_POST['pro_con_person'][$j]) || !empty($_POST['pro_con_designation'][$j]) || !empty($_POST['pro_con_mobile'][$j]) || !empty($_POST['pro_con_email'][$j]))
+                        
+                        {
 
-				        $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
-				
+                            $insert_data  	= array(  
+                                
+                                'contact_person'              =>  $_POST['pro_con_person'][$j],
+                                'contact_designation'         =>  $_POST['pro_con_designation'][$j],
+                                'contact_mobile'              =>  $_POST['pro_con_mobile'][$j],
+                                'contact_email'               =>  $_POST['pro_con_email'][$j],
+                                'contact_customer_creation'   =>  $_POST['pro_con_vendor'],
+        
+                            );
+
+                            $id = $this->common_model->InsertData('crm_contact_details',$insert_data);
+
+                        }
+
+                      
 				    } 
 				}
 			}
@@ -673,7 +681,8 @@ class Vendor extends BaseController
 
 
     public function EditAddContact()
-    {
+    {  
+        
         $insert_data = $this->request->getPost();
         
         $id = $this->common_model->InsertData('crm_contact_details',$insert_data);

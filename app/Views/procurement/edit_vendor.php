@@ -1118,6 +1118,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                     $('.vendor_hidden_id').val(data.vendor_id);
 
+                    
+
                     //image section
 
                     $('.edit_cr_attach').html(data.ven_cr_attach);
@@ -1196,7 +1198,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $("body").on('click', '.edit_add_con', function(){ 
 
-        var id = $('.edit_con_ven_id').val()
+       // var id = $('.edit_con_ven_id').val() edit_vendor_id
+
+       var id = $('.edit_vendor_id').val() 
 
         $('.edit_contact_hidden_id').val(id);
 

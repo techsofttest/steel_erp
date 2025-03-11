@@ -282,10 +282,10 @@
                                     <tbody>
                                         <tr class="prod_row">
                                             <td class=" si_no" style="padding:10px 10px;">1</td>
-                                            <td><input type="text" name="pro_con_person[0]" class="form-control text-center"></td>
-                                            <td><input type="text" name="pro_con_designation[0]" class="form-control text-center"></td>
-                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz text-center"></td>
-                                            <td> <input type="email" name="pro_con_email[0]" class="form-control text-center"></td>
+                                            <td><input type="text" name="pro_con_person[0]" class="form-control text-center" ></td>
+                                            <td><input type="text" name="pro_con_designation[0]" class="form-control text-center" ></td>
+                                            <td><input type="text" name="pro_con_mobile[0]"  class="form-control contact_mobile_clz text-center" ></td>
+                                            <td> <input type="email" name="pro_con_email[0]" class="form-control text-center" ></td>
                                             <td><div class="tecs"><span  class="add_person" class="add_icon"><i class="ri-add-circle-line"></i> </span></div></td>
                                         </tr>
                                     </tbody>
