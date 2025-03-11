@@ -701,14 +701,14 @@ class Receipts extends BaseController
      
      <input type="hidden" name="type[]" value="cash_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->ci_id.'">
-     <th>'.$sl.'</th>
-     <th>'.date('d-m-Y',strtotime($inv->ci_date)).'</th>
+     <th width="2%" class="px-0">'.$sl.'</th>
+     <th>'.date('d M Y',strtotime($inv->ci_date)).'</th>
      <th>'.$inv->ci_reffer_no.'</th>
-     <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
+     <th width="40%" class="px-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
+     <th class="px-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
      
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
@@ -748,14 +748,14 @@ class Receipts extends BaseController
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->cci_id.'">
-     <th>'.$sl.'</th>
-     <th>'.date('d-m-Y',strtotime($inv->cci_date)).'</th>
+     <th width="2%" class="px-0">'.$sl.'</th>
+     <th>'.date('d M Y',strtotime($inv->cci_date)).'</th>
      <th>'.$inv->cci_reffer_no.'</th>
-     <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
+     <th width="40%" class="px-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
+     <th class="px-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
     
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
@@ -1423,12 +1423,12 @@ class Receipts extends BaseController
     <td>{$invoice->ca_name}</td>
     <td>Debit</td>
     <td>-</td>
-    <td><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
-    <td width='10%'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control text-end'></td>
-    <td><!--<a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a>--></td>
+    <td class='px-0'><input name='rec_inv_notes[]' type='text' value='{$invoice->ri_remarks}' class='form-control'></td>
+    <td width='10%' class='px-0'><input name='rec_inv_amount[]' type='number' step='0.01' value='".$invoice->ri_amount."' class='form-control text-end'></td>
+    
     </tr>";
 
-    
+    //<td><!--<a href='javascript:void(0)' data-id='{$invoice->ri_id}' class='invoice_delete_btn'>Delete</a>--></td>
 
     #ri_credit_account	
     
@@ -1465,13 +1465,13 @@ class Receipts extends BaseController
 
             <td></td>
 
-            <td>
+            <td class='px-0'>
                 <input type='hidden' name='linked_invoice_id[$invoice->ri_id][]' value='{$invoice->ri_id}'>
                 <input type='hidden' name='linked_receipt_id[$invoice->ri_id][]' value='{$ridId}'>
                 <input width='10%' name='linked_receipt_amount[$invoice->ri_id][]' class='form-control text-end linked_amount_edit' type='number' step='0.01' max='{$max_payable}' value='{$ridReceipt}'>
             </td>
 
-            <td></td>
+            <!--<td></td>-->
         </tr>";
 
     }
@@ -1503,7 +1503,7 @@ class Receipts extends BaseController
     <input type='hidden' name='advance_invoice_id[$invoice->ri_id][]' value='$advance->rso_id'>
     <input type='hidden' name='advance_so_id[$invoice->ri_id][]' value='$advance->so_id'>
     <input width='10%' type='number' step='0.01' name='advance_receipt_amount[$invoice->ri_id][]' class='form-control text-end' max='".$max_so_payable."' value='".$advance->rso_receipt_amount."'></td>
-    <td></td>
+    <!--<td></td>-->
     </tr>";
 
     }
@@ -2002,6 +2002,17 @@ class Receipts extends BaseController
 
     foreach($so_advances as $advance)
     {
+
+    if($first==true)
+    {
+    $account_name=$invoice->ca_name;
+    $first=false;
+    }
+    else
+    {
+    $account_name="";
+    }
+
     
     $remarks = "";
 
@@ -2011,7 +2022,7 @@ class Receipts extends BaseController
     }
 
     $data['invoices'] .="<tr>
-    <td></td>
+    <td>".$account_name."</td>
     <td>Advance</td>
     <td>".$advance->so_reffer_no." ".$remarks."</td>
     <td></td>
@@ -2027,6 +2038,7 @@ class Receipts extends BaseController
     <td class='text-end'><b>".format_currency($invoice->ri_amount)."</b></td>
     </tr>";
 
+    
 
     }
 

@@ -496,7 +496,7 @@ class Payments extends BaseController
         <td>{$invoice->ca_name}</td>
         <td>Debit</td>
         <td>-</td>
-        <td><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
+        <td class='px-0'><input name='pay_inv_notes[]' type='text' value='{$invoice->pd_remarks}' class='form-control'></td>
         <td><input name='pay_inv_amount[]' type='number' step='0.01' value='".$invoice->pd_payment_amount."' class='form-control text-end'></td>
         <!--<td><a href='javascript:void(0)' data-id='{$invoice->pd_id}' class='invoice_delete_btn'>Delete</a></td>-->
         </tr>";

@@ -357,7 +357,7 @@
                                                             </td>
 
 
-                                                            <td>
+                                                            <td class="px-0 py-3 text-center">
 
                                                             <input class="form-control credit_narration" type="text" name="narration[]" />
 
@@ -542,7 +542,7 @@
 
                                                             <tr>
 
-                                                                <td>Total Receipt</td>
+                                                                <td class="px-0" colspan="2">Total</td>
 
                                                                 <td class="invoice_total"></td>
 
@@ -1084,7 +1084,7 @@
                         <th>Invoice</th>
                         <th>Narration</th>
                         <th>Amount</th>
-                        <th></th>
+                        <!--<th></th>-->
                     </tr>
                 </thead>
 
