@@ -1696,7 +1696,7 @@ $query .= "UNION ALL
 {$pv_table}.pv_date AS transaction_date,
 NULL AS method,
 NULL AS credit_amount,
-{$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_amount AS debit_amount,
+{$pv_table}.pv_total AS debit_amount,
 'Purchase Voucher' as voucher_type,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
@@ -1803,7 +1803,7 @@ $query .= "UNION ALL
 {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
 {$pv_table}.pv_date AS transaction_date,
 NULL AS method,
-{$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_amount AS credit_amount,
+{$pv_table}.pv_total AS credit_amount,
 NULL AS debit_amount,
 'Purchase Voucher' as voucher_type,
 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
@@ -1892,7 +1892,7 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 }
 
-//$query .="GROUP BY {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id";
+$query .="GROUP BY {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id";
 
 $query .= ")";
 
@@ -3215,7 +3215,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
         FROM {$this->db->getPrefix()}pro_purchase_voucher
         LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
-        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name AND {$this->db->getPrefix()}accounts_charts_of_accounts.ca_type = 'VENDOR'
+        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name 
         LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
         LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
         LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
@@ -3483,7 +3483,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         {$pf}accounts_charts_of_accounts.ca_name AS account_name
         FROM {$this->db->getPrefix()}pro_purchase_voucher
         LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
-        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name AND {$this->db->getPrefix()}accounts_charts_of_accounts.ca_type = 'VENDOR'
+        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name 
         LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
         LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS debit_account_pv ON debit_account_pv.ca_id = {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_debit  
         LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = debit_account_pv.ca_account_type
@@ -4209,7 +4209,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
             {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
             FROM {$this->db->getPrefix()}pro_purchase_voucher
             LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
-            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name AND {$this->db->getPrefix()}accounts_charts_of_accounts.ca_type = 'VENDOR'
+            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name
             LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
             LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
             LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
