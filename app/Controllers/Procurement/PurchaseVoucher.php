@@ -834,7 +834,11 @@ class PurchaseVoucher extends BaseController
         $debit_accounts = $this->common_model->FetchAllOrder('accounts_charts_of_accounts','ca_id','desc');
 
         $options_product = '<option value="'.$pur_vou_prod->pvp_prod_dec.'" selected>'.$pur_vou_prod->pvp_prod_dec.'</option>';
-    
+
+        $options_debit = '<option value="'.$pur_vou_prod->ca_id .'" selected>'.$pur_vou_prod->ca_name.'</option>';
+        
+        
+        
 
         $data['prod_desc'] = '';
 
@@ -858,17 +862,9 @@ class PurchaseVoucher extends BaseController
                 
 
 
-                <td>
-                    <select class="form-select" name="pvp_debit" required>';
-                    
-                        foreach($debit_accounts as $debit_account){
-                            $data['prod_desc'] .='<option class="droup_color" value="'.$debit_account->ca_id.'" '; 
-                            if($debit_account->ca_id == $pur_vou_prod->pvp_debit){ $data['prod_desc'] .= "selected"; }
-                            $data['prod_desc'] .='>'.$debit_account->ca_name.'</option>';
-                        }
-                    $data['prod_desc'] .='</select>
 
-                </td>
+
+                <td> <select name="pvp_debit" class="form-select debit_select2_edit  droup_color">'.$options_debit.'</select></td>
 
        
         <td> <input type="text" name="" value="'.$pur_vou_prod->pvp_unit.'" class="form-control text-center" readonly></td>

@@ -131,6 +131,11 @@
         color: #ff0000b5;
         font-size: 20px;
     }
+    .select_width1{
+
+        border: unset !important;
+
+    }
 </style>
 
  <!--add product modal start-->
@@ -2560,7 +2565,7 @@
            
            // $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
               
 
             }
@@ -2883,15 +2888,19 @@
 
                     $('.edit_single_prod').html(data.prod_desc);
 
+                    ProductSelect2Edit();
+
+                    DebitSelect2Edit();
 
                 }
+
             });
 
             $('#EditProdModal').modal('show');
 
             $('#EditModal').modal('hide');
 
-            ProductSelect2Edit();
+           
 
         });
 
@@ -3057,10 +3066,10 @@
                 $('body .product_select2_edit').each(function() {
                 $(this).select2({
                     placeholder: "Select Product",
-                    theme: "default form-control- select_width ",
+                    theme: "default form-control- select_width1 ",
                     dropdownParent: $($(this).closest('.edit_single_prod_row')),
                     ajax: {
-                        url: "<?= base_url(); ?>Crm/SalesOrder/FetchProducts",
+                        url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProdDes",
                         dataType: 'json',
                         delay: 250,
                         cache: false,
@@ -3078,7 +3087,7 @@
                             return {
                                 results: $.map(data.result, function(item) {
                                     return {
-                                        id: item.product_id ,
+                                        id: item.product_details ,
                                         text: item.	product_details
                                     }
                                 }),
@@ -3093,12 +3102,70 @@
             });
 
 
+            
         }
+
+
+
+        /**/
+        
+        
+        function DebitSelect2Edit() {
+                $('body .debit_select2_edit').each(function() {
+                $(this).select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width1 ",
+                    dropdownParent: $($(this).closest('.edit_single_prod_row')),
+                    ajax: {
+                        url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchDebit",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function(params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function(data, params) {
+
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function(item) {
+                                    return {
+                                        id: item.ca_id ,
+                                        text: item.	ca_name
+                                    }
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        },
+                    }
+                })
+
+            });
+
+
+            
+        }
+
+        /**/
 
 
 
 
     });
+
+
+    /**/
+     
+    
+    
+    /**/
 
 
 
