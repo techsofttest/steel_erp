@@ -170,7 +170,7 @@ class PurchaseVoucher extends BaseController
         {   
             //$uid = $this->common_model->FetchNextId('pro_purchase_voucher',"PV");
 
-            $uid = $this->FetchReference("r");
+            //$uid = $this->FetchReference("r");
 
             if(!empty($this->request->getPost('purchase_order')))
             {
@@ -199,6 +199,17 @@ class PurchaseVoucher extends BaseController
                 $delivery_note =  "";
             }
             
+            $ruid_check = $this->common_model->SingleRow('pro_purchase_voucher',array('pv_reffer_id' => $this->request->getPost('purchase_reffer_no')));
+
+            if(empty($ruid_check)){
+
+                $uid = $this->request->getPost('purchase_reffer_no');
+            }
+            else{
+
+                $uid = $this->FetchReference("r");
+            }
+
             $insert_data = [
 
                 'pv_reffer_id'       => $uid,

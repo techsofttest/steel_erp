@@ -199,7 +199,16 @@ class SalesReturn extends BaseController
         {
             //$uid = $this->common_model->FetchNextId('crm_sales_return',"SR");
 
-            $uid = $this->FetchReference("r");
+            $ruid_check = $this->common_model->SingleRow('crm_sales_return',array('sr_reffer_no' => $this->request->getPost('sr_reffer_no')));
+
+            if(empty($ruid_check)){
+        
+                $uid = $this->request->getPost('sr_reffer_no');
+            }
+            else{
+        
+                $uid = $this->FetchReference("r");
+            }
 
 
             $insert_data = [

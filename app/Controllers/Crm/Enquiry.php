@@ -186,61 +186,71 @@ class Enquiry extends BaseController
     // add account head
     Public function Add()
     {   
-            $uid = $this->FetchReference("r");
             
-            $insert_data = [
+        $ruid_check = $this->common_model->SingleRow('crm_enquiry',array('enquiry_reff' => $this->request->getPost('enquiry_reff')));
+
+        if(empty($ruid_check)){
+
+            $uid = $this->request->getPost('enquiry_reff');
+        }
+        else{
+
+            $uid = $this->FetchReference("r");
+        }
+
+        $insert_data = [
+        
+            'enquiry_reff'           => $uid,
+
+            'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
+
+            'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
+
+            'enquiry_contact_person' => $this->request->getPost('enquiry_contact_person'),
+
+            'enquiry_assign_to'      => $this->request->getPost('enquiry_assign_to'),
+
+            'enquiry_source'         => $this->request->getPost('enquiry_source'),
+
+            'enquiry_time_frame'     => date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame'))),
+
+            'enquiry_project'        => $this->request->getPost('enquiry_project'),
+
+            'enquiry_added_by'       => 0,
+
+            'enquiry_added_date'     => date("Y-m-d"),
+
+        ];
+
+        $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
+    
+    
+        if(!empty($_POST['pd_product_detail']))
+        {
+            $count =  count($_POST['pd_product_detail']);
                     
-                'enquiry_reff'           => $uid,
-
-                'enquiry_date'           => date('Y-m-d',strtotime($this->request->getPost('enquiry_date'))),
-
-                'enquiry_customer'       => $this->request->getPost('enquiry_customer'),
-
-                'enquiry_contact_person' => $this->request->getPost('enquiry_contact_person'),
-
-                'enquiry_assign_to'      => $this->request->getPost('enquiry_assign_to'),
-
-                'enquiry_source'         => $this->request->getPost('enquiry_source'),
-
-                'enquiry_time_frame'     => date('Y-m-d',strtotime($this->request->getPost('enquiry_time_frame'))),
-
-                'enquiry_project'        => $this->request->getPost('enquiry_project'),
-
-                'enquiry_added_by'       => 0,
-
-                'enquiry_added_date'     => date("Y-m-d"),
-
-            ];
-
-            $enquiry_id = $this->common_model->InsertData('crm_enquiry',$insert_data);
-        
-        
-            if(!empty($_POST['pd_product_detail']))
-            {
-                $count =  count($_POST['pd_product_detail']);
-                        
-                if($count!=0)
-                {  
-                    for($j=0;$j<=$count-1;$j++)
-                    {
-                                
-                        $insert_data  	= array(  
+            if($count!=0)
+            {  
+                for($j=0;$j<=$count-1;$j++)
+                {
                             
-                            'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
-                            'pd_unit'                 =>  $_POST['pd_unit'][$j],
-                            'pd_quantity'             =>  $_POST['pd_quantity'][$j],
-                            'pd_enquiry_id'           =>  $enquiry_id,
-        
-                        );
-                    
-                        $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
-                    
-                    } 
-                }
-            } 
+                    $insert_data  	= array(  
+                        
+                        'pd_product_detail'       =>  $_POST['pd_product_detail'][$j],
+                        'pd_unit'                 =>  $_POST['pd_unit'][$j],
+                        'pd_quantity'             =>  $_POST['pd_quantity'][$j],
+                        'pd_enquiry_id'           =>  $enquiry_id,
+    
+                    );
+                
+                    $id = $this->common_model->InsertData('crm_product_detail',$insert_data);
+                
+                } 
+            }
+        } 
 
-
-
+      
+     
 
     }
 

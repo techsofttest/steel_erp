@@ -176,8 +176,17 @@ class SalesQuotation extends BaseController
     // add account head
     Public function Add()
     {   
+        $ruid_check = $this->common_model->SingleRow('crm_quotation_details',array('qd_reffer_no' => $this->request->getPost('qd_reffer_no')));
         
-        $uid = $this->FetchReference("r");
+        if(empty($ruid_check)){
+
+            $uid = $this->request->getPost('qd_reffer_no');
+        }
+        else{
+
+            $uid = $this->FetchReference("r");
+        }
+        
        
         $insert_data = [
 

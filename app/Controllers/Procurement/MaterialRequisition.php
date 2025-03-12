@@ -132,7 +132,18 @@ class MaterialRequisition extends BaseController
     public function Add()
     {   
 
-        $uid = $this->FetchReference("r");
+        //$uid = $this->FetchReference("r");
+
+        $ruid_check = $this->common_model->SingleRow('pro_material_requisition',array('mr_reffer_no' => $this->request->getPost('mr_reffer_no')));
+
+        if(empty($ruid_check)){
+
+            $uid = $this->request->getPost('mr_reffer_no');
+        }
+        else{
+
+            $uid = $this->FetchReference("r");
+        }
         
         $insert_data = [
                 

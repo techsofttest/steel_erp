@@ -146,7 +146,18 @@ class MaterialReceivedNote extends BaseController
         {
             //$uid = $this->common_model->FetchNextId('pro_material_received_note',"MRN");
 
-            $uid = $this->FetchReference("r");
+            //$uid = $this->FetchReference("r");
+
+            $ruid_check = $this->common_model->SingleRow('pro_material_received_note',array('mrn_reffer' => $this->request->getPost('mrn_reffer_no')));
+
+            if(empty($ruid_check)){
+
+                $uid = $this->request->getPost('mrn_reffer_no');
+            }
+            else{
+
+                $uid = $this->FetchReference("r");
+            }
             
             $insert_data = [
 

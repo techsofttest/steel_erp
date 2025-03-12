@@ -222,9 +222,19 @@ class ProFormaInvoice extends BaseController
 
         $return['print'] = "";
 
-      
+        $ruid_check = $this->common_model->SingleRow('crm_proforma_invoices',array('pf_reffer_no' => $this->request->getPost('pf_reffer_no')));
 
-        $uid = $this->FetchReference("r");
+        if(empty($ruid_check)){
+
+            $uid = $this->request->getPost('pf_reffer_no');
+        }
+        else{
+          
+            $uid = $this->FetchReference("r");
+            
+        }
+
+        
         
         $insert_data = [
 

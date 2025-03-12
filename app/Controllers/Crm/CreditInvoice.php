@@ -216,11 +216,23 @@ class CreditInvoice extends BaseController
 
             //if(empty($credit_invoices))
             //{
-                $uid = $this->FetchReference("r");
+
+                //$uid = $this->FetchReference("r");
+
+                $ruid_check = $this->common_model->SingleRow('crm_credit_invoice',array('cci_reffer_no' => $this->request->getPost('cci_reffer_no')));
+
+                if(empty($ruid_check)){
+
+                    $uid = $this->request->getPost('cci_reffer_no');
+                }
+                else{
+            
+                    $uid = $this->FetchReference("r");
+                }
 
                 $insert_data = [
 
-                    'cci_reffer_no'      => $uid,
+                    //'cci_reffer_no'      => $uid,
         
                     'cci_date'           => date('Y-m-d',strtotime($this->request->getPost('cci_date'))),
         
