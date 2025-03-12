@@ -307,6 +307,11 @@
                                             foreach($transactions as $trn){ 
 
 
+                                                if($trn->method==1)
+                                                {
+                                                continue;
+                                                }
+
                                                 $days_due = (strtotime(date('Y-m-d')) - strtotime($trn->transaction_date)) / (60 * 60 * 24);
                                                     
                                                     // Determine Aging Bucket
