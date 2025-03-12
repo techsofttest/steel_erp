@@ -437,7 +437,17 @@
                                         <tbody>
 
 
-                                    <?php foreach($post_dated_cheques as $pdc){?>
+                                    <?php 
+                                    $displayed_references = [];
+                                    foreach($post_dated_cheques as $pdc){
+                                        
+                                    if (in_array($pdc->reference, $displayed_references)) {
+                                        continue; // Skip this iteration if reference is already displayed
+                                    }
+                                    
+                                    $displayed_references[] = $pdc->reference;
+
+                                    ?>
 
                                     <tr>
 
