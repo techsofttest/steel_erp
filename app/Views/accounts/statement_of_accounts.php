@@ -403,10 +403,12 @@
                                         {
                                         ?>
 
+                                        <h5 class="text-center">Post Date Cheque Details</h5>
+
                                         <table class="table table-bordered">
 
 
-                                        <thead>
+                                            <thead>
 
                                             <tr>
 

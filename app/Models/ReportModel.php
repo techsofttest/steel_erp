@@ -402,7 +402,7 @@ class ReportModel extends Model
 
     $query .= ")";
 
-
+    
     //Payment Debit
 
             $query .= "UNION ALL
@@ -3331,7 +3331,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         (SELECT 
             {$pf}accounts_receipts.r_ref_no as reference,
             {$pf}accounts_receipts.r_date AS transaction_date,
-            {$pf}accounts_receipt_invoice_data.rid_receipt as amount,
+            {$pf}accounts_receipts.r_amount as amount,
             {$pf}accounts_receipts.r_cheque_no as cheque_no,
             {$pf}accounts_receipts.r_cheque_date as cheque_date,
             {$pf}master_banks.bank_name as bank,
@@ -3387,6 +3387,8 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         }
 
+        $query .="GROUP BY {$pf}accounts_receipts.r_id";
+
 
         $query .= ")";  
 
@@ -3397,7 +3399,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
         (SELECT 
         {$pf}accounts_receipts.r_ref_no as reference,
         {$pf}accounts_receipts.r_date AS transaction_date,
-        {$pf}accounts_receipt_invoice_data.rid_receipt as amount,
+        {$pf}accounts_receipts.r_amount as amount,
         {$pf}accounts_receipts.r_cheque_no as cheque_no,
         {$pf}accounts_receipts.r_cheque_date as cheque_date,
         {$pf}master_banks.bank_name as bank,
@@ -3456,8 +3458,9 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         }
 
-        $query .= ")";
+        $query .="GROUP BY {$pf}accounts_receipts.r_id";
 
+        $query .= ")";
 
         }
 

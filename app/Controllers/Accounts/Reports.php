@@ -1586,7 +1586,7 @@ class Reports extends BaseController
         {
 
         $start_date = "";
-        $end_date =date('Y-m-d');
+        $end_date = date('Y-m-d');
 
 
         if(!empty($this->request->getGet('start_date')))
@@ -1688,7 +1688,9 @@ class Reports extends BaseController
 
         //$data['receipts'] = $this->report_model->ARPReceipts($start_date,$account_head,$account_type,$account);
 
-        $data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
+        //$data['transactions'] = $this->report_model->AgedRPTransactions($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
+
+        $data['transactions'] = $this->report_model->FetchGLTransactions($start_date, $end_date, $account_head_filter="", $account_type_filter="", $account, $time_frame="Range",$range_from="",$range_to="");
 
         $data['post_dated_cheques'] = $this->report_model->AgedRPPDC($start_date,$end_date,$account_head,$account_type,$account,$type,$adjust_type);
 
@@ -1766,9 +1768,7 @@ class Reports extends BaseController
                     $balance = $balance+$vc->debit_amount; 
 
                     $total_debit = $total_debit+$vc->debit_amount;
-
-                 
-
+                    
                     } else if($vc->credit_amount<0) {
 
                     $debit_am = format_currency($vc->credit_amount); 
