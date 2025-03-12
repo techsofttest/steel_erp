@@ -3387,7 +3387,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         }
 
-        $query .="GROUP BY {$pf}accounts_receipts.r_id";
+        $query .="GROUP BY reference";
 
 
         $query .= ")";  
@@ -3458,7 +3458,7 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
 
         }
 
-        $query .="GROUP BY {$pf}accounts_receipts.r_id";
+        $query .="GROUP BY reference";
 
         $query .= ")";
 
