@@ -3300,379 +3300,137 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
     
             $pf = $this->db->getPrefix();
 
-            if(empty($date_to))
-            {
-
-            $date_to = date('Y-m-d');
-
-            }
-
-
-            $cash_invoice_table = "{$this->db->getPrefix()}crm_cash_invoice";
-
-            $credit_invoice_table = "{$this->db->getPrefix()}crm_credit_invoice";
-    
-            $pv_table = "{$this->db->getPrefix()}pro_purchase_voucher";
-
-            $query = "";
-
-            //Cash Invoices Fetch
-
-            
-            $pv_union = "";
-            if($type=="b" || $type=="")
-            {
-            //$pv_union="UNION ALL";
+            if (empty($date_to)) {
+                $date_to = date('Y-m-d');
             }
             
-            if($type=="r" || $type=="b" || $type=="")
-            {
-
+            $cash_invoice_table = "{$pf}crm_cash_invoice";
+            $credit_invoice_table = "{$pf}crm_credit_invoice";
+            $pv_table = "{$pf}pro_purchase_voucher";
+            
+            $mainQuery = "";
+            
+            // Cash & Credit Invoice Queries
+            if ($type == "r" || $type == "b" || $type == "") {
+                $mainQuery = "SELECT reference, transaction_date, amount, cheque_no, cheque_date, bank, account_id, account_name FROM (";
+            
+                // Cash Invoice Query
+                $mainQuery .= "
+                    SELECT 
+                        ar.r_ref_no AS reference,
+                        MAX(ar.r_date) AS transaction_date,
+                        SUM(ar.r_amount) AS amount,
+                        ar.r_cheque_no AS cheque_no,
+                        ar.r_cheque_date AS cheque_date,
+                        mb.bank_name AS bank,
+                        coa.ca_id AS account_id,
+                        coa.ca_name AS account_name
+                    FROM {$cash_invoice_table} ci
+                    LEFT JOIN {$pf}accounts_charts_of_accounts coa 
+                        ON coa.ca_customer = ci.ci_customer
+                    LEFT JOIN {$pf}accounts_receipt_invoice_data rid 
+                        ON rid.rid_invoice = ci.ci_id AND rid.rid_invoice_type = 'cash_invoice'
+                    LEFT JOIN {$pf}accounts_receipt_invoices ri 
+                        ON ri.ri_id = rid.rid_receipt_invoice
+                    LEFT JOIN {$pf}accounts_receipts ar 
+                        ON ar.r_id = ri.ri_receipt
+                    LEFT JOIN {$pf}master_banks mb 
+                        ON mb.bank_id = ar.r_bank
+                    WHERE ar.r_method = 1 ";
+            
+                if (!empty($date_from)) {
+                    $mainQuery .= " AND ar.r_date >= '{$date_from}' ";
+                }
+                if (!empty($date_to)) {
+                    $mainQuery .= " AND ar.r_date <= '{$date_to}' ";
+                }
+                if (!empty($account)) {
+                    $mainQuery .= " AND coa.ca_id = '{$account}' ";
+                }
+            
+                $mainQuery .= " GROUP BY reference, ar.r_cheque_no, ar.r_cheque_date, mb.bank_name, coa.ca_id, coa.ca_name ";
+            
+                // Credit Invoice Query
+                $mainQuery .= " UNION ALL 
+                    SELECT 
+                        ar.r_ref_no AS reference,
+                        MAX(ar.r_date) AS transaction_date,
+                        SUM(ar.r_amount) AS amount,
+                        ar.r_cheque_no AS cheque_no,
+                        ar.r_cheque_date AS cheque_date,
+                        mb.bank_name AS bank,
+                        coa.ca_id AS account_id,
+                        coa.ca_name AS account_name
+                    FROM {$credit_invoice_table} ci
+                    LEFT JOIN {$pf}accounts_charts_of_accounts coa 
+                        ON coa.ca_customer = ci.cci_customer
+                    LEFT JOIN {$pf}accounts_receipt_invoice_data rid 
+                        ON rid.rid_invoice = ci.cci_id AND rid.rid_invoice_type = 'credit_invoice'
+                    LEFT JOIN {$pf}accounts_receipt_invoices ri 
+                        ON ri.ri_id = rid.rid_receipt_invoice
+                    LEFT JOIN {$pf}accounts_receipts ar 
+                        ON ar.r_id = ri.ri_receipt
+                    LEFT JOIN {$pf}master_banks mb 
+                        ON mb.bank_id = ar.r_bank
+                    WHERE ar.r_method = 1 ";
+            
+                if (!empty($date_from)) {
+                    $mainQuery .= " AND ar.r_date >= '{$date_from}' ";
+                }
+                if (!empty($date_to)) {
+                    $mainQuery .= " AND ar.r_date <= '{$date_to}' ";
+                }
+                if (!empty($account)) {
+                    $mainQuery .= " AND coa.ca_id = '{$account}' ";
+                }
+            
+                $mainQuery .= " GROUP BY reference, ar.r_cheque_no, ar.r_cheque_date, mb.bank_name, coa.ca_id, coa.ca_name ) AS combined_data ";
+            }
+            
             /*
-            $query .= " 
-            (SELECT 
-                {$pf}accounts_receipts.r_ref_no as reference,
-                {$pf}accounts_receipts.r_date AS transaction_date,
-                {$pf}accounts_receipts.r_amount as amount,
-                {$pf}accounts_receipts.r_cheque_no as cheque_no,
-                {$pf}accounts_receipts.r_cheque_date as cheque_date,
-                {$pf}master_banks.bank_name as bank,
-                {$pf}accounts_charts_of_accounts.ca_id AS account_id,
-                {$pf}accounts_charts_of_accounts.ca_name AS account_name
-            FROM {$pf}crm_cash_invoice
-            LEFT JOIN {$pf}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$cash_invoice_table}.ci_customer
-            LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
-            LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
-            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_customer = {$cash_invoice_table}.ci_customer
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice = {$cash_invoice_table}.ci_id AND {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice_type = 'cash_invoice'
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_id = {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipts ON {$this->db->getPrefix()}accounts_receipts.r_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt
-            LEFT JOIN {$pf}master_banks ON {$pf}master_banks.bank_id = {$pf}accounts_receipts.r_bank
-            ";
-
-            $query .= "WHERE ";
-
-            $query .= "`{$this->db->getPrefix()}accounts_receipts`.r_method = 1";
-
+            // Purchase Vouchers
+            if ($type == "p" || $type == "b" || $type == "") {
+                if (!empty($mainQuery)) {
+                    $mainQuery .= " UNION ALL ";
+                }
             
-            if ($date_from != "") {
-                $query .= " AND ";
-                $query .= "{$cash_invoice_table}.ci_date >= '{$date_from}' ";
-            }
-
+                $mainQuery .= "SELECT 
+                    ap.pay_ref_no AS reference,
+                    MAX(ap.pay_date) AS transaction_date,
+                    SUM(ap.pay_amount) AS amount,
+                    ap.pay_cheque_no AS cheque_no,
+                    ap.pay_cheque_date AS cheque_date,
+                    mb.bank_name AS bank,
+                    coa.ca_id AS account_id,
+                    coa.ca_name AS account_name
+                FROM {$pv_table} pv
+                LEFT JOIN {$pf}accounts_charts_of_accounts coa 
+                    ON coa.ca_customer = pv.pv_vendor_name
+                LEFT JOIN {$pf}accounts_payments ap 
+                    ON ap.pay_id = pv.pi_payment
+                LEFT JOIN {$pf}master_banks mb 
+                    ON mb.bank_id = ap.pay_bank
+                WHERE ap.pay_method = 1 ";
             
-            if ($date_to != "") {
-                $query .= " AND ";
-                $query .= "{$cash_invoice_table}.ci_date <= '{$date_to}' ";
-            }
-
-            if ($account_head != "") {
-            if ($date_to != "") {
-                $query .= " AND ";
-            }
-            $query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
-            }
-                
-            if ($account_type != "") {
-            if ($date_to != "") {
-                $query .= " AND ";
-            }
-            $query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
-            }
-
-            if ($account != "") {
-                if ($date_to != "") {
-                    $query .= " AND ";
+                if (!empty($date_from)) {
+                    $mainQuery .= " AND ap.pay_date >= '{$date_from}' ";
                 }
-
-            $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
-
-            }
-
-            $query .="GROUP BY reference";
-
-
-            $query .= ")";  
-
-
-            //Credit Invoices Fetch
-
-            $query .= "UNION ALL 
-            (SELECT 
-            {$pf}accounts_receipts.r_ref_no as reference,
-            {$pf}accounts_receipts.r_date AS transaction_date,
-            {$pf}accounts_receipts.r_amount as amount,
-            {$pf}accounts_receipts.r_cheque_no as cheque_no,
-            {$pf}accounts_receipts.r_cheque_date as cheque_date,
-            {$pf}master_banks.bank_name as bank,
-            {$pf}accounts_charts_of_accounts.ca_id AS account_id,
-            {$pf}accounts_charts_of_accounts.ca_name AS account_name
-            FROM {$pf}crm_credit_invoice
-            LEFT JOIN {$pf}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$credit_invoice_table}.cci_customer
-            LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = {$this->db->getPrefix()}accounts_charts_of_accounts.ca_account_type
-            LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
-            LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS ca_credit_account ON ca_credit_account.ca_customer = {$credit_invoice_table}.cci_customer
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoice_data ON {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice = {$credit_invoice_table}.cci_id AND {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_invoice_type = 'credit_invoice'
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipt_invoices ON {$this->db->getPrefix()}accounts_receipt_invoices.ri_id = {$this->db->getPrefix()}accounts_receipt_invoice_data.rid_receipt_invoice
-            LEFT JOIN {$this->db->getPrefix()}accounts_receipts ON {$this->db->getPrefix()}accounts_receipts.r_id = {$this->db->getPrefix()}accounts_receipt_invoices.ri_receipt
-            LEFT JOIN {$pf}master_banks ON {$pf}master_banks.bank_id = {$pf}accounts_receipts.r_bank
-            ";
-
-
-            $query .= "WHERE ";
-
-            //$query .="{$credit_invoice_table}.cci_paid_status != 3";
-
-            $query .= "`{$this->db->getPrefix()}accounts_receipts`.r_method = 1";
-
-
-            if ($date_from != "") {
-                $query .= " AND ";
-                $query .= "{$credit_invoice_table}.cci_date >= '{$date_from}' ";
-            }
-
-
-            if ($date_to != "") {
-                $query .= " AND ";
-                $query .= "{$credit_invoice_table}.cci_date <= '{$date_to}' ";
-            }
-
-            if ($account_head != "") {
-                if ($date_to != "") {
-                    $query .= " AND ";
+                if (!empty($date_to)) {
+                    $mainQuery .= " AND ap.pay_date <= '{$date_to}' ";
                 }
-                $query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
-                }
-                
-            if ($account_type != "") {
-                    if ($date_to != "") {
-                        $query .= " AND ";
-                    }
-                    $query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
+            
+                $mainQuery .= " GROUP BY reference, ap.pay_cheque_no, ap.pay_cheque_date, mb.bank_name, coa.ca_id, coa.ca_name ";
             }
-
-            if ($account != "") {
-                if ($date_to != "") {
-                    $query .= " AND ";
-                }
-
-            $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
-
-            }
-
-            $query .="GROUP BY reference";
-
-            $query .= ")";
-
             */
-
-
-
-            $query = "
-    SELECT 
-        reference,
-        MAX(transaction_date) AS transaction_date,
-        SUM(amount) AS amount,
-        MAX(cheque_no) AS cheque_no,
-        MAX(cheque_date) AS cheque_date,
-        MAX(bank) AS bank,
-        MAX(account_id) AS account_id,
-        MAX(account_name) AS account_name
-    FROM (
-        -- Cash Invoices
-        SELECT 
-            {$pf}accounts_receipts.r_ref_no AS reference,
-            {$pf}accounts_receipts.r_date AS transaction_date,
-            {$pf}accounts_receipts.r_amount AS amount,
-            {$pf}accounts_receipts.r_cheque_no AS cheque_no,
-            {$pf}accounts_receipts.r_cheque_date AS cheque_date,
-            {$pf}master_banks.bank_name AS bank,
-            {$pf}accounts_charts_of_accounts.ca_id AS account_id,
-            {$pf}accounts_charts_of_accounts.ca_name AS account_name
-        FROM {$cash_invoice_table}
-        LEFT JOIN {$pf}accounts_charts_of_accounts 
-            ON {$pf}accounts_charts_of_accounts.ca_customer = {$cash_invoice_table}.ci_customer
-        LEFT JOIN {$pf}accounts_account_heads 
-            ON {$pf}accounts_account_heads.ah_id = {$pf}accounts_charts_of_accounts.ca_account_type
-        LEFT JOIN {$pf}accounts_account_types 
-            ON {$pf}accounts_account_types.at_id = {$pf}accounts_account_heads.ah_id
-        LEFT JOIN {$pf}accounts_receipt_invoice_data 
-            ON {$pf}accounts_receipt_invoice_data.rid_invoice = {$cash_invoice_table}.ci_id 
-            AND {$pf}accounts_receipt_invoice_data.rid_invoice_type = 'cash_invoice'
-        LEFT JOIN {$pf}accounts_receipt_invoices 
-            ON {$pf}accounts_receipt_invoices.ri_id = {$pf}accounts_receipt_invoice_data.rid_receipt_invoice
-        LEFT JOIN {$pf}accounts_receipts 
-            ON {$pf}accounts_receipts.r_id = {$pf}accounts_receipt_invoices.ri_receipt
-        LEFT JOIN {$pf}master_banks 
-            ON {$pf}master_banks.bank_id = {$pf}accounts_receipts.r_bank
-        WHERE {$pf}accounts_receipts.r_method = 1 ";
-
-if (!empty($date_from)) {
-    $query .= " AND {$cash_invoice_table}.ci_date >= '{$date_from}' ";
-}
-
-if (!empty($date_to)) {
-    $query .= " AND {$cash_invoice_table}.ci_date <= '{$date_to}' ";
-}
-
-if (!empty($account_head)) {
-    $query .= " AND {$pf}accounts_account_heads.ah_id = {$account_head}";
-}
-if (!empty($account_type)) {
-    $query .= " AND {$pf}accounts_account_types.at_id = {$account_type}";
-}
-if (!empty($account)) {
-    $query .= " AND {$pf}accounts_charts_of_accounts.ca_id = {$account}";
-}
-
-$query .= "
-        UNION ALL
-
-        -- Credit Invoices
-        SELECT 
-            {$pf}accounts_receipts.r_ref_no AS reference,
-            {$pf}accounts_receipts.r_date AS transaction_date,
-            {$pf}accounts_receipts.r_amount AS amount,
-            {$pf}accounts_receipts.r_cheque_no AS cheque_no,
-            {$pf}accounts_receipts.r_cheque_date AS cheque_date,
-            {$pf}master_banks.bank_name AS bank,
-            {$pf}accounts_charts_of_accounts.ca_id AS account_id,
-            {$pf}accounts_charts_of_accounts.ca_name AS account_name
-        FROM {$credit_invoice_table}
-        LEFT JOIN {$pf}accounts_charts_of_accounts 
-            ON {$pf}accounts_charts_of_accounts.ca_customer = {$credit_invoice_table}.cci_customer
-        LEFT JOIN {$pf}accounts_account_heads 
-            ON {$pf}accounts_account_heads.ah_id = {$pf}accounts_charts_of_accounts.ca_account_type
-        LEFT JOIN {$pf}accounts_account_types 
-            ON {$pf}accounts_account_types.at_id = {$pf}accounts_account_heads.ah_id
-        LEFT JOIN {$pf}accounts_receipt_invoice_data 
-            ON {$pf}accounts_receipt_invoice_data.rid_invoice = {$credit_invoice_table}.cci_id 
-            AND {$pf}accounts_receipt_invoice_data.rid_invoice_type = 'credit_invoice'
-        LEFT JOIN {$pf}accounts_receipt_invoices 
-            ON {$pf}accounts_receipt_invoices.ri_id = {$pf}accounts_receipt_invoice_data.rid_receipt_invoice
-        LEFT JOIN {$pf}accounts_receipts 
-            ON {$pf}accounts_receipts.r_id = {$pf}accounts_receipt_invoices.ri_receipt
-        LEFT JOIN {$pf}master_banks 
-            ON {$pf}master_banks.bank_id = {$pf}accounts_receipts.r_bank
-        WHERE {$pf}accounts_receipts.r_method = 1 ";
-
-            if (!empty($date_from)) {
-                $query .= " AND {$credit_invoice_table}.cci_date >= '{$date_from}' ";
-            }
-
-            if (!empty($date_to)) {
-                $query .= " AND {$credit_invoice_table}.cci_date <= '{$date_to}' ";
-            }
-
-            if (!empty($account_head)) {
-                $query .= " AND {$pf}accounts_account_heads.ah_id = {$account_head}";
-            }
-            if (!empty($account_type)) {
-                $query .= " AND {$pf}accounts_account_types.at_id = {$account_type}";
-            }
-            if (!empty($account)) {
-                $query .= " AND {$pf}accounts_charts_of_accounts.ca_id = {$account}";
-            }
-
-            $query .= ") AS combined_data
-                GROUP BY reference;
-            ";
-
-
-            }
-
-
             
+            $mainQuery .= " ORDER BY transaction_date DESC; ";
 
-
-        //echo $query; exit;
-
-
-
-        //PV Start
- 
-        if($type=="p" || $type=="b" || $type=="")
-        {
-
-        /*
-        $query .= "{$pv_union} 
-        (SELECT 
-        {$pf}accounts_payments.pay_ref_no as reference,
-        {$pf}accounts_payments.pay_date AS transaction_date,
-        {$pf}accounts_payments.pay_amount as amount,
-        {$pf}accounts_payments.pay_cheque_no as cheque_no,
-        {$pf}accounts_payments.pay_cheque_date as cheque_date,
-        {$pf}master_banks.bank_name as bank,
-        {$pf}accounts_charts_of_accounts.ca_id AS account_id,
-        {$pf}accounts_charts_of_accounts.ca_name AS account_name
-        FROM {$this->db->getPrefix()}pro_purchase_voucher
-        LEFT JOIN {$this->db->getPrefix()}pro_purchase_voucher_prod ON {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id = {$pv_table}.pv_id 
-        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts ON {$this->db->getPrefix()}accounts_charts_of_accounts.ca_customer = {$pv_table}.pv_vendor_name 
-        LEFT JOIN {$this->db->getPrefix()}pro_purchase_order ON {$this->db->getPrefix()}pro_purchase_order.po_id = {$pv_table}.pv_purchase_order 
-        LEFT JOIN {$this->db->getPrefix()}accounts_charts_of_accounts AS debit_account_pv ON debit_account_pv.ca_id = {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_debit  
-        LEFT JOIN {$this->db->getPrefix()}accounts_account_heads ON {$this->db->getPrefix()}accounts_account_heads.ah_id = debit_account_pv.ca_account_type
-        LEFT JOIN {$this->db->getPrefix()}accounts_account_types ON {$this->db->getPrefix()}accounts_account_types.at_id = {$this->db->getPrefix()}accounts_account_heads.ah_id
-        LEFT JOIN {$this->db->getPrefix()}accounts_payment_debit_invoices ON {$this->db->getPrefix()}accounts_payment_debit_invoices.pdi_invoice = {$pv_table}.pv_id
-        LEFT JOIN {$this->db->getPrefix()}accounts_payment_debit ON {$this->db->getPrefix()}accounts_payment_debit.pd_id = {$this->db->getPrefix()}accounts_payment_debit_invoices.pdi_debit_id
-        LEFT JOIN {$this->db->getPrefix()}accounts_payments ON {$this->db->getPrefix()}accounts_payments.pay_id = {$this->db->getPrefix()}accounts_payment_debit.pd_payment
-        LEFT JOIN {$pf}master_banks ON {$pf}master_banks.bank_id = {$pf}accounts_payments.pay_bank
-        ";
-        //
-        //
-
-        $query .= "WHERE ";
-
-        //if payables
-
-        $query .= "`{$this->db->getPrefix()}accounts_payments`.pay_method = 1";
-
-        if ($date_from != "") {
-            $query .= " AND ";
-            $query .= "{$pv_table}.pv_date >= '{$date_from}' ";
-        }
-
-        if ($date_to != "") {
-            $query .= " AND ";
-            $query .= "{$pv_table}.pv_date <= '{$date_to}' ";
-        }
-
-        if ($account_head != "") {
-            if ($date_to != "") {
-                $query .= " AND ";
-            }
-            $query .= "{$this->db->getPrefix()}accounts_account_heads.ah_id = {$account_head} ";
-            }
+            //echo $mainQuery; exit;
             
-        if ($account_type != "") {
-                if ($date_to != "") {
-                    $query .= " AND ";
-                }
-                $query .= "{$this->db->getPrefix()}accounts_account_types.at_id = {$account_type} ";
-        }
+            // Execute query
+            $result = $this->db->query($mainQuery)->getResult();
 
-        if ($account != "") {
-            if ($date_to != "") {
-                $query .= " AND ";
-            }
-
-        $query .= "{$this->db->getPrefix()}accounts_charts_of_accounts.ca_id = {$account} ";
-
-        }
-
-        $query .="GROUP BY {$this->db->getPrefix()}pro_purchase_voucher_prod.pvp_reffer_id";
-
-        $query .= ")";
-
-        */
-
-        }
-
-
-        $result = $this->db->query($query)->getResult();
-
-        //$return = $this->FetchGLTransactions($date_from="",$date_to, $account_head="", $account_type="", $account, $time_frame="Range",$range_from="",$range_to="");
-  
-        return $result;
+            return $result;
     
         }
 
