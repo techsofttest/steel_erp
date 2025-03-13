@@ -1658,7 +1658,7 @@ class Reports extends BaseController
         $account_name .= ", Fax : {$data['account_name']->cc_fax}";
 
         if(!empty($data['account_name']->cc_fax))
-        $account_name .=", Email : {$data['account_name']->cc_fax}";
+        $account_name .=", Email : {$data['account_name']->cc_email}";
                        
         }
 
@@ -1731,7 +1731,15 @@ class Reports extends BaseController
 
                 foreach($data['transactions'] as $vc)
                 {   
+                    
+                    $purchase_order = "";
 
+                    if($vc->voucher_type=="Purchase Voucher")
+                    {
+
+                    $purchase_order = $this->report_model->LinkedPurchaseOrder($vc->id);
+
+                    }
 
                     if(empty($start_date))
                     {
@@ -1749,7 +1757,6 @@ class Reports extends BaseController
 
                     $total_credit = $total_credit + $vc->credit_amount;
 
-                    $total_pdc = $total_pdc + $vc->pdc_amount;
     
                     $new_date = date('d-M-Y',strtotime($vc->transaction_date));
     
@@ -1757,7 +1764,7 @@ class Reports extends BaseController
 
                     $pdf_data .= " <td align='center'>{$new_date}</td>";
 
-                    $pdf_data .= "<td align='center'>{$vc->purchase_order}</td>";
+                    $pdf_data .= "<td align='center'>{$purchase_order}</td>";
                 
 
 
@@ -1872,15 +1879,15 @@ class Reports extends BaseController
             
                 <style>
                 th, td {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
                     padding-left: 5px;
                     padding-right: 5px;
-                    font-size: 12px;
+                    font-size: 10px;
                 }
                 p{
                     
-                    font-size: 12px;
+                    font-size: 10px;
     
                 }
                 .dec_width
@@ -1920,16 +1927,14 @@ class Reports extends BaseController
             
                 <tr width="100%">
 
-                <td width="100%" colspan="5" align="right"><h3>Statement Of Account</h3></td>
+                <td style="border-bottom:1px solid;" width="100%" colspan="5" align="right"><h3>Statement Of Account</h3></td>
             
-                
-
                 </tr>
 
 
                 <tr width="100%">
 
-                <td width="15%">
+                <td width="15%" height="100%" style="border-right:1px solid;" align="left">
                 Customer : 
                 </td>
 
@@ -1943,9 +1948,28 @@ class Reports extends BaseController
 
 
 
+                 <tr width="100%">
+
+                <td width="15%" style="border-right:1px solid;" align="left">
+                Attention :    
+                </td>
+
+                <td>
+                
+                Accounts Department
+
+                </td>
+
+                </tr>
+
+
+
+
+
+
                 <tr width="100%">
 
-                <td width="15%">
+                <td width="15%" style="border-right:1px solid;" align="left">
                 Period :
                 </td>
 
@@ -1958,19 +1982,7 @@ class Reports extends BaseController
                 </tr>
 
 
-                <tr width="100%">
-
-                <td width="15%">
-                Division :    
-                </td>
-
-                <td>
-                
-                Al Fuzail
-
-                </td>
-
-                </tr>
+               
 
 
 
@@ -1978,7 +1990,7 @@ class Reports extends BaseController
                 </table>
                
             
-                <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+                <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;">
                 
             
                 <tr>
@@ -2002,17 +2014,17 @@ class Reports extends BaseController
 
                 <tr>
 
-                <td align="left" style="border-top: 2px solid">Op. Balance</td>
+                <td align="left" style="border-top: 1px solid">Op. Balance</td>
             
-                <td align="left" style="border-top: 2px solid"></td>
+                <td align="left" style="border-top: 1px solid"></td>
             
-                <td align="left" style="border-top: 2px solid"></td>
+                <td align="left" style="border-top: 1px solid"></td>
             
-                <td align="right" style="border-top: 2px solid"></td>
+                <td align="right" style="border-top: 1px solid"></td>
     
-                <td align="right" style="border-top: 2px solid"></td>
+                <td align="right" style="border-top: 1px solid"></td>
     
-                <td align="right" style="border-top: 2px solid">-</td>
+                <td align="right" style="border-top: 1px solid">-</td>
                 
                 </tr>
                 
@@ -2050,12 +2062,12 @@ class Reports extends BaseController
 
                 $pdc_data .='
                 <tr>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt No</td>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Receipt Date</td>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque No</td>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Cheque Date</td>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="center">Bank</td>
-                <td style="border-top: 2px solid;border-bottom: 2px solid;" align="right">Amount</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="center">Receipt No</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="center">Receipt Date</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="center">Cheque No</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="center">Cheque Date</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="center">Bank</td>
+                <td style="border-top: 1px solid;border-bottom: 1px solid;" align="right">Amount</td>
                 </tr>
                 ';
 
@@ -2085,12 +2097,12 @@ class Reports extends BaseController
 
                 $pdc_data .='
                 <tr>
-                <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"></td>
-                <td style="border-top: 2px solid"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
+                <td style="border-top: 1px solid"></td>
+                <td style="border-top: 1px solid"></td>
+                <td style="border-top: 1px solid"></td>
+                <td style="border-top: 1px solid"></td>
+                <td style="border-top: 1px solid"></td>
+                <td style="border-top: 1px solid" align="right"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
                 </tr>
                 ';
 
@@ -2104,7 +2116,7 @@ class Reports extends BaseController
 
                 <tr>
                 
-                <td style="border-top:2px solid;border-bottom:2px solid;" align="center">Net Amount Due : '.currency_to_words($balance).'</td>
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="center"><b>Net Amount Due : '.currency_to_words($balance).'</b></td>
 
                 </tr>
 
@@ -2351,7 +2363,8 @@ class Reports extends BaseController
                 $mpdf = new \Mpdf\Mpdf([
                     'format' => 'Letter', // Custom page size in millimeters
                     //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
-                    'default_font_size' => 9, 
+                    'default_font_size' => 9,
+                    'margin_top' => 0,
                     'margin_left' => 5, 
                     'margin_right' => 5,
                     'fontDir' => array_merge($fontDirs, [
@@ -2434,7 +2447,7 @@ class Reports extends BaseController
 
                 <tr width="100%">
 
-                <td width="15%">
+                <td width="15%" style="border-right:2px solid;">
                 Period : 
                 </td>
 

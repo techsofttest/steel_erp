@@ -2742,6 +2742,30 @@ public function FetchGLOpenBalance($date_from, $date_to, $account_head, $account
     }
 
 
+
+
+
+        public function LinkedPurchaseOrder($pvid)
+        {
+
+        $query = $this->db->table('pro_purchase_voucher');
+
+        $query->select('po_reffer_no');
+
+        $query->where('pv_id',$pvid);
+
+        $query->join('pro_purchase_order','pro_purchase_order.po_id=pro_purchase_voucher.pv_purchase_order','left');
+
+        return $query->get()->getRow()->po_reffer_no;
+
+        }
+
+
+
+
+
+
+
         //Statement Of Accounts End
 
 

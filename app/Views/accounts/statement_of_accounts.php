@@ -307,6 +307,18 @@
                                             foreach($transactions as $trn){ 
 
 
+                                                $purchase_order = "";
+
+                                                if($trn->voucher_type=="Purchase Voucher")
+                                                {
+                            
+                                                $repmodel = model('App\Models\ReportModel');
+
+                                                $purchase_order = $repmodel->LinkedPurchaseOrder($trn->id);
+                            
+                                                }
+
+
                                                 if($trn->method==1)
                                                 {
                                                 continue;
@@ -336,7 +348,7 @@
     
                                                 <td><?php echo date('d M Y',strtotime($trn->transaction_date)); ?></td>
     
-                                                <td><?php if(!empty($trn->purchase_order)) { echo $trn->purchase_order; } ?></td>
+                                                <td><?= $purchase_order; ?></td>
     
                                                 <td align="right" class="text-end"> 
     
