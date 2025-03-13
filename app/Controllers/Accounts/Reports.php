@@ -2138,7 +2138,7 @@ class Reports extends BaseController
 
                 <tr>
                 
-                <td style="border-top:2px solid;border-bottom:2px solid;" align="left"><b>Net Amount Due : '.currency_to_words($remaining_balance).'</b></td>
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="left"><b>Net Amount Due : '.currency_to_words(abs($remaining_balance)).'</b></td>
 
                 <td style="border-top:2px solid;border-bottom:2px solid;" align="right"><b>'.format_currency(abs($remaining_balance)).'</b></td>
 
