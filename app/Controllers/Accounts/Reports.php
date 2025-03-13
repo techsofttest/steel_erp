@@ -1841,9 +1841,13 @@ class Reports extends BaseController
                  
                    $dates = "-";
                 }
+                else if(empty($start_date))
+                {
+                   $dates = "Till" . date('d-M-Y',strtotime($end_date));
+                }
                 else
                 {
-                   $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date));
+                    $dates = date('d-M-Y',strtotime($start_date)) . " to " . date('d-M-Y',strtotime($end_date)); 
                 }
     
                 
