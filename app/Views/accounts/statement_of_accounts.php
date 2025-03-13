@@ -370,7 +370,7 @@
                                                 <?php if($trn->credit_amount !="") { 
                                                 echo  format_currency($trn->credit_amount); 
                                                 $total_credit=$total_credit+$trn->credit_amount;
-                                                $c_balance = $c_balance + $trn->credit_amount;
+                                                $c_balance = $c_balance - $trn->credit_amount;
 
                                                 $aging_totals[$aging_bucket] += $trn->credit_amount;
 

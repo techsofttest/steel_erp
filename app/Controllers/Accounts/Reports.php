@@ -1731,6 +1731,10 @@ class Reports extends BaseController
 
                 foreach($data['transactions'] as $vc)
                 {   
+                    if($vc->method==1)
+                    {
+                    continue;
+                    }
                     
                     $purchase_order = "";
 
@@ -1753,9 +1757,9 @@ class Reports extends BaseController
 
                     $border="border-top: 2px solid";
                    
-                    $total_debit = $total_debit + $vc->debit_amount;
+                    //$total_debit = $total_debit + $vc->debit_amount;
 
-                    $total_credit = $total_credit + $vc->credit_amount;
+                    //$total_credit = $total_credit + $vc->credit_amount;
 
     
                     $new_date = date('d-M-Y',strtotime($vc->transaction_date));
@@ -1776,7 +1780,9 @@ class Reports extends BaseController
 
                     $total_debit = $total_debit+$vc->debit_amount;
                     
-                    } else if($vc->credit_amount<0) {
+                    } 
+                    /*
+                    else if($vc->credit_amount<0) {
 
                     $debit_am = format_currency($vc->credit_amount); 
 
@@ -1786,6 +1792,7 @@ class Reports extends BaseController
                     
                         
                     }
+                    */
                     else
                     {
                     $debit_am="";
@@ -1798,7 +1805,7 @@ class Reports extends BaseController
 
                         $credit_am = format_currency($vc->credit_amount);
 
-                        $balance = $balance+$vc->credit_amount; 
+                        $balance = $balance-$vc->credit_amount; 
 
                         $total_credit = $total_credit+$vc->credit_amount;
 
@@ -2074,7 +2081,14 @@ class Reports extends BaseController
 
                 //Total 
 
+              $displayed_references = [];
                foreach($data['post_dated_cheques'] as $pdc){
+
+                if (in_array($pdc->reference, $displayed_references)) {
+                    continue; // Skip this iteration if reference is already displayed
+                }
+                
+                $displayed_references[] = $pdc->reference;
                 
                $pdc_data .='
                     <tr>
@@ -2109,14 +2123,24 @@ class Reports extends BaseController
 
                 $pdc_data .= "</table>";
 
+                $pdc_total_amount = 0;
+                if(!empty($_GET['pdc']))
+                {
+                $pdc_total_amount = array_sum(array_column($data['post_dated_cheques'],'amount'));
+                }
 
-                $pdc_data .='
+                $remaining_balance = $balance-$pdc_total_amount;
+
+
+                $footer_data ='
                 
                 <table width="100%" style="margin-top:10px;border-collapse:collapse;">
 
                 <tr>
                 
-                <td style="border-top:2px solid;border-bottom:2px solid;" align="center"><b>Net Amount Due : '.currency_to_words($balance).'</b></td>
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="left"><b>Net Amount Due : '.currency_to_words($remaining_balance).'</b></td>
+
+                <td style="border-top:2px solid;border-bottom:2px solid;" align="right"><b>'.format_currency($remaining_balance).'</b></td>
 
                 </tr>
 
@@ -2125,7 +2149,7 @@ class Reports extends BaseController
                 ';
 
 
-                $pdc_data .='
+                $footer_data .='
                 
                 <table width="100%" style="margin-top:10px;border-collapse:collapse;">
 
@@ -2145,7 +2169,12 @@ class Reports extends BaseController
                 ';
 
 
+                if(!empty($_GET['pdc']))
+                {
                 $html .= $pdc_data;
+                }
+
+                $html .=$footer_data;
 
                 //echo $html; exit;
             
