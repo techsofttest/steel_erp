@@ -2124,7 +2124,7 @@ class Reports extends BaseController
                 <td style="border-top: 1px solid"></td>
                 <td style="border-top: 1px solid"></td>
                 <td style="border-top: 1px solid"></td>
-                <td style="border-top: 1px solid" align="right"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
+                <td style="border-top: 1px solid" align="right"><b>'.format_currency($pdc_total_amount).'</b></td>
                 </tr>
                 ';
 
