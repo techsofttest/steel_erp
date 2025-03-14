@@ -490,7 +490,7 @@
                                     <?php } ?>
 
 
-                                    <?= $remaining_bal = $c_balance-$tot_pdc_am; 
+                                    <?php $remaining_bal = $c_balance-$tot_pdc_am; 
                                     
                                         $remaining_bal = abs($remaining_bal);
 
@@ -503,9 +503,9 @@
 
                                     <tr>
 
-                                    <th class="text-start"><b>Net Amount Due : <?= currency_to_words($remaining_bal); ?></b></th>
+                                    <td class="text-start"><b>Net Amount Due : <?= currency_to_words($remaining_bal); ?></b></td>
 
-                                    <th class="text-right"><b><?= $remaining_bal ?></b></th>
+                                    <td class="text-right"><b><?= format_currency($remaining_bal) ?></b></td>
 
                                     <tr>
 
