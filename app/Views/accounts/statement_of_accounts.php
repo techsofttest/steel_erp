@@ -503,9 +503,9 @@
 
                                     <tr>
 
-                                    <td class="text-start"><b>Net Amount Due : <?= currency_to_words($remaining_bal); ?></b></td>
+                                    <td class="" align="left"><b>Net Amount Due : <?= currency_to_words($remaining_bal); ?></b></td>
 
-                                    <td class="text-right"><b><?= format_currency($remaining_bal) ?></b></td>
+                                    <td class="" align="right"><b><?= format_currency($remaining_bal) ?></b></td>
 
                                     <tr>
 
