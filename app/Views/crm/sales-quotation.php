@@ -634,9 +634,9 @@
                                                                 <td><input type="text" name="qc_unit[0]"  class="form-control cost_unit_clz text-center" required></td>
                                                                 <td><input type="number" name="qc_qty[0]" class="form-control cost_qty_clz text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;"><a href="javascript:void(0)" onclick="costVendor.call(this)">Click</a></td>
-                                                                <td><input type="number" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required></td>
+                                                                <td><input type="text" name="qc_rate[0]"  class="form-control cost_rate_clz text-end" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount[0]" class="form-control cost_amount_clz text-end" readonly></td>
+                                                                <td><input type="text" name="qc_amount[0]" class="form-control cost_amount_clz text-end" readonly></td>
                                                                 <td><div class="tecs" style="text-align: center;"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i> </span></div></td>
                                                                 <input type="hidden" name="qc_quotation_id" class="quotation_hidden_id">
                                                             </tr>
@@ -1215,9 +1215,9 @@
                                                                 <td><input type="text" name="qc_unit"  class="form-control edit_cost_unit text-center" required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_cost_qty text-center" required></td>
                                                                 <td style="text-align: center;padding: 10px 10px;background: #f5f5f56e;"><a href="javascript:void(0)" onclick="editcostVendor.call(this)">Click</a></td>
-                                                                <td><input type="number" name="qc_rate"  class="form-control edit_cost_rate text-end" required></td>
+                                                                <td><input type="text" name="qc_rate"  class="form-control edit_cost_rate text-end" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount" class="form-control edit_cost_amount text-end" readonly></td>
+                                                                <td><input type="text" name="qc_amount" class="form-control edit_cost_amount text-end" readonly></td>
                                                                
                                                                 <input type="hidden" name="qc_id" class="edit_hidden_cost_id">
                                                             </tr>
@@ -1307,9 +1307,9 @@
                                                                 <td><input type="text" name="qc_unit"  class="form-control text-center" required></td>
                                                                 <td><input type="number" name="qc_qty" class="form-control edit_add_qty text-center" required></td>
                                                                 <td style="padding-top: 10px;" class="text-center"><a href="javascript:void(0)" onclick="editAddCostVendor.call(this)" class="text-center">Click</a></td>
-                                                                <td><input type="number" name="qc_rate"  class="form-control edit_add_rate text-end" required></td>
+                                                                <td><input type="text" name="qc_rate"  class="form-control edit_add_rate text-end" required></td>
                                                                 
-                                                                <td><input type="number" name="qc_amount" class="form-control edit_add_amount text-end" readonly></td>
+                                                                <td><input type="text" name="qc_amount" class="form-control edit_add_amount text-end" readonly></td>
                                                                 <!--<td><div class="tecs"><span class="add_icon add_product3"><i class="ri-add-circle-line"></i>Add </span></div></td>-->
                                                                 <input type="hidden" name="qc_quotation_id" class="edit_add_qtn_id">
                                                             </tr>
@@ -1465,10 +1465,10 @@
                                                                 </td>
                                                                 <td><input type="text" name="qpd_unit"  class="form-control text-center" required></td>
                                                                 <td><input type="number" name="qpd_quantity" class="form-control edit_add_prod_qty text-center" required></td>
-                                                                <td><input type="number" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
+                                                                <td><input type="text" name="qpd_rate" class="form-control edit_add_prod_rate text-end" required></td>
                                                                 <td><input type="number" name="qpd_discount" min="0" max="100"  onkeyup="MinMax(this)" class="form-control edit_add_prod_dis text-center" required></td>
                                                                 
-                                                                <td><input type="number" name="qpd_amount" class="form-control edit_add_prod_amount text-end" readonly></td>
+                                                                <td><input type="text" name="qpd_amount" class="form-control edit_add_prod_amount text-end" readonly></td>
                                                                
                                                                 <input type="hidden" name="qpd_quotation_details" class="edit_add_quot_id">
                                                             </tr>
@@ -2869,7 +2869,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -2976,7 +2976,7 @@
 
                 //$(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz' required=''></td><td><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz' readonly></td><td class='remove-btncc' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no text-center' style='padding:10px 10px;'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz text-center' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz text-center' required=''></td><td style='text-align: center;padding: 10px 10px;'><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='number' name='qc_rate["+sq+"]' class='form-control cost_rate_clz text-end' required=''></td><td><input type='number' name='qc_amount["+sq+"]' class='form-control cost_amount_clz text-end' readonly></td><td class='remove-btncc text-center' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more3").append("<tr class='cost_cal_row cost_cal_row2 cost_cal_row2_remove'><td class='cost_ci_no text-center' style='padding:10px 10px;'>"+cc+"</td><td><select class='form-select cost_service_clz cost_product_det' name='qc_material["+sq+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option class='droup_color' value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qc_unit["+sq+"]' class='form-control cost_unit_clz text-center' required=''></td><td><input type='number' name='qc_qty["+sq+"]' class='form-control cost_qty_clz text-center' required=''></td><td style='text-align: center;padding: 10px 10px;'><a href='javascript:void(0)' onclick='costVendor.call(this)'>Click</a></td><td><input type='text' name='qc_rate["+sq+"]' class='form-control cost_rate_clz text-end' required=''></td><td><input type='text' name='qc_amount["+sq+"]' class='form-control cost_amount_clz text-end' readonly></td><td class='remove-btncc text-center' colspan='6' style='padding:10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
                 
                 InitCostSelect();
@@ -3225,12 +3225,72 @@
 
         
        
-
-
+       
 
         /*product detail calculation*/
+
+         // Function to format numbers with commas and always show two decimal places
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Allow typing without formatting while user is entering the value
+        $("body").on("input", ".rate_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".rate_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        /* Product detail calculation */
+        $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".prod_row").find(".discount_clz_id").val()) || 0;
+            var rateElement = $this.closest(".prod_row").find(".rate_clz_id");
+            var quantityElement = $this.closest(".prod_row").find(".qtn_clz_id");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".prod_row").find(".amount_clz_id");
+            amountElement.val(formattedPrice);
+
+            TotalAmount();
+        });
+
+
+
+
+
        
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+       /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
 
             var $discountSelect = $(this);
 
@@ -3254,20 +3314,18 @@
            
             var orginalPrice = multipliedTotal - per_amount;
 
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            var  rawPrice  = orginalPrice.toFixed(2); 
 
-            //var formatted = formatCurrency(orginalPrice);
-
-            //currency_format(orginalPrice);
-
+            var formattedPrice = Number(rawPrice).toLocaleString();
+            
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
-            $amountElement.val(orginalPrice);
+            $amountElement.val(formattedPrice);
 
             TotalAmount();
 
            
-        });
+        });*/
 
 
 
@@ -3396,8 +3454,61 @@
 
 
         /*cost calculation section start*/
+
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".cost_rate_clz", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".cost_rate_clz", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("keyup", ".cost_qty_clz, .cost_rate_clz", function () {
+            var $this = $(this);
+
+           
+            var rateElement = $this.closest(".cost_cal_row").find(".cost_rate_clz");
+            var quantityElement = $this.closest(".cost_cal_row").find(".cost_qty_clz");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            
+
+            // Format calculated price with commas
+            var formattedPrice = multipliedTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".cost_cal_row").find(".cost_amount_clz");
+            amountElement.val(formattedPrice);
+
+            totalCalcutate();
+        });
+
         
-        $("body").on('keyup', '.cost_qty_clz, .cost_rate_clz', function(){ 
+        /*$("body").on('keyup', '.cost_qty_clz, .cost_rate_clz', function(){ 
 
             var valueSelect = $(this);
 
@@ -3424,7 +3535,7 @@
             totalCalcutate();
 
           
-        });
+        });*/
 
         /*cost calculation section end*/
 
@@ -3658,8 +3769,60 @@
 
 
         /*cost calculation section start*/
+
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".edit_cost_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_cost_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
         
-        $("body").on('keyup', '.edit_cost_qty, .edit_cost_rate', function(){ 
+
+        $("body").on("keyup", ".edit_cost_qty, .edit_cost_rate", function () {
+            var $this = $(this);
+
+           
+            var rateElement = $this.closest(".edit_cost_cal_row").find(".edit_cost_rate");
+            var quantityElement = $this.closest(".edit_cost_cal_row").find(".edit_cost_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+           
+
+            // Format calculated price with commas
+            var formattedPrice = multipliedTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_cost_cal_row").find(".edit_cost_amount");
+            amountElement.val(formattedPrice);
+
+           
+        });
+
+        /*$("body").on('keyup', '.edit_cost_qty, .edit_cost_rate', function(){ 
 
             var valueSelect = $(this);
 
@@ -3683,10 +3846,9 @@
 
             amountElement.val(multipliedTotal);
 
-          // editTotalCalcutate();
 
+        });*/
 
-        });
 
         /*cost calculation section end*/
 
@@ -3834,7 +3996,62 @@
 
         /*cost calculation section start*/
 
-        $("body").on('keyup', '.edit_add_qty, .edit_add_rate', function(){ 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".edit_add_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".edit_add_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("keyup", ".edit_add_qty, .edit_add_rate", function () {
+            var $this = $(this);
+
+            
+            var rateElement = $this.closest(".edit_add_cost_cal_row").find(".edit_add_rate");
+            var quantityElement = $this.closest(".edit_add_cost_cal_row").find(".edit_add_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            
+
+            // Format calculated price with commas
+            var formattedPrice = multipliedTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_add_cost_cal_row").find(".edit_add_amount");
+            amountElement.val(formattedPrice);
+
+            
+        });
+
+
+
+        /*$("body").on('keyup', '.edit_add_qty, .edit_add_rate', function(){ 
 
             var valueSelect = $(this);
 
@@ -3858,9 +4075,9 @@
 
             amountElement.val(multipliedTotal);
 
-            // editTotalCalcutate();
+            
 
-        });
+        });*/
 
         /*cost calculation section end*/
 
@@ -4027,7 +4244,61 @@
 
         /*edit product detail calculation*/
 
-        $("body").on('keyup', '.edit_prod_dis , .edit_prod_qty , .edit_prod_rate', function(){ 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+
+        $("body").on("input", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("keyup", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".edit_prod_row").find(".edit_prod_dis").val()) || 0;
+            var rateElement = $this.closest(".edit_prod_row").find(".edit_prod_rate");
+            var quantityElement = $this.closest(".edit_prod_row").find(".edit_prod_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_prod_row").find(".edit_prod_amount");
+            amountElement.val(formattedPrice);
+
+            
+        });
+
+        /*$("body").on('keyup', '.edit_prod_dis , .edit_prod_qty , .edit_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -4058,7 +4329,7 @@
             $amountElement.val(orginalPrice);
 
             
-        });
+        });*/
 
 
 
@@ -4087,9 +4358,8 @@
                         method: "POST",
                         data: $(currentForm).serialize(),
                         success: function(data) {
-                            var responseData = JSON.parse(data);
 
-                           
+                            var responseData = JSON.parse(data);
 
                             $('#EditProdDet').modal('hide');
 
@@ -4214,8 +4484,62 @@
 
         /*calculation of edit add product detail*/
 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-        $("body").on('keyup', '.edit_add_prod_dis , .edit_add_prod_qty , .edit_add_prod_rate', function(){ 
+        $("body").on("input", ".edit_add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("keyup", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".edit_add_prod_det_row").find(".edit_add_prod_dis").val()) || 0;
+            var rateElement = $this.closest(".edit_add_prod_det_row").find(".edit_add_prod_rate");
+            var quantityElement = $this.closest(".edit_add_prod_det_row").find(".edit_add_prod_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_add_prod_det_row").find(".edit_add_prod_amount");
+            amountElement.val(formattedPrice);
+
+            //TotalAmount();
+        });
+         
+
+
+
+        /*$("body").on('keyup', '.edit_add_prod_dis , .edit_add_prod_qty , .edit_add_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -4246,7 +4570,8 @@
             $amountElement.val(orginalPrice);
 
 
-        });
+        });*/
+
        
 
         /*####*/
@@ -4910,29 +5235,27 @@
 
 
 
-      function TotalAmount()
+        function TotalAmount()
         {
 
-            var total= 0;
+            var total = 0;
 
-            $('body .amount_clz_id').each(function()
-            {
-                var sub_tot = parseFloat($(this).val());
+            $(".amount_clz_id").each(function () {
+                var value = $(this).val().replace(/,/g, ""); // Remove commas
+                var sub_tot = parseFloat(value) || 0; // Parse safely
 
-                total += parseFloat(sub_tot.toFixed(2))||0;
-               //total = Number(total).toFixed(2)
+                total += sub_tot; // Add to total
             });
 
-           total = total.toFixed(2);
+            // Keep raw value (two decimal places)
+            var rawPrice = total.toFixed(2);
 
-           $('.amount_total').val(total);
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString();
 
-           var resultQuotation = numberToWords.toWords(total);
+            // Set formatted value in input
+            $(".amount_total").val(formattedPrice);
 
-            $(".sales_quotation_amount_in_word").text(resultQuotation);
-
-            $(".sales_quotation_amount_in_word_val").val(resultQuotation);
-            
 
         }
         
@@ -4948,27 +5271,16 @@
             
             $('body .cost_amount_clz').each(function()
             {
-                
-                var sub_tot = parseFloat($(this).val());
-
+                var value = $(this).val().replace(/,/g, ""); 
+                var sub_tot = parseFloat(value) || 0; 
                 total += parseFloat(sub_tot.toFixed(2))||0;
 
-                //
             });
 
-            total = total.toFixed(2);
-
-            $('.total_cost_cal').val(total);
             
-           // var result = numberToWords.toWords(total);
-
-           
-            //$(".cost_cal_amount_in_words").text(result);
-
-           // $(".cost_cal_amount_in_words_val").val(result);
-
-           
-
+            var rawPrice = total.toFixed(2);
+            var formattedPrice = Number(rawPrice).toLocaleString();
+            $(".total_cost_cal").val(formattedPrice);
 
             Percentage()
          

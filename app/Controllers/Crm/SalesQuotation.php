@@ -212,7 +212,7 @@ class SalesQuotation extends BaseController
 
             'qd_sales_quot_amount_in_words' => $this->request->getPost('qd_sales_quot_amount_in_words'),
 
-            'qd_sales_amount'               => $this->request->getPost('qd_sales_amount'),
+            'qd_sales_amount'               => preg_replace('/[,]/', '',$this->request->getPost('qd_sales_amount')),
 
             'qd_added_by'                   => 0,
         ];
@@ -240,9 +240,9 @@ class SalesQuotation extends BaseController
                         'qpd_product_description'  =>  $_POST['qpd_product_description'][$j],
                         'qpd_unit'                 =>  $_POST['qpd_unit'][$j],
                         'qpd_quantity'             =>  $_POST['qpd_quantity'][$j],
-                        'qpd_rate'                 =>  $_POST['qpd_rate'][$j],
+                        'qpd_rate'                 =>  preg_replace('/[,]/', '', $_POST['qpd_rate'][$j]),
                         'qpd_discount'             =>  $_POST['qpd_discount'][$j],
-                        'qpd_amount'               =>  $_POST['qpd_amount'][$j],
+                        'qpd_amount'               =>  preg_replace('/[,]/', '', $_POST['qpd_amount'][$j]),
                         'qpd_enq_prod_id'          =>  $enq_prod_id,
                         'qpd_quotation_details'    =>  $data['quotation_id'],
     
@@ -302,8 +302,8 @@ class SalesQuotation extends BaseController
                         'qc_material'            =>  $_POST['qc_material'][$j],
                         'qc_unit'                =>  $_POST['qc_unit'][$j],
                         'qc_qty'                 =>  $_POST['qc_qty'][$j],
-                        'qc_rate'               =>  $_POST['qc_rate'][$j],
-                        'qc_amount'              =>  $_POST['qc_amount'][$j],
+                        'qc_rate'                =>  preg_replace('/[,]/', '', $_POST['qc_rate'][$j]),
+                        'qc_amount'              =>  preg_replace('/[,]/', '', $_POST['qc_amount'][$j]),
                         'qc_quotation_id'      =>  $quotation,
     
                     );
@@ -321,7 +321,7 @@ class SalesQuotation extends BaseController
             
 
             $update_data = [
-                'qd_cost_amount'           => $this->request->getPost('qd_cost_amount'),
+                'qd_cost_amount'           => preg_replace('/[,]/', '',$this->request->getPost('qd_cost_amount')),
                 'qd_cost_amount_in_words'  => $this->request->getPost('qd_cost_amount_in_words'),
                 'qd_percentage'            => $this->request->getPost('qd_percentage'),
             ];
@@ -433,9 +433,9 @@ class SalesQuotation extends BaseController
                     <td style="padding: 10px 10px;">'.$prod_det->product_details.'</td>
                     <td class="text-center">'.$prod_det->qpd_unit.'</td>
                     <td class="text-center">'.$prod_det->qpd_quantity.'</td>
-                    <td class="text-end">'.$prod_det->qpd_rate.'</td>
-                    <td class="text-center">'.$prod_det->qpd_discount.'</td>
-                    <td class="text-end">'.$prod_det->qpd_amount.'</td>
+                    <td class="text-end">'.format_currency($prod_det->qpd_rate).'</td>
+                    <td class="text-center">'.format_currency($prod_det->qpd_discount).'</td>
+                    <td class="text-end">'.format_currency($prod_det->qpd_amount).'</td>
                     
                 </tr>';
                 $i++;
@@ -470,8 +470,8 @@ class SalesQuotation extends BaseController
                 <td colspan="2">'.$cost_cal_data->product_details.'</td>
                 <td class="text-center">'.$cost_cal_data->qc_unit.'</td>
                 <td class="text-center">'.$cost_cal_data->qc_qty.'</td>
-                <td class="text-end">'.$cost_cal_data->qc_rate.'</td>
-                <td class="text-end">'.$cost_cal_data->qc_amount.'</td>
+                <td class="text-end">'.format_currency($cost_cal_data->qc_rate).'</td>
+                <td class="text-end">'.format_currency($cost_cal_data->qc_amount).'</td>
                 </tr>'; 
 
                 $j++;
@@ -985,9 +985,9 @@ class SalesQuotation extends BaseController
                 <td><select name="qpd_product_description['.$k.']" class="form-control add_select2_prod">'.$options_product.'</select></td>
                 <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id text-center" required></td>
                 <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
-                <td><input type="number" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>
+                <td><input type="text" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>
                 <td><input type="number" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id text-center" required></td>
-                <td><input type="number" name="qpd_amount['.$k.']" class="form-control amount_clz_id text-end" readonly></td>
+                <td><input type="text" name="qpd_amount['.$k.']" class="form-control amount_clz_id text-end" readonly></td>
                 <input type="hidden" name="qpd_prod_id['.$k.']" class="rename_prod_id" value="'.$prod_det->pd_id.'">
                 <input type="hidden" name="enquiry_id['.$k.']" class="rename_enq_id" value="'.$prod_det->pd_enquiry_id.'">
                 <td class="remove-btnpp row_remove text-center"  data-id="'.$prod_det->pd_id.'"><i class="ri-close-line"></i></td>
@@ -1408,7 +1408,18 @@ class SalesQuotation extends BaseController
         if (array_key_exists('qc_id', $update_data)) 
         {
             unset($update_data['qc_id']);
-        }    
+        } 
+        
+        if (isset($update_data['qc_rate'])) {
+            $update_data['qc_rate'] = preg_replace('/[,]/', '', $update_data['qc_rate']);
+        }
+
+
+        if (isset($update_data['qc_amount'])) {
+            $update_data['qc_amount'] = preg_replace('/[,]/', '', $update_data['qc_amount']);
+        }
+        
+        
         
         $this->common_model->EditData($update_data,$cond,'crm_quotation_cost_calculation');
 
@@ -1444,6 +1455,14 @@ class SalesQuotation extends BaseController
     public function EditAddCostCal()
     {
         $insert_data = $this->request->getPost();
+
+        if (isset($insert_data['qc_rate'])) {
+            $insert_data['qc_rate'] = preg_replace('/[,]/', '', $insert_data['qc_rate']);
+        }
+
+        if (isset($insert_data['qc_amount'])) {
+            $insert_data['qc_amount'] = preg_replace('/[,]/', '', $insert_data['qc_amount']);
+        }
 
         $quot_det = $this->common_model->InsertData('crm_quotation_cost_calculation',$insert_data);
 
@@ -1566,7 +1585,9 @@ class SalesQuotation extends BaseController
 
         $options_product = '<option value="'.$prod_det->product_id.'" selected>'.$prod_det->product_details.'</option>';
        
-        
+        $rate = format_currency($prod_det->qpd_rate);
+        $discount = format_currency($prod_det->qpd_discount);
+        $amount = format_currency($prod_det->qpd_amount);
         
         $data['prod_details'] ="";
         
@@ -1577,9 +1598,9 @@ class SalesQuotation extends BaseController
 
             <td><input type="text" name="qpd_unit"  value="'.$prod_det->qpd_unit.'" class="form-control text-center" required></td>
             <td><input type="text" name="qpd_quantity" value="'.$prod_det->qpd_quantity.'" class="form-control edit_prod_qty text-center" required></td>
-            <td><input type="text" name="qpd_rate" value="'.$prod_det->qpd_rate.'" class="form-control edit_prod_rate text-end" required></td>
-            <td><input type="text" name="qpd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$prod_det->qpd_discount.'" class="form-control edit_prod_dis text-center" required></td>
-            <td><input type="text" name="qpd_amount" value="'.$prod_det->qpd_amount.'" class="form-control edit_prod_amount text-end" readonly></td>
+            <td><input type="text" name="qpd_rate" value="'.$rate.'" class="form-control edit_prod_rate text-end" required></td>
+            <td><input type="text" name="qpd_discount" min="0" max="100" onkeyup="MinMax(this)" value="'.$discount.'" class="form-control edit_prod_dis text-center" required></td>
+            <td><input type="text" name="qpd_amount" value="'.$amount.'" class="form-control edit_prod_amount text-end" readonly></td>
            <input type="hidden" name="qpd_id" value="'.$prod_det->qpd_id.'">
             </tr>'; 
 
@@ -1599,7 +1620,29 @@ class SalesQuotation extends BaseController
         if (array_key_exists('qpd_id', $update_data)) 
         {
             unset($update_data['qpd_id']);
-        }    
+        } 
+
+        if (isset($update_data['qpd_rate'])) {
+            $update_data['qpd_rate'] = preg_replace('/[,]/', '', $update_data['qpd_rate']);
+        }
+
+        if (isset($update_data['qpd_amount'])) {
+            $update_data['qpd_amount'] = preg_replace('/[,]/', '', $update_data['qpd_amount']);
+        }
+        
+       
+       /*$update_data  	= array(  
+                        
+            'qpd_product_description'  =>  $_POST['qpd_product_description'],
+            'qpd_unit'                 =>  $_POST['qpd_unit'],
+            'qpd_quantity'             =>  $_POST['qpd_quantity'],
+            'qpd_rate'                 =>  preg_replace('/[,]/', '', $_POST['qpd_rate']),
+            'qpd_discount'             =>  $_POST['qpd_discount'],
+            'qpd_amount'               =>  preg_replace('/[,]/', '', $_POST['qpd_amount']),
+            'qpd_quotation_details'    =>  $_POST['qpd_id'],
+
+        );*/
+        
         
         $this->common_model->EditData($update_data,$cond,'crm_quotation_product_details');
 
@@ -1635,7 +1678,19 @@ class SalesQuotation extends BaseController
     public function EditAddProd()
     {   
 
-        $insert_data = $this->request->getPost();
+        //$insert_data = $this->request->getPost();
+
+        $insert_data  	= array(  
+                        
+            'qpd_product_description'  =>  $_POST['qpd_product_description'],
+            'qpd_unit'                 =>  $_POST['qpd_unit'],
+            'qpd_quantity'             =>  $_POST['qpd_quantity'],
+            'qpd_rate'                 =>  preg_replace('/[,]/', '', $_POST['qpd_rate']),
+            'qpd_discount'             =>  $_POST['qpd_discount'],
+            'qpd_amount'               =>  preg_replace('/[,]/', '', $_POST['qpd_amount']),
+            'qpd_quotation_details'    =>  $_POST['qpd_quotation_details'],
+
+        );
 
         $quot_det = $this->common_model->InsertData('crm_quotation_product_details',$insert_data);
 

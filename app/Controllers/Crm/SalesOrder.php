@@ -174,7 +174,10 @@ class SalesOrder extends BaseController
 
     // add account head
     Public function Add()
-    {   
+    {  
+        
+        
+
         $return['print'] = "";
 
         if(!empty($this->request->getPost('so_quotation_ref')))
@@ -217,7 +220,7 @@ class SalesOrder extends BaseController
 
             'so_project'                => $this->request->getPost('so_project'),
 
-            'so_amount_total'           => $this->request->getPost('so_amount_total'),
+            'so_amount_total'           => preg_replace('/[,]/', '',$this->request->getPost('so_amount_total')),
 
             'so_amount_total_in_words'  => $this->request->getPost('so_amount_total_in_words'),
 
@@ -267,9 +270,9 @@ class SalesOrder extends BaseController
                         'spd_product_details'   =>  $_POST['spd_product_details'][$j],
                         'spd_unit'              =>  $_POST['spd_unit'][$j],
                         'spd_quantity'          =>  $_POST['spd_quantity'][$j],
-                        'spd_rate'              =>  $_POST['spd_rate'][$j],
+                        'spd_rate'              =>  preg_replace('/[,]/', '',$_POST['spd_rate'][$j]),
                         'spd_discount'          =>  $_POST['spd_discount'][$j],
-                        'spd_amount'            =>  $_POST['spd_amount'][$j],
+                        'spd_amount'            =>  preg_replace('/[,]/', '',$_POST['spd_amount'][$j]),
                         'spd_quot_prod_id'      =>  $quot_prod_id,
                         'spd_sales_order'       =>  $sales_order_id,
     
@@ -465,7 +468,7 @@ class SalesOrder extends BaseController
             </td>
             <td><input type="text"  name="spd_unit['.$si.']"  value="'.$prod_det->qpd_unit.'" class="form-control unit_clz_id text-center" required></td>
             <td> <input type="text" name="spd_quantity['.$si.']" value="'.$prod_det->qpd_quantity.'" step="0.01"  class="form-control qtn_clz_id text-center"  required></td>
-            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end" step="0.01 "  required></td>
+            <td> <input type="text" name="spd_rate['.$si.']"  class="form-control rate_clz_id text-end"   required></td>
             <td> <input type="text" name="spd_discount['.$si.']" min="0" max="100" onkeyup="MinMax(this)"  step="0.01"  class="form-control discount_clz_id text-center" required></td>
             <td> <input type="text" name="spd_amount['.$si.']"  class="form-control amount_clz_id text-end" readonly></td>
             <input type="hidden" name="quot_prod_id['.$si.']" class="quot_prod_id_clz" value="'.$prod_det->qpd_id.'">
@@ -1253,7 +1256,13 @@ class SalesOrder extends BaseController
     {
         $insert_data = $this->request->getPost();
 
-       
+        if (isset($insert_data['spd_rate'])) {
+            $insert_data['spd_rate'] = preg_replace('/[,]/', '', $insert_data['spd_rate']);
+        }
+
+        if (isset($insert_data['spd_amount'])) {
+            $insert_data['spd_amount'] = preg_replace('/[,]/', '', $insert_data['spd_amount']);
+        }
 
         $sales_det = $this->common_model->InsertData('crm_sales_product_details',$insert_data);
 
@@ -1373,8 +1382,17 @@ class SalesOrder extends BaseController
         
         $update_data = $this->request->getPost();
 
-        if (array_key_exists('spd_id', $update_data)) 
-        {
+        
+        if (isset($update_data['spd_rate'])) {
+            $update_data['spd_rate'] = preg_replace('/[,]/', '', $update_data['spd_rate']);
+        }
+
+        
+        if (isset($update_data['spd_amount'])) {
+            $update_data['spd_amount'] = preg_replace('/[,]/', '', $update_data['spd_amount']);
+        }
+
+        if (array_key_exists('spd_id', $update_data)){
             unset($update_data['spd_id']);
         }    
         $update_data['spd_deliver_flag'] =0;
