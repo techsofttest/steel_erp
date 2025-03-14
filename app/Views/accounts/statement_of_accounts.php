@@ -307,6 +307,23 @@
                                             foreach($transactions as $trn){ 
 
 
+                                                $purchase_order = "";
+
+                                                if($trn->voucher_type=="Purchase Voucher")
+                                                {
+                            
+                                                $repmodel = model('App\Models\ReportModel');
+
+                                                $purchase_order = $repmodel->LinkedPurchaseOrder($trn->id);
+                            
+                                                }
+
+
+                                                if($trn->method==1)
+                                                {
+                                                continue;
+                                                }
+
                                                 $days_due = (strtotime(date('Y-m-d')) - strtotime($trn->transaction_date)) / (60 * 60 * 24);
                                                     
                                                     // Determine Aging Bucket
@@ -331,7 +348,7 @@
     
                                                 <td><?php echo date('d M Y',strtotime($trn->transaction_date)); ?></td>
     
-                                                <td><?php if(!empty($trn->purchase_order)) { echo $trn->purchase_order; } ?></td>
+                                                <td><?= $purchase_order; ?></td>
     
                                                 <td align="right" class="text-end"> 
     
@@ -353,7 +370,7 @@
                                                 <?php if($trn->credit_amount !="") { 
                                                 echo  format_currency($trn->credit_amount); 
                                                 $total_credit=$total_credit+$trn->credit_amount;
-                                                $c_balance = $c_balance + $trn->credit_amount;
+                                                $c_balance = $c_balance - $trn->credit_amount;
 
                                                 $aging_totals[$aging_bucket] += $trn->credit_amount;
 
@@ -403,10 +420,12 @@
                                         {
                                         ?>
 
+                                        <h5 class="text-center">Post Date Cheque Details</h5>
+
                                         <table class="table table-bordered">
 
 
-                                        <thead>
+                                            <thead>
 
                                             <tr>
 
@@ -430,7 +449,17 @@
                                         <tbody>
 
 
-                                    <?php foreach($post_dated_cheques as $pdc){?>
+                                    <?php 
+                                    $displayed_references = [];
+                                    foreach($post_dated_cheques as $pdc){
+                                        
+                                    if (in_array($pdc->reference, $displayed_references)) {
+                                        continue; // Skip this iteration if reference is already displayed
+                                    }
+                                    
+                                    $displayed_references[] = $pdc->reference;
+
+                                    ?>
 
                                     <tr>
 
