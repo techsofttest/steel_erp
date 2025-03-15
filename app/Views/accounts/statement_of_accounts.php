@@ -415,6 +415,7 @@
 
 
 
+                                        <?php $tot_pdc_am = 0; ?>
                                         <?php if(!empty($_GET['pdc']))
 
                                         {
@@ -450,7 +451,7 @@
 
 
                                     <?php
-                                    $tot_pdc_am = 0; 
+                                    
                                     $displayed_references = [];
                                     foreach($post_dated_cheques as $pdc){
                                         
