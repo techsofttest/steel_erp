@@ -226,14 +226,14 @@
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MR Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
 
-                                                    <th class="text-center" style="width:500px">Product</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:100px">Quantity</th>
+                                                    <th class="" style="min-width:500px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th></th>
 
                                                 </tr>
@@ -246,7 +246,7 @@
                                                     foreach ($material_requesition as $material_req) { ?>
                                                         <tr>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $material_req->mr_date; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mr_reffer_no; ?></td>
 
@@ -261,12 +261,12 @@
                                                                     <?php foreach ($material_req->product_orders as $orders) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $orders->so_reffer_no; ?></td>
+                                                                            <td class="rotate text-center" style="white-space: nowrap;width:100px"><?php echo $orders->so_reffer_no; ?></td>
 
 
-                                                                            <td style="white-space: nowrap;width:500px"> <?php echo $orders->product_details; ?></td>
+                                                                            <td style="rotate white-space: nowrap;min-width:500px"> <?php echo $orders->product_details; ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:100px"> <?php echo $orders->mrp_qty; ?> </td>
+                                                                            <td class="rotate text-center" style="white-space: nowrap;width:100px"> <?php echo format_currency($orders->mrp_qty); ?> </td>
 
                                                                         </tr>
                                                                     <?php }  ?>

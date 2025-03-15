@@ -1,5 +1,5 @@
 <style>
-     .divcontainer {
+    .divcontainer {
         overflow-x: scroll;
         overflow-y: auto;
         /* transform: rotateX(180deg); */
@@ -20,15 +20,10 @@
     }
 
     #DataTable td {
-        line-height: 1.0
+        line-height: 1.1;
     }
-    #DataTable {
-        table-layout: fixed;
-        width: auto;
-        margin:unset
-    }
-   
 </style>
+
 
 <div class="tab-content text-muted">
 
@@ -45,14 +40,19 @@
 
 
                         <!--sales rout report modal start-->
-                        <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="MaterialRequesitionReport" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <!--<form  class="Dashboard-form class" id="sales_quot_report_form">-->
-                                <form method="GET" action="<?php echo base_url(); ?>Procurement/MaterialRecReport/GetData" target="_blank" class="Dashboard-form class" id="add_form">
+                                <form method="GET"
+                                    action="<?php echo base_url(); ?>Procurement/MaterialRecReport/GetData"
+                                    target="_blank" class="Dashboard-form class" id="add_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Material Received Note Report</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title" id="exampleModalLabel">Material Received Note Report
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
 
@@ -90,7 +90,7 @@
                                                                 //         $sales_executive ="";
                                                                 //    }
                                                                 if (!empty($_GET['product'])) {
-                                                                    $product =  $_GET['product'];
+                                                                    $product = $_GET['product'];
                                                                 } else {
                                                                     $product = "";
                                                                 }
@@ -99,14 +99,23 @@
 
 
                                                                 <div class="mt-4">
-                                                                    <table class="table table-bordered table-striped delTable">
+                                                                    <table
+                                                                        class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control"></td>
+                                                                                <td><input type="date" name="form_date"
+                                                                                        id="from_date_id"
+                                                                                        value="<?php echo $from_date; ?>"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control"></td>
                                                                                 <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control"></td>
+                                                                                <td><input type="date" name="to_date"
+                                                                                        id="to_date_id"
+                                                                                        value="<?php echo $to_date; ?>"
+                                                                                        onclick="this.showPicker();"
+                                                                                        class="form-control"></td>
 
                                                                             </tr>
 
@@ -119,10 +128,17 @@
                                                                             <tr>
                                                                                 <td>Vendor</td>
                                                                                 <td>
-                                                                                    <select class="form-select value='' customer_clz" name="vendor">
-                                                                                        <option value="" selected disabled>Select Vendor</option>
+                                                                                    <select
+                                                                                        class="form-select value='' customer_clz"
+                                                                                        name="vendor">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Vendor
+                                                                                        </option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
-                                                                                            <option value="<?php echo $vendor->cc_id ?>"><?php echo $vendor->cc_customer_name; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $vendor->cc_id ?>">
+                                                                                                <?php echo $vendor->cc_customer_name; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -132,10 +148,17 @@
                                                                             <tr>
                                                                                 <td>Sales Order</td>
                                                                                 <td>
-                                                                                    <select class="form-select value='' customer_clz" name="sales_order">
-                                                                                        <option value="" selected disabled>Select Sales Order</option>
+                                                                                    <select
+                                                                                        class="form-select value='' customer_clz"
+                                                                                        name="sales_order">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Sales Order
+                                                                                        </option>
                                                                                         <?php foreach ($sales_orders as $sales_order) { ?>
-                                                                                            <option value="<?php echo $sales_order->so_id ?>"><?php echo $sales_order->so_reffer_no; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $sales_order->so_id ?>">
+                                                                                                <?php echo $sales_order->so_reffer_no; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -147,10 +170,16 @@
                                                                             <tr>
                                                                                 <td>Product</td>
                                                                                 <td>
-                                                                                    <select class="form-select" value="" name="product">
-                                                                                        <option value="" selected disabled>Select Porduct</option>
+                                                                                    <select class="form-select" value=""
+                                                                                        name="product">
+                                                                                        <option value="" selected
+                                                                                            disabled>Select Porduct
+                                                                                        </option>
                                                                                         <?php foreach ($products as $product) { ?>
-                                                                                            <option value="<?php echo $product->product_id; ?>"><?php echo $product->product_details; ?></option>
+                                                                                            <option
+                                                                                                value="<?php echo $product->product_id; ?>">
+                                                                                                <?php echo $product->product_details; ?>
+                                                                                            </option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
@@ -217,16 +246,18 @@
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black; margin-right:-16%">Material Received Note Report</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"
+                                            style="text-align: center;font-weight: 600;color: black; margin-right:-16%">
+                                            Material Received Note Report</h4>
 
                                         <form method="POST" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
                                             <button type="submit" class="pdf_button report_button">PDF</button>
                                         </form>
 
-                               
-                                            <button class="excel_button report_button" type="submit">Excel</button>
-                                     
+
+                                        <button class="excel_button report_button" type="submit">Excel</button>
+
 
                                         <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -235,27 +266,42 @@
 
                                         <!-- <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="excel" value="1"> -->
-                                        <button class="email_button report_button" type="submit" id="email_button">Email</button>
+                                        <button class="email_button report_button" type="submit"
+                                            id="email_button">Email</button>
                                         <!-- </form> -->
 
-                                        <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
+                                        <button type="button" data-bs-toggle="modal" id="clear_data"
+                                            data-bs-target="#SalesQuotReport"
+                                            class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style=" overflow:scroll">
-                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
-                                    <thead>
+                                        <table style="table-layout:fixed;" id="DataTable"
+                                            class="table table-bordered table-striped delTable display dataTable">
+                                            <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Vendor DN Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
-                                                    <th style="white-space: nowrap;width:400px">Product</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:70px">Quantity</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:70px">Rate</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:70px">Discount</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="no-sort text-center"
+                                                        style="white-space: nowrap;width:60px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px">Date
+                                                    </th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">MRN
+                                                        Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:300px">
+                                                        Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">
+                                                        Purchase Order</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">
+                                                        Vendor DN Ref</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount
+                                                    </th>
+                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity
+                                                    </th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate
+                                                    </th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount
+                                                    </th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount
+                                                    </th>
                                                 </tr>
                                             </thead>
 
@@ -263,64 +309,77 @@
                                                 <?php
                                                 if (!empty($material_requesition)) {
                                                     $i = 1;
-                                                    $total = $mr_total = 0;
+                                                    $total = $mr_total = 0; 
                                                     foreach ($material_requesition as $material_req) { ?>
 
                                                         <tr>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $material_req->mrn_date; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mrn_reffer; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:60px">
+                                                                <?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px">
+                                                                <?php echo $material_req->mrn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                <?php echo $material_req->mrn_reffer; ?></td>
 
                                                             <td class="" style="width:300px"><?php foreach ($vendors as $vendor) {
-                                                                    echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
-                                                                } ?>
+                                                                echo $material_req->mrn_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
+                                                            } ?>
                                                             </td>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->po_reffer_no; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                <?php echo $material_req->po_reffer_no; ?></td>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $material_req->mrn_delivery_note; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:100px">
+                                                                <?php echo $material_req->mrn_delivery_note; ?></td>
 
                                                             <td colspan="6" align="left" class="p-0">
-                                                            <table>
-                                                            <?php $tot_amt = 0;
-                                                                                    foreach ($material_req->product_orders as $orders) { ?>
+                                                                <table>
+                                                                    <?php $tot_amt = 0;$k=0; 
+                                                                    foreach ($material_req->product_orders as $orders) { $k++;  ?>
 
-                                                                <tr style="background: unset;border-bottom: hidden !important;">
-                                                            <td class="text-end" style="white-space: nowrap;width:100px"><?php $tot_amt = 0;
-                                                                                    foreach ($material_req->product_orders as $ord) { ?>
-                                                                    <?php $tot_amt += $ord->rnp_amount; ?>
-                                                                <?php }
-                                                                                    echo format_currency($tot_amt);
-                                                                                    $total += $tot_amt; ?> </td>
+                                                                        <tr
+                                                                            style="background: unset;border-bottom: hidden !important;">
+                                                                            <td class="text-end rotate"
+                                                                                style="white-space: nowrap;width:80px">
+                                                                                <?php if($k==1){ $tot_amt = 0;
+                                                                                foreach ($material_req->product_orders as $ord) { ?>
+                                                                                    <?php $tot_amt += $ord->rnp_amount; ?>
+                                                                                <?php }
+                                                                                echo format_currency($tot_amt);
+                                                                                $total += $tot_amt; } ?>
+                                                                            </td>
 
-                                                            <td style="white-space: nowrap;width:400px">
-                                                                    <?php echo $orders->product_details; ?><br>
-                                                                </td>
-                                                            <td class="text-end" style="white-space: nowrap;width:70px">
-                                                                    <?php echo $orders->rnp_current_delivery; ?><br>
-                                                                </td>
+                                                                            <td class="rotate" style="min-width:500px">
+                                                                                <?php echo $orders->product_details; ?><br>
+                                                                            </td>
+                                                                            <td class="text-center rotate"
+                                                                                style="white-space: nowrap;width:80px">
+                                                                                <?php echo format_currency($orders->rnp_current_delivery); ?><br>
+                                                                            </td>
 
-                                                            <td class="text-end" style="white-space: nowrap;width:70px">
-                                                                    <?php echo format_currency($orders->pop_rate); ?><br>
-                                                               </td>
+                                                                            <td class="text-end rotate"
+                                                                                style="white-space: nowrap;width:80px">
+                                                                                <?php echo format_currency($orders->pop_rate); ?><br>
+                                                                            </td>
 
-                                                                <td class="text-end" style="white-space: nowrap;width:70px">
-                                                                    <?php echo format_currency($orders->pop_discount); ?><br>
-                                                                </td>
+                                                                            <td class="text-end rotate"
+                                                                                style="white-space: nowrap;width:80px">
+                                                                                <?php echo format_currency($orders->pop_discount); ?><br>
+                                                                            </td>
 
-                                                            <td class="text-end" style="white-space: nowrap;width:100px">
-                                                                    <?php echo format_currency($orders->rnp_amount);
-                                                                                        $mr_total += $orders->rnp_amount ?><br>
-                                                               </td>
+                                                                            <td class="text-end rotate"
+                                                                                style="white-space: nowrap;width:80px">
+                                                                                <?php echo format_currency($orders->rnp_amount);
+                                                                                $mr_total += $orders->rnp_amount ?><br>
+                                                                            </td>
 
-                                                                                    </tr>
-                                                                                    <?php } ?>
-                                                            </table>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </table>
                                                             </td>
 
                                                         </tr>
-                                                    <?php $i++;
+                                                        <?php $i++;
                                                     } ?>
 
                                                     <tr>
@@ -330,15 +389,17 @@
                                                         <th style="white-space: nowrap;width:300px"></th>
                                                         <th style="white-space: nowrap;width:100px"></th>
                                                         <th style="white-space: nowrap;width:100px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($total); ?></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:100px">
+                                                            <?php echo format_currency($total); ?></th>
                                                         <th style="white-space: nowrap;width:400px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
                                                         <th style="white-space: nowrap;width:70px"></th>
-                                                        <th class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($mr_total); ?></th>
+                                                        <th class="text-end" style="white-space: nowrap;width:100px">
+                                                            <?php echo format_currency($mr_total); ?></th>
                                                     </tr>
 
-                                                <?php
+                                                    <?php
                                                 } ?>
 
                                             </tbody>
@@ -385,12 +446,12 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
 
         /*modal open start*/
         <?php if (empty($_GET)): ?>
 
-            $(window).on('load', function() {
+            $(window).on('load', function () {
 
                 $('#MaterialRequesitionReport').modal('show');
             });
@@ -413,16 +474,16 @@
                 cache: false,
                 minimumInputLength: 1,
                 allowClear: true,
-                data: function(params) {
+                data: function (params) {
                     return {
                         term: params.term,
                         page: params.page || 1,
                     };
                 },
-                processResults: function(data, params) {
+                processResults: function (data, params) {
                     var page = params.page || 1;
                     return {
-                        results: $.map(data.result, function(item) {
+                        results: $.map(data.result, function (item) {
                             return {
                                 id: item.so_id,
                                 text: item.so_reffer_no
@@ -440,7 +501,7 @@
 
         /*fetch  sales executive by  customer*/
 
-        $("body").on('change', '.customer_clz', function() {
+        $("body").on('change', '.customer_clz', function () {
 
 
             var id = $(this).val();
@@ -456,7 +517,7 @@
                     ID: id
                 },
 
-                success: function(data) {
+                success: function (data) {
                     var data = JSON.parse(data);
 
                     //console.log(data.prod_details);
@@ -474,7 +535,7 @@
 
         /*form submit start*/
 
-        $(".submit_btn").on('click', function() {
+        $(".submit_btn").on('click', function () {
 
             /* $('#SalesQuotReport').modal("hide");
 
@@ -493,7 +554,7 @@
         /*#####*/
 
 
-        $(".search-btn").on('click', function() {
+        $(".search-btn").on('click', function () {
 
             $('#MaterialRequesitionReport').modal('show');
         });
@@ -501,9 +562,9 @@
 
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".excel_button").click(
-                function() {
+                function () {
                     tableToExcel('DataTable', 'Material Recieved Note Report', 'Material Recieved Note Report');
                 }
             );
@@ -540,11 +601,11 @@
 
             var uri = 'data:application/vnd.ms-excel;base64,',
                 templateData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
-                base64Conversion = function(s) {
+                base64Conversion = function (s) {
                     return window.btoa(unescape(encodeURIComponent(s)))
                 },
-                formatExcelData = function(s, c) {
-                    return s.replace(/{(\w+)}/g, function(m, p) {
+                formatExcelData = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
                         return c[p];
                     })
                 }
@@ -601,7 +662,7 @@
 
 <script>
     // Close modal when form is submitted
-    document.getElementById('add_form').addEventListener('submit', function(e) {
+    document.getElementById('add_form').addEventListener('submit', function (e) {
         // Close the modal after the form is submitted
         $('#MaterialRequesitionReport').modal('hide');
     });
@@ -609,7 +670,7 @@
 
 
 <script>
-    document.getElementById("email_button").addEventListener("click", function() {
+    document.getElementById("email_button").addEventListener("click", function () {
         // Select the table element
         var range = document.createRange();
         range.selectNode(document.getElementById("DataTable"));

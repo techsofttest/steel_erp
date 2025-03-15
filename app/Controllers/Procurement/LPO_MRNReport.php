@@ -211,11 +211,11 @@ class LPO_MRNReport extends BaseController
 
 
         $joins1 = array(
-            array(
-                'table' => 'crm_products',
-                'pk'    => 'product_id',
-                'fk'    => 'pop_prod_desc',
-            ),
+            // array(
+            //     'table' => 'crm_products',
+            //     'pk'    => 'product_id',
+            //     'fk'    => 'pop_prod_desc',
+            // ),
             array(
                 'table' => 'crm_sales_orders',
                 'pk'    => 'so_id',
@@ -274,7 +274,7 @@ class LPO_MRNReport extends BaseController
                 );
         
                 // Fetch related purchase order products with a join
-                $pvps = $this->common_model->FetchWhereJoin('pro_purchase_order_product', ['pop_purchase_order' => $pvs->po_id], $joins2);
+                $pvps = $this->pro_model->FetchWhereJoinBy('pro_purchase_order_product', ['pop_purchase_order' => $pvs->po_id], $joins2,'pop_id');
         
                 // If there are products, assign them to the current order
                 if ($pvps) {
@@ -295,7 +295,8 @@ class LPO_MRNReport extends BaseController
         // Assign the result back to the purchase_order data
         $data['purchase_order'] = $new_order;
         
-
+        // echo '<pre>';
+        // print_r($data['purchase_order'] );exit;
 
 
         $lpo_ref = $this->request->getPost('lpo_ref');
