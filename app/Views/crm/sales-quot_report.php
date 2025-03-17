@@ -274,7 +274,7 @@
                                                     <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
                                                     <th style="white-space: nowrAap" class="text-center">Date</th>
                                                     <th style="white-space: nowrap" class="text-center">Quotation Ref</th>
-                                                    <th style="width:300px">Customer Name</th>
+                                                    <th style="white-space: nowrap;width:300px !important">Customer Name</th>
                                                     <th style="white-space: nowrap" class="text-center">Sales Executive</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
                                                     <th style="width:900px">Product</th>
@@ -296,7 +296,7 @@
                                                             <td class="text-center"><?php echo $i; ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
-                                                            <td style="width:300px !important"><?php echo $quot_data->cc_customer_name; ?></td>
+                                                            <td style="white-space: nowrap;width:300px !important"><?php echo $quot_data->cc_customer_name; ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><?php echo $quot_data->se_name; ?></td>
                                                             <?php
                                                             $total = $quot_data->qd_sales_amount + $total;
