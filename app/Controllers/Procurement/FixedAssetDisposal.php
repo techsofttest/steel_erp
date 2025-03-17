@@ -240,20 +240,30 @@ class FixedAssetDisposal extends BaseController
                                 <td> 1 </td>
                                 <td><input type="text" name="dfs_description" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dfs_acquired_date" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dfs_asset_amount" value="' . $fixed_amount . '" class="form-control add_asset_amt"  readonly></td>
-                                <td><input type="text" name="dfs_depreciation" value="' . preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation) . '%" class="form-control"  readonly></td>
-                                <td><input type="number" name="dfs_sales_price" value="" class="form-control add_sale_price"  ></td>
-                                <td><input type="text" name="dfs_profit" value="" class="form-control add_profit"  readonly></td>
+                                <td><input type="text" name="dfs_asset_amount" value="' . format_currency($fixed_amount) . '" class="form-control add_asset_amt rt-inp"  readonly></td>
+                                <td><input type="text" name="dfs_depreciation" value="' . preg_replace('/[^0-9.]/', '', $asset->cfs_depreciation) . '%" class="form-control rt-inp"  readonly></td>
+                                <td><input type="text" step=".01" name="dfs_sales_price" value="" class="form-control add_sale_price rt-inp dec-inp"  ></td>
+                                <td><input type="text" name="dfs_profit" value="" class="form-control add_profit rt-inp"  readonly></td>
                             </tr>';
 
 
-        $asset_det .= '<tr>
-            <td colspan="1"></td>
-            <td colspan="2" align="left" class="amount_in_words_add"></td>
-            <td align="right" colspan="3">Total</td>
-            <input type="hidden" id="total_amount_val" val="">
-            <th id="total_amount"></th>
-        </tr>';
+
+        $data['total_Sec'] ='<tbody>
+            <tr>             
+                <td align="right" class="total_label amount_in_words_add">Total</td>
+                <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
+                <td  id="total_amount" class="rt-inp"><input type="text" name="" class="edit_total_prod form-control text-end rt-inp" readonly value=""></td>
+            </tr>      
+        </tbody>';
+
+        // $asset_det .= '<tr>
+        //     <td colspan="1"></td>
+        //     <td colspan="2" align="left" class="amount_in_words_add"></td>
+        //     <td align="right" colspan="3">Total</td>
+        //     <input type="hidden" id="total_amount_val" val="">
+        //     <th id="total_amount"></th>
+        // </tr>';
+        
 
         // Set fixed_asset key in the response data
         $data['asset_det'] = $asset_det;

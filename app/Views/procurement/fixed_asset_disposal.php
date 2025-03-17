@@ -1,63 +1,134 @@
 <style>
-    .select2.select2-container {
-        width: 95% !important;
+     .selectize-input
+    {
+        border: unset;
+    }
+    .selectize-input
+    {
+        margin-bottom: 5px;
+        border: unset;
+        border-bottom: 1px solid #0000003b;
+        border-radius: 0px;
+    }
+    .selectize-control.single .selectize-input
+    {
+        background-color: unset;
+        background-image: unset;
+        background-repeat: unset;
+    }
+    .zero_padding
+    {
+        padding: 0px 0px;
+    }
+    
+    .input_length2 
+    {
+            border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 97%;
+    border-radius: 4px;
+    }
+    .droup_color{
+
+        /*color: black !important;*/
+        width: 100% !important;
+        background: #f5f5f5bd;
+        border: none !important;
+        height: 37px !important;
+    }
+    .selectize-input{
+
+        border: unset !important;
+    }
+    .tecs span {
+    
+        font-size: 14px;
+    }
+    .tecs .add_product3{
+
+        font-size: 18px;
     }
 
-    .cust_more_modal {
-        /*position: absolute;
-        left: 471px;
-        padding: 0px 23px;
-        z-index: 999;
+    span.select2.customer_width1 {
+        
+        margin-bottom: 0px;
+        width: 100% !important;
+        padding: 0px;
+        display: block;
+        border-radius: 4px;
+        background: #f5f5f5bd;
+        border: none !important;
+        /*height: 37px !important;*/
+        height: 100% !important;
+        overflow: visible;
+    }
+    .content_table tr {
+        text-align: unset;
+        border: 1px solid black !important;
+    }
+    .edit_cost_cal_row td{
+
+        padding: 0px;
+    }
+
+    .content_table table {
+        width: 100%;
+        border-collapse: collapse;
         border: 1px solid black;
-        border: 1px solid #0000003b;*/
+    }
+    .add_table{
 
-        position: absolute;
-        right: 32px;
-        top: -16px;
-        font-size: 25px;
-        color: #ff0000b5;
+        margin-bottom: 0px;
+        vertical-align: middle;
+    }
+    .total_table {
+        
+        width: 27% !important;
+    }
+    .cost_data td{
 
+        vertical-align: middle !important;
+        padding: 10px 10px;
+    }
+    .product-more4{
+
+        vertical-align: middle !important;
+        padding: 10px 10px;
+    }
+    .view_prod_det td{
+
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+    .view_cost_cal td{
+       
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+    .total_table td{
+            border: 1px solid black !important;
+            padding: 5px 10px;
+    }
+.assets-body td{ 
+    padding: 5px 10px;
+}
+    .edit_product-more td {
+        
+        padding: 10px 10px !important;
+    }
+    .edit_cost_cal td{
+
+        padding: 10px 10px !important;
     }
 
-    span.select2.select_width {
-        width: 70% !important;
+    .rt-inp{
+        text-align: end;
     }
-
-    .prod_add_more {
-        position: absolute;
-        left: 340px;
-        padding: 4px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
-    }
-
-    .row_align {
-        display: flex;
-        align-items: center;
-        justify-content: unset !important;
-    }
-
-    .input_length {
-        width: 95% !important;
-    }
-
-    .add_contact {
-        position: absolute;
-        right: 32px;
-        top: -16px;
-        font-size: 25px;
-        color: #ff0000b5;
-    }
-
-    .input_length2 {
-        width: 93%;
-    }
-
-    .input_length3 {
-        width: 12%;
-    }
+    
 </style>
+
 
 <div class="tab-content text-muted">
 
@@ -269,8 +340,8 @@
 
                                                 <div class="row">
 
-                                                    <div class="mt-4">
-                                                        <table class="table table-bordered table-striped delTable view_selected_table" style="display: none;">
+                                                    <div class="mt-4 content_table">
+                                                        <!-- <table class="table table-bordered table-striped delTable view_selected_table" style="display: none;">
                                                             <tbody class="travelerinfo">
 
                                                                 <tr>
@@ -287,7 +358,36 @@
 
                                                             <tbody class="travelerinfo product-more2 view-assets-body"></tbody>
 
-                                                        </table>
+                                                        </table> -->
+
+                                                        <table class="table table-bordered table-striped delTable add_table view_selected_table"  style="display: none;">
+                                                        <thead class="travelerinfo ">
+                                                            <tr>
+                                                                <td style="width: 4%;">SI</td>
+                                                                <td>Description</td>
+                                                                <td style="width: 10%;">Date Acquired</td>
+                                                                <td style="width: 10%;">Amount</td>
+                                                                <td style="width: 10%;">Depreciation</td>
+                                                                <td style="width: 10%;">Sales Price</td>
+                                                                <td style="width: 10%;">Profit/Loss</td>
+                                                            </tr>
+                                                           
+                                                        </thead>
+
+                                                        
+                                                        <tbody  class="travelerinfo product-more2 view-assets-body"></tbody>
+                                                        <!--<tbody>-->
+                                                         
+                                                        <!--</tbody>--->
+
+                                                        
+                                                        
+                                                    </table>
+                                                    <table class="total_table" >
+                                                        
+                                                    </table>
+
+
                                                     </div>
 
                                                 </div>
@@ -1420,6 +1520,7 @@
                 success: function(data) {
                     var data = JSON.parse(data);
                     var fixedData = data.fixedasset;
+                    var total_Sec = data.total_Sec;
 
                     $('.add_current_balance').val(data.asset_balance);
                     $('.asset_credit_acc').val(fixedData.cfs_credit_account).trigger('change');
@@ -1431,6 +1532,9 @@
                     if (data.asset_det != '') {
                         $('.view-assets-body').html(data.asset_det);
                         $('.view_selected_table').css('display', 'block');
+
+               
+                        $('.total_table').html(total_Sec);
 
                     }
                 }
@@ -2087,4 +2191,50 @@
 
 
     /*checkbox section end*/
+</script>
+
+
+<script>
+document.addEventListener("input", function (event) {
+    if (event.target.classList.contains("dec-inp")) {
+        let input = event.target;
+        let value = input.value.replace(/[^0-9.]/g, ""); // Allow only numbers and dot
+        let parts = value.split(".");
+
+        // Ensure only one decimal point
+        if (parts.length > 2) {
+            value = parts[0] + "." + parts.slice(1).join("");
+        }
+
+        // Restrict to 2 decimal places while typing
+        if (value.includes(".")) {
+            let [integer, decimal] = value.split(".");
+            decimal = decimal.substring(0, 2); // Keep only two decimal places
+            value = integer + (decimal ? "." + decimal : "");
+        }
+
+        input.value = value;
+    }
+});
+
+// Format number on blur (adds commas and 2 decimal places)
+document.addEventListener("blur", function (event) {
+    if (event.target.classList.contains("dec-inp")) {
+        let input = event.target;
+        let value = input.value.replace(/[^0-9.]/g, ''); // Strip non-numeric characters (except .)
+
+        let floatValue = parseFloat(value); // Convert to a number
+        if (isNaN(floatValue)) {
+            input.value = "0.00"; // Default value if empty or invalid
+            return;
+        }
+
+        let formattedValue = floatValue.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        input.value = formattedValue; // Apply formatted value
+    }
+}, true);
 </script>
