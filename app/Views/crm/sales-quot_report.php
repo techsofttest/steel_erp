@@ -277,7 +277,7 @@
                                                     <th style="width:300px">Customer Name</th>
                                                     <th style="white-space: nowrap" class="text-center">Sales Executive</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:700px">Product</th>
+                                                    <th style="width:900px">Product</th>
                                                     <th style="white-space: nowrap" class="text-center">Quantity</th>
                                                     <th style="white-space: nowrap" class="text-end">Rate</th>
                                                     <th style="white-space: nowrap" class="text-end">Discount</th>
@@ -302,7 +302,7 @@
                                                             $total = $quot_data->qd_sales_amount + $total;
                                                             ?>
                                                             <td style="white-space: nowrap" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount); ?></td>
-                                                            <td style="width:700px !important;">
+                                                            <td style="width:900px !important;">
                                                                 <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
                                                                     <?php echo $quot_prod->product_details; ?><br>
                                                                 <?php } ?>
