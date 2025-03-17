@@ -2085,6 +2085,8 @@ class Reports extends BaseController
 
                 //Total 
 
+              $pdc_total_amount = 0;
+
               $displayed_references = [];
                foreach($data['post_dated_cheques'] as $pdc){
 
@@ -2093,8 +2095,10 @@ class Reports extends BaseController
                 }
                 
                 $displayed_references[] = $pdc->reference;
+
+                $pdc_total_amount = $pdc_total_amount+$pdc->amount;
                 
-               $pdc_data .='
+                $pdc_data .='
                     <tr>
 
                         <td align="center">'.$pdc->reference.'</td>
@@ -2120,17 +2124,17 @@ class Reports extends BaseController
                 <td style="border-top: 1px solid"></td>
                 <td style="border-top: 1px solid"></td>
                 <td style="border-top: 1px solid"></td>
-                <td style="border-top: 1px solid" align="right"><b>'.format_currency(array_sum(array_column($data['post_dated_cheques'],'amount'))).'</b></td>
+                <td style="border-top: 1px solid" align="right"><b>'.format_currency($pdc_total_amount).'</b></td>
                 </tr>
                 ';
 
 
                 $pdc_data .= "</table>";
 
-                $pdc_total_amount = 0;
+                
                 if(!empty($_GET['pdc']))
                 {
-                $pdc_total_amount = array_sum(array_column($data['post_dated_cheques'],'amount'));
+                $pdc_total_amount_get = $pdc_total_amount;
                 }
 
                 $remaining_balance = $balance-$pdc_total_amount;

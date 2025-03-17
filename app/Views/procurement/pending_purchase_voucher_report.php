@@ -266,14 +266,14 @@
                                         <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
                                                     <th class="text-center" style="width:300px">Vendor</th>
-                                                    <th style="width:100px;white-space: nowrap" class="text-center">Amount</th>
-                                                    <th style="width:100px;white-space: nowrap" class="text-center">Recieved</th>
-                                                    <th style="width:100px;white-space: nowrap" class="text-center">Booked</th>
-                                                    <th style="width:100px;white-space: nowrap" class="text-center">Balance</th>
+                                                    <th style="width:80px;white-space: nowrap" class="text-end">Amount</th>
+                                                    <th style="width:80px;white-space: nowrap" class="text-end">Recieved</th>
+                                                    <th style="width:80px;white-space: nowrap" class="text-end">Booked</th>
+                                                    <th style="width:80px;white-space: nowrap" class="text-end">Balance</th>
                                                 </tr>
                                             </thead>
 
@@ -285,7 +285,7 @@
                                                     foreach ($purchase_order as $pur_vouc) { ?>
                                                         <tr>
 
-                                                            <td class="text-center"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_vouc->po_date; ?></td>
                                                             <td class="text-center"><?php echo $pur_vouc->po_reffer_no; ?></td>
 
@@ -308,7 +308,7 @@
                                                             <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->pv_paid ?? 0);
                                                                                     $pv_paid += $pur_vouc->pv_paid ?? 0; ?></td>
 
-                                                            <td class="rotate text-end" style="width:100px"><?php echo format_currency($pur_vouc->po_amount - $booked_note);
+                                                            <td class="rotate text-end" style="width:80px"><?php echo format_currency($pur_vouc->po_amount - $booked_note);
                                                                                     $balance += $pur_vouc->po_amount - $booked_note; ?></td>
 
 

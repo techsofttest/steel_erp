@@ -415,6 +415,7 @@
 
 
 
+                                        <?php $tot_pdc_am = 0; ?>
                                         <?php if(!empty($_GET['pdc']))
 
                                         {
@@ -449,7 +450,8 @@
                                         <tbody>
 
 
-                                    <?php 
+                                    <?php
+                                    
                                     $displayed_references = [];
                                     foreach($post_dated_cheques as $pdc){
                                         
@@ -459,6 +461,8 @@
                                     
                                     $displayed_references[] = $pdc->reference;
 
+                                    
+                                    $tot_pdc_am = $tot_pdc_am + $pdc->amount;
                                     ?>
 
                                     <tr>
@@ -487,6 +491,11 @@
                                     <?php } ?>
 
 
+                                    <?php $remaining_bal = $c_balance-$tot_pdc_am; 
+                                    
+                                        $remaining_bal = abs($remaining_bal);
+
+                                    ?>
 
                                     <table class="table table-bordered">
 
@@ -495,7 +504,9 @@
 
                                     <tr>
 
-                                    <th class="text-center"><b>Net Amount Due : <?= currency_to_words($c_balance); ?></b></th>
+                                    <td class="" align="left"><b>Net Amount Due : <?= currency_to_words($remaining_bal); ?></b></td>
+
+                                    <td class="" align="right"><b><?= format_currency($remaining_bal) ?></b></td>
 
                                     <tr>
 
