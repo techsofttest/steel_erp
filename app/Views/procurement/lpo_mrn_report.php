@@ -27,6 +27,9 @@
         table-layout: fixed;
         width: 100%;
     }
+    table{
+        width:auto
+    }
 </style>
 
 
@@ -324,7 +327,7 @@
 
                                                             <?php if (!empty($pur_order->product_orders)) { ?>
                                                                 <td colspan="10" align="left" class="p-0">
-                                                                <table style="table-layout:fixed;">
+                                                                <table >
                                                                    
 
                                                                         <?php $k=0; foreach ($pur_order->product_orders as $orders) { $k++; ?>
@@ -342,7 +345,7 @@
                                                                                     <?php echo $orders->product_details; ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-center " style="width:80px;white-space: nowrap">
+                                                                                <td class="text-center " style="width:100px;white-space: nowrap">
                                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                                 </td>
 
@@ -354,27 +357,24 @@
                                                                                     <?php echo format_currency($orders->pop_discount); ?>%<br>
                                                                                 </td>
 
-                                                                                <td class="text-end " style="width:80px;white-space: nowrap">
+                                                                                <td class="text-end " style="width:85px;white-space: nowrap">
                                                                                     <?php $mr_amount += $orders->pop_amount;
                                                                                     echo format_currency($orders->pop_amount); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-center" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-center" style="width:105px;white-space: nowrap">
                                                                                     <?php echo $pur_order->mrn_reffer; ?><br>
                                                                                 </td>
 
-
-
-                                                                                <td class="text-end" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-end" style="width:80px;white-space: nowrap">
                                                                                     <?php $po_amount += $orders->rnp_amount;
                                                                                     echo format_currency($orders->rnp_amount); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-end" style="width:80px;white-space: nowrap">
                                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
                                                                                     echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                                 </td>
-
 
                                                                             <?php } ?>
 
