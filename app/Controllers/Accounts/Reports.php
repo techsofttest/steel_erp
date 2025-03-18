@@ -185,11 +185,7 @@ class Reports extends BaseController
                         $q=1;
 
                         $border="border-top: 2px solid";
-                       
-                        $total_debit = $total_debit + $vc->debit_amount;
-
-                        $total_credit = $total_credit + $vc->credit_amount;
-        
+                        
                         $new_date = date('d-M-Y',strtotime($vc->transaction_date));
         
                         $pdf_data .= "<tr> <td align='center'>{$new_date}</td>";
@@ -204,23 +200,24 @@ class Reports extends BaseController
                     
 
 
-                        if($vc->debit_amount !="") { 
+                        if($vc->debit_amount !="" && $vc->debit_amount>0) { 
 
-                        $debit_am = format_currency($vc->debit_amount);
+                            $debit_am = format_currency($vc->debit_amount);
 
-                        $balance = $balance+$vc->debit_amount; 
+                            $vc->debit_amount === "" ? "" : $vc->debit_amount;
 
-                        $total_debit = $total_debit+$vc->debit_amount;
+                            $total_debit = (float)$total_debit+(float)$vc->debit_amount;
 
                         } else if($vc->credit_amount<0) {
-
-                        $debit_am = format_currency($vc->credit_amount); 
-
-                        $balance = $balance-$vc->credit_amount;
-
-                        $total_debit = $total_debit+$vc->credit_amount;
                             
-                        }
+                            $debit_am= format_currency(abs($vc->credit_amount)); 
+
+                            $vc->credit_amount === "" ? "" : $vc->credit_amount;
+
+                            $total_debit=(float)$total_debit+(float)abs($vc->credit_amount);
+
+                            
+                        } 
                         else
                         {
                         $debit_am="";
@@ -229,18 +226,38 @@ class Reports extends BaseController
                         $pdf_data .= "<td align='right' >{$debit_am}</td>";
 
 
-                        if($vc->credit_amount !="" && $vc->credit_amount>0) {
+                        if($vc->credit_amount !="" && $vc->credit_amount>0) { 
 
-                            $credit_am = format_currency($vc->credit_amount);
+                            $credit_am = format_currency($vc->credit_amount); 
 
-                            $balance = $balance-$vc->credit_amount; 
+                            $total_credit=$total_credit+$vc->credit_amount;
+                            
+                        } else if($vc->debit_amount<0) {
+                            
+                            $credit_am = format_currency(abs($vc->debit_amount));
 
-                            $total_credit = $total_credit+$vc->credit_amount;
+                            $vc->debit_amount === "" ? "" : $vc->debit_amount;
+
+                            $total_credit = (float)$total_credit+(float)abs($vc->debit_amount);
 
                         } else {
 
                             $credit_am ="";
 
+                        }
+
+
+                        if(!empty($vc->debit_amount))
+                        {
+                        $vc->debit_amount === "" ? "" : $vc->debit_amount;
+                        
+                        $balance = (float)$balance+(float)$vc->debit_amount;
+                        
+                        }
+                        else
+                        {
+                        $vc->credit_amount === "" ? "" : $vc->credit_amount;
+                        $balance = (float)$balance-(float)$vc->credit_amount; 
                         }
         
                         $pdf_data .= "<td align='right'>{$credit_am}</td>";
@@ -248,6 +265,8 @@ class Reports extends BaseController
                         $pdf_data .= "<td  align='right'>(".format_currency($balance).")</td>";
                         
                         $pdf_data .="</tr>";
+
+                        
                        
                         
                     }
