@@ -245,11 +245,11 @@
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th style="white-space: nowrap;width:500px">Product</th>
+                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
@@ -292,7 +292,7 @@
                                                                                 <?php if($k ==1){ echo format_currency($pur_vouc->pv_total);
                                                                                                     $total += $pur_vouc->pv_total; } ?> </td>
 
-                                                                            <td style="width:500px"> <?php echo $orders->pvp_prod_dec; ?></td>
+                                                                            <td style="min-width:500px"> <?php echo $orders->pvp_prod_dec; ?></td>
 
                                                                             <td class="text-center" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pvp_qty); ?></td>
 

@@ -240,13 +240,13 @@
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="width:300px">Vendor</th>
+                                                    <th class="" style="width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
                                                     <th style="white-space: nowrap;min-width:500px">Product</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Amount</th>
                                                 </tr>
                                             </thead>

@@ -285,7 +285,7 @@
                                                     </th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN
                                                         Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">
+                                                    <th class="" style="white-space: nowrap;width:300px">
                                                         Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">
                                                         Purchase Order</th>
