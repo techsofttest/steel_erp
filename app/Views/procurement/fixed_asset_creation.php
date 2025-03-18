@@ -1,6 +1,6 @@
 <style>
     .select2.select2-container {
-        width: 95% !important;
+        width: 100% !important;
     }
 
     .cust_more_modal {
@@ -145,7 +145,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="cfs_account_id" class="form-control  account_id" readonly required>
+                                                                        <input type="text" name="cfs_account_id" class="form-control account_id" readonly required>
                                                                     </div>
 
                                                                 </div>
@@ -1746,73 +1746,37 @@
         /*contact new modal end*/
 
 
-        /*fetch purchase order by vendor name*/
-
-        $("body").on('change', '.vendor_data', function() {
-
-            var Id = $('.vendor_data').val();
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/VendorInv",
-
-                method: "POST",
-
-                data: {
-                    ID: Id
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    console.log(data.vendor_inv)
-
-                    $('.vendor_inv_ref').html(data.vendor_inv);
-
-                }
-
-            });
-        });
-
+  
         /*###*/
 
 
+        $('.account_head_select').on('change', function() {
+            var accountHeadId = $(this).val();  // Get the selected account head ID
 
-        /*fetch data by vendor inv */
+            if (accountHeadId) { // Check if an account head is actually selected
+                $.ajax({
+                    url: '<?php echo base_url('Procurement/FixedAssetCreation/Code'); ?>', // Replace 'your_controller' with the actual controller name
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { ID: accountHeadId },  // Send the account head ID
 
-        $("body").on('change', '.vendor_inv_ref', function() {
-
-            var id = $('.vendor_inv_ref').val();
-
-
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Procurement/PurchaseReturn/FetchContact",
-
-                method: "POST",
-
-                data: {
-                    ID: id
-                },
-
-                success: function(data) {
-
-                    var data = JSON.parse(data);
-
-                    $('.add_contact_person').val(data.contact_person);
-
-                    $('.add_payment_term').val(data.payment_term);
-
-                }
-
-            });
+                    success: function(response) {
+                        if (response && response.account_id) {
+                            $('.account_id').val(response.account_id); // Display the account ID in the input field
+                        } else {
+                            $('.account_id').val(''); // Clear the field if no account ID is returned
+                            console.error("No account ID returned from the server.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX request failed:", status, error);
+                        $('.account_id').val(''); // Clear the field on error
+                    }
+                });
+            } else {
+                $('.account_id').val(''); // Clear the field if no account head is selected
+            }
         });
-
-        /*###*/
-
-
 
         /*add product start*/
 

@@ -172,6 +172,26 @@ class FixedAssetCreation extends BaseController
     }
 
 
+    public function Code()
+    {
+    
+        $id = $this->request->getPost('ID');
+
+        if(empty($id))
+        {
+            return false; 
+
+            exit();
+        }
+
+        $data['account_id'] = $this->common_model->FetchNextHeadId($id);
+
+        echo json_encode($data);
+
+    }
+
+
+
     // add account head
     Public function Add()
     {   

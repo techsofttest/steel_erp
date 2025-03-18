@@ -257,14 +257,27 @@
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
+                                                <!--<tr>
+                                                    <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
+                                                    <th style="white-space: nowrAap" class="text-center">Date</th>
+                                                    <th style="white-space: nowrap" class="text-center">Quotation Ref</th>
+                                                    <th style="width:50%">Customer Name</th>
+                                                    <th style="white-space: nowrap" class="text-center">Sales Executive</th>
+                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th style="width:70%">Product</th>
+                                                    <th style="white-space: nowrap" class="text-center">Quantity</th>
+                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
+                                                    <th style="white-space: nowrap" class="text-end">Discount</th>
+                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                </tr>--->
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
                                                     <th style="white-space: nowrAap" class="text-center">Date</th>
                                                     <th style="white-space: nowrap" class="text-center">Quotation Ref</th>
-                                                    <th style="white-space: nowrap">Customer Name</th>
+                                                    <th style="white-space: nowrap;width:300px !important">Customer Name</th>
                                                     <th style="white-space: nowrap" class="text-center">Sales Executive</th>
                                                     <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
+                                                    <th style="width:900px">Product</th>
                                                     <th style="white-space: nowrap" class="text-center">Quantity</th>
                                                     <th style="white-space: nowrap" class="text-end">Rate</th>
                                                     <th style="white-space: nowrap" class="text-end">Discount</th>
@@ -283,13 +296,13 @@
                                                             <td class="text-center"><?php echo $i; ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
-                                                            <td style="white-space: nowrap"><?php echo $quot_data->cc_customer_name; ?></td>
+                                                            <td style="white-space: nowrap;width:300px !important"><?php echo $quot_data->cc_customer_name; ?></td>
                                                             <td style="white-space: nowrap" class="text-center"><?php echo $quot_data->se_name; ?></td>
                                                             <?php
                                                             $total = $quot_data->qd_sales_amount + $total;
                                                             ?>
                                                             <td style="white-space: nowrap" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount); ?></td>
-                                                            <td style="white-space: nowrap;width: 70% !important;overflow-x: auto;">
+                                                            <td style="width:900px !important;">
                                                                 <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
                                                                     <?php echo $quot_prod->product_details; ?><br>
                                                                 <?php } ?>

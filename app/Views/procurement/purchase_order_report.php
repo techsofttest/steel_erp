@@ -18,17 +18,12 @@
     .rotate {
         /* transform: rotateX(180deg); */
     }
-
     #DataTable td {
-        line-height: 1.0
-    }
-
-    #DataTable {
-        table-layout: fixed;
-        width: auto;
-        margin: unset
+        line-height: 1.1;
     }
 </style>
+
+
 <div class="tab-content text-muted">
 
     <div class="tab-pane active" id="nav-crm-top-1-1" role="tabpanel">
@@ -242,17 +237,17 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="width:300px">Vendor</th>
+                                                    <th class="" style="width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
-                                                    <th style="white-space: nowrap;width:400px">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Quantity</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Rate</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:70px">Discount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
+                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -264,7 +259,7 @@
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
 
-                                                            <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:60px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $pur_order->po_date; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $pur_order->po_reffer_no; ?></td>
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
@@ -274,24 +269,28 @@
 
                                                             <td colspan="7" align="left" class="p-0">
                                                                 <table>
-                                                                    <?php foreach ($pur_order->product_orders as $orders) { ?>
+                                                                    <?php $k=0 ; foreach ($pur_order->product_orders as $orders) { $k++; ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
                                                                             <td class="text-center" style="white-space: nowrap;width:100px">
                                                                                 <?php echo $orders->so_reffer_no;  ?><br>
                                                                             </td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($pur_order->po_amount);
-                                                                                                    $total += $pur_order->po_amount; ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php
+                                                                            if($k==1){
+                                                                                echo format_currency($pur_order->po_amount);
+                                                                                $total += $pur_order->po_amount; 
+                                                                            }
+                                                                            ?></td>
 
-                                                                            <td style="width:400px">
+                                                                            <td style="min-width:500px">
                                                                                     <?php echo $orders->product_details; ?></td>
-                                                                            <td class="text-end" style="white-space: nowrap;width:70px"><?php echo $orders->pop_qty; ?></td>
+                                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $orders->pop_qty; ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:70px"> <?php echo format_currency($orders->pop_rate); ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px"> <?php echo format_currency($orders->pop_rate); ?></td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:70px"><?php echo format_currency($orders->pop_discount); ?></td>
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_discount); ?>%</td>
 
-                                                                            <td class="text-end" style="white-space: nowrap;width:100px"><?php echo format_currency($orders->pop_amount);
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_amount);
                                                                                                         $po_total += $orders->pop_amount; ?></td>
 
                                                                         </tr>
@@ -305,16 +304,16 @@
 
                                                     <tr>
                                                         <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-end"><?php echo format_currency($po_total); ?></th>
+                                                        <th style="width:70px">Total</th>
+                                                        <th style="width:100px"></th>
+                                                        <th style="width:300px"></th>
+                                                        <th style="width:100px"></th>
+                                                        <th class="text-end" style="width:80px"><?php echo format_currency($total); ?></th>
+                                                        <th style="min-width:500px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th class="text-center" style="    padding: 10px 0px 0px 10px !important;"><?php echo format_currency($po_total); ?></th>
                                                     </tr>
 
                                                 <?php

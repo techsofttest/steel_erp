@@ -1,61 +1,126 @@
 <style>
-    .select2.select2-container {
-        width: 95% !important;
+     .selectize-input
+    {
+        border: unset;
+    }
+    .selectize-input
+    {
+        margin-bottom: 5px;
+        border: unset;
+        border-bottom: 1px solid #0000003b;
+        border-radius: 0px;
+    }
+    .selectize-control.single .selectize-input
+    {
+        background-color: unset;
+        background-image: unset;
+        background-repeat: unset;
+    }
+    .zero_padding
+    {
+        padding: 0px 0px;
+    }
+    
+    .input_length2 
+    {
+            border: 1px solid #434343 !important;
+    margin-bottom: 0px;
+    background: #f5f5f56e;
+    height: 40px;
+    width: 97%;
+    border-radius: 4px;
+    }
+    .droup_color{
+
+        /*color: black !important;*/
+        width: 100% !important;
+        background: #f5f5f5bd;
+        border: none !important;
+        height: 37px !important;
+    }
+    .selectize-input{
+
+        border: unset !important;
+    }
+    .tecs span {
+    
+        font-size: 14px;
+    }
+    .tecs .add_product3{
+
+        font-size: 18px;
     }
 
-    .cust_more_modal {
-        /*position: absolute;
-        left: 471px;
-        padding: 0px 23px;
-        z-index: 999;
+    span.select2.customer_width1 {
+        
+        margin-bottom: 0px;
+        width: 100% !important;
+        padding: 0px;
+        display: block;
+        border-radius: 4px;
+        background: #f5f5f5bd;
+        border: none !important;
+        /*height: 37px !important;*/
+        height: 100% !important;
+        overflow: visible;
+    }
+    .content_table tr {
+        text-align: unset;
+        border: 1px solid black !important;
+    }
+    .edit_cost_cal_row td{
+
+        padding: 0px;
+    }
+
+    .content_table table {
+        width: 100%;
+        border-collapse: collapse;
         border: 1px solid black;
-        border: 1px solid #0000003b;*/
-
-        position: absolute;
-        right: 32px;
-        top: -16px;
-        font-size: 25px;
-        color: #ff0000b5;
-
     }
+    .add_table{
 
-    span.select2.select_width {
-        width: 70% !important;
+        margin-bottom: 0px;
+        vertical-align: middle;
     }
-
-    .prod_add_more {
-        position: absolute;
-        left: 340px;
-        padding: 4px 27px;
-        z-index: 999;
-        border: 1px solid black;
-        border: 1px solid #0000003b;
+    .total_table {
+        
+        width: 27% !important;
     }
+    .cost_data td{
 
-    .row_align {
-        display: flex;
-        align-items: center;
-        justify-content: unset !important;
+        vertical-align: middle !important;
+        padding: 10px 10px;
     }
+    .product-more4{
 
-    .input_length {
-        width: 95% !important;
+        vertical-align: middle !important;
+        padding: 10px 10px;
     }
+    .view_prod_det td{
 
-    .add_contact {
-        position: absolute;
-        right: 32px;
-        top: -16px;
-        font-size: 25px;
-        color: #ff0000b5;
+        vertical-align: middle;
+        padding: 10px 10px;
     }
-
-    .input_length2 {
-        width: 93%;
+    .view_cost_cal td{
+       
+        vertical-align: middle;
+        padding: 10px 10px;
     }
+    .total_table td{
+            border: 1px solid black !important;
+            padding: 5px 10px;
+    }
+.assets-body td{ 
+    padding: 5px 10px;
+}
+    .edit_product-more td {
+        
+        padding: 10px 10px !important;
+    }
+    .edit_cost_cal td{
 
-    .input_length3 {
-        width: 12%;
+        padding: 10px 10px !important;
     }
 </style>
 
@@ -275,7 +340,7 @@
                                                 </div>
                                                 <div class="row">
 
-                                                    <div class="mt-4">
+                                                    <!-- <div class="mt-4">
                                                         <table class="table table-bordered table-striped delTable selected_table" style="display: none;">
                                                             <tbody class="travelerinfo">
 
@@ -294,7 +359,40 @@
                                                             <tbody class="travelerinfo product-more2 assets-body"></tbody>
 
                                                         </table>
-                                                    </div>
+                                                    </div> -->
+
+                                                    <div class="mt-4 content_table" style="padding-top: 0px;">
+                                                    
+                                                    <!-- <h5 class="modal-title text-center mb-3" id="exampleModalLabel">Cost Calculation</h5> -->
+                                                    <table class="table table-bordered table-striped delTable add_table selected_table"  style="display: none;">
+                                                        <thead class="travelerinfo contact_tbody">
+                                                            <tr>
+                                                                <td style="width: 4%;">SI</td>
+                                                                <td>Description</td>
+                                                                <td style="width: 10%;">Date Acquired</td>
+                                                                <td style="width: 10%;">Amount</td>
+                                                                <td style="width: 10%;">Depreciation</td>
+                                                                <td style="width: 10%;">Entitlement</td>
+                                                                <td style="width: 10%;">Depreciation</td>
+                                                            </tr>
+                                                           
+                                                        </thead>
+
+                                                        
+                                                        <tbody  class="travelerinfo product-more2 assets-body"></tbody>
+                                                        <!--<tbody>-->
+                                                         
+                                                        <!--</tbody>--->
+
+                                                        
+                                                        
+                                                    </table>
+                                                    <table class="total_table" >
+                                                        
+                                                    </table>
+                                                  
+                                                </div>
+
 
                                                 </div>
 
@@ -1601,6 +1699,7 @@
                         if (parsedData.fixedasset) {
                             // Do something with parsedData.fixedasset, if needed
                             var fixedasset = parsedData.fixedasset;
+                            var totsec = parsedData.total_Sec;
 
                             $('#debit_account_select').val(fixedasset.cfs_debit_account).trigger('change');
                             $('#credit_account_select').val(fixedasset.cfs_credit_account).trigger('change');
@@ -1626,8 +1725,11 @@
 
                             // Populate the table's body with the data received from `fixed_asset`
                             $('.assets-body').html(parsedData.fixed_asset);
-                        }
 
+                            // $('.total_table').css('display', 'block');
+                            $('.total_table').html(parsedData.total_Sec);
+                        }
+                        
 
 
 

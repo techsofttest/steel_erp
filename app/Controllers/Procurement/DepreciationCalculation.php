@@ -289,25 +289,27 @@ class DepreciationCalculation extends BaseController
                                  <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
                                 <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_acquired_date[]" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_amount[]" value="' . $fixed_amount . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_depreciation[]" value="' . $depreciation_percent . '%" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control"  readonly></td>
-                                <td><input type="text" name="dpcd_depreciation_amt[]" value="' . $depreciation_amount . '" class="form-control"  readonly></td>
+                                <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>
+                                <td><input type="text" name="dpcd_depreciation[]" value="' .  format_currency($depreciation_percent) . '%" class="form-control" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_entitlement[]" value="' . $entitlement . '" class="form-control" style="text-align: end;"  readonly></td>
+                                <td><input type="text" name="dpcd_depreciation_amt[]" value="' .  format_currency($depreciation_amount) . '" class="form-control" style="text-align: end;" readonly></td>
                             </tr>';
             $j++; // Increment row count
         }
 
-        $fixed_asset .= '<tr>
-            <td colspan="1"></td>
-            <td colspan="2" align="left" class="amount_in_words_add"></td>
-            <td align="right" colspan="3">Total</td>
-            <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
-            <th id="total_amount"> ' . format_currency($total_amt) . '</th>
-        </tr>';
+
 
         // Set fixed_asset key in the response data
         $data['fixed_asset'] = $fixed_asset;
 
+        $data['total_Sec'] ='<tbody>
+                                <tr>             
+                                    <td align="right" class="total_label amount_in_words_add">Total</td>
+                                     <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
+                                    <td  id="total_amount"><input type="text" name="" class="edit_total_prod form-control text-end" readonly value="' . format_currency($total_amt) . '"></td>
+                                </tr>      
+                            </tbody>';
+        
         // exit;
 
         // Return the data as a JSON response
@@ -986,8 +988,9 @@ class DepreciationCalculation extends BaseController
 // exit;
 
         //Insert Journal voucher
+       
 
-        $juid = $this->common_model->FetchNextId('accounts_journal_vouchers', "JV-{$this->data['accounting_year']}-");
+         $juid = $this->common_model->FetchNextId('accounts_journal_vouchers','jv_id', "JV-{$this->data['accounting_year']}-",'');
 
         $insert_journal['jv_voucher_no'] = $juid;
 

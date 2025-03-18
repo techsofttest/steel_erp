@@ -257,11 +257,6 @@ class CommonModel extends Model
 
 
 
-
-
-
-
-
     //Fetch where Join
     public function FetchWhereJoin($table,$cond,$joins)
     {

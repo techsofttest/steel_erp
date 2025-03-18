@@ -267,13 +267,13 @@
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Invoice Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -284,15 +284,15 @@
                                                     $total = 0;
                                                     foreach ($purchase_order as $pur_order) { ?>
                                                         <tr>
-                                                            <td class="text-center"><?php echo $i; ?></td>
-                                                            <td class="text-center"><?php echo $pur_order->pr_date; ?></td>
-                                                            <td class="text-center"><?php echo $pur_order->pr_reffer_id; ?></td>
+                                                            <td class="text-center" style="width:60px"><?php echo $i; ?></td>
+                                                            <td class="text-center" style="width:70px"><?php echo $pur_order->pr_date; ?></td>
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pr_reffer_id; ?></td>
                                                             <td class="" style="white-space: nowrap;width:300px"><?php foreach ($vendors as $vendor) {
                                                                                                                         echo $pur_order->pr_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';  } ?>
                                                             </td>
-                                                            <td class="text-center"><?php echo $pur_order->po_reffer_no ?? ''; ?></td>
-                                                            <td class="text-center"><?php echo $pur_order->pv_reffer_id; ?></td>
-                                                            <td class="text-end"><?php echo format_currency($pur_order->prp_amount); $total +=$pur_order->prp_amount; ?></td>
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->po_reffer_no ?? ''; ?></td>
+                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->pv_reffer_id; ?></td>
+                                                            <td class="text-end" style="width:80px"><?php echo format_currency($pur_order->prp_amount); $total +=$pur_order->prp_amount; ?></td>
                                                         </tr>
 
                                                 <?php $i++;
