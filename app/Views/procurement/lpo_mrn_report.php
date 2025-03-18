@@ -371,7 +371,7 @@
                                                                                     echo format_currency($orders->rnp_amount); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end" style="width:80px;white-space: nowrap">
+                                                                                <td class="text-end" style="width:83px;white-space: nowrap">
                                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
                                                                                     echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                                 </td>
