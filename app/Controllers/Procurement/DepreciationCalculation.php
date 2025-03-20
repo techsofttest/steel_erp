@@ -230,7 +230,7 @@ class DepreciationCalculation extends BaseController
         $acchead_balance = $credit_balance->ending_balance;
 
 
-        $data['acchead_balance'] = $acchead_balance;
+        $data['acchead_balance'] = format_currency($acchead_balance);
 
 
         $cond = ['cfs_account_head' => $acchead];
@@ -592,7 +592,7 @@ class DepreciationCalculation extends BaseController
 
         $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
 
-        $data['balance_amt']    = $depreciation_calc->dpc_amount;
+        $data['balance_amt']    = format_currency($depreciation_calc->dpc_amount);
 
         $data['debit_account']  = $depreciation_calc->dpc_debit_account;
 
@@ -907,7 +907,7 @@ class DepreciationCalculation extends BaseController
 
         $data['acquired_date']  = date('d-M-Y', strtotime($depreciation_calc->dpc_acquired_date));
 
-        $data['balance_amt']    = $depreciation_calc->dpc_amount;
+        $data['balance_amt']    = format_currency($depreciation_calc->dpc_amount);
 
         $data['debit_account']  = $depreciation_calc->dpc_debit_account;
 
