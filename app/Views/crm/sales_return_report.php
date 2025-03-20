@@ -271,7 +271,7 @@
                                                                             
                                                             <tr style="background: unset;border-bottom: hidden !important;">
                                                                 
-                                                                <td  style="width:500px" ><?php echo $ret_prod->product_details; ?> </td>
+                                                                <td  style="width:500px" style="line-height: 1.5;"><?php echo $ret_prod->product_details; ?> </td>
                                                                 <td class="text-center" style="width:100px; "><?php echo $ret_prod->srp_quantity; ?> </td>
                                                                 <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_rate); ?> </td>
                                                                 <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_discount); ?>% </td>
