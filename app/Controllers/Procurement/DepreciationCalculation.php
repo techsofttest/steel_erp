@@ -254,8 +254,7 @@ class DepreciationCalculation extends BaseController
 
             //$fixed_amount -= $cfs_last_yr_depreciation;
 
-            $fixed_amount -=  ($fixed_amount*100)/$cfs_last_yr_depreciation;
-
+            $fixed_amount -=  ($fixed_amount*$cfs_last_yr_depreciation)/100;
 
 
 
