@@ -228,15 +228,15 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
-                'pv_total'           => $this->request->getPost('total_vou_amount'),
+                'pv_total'           =>  preg_replace('/[,]/', '',$this->request->getPost('total_vou_amount')),
                 
                 'pv_added_by'        => 0,
 
                 'pv_added_date'      => date('Y-m-d'),
 
             ];
-
-           
+            
+         
 
             $purchase_voucher = $this->common_model->InsertData('pro_purchase_voucher',$insert_data);
 
@@ -281,9 +281,9 @@ class PurchaseVoucher extends BaseController
                             'pvp_debit'                =>  $_POST['debit_account'][$j],
                             'pvp_qty'                  =>  $_POST['pvp_qty'][$j],
                             'pvp_unit'                 =>  $_POST['pvp_unit'][$j],
-                            'pvp_rate'                 =>  $_POST['pvp_rate'][$j],
+                            'pvp_rate'                 =>  preg_replace('/[,]/', '',$_POST['pvp_rate'][$j]),
                             'pvp_discount'             =>  $_POST['pvp_discount'][$j],
-                            'pvp_amount'               =>  $_POST['pvp_amount'][$j],
+                            'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
                             'pvp_reffer_id'            =>  $purchase_voucher,
                         );
                         
@@ -337,7 +337,7 @@ class PurchaseVoucher extends BaseController
 
                 'pv_payment_term'    => $this->request->getPost('purchase_payment_term'),
 
-                'pv_total'           => $this->request->getPost('total_vou_amount'),
+                'pv_total'           => preg_replace('/[,]/', '',$this->request->getPost('total_vou_amount')),
 
                 'pv_added_by'        => 0,
 
@@ -367,9 +367,9 @@ class PurchaseVoucher extends BaseController
                             'pvp_debit'                =>  $_POST['debit_account'][$j],
                             'pvp_qty'                  =>  $_POST['pvp_qty'][$j],
                             'pvp_unit'                 =>  $_POST['pvp_unit'][$j],
-                            'pvp_rate'                 =>  $_POST['pvp_rate'][$j],
+                            'pvp_rate'                 =>  preg_replace('/[,]/', '',$_POST['pvp_rate'][$j]),
                             'pvp_discount'             =>  $_POST['pvp_discount'][$j],
-                            'pvp_amount'               =>  $_POST['pvp_amount'][$j],
+                            'pvp_amount'               =>  preg_replace('/[,]/', '',$_POST['pvp_amount'][$j]),
                             'pvp_mat_rec_note_prod_id' =>  $_POST['rnp_id'][$j],
                             'pvp_mat_rec_id'           =>  $_POST['material_received_id'][$j],
                             'pvp_reffer_id'            =>  $this->request->getPost('purchase_voucher_id'),
@@ -1236,9 +1236,9 @@ class PurchaseVoucher extends BaseController
                                             </td>
                                             <td class="text-center"><input type="number" name="pvp_qty[]" value="'.$product->rnp_current_delivery.'"  class="form-control add_prod_qty text-center"  required readonly></td>
                                             <td class="text-center"><input type="text" name="pvp_unit[]" value="'.$product->rnp_unit.'" class="form-control text-center" required readonly></td>
-                                            <td class="text-center"><input type="number" name="pvp_rate[]" value="'.$product->rnp_rate.'"  class="form-control add_prod_rate text-end" required ></td>
-                                            <td class="text-center"><input type="number" name="pvp_discount[]" value="'.$product->rnp_discount.'"  class="form-control add_discount text-center" required ></td>
-                                            <td class="text-center"><input type="amount" name="pvp_amount[]" value="'.$product->rnp_amount.'"  class="form-control add_prod_amount text-end" required readonly></td>
+                                            <td class="text-center"><input type="text" name="pvp_rate[]" value="'.format_currency($product->rnp_rate).'"  class="form-control add_prod_rate text-end" required ></td>
+                                            <td class="text-center"><input type="number" name="pvp_discount[]" value="'.format_currency($product->rnp_discount).'"  class="form-control add_discount text-center" required ></td>
+                                            <td class="text-center"><input type="text" name="pvp_amount[]" value="'.format_currency($product->rnp_amount).'"  class="form-control add_prod_amount text-end" required readonly></td>
                                             <input type="hidden" name="rnp_id[]" value="'.$product->rnp_id.'">
                                             <input type="hidden" name="material_received_id[]" value="'.$product->rnp_material_received_note.'">
                                             <input type="hidden" name="pvp_product_desc[]" value="'.$product->rnp_product_desc.'">
@@ -1401,11 +1401,13 @@ class PurchaseVoucher extends BaseController
                 
                 $material_received_note_prod = $this->common_model->SingleRow('pro_material_received_note_prod',array('rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id));
 
-                $this->common_model->EditData(array('rnp_status' => 0), array('	rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
+                if(!empty($material_received_note_prod->rnp_material_received_note)){
 
-                
-                
-                $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $material_received_note_prod->rnp_material_received_note), 'pro_material_received_note');
+                    $this->common_model->EditData(array('rnp_status' => 0), array('	rnp_id' => $pur_vou_prod->pvp_mat_rec_note_prod_id), 'pro_material_received_note_prod');
+
+                    $this->common_model->EditData(array('mrn_status' => 0), array('	mrn_id' => $material_received_note_prod->rnp_material_received_note), 'pro_material_received_note');
+    
+                }
 
 
             }
@@ -1498,11 +1500,11 @@ class PurchaseVoucher extends BaseController
             
             'pvp_qty'         => $this->request->getPost('pvp_qty'),
 
-            'pvp_rate'        => $this->request->getPost('pvp_rate'),
+            'pvp_rate'        => preg_replace('/[,]/', '',$this->request->getPost('pvp_rate')),
 
             'pvp_discount'    => $this->request->getPost('pvp_discount'),
 
-            'pvp_amount'      => $this->request->getPost('pvp_amount'),
+            'pvp_amount'      => preg_replace('/[,]/', '',$this->request->getPost('pvp_amount')),
 
 
         ];

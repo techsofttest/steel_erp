@@ -232,9 +232,9 @@ class PurchaseReturn extends BaseController
                             'prp_debit'               =>  $_POST['prp_debit'][$j],
                             'prp_qty'                 =>  $_POST['prp_qty'][$j],
                             'prp_unit'                =>  $_POST['prp_unit'][$j],
-                            'prp_rate'                =>  $_POST['prp_rate'][$j],
+                            'prp_rate'                =>  preg_replace('/[,]/', '',$_POST['prp_rate'][$j]),
                             'prp_discount'            =>  $_POST['prp_discount'][$j],
-                            'prp_amount'              =>  $_POST['prp_amount'][$j],
+                            'prp_amount'              =>  preg_replace('/[,]/', '',$_POST['prp_amount'][$j]),
                             //'prp_voucher_prod_id'     =>  $_POST['prp_id'][$j],
                             //'prp_voucher_id'          =>  $_POST['prp_voucher_id'][$j],
                             'prp_purchase_return_id'  =>  $this->request->getPost('pr_id'),
@@ -250,7 +250,7 @@ class PurchaseReturn extends BaseController
                         
                         $purchase_return = $this->common_model->SingleRow('pro_purchase_return',array('pr_id' => $purchase_return_prod->prp_purchase_return_id));
                         
-                        $this->common_model->EditData(array('pr_total_amount' => $_POST['pr_total_amount']), array('pr_id' => $purchase_return_prod->prp_purchase_return_id),'pro_purchase_return');
+                        $this->common_model->EditData(array('pr_total_amount' => preg_replace('/[,]/', '',$_POST['pr_total_amount'])), array('pr_id' => $purchase_return_prod->prp_purchase_return_id),'pro_purchase_return');
                         
 
                         /*$this->common_model->EditData(array('pvp_status' => 1), array('pvp_id' => $purchase_return_prod->prp_voucher_prod_id),'pro_purchase_voucher_prod');

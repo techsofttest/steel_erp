@@ -264,7 +264,7 @@
                                                     <th style="white-space: nowrap;width:80px" class="text-center">Rate</th>
                                                     <th style="white-space: nowrap;width:80px" class="text-center">Discount</th>
                                                     <th style="white-space: nowrap;width:80px" class="text-center">Amount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:200px">Invoice Ref</th>
                                                     <th style="white-space: nowrap;width:100px" class="text-center">Difference</th>
 
                                                 </tr>
@@ -313,7 +313,7 @@
                                                                                         if(!empty($del_prod->invoices)){
                                                                                         foreach ($del_prod->invoices as $invoice) { ?>
                                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
-                                                                                            <td width="100px" class="responsive text-center"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_crn=<?php echo $invoice->cci_id;?>" target="_blank"><?php echo $invoice->cci_reffer_no; ?></a></td>
+                                                                                            <td width="200px" class="responsive text-center"><a href="<?php echo base_url();?>Crm/CreditInvoice?view_crn=<?php echo $invoice->cci_id;?>" target="_blank"><?php echo $invoice->cci_reffer_no; ?></a></td>
                                                                                             
                                                                                                <?php $difference = $del_prod->dpd_total_amount - $invoice->ipd_amount;
                                                                                                
@@ -328,7 +328,7 @@
                                                                                     <?php } } else{?> 
                                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
                                                                                             
-                                                                                            <td width="100px" class="responsive text-center"></td>
+                                                                                            <td width="200px" class="responsive text-center"></td>
                                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_total_amount); ?></td>
                                                                                             
                                                                                             <?php  

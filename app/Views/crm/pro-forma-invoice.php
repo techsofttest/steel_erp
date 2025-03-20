@@ -369,7 +369,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 <td style="width:4%"></td>
@@ -414,7 +414,7 @@ span.select2.customer_width, span.select2 {
                                                                
                                                                 <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
                                                                 <td align="right" class="total_label">Current Claim Value -QAR</td>
-                                                                <td><input type="number" name="pf_current_claim_value" class="form-control claim_qar text-end" readonly></td>
+                                                                <td><input type="text" name="pf_current_claim_value" class="form-control claim_qar text-end" readonly></td>
                                                                 <td></td>
 
                                                             </tr>
@@ -763,7 +763,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td class="text-center">Product Description</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
                                                                 <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 8%;">Rate</td>
                                                                 <td class="text-center" style="width: 7%;">Discount</td>
                                                                 <td class="text-center" style="width: 9%;">Amount</td>
                                                               
@@ -1144,7 +1144,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 14%;">Action</td>
@@ -1276,7 +1276,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -1297,9 +1297,9 @@ span.select2.customer_width, span.select2 {
 
                                                                 <td><input type="text"   name="pp_unit" class="form-control text-center" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control edit_add_qty text-center" required></td>
-                                                                <td><input type="number" name="pp_rate" class="form-control edit_add_rate text-end" required></td>
+                                                                <td><input type="text" name="pp_rate" class="form-control edit_add_rate text-end" required></td>
                                                                 <td><input type="number" name="pp_discount" min="0" max="100" onkeyup="MinMax(this)" class="form-control edit_add_discount text-center" required></td>
-                                                                <td><input type="number" name="pp_amount" class="form-control edit_add_amount text-end" readonly></td>
+                                                                <td><input type="text" name="pp_amount" class="form-control edit_add_amount text-end" readonly></td>
                                                                 
                                                                 <input type="hidden" name="pp_proforma" class="edit_hidden_performa_id">
 
@@ -1364,7 +1364,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -1381,10 +1381,10 @@ span.select2.customer_width, span.select2 {
                                                                 </td>
                                                                 <td><input type="text" name="pp_unit"  class="form-control forma_edit_unit text-center" required></td>
                                                                 <td><input type="number" name="pp_quantity" class="form-control forma_edit_qty text-center" required></td>
-                                                                <td><input type="number" name="pp_rate" class="form-control forma_edit_rate text-end" required></td>
+                                                                <td><input type="text" name="pp_rate" class="form-control forma_edit_rate text-end" required></td>
                                                                 <td><input type="number" name="pp_discount"  min="0" max="100"  onkeyup="MinMax(this)" class="form-control forma_edit_discount text-center" required></td>
                                                                 
-                                                                <td><input type="number" name="pp_amount" class="form-control forma_edit_amount text-end" readonly></td>
+                                                                <td><input type="text" name="pp_amount" class="form-control forma_edit_amount text-end" readonly></td>
                                                                
                                                                 <input type="hidden" name="pp_id" class="edit_hidden_prod_id">
                                                             </tr>
@@ -2048,8 +2048,109 @@ span.select2.customer_width, span.select2 {
 
 
         /*product detail calculation*/
+
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
         
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+        $("body").on("input", ".rate_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".rate_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                //console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                //console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".qtn_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".qtn_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                //console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".prod_row").find(".discount_clz_id").val()) || 0;
+            var rateElement = $this.closest(".prod_row").find(".rate_clz_id");
+            var quantityElement = $this.closest(".prod_row").find(".qtn_clz_id");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".prod_row").find(".amount_clz_id");
+            amountElement.val(formattedPrice);
+
+            TotalAmount();
+        });
+        
+        /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
            
             var $discountSelect = $(this);
 
@@ -2073,7 +2174,11 @@ span.select2.customer_width, span.select2 {
            
             var orginalPrice = multipliedTotal - per_amount;
 
-            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+            console.log(orginalPrice);
+
+            var orginalPrice = orginalPrice.toFixed(2); 
+
+           
 
             var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
@@ -2081,7 +2186,7 @@ span.select2.customer_width, span.select2 {
 
             TotalAmount();
 
-        });
+        });*/
 
         
         /*total amount calculation start*/
@@ -2089,28 +2194,45 @@ span.select2.customer_width, span.select2 {
         function TotalAmount()
         {
 
-            var total= 0;
+            /*var total= 0;
 
             $('body .amount_clz_id').each(function()
             {
                 var sub_tot = parseFloat($(this).val());
 
                 total += parseFloat(sub_tot.toFixed(2))||0;
-               //total = Number(total).toFixed(2)
+               
             });
 
            total = total.toFixed(2);
 
-           $('.amount_total').val(total);
+           var formattedPrice = total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-           //var resultSalesOrder= numberToWords.toWords(total);
+           $('.amount_total').val(formattedPrice);*/
 
-           // $(".performa_amount_in_word").text(resultSalesOrder);
+           var total= 0;
 
-           // $(".performa_amount_in_word_val").val(resultSalesOrder);
-                
-            //currentClaim()
+            $('body .amount_clz_id').each(function()
+            {   
+                var value = $(this).val().replace(/,/g, ""); 
 
+                var sub_tot = parseFloat(value) || 0;
+
+                total += sub_tot; 
+
+               
+               
+            });
+
+            var rawPrice = total.toFixed(2);
+
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Set formatted value in input
+            $(".amount_total").val(formattedPrice);
+
+          
            
         }
 
@@ -2141,7 +2263,7 @@ span.select2.customer_width, span.select2 {
             
            // $(".product-more2").append("<tr class='prod_row performa_row_lenght'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id' readonly></td><td class='remove-btnpp' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
            
-           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='number' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='number' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           $(".product-more2").append("<tr class='prod_row performa_row_lenght text-center'><td class='si_no'>"+pp+"</td><td><select class='form-select add_prod add_prod2' name='pp_product_det["+prl+"]' required><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='pp_unit["+prl+"]' class='form-control unit_clz_id text-center' required></td><td><input type='number' name='pp_quantity["+prl+"]' class='form-control qtn_clz_id text-center' required></td><td><input type='text' name='pp_rate["+prl+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' name='pp_discount["+prl+"]' min='0' max='100' onkeyup='MinMax(this)' class='form-control discount_clz_id text-center' required></td><td><input type='text' name='pp_amount["+prl+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding: 10px 10px;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
 
         }
 
@@ -2526,7 +2648,7 @@ span.select2.customer_width, span.select2 {
 
                     $(".edit_current_claim_value").val(responseData.current_claim_value);
 
-                    console.log(responseData.current_claim_value);
+                    //console.log(responseData.current_claim_value);
 
                     $(".edit_performa_id").val(responseData.performa_id);
 
@@ -2688,7 +2810,84 @@ span.select2.customer_width, span.select2 {
 
     //edit add calculation section start
 
-    $("body").on('keyup', '.edit_add_discount , .edit_add_qty , .edit_add_rate', function(){ 
+    function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Allow typing without formatting while user is entering the value
+        $("body").on("input", ".edit_add_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".edit_add_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                //console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                //console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".edit_add_prod_row").find(".edit_add_discount").val()) || 0;
+            var rateElement = $this.closest(".edit_add_prod_row").find(".edit_add_rate");
+            var quantityElement = $this.closest(".edit_add_prod_row").find(".edit_add_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_add_prod_row").find(".edit_add_amount");
+            amountElement.val(formattedPrice);
+
+            
+        });
+
+    /*$("body").on('keyup', '.edit_add_discount , .edit_add_qty , .edit_add_rate', function(){ 
            
         var $discountSelect = $(this);
 
@@ -2718,9 +2917,9 @@ span.select2.customer_width, span.select2 {
 
         $amountElement.val(orginalPrice);
 
-           //TotalAmount();
+           
 
-    });
+    });*/
 
     //inset edit add prod
     $(function() {
@@ -2802,6 +3001,8 @@ span.select2.customer_width, span.select2 {
 
                 $(".forma_edit_amount").val(data.amount);
 
+                //console.log(data.rate);
+
                 
                 InitProductSelectEdit();
 
@@ -2815,7 +3016,86 @@ span.select2.customer_width, span.select2 {
 
 
     //edit calculation start
-    $("body").on('keyup', '.forma_edit_discount, .forma_edit_qty, .forma_edit_rate', function(){ 
+
+    function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Allow typing without formatting while user is entering the value
+        $("body").on("input", ".forma_edit_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".forma_edit_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".forma_edit_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".forma_edit_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("keyup", ".forma_edit_discount, .forma_edit_qty, .forma_edit_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".edit_product_row").find(".forma_edit_discount").val()) || 0;
+            var rateElement = $this.closest(".edit_product_row").find(".forma_edit_rate");
+            var quantityElement = $this.closest(".edit_product_row").find(".forma_edit_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_product_row").find(".forma_edit_amount");
+            amountElement.val(formattedPrice);
+
+            
+        });
+
+    /*$("body").on('keyup', '.forma_edit_discount, .forma_edit_qty, .forma_edit_rate', function(){ 
            
            var $discountSelect = $(this);
    
@@ -2847,7 +3127,7 @@ span.select2.customer_width, span.select2 {
    
            
    
-       });
+       });*/
        
        
        //update product
@@ -2945,7 +3225,7 @@ span.select2.customer_width, span.select2 {
        function EditTotalAmount()
        {
 
-            var total= 0;
+            /*var total= 0;
            
             $('body .edit_total_amount').each(function()
             {
@@ -2960,7 +3240,31 @@ span.select2.customer_width, span.select2 {
 
         $('.edit_total_order').val(total);
 
-        editCurrentClaim();
+        editCurrentClaim();*/
+
+        var total = 0;
+
+            $(".edit_total_amount").each(function () {
+                var value = $(this).text().replace(/,/g, ""); 
+              
+                var sub_tot = parseFloat(value) || 0; 
+                
+
+                total += sub_tot; 
+            });
+
+            var rawPrice = total.toFixed(2);
+
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            // Set formatted value in input
+            $(".edit_total_order").val(formattedPrice);
+
+            // Recalculate percentage
+            editCurrentClaim();
 
        
        }
@@ -3025,6 +3329,8 @@ span.select2.customer_width, span.select2 {
                 
             }
         });
+
+        editCurrentClaim();
 
        
        
@@ -3181,43 +3487,67 @@ span.select2.customer_width, span.select2 {
 
     /*current claim section start*/
 
-    function currentClaim()
-    {  
+    
+    function currentClaim() {  
+        var current_claim_lenght = $(".current_cliam_clz").length;
+        var current_claim = $('.current_cliam_clz').val();
 
-       var current_claim_lenght = $(".current_cliam_clz").length 
- 
-       var current_claim = $('.current_cliam_clz').val();
+        var amountTotal = $('.amount_total').val().replace(/,/g, ''); // Remove commas
 
-       var amountTotal = $('.amount_total').val();
+        if (current_claim && amountTotal) {
+            amountTotal = parseFloat(amountTotal); // Convert to number
+            current_claim = parseFloat(current_claim); // Convert to number
 
-        var discountAmount = (current_claim/100)*amountTotal
+            if (!isNaN(current_claim) && !isNaN(amountTotal)) {
+                var discountAmount = (current_claim / 100) * amountTotal;
+                discountAmount = discountAmount.toFixed(2); // Keep two decimal places
 
-        var discountAmount = discountAmount.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+                var formattedPrice = Number(discountAmount).toLocaleString("en-US", { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                });
 
-        //var qar = amountTotal - discountAmount;
-
-        $('.claim_qar').val(discountAmount);
-
+                $('.claim_qar').val(formattedPrice);
+            } 
+        } 
     } 
+
 
     /*current claim section end*/
 
 
      /*calculate current claim */
 
-    function editCurrentClaim()
-        {   
-            
-            var current_claim = $('.edit_current_claim').val();
+     
+    
+    function editCurrentClaim() {  
 
-            var amountTotal = $('.edit_total_order').val();
+      
+        var current_claim_lenght = $(".edit_current_claim").length;
+        var current_claim = $('.edit_current_claim').val();
 
-            var discountAmount = (current_claim/100)*amountTotal
+        var amountTotal = $('.edit_total_order').val().replace(/,/g, ''); // Remove commas
 
-            var discountAmount = discountAmount.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+        if (current_claim && amountTotal) {
+            amountTotal = parseFloat(amountTotal); // Convert to number
+            current_claim = parseFloat(current_claim); // Convert to number
 
-            $('.edit_current_claim_value').val(discountAmount);
+            if (!isNaN(current_claim) && !isNaN(amountTotal)) {
+                var discountAmount = (current_claim / 100) * amountTotal;
+                discountAmount = discountAmount.toFixed(2); // Keep two decimal places
+
+                var formattedPrice = Number(discountAmount).toLocaleString("en-US", { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                });
+
+                $('.edit_current_claim_value').val(formattedPrice);
+            } 
         } 
+    } 
+
+
+   
 
 
     

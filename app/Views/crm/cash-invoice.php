@@ -363,7 +363,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                
@@ -2013,7 +2013,7 @@ span.select2.customer_width, span.select2 {
 
          /*product detail calculation*/
         
-        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+        /*$("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
            
            var $discountSelect = $(this);
 
@@ -2039,18 +2039,46 @@ span.select2.customer_width, span.select2 {
 
            var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
 
+           var formattedPrice = orginalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
 
-           $amountElement.val(orginalPrice);
+           $amountElement.val(formattedPrice);
 
            TotalAmount();
 
+        });*/
+
+        $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+            var $discountSelect = $(this);
+
+            var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val()) || 0;
+            var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+            var rate = parseFloat($discountSelectElement.val()) || 0;
+            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
+            var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var per_amount = (discount / 100) * multipliedTotal;
+            var originalPrice = multipliedTotal - per_amount;
+
+            // Ensure originalPrice is a number before formatting
+            var formattedPrice = Number(originalPrice).toLocaleString("en-US", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+            $amountElement.val(formattedPrice);
+
+            TotalAmount();
         });
+
 
 
         /**/
 
-        $("body").on('keyup', '.qtn_clz_id', function(){ 
+        /*$("body").on('keyup', '.qtn_clz_id', function(){ 
             
           
             var $cashSelect = $(this);
@@ -2090,7 +2118,43 @@ span.select2.customer_width, span.select2 {
 
             });
 
+        });*/
+
+
+        $("body").on('keyup', '.qtn_clz_id', function() { 
+            var $cashSelect = $(this);
+
+            var sales_prod_id = parseInt($cashSelect.closest('.prod_row').find('.selected_sales_prod').val()) || 0;
+
+            var currentSelectElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
+
+            var qty = parseInt($cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id').val()) || 0;
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>Crm/CashInvoice/qtyCheck",
+                method: "POST",
+                data: { selectProdId: sales_prod_id },
+                success: function(data) {
+                    var data = JSON.parse(data);
+
+                    if (qty > data.delivery_qty) {
+                        alertify.error('Quantity cannot be greater than ' + data.delivery_qty).delay(3).dismissOthers();
+
+                        // Set quantity input to empty
+                        currentSelectElement.val("");
+
+                        // This line was incorrect in your code:
+                        // var $currencyNullElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
+
+                        // Correct it by ensuring you use the right element reference
+                        var $qtyElement = $cashSelect.closest('.cash_invoice_remove').find('.qtn_clz_id');
+
+                        $qtyElement.val(""); // Clear the input field
+                    }
+                }
+            });
         });
+
 
         /**/
 
@@ -2103,7 +2167,7 @@ span.select2.customer_width, span.select2 {
         function TotalAmount()
         {
 
-           var total= 0;
+           /*var total= 0;
 
            $('body .amount_clz_id').each(function()
            {
@@ -2115,15 +2179,28 @@ span.select2.customer_width, span.select2 {
 
           total = total.toFixed(2);
 
-          $('.amount_total').val(total);
+          $('.amount_total').val(total);*/
 
-          /*var resultSalesOrder= numberToWords.toWords(total);
 
-           $(".performa_amount_in_word").text(resultSalesOrder);
+            var total = 0;
 
-           $(".performa_amount_in_word_val").val(resultSalesOrder);*/
-           
-           //currentClaim()
+            $(".amount_clz_id").each(function () {
+                var value = $(this).val().replace(/,/g, ""); // Remove commas
+                var sub_tot = parseFloat(value) || 0; // Parse safely
+                total += sub_tot; // Add to total
+            });
+
+            // Keep raw value with two decimal places
+            var rawPrice = total.toFixed(2);
+
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+            // Set formatted value in input
+            $(".amount_total").val(formattedPrice);
+
+          
         }
 
        /*total amount calculation end*/

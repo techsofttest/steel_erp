@@ -258,11 +258,11 @@ class ProFormaInvoice extends BaseController
 
             'pf_project'                => $this->request->getPost('pf_project'),
 
-            'pf_total_amount'           => $this->request->getPost('pf_total_amount'),
+            'pf_total_amount'           =>  preg_replace('/[,]/', '',$this->request->getPost('pf_total_amount')),
 
             'pf_current_cliam'          => $this->request->getPost('pf_current_cliam'),
 
-            'pf_current_claim_value'    => $this->request->getPost('pf_current_claim_value'),
+            'pf_current_claim_value'    => preg_replace('/[,]/', '',$this->request->getPost('pf_current_claim_value')),
 
             'pf_total_amount_in_words'  => $this->request->getPost('pf_total_amount_in_words'),
 
@@ -296,9 +296,9 @@ class ProFormaInvoice extends BaseController
                         'pp_product_det'    =>  $_POST['pp_product_det'][$j],
                         'pp_unit'           =>  $_POST['pp_unit'][$j],
                         'pp_quantity'       =>  $_POST['pp_quantity'][$j],
-                        'pp_rate'           =>  $_POST['pp_rate'][$j],
+                        'pp_rate'           =>  preg_replace('/[,]/', '',$_POST['pp_rate'][$j]),
                         'pp_discount'       =>  $_POST['pp_discount'][$j],
-                        'pp_amount'         =>  $_POST['pp_amount'][$j],
+                        'pp_amount'         =>  preg_replace('/[,]/', '',$_POST['pp_amount'][$j]),
                         'pp_proforma'       =>  $sales_order_id,
     
                     );
@@ -678,9 +678,9 @@ class ProFormaInvoice extends BaseController
                                             </td>
                                             <td><input type="text"   name="pp_unit['.$j.']" value="'.$prod_det->spd_unit.'" class="form-control unit_clz_id text-center" required></td>
                                             <td><input type="number" name="pp_quantity['.$j.']" value="'.$prod_det->spd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
-                                            <td><input type="number" name="pp_rate['.$j.']" value="'.$prod_det->spd_rate.'" class="form-control rate_clz_id text-end" required></td>
-                                            <td><input type="number" name="pp_discount['.$j.']" value="'.$prod_det->spd_discount.'" class="form-control discount_clz_id text-center" required></td>
-                                            <td><input type="number" name="pp_amount['.$j.']" value="'.$prod_det->spd_amount.'" class="form-control amount_clz_id text-end" readonly></td>
+                                            <td><input type="text" name="pp_rate['.$j.']" value="'.format_currency($prod_det->spd_rate).'" class="form-control rate_clz_id text-end" required></td>
+                                            <td><input type="number" name="pp_discount['.$j.']" value="'.format_currency($prod_det->spd_discount).'" class="form-control discount_clz_id text-center" required></td>
+                                            <td><input type="text" name="pp_amount['.$j.']" value="'.format_currency($prod_det->spd_amount).'" class="form-control amount_clz_id text-end" readonly></td>
                                             <td class="row_remove remove-btnpp text-center" data-id="'.$prod_det->spd_id .'" style="padding: 10px 10px;"><i class="ri-close-line"></i></td>
                                         </tr>';
                                         $i++;
@@ -893,7 +893,7 @@ class ProFormaInvoice extends BaseController
                 <td class="text-center">'.round($prod_det->pp_quantity).'</td>
                 <td class="text-end">'.format_currency($prod_det->pp_rate).'</td>
                 <td class="text-center">'.format_currency($prod_det->pp_discount).'</td>
-                <td class="text-end">'.format_currency($prod_det->pp_amount).'</td>
+                <td class="text-end edit_total_amount">'.format_currency($prod_det->pp_amount).'</td>
                 <td class="text-center">
                     <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
                     <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->pp_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -945,6 +945,14 @@ class ProFormaInvoice extends BaseController
         public function EditAddProd()
         {
             $insert_data = $this->request->getPost();
+
+            if (isset($insert_data['pp_rate'])) {
+                $insert_data['pp_rate'] = preg_replace('/[,]/', '', $insert_data['pp_rate']);
+            }
+
+            if (isset($insert_data['pp_amount'])) {
+                $insert_data['pp_amount'] = preg_replace('/[,]/', '', $insert_data['pp_amount']);
+            }
 
             $proforma_prod_id = $this->common_model->InsertData('crm_proforma_product',$insert_data);
 
@@ -1029,11 +1037,11 @@ class ProFormaInvoice extends BaseController
 
             $data['qty']      = round($proforma_prod->pp_quantity);
     
-            $data['rate']     = $proforma_prod->pp_rate;
+            $data['rate']     = format_currency($proforma_prod->pp_rate);
     
-            $data['discount'] = $proforma_prod->pp_discount;
+            $data['discount'] = format_currency($proforma_prod->pp_discount);
 
-            $data['amount']   = $proforma_prod->pp_amount;
+            $data['amount']   = format_currency($proforma_prod->pp_amount);
     
             echo json_encode($data);
         }
@@ -1044,6 +1052,15 @@ class ProFormaInvoice extends BaseController
             $cond = array('pp_id' => $this->request->getPost('pp_id'));
 
             $update_data = $this->request->getPost();
+
+            if (isset($update_data['pp_rate'])) {
+                $update_data['pp_rate'] = preg_replace('/[,]/', '', $update_data['pp_rate']);
+            }
+
+            if (isset($update_data['pp_amount'])) {
+                $update_data['pp_amount'] = preg_replace('/[,]/', '', $update_data['pp_amount']);
+            }
+
 
             if (array_key_exists('pp_id', $update_data)) 
             {

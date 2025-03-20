@@ -277,9 +277,9 @@ class SalesReturn extends BaseController
 
                 'sr_credit_account'  => $this->request->getPost('sr_credit_account'),
 
-                'sr_sales_order'  => $this->request->getPost('sales_order'),
+                'sr_sales_order'     => $this->request->getPost('sales_order'),
 
-                'sr_total'           => $this->request->getPost('sr_total'),
+                'sr_total'           =>  preg_replace('/[,]/', '',$this->request->getPost('sr_total')),
 
             ];
 
@@ -319,9 +319,9 @@ class SalesReturn extends BaseController
                         'srp_prod_det'       =>  $_POST['srp_prod_det'][$j],
                         'srp_unit'           =>  $_POST['srp_unit'][$j],
                         'srp_quantity'       =>  $_POST['srp_quantity'][$j],
-                        'srp_rate'           =>  $_POST['srp_rate'][$j],
+                        'srp_rate'           =>  preg_replace('/[,]/', '',$_POST['srp_rate'][$j]),
                         'srp_discount'       =>  $_POST['srp_discount'][$j],
-                        'srp_amount'         =>  $_POST['srp_amount'][$j],
+                        'srp_amount'         =>  preg_replace('/[,]/', '',$_POST['srp_amount'][$j]),
                         'srp_prod_reff_name' =>  $_POST['reffer_id'][$j],
                         'srp_sales_return'   =>  $sales_return_id->sr_id
                         
@@ -1179,9 +1179,9 @@ class SalesReturn extends BaseController
                                                         <td style="text-align:left">'.$sales_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sales_det->cipd_unit.'" class="form-control text-center" readonly></td>
                                                         <td><input type="number" name="srp_quantity[]" value="'.$qty.'"  class="form-control qtn_clz_id text-center" required></td>
-                                                        <td><input type="number" name="srp_rate[]" value="'.$sales_det->cipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
-                                                        <td><input type="number" name="srp_discount[]" value="'.$sales_det->cipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
-                                                        <td><input type="number" name="srp_amount[]" value="'.$sales_det->cipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
+                                                        <td><input type="text" name="srp_rate[]" value="'.format_currency($sales_det->cipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="srp_discount[]" value="'.format_currency($sales_det->cipd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($sales_det->cipd_amount).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" name="cash_id[]" value="'.$sales_det->cipd_id.'"> 
                                                         <input type="hidden" name="cash_main_table[]" value="'.$sales_det->cipd_cash_invoice.'">
@@ -1193,7 +1193,7 @@ class SalesReturn extends BaseController
                                                         
                     }
 
-                    $data['total_amount'] = $new_amount;
+                    $data['total_amount'] = format_currency($new_amount);
                 }
 
                 if(!empty($sales_order_details2))
@@ -1207,9 +1207,9 @@ class SalesReturn extends BaseController
                                                         <td style="text-align:left">'.$sale_det->product_details.'</td>
                                                         <td><input type="text"   name="srp_unit[]" value="'.$sale_det->ipd_unit.'" class="form-control text-center" readonly></td>
                                                         <td><input type="number" name="srp_quantity[]" value="'.$new_qty.'"  class="form-control qtn_clz_id text-center" required></td>
-                                                        <td><input type="number" name="srp_rate[]" value="'.$sale_det->ipd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
-                                                        <td><input type="number" name="srp_discount[]" value="'.$sale_det->ipd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
-                                                        <td><input type="number" name="srp_amount[]" value="'.$sale_det->ipd_amount.'" class="form-control amount_clz_id text-end" required readonly></td>
+                                                        <td><input type="text" name="srp_rate[]" value="'.format_currency($sale_det->ipd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="srp_discount[]" value="'.format_currency($sale_det->ipd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="text" name="srp_amount[]" value="'.format_currency($sale_det->ipd_amount).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="srp_prod_det[]" value="'.$sale_det->product_id.'">
                                                         <input type="hidden" name="credit_id[]" value="'.$sale_det->ipd_id.'"> 
                                                         <input type="hidden" name="credit_main_table[]" value="'.$sale_det->ipd_credit_invoice.'">  
@@ -1220,7 +1220,7 @@ class SalesReturn extends BaseController
                                                         
                     }
 
-                    $data['total_amount'] = $new_amount;
+                    $data['total_amount'] = format_currency($new_amount);
                 }
 
 

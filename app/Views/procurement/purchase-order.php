@@ -366,7 +366,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 
@@ -677,7 +677,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="text-align: center;width:9%">Amount</td>
                                                                
@@ -976,7 +976,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="text-align: center;width:9%">Amount</td>
                                                                 <td style="width:8%">Actions</td>
@@ -1965,7 +1965,87 @@
 
         /*calculation section start*/
 
-	    $("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function(){ 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+
+        });
+
+        $("body").on("input", ".add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+
+        });
+        
+        $("body").on("input", ".add_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".add_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+
+        });
+
+	    /*$("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -1973,7 +2053,9 @@
 
             var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
 
-            var rate = $discountSelectElement.val();
+           // var rate = $discountSelectElement.val();
+
+           var rate = parseFloat(discountSelectElement.val().replace(/,/g, "")) || 0;
 
             var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
 
@@ -1999,9 +2081,11 @@
 
             var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
 
+            var formattedPrice = orginalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
             var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
 
-            $amountElement.val(orginalPrice);
+            $amountElement.val(formattedPrice);
 
             var current_qty = total_qty -  delivered_qty;
 
@@ -2026,10 +2110,52 @@
 
             TotalAmount();
 
+        });*/
+
+        $("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function() { 
+            var $discountSelect = $(this);
+
+            var discount = parseFloat($discountSelect.closest('.add_prod_row').find('.add_discount').val()) || 0;
+
+            var $discountSelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_rate');
+
+            var rate = parseFloat($discountSelectElement.val().replace(/,/g, "")) || 0;
+
+            var $quantitySelectElement = $discountSelect.closest('.add_prod_row').find('.add_prod_qty');
+            var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+            var $totalqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_total_qty');
+            var total_qty = parseFloat($totalqtySelectElement.val()) || 0;
+
+            var $deliveredqtySelectElement = $discountSelect.closest('.add_prod_row').find('.check_delivered_qty');
+            var delivered_qty = parseFloat($deliveredqtySelectElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var per_amount = (discount / 100) * multipliedTotal;
+            var originalPrice = multipliedTotal - per_amount;
+
+            // Ensure two decimal places and format with commas
+            var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            var $amountElement = $discountSelect.closest('.add_prod_row').find('.add_prod_amount');
+            $amountElement.val(formattedPrice);
+
+            var current_qty = total_qty - delivered_qty;
+
+            if (quantity > current_qty) {   
+                $quantitySelectElement.val("");  
+                alertify.error('Quantity should not be greater than ' + current_qty).dismissOthers();
+            }
+
+            TotalAmount();
         });
 
 
-        function TotalAmount()
+
+        /*function TotalAmount()
         {
 
             var total= 0;
@@ -2045,10 +2171,28 @@
            total = total.toFixed(2);
 
            $('.amount_total').val(total);
+    
 
-          
-            
+        }*/
 
+        function TotalAmount() {
+            var total = 0;
+
+            $(".add_prod_amount").each(function () {
+                var value = $(this).val().replace(/,/g, ""); // Remove commas
+                var sub_tot = parseFloat(value) || 0; // Parse safely
+                total += sub_tot; // Add to total
+            });
+
+            // Keep raw value with two decimal places
+            var rawPrice = total.toFixed(2);
+
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+            // Set formatted value in input
+            $(".amount_total").val(formattedPrice);
         }
 		
 
@@ -2302,7 +2446,137 @@
 
         /*single product calculation start*/
 
-        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Allow typing without formatting while user is entering the value
+        $("body").on("input", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        // Allow typing without formatting while user is entering the value
+        $("body").on("input", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+         // Allow typing without formatting while user is entering the value
+         $("body").on("input", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function() { 
+            var $discountSelect = $(this);
+
+            var discount = parseFloat($discountSelect.closest('.edit_single_prod_row').find('.edit_prod_discount').val()) || 0;
+
+            var $discountSelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_rate');
+            var rate = parseFloat($discountSelectElement.val().replace(/,/g, "")) || 0;
+
+            var $quantitySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
+            var quantity = parseFloat($quantitySelectElement.val()) || 0;
+
+            var $totalqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_total_qty');
+            var total_qty = parseFloat($totalqtySelectElement.val()) || 0;
+
+            var $deliveredqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_delivered_qty');
+            var delivered_qty = parseFloat($deliveredqtySelectElement.val()) || 0;
+
+            var $actqtySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_actual_qty');
+            var act_qty = parseFloat($actqtySelectElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var per_amount = (discount / 100) * multipliedTotal;
+            var originalPrice = multipliedTotal - per_amount;
+
+            // Format price with two decimal places and commas
+            var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            var $amountElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_amount');
+            $amountElement.val(formattedPrice);
+
+            // Declare current_qty outside the conditional block
+            var current_qty = total_qty;
+
+            if (act_qty !== delivered_qty) {
+                var qty = delivered_qty - act_qty;
+                current_qty = total_qty - qty;
+            }
+
+            // Prevent quantity from exceeding current_qty
+            if (quantity > current_qty) {   
+                $quantitySelectElement.val("");  
+                alertify.error('Quantity should not be greater than ' + current_qty).dismissOthers();
+            }
+        });
+
+
+
+        /*$("body").on('keyup', '.edit_prod_discount, .edit_prod_qty, .edit_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -2310,7 +2584,9 @@
 
             var $discountSelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_rate');
 
-            var rate = $discountSelectElement.val();
+           // var rate = $discountSelectElement.val();
+
+           var rate = parseFloat($discountSelectElement.val().replace(/,/g, "")) || 0;
 
             var $quantitySelectElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_qty');
 
@@ -2338,11 +2614,16 @@
 
             var orginalPrice = multipliedTotal - per_amount;
 
-            var orginalPrice = orginalPrice.toFixed(2); 
+            var formattedPrice = Number(originalPrice.toFixed(2)).toLocaleString("en-US", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+           // var orginalPrice = orginalPrice.toFixed(2); 
 
             var $amountElement = $discountSelect.closest('.edit_single_prod_row').find('.edit_prod_amount');
 
-            $amountElement.val(orginalPrice);
+            $amountElement.val(formattedPrice);
 
             if(act_qty === delivered_qty){
                
@@ -2373,7 +2654,7 @@
             }
 
 
-        });
+        });*/
 
 
        

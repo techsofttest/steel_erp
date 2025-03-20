@@ -232,7 +232,7 @@ class PurchaseOrder extends BaseController
 
                 'po_vendor_ref'      => $this->request->getPost('po_vendor_ref'),
 
-                'po_amount'          => $this->request->getPost('po_amount'),
+                'po_amount'          => preg_replace('/[,]/', '',$this->request->getPost('po_amount')),
 
                 'po_added_by'        => 0,
 
@@ -273,9 +273,9 @@ class PurchaseOrder extends BaseController
                             'pop_prod_desc'             =>  $_POST['pop_prod_desc'][$j],
                             'pop_unit'                  =>  $_POST['pop_unit'][$j],
                             'pop_qty'                   =>  $_POST['pop_qty'][$j],
-                            'pop_rate'                  =>  $_POST['pop_rate'][$j],
+                            'pop_rate'                  =>  preg_replace('/[,]/', '',$_POST['pop_rate'][$j]),
                             'pop_discount'              =>  $_POST['pop_discount'][$j],
-                            'pop_amount'                =>  $_POST['pop_amount'][$j],
+                            'pop_amount'                =>  preg_replace('/[,]/', '',$_POST['pop_amount'][$j]),
                             'pop_material_req_prod_id'  =>  $_POST['material_req_prod_id'][$j],
                             'pop_purchase_order'        =>  $purchase_id,
                             'pop_delivered_order'       =>  0,
@@ -524,9 +524,9 @@ class PurchaseOrder extends BaseController
                                             <td style="text-align: left;padding:10px 10px;">'.$product->product_details.'</td>
                                             <td><input type="text" name="pop_unit[]" value="'.$product->mrp_unit.'" class="form-control text-center" readonly></td>
                                             <td><input type="number" name="pop_qty[]" value="'.$current_qty.'"  class="form-control add_prod_qty text-center" ></td>
-                                            <td><input type="number" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
+                                            <td><input type="text" name="pop_rate[]" value=""  class="form-control add_prod_rate text-end" required></td>
                                             <td><input type="number" name="pop_discount[]" value=""  class="form-control add_discount text-center" min="0" max="100" onkeyup="MinMax(this)" required></td>
-                                            <td><input type="number" name="pop_amount[]" value=""  class="form-control add_prod_amount text-end" readonly></td>
+                                            <td><input type="text" name="pop_amount[]" value=""  class="form-control add_prod_amount text-end" readonly></td>
                                             <input type="hidden" name="pop_sales_order[]" value="'.$product->so_id.'" class="form-control" readonly>
                                             <input type="hidden" name="pop_prod_desc[]" value="'.$product->mrp_product_desc.'">
                                             <input type="hidden" name="material_req_prod_id[]" value="'.$product->mrp_id.'">
@@ -973,11 +973,11 @@ class PurchaseOrder extends BaseController
 
                 'pop_qty'       => $this->request->getPost('pop_qty'),
 
-                'pop_rate'      => $this->request->getPost('pop_rate'),
+                'pop_rate'      => preg_replace('/[,]/', '',$this->request->getPost('pop_rate')),
 
                 'pop_discount'  => $this->request->getPost('pop_discount'),
 
-                'pop_amount'    => $this->request->getPost('pop_amount'),
+                'pop_amount'    => preg_replace('/[,]/', '',$this->request->getPost('pop_amount')),
 
 
             ];

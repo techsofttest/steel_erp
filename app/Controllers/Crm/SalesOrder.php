@@ -994,9 +994,9 @@ class SalesOrder extends BaseController
             <td>'.$prod_det->product_details.'</td>
             <td class="text-center">'.$prod_det->spd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
-            <td class="text-center"> '.format_currency($prod_det->spd_rate).'</td>
+            <td class="text-end"> '.format_currency($prod_det->spd_rate).'</td>
             <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
-            <td class="text-center">'.format_currency($prod_det->spd_amount).'</td>
+            <td class="text-end edit_product_amount">'.format_currency($prod_det->spd_amount).'</td>
             <td class="text-center">
                 <a href="javascript:void(0)" class="edit edit-color product_edit"  data-id="'.$prod_det->spd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 		        <a href="javascript:void(0)" class="delete delete-color product_delete" data-id="'.$prod_det->spd_id.'"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -1140,9 +1140,9 @@ class SalesOrder extends BaseController
             <td>'.$prod_det->product_details.'</td>
             <td class="text-center">'.$prod_det->spd_unit.'</td>
             <td class="text-center">'.format_currency($prod_det->spd_quantity).'</td>
-            <td class="text-center">'.format_currency($prod_det->spd_rate).'</td>
+            <td class="text-end">'.format_currency($prod_det->spd_rate).'</td>
             <td class="text-center">'.format_currency($prod_det->spd_discount).'</td>
-            <td class="text-center">'.format_currency($prod_det->spd_amount).'</td>
+            <td class="text-end">'.format_currency($prod_det->spd_amount).'</td>
           
             </tr>'; 
             $i++; 

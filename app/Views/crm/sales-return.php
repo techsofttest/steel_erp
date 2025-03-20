@@ -345,7 +345,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                
@@ -895,7 +895,7 @@ span.select2.customer_width, span.select2 {
                                         <td class="text-center">Product Description</td>
                                         <td class="text-center" style="width: 6%;">Unit</td>
                                         <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 6%;">Rate</td>
+                                        <td class="text-center" style="width: 8%;">Rate</td>
                                         <td class="text-center" style="width: 7%;">Discount</td>
                                         <td style="width: 9%;">Amount</td>
                                     </tr>
@@ -1199,7 +1199,7 @@ span.select2.customer_width, span.select2 {
                                         <td>Product Description</td>
                                         <td style="width: 6%;">Unit</td>
                                         <td style="width: 6%;">Qty</td>
-                                        <td style="width: 6%;">Rate</td>
+                                        <td style="width: 8%;">Rate</td>
                                         <td style="width: 7%;">Discount</td>
                                         <td style="width: 9%;">Amount</td>
                                         <!--<td>Action</td>->(action all ready done - remove comment)-->

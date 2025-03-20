@@ -212,7 +212,7 @@ class SalesQuotation extends BaseController
 
             'qd_sales_quot_amount_in_words' => $this->request->getPost('qd_sales_quot_amount_in_words'),
 
-            'qd_sales_amount'               => preg_replace('/[,]/', '',$this->request->getPost('qd_sales_amount')),
+            'qd_sales_amount'               => preg_replace('/[,]/', '', $this->request->getPost('qd_sales_amount')),
 
             'qd_added_by'                   => 0,
         ];
@@ -1209,11 +1209,11 @@ class SalesQuotation extends BaseController
             $data['prod_details'] .='<tr class="edit_add_prod_row">
             <td class="edit_add_prod_si_no text-center" style="padding:0px 10px;">'.$i.'</td>
             <td>'.$prod_det->product_details.'</td>
-            <td>'.$prod_det->qpd_unit.'</td>
-            <td>'.format_currency($prod_det->qpd_quantity).'</td>
-            <td>'.format_currency($prod_det->qpd_rate).'</td>
-            <td>'.format_currency($prod_det->qpd_discount).'</td>
-            <td>'.format_currency($prod_det->qpd_amount).'</td>
+            <td class="text-center">'.$prod_det->qpd_unit.'</td>
+            <td class="text-center">'.format_currency($prod_det->qpd_quantity).'</td>
+            <td class="text-end">'.format_currency($prod_det->qpd_rate).'</td>
+            <td class="text-center">'.format_currency($prod_det->qpd_discount).'</td>
+            <td class="text-end edit_prod_total_amount">'.format_currency($prod_det->qpd_amount).'</td>
             <td>
                 <a href="javascript:void(0)" class="edit edit-color edit_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_prod_btn" data-id="'.$prod_det->qpd_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
@@ -1247,11 +1247,11 @@ class SalesQuotation extends BaseController
             $data['cost_prod_det'] .='<tr class="edt_cost_row">
             <td class="edit_cost_si_no text-center" style="padding: 10px 10px;">'.$j.'</td>
             <td>'.$cost_prod->product_details.'</td>
-            <td>'.$cost_prod->qc_unit.'</td>
-            <td>'.format_currency($cost_prod->qc_qty).'</td>
+            <td class="text-center">'.$cost_prod->qc_unit.'</td>
+            <td class="text-center">'.format_currency($cost_prod->qc_qty).'</td>
            
-            <td>'.format_currency($cost_prod->qc_rate).'</td>
-            <td>'.format_currency($cost_prod->qc_amount).'</td>
+            <td class="text-end">'.format_currency($cost_prod->qc_rate).'</td>
+            <td class="text-end edit_cal_amount">'.format_currency($cost_prod->qc_amount).'</td>
             <td style="padding: 10px 10px;">
                 <a href="javascript:void(0)" class="edit edit-color edit_cost_cal_btn" data-id="'.$cost_prod->qc_id.'" data-toggle="tooltip" data-placement="top" title="edit" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>
 	            <a href="javascript:void(0)" class="delete delete-color delete_cost_cal_btn" data-id="'.$cost_prod->qc_id.'" data-toggle="tooltip" data-placement="top" title="Delete"><i class="ri-delete-bin-fill"></i> Delete</a>
