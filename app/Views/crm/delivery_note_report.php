@@ -263,7 +263,7 @@
                                                                     <?php foreach ($del_note->delivery_product as $delv_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
                                                                            
-                                                                            <td class="rotate" width="500px"><?php echo $delv_prod->product_details; ?></td>
+                                                                            <td class="rotate" width="500px" style="line-height: 1.5;"><?php echo $delv_prod->product_details; ?></td>
                                                                             <td class="rotate text-center" width="80px"><?php echo $delv_prod->dpd_order_qty; ?></td>
                                                                             <td class="rotate text-center" width="80px"><?php echo $delv_prod->dpd_current_qty; ?></td>
                                                                             <td class="rotate text-end" width="80px"><?php echo format_currency($delv_prod->dpd_prod_rate); ?></td>
