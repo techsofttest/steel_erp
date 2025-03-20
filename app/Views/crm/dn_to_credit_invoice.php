@@ -299,7 +299,7 @@
                                                                 <table>
                                                                     <?php  $difference = 0;   foreach ($del_note->delivery_products as $del_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
-                                                                            <td width="500px" class="responsive"><?php echo $del_prod->product_details; ?></td>
+                                                                            <td width="500px" class="responsive" style="line-height: 1.5;"><?php echo $del_prod->product_details; ?></td>
                                                                             <td width="80px" class="responsive text-center"><?php echo $del_prod->dpd_current_qty; ?></td>
                                                                             <td width="80px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_rate); ?></td>
                                                                             <td width="80px" class="responsive text-end"><?php echo format_currency($del_prod->dpd_prod_dicount); ?>%</td>
