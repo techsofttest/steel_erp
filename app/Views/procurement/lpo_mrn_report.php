@@ -20,12 +20,15 @@
     }
 
     #DataTable td {
-        line-height: 1.0
+        line-height: 1.3
     }
 
     #DataTable {
         table-layout: fixed;
         width: 100%;
+    }
+    table{
+        width:auto
     }
 </style>
 
@@ -281,19 +284,19 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1 search-btn">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow:scroll">
-                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                    <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
-                                                    <th class="text-center" style="width:500px">Product</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-center">Quantity</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="width:80px;white-space: nowrap" class="text-end">Discount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
+                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="text-center" style="width:100px">Sales Order Ref</th>
+                                                    <th class="text-end" style="width:80px">Amount</th>
+                                                    <th class="" style="width:500px;">Product</th>
+                                                    <th style="width:80px;" class="text-center">Quantity</th>
+                                                    <th style="width:80px;" class="text-end">Rate</th>
+                                                    <th style="width:80px;" class="text-end">Discount</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-end">Amount</th>
                                                     <th class="text-center" style="width:100px;white-space: nowrap">MRN Ref</th>
                                                     <!-- <th class="text-end">Quantity</th>
@@ -324,56 +327,54 @@
 
                                                             <?php if (!empty($pur_order->product_orders)) { ?>
                                                                 <td colspan="10" align="left" class="p-0">
-                                                                    <table style="width: 100%; border-collapse: collapse;">
+                                                                <table >
+                                                                   
 
                                                                         <?php $k=0; foreach ($pur_order->product_orders as $orders) { $k++; ?>
                                                                             <tr style="background: unset;border-bottom: hidden !important;">
-                                                                                <td class="rotate text-center" style="white-space: nowrap;width:100px">
+                                                                                <td class=" text-center" style="white-space: nowrap;width:100px">
                                                                                     <?php echo $orders->so_reffer_no; ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end rotate" style="white-space: nowrap;width:80px">
+                                                                                <td class="text-end " style="white-space: nowrap;width:80px">
                                                                                     <?php if($k == 1){ $tot_amount += $pur_order->po_amount;
                                                                                                             echo format_currency($pur_order->po_amount); }?>
                                                                                 </td>
 
-                                                                                <td class="rotate" style="width:500px;">
+                                                                                <td class="" style="width:500px;">
                                                                                     <?php echo $orders->product_details; ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-center rotate" style="width:80px;white-space: nowrap">
+                                                                                <td class="text-center " style="width:100px;white-space: nowrap">
                                                                                     <?php echo $orders->pop_qty; ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end rotate" style="width:80px;white-space: nowrap">
+                                                                                <td class="text-end " style="width:80px;white-space: nowrap">
                                                                                     <?php echo format_currency($orders->pop_rate); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end rotate" style="width:80px;white-space: nowrap">
+                                                                                <td class="text-end " style="width:80px;white-space: nowrap">
                                                                                     <?php echo format_currency($orders->pop_discount); ?>%<br>
                                                                                 </td>
 
-                                                                                <td class="text-end rotate" style="width:80px;white-space: nowrap">
+                                                                                <td class="text-end " style="width:85px;white-space: nowrap">
                                                                                     <?php $mr_amount += $orders->pop_amount;
                                                                                     echo format_currency($orders->pop_amount); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-center" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-center" style="width:105px;white-space: nowrap">
                                                                                     <?php echo $pur_order->mrn_reffer; ?><br>
                                                                                 </td>
 
-
-
-                                                                                <td class="text-end" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-end" style="width:80px;white-space: nowrap">
                                                                                     <?php $po_amount += $orders->rnp_amount;
                                                                                     echo format_currency($orders->rnp_amount); ?><br>
                                                                                 </td>
 
-                                                                                <td class="text-end" style="width:100px;white-space: nowrap">
+                                                                                <td class="text-end" style="width:83px;white-space: nowrap">
                                                                                     <?php $difference += $orders->pop_amount - $orders->rnp_amount;
                                                                                     echo format_currency($orders->pop_amount - $orders->rnp_amount); ?><br>
                                                                                 </td>
-
 
                                                                             <?php } ?>
 

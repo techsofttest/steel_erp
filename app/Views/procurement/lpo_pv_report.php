@@ -285,8 +285,8 @@
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:300px">Vendor</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">PO Ref</th>
+                                                    <th class="" style="white-space: nowrap;width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">MRN Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Vendor Inv Ref</th>
@@ -319,7 +319,7 @@
                                                                                                     echo $pur_order->po_vendor_name == $vendor->cc_id ? $vendor->cc_customer_name : '';
                                                                                                 } ?>
                                                             </td>
-                                                            <td class="text-center" style="width:100px"><?php echo $pur_order->mrn_reffer; ?></td>
+                                                            <td class="text-center"  style="white-space: nowrap;width:100px"><?php echo $pur_order->mrn_reffer; ?></td>
 
                                                             <td colspan="9" align="left" class="p-0">
                                                                 <table>

@@ -240,14 +240,14 @@
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="width:300px">Vendor</th>
+                                                    <th class="" style="width:300px">Vendor</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                     <th style="white-space: nowrap;min-width:500px">Product</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Rate</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Discount</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:80px">Amount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Rate</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Discount</th>
+                                                    <th class="text-end" style="white-space: nowrap;width:80px">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -290,7 +290,7 @@
 
                                                                             <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_discount); ?>%</td>
 
-                                                                            <td class="text-center" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_amount);
+                                                                            <td class="text-end" style="white-space: nowrap;width:80px"><?php echo format_currency($orders->pop_amount);
                                                                                                         $po_total += $orders->pop_amount; ?></td>
 
                                                                         </tr>
@@ -304,16 +304,16 @@
 
                                                     <tr>
                                                         <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-center"><?php echo format_currency($total); ?></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th class="text-center"><?php echo format_currency($po_total); ?></th>
+                                                        <th style="width:70px">Total</th>
+                                                        <th style="width:100px"></th>
+                                                        <th style="width:300px"></th>
+                                                        <th style="width:100px"></th>
+                                                        <th class="text-end" style="width:80px"><?php echo format_currency($total); ?></th>
+                                                        <th style="min-width:500px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th style="width:80px"></th>
+                                                        <th class="text-center" style="    padding: 10px 0px 0px 10px !important;"><?php echo format_currency($po_total); ?></th>
                                                     </tr>
 
                                                 <?php

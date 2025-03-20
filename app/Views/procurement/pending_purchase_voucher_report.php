@@ -269,7 +269,7 @@
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:60px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:70px">Date</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Purchase Order Ref</th>
-                                                    <th class="text-center" style="width:300px">Vendor</th>
+                                                    <th class="" style="width:300px">Vendor</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-end">Amount</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-end">Recieved</th>
                                                     <th style="width:80px;white-space: nowrap" class="text-end">Booked</th>
