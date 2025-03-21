@@ -308,7 +308,7 @@
                                                                 <td style="width:11%">Debit A/C</td>
                                                                 <td style="width:6%">Qty</td>
                                                                 <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                             </tr>
@@ -811,7 +811,7 @@
                                         <td class="text-center" style="width: 8%;">Credit A/C</td>
                                         <td class="text-center" style="width: 6%;">Qty</td>
                                         <td class="text-center" style="width: 6%;">Unit</td>
-                                        <td class="text-center" style="width: 6%;">Rate</td>
+                                        <td class="text-center" style="width: 8%;">Rate</td>
                                         <td class="text-center" style="width: 7%;">Discount</td>
                                         <td class="text-center" style="width: 9%;">Amount</td>
                                        
@@ -1084,7 +1084,7 @@
                                         <td style="width: 8%;">Credit A/C</td>
                                         <td style="width: 6%;">Qty</td>
                                         <td style="width: 6%;">Unit</td>
-                                        <td style="width: 6%;">Rate</td>
+                                        <td style="width: 8%;">Rate</td>
                                         <td style="width: 7%;">Discount</td>
                                         <td style="width: 9%;">Amount</td>
                                        
@@ -1683,7 +1683,7 @@
 
         /*calculation section start*/
 
-	    $("body").on('keyup', '.add_discount', function(){ 
+	    /*$("body").on('keyup', '.add_discount', function(){ 
 
             var $discountSelect = $(this);
 
@@ -1713,7 +1713,7 @@
 
             $amountElement.val(orginalPrice);
 
-        });
+        });*/
 
         /*####*/
 

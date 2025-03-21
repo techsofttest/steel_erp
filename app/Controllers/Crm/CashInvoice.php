@@ -316,11 +316,11 @@ class CashInvoice extends BaseController
 
                     'ci_credit_account'  => $this->request->getPost('ci_credit_account'),
 
-                    'ci_total_amount'  => $this->request->getPost('ci_total_amount'),
+                    'ci_total_amount'    => preg_replace('/[,]/', '',$this->request->getPost('ci_total_amount')),
 
-                    'ci_advance_amount'  => $this->request->getPost('ci_advance_amount'),
+                    'ci_advance_amount'  => preg_replace('/[,]/', '',$this->request->getPost('ci_advance_amount')),
 
-                    'ci_paid_amount'  => $this->request->getPost('ci_advance_amount'),
+                    'ci_paid_amount'     => preg_replace('/[,]/', '',$this->request->getPost('ci_advance_amount')),
 
                 ];
 
@@ -373,9 +373,9 @@ class CashInvoice extends BaseController
                                 'cipd_prod_det'      =>  $_POST['cipd_prod_det'][$j],
                                 'cipd_unit'          =>  $_POST['cipd_unit'][$j],
                                 'cipd_qtn'           =>  $_POST['cipd_qtn'][$j],
-                                'cipd_rate'          =>  $_POST['cipd_rate'][$j],
+                                'cipd_rate'          =>  preg_replace('/[,]/', '',$_POST['cipd_rate'][$j]),
                                 'cipd_discount'      =>  $_POST['cipd_discount'][$j],
-                                'cipd_amount'        =>  $_POST['cipd_amount'][$j],
+                                'cipd_amount'        =>  preg_replace('/[,]/', '',$_POST['cipd_amount'][$j]),
                                 'cipd_sales_prod'    =>  $_POST['cipd_sales_prod'][$j],
                                 'cipd_cash_invoice'  =>  $cash_invoice_id,
                                 
@@ -1190,9 +1190,9 @@ class CashInvoice extends BaseController
                                                         <td height: 100%;overflow: visible;><texarea type="text" name=""  class="form-control" readonly style="height: 100%;">'.$sales_det->product_details.'</texarea></td>
                                                         <td><input type="text" name="cipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control text-center" readonly></td>
                                                         <td><input type="number" name="cipd_qtn[]" value="'.$current_qty.'"  class="form-control qtn_clz_id text-center" ></td>
-                                                        <td><input type="number" name="cipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control rate_clz_id text-end"  readonly></td>
-                                                        <td><input type="number" name="cipd_discount[]" value="'.$sales_det->spd_discount.'" class="form-control discount_clz_id text-center" readonly></td>
-                                                        <td><input type="number" name="cipd_amount[]" value="'.$amount.'" class="form-control amount_clz_id text-end" required readonly></td>
+                                                        <td><input type="text" name="cipd_rate[]" value="'.format_currency($sales_det->spd_rate).'"  class="form-control rate_clz_id text-end"  readonly></td>
+                                                        <td><input type="number" name="cipd_discount[]" value="'.format_currency($sales_det->spd_discount).'" class="form-control discount_clz_id text-center" readonly></td>
+                                                        <td><input type="text" name="cipd_amount[]" value="'.format_currency($amount).'" class="form-control amount_clz_id text-end" required readonly></td>
                                                         <input type="hidden" name="cipd_prod_det[]" value="'.$sales_det->product_id.'">
                                                         <input type="hidden" class="selected_sales_prod" name="cipd_sales_prod[]" value="'.$sales_det->spd_id.'">
                                                         <input type="hidden" name="sales_order_id[]" value="'.$sales_det->spd_sales_order.'">
@@ -1201,7 +1201,7 @@ class CashInvoice extends BaseController
                                                     } $i++;
             }
 
-            $total_amount = number_format((float)$total_amount, 2, '.', '');  // Outputs -> 105.00
+            $total_amount = number_format((float)$total_amount, 2, '.', ',');  // Outputs -> 105.00
             
             $data['total_amount'] = $total_amount;
 
@@ -1819,7 +1819,7 @@ class CashInvoice extends BaseController
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td class=""><input type="text" value="'. $total_amount.'" class="form-control " readonly></td>
+                <td class=""><input type="text" value="'. format_currency($total_amount).'" class="form-control " readonly></td>
                 
             </tr> ';
 

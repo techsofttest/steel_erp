@@ -374,7 +374,7 @@
                                                                 <td>Product Description <span class="add_more_icon prod_add_more ri-add-line"></span></td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 4%;"></td>
@@ -772,7 +772,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 <td style="width:14%">Action</td>
@@ -894,7 +894,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -981,7 +981,7 @@
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -1306,7 +1306,7 @@
                                                                 <td class="text-center">Product Description</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
                                                                 <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 8%;">Rate</td>
                                                                 <td class="text-center" style="width: 7%;">Discount</td>
                                                                 <td class="text-center" style="width: 9%;">Amount</td>
                                                                
@@ -2190,6 +2190,59 @@
             }
         });
 
+
+        $("body").on("input", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("input", ".qtn_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".qtn_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+
+
         $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
             var $this = $(this);
 
@@ -2276,7 +2329,8 @@
             var rawPrice = total.toFixed(2);
 
             // Format with commas
-            var formattedPrice = Number(rawPrice).toLocaleString();
+           // var formattedPrice = rawPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+           var formattedPrice = rawPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
             // Set formatted value in input
             $(".amount_total").val(formattedPrice);
@@ -2611,6 +2665,55 @@
         });
 
 
+        $("body").on("input", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("input", ".edit_add_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_add_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+
         $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
             var $this = $(this);
 
@@ -2678,7 +2781,7 @@
         function EditProdTotal()
         {
 
-            var total= 0;
+            /*var total= 0;
 
             $('body .edit_product_amount').each(function()
             {
@@ -2690,7 +2793,32 @@
 
             total = total.toFixed(2);
 
-            $('.edit_amount_total').val(total);
+            $('.edit_amount_total').val(total);*/
+
+
+            var total = 0;
+
+            $(".edit_product_amount").each(function () {
+                var value = $(this).text().replace(/,/g, ""); 
+            
+                var sub_tot = parseFloat(value) || 0; 
+                
+
+                total += sub_tot; 
+            });
+
+            var rawPrice = total.toFixed(2);
+
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            // Set formatted value in input
+            $(".edit_amount_total").val(formattedPrice);
+
+            // Recalculate percentage
+
    
 
         }
@@ -2943,8 +3071,59 @@
             }
         });
 
+        $("body").on("input", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".edit_prod_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+            
+        });
+
+
 
         $("body").on("keyup", ".edit_prod_discount, .edit_prod_qty, .edit_prod_rate", function () {
+            
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".edit_prod_row").find(".edit_prod_discount").val()) || 0;

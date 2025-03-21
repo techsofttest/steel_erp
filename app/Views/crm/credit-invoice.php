@@ -365,7 +365,7 @@ span.select2.customer_width, span.select2 {
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 
@@ -1261,7 +1261,7 @@ span.select2.customer_width, span.select2 {
                                         <td class="text-center">Product Description</td>
                                         <td class="text-center" style="width: 6%;">Unit</td>
                                         <td class="text-center" style="width: 6%;">Qty</td>
-                                        <td class="text-center" style="width: 6%;">Rate</td>
+                                        <td class="text-center" style="width: 8%;">Rate</td>
                                         <td class="text-center" style="width: 7%;">Discount</td>
                                         <td class="text-center" style="width: 9%;">Amount</td>
                                         
@@ -1958,26 +1958,39 @@ span.select2.customer_width, span.select2 {
         function TotalAmount()
         {
            
-            var total= 0;
+            /*var total= 0;
 
             $('body .amount_clz_id').each(function()
             {
                 var sub_tot = parseFloat($(this).val());
 
                 total += parseFloat(sub_tot.toFixed(2))||0;
-               //total = Number(total).toFixed(2)
+               
             });
 
            total = total.toFixed(2);
 
-           $('.amount_total').val(total);
+           $('.amount_total').val(total);*/
 
-           //var resultSalesOrder= numberToWords.toWords(total);
+           var total = 0;
 
-            //$(".performa_amount_in_word").text(resultSalesOrder);
+            $(".amount_clz_id").each(function () {
+                var value = $(this).val().replace(/,/g, ""); // Remove commas
+                var sub_tot = parseFloat(value) || 0; // Parse safely
+                total += sub_tot; // Add to total
+            });
 
-            //$(".performa_amount_in_word_val").val(resultSalesOrder);
-            
+            // Keep raw value with two decimal places
+            var rawPrice = total.toFixed(2);
+
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+            // Set formatted value in input
+            $(".amount_total").val(formattedPrice);
+
+           
 
         }
 

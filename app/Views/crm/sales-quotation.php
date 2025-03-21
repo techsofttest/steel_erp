@@ -443,7 +443,7 @@
                                                                 <td >Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 4%;"></td>
@@ -615,7 +615,7 @@
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
                                                                 <td style="width:10%">Price Check</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:9%">Amount</td>
                                                                 <td style="width:5%"></td>
                                                             </tr>
@@ -1055,7 +1055,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 14%;">Action</td>
@@ -1092,7 +1092,7 @@
                                                                 <td>Cost Of Materials / Services</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 <td style="width: 14%;">Action</td>
                                                             </tr>
@@ -1198,7 +1198,7 @@
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 10%;">Price Check</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
@@ -1288,7 +1288,7 @@
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
                                                                 <td style="width: 9%;">Price Check</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
@@ -1378,7 +1378,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width: 6%;">Unit</td>
                                                                 <td style="width: 6%;">Qty</td>
-                                                                <td style="width: 6%;">Rate</td>
+                                                                <td style="width: 8%;">Rate</td>
                                                                 <td style="width: 7%;">Discount</td>
                                                                 <td style="width: 9%;">Amount</td>
                                                                 
@@ -1448,7 +1448,7 @@
                                                                 <td>Product Description</td>
                                                                 <td style="width:6%">Unit</td>
                                                                 <td style="width:6%">Qty</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
                                                                
@@ -1790,7 +1790,7 @@
                                                                 <td class="text-center">Product Description</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
                                                                 <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center" style="width: 6%;">Rate</td>
+                                                                <td class="text-center" style="width: 8%;">Rate</td>
                                                                 <td class="text-center" style="width: 7%;">Discount</td>
                                                                 <td class="text-center" style="width: 9%;">Amount</td>
                                                                 
@@ -1822,7 +1822,7 @@
                                                                 <td colspan="2" class="text-center">Cost Of Materials / Services</td>
                                                                 <td class="text-center" style="width: 6%;">Unit</td>
                                                                 <td class="text-center" style="width: 6%;">Qty</td>
-                                                                <td class="text-center"  style="width: 6%;">Rate</td>
+                                                                <td class="text-center"  style="width: 8%;">Rate</td>
                                                                 <td class="text-center" style="width: 9%;">Amount</td>
                                                                 
                                                             </tr>
@@ -2625,7 +2625,7 @@
                                 success: function(secondData) {
                                     // Handle the response of the second AJAX call
                                     var secdata = JSON.parse(secondData);
-                                    console.log(secdata);
+                                   
                                     $(".add_prod").html(secdata.product_head_out);
                                     
                                  
@@ -2869,7 +2869,7 @@
  
                 //$(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id' required=''></td><td><input type='number' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id' required=''></td><td><input type='number' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6' style='padding:10px 10px'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
-                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup=MinMax(this) name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+                $(".product-more2").append("<tr class='prod_row quot_row_leng prod_row_add'><td class='si_no'>"+pp+"</td><td ><select class='form-select add_prod' name='qpd_product_description["+qj+"]' required=''><option value='' selected disabled>Select Product Description</option><?php foreach($products as $prod){?><option value='<?php echo $prod->product_id;?>'><?php echo addslashes($prod->product_details);?></option><?php } ?></select></td><td><input type='text' name='qpd_unit["+qj+"]' class='form-control unit_clz_id text-center' required=''></td><td><input type='number' name='qpd_quantity["+qj+"]' class='form-control qtn_clz_id text-center' required=''></td><td><input type='text' name='qpd_rate["+qj+"]' class='form-control rate_clz_id text-end' required=''></td><td><input type='text'  name='qpd_discount["+qj+"]' class='form-control discount_clz_id text-center' min='0'  max='100' onkeyup='MinMax(this)' required=''></td><td><input type='text' name='qpd_amount["+qj+"]' class='form-control amount_clz_id text-end' readonly></td><td class='remove-btnpp text-center' colspan='6'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
                 
 			}
             
@@ -3256,9 +3256,35 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                
             }
         });
+
+        $("body").on("input", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".discount_clz_id", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });
+
+
+
 
         /* Product detail calculation */
         $("body").on("keyup", ".discount_clz_id, .qtn_clz_id, .rate_clz_id", function () {
@@ -3479,7 +3505,7 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+               
             }
         });
 
@@ -3794,7 +3820,7 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                
             }
         });
         
@@ -4021,7 +4047,7 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+               
             }
         });
 
@@ -4127,7 +4153,7 @@
                 {
                     var data = JSON.parse(data);
 
-                    console.log(data)
+                   
                         
                         if(data.status == "false")
                         {   
@@ -4270,9 +4296,36 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+               
             }
         });
+
+
+        $("body").on("input", ".edit_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+
+        $("body").on("blur", ".edit_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+               
+            }
+        });
+
+
 
         $("body").on("keyup", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
             var $this = $(this);
@@ -4508,9 +4561,33 @@
             if (rawValue !== "") {
                 var formattedValue = formatNumberWithCommas(rawValue);
                 $this.val(formattedValue);
-                console.log("Formatted Output:", formattedValue); // Debugging
+                
             }
         });
+        
+        $("body").on("input", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_add_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                
+            }
+        });
+
 
         $("body").on("keyup", ".edit_add_prod_dis, .edit_add_prod_qty, .edit_add_prod_rate", function () {
             var $this = $(this);
@@ -4649,7 +4726,7 @@
                 {
                     var responseData = JSON.parse(data);
 
-                    console.log(responseData.status)
+                   
 
                     if(responseData.status =="true")
                     {
@@ -4741,20 +4818,28 @@
 
         function EditProdTotal()
 	    {
-            var total= 0;
+            var total = 0;
 
-            $('body .edit_prod_total_amount').each(function()
-            {
-                var sub_tot = parseFloat($(this).val());
+            $(".edit_prod_total_amount").each(function () {
+                var value = $(this).text().replace(/,/g, ""); 
+              
+                var sub_tot = parseFloat(value) || 0; 
+                
 
-                total += parseFloat(sub_tot.toFixed(2))||0;
-           
+                total += sub_tot; 
             });
 
-            total = total.toFixed(2);
+            var rawPrice = total.toFixed(2);
 
-            $('.edit_total_prod').val(total);
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
 
+            // Set formatted value in input
+            $(".edit_total_prod").val(formattedPrice);
+
+            // Recalculate percentage
             EditPercentage();
  
         }
@@ -4762,31 +4847,34 @@
         function EditCalTotal()
 	    {
 
-            var total = 0; 
-            
-            $('body .edit_cal_amount').each(function()
-            {   
-                var sub_tot = parseFloat($(this).val());
+            var total = 0;
 
-                console.log(sub_tot);
+            $(".edit_cal_amount").each(function () {
+                var value = $(this).text().replace(/,/g, ""); 
+              
+                var sub_tot = parseFloat(value) || 0; 
+                
 
-                total += parseFloat(sub_tot.toFixed(2))||0;
-
+                total += sub_tot; 
             });
 
-            total = total.toFixed(2);
+            var rawPrice = total.toFixed(2);
 
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
 
-            $('.edit_total_cost_cal').val(total);
-            
-            var result = numberToWords.toWords(total);
+            // Set formatted value in input
+            $(".edit_total_cost_cal").val(formattedPrice);
 
-            EditPercentage()
+            // Recalculate percentage
+            EditPercentage();
 
 	    }
 
 
-        function EditPercentage()
+        /*function EditPercentage()
         {
             var cost_total = parseFloat($('.edit_total_cost_cal').val());
 
@@ -4804,7 +4892,18 @@
  
             }
 
+        }*/
+
+        function EditPercentage() {
+            var cost_total = parseFloat($('.edit_total_cost_cal').val().replace(/,/g, ''));
+            var quotation_total = parseFloat($('.edit_total_prod').val().replace(/,/g, ''));
+
+            if (!isNaN(cost_total) && !isNaN(quotation_total) && quotation_total !== 0) {
+                var percentage = (cost_total / quotation_total) * 100;
+                $('.edit_total_percent').val(percentage.toFixed(2));
+            }
         }
+
 
 
         /*fetch  data by  enquiry ref*/
@@ -5231,33 +5330,27 @@
     })
 
 
-      
-
-
-
-        function TotalAmount()
-        {
-
+        function TotalAmount() {
+            
             var total = 0;
 
             $(".amount_clz_id").each(function () {
                 var value = $(this).val().replace(/,/g, ""); // Remove commas
                 var sub_tot = parseFloat(value) || 0; // Parse safely
-
                 total += sub_tot; // Add to total
             });
 
-            // Keep raw value (two decimal places)
+            // Keep raw value with two decimal places
             var rawPrice = total.toFixed(2);
 
             // Format with commas
-            var formattedPrice = Number(rawPrice).toLocaleString();
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 
             // Set formatted value in input
             $(".amount_total").val(formattedPrice);
-
-
         }
+
         
         /*total amount calculation section end*/
 
@@ -5279,7 +5372,8 @@
 
             
             var rawPrice = total.toFixed(2);
-            var formattedPrice = Number(rawPrice).toLocaleString();
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $(".total_cost_cal").val(formattedPrice);
 
             Percentage()
@@ -5303,9 +5397,7 @@
 
                 var percent =  percentage.toFixed(2)
 
-                console.log(percent);
-
-                $('.total_percent').val(percent);
+               $('.total_percent').val(percentage);
 
               
 

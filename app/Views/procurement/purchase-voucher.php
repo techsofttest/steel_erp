@@ -72,6 +72,7 @@
         background: #f5f5f5bd;
         border: none !important;
         height: 37px !important;
+       
     }
     .add_new {
         font-size: 25px;
@@ -135,6 +136,14 @@
 
         border: unset !important;
 
+    }
+    .select_data_style{
+        height: 100% !important;
+        overflow: visible;
+    }
+    .span.select2.customer_width, span.select2{
+
+        height: unset !important;
     }
 </style>
 
@@ -461,10 +470,10 @@
                                                                 <td style="width:15%">Debit A/C</td>
                                                                 <td style="width:6%">Qty</td>
                                                                 <td style="width:6%">Unit</td>
-                                                                <td style="width:6%">Rate</td>
+                                                                <td style="width:8%">Rate</td>
                                                                 <td style="width:7%">Discount</td>
                                                                 <td style="width:9%">Amount</td>
-                                                                <td style="width:11%;display:none" class="show_action">Action</td> 
+                                                                <td style="width:6%;display:none" class="show_action">Action</td> 
 
                                                             </tr>
                                                             
@@ -472,8 +481,6 @@
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
 
-                                                        
-	
                                                         
                                                     </table>
 
@@ -1925,7 +1932,7 @@
         function InitProductSelectAdd(){
             $(".add_products:last").select2({
                 placeholder: "Select Product",
-                theme : "default form-control- droup_color",
+                theme : "default form-control- droup_color select_data_style",
                 dropdownParent: $($('.add_products:last').closest('.add_prod_row')),
                 ajax: {
                     url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProducts",
@@ -2218,7 +2225,107 @@
 
         /*calculation section start*/
 
-        $("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function(){ 
+        function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".add_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".add_discount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("input", ".add_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".add_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("keyup", ".add_discount, .add_prod_qty, .add_prod_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".add_prod_row").find(".add_discount").val()) || 0;
+            var rateElement = $this.closest(".add_prod_row").find(".add_prod_rate");
+            var quantityElement = $this.closest(".add_prod_row").find(".add_prod_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".add_prod_row").find(".add_prod_amount");
+            amountElement.val(formattedPrice);
+
+            TotalAmount();
+        });
+
+        /*$("body").on('keyup', '.add_discount, .add_prod_qty, .add_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -2250,10 +2357,10 @@
 
             TotalAmount();
 
-        });
+        });*/
 
 
-        function TotalAmount()
+        /*function TotalAmount()
         {
             
             var total= 0;
@@ -2273,6 +2380,26 @@
           
             
 
+        }*/
+
+        function TotalAmount() {
+            var total = 0;
+
+            $(".add_prod_amount").each(function () {
+                var value = $(this).val().replace(/,/g, ""); // Remove commas
+                var sub_tot = parseFloat(value) || 0; // Parse safely
+                total += sub_tot; // Add to total
+            });
+
+            // Keep raw value with two decimal places
+            var rawPrice = total.toFixed(2);
+
+            // Format with commas
+            var formattedPrice = Number(rawPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+            // Set formatted value in input
+            $(".total_prod_amount").val(formattedPrice);
         }
 		
 
@@ -2565,7 +2692,7 @@
            
            // $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control ' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount' required=''></td><td class='remove-btnpp product_delete' colspan='6'><div class='remainpass'><i class='ri-close-line'></i>Remove</div></td></tr>");
             
-           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='number' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
+           $(".product-more2").append("<tr class='prod_row quot_row_leng add_prod_row'><td style='width: 10%;'><select class='form-select add_sales_order' name='pvp_sales_order["+qj+"]'><option value='' selected disabled>Select Sales Order</option><?php foreach($sales_orders as $sales_order){?><option value='<?php echo $sales_order->so_reffer_no;?>'><?php echo $sales_order->so_reffer_no;?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select add_products' name='pvp_product_desc["+qj+"]' required=''><option value='' selected Products>Select Product Description</option><?php foreach($products as $product){?><option value='<?php echo addslashes($product->product_details);?>'><?php echo addslashes($product->product_details);?></option><?php } ?></select></td><td style='width: 20%;'><select class='form-select debit_account' name='debit_account["+qj+"]' required=''><option value='' selected Debits>Select Sales Order</option><?php foreach($debit_accounts as $debit_acc){?><option value='<?php echo $debit_acc->ca_id;?>'><?php echo $debit_acc->ca_name;?></option><?php } ?></select></td><td><input type='number' name='pvp_qty["+qj+"]' class='form-control add_prod_qty text-center' required=''></td><td><input type='text' name='pvp_unit["+qj+"]' class='form-control text-center' required=''></td><td><input type='text' name='pvp_rate["+qj+"]' class='form-control add_prod_rate text-end' required=''></td><td><input type='number' min='0' max='100' onkeyup='MinMax(this)'   name='pvp_discount["+qj+"]' class='form-control add_discount text-center' required=''></td><td><input type='text' name='pvp_amount["+qj+"]' class='form-control add_prod_amount text-end' required=''></td><td class='remove-btnpp product_delete' colspan='6' style='padding:10px 10px;text-align: center;'><div class='remainpass'><i class='ri-close-line'></i></div></td></tr>");
               
 
             }
@@ -2636,7 +2763,108 @@
 
        /*edit single prod section start*/
 
-        $("body").on('keyup', '.edit_prod_dis, .edit_prod_qty, .edit_prod_rate', function(){ 
+       function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $("body").on("input", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        // Format number with commas on blur (after user finishes typing)
+        $("body").on("blur", ".edit_prod_rate", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+
+        $("body").on("input", ".edit_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_prod_dis", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+
+        $("body").on("input", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/[^0-9.]/g, ""); // Allow only numbers and one decimal point
+
+            // Ensure only one decimal point
+            if ((rawValue.match(/\./g) || []).length > 1) {
+                rawValue = rawValue.substring(0, rawValue.lastIndexOf("."));
+            }
+
+            $this.val(rawValue); // Keep raw value while typing
+        });
+
+        $("body").on("blur", ".edit_prod_qty", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+                console.log("Formatted Output:", formattedValue); // Debugging
+            }
+        });
+        
+        $("body").on("keyup", ".edit_prod_dis, .edit_prod_qty, .edit_prod_rate", function () {
+            var $this = $(this);
+
+            var discount = parseFloat($this.closest(".edit_single_prod_row").find(".edit_prod_dis").val()) || 0;
+            var rateElement = $this.closest(".edit_single_prod_row").find(".edit_prod_rate");
+            var quantityElement = $this.closest(".edit_single_prod_row").find(".edit_prod_qty");
+
+            // Remove commas before performing calculations
+            var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
+            var quantity = parseFloat(quantityElement.val()) || 0;
+
+            var multipliedTotal = rate * quantity;
+            var discountAmount = (discount / 100) * multipliedTotal;
+            var finalPrice = multipliedTotal - discountAmount;
+
+            // Format calculated price with commas
+            var formattedPrice = finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            var amountElement = $this.closest(".edit_single_prod_row").find(".edit_prod_amount");
+            amountElement.val(formattedPrice);
+
+            //TotalAmount();
+        });
+		
+
+        /*$("body").on('keyup', '.edit_prod_dis, .edit_prod_qty, .edit_prod_rate', function(){ 
 
             var $discountSelect = $(this);
 
@@ -2668,7 +2896,7 @@
 
            
 
-        });
+        });*/
 
 
        /*edit single prod section end*/

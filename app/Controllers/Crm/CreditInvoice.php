@@ -248,11 +248,11 @@ class CreditInvoice extends BaseController
         
                     'cci_project'        => $this->request->getPost('cci_project'),
         
-                    'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
+                    'cci_total_amount'   =>  preg_replace('/[,]/', '',$this->request->getPost('cci_total_amount')),
         
                     'cci_credit_account' => $this->request->getPost('ci_credit_account'),
 
-                    'cci_advance_amount' => $this->request->getPost('cci_advance_amount'),
+                    'cci_advance_amount' =>  preg_replace('/[,]/', '',$this->request->getPost('cci_advance_amount')),
         
                     'cci_added_by'       => 0,
         
@@ -285,7 +285,7 @@ class CreditInvoice extends BaseController
     
                 'cci_project'        => $this->request->getPost('cci_project'),
     
-                'cci_total_amount'   => $this->request->getPost('cci_total_amount'),
+                'cci_total_amount'   =>  preg_replace('/[,]/', '',$this->request->getPost('cci_total_amount')),
     
                 'cci_credit_account' => $this->request->getPost('ci_credit_account'),
     
@@ -337,9 +337,9 @@ class CreditInvoice extends BaseController
                         'ipd_prod_detl'        =>  $_POST['ipd_prod_detl'][$j],
                         'ipd_unit'             =>  $_POST['ipd_unit'][$j],
                         'ipd_quantity'         =>  $_POST['ipd_quantity'][$j],
-                        'ipd_rate'             =>  $_POST['ipd_rate'][$j],
+                        'ipd_rate'             =>  preg_replace('/[,]/', '',$_POST['ipd_rate'][$j]),
                         'ipd_discount'         =>  $_POST['ipd_discount'][$j],
-                        'ipd_amount'           =>  $_POST['ipd_amount'][$j],
+                        'ipd_amount'           =>  preg_replace('/[,]/', '',$_POST['ipd_amount'][$j]),
                         'ipd_prod_id'          =>  $_POST['sales_order_product'][$j],
                         'ipd_delivery_prod_id' =>  $_POST['delivery_prod_id'][$j],
                         'ipd_credit_invoice'   =>  $credit_invoice_id,
@@ -415,7 +415,7 @@ class CreditInvoice extends BaseController
                         <td>1</td>
                         <td><input type='date' name='' value='".$receipt->r_date."' class='form-control' readonly></td>
                         <td><input type='text' name='' value='".$receipt->r_ref_no."' class='form-control' readonly></td>
-                        <td><input type='text' name='' value='".$receipt->r_amount."' class='form-control' readonly></td>
+                        <td><input type='text' name='' value='".format_currency($receipt->r_amount)."' class='form-control' readonly></td>
                         <td><input type='text' name='' value='' class='form-control' required></td>
                         <td><input type='checkbox' name='' value='' class='' required></td>
                     </tr>
@@ -1323,9 +1323,9 @@ class CreditInvoice extends BaseController
                                                     </td>
                                                     <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control  text-center" readonly></td>
                                                     <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->dpd_current_qty.'"  class="form-control order_qty  text-center" readonly></td>
-                                                    <td><input type="number" name="ipd_rate[]" value="'.$sales_det->spd_rate.'"  class="form-control delivery_qty  text-end" readonly ></td>
-                                                    <td><input type="number" name="ipd_discount[]"  value="'.$sales_det->spd_discount.'" class="form-control current_delivery  text-center" readonly></td>
-                                                    <td><input type="number" name="ipd_amount[]"  value="'.$amount.'" class="form-control amount_clz_id  text-end" readonly></td>
+                                                    <td><input type="text" name="ipd_rate[]" value="'.format_currency($sales_det->spd_rate).'"  class="form-control delivery_qty  text-end" readonly ></td>
+                                                    <td><input type="number" name="ipd_discount[]"  value="'.format_currency($sales_det->spd_discount).'" class="form-control current_delivery  text-center" readonly></td>
+                                                    <td><input type="text" name="ipd_amount[]"  value="'.format_currency($amount).'" class="form-control amount_clz_id  text-end" readonly></td>
                                                     <input type ="hidden" name="delivery_prod_id[]" value="'.$sales_det->dpd_id.'">
                                                     <input type ="hidden" name="delivery_id[]" value="'.$sales_det->dpd_delivery_id.'">
                                                     <input type ="hidden" name="sales_order[]" value="'.$sales_det->dn_sales_order_num.'">

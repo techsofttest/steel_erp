@@ -129,13 +129,13 @@
                                     </div><!-- end card header -->
                                     <div class="card-body">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                            
                                             <thead>
                                                 <tr>
                                                     <th class="no-sort">Sl no</th>
                                                     <th>Enquiry Number</th>
                                                     <th>Date</th>
                                                     <th>Action</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             

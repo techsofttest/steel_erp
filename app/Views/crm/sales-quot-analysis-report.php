@@ -282,7 +282,7 @@
                                                                 <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
                                                                     
                                                                 <tr style="background: unset;border-bottom: hidden !important;">
-                                                                    <td class="rotate" style="width:500px"><?php echo $quot_prod->product_details; ?></td>
+                                                                    <td class="rotate" style="width:500px;line-height: 1.5;"><?php echo $quot_prod->product_details; ?></td>
                                                                     <td class="rotate text-center" style="width:80px;"><?php echo $quot_prod->qpd_quantity; ?></td>
                                                                     <td class="rotate text-end" style="width:80px;"><?php echo format_currency($quot_prod->qpd_rate); ?></td>
                                                                     <td class="rotate text-end" style="width:80px;"><?php echo format_currency($quot_prod->qpd_discount); ?>%</td>

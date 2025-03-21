@@ -253,7 +253,7 @@
                                                                 <table>
                                                                     <?php foreach ($sales_order->sales_products as $sales_prod) { ?>
                                                                         <tr style="background: unset;border-bottom: hidden !important;">
-                                                                            <td class="rotate" width="500px"><?php echo $sales_prod->product_details; ?></td>
+                                                                            <td class="rotate" width="500px;" style="line-height: 1.5;"><?php echo $sales_prod->product_details; ?></td>
                                                                            
                                                                             <td class="rotate text-end" width="100px"><?php echo format_currency($sales_prod->totaldelivered); ?></td>
                                                                              
