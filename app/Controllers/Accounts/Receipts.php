@@ -237,7 +237,7 @@ class Receipts extends BaseController
 
         {   
 
-                $insert_data['r_number'] = str_replace(" ","",$this->request->getPost('r_receipt_no'));
+                $insert_data['r_number'] = str_replace(",","",$this->request->getPost('r_receipt_no'));
                 //Check Duplicate Receipt Number
                 
                 if(!empty($this->request->getPost('r_receipt_no')))
@@ -301,6 +301,9 @@ class Receipts extends BaseController
                 $insert_inv_data['ri_receipt'] = $id;
 
                 //$insert_inv_data['ri_date'] = $_POST['inv_date'][$i];
+
+                //Remove comma
+                $_POST['inv_amount'][$i] = str_replace(",","",$_POST['inv_amount'][$i]);
 
                 $insert_inv_data['ri_credit_account'] = $_POST['r_credit_account'][$i];
 
@@ -578,7 +581,7 @@ class Receipts extends BaseController
  
      $rid = $this->request->getPost('rid');
  
-     $reciept_amount = $this->request->getPost('camount');
+     $reciept_amount = str_replace(",","",$this->request->getPost('camount'));
 
 
      if(empty($ac_id))
@@ -701,14 +704,14 @@ class Receipts extends BaseController
      
      <input type="hidden" name="type[]" value="cash_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->ci_id.'">
-     <th width="2%" class="px-0">'.$sl.'</th>
+     <th width="2%" class="p-0">'.$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->ci_date)).'</th>
      <th>'.$inv->ci_reffer_no.'</th>
-     <th width="40%" class="px-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
+     <th width="40%" class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->ci_lpo_reff.'" required></th>
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="px-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
+     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" max="'.$remaining_amount.'" data-max="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
      
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->ci_id.'">
@@ -752,14 +755,14 @@ class Receipts extends BaseController
      $data['invoices'].='<tr id="'.$inv->cci_id.'">
      <input type="hidden" name="type[]" value="credit_invoice">
      <input type="hidden" name="credit_account_invoice[]" value="'.$inv->cci_id.'">
-     <th width="2%" class="px-0">'.$sl.'</th>
+     <th width="2%" class="p-0">'.$sl.'</th>
      <th>'.date('d M Y',strtotime($inv->cci_date)).'</th>
      <th>'.$inv->cci_reffer_no.'</th>
-     <th width="40%" class="px-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
+     <th width="40%" class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="'.$inv->cci_lpo_reff.'" required></th>
      <th>'.$remaining_amount.'
      <input type="hidden" class="invoice_total_amount" name="total_amount" value="'.$remaining_amount.'">
      </th>
-     <th class="px-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
+     <th class="p-0 text-center"><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" maxlength="'.$remaining_amount.'" type="number" step="0.01" value=""></th>
     
      <th>
      <input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="'.$inv->cci_total_amount.'">
@@ -2034,10 +2037,23 @@ class Receipts extends BaseController
     <td></td>
     <td class='text-end'>".format_currency($advance->rso_receipt_amount)."</td>
     </tr>";
+
+    $first=false;
+
+    }
+
+    if($first==true)
+    {
+    $account_name=$invoice->ca_name;
+    $first=false;
+    }
+    else
+    {
+    $account_name="";
     }
 
     $data['invoices'] .="<tr>
-    <td></td>
+    <td>".$account_name."</td>
     <td>Debit</td>
     <td>-</td>
     <td>".$invoice->ri_remarks."</td>

@@ -23,6 +23,8 @@
     transform: translateY(-50%);
     }
     */
+
+ 
   
 </style>
 
@@ -41,7 +43,7 @@
 
 <div class="modal fade" id="AddModal" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
-        <form class="Dashboard-form class" data-submit="false" data-rcid="" id="add_form">
+        <form class="Dashboard-form class" data-submit="false" data-rcid="" id="add_form" autocomplete="off">
             <input id="added_id" type="hidden" name="r_id" value="" autocomplete="off">
             <input id="add_saved" value="no" type="hidden">
             <div class="modal-content">
@@ -115,7 +117,7 @@
                                                     </div>
 
 
-                                                    <div class="col-col-md-9 col-lg-9 select2_parent">
+                                                    <div class="col-col-md-9 col-lg-9 select2_parent text-center">
 
                                                         <select class="form-control debit_account_select2" name="r_debit_account" required>
 
@@ -328,7 +330,7 @@
                                                         <tr class="invoice_row">
 
 
-                                                            <td width="3%" class="px-0">
+                                                            <td width="3%" class="p-0">
 
 
                                                                 <input class="credit_sl_no form-control text-center" type="number" name="credit_sl_no[]" value="1" readonly>
@@ -337,7 +339,7 @@
                                                             </td>
 
 
-                                                            <td width="55%" class="select2_parent px-0">
+                                                            <td width="55%" class="select2_parent p-0">
 
                                                                 <select class="form-control credit_account credit_account_select2" name="r_credit_account[]" data-max="">
 
@@ -345,28 +347,30 @@
                                                             </td>
 
 
-                                                            <td width="5%" class="px-0">
+                                                            <td width="5%" class="p-0">
 
-                                                                <input class="form-control credit_amount" type="number" name="inv_amount[]" value="">
+                                                                <input title="Only numbers, commas, and dots allowed" class="number_format form-control credit_amount p-0" type="text" name="inv_amount[]" value="">
 
                                                             </td>
 
 
-                                                            <td width="4%" class="px-0 py-3 text-center">
+                                                            <td width="4%" class="p-0 text-center">
                                                                 <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
                                                             </td>
 
 
-                                                            <td class="px-0 py-3 text-center">
+                                                            <td class="p-0  text-center">
 
-                                                            <input class="form-control credit_narration" type="text" name="narration[]" />
+                                                            <input class="form-control credit_narration p-0" type="text" name="narration[]" />
 
                                                             </td>
 
 
-                                                            <td class="px-0">
+                                                            <td class="p-0">
 
-                                                            <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a>
+                                                            <a href="javascript:void(0);" class="del_elem remainpass" style="display:none;"><i class='ri-close-line'></i></a>
+
+                                                            <a class="add_more add_icon" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
 
                                                             </td>
                                                             
@@ -377,9 +381,10 @@
 
 
 
+                                                        <?php /*
                                                         <tr class="no-border">
 
-                                                            <td colspan="6" width="5%" class="px-0">
+                                                            <td colspan="6" width="5%" class="p-0">
 
                                                                 <div class="col-lg-12 text-center">
 
@@ -390,6 +395,7 @@
                                                             </td>
 
                                                         </tr>
+                                                        */ ?>
 
 
                                                     </tbody>
@@ -487,7 +493,7 @@
 
 <div class="modal fade" id="InvoicesModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <form method="POST" class="Dashboard-form class" id="invoices_add">
+        <form method="POST" class="Dashboard-form class" id="invoices_add" autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
@@ -2129,10 +2135,15 @@
 
                 $clone.find('.select2').remove();
 
-
                 //$clone.find(".sl_no").html(cc);
 
-                $clone.find(".del_elem").show();
+                $('body .del_elem').show();
+
+                $clone.find(".del_elem").hide();
+
+                $('body .add_more').hide();
+
+                $clone.find(".add_more").show();
 
                 //$clone.find('.credit_sl_no').val(cc);
 
@@ -2264,7 +2275,9 @@
 
                     var credit_date = parent.find('.credit_date').val();
 
-                    var credit_amount = parent.find('.credit_amount').val();
+                    var credit_amount_comma = parent.find('.credit_amount').val();
+
+                    credit_amount = credit_amount_comma.replace(",","")
 
                     var credit_narration = parent.find('.credit_narration').val();
 
@@ -2310,7 +2323,7 @@
 
                             $('body #fifo_add').data('total', credit_amount);
 
-                            $('.invoice_total').html(credit_amount);
+                            $('.invoice_total').html(credit_amount_comma);
 
                             $('.invoice_adjusted').html('0');
 
@@ -4885,6 +4898,23 @@
 
 
 
+     // Function to format numbers with commas and always show two decimal places
+     function formatNumberWithCommas(value) {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+
+        $("body").on("blur", ".credit_amount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+            }
+        });
+
 
 
     function formatCurrency(amount, currency = 'QAR') {
@@ -4916,7 +4946,7 @@
 
         total = total;
 
-        $('#total_amount').html(total);
+        $('#total_amount').html(formatNumberWithCommas(total));
 
         $('#total_amount_val').val(total);
 
