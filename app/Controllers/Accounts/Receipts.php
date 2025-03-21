@@ -1985,7 +1985,7 @@ class Receipts extends BaseController
         {
         $data['invoices'] .="
         <tr>
-        <td></td>
+        <td>{$account_name}</td>
         <td>Linked</td>
         <td>{$inv_data->cci_reffer_no}</td>
         <td></td>
