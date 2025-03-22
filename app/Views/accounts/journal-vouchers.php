@@ -95,12 +95,12 @@
 
                                     <thead>
                                         <tr>    
-                                        <th>Sl No</th>
-                                        <th>Sales Order No</th>
+                                        <th>Sl</th>
+                                        <th>Sales Order</th>
                                         <th>Account</th>
-                                        <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
+                                        <th>Narration</th>
                                         <th></th>
                                         </tr>
                                     </thead>
@@ -112,10 +112,10 @@
 
                                         <input type="hidden" name="jv_invoice[]" value="1">
 
-                                        <th width="3%" class="sl_no px-0 text-center">1</th>
+                                        <th width="3%" class="sl_no p-0 text-center">1</th>
 
                                         
-                                        <th class="so_select2_parent_add px-0" width="15%">
+                                        <th class="so_select2_parent_add select2-center p-0" width="15%">
 
                                         <select name="jv_sale_invoice[]" class="form-control so_select_add so_select2_add">
 
@@ -123,49 +123,47 @@
 
                                         </th>
 
-                                        <th class="select2_parent px-0" width="35%"> 
+                                        <th class="select2_parent p-0 select2-center" width="35%"> 
                                             
                                         <select name="jv_account[]" class="form-control account_select2" required>
 
                                         </select>
 
                                         </th>
-                                        
-                                        <th class="px-0" width="20%"><input name="jv_remarks[]" type="text" class="form-control" ></th>
 
-                                        <th width="10%" class="px-0"><input name="jv_debit[]" step="0.01" type="number" class="form-control debit_amount" ></th>
+                                        <th width="10%" class="p-0"><input name="jv_debit[]" type="text" class="form-control text-end debit_amount number_format" ></th>
 
-                                        <th width="10%" class="px-0"><input name="jv_credit[]" step="0.01" type="number" class="form-control credit_amount" ></th>
+                                        <th width="10%" class="p-0"><input name="jv_credit[]"  type="text" class="form-control text-end credit_amount number_format" ></th>
 
-                                        <th width="5%"> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></th>
+                                        <th class="p-0" width="20%"><input name="jv_remarks[]" type="text" class="form-control" ></th>
+
+                                        <th width="5%" class='p-0'> 
+                                            
+                                        <a href="javascript:void(0);" class="del_elem remainpass" style="display:none;"><i class='ri-close-line'></i></a>
+
+                                        <a class="add_more add_icon add_button_cls" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
+
+                                        </th>
 
                                     </tr>
 
 
                                     </tbody>
 
-                                    <tr>
 
-                                    <td colspan="7">
+                                    <tr class="no-border">
 
-                                    <div class="col-lg-12 text-center">
-                                                            
-                                      <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-                                
-                                    </div>
-                                    
-                                    </td>
+                                    <th class="no-border"></th>
 
-                                    </tr>
+                                    <th class="no-border"></th>
 
-
-                                    <tr>
-
-                                    <td colspan="4" align="right">Total</td>
+                                    <td colspan="" align="right">Total</td>
                                    
-                                    <th id="total_amount_debit_disp">0</th>
+                                    <th id="total_amount_debit_disp" class="text-end">0</th>
 
-                                    <th  id="total_amount_credit_disp">0</th>
+                                    <th  id="total_amount_credit_disp" class="text-end">0</th>
+
+                                    <th class="no-border"></th>
                                     
                                     <input type="hidden" id="total_amount_inp" name="total_amount">
 
@@ -304,17 +302,17 @@
 
                         <tr>
 
-                        <th>Sl No</th>
+                        <th>Sl</th>
 
                         <th>Sales Order</th>
 
                         <th>Account</th>
 
-                        <th>Narration</th>
-
                         <th class="text-end">Debit</th>
 
                         <th class="text-end">Credit</th>
+
+                        <th>Narration</th>
 
                         </tr>
 
@@ -399,7 +397,7 @@
                     <table id="accountTable" class="table table-bordered table-striped delTable display dataTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">Sl no</th>
+                                <th class="no-sort">Sl</th>
                                 <th>Reference</th>
                                 <th>Date</th>
                                 <th>Debit</th>
@@ -503,57 +501,29 @@
 
                                     <thead>
                                         <tr>    
-                                        <th>Sl No</th>
+                                        <th>Sl</th>
                                         <th>Sales Order No</th>
                                         <th>Account</th>
-                                        <th>Narration</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Actions</th>
+                                        <th>Narration</th>
+                                        <th></th>
                                         </tr>
                                     </thead>
 
                                     <tbody id="jv_invoices_edit">
-                                   
-
 
                                     </tbody>
 
-
-
-                                    <tr>
-                                        <td colspan="6">
-                                    <div class="col-lg-12 text-center">
-                                                            
-                                        <a class="add_more_edit" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-                                                      
-                                    </div>
-                                        <td>
-                                    </tr>
-
-
-                                    <!--
-
-                                    <tr>
-
-                                    <td colspan="6">
-
-                                    <div class="col-lg-12 text-center">
-                                                            
-                                      <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
                                 
-                                    </div>
-                                    
-                                    </td>
 
-                                    </tr>
+                                    <tr class="no-border">
 
-                                    -->
+                                    <td class="no-border"></td>
 
+                                    <td class="no-border"></td>
 
-                                    <tr>
-
-                                    <td colspan="4" align="right">Total</td>
+                                    <td  align="right">Total</td>
                                    
                                     <th id="total_amount_debit_disp_edit" class="text-end">0</th>
 
@@ -671,10 +641,6 @@
 
             $clone.find("select").val(0);
 
-            $clone.find(".sl_no").html(cc);
-
-            $clone.find(".del_elem").show();
-
             $clone.insertAfter('.so_row:last');
 
             $clone.find(".account_select2").val('');
@@ -687,17 +653,39 @@
 
             $clone.find(".so_select2_add").removeAttr('data-select2-id');
 
+            $('body .del_elem').show();
+
+            $clone.find(".del_elem").hide();
+
+            $('body .add_more').hide();
+
+            $clone.find(".add_more").show();
+
             $('.so_row:last').find('.so_select_add').focus();
             
 			}
+
+            slno();
 
             SOSelect2();
 
             InitAccountsSelect2('.account_select2', '.select2_parent');
 
-
-
 	    });
+
+        function slno() {
+
+        var pp = 1;
+
+        $('body .so_row').each(function() {
+
+            $(this).find('.sl_no').html(pp);
+
+            pp++;
+
+        });
+
+        }
 
 
 
@@ -705,7 +693,8 @@
         {
             $(this).closest('.so_row').remove();
             cc--;
-            totalCalcutate();    
+            totalCalcutate();   
+            slno(); 
         });
 
         /**/
@@ -727,7 +716,13 @@
 
         $clone.find(".sl_no_edit").html(tot_rows);
 
-        $clone.find(".del_elem_edit").show();
+        $("body .add_more_edit").hide();
+
+        $("body .del_elem_edit").show();
+
+        $clone.find(".add_more_edit").show();
+
+        $clone.find(".del_elem_edit").hide();
 
         $clone.insertAfter('.so_row_edit:last');
 
@@ -749,6 +744,8 @@
 
         AccountsSelect2Edit();
 
+        totalCalcutateEdit();
+
         });
 
 
@@ -756,7 +753,7 @@
         {
             $(this).closest('.so_row_edit').remove();
             cc--;
-            totalCalcutate();    
+            totalCalcutateEdit();   
         });
 
 
@@ -871,17 +868,21 @@
 
                         $('#jv_invoices_edit').html(data.invoices);
 
-                        $('#total_amount_debit_disp_edit').html(data.jv.jv_debit_total);
+                        $('#total_amount_debit_disp_edit').html(formatNumberWithCommas(data.jv.jv_debit_total));
 
                         $('#total_amount_credit_edit').val(data.jv.jv_credit_total);
 
                         $('#total_amount_debit_edit').val(data.jv.jv_debit_total);
 
-                        $('#total_amount_credit_disp_edit').html(data.jv.jv_credit_total);
+                        $('#total_amount_credit_disp_edit').html(formatNumberWithCommas(data.jv.jv_credit_total));
 
                         SOSelect2Edit();
 
                         AccountsSelect2Edit();
+
+                        $('body .debit_amount_edit').trigger('blur');
+
+                        $('body .credit_amount_edit').trigger('blur');
 
                         $('#EditModal').modal('show');
 
@@ -930,7 +931,7 @@ var c_total = 0;
 $('body .debit_amount_edit').each(function()
 {
 
-var sub_tot = $(this).val();
+var sub_tot = $(this).val().replace(/,/g, "");
 
 d_total += parseFloat(sub_tot)||0;
 
@@ -940,20 +941,20 @@ d_total += parseFloat(sub_tot)||0;
 $('body .credit_amount_edit').each(function()
 {
 
-var sub_tot = $(this).val();
+var sub_tot = $(this).val().replace(/,/g, "");
 
 c_total += parseFloat(sub_tot)||0;
 
 });
 
 
-$('#total_amount_debit_disp_edit').html(d_total);
+$('#total_amount_debit_disp_edit').html(formatNumberWithCommas(d_total));
 
 $('#total_amount_credit_edit').val(c_total);
 
 $('#total_amount_debit_edit').val(d_total);
 
-$('#total_amount_credit_disp_edit').html(c_total);
+$('#total_amount_credit_disp_edit').html(formatNumberWithCommas(c_total));
 
 
 }
@@ -984,7 +985,7 @@ $('#total_amount_credit_disp_edit').html(c_total);
         $('body .debit_amount').each(function()
         {
 
-        var sub_tot = $(this).val();
+        var sub_tot = $(this).val().replace(/,/g, "");
 
         d_total += parseFloat(sub_tot)||0;
 
@@ -994,7 +995,7 @@ $('#total_amount_credit_disp_edit').html(c_total);
         $('body .credit_amount').each(function()
         {
 
-        var sub_tot = $(this).val();
+        var sub_tot = $(this).val().replace(/,/g, "");
 
         c_total += parseFloat(sub_tot)||0;
 
@@ -1002,12 +1003,11 @@ $('#total_amount_credit_disp_edit').html(c_total);
 
         $('#total_amount_debit').val(d_total);
 
-        $('#total_amount_debit_disp').html(d_total);
+        $('#total_amount_debit_disp').html(formatNumberWithCommas(d_total));
 
         $('#total_amount_credit').val(c_total);
 
-        $('#total_amount_credit_disp').html(c_total);
-
+        $('#total_amount_credit_disp').html(formatNumberWithCommas(c_total));
 
         }
 
@@ -1564,6 +1564,28 @@ if (element.length === 0) {
 
 
                 }
+
+
+
+
+
+        // Function to format numbers with commas and always show two decimal places
+        function formatNumberWithCommas(value) {
+            value=String(value);
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+
+        $("body").on("blur", ".credit_amount,.debit_amount,.debit_amount_edit,.credit_amount_edit", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = formatNumberWithCommas(rawValue);
+                $this.val(formattedValue);
+            }
+        });
 
 
 

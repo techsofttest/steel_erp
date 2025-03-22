@@ -65,7 +65,7 @@
 
                         </div>
 
-                        <div class="col-col-md-9 col-lg-9 select2_parent">
+                        <div class="col-col-md-9 col-lg-9 select2_parent text-center">
 
                         <select id="add_account_select" class="form-control" name="br_account" required>
 

@@ -433,7 +433,7 @@
                                                         </div>
 
 
-                                                        <div class="col-col-md-9 col-lg-9 select2_parent">
+                                                        <div class="col-col-md-9 col-lg-9 select2_parent text-center">
 
 
                                                             <select class="form-control add_credit_account_select2" name="p_credit_account" required>
@@ -460,7 +460,7 @@
 
                                                         <div class="col-col-md-9 col-lg-9">
 
-                                                            <input type="file" name="p_cheque_copy" class="form-control">
+                                                            <input style="padding: 10px 20% !important;" type="file" name="p_cheque_copy" class="form-control">
 
                                                         </div>
 
@@ -1010,7 +1010,7 @@
 
                                                 <div class="row align-items-center mb-2">
 
-                                                    <div class="col-col-md-3 col-lg-3">
+                                                    <div class="col-col-md-3 col-lg-3 text-center">
 
                                                         <label for="basiInput" class="form-label">Credit Account</label>
 
@@ -2429,6 +2429,8 @@
 
             $('.debit_account_select2').val('').trigger('change');
 
+            $('.so_select2_add').val('').trigger('change');
+
 
             $('.invoice_row').not(':first').remove();
 
@@ -2995,37 +2997,37 @@
                                dropdownParent: $($('.so_select2_parent_add:last').closest('.invoice_row')),
                                allowClear: true, // Allows clearing the selection
                                ajax: {
-                                   url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
-                                   dataType: 'json',
-                                   delay: 250,
-                                   cache: false,
-                                   minimumInputLength: 1,
-                                   data: function(params) {
-                                       return {
-                                           term: params.term,
-                                           page: params.page || 1,
-                                       };
-                                   },
-                                   processResults: function(data, params) {
-                                       var page = params.page || 1;
-                                       return {
-                                           results: [
-                                               { id: null, text: "Select Sales Order" }, // Default null option
-                                               ...$.map(data.result, function(item) {
-                                                   return {
-                                                       id: item.so_id,
-                                                       text: item.so_reffer_no
-                                                   };
-                                               })
-                                           ],
-                                           pagination: {
-                                               more: (page * 10) <= data.total_count
-                                           }
-                                       };
-                                   },
-                               }
+                                    url: "<?= base_url(); ?>Accounts/JournalVouchers/FetchSalesOrders",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    cache: false,
+                                    minimumInputLength: 1,
+                                    data: function(params) {
+                                        return {
+                                            term: params.term,
+                                            page: params.page || 1,
+                                        };
+                                    }, 
+                                    processResults: function(data, params) {
+                                        const page = params.page || 1;
+
+                                        // Log data for debugging
+                                        //console.log('Data:', data, 'Page:', page);
+
+                                        return {
+                                            results: $.map(data.result, function(item) {
+                                                return {
+                                                    id: item.so_id,
+                                                    text: item.so_reffer_no,
+                                                };
+                                            }),
+                                            pagination: {
+                                                more: (page * 10) < data.total_count // Ensure accurate pagination
+                                            },
+                                        };
+                                    },
+                                },
                            });
-                          
                        }
                        SOSelect2();
 

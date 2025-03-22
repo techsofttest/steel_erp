@@ -874,7 +874,7 @@ class BankRec extends BaseController
 
     $return['account_name'] = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $id))->ca_name;
 
-    $return['account'] = $this->report_model->FetchGLTransactions($date_from="",$date="",$account_head="",$account_type="",$account=$id,$time_frame="",$range_from="",$range_to="");
+    $return['account'] = $this->report_model->FetchGLTransactions($date_from="",$date,$account_head="",$account_type="",$account=$id,$time_frame="Range",$range_from="",$range_to="");
 
     // print_r($return['account']);
 
@@ -1001,7 +1001,7 @@ class BankRec extends BaseController
 
         <td>'.$t.'</td>
 
-        <td>'.date('d-F-Y',strtotime("$tr->tran_datetime")).'</td>
+        <td>'.date('d M Y',strtotime("$tr->tran_datetime")).'</td>
 
         <td>'.$tr->tran_reference.'</td>
 

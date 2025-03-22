@@ -117,7 +117,7 @@
                                                     </div>
 
 
-                                                    <div class="col-col-md-9 col-lg-9 select2_parent text-center">
+                                                    <div class="col-col-md-9 col-lg-9 select2_parent select2-center text-center">
 
                                                         <select class="form-control debit_account_select2" name="r_debit_account" required>
 
@@ -370,7 +370,7 @@
 
                                                             <a href="javascript:void(0);" class="del_elem remainpass" style="display:none;"><i class='ri-close-line'></i></a>
 
-                                                            <a class="add_more add_icon" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
+                                                            <a class="add_more add_icon add_button_cls" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
 
                                                             </td>
                                                             
@@ -409,7 +409,7 @@
 
                                                 <tr>
 
-                                                        <td align="right" class="total_label">Total</td>
+                                                        <td height="40px" align="right" class="total_label">Total</td>
 
                                                         <input type="hidden" id="total_amount_val" name="total_receipt_amount" val="">
 
@@ -528,9 +528,9 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Sl</th>
-                                                                    <th>Date</th>
-                                                                    <th>Invoice No</th>
-                                                                    <th>LPO Ref</th>
+                                                                    <th width="20%">Date</th>
+                                                                    <th width="30%">Invoice No</th>
+                                                                    <th width="30%">LPO Ref</th>
                                                                     <th>Amount</th>
                                                                     <th>Receipt</th>
                                                                   
@@ -666,7 +666,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10 add_more_contai p-0">
+                                                    <div class="col-lg-10 add_more_container p-0">
 
                                                         <table class="table table-bordered" id="">
 
@@ -675,7 +675,7 @@
 
                                                                 <tr>
 
-                                                                    <th>Sl</th>
+                                                                    <th width="5%">Sl</th>
                                                                     <th>Invoice No</th>
                                                                     <th>LPO Ref</th>
                                                                     <th>Amount</th>
@@ -696,18 +696,18 @@
 
                                                             <tr>
 
-                                                                <td>Total Receipt</td>
+                                                                <td class="p-0">Total Receipt</td>
 
-                                                                <td class="invoice_total"></td>
+                                                                <td class="p-0" class="invoice_total"></td>
 
-                                                                <td>Adjusted</td>
+                                                                <td class="p-0">Adjusted</td>
 
-                                                                <td class="invoice_adjusted"></td>
+                                                                <td class="p-0" class="invoice_adjusted"></td>
 
 
-                                                                <td>Balance</td>
+                                                                <td class="p-0">Balance</td>
 
-                                                                <td class="invoice_balance"></td>
+                                                                <td class="invoice_balance p-0"></td>
 
                                                             </tr>
 
@@ -2070,7 +2070,7 @@
             var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
             var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-            var val = parseFloat($(this).val()) || 0; // Current value entered
+            var val = rmv_comma($(this).val()); // Current value entered
             var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
 
           
@@ -2214,7 +2214,7 @@
 
             var c_amount = parent.find('.credit_amount');
 
-            LinkTotal = parseFloat(c_amount.val()) || 0;
+            LinkTotal = rmv_comma(c_amount.val());
 
             if (c_account.val() == "") {
 
@@ -2450,19 +2450,19 @@
             balance = 0;
 
             $('body .invoice_receipt_amount').each(function() {
-
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+                
+                LinkAdjusted += rmv_comma($(this).val());
 
             });
 
 
             $('body .so_receipt_amount').each(function() {
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+                LinkAdjusted += rmv_comma($(this).val());
 
             });
 
-            balance = LinkTotal - LinkAdjusted;
+            invoice_adjusted = LinkTotal - LinkAdjusted;
 
             balance = Math.max(0, balance);
 
@@ -2506,14 +2506,14 @@
 
             $('#InvoicesLinkEditModal .invoice_receipt_amount').each(function() {
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
 
             });
 
 
             $('body .so_receipt_amount').each(function() {
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
 
             });
 
@@ -3951,63 +3951,7 @@
         });
 
 
-
-
-
-
-
-
-
-
-        /*##*/
-
-        /*
-        
-        $("body").on('submit', '#invoices_add', function(e){ 
-
-        e.preventDefault();
-
-        $('#sel_invoices').html('');
-
-        var form = $(this);
-
-        var tbody =  $('#sel_invoices');
-        
-        $.ajax({
-
-        url : "<?php echo base_url(); ?>Accounts/Receipts/SelectedInvoices",
-
-        method : "POST",
-
-        data: form.serialize(),
-
-        success:function(data)
-        {
-        
-        var data = JSON.parse(data);
-
-        //console.log(data);
-        $.each(data.html, function(key,value) {
-        //alert(value.so_o);
-        tbody.append('<tr><td>'+value['pf_date']+'</td><td><input type="hidden" name="pf_id[]" value="'+value['pf_id']+'">'+value['pf_uid']+'</td><td><input class="form-control" name="pf_remarks[]" type="text"></td><td>'+value['pf_total_cost']+'</td></tr>');
-
-        }); 
-
-        $('#total_amount').html(data.total);
-
-        $('input[name=r_amount]').val(data.total);
-
-        }
-
-        });
-
-        $('#AddModal').modal('show');
-
-        $('#InvoicesModal').modal('hide');
-
-        });
-
-        */
+       
 
 
 
@@ -4584,89 +4528,7 @@
 
 
 
-        /*
-        $('body').on('change','.debit_account_select2', function(){
-
-        var account_id = $(this).val();
-
-        //var parent = $(this).closest('.invoice_row');
-
-            $.ajax({
-
-            url : "<?php echo base_url(); ?>Accounts/Receipts/CreditTotal",
-
-            method : "POST",
-
-            data: {account:account_id},
-
-            success:function(data)
-            {
-
-            
-            $('body').find('.credit_amount').attr('data-max',data);
-
-            //console.log(data);
-
-            //alertify.success(data).delay(3).dismissOthers();   
-
-
-            }
-
-            });
-
-        });
-        */
-
-
-
-        /* Add Receipt Credit Amount Check Start */
-
-        /*
-        $('body').on('change', '.credit_account_select2', function() {
-
-            var account_id = $(this).val();
-
-            parent = $(this).closest('.invoice_row');
-
-            parent.find('.credit_amount').val('');
-
-            //var parent = $(this).closest('.invoice_row');
-
-            $.ajax({
-
-                url: "<?php echo base_url(); ?>Accounts/Receipts/CreditTotal",
-
-                method: "POST",
-
-                data: {
-                    account: account_id
-                },
-
-                success: function(data) {
-
-                    if (data != "") {
-                        parent.find('.credit_amount').attr('data-max', data);
-                    } else {
-                        parent.find('.credit_amount').attr('data-max', 0);
-                    }
-
-                    //console.log(data);
-
-                    //alertify.success(data).delay(3).dismissOthers();   
-
-
-                }
-
-            });
-
-        });
-        */
-
-
-        /* Add Receipt Invoice Credit Check ENd */
-
-
-
+    
 
 
         /* Edit Receipt Credit Amount CHeck Start */
@@ -4899,18 +4761,14 @@
 
 
      // Function to format numbers with commas and always show two decimal places
-     function formatNumberWithCommas(value) {
-            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
-            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
+        
 
-
-        $("body").on("blur", ".credit_amount", function () {
+        $("body").on("blur", ".credit_amount,.invoice_receipt_amount", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
             if (rawValue !== "") {
-                var formattedValue = formatNumberWithCommas(rawValue);
+                var formattedValue = add_comma(rawValue);
                 $this.val(formattedValue);
             }
         });
@@ -4946,7 +4804,7 @@
 
         total = total;
 
-        $('#total_amount').html(formatNumberWithCommas(total));
+        $('#total_amount').html(add_comma(total));
 
         $('#total_amount_val').val(total);
 

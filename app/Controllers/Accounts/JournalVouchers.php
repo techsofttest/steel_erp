@@ -207,6 +207,14 @@ class JournalVouchers extends BaseController
 
         }
 
+        //Remove Commas
+        $_POST['jv_credit'] = array_map(function($value) {
+            return str_replace(',', '', $value);
+        }, $_POST['jv_credit']);
+
+        $_POST['jv_debit'] = array_map(function($value) {
+            return str_replace(',', '', $value);
+        }, $_POST['jv_debit']);
 
         $insert_data['jv_added_by'] = 0; 
 
@@ -293,6 +301,8 @@ class JournalVouchers extends BaseController
 
         $data['jv'] = $this->common_model->SingleRowJoin('accounts_journal_vouchers',$cond,$joins);
 
+        $data['jv']->jv_date = date('d M Y',strtotime($data['jv']->jv_date));
+
         $invoice_cond = array('ji_voucher_id' => $data['jv']->jv_id);
 
         $invoice_joins=array(
@@ -369,10 +379,9 @@ class JournalVouchers extends BaseController
         <td>".$i."</td>
         <td>".$sales_order."</td>
         <td>".$invoice->ca_name."</td>
-        <td>".$invoice->ji_narration."</td>
         <td class='text-end'>".$debit_amount."</td>
         <td class='text-end'>".$credit_amount."</td>
-    
+         <td>".$invoice->ji_narration."</td>
         </tr>";
 
 
@@ -452,6 +461,14 @@ class JournalVouchers extends BaseController
 
         foreach($invoices as $invoice)
         {
+
+        $add_dis = "none";
+        $del_dis="block";
+        if ($i == count($invoices) - 1) {
+        $add_dis = "block";
+        $del_dis="none";
+        }
+
         $i++;
 
         if($invoice->ji_sales_order_id==0)
@@ -511,11 +528,11 @@ class JournalVouchers extends BaseController
 
         $data['invoices'] .= "<tr class=\"so_row_edit\">
 
-        <td class='sl_no_edit'>".$i."
+        <td class='sl_no_edit p-0'>".$i."
         <input type=\"hidden\" name=\"jv_invoice_id[]\" value=\"".$invoice->ji_id."\">
         </td>
 
-        <td class=\"so_select2_parent_edit px-0\" width='20%'>
+        <td class=\"so_select2_parent_edit select2-center p-0\" width='20%'>
         
         <select name=\"jv_sale_invoice[]\" class=\"form-control so_select2_edit\">
         
@@ -525,7 +542,7 @@ class JournalVouchers extends BaseController
         
         </td>
 
-        <td class=\"select2_parent_edit px-0\" width='35%'>
+        <td class=\"select2_parent_edit select2-center p-0\" width='35%'>
 
         <select name=\"jv_account[]\" class=\"form-control account_select2_edit\">
         
@@ -535,10 +552,20 @@ class JournalVouchers extends BaseController
         
         </td>
         
-        <td class='px-0'><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
-        <td width='10%' class='px-0'><input name=\"jv_debit[]\" type=\"number\" step='0.01' class=\"form-control text-end debit_amount_edit\" value=\"".$debit_amount."\"></td>
-        <td width='10%' class='px-0'><input name=\"jv_credit[]\" type=\"number\" step='0.01' class=\"form-control text-end credit_amount_edit\" value=\"".$credit_amount."\" ></td>
-        <th> <a href=\"javascript:void(0);\" class=\"del_elem_edit\" style=\"display:none;\"><i class='ri-close-line'></i></a></th>
+        <td width='10%' class='p-0'><input name=\"jv_debit[]\" type=\"text\"  class=\"form-control text-end number_format debit_amount_edit\" value=\"".$debit_amount."\"></td>
+        
+        <td width='10%' class='p-0'><input name=\"jv_credit[]\" type=\"text\"  class=\"form-control text-end number_format credit_amount_edit\" value=\"".$credit_amount."\" ></td>
+        
+        <td class='p-0'><input name=\"jv_remarks[]\" type=\"text\"  class=\"form-control\" value=\"".$invoice->ji_narration."\" ></td>
+
+        <th class='p-0' width='5%'> 
+        <a href=\"javascript:void(0);\" class=\"del_elem_edit remainpass\" style=\"display:".$del_dis.";\"><i class='ri-close-line'></i></a>
+        
+        <a class=\"add_more_edit add_button_cls\" href=\"javascript:void(0);\" style=\"display:".$add_dis.";\"><span class=\"\"><i class=\"ri-add-circle-line\"></i></span></a>
+         
+        </th>
+       
+        
         </tr>";
 
 
@@ -558,6 +585,15 @@ class JournalVouchers extends BaseController
         $id = $this->request->getPost('jv_id');
 
         $update_data['jv_date'] = date('Y-m-d',strtotime($this->request->getPost('jv_date')));
+
+        //Remove Commas
+        $_POST['jv_credit'] = array_map(function($value) {
+            return str_replace(',', '', $value);
+        }, $_POST['jv_credit']);
+
+        $_POST['jv_debit'] = array_map(function($value) {
+            return str_replace(',', '', $value);
+        }, $_POST['jv_debit']);
 
         $update_data['jv_credit_total'] = array_sum($_POST['jv_credit']);
 
@@ -580,6 +616,9 @@ class JournalVouchers extends BaseController
 
         for($i=0;$i<count($this->request->getPost('jv_sale_invoice'));$i++)
         {
+            if(!empty($_POST['jv_account'][$i]))
+
+            {
 
             $invoice_id = $_POST['jv_invoice_id'][$i] ?? 0;
 
@@ -612,6 +651,7 @@ class JournalVouchers extends BaseController
             else
             {
             $this->common_model->InsertData('accounts_journal_invoices',$update_invoice);  
+            }
             }
 
         }
