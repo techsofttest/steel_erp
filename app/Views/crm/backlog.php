@@ -183,9 +183,9 @@
 
 
                         <!--datatable section start-->
-
+                        <?php if (!empty($backlogs)){?> 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">BackLog <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
@@ -403,6 +403,8 @@
                             </div>
                             <!--end col-->
                         </div>
+
+                        <?php } ?>
 
                         <!---datatable section end-->
 

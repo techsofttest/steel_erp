@@ -7,3 +7,13 @@
         <a class="crm_report_per nav-link <?php if($uri->getSegment(3)=="SalesQuotReports" || $uri->getSegment(3)=="SalesQuotReport" || $uri->getSegment(3)=="SalesQuotAnalysisReport" || $uri->getSegment(3)=="SalesOrderReport" || $uri->getSegment(3)=="SalesOrderToDn" || $uri->getSegment(3)=="DeliveryNoteReport" ||  $uri->getSegment(3)=="DnToCreditInvoice" || $uri->getSegment(3)=="InvoiceReport" || $uri->getSegment(3)=="SalesReturnReport" || $uri->getSegment(3)=="SalesSummery" || $uri->getSegment(3)=="BackLog" || $uri->getSegment(3)=="JobProfitability" || $uri->getSegment(3)=="JobSummery") {echo "active" ;} ?>" data-bs-toggle="" href="<?= base_url(); ?>Crm/SalesQuotReports" role="tab">Reports</a>
     </li>
 </ul>
+
+<style>
+
+.center_padding{
+
+    padding-top: 20px !important;
+
+}
+
+</style>

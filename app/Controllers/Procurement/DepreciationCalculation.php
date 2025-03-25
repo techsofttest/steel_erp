@@ -287,7 +287,7 @@ class DepreciationCalculation extends BaseController
 
             $fixed_asset .= '<tr>
                                 <td>' . $j . '</td>
-                                 <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
+                                <input type="hidden" name="dpcd_asset_id[]" value="' . $asset->cfs_id . '" class="form-control"  readonly>
                                 <td><input type="text" name="dpcd_description[]" value="' . $asset->cfs_description . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_acquired_date[]" value="' . $asset->cfs_acquired_date . '" class="form-control"  readonly></td>
                                 <td><input type="text" name="dpcd_amount[]" value="' .  format_currency($fixed_amount) . '" class="form-control"  style="text-align: end;" readonly></td>

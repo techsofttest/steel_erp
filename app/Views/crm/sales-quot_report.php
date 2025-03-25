@@ -37,6 +37,10 @@
     #DataTable td {
         line-height: 1.7
     }
+    .modal-dialog{
+        width: 500px;
+        margin: auto;
+    }
 
     @media(max-width:575px) {
         .card-title {
@@ -113,7 +117,7 @@
 
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
-                                                                        <thead class="travelerinfo contact_tbody">
+                                                                        <tbody class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 <td>Date</td>
                                                                                 <td class="text-center">From</td>
@@ -122,44 +126,45 @@
                                                                                 <td style="padding: 0px !important;"><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control"></td>
 
                                                                             </tr>
+                                                                            
 
 
-                                                                        </thead>
+                                                                        </tbody>
 
 
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                                <td>Customer</td>
-                                                                                <td><select class="form-select droup_customer  customer_clz" name="customer">
+                                                                                <td style="width: 30%;" class="center_padding">Customer</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         <?php foreach($customer_creation as $cus_data){?>
                                                                                             <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
                                                                                         <?php } ?>
-                                                                                    </select></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                    </select>
+                                                                                </td>
                                                                             </tr>
 
+                                                                            
+
+
                                                                             <tr>
-                                                                                <td>Sales Executive</td>
-                                                                                <td><select class="form-select executive_clz" name="sales_executive">
+                                                                                <td style="width: 30%;">Sales Executive</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                   <select class="form-select executive_clz" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
                                                                                         
                                                                                         <?php foreach($sales_executives as $sales_exe){?> 
                                                                                             <option value="<?php echo $sales_exe->se_id; ?>"><?php echo $sales_exe->se_name; ?></option>    
                                                                                         <?php } ?>
-                                                                                    </select></td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                    </select>
+                                                                                </td>
                                                                             </tr>
 
-
                                                                             <tr>
-                                                                                <td>Product</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select value='<?php echo $product; ?>' product_clz" name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
                                                                                         <?php foreach($Products as $prod){?> 
@@ -168,33 +173,17 @@
                                                                                         
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
-
                                                                             </tr>
 
 
                                                                         </tbody>
 
 
+
                                                                     </table>
                                                                 </div>
 
-                                                                <!--table section end-->
-
-                                                                <!--<div style="float: right;">
-                                                                    <table class="table table-bordered table-striped enq_tab_submit menu">
-                                                                        <tr>
-                                                                           
-                                                                            <td><button type="submit">View</button></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>--->
-
+                                                              
 
 
 
@@ -227,7 +216,7 @@
 
 
                         <!--datatable section start-->
-
+                        <?php if(!empty($quotation_data)){ ?> 
                         <div class="row">
                             <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
@@ -257,19 +246,7 @@
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
                                         <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
-                                                <!--<tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
-                                                    <th style="white-space: nowrAap" class="text-center">Date</th>
-                                                    <th style="white-space: nowrap" class="text-center">Quotation Ref</th>
-                                                    <th style="width:50%">Customer Name</th>
-                                                    <th style="white-space: nowrap" class="text-center">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:70%">Product</th>
-                                                    <th style="white-space: nowrap" class="text-center">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                </tr>--->
+                                              
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
                                                     <th style="white-space: nowrAap" class="text-center">Date</th>
@@ -370,6 +347,7 @@
                             </div>
                             <!--end col-->
                         </div>
+                        <?php } ?>
 
                         <!---datatable section end-->
 

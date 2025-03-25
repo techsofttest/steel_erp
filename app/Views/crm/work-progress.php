@@ -118,7 +118,7 @@
 
 
                         <!--datatable section start-->
-
+                        <?php if (!empty($work_progress)){?> 
                         <div class="row">
                             <div class="col-lg-12" style="padding: 0px;">
                                 <div class="card">
@@ -235,6 +235,8 @@
                             </div>
                             <!--end col-->
                         </div>
+
+                        <?php } ?>
 
                         <!---datatable section end-->
 
