@@ -243,7 +243,7 @@
 
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Sl No</th>
+                                                                    <th>Sl</th>
                                                                     <th>Date</th>
                                                                     <th>Invoice No</th>
                                                                     <th>LPO Ref</th>
@@ -432,7 +432,7 @@
                                                         </div>
 
 
-                                                        <div class="col-col-md-9 col-lg-9 select2_parent">
+                                                        <div class="col-col-md-9 col-lg-9 select2_parent select2-center">
 
 
                                                             <select class="form-control add_credit_account_select2" name="p_credit_account" required>
@@ -602,14 +602,14 @@
                                                             <tr class="invoice_row">
 
 
-                                                            <td width="3%" class="px-0">
+                                                            <td width="3%" class="p-0">
 
                                                                     <input class="credit_sl_no form-control text-center" type="number" name="credit_sl_no[]" value="1" readonly>
 
                                                             </td>
 
 
-                                                                <td width="55%" class="px-0">
+                                                                <td width="55%" class="p-0">
 
                                                                     <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
@@ -618,44 +618,32 @@
                                                                 </td>
 
 
-                                                                <td width="5%" class="px-0">
+                                                                <td width="5%" class="p-0">
 
                                                                     <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
 
                                                                 </td>
 
 
-                                                                <td width="4%" class="px-0 py-3 text-center">
+                                                                <td width="4%" class="p-0 text-center">
                                                                     <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
                                                                 </td>
 
 
-                                                                <td class="px-0">
+                                                                <td class="p-0">
 
                                                                     <input class="form-control credit_narration" type="text" name="narration[]" />
 
                                                                 </td>
 
 
-                                                                <td width="2%"> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
+                                                                <td width="2%"> 
+                                                                    
+                                                                <a href="javascript:void(0);" class="del_elem remainpass" style="display:none;"><i class='ri-close-line'></i></a>
 
+                                                                <a class="add_more add_icon add_button_cls" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
 
-                                                            </tr>
-
-
-                                                            <tr>
-
-                                                                <td colspan="6">
-
-                                                                    <div class="col-lg-12 text-center">
-
-                                                                        <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-
-                                                                    </div>
-
-                                                                </td>
-
-                                                            </tr>
+                                                                </tr>
 
 
                                                         </tbody>
@@ -760,18 +748,15 @@
 
         <div class="modal-dialog modal-xl">
 
-            <form class="" class="Dashboard-form class" id="add_po_advance_form">
+            <form  class="Dashboard-form" id="add_po_advance_form">
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <!--<h5 class="modal-title" id="exampleModalLabel">Sales Orders</h5>-->
+                        <h5 class="modal-title" id="exampleModalLabel">Select Invoices</h5>
                         <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#InvoicesModal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
-
                         <div class="row">
-
 
                             <div class="col-lg-12">
                                 <div class="card">
@@ -782,17 +767,18 @@
                                             <div class="row align-items-end">
 
 
-                                                <div class="col-col-md-12 col-lg-12">
+                                                <div class="col-col-md-12 col-lg-12 add_more_container p-0">
 
-                                                    <table class="table table-bordered" style="overflow-y:scroll;">
+                                                    <table class="table table-bordered " style="overflow-y:scroll;">
 
                                                         <thead>
                                                             <tr>
-                                                                <th>Sl No</th>
+                                                                <th width="5%">Sl</th>
                                                                 <th>Purchase Order</th>
                                                                 <th>LPO Ref</th>
                                                                 <th>Amount</th>
                                                                 <th>Payment</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
 
@@ -1001,7 +987,7 @@
                                                     </div>
 
 
-                                                    <div class="col-col-md-9 col-lg-9 select2_parent">
+                                                    <div class="col-col-md-9 col-lg-9 select2_parent text-center">
 
                                                         <!--
                             <select class="form-control edit_credit_account_select2" id="p_credit_account_edit" name="p_credit_account">
@@ -2157,7 +2143,13 @@
 
                 $clone.find(".sl_no").html(cc);
 
-                $clone.find(".del_elem").show();
+                $('body .del_elem').show();
+
+                $clone.find(".del_elem").hide();
+
+                $('body .add_more').hide();
+
+                $clone.find(".add_more").show();
 
                 //$clone.find('.credit_sl_no').val('2');
 

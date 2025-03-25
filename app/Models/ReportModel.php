@@ -526,8 +526,8 @@ class ReportModel extends Model
                     {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
                     {$pcv_table}.pcv_date AS transaction_date,
                     {$pcv_table}.pcv_pay_method AS method,
-                    {$this->db->getPrefix()}accounts_petty_cash_debits.pci_amount AS credit_amount,
-                    NULL AS debit_amount,                                                                                                                                                                           
+                    NULL AS credit_amount,
+                    {$this->db->getPrefix()}accounts_petty_cash_debits.pci_amount AS debit_amount,                                                                                                                                                                           
                     'Petty Cash Voucher' as voucher_type,
                     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
                     {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name
@@ -627,8 +627,8 @@ class ReportModel extends Model
                     {$this->db->getPrefix()}accounts_account_heads.ah_head_id as head_id,
                     {$pcv_table}.pcv_date AS transaction_date,
                     {$pcv_table}.pcv_pay_method AS method,
-                NULL AS credit_amount,
-                {$this->db->getPrefix()}accounts_petty_cash_debits.pci_amount AS debit_amount,
+                {$this->db->getPrefix()}accounts_petty_cash_debits.pci_amount AS credit_amount,
+                NULL AS debit_amount,
                 'Petty Cash Voucher' as voucher_type,
                 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_id AS account_id,
                 {$this->db->getPrefix()}accounts_charts_of_accounts.ca_name AS account_name

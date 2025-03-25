@@ -1544,18 +1544,18 @@ class Payments extends BaseController
             <input type="hidden" name="pv_id[]" value="' . $pv->pv_id . '">
 
             <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
-            <th>' . $sl . '</th>
-            <th>' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
-            <th>' . $pv->pv_reffer_id . '</th>
-            <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
+            <th class="p-0">' . $sl . '</th>
+            <th class="p-0">' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
+            <th class="p-0">' . $pv->pv_reffer_id . '</th>
+            <th class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
             
-            <th>' . $balance_amount . '
+            <th class="p-0">' . $balance_amount . '
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            <th class="p-0"><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
             
-            <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+            <th class="p-0"><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
             </tr>';
 
                 $data['status'] = 1;
@@ -2331,8 +2331,7 @@ class Payments extends BaseController
 
             $vendor_id = $this->request->getPost('vendor');
 
-
-            $v_id = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_type' => 'VENDOR','ca_id' => $vendor_id))->ca_customer;
+            $v_id = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $vendor_id))->ca_customer;
 
             $purchase_orders = $this->common_model->FetchWhere('pro_purchase_order', array('po_vendor_name' => $v_id));
 
@@ -2352,15 +2351,17 @@ class Payments extends BaseController
 
             <input type="hidden" name="po_id[]" value="'.$po->po_id.'">
             
-            <td>'.$sl_no++.'</td>
+            <td class="p-0">'.$sl_no++.'</td>
 
-            <td>'.$po->po_reffer_no.'</td>
+            <td class="p-0">'.$po->po_reffer_no.'</td>
 
-            <td>'.$po->po_vendor_ref.'</td>
+            <td class="p-0">'.$po->po_vendor_ref.'</td>
 
-            <td>'.format_currency($po->po_amount).'</td>
+            <td class="p-0">'.format_currency($po->po_amount).'</td>
 
-            <td><input class="form-control po_advance_amount" name="advance_amount[]" step="0.01" type="number"></td>
+            <td class="p-0"><input class="form-control po_advance_amount" name="advance_amount[]" step="0.01" type="number"></td>
+
+            <td></td>
 
             </tr>
             

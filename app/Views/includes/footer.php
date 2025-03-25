@@ -95,6 +95,56 @@
     
 
     <script>
+
+        function add_comma(value)
+        {
+            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        
+        }
+
+        function rmv_comma(value)
+        {
+        let num = parseFloat(String(value).replace(/,/g, "")) || 0;
+        return isNaN(num) ? 0 : num; // Return a valid number for calculations
+        }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+            document.querySelectorAll(".number_format").forEach(function (input) {
+            input.addEventListener("input", function () {
+            let value = this.value;
+
+            // Remove any non-numeric characters except '.' and ','
+            value = value.replace(/[^0-9,.]/g, '');
+
+            // Prevent starting with ',' or '.'
+            if (value.startsWith(',') || value.startsWith('.')) {
+                value = value.substring(1);
+            }
+
+            // Prevent multiple consecutive ',' or '.'
+            value = value.replace(/(\.{2,})/g, '.'); // Prevent multiple dots
+            value = value.replace(/(,{2,})/g, ','); // Prevent multiple commas
+            
+            // Ensure only one decimal point
+            let parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            // Ensure ',' is only used for thousands (e.g., 1,000.00)
+            value = value.replace(/,{2,}/g, ','); // Remove extra commas
+
+            this.value = value;
+        });
+    });
+
+
+});
+
        
        document.addEventListener('contextmenu', event => event.preventDefault());
         //$('.add_model_btn').click(function(){
@@ -372,8 +422,11 @@
         $(document).ready(function() {
 
 
+          
+
+
             
-            $(document).on('input', 'input[type="number"][max]', function () {
+            $(document).on('input', 'input[max]', function () {
             const max = parseFloat($(this).attr('max'), 10);
             const value = parseFloat($(this).val(), 10);
 

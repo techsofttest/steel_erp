@@ -950,7 +950,15 @@ vertical-align: middle;
 {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid black;
+ /* border: 1px solid black;*/
+}
+
+td.no-border, th.no-border, tr.no-border
+{
+border-top:0px !important;
+border-bottom:0px !important;
+border-left:0px !important;
+border-right:0px !important;
 }
 
 .add_more_container td, .add_more_container th{
@@ -1044,7 +1052,30 @@ height:100% !important;
 }
 
 
+
 /**/
+
+
+    .add_button_cls
+    {
+    color: green;
+    cursor: pointer;
+    font-size: 18px;
+    }
+
+    /* Center align select 2 */
+
+    .select2-center .select2-container--default .select2-selection--single .select2-selection__arrow
+    {
+        top: 50%;
+        transform: translateY(-50%);        
+    }
+
+    .select2-center .select2-container--default .select2-selection--single .select2-selection__rendered
+    {
+        display: flex;
+        align-items: center;
+    }
 
 
 
