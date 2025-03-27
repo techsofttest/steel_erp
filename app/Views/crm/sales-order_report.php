@@ -19,7 +19,13 @@
 #DataTable td{
     line-height:1.8;
 }
-
+.modal-dialog{
+        width: 500px;
+        margin: auto;
+    }
+    .adjust_width {
+    width: 86%;
+}
 </style>
 
 
@@ -115,11 +121,11 @@
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
-                                                                                <td>Date</td>
-                                                                                <td class="text-center">From</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="form_date"  value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control"></td>
-                                                                                <td style="width: 10% !important;text-align: center;">To</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="to_date" value='<?php echo $to_date; ?>' id="to_date_id" onclick="this.showPicker();" class="form-control"></td>
+                                                                                
+                                                                                <td style="display: flex;align-items: center;margin-left: 10px;" class="center_padding">From</td>
+                                                                                <td><input type="date" name="form_date" style="margin-left: 10px;"  value='<?php echo $from_date; ?>' id="from_date_id" onclick="this.showPicker();"  class="form-control adjust_width"></td>
+                                                                                <td style="width: 10% !important;display: flex;justify-content: center;align-items: center;" class="center_padding">To</td>
+                                                                                <td><input type="date" name="to_date" value='<?php echo $to_date; ?>' id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -130,24 +136,22 @@
                                                                         <tbody  class="travelerinfo">
                                                                             
                                                                             <tr>
-                                                                                <td>Customer</td>
-                                                                                <td>
-                                                                                    <select class="form-select droup_customer value='<?php echo $customer;?>' customer_clz" name="customer">
+                                                                                <td style="width: 30%;" class="center_padding">Customer</td>
+                                                                                <td style="width: 70%;" colspan="4">
+                                                                                    <select class="form-select droup_customer customer_clz" value='<?php echo $customer;?>'  name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         <?php foreach($customer_creation as $cus_data){?>
                                                                                             <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
                                                                             </tr>
 
 
                                                                             <tr>
-                                                                                <td>Sales Order Ref</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" value='<?php echo $sales_order;?>' name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders_data as $sales_ord_data){?> 
@@ -155,15 +159,13 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
                                                                             </tr>
 
 
                                                                             <tr>
-                                                                                <td>Sales Executive</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select executive_clz" value="<?php echo $sales_executive; ?>" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Executive</option>
                                                                                         <?php foreach($sales_executives as $sales_exe){?> 
@@ -171,15 +173,13 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
                                                                             </tr>
 
 
                                                                             <tr>
-                                                                                <td>Product</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select product_clz" value='<?php echo $product; ?>' name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
                                                                                         <?php foreach($products_data as $prod){?>
@@ -187,9 +187,7 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
                                                                                 
                                                                             </tr>
 

@@ -22,7 +22,13 @@
     #DataTable td {
         line-height: 1.0
     }
-
+    .modal-dialog{
+        width: 500px;
+        margin: auto;
+    }
+    .adjust_width {
+        width: 87%;
+    }
 </style>   
 
 <div class="tab-content text-muted">
@@ -84,11 +90,11 @@
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
-                                                                                <td>Date</td>
-                                                                                <td class="text-center">From</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control"></td>
-                                                                                <td style="width: 10% !important;text-align: center;">To</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control"></td>
+                                                                                
+                                                                                <td style="text-align: center;display: flex;margin-left:10px;" class="center_padding">From</td>
+                                                                                <td><input style="margin-left: 10px;" type="date" name="form_date" id="" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td style="width: 10% !important;text-align: center;display: flex;justify-content: center;" class="center_padding">To</td>
+                                                                                <td><input type="date" name="to_date" id="" onclick="this.showPicker();"  class="form-control adjust_width"></td>
                                                                             
                                                                             </tr>
                                                                             
@@ -99,8 +105,8 @@
                                                                         <tbody  class="travelerinfo">
                                                                             
                                                                             <tr>
-                                                                                <td>Customer</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Customer</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select droup_customer  customer_clz" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         <?php foreach($customer_creation as $cus_data){?>
@@ -109,15 +115,13 @@
 
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                               
                                                                             </tr>
 
 
                                                                             <tr>
-                                                                                <td>Sales Order Ref</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders as $sal_ord){?> 
@@ -125,9 +129,7 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
 
                                                                             </tr>
 
@@ -135,8 +137,8 @@
                                           
 
                                                                             <tr>
-                                                                                <td>Product</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Product</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select product_clz"name="product">
                                                                                         <option value="" selected disabled>Select Product</option>
                                                                                         <?php foreach($products as $prod){?> 
@@ -144,9 +146,7 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
                                                                                 
                                                                             </tr>
 

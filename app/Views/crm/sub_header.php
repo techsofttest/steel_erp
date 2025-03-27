@@ -15,5 +15,8 @@
     padding-top: 20px !important;
 
 }
+.adjust_width{
 
+    width: 91%;
+}
 </style>

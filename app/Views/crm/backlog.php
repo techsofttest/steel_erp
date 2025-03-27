@@ -14,8 +14,13 @@
   width: 100%;
   display: block overflow-x: scroll;
 }
-
-
+.modal-dialog{
+    width: 500px;
+    margin: auto;
+}
+.adjust_width {
+    width: 86%;
+}
 </style>
 
 
@@ -88,11 +93,11 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
 
-                                                                                <td>Date</td>
-                                                                                <td class="text-center">From</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date; ?>" class="form-control"></td>
-                                                                                <td style="width: 10% !important;text-align: center;">To</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="to_date" id="" onclick="this.showPicker();" value="<?php echo $to_date; ?>" class="form-control"></td>
+                                                                                
+                                                                                <td class="center_padding" style="display: flex;align-items: center;margin-left: 10px;">From</td>
+                                                                                <td style=""><input type="date" style="margin-left: 10px;" name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date; ?>" class="form-control adjust_width"></td>
+                                                                                <td style="width: 10% !important;display: flex;align-items: center;margin-right: 10px;">To</td>
+                                                                                <td style=""><input type="date" name="to_date" id="" onclick="this.showPicker();" value="<?php echo $to_date; ?>" class="form-control adjust_width"></td>
 
                                                                             </tr>
 
@@ -103,8 +108,8 @@
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                                <td>Customer</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Customer</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select droup_customer  customer_clz" value="<?php echo $customer; ?>" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         				
@@ -114,15 +119,13 @@
 
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                               
                                                                             </tr>
 
 
                                                                             <tr>
-                                                                                <td>Sales Executive</td>
-                                                                                <td>
+                                                                                <td style="width: 30%;" class="center_padding">Sales Executive</td>
+                                                                                <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" value="<?php echo $sales_executives; ?>" name="sales_executive">
                                                                                         <option value="" selected disabled>Select Sales
 
@@ -134,9 +137,7 @@
                                                                                         ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                
 
                                                                             </tr>
 

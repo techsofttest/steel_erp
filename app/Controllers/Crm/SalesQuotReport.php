@@ -58,6 +58,42 @@ class SalesQuotReport extends BaseController
 
     }
 
+    public function FetchProducts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+    public function FetchCustomer()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
 
     //fetch executive by customer
     public function FetchData()
@@ -424,7 +460,7 @@ class SalesQuotReport extends BaseController
 
 
             $mpdf = new \Mpdf\Mpdf([
-                'format' => 'Letter',
+                'format' => 'Letter-L',
                 'default_font_size' => 9, 
                 'margin_left' => 5, 
                 'margin_right' => 5,

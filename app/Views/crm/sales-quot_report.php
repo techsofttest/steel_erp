@@ -48,6 +48,10 @@
             margin-right: unset !important;
         }
     }
+    .select2.select2-container{
+
+        padding-top: 5px !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -119,11 +123,11 @@
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <tbody class="travelerinfo contact_tbody">
                                                                             <tr>
-                                                                                <td>Date</td>
-                                                                                <td class="text-center">From</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control"></td>
-                                                                                <td style="width: 10% !important;text-align: center;">To</td>
-                                                                                <td style="padding: 0px !important;"><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control"></td>
+                                                                                
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;">From</td>
+                                                                                <td ><input type="date"  name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td style="width: 10% !important;text-align: center;" class="center_padding">To</td>
+                                                                                <td ><input type="date"  name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control adjust_width"></td>
 
                                                                             </tr>
                                                                             
@@ -374,12 +378,14 @@
 </div>
 
 
-
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 
 
 <script>
+
+    
+
     document.addEventListener("DOMContentLoaded", function(event) {
 
         /*modal open start*/
@@ -571,6 +577,83 @@
 
 
     });
+
+
+        /*customer droup drown search*/
+        $(".droup_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesQuotReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesQuotReport/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+        /*product droup drown search*/
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesQuotReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesQuotReport/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
 </script>
 
 

@@ -28,6 +28,42 @@ class SalesQuotAnalysisReport extends BaseController
     }
 
 
+    public function FetchCustomer()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+    public function FetchProducts()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_products','product_details','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
+
     //customer droupdrown
     public function FetchTypes()
     {
@@ -260,11 +296,11 @@ class SalesQuotAnalysisReport extends BaseController
                                                     $quot_amount = format_currency($quot_prod->qpd_amount);
 
                                                     $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
-                                                                    <td class='rotate' width='50px'>{$quot_prod->product_details}</td>
-                                                                    <td class='rotate' width='50px' align='center'>{$quot_prod->qpd_quantity}</td>
-                                                                    <td class='rotate'  width='50px' align='right'>{$quot_rate}</td>
-                                                                    <td class='rotate '  width='50px' align='center'>{$quot_prod->qpd_discount}</td>
-                                                                    <td class='rotate' width='50px' align='right'>{$quot_amount}</td>";
+                                                                    <td class='rotate' width='200px'>{$quot_prod->product_details}</td>
+                                                                    <td class='rotate' width='40px' align='center'>{$quot_prod->qpd_quantity}</td>
+                                                                    <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
+                                                                    <td class='rotate '  width='80px' align='center'>{$quot_prod->qpd_discount}</td>
+                                                                    <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
 
                                                                     $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
 
@@ -280,8 +316,8 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
                                                                                                             
-                                                                                                        <td class='rotate' width='50px' align='center'>{$sal_ord->so_reffer_no}</td>
-                                                                                                        <td class='rotate' width='50px' align='right'>{$sales_amount}</td>";
+                                                                                                        <td class='rotate' width='100px' align='center'>{$sal_ord->so_reffer_no}</td>
+                                                                                                        <td class='rotate' width='90px' align='right'>{$sales_amount}</td>";
 
                                                                                                         $diff = $quot_prod->qpd_amount - $sal_ord->spd_amount; 
 
@@ -291,7 +327,7 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                                         $diff = format_currency($diff);
 
-                                                                                                        $pdf_data .="<td class='rotate' width='50px' align='right'>{$diff}</td>";
+                                                                                                        $pdf_data .="<td class='rotate' width='80px' align='right'>{$diff}</td>";
                                                                                                         
                                                                                         
                                                                                         $pdf_data .= "</tr>";
@@ -301,9 +337,9 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
 
-                                                                                                          <td class='rotate' width='50px'></td>
-                                                                                                          <td class='rotate' width='50px'></td>
-                                                                                                          <td class='rotate' width='50px' align='right'>{$quot_prod->qpd_amount}</td>
+                                                                                                          <td class='rotate' width='100px'></td>
+                                                                                                          <td class='rotate' width='90px'></td>
+                                                                                                          <td class='rotate' width='80px' align='right'>{$quot_prod->qpd_amount}</td>
                                                                                         
                                                                                         </tr>";
 
@@ -360,7 +396,7 @@ class SalesQuotAnalysisReport extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', // Custom page size in millimeters
+            'format' => 'Letter-L', // Custom page size in millimeters
             //'format' => [300, 600], // Width: 300mm, Height: 600mm (custom large page)
             'default_font_size' => 9, 
             'margin_left' => 5, 
@@ -478,15 +514,15 @@ class SalesQuotAnalysisReport extends BaseController
                     
                     <tr>
 
-                        <th align="center"  width="50px">Product</th>
+                        <th align="center"  width="200px">Product</th>
 
-                        <th align="center" width="50px">Qty</th>
+                        <th align="center" width="40px">Qty</th>
 
-                        <th align="center" width="50px">Rate</th>
+                        <th align="center" width="80px">Rate</th>
 
-                        <th align="center" width="50px">Discount</th>
+                        <th align="center" width="80px">Discount</th>
 
-                        <th align="center" width="50px">Amount</th>
+                        <th align="center" width="100px">Amount</th>
 
                         <th colspan="3"  class="p-0">
                             
@@ -494,11 +530,11 @@ class SalesQuotAnalysisReport extends BaseController
 
                                 <tr>
 
-                                   <th align="center" width="50px">Sales Order</th>
+                                   <th align="center" width="100px">Sales Order</th>
 
-                                <th align="center" width="50px">Amount</th>
+                                <th align="center" width="90px">Amount</th>
 
-                                <th align="center" width="50px">Difference</th>
+                                <th align="center" width="80px">Difference</th>
             
                                 
                                 </tr>
@@ -533,19 +569,19 @@ class SalesQuotAnalysisReport extends BaseController
                     <table>
                        <tr style="background: unset;border-bottom: hidden !important;">
 
-                            <td  width="50px"></td>
-                            <td  width="50px"></td>
-                            <td  width="50px"></td>
-                            <td  width="50px" ></td>
-                            <td  width="50px" align="right"><b>'.$quot_prod_total.'</b></td>
+                            <td  width="200"></td>
+                            <td  width="40px"></td>
+                            <td  width="80px"></td>
+                            <td  width="80px" ></td>
+                            <td  width="100px" align="right"><b>'.$quot_prod_total.'</b></td>
 
                             <td colspan="3"  class="p-0">
                                 <table>
                                     <tr style="background: unset;border-bottom: hidden !important;">
 
-                                        <td  width="50px" ></td>
-                                        <td  width="50px" align="right"><b>'.$sales_prod_total.'</b></td>
-                                        <td  width="50px" align="right"><b>'.$final_diff_total.'</b></td>
+                                        <td  width="100px" ></td>
+                                        <td  width="90px" align="right"><b>'.$sales_prod_total.'</b></td>
+                                        <td  width="80px" align="right"><b>'.$final_diff_total.'</b></td>
                                     
                                     </tr>
                                 
