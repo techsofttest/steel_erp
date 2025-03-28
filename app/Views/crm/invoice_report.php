@@ -273,12 +273,12 @@
                                                                 
                                                             <?php } else{ ?>
                                                                 <td class="height_class" style="width:40px"><?php echo $i; ?></td>
-                                                                <td class="height_class" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
-                                                                <td  class="p-0" style="height:100%,width:100px;display: flex;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                                <td class="height_class text-center" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                                <td  class="p-0 text-center" style="height:100%,width:100px;display: flex;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
                                                                 <td class="height_class" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
-                                                                <td class="height_class" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
-                                                                <td class="height_class" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
-                                                                <td class="height_class" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
+                                                                <td class="height_class text-center" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
+                                                                <td class="height_class text-center" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
+                                                                <td class="height_class text-center" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
                                                                 <td class="height_class text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
                                                                 
                                                                 
