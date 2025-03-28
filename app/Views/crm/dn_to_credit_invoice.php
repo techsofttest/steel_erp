@@ -450,7 +450,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
 
-        var maxh = 0;
+        /*var maxh = 0;
 
         $('.product-row').each(function() {
 
@@ -458,14 +458,12 @@
                 maxh = $(this).height();
             }
 
-            //$(this).closest('.invoice-row').height(maxh);
-
-            //$('.invoice-row').height(maxh);
+            
 
         })
 
         $('.invoice-row').height(maxh);
-        $('.product-row').height(maxh);
+        $('.product-row').height(maxh);*/
 
 
 
