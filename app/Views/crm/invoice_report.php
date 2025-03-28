@@ -661,7 +661,7 @@
 
          /*customer droup drown search*/
          $(".sales_order").select2({
-            placeholder: "Select Product",
+            placeholder: "Select Sales Order",
             theme : "default form-control- customer_width",
             dropdownParent: $('#InvoiceReport'),
             ajax: {

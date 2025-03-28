@@ -143,7 +143,7 @@
 
 
                                                                             <tr>
-                                                                                <td style="width: 30%;">Sales Order Ref</td>
+                                                                                <td style="width: 30%;" class="center_padding">Sales Order Ref</td>
                                                                                 <td style="width: 70%;" colspan="4"><select class="form-select sales_order_ref sales_order" value="<?php echo $sales_order; ?>" name="sales_order">
                                                                                         <option value="" selected disabled>Select Order Ref</option>
                                                                                         <?php foreach($sales_orders_data as $sales_data){?> 
@@ -155,7 +155,7 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td style="width: 30%;">Delivery Note Ref</td>
+                                                                                <td style="width: 30%;" class="center_padding">Delivery Note Ref</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select  deliver_note_ref" value="<?php echo $delivery_note; ?>" name="delivery_note">
                                                                                         <option value="" selected disabled>Select Delivery Note Ref</option>
@@ -740,7 +740,7 @@
         
         /*product droup drown search*/
         $(".sales_order").select2({
-            placeholder: "Select Product",
+            placeholder: "Select Sales Order",
             theme : "default form-control- customer_width",
             dropdownParent: $('#DnToCreditInvoice'),
             ajax: {
