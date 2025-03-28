@@ -29,6 +29,10 @@
     .adjust_width {
         width: 87%;
     }
+    .select2.select2-container{
+
+        padding-top: 5px !important;
+    }
 </style>   
 
 <div class="tab-content text-muted">
@@ -346,7 +350,7 @@
 
 
 
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
 
@@ -510,6 +514,81 @@
             return (sa);
 
         }
+
+        /*customer droup drown search*/
+        $(".droup_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesReturnReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesReturnReport/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+         /*product droup drown search*/
+         $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesReturnReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesReturnReport/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
 
 
 

@@ -29,6 +29,10 @@
     .adjust_width {
         width: 86%;
     }
+    .select2.select2-container{
+        
+        padding-top: 5px !important;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -324,7 +328,7 @@
                                                                                             <td width="100px" class="responsive text-end"><?php echo format_currency($difference); ?></td>
                                                                                         
                                                                                         </tr>
-                                                                                    <?php } } else{?> 
+                                                                                    <?php } } else{ ?> 
                                                                                         <tr style="background: unset;border-bottom: hidden !important;" class="product-row">
                                                                                             
                                                                                             <td width="200px" class="responsive text-center"></td>
@@ -441,7 +445,7 @@
 
 
 
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -660,6 +664,80 @@
         }
 
     });
+
+    /*customer droup drown search*/
+    $(".droup_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#DnToCreditInvoice'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/DnToCreditInvoice/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+        /*product droup drown search*/
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#DnToCreditInvoice'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/DnToCreditInvoice/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
 </script>
 
 

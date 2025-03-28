@@ -58,6 +58,24 @@ class BackLog extends BaseController
     }
 
 
+    public function FetchCustomer()
+    {
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_customer_creation','cc_customer_name','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+
+
 
     
 

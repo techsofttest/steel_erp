@@ -22,10 +22,15 @@
 .modal-dialog{
         width: 500px;
         margin: auto;
-    }
-    .adjust_width {
+}
+.adjust_width {
     width: 86%;
 }
+.select2.select2-container{
+    
+    padding-top: 5px !important;
+}
+
 </style>
 
 
@@ -258,21 +263,21 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesOrderReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll;">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table style="table-layout:fixed;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap">Sl no</th>
-                                                    <th class="text-center" style="white-space: nowrap" >Date</th>
-                                                    <th class="text-center" style="white-space: nowrap">Sales Order Ref</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:70px" >Date</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Order Ref</th>
                                                     <th style="white-space: nowrap;width:300px !important" class="text-center">Customer</th>
-                                                    <th class="text-center" style="white-space: nowrap">LPO Ref</th>
-                                                    <th class="text-center" style="white-space: nowrap">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:900px" class="text-center">Product</th>
-                                                    <th class="text-center" style="white-space: nowrap">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-center">Rate</th>
-                                                    <th style="white-space: nowrap" class="text-center">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-center">Amount</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                    <th style="width:500px" class="text-center">Product</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:80px;">Quantity</th>
+                                                    <th style="white-space: nowrap;width:80px;" class="text-center">Rate</th>
+                                                    <th style="white-space: nowrap;width:80px;" class="text-center">Discount</th>
+                                                    <th style="white-space: nowrap;width:100px;" class="text-center">Amount</th>
                                                 </tr>
                                             </thead>
                                             
@@ -289,40 +294,40 @@
                                                     ?> 
                                                     
                                                     <tr>
-                                                        <td class="text-center"><?php echo $i;?></td>
-                                                        <td class="text-center" style="white-space: nowrap"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
-                                                        <td class="text-center" style="white-space: nowrap"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
+                                                        <td class="text-center" style="width:40px"><?php echo $i;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($sales_order->so_date));?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id;?>" target="_blank"><?php echo $sales_order->so_reffer_no;?></a></td>
                                                         <td style="white-space: nowrap;width:300px !important"><?php echo $sales_order->cc_customer_name;?></td>
-                                                        <td class="text-center" style="white-space: nowrap"><?php echo $sales_order->so_lpo;?></td>
-                                                        <td class="text-center" style="white-space: nowrap"><?php echo $sales_order->se_name;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->so_lpo;?></td>
+                                                        <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
                                                         <?php $total_amount = $sales_order->so_amount_total + $total_amount ;?>
-                                                        <td style="white-space: nowrap" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
-                                                        <td style="width:900px !important;">
+                                                        <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
+                                                        <td style="width:500px !important;">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->product_details;?><br>
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td class="text-center" style="white-space: nowrap">
+                                                        <td class="text-center" style="white-space: nowrap;width:80px;">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo $sales_prod->spd_quantity;?></br>
                                                             <?php } ?>
                                                            
                                                         </td>
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td style="white-space: nowrap;width:80px;" class="text-end">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo format_currency($sales_prod->spd_rate);?></br>
                                                             <?php } ?>
                                                            
                                                         </td>
 
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td style="white-space: nowrap;width:80px;" class="text-end">
                                                             <?php foreach($sales_order->sales_product as $sales_prod){?> 
                                                                 <?php echo format_currency($sales_prod->spd_discount);?>%</br>
                                                             <?php } ?>
                                                         </td>
 
-                                                        <td style="white-space: nowrap" class="text-end">
+                                                        <td style="white-space: nowrap;width:100px;" class="text-end">
                                                             
                                                             <?php foreach($sales_order->sales_product as $sales_prod){
 
@@ -394,7 +399,7 @@
 
 
 
-
+<script src="<?php echo base_url(); ?>public/assets/js/select2.min.js"></script>
 
 <script>
 
@@ -585,6 +590,85 @@
         }
 
     });
+    
+    /*customer droup drown search*/
+    $(".droup_customer").select2({
+            placeholder: "Select Customer",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesOrderReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesOrderReport/FetchCustomer",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.cc_id, text: item.cc_customer_name}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+
+        /*product droup drown search*/
+        $(".product_clz").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#SalesOrderReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesOrderReport/FetchProducts",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.product_id, text: item.product_details}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
+
 </script>
 
 
