@@ -611,6 +611,44 @@
         /*###*/
 
 
+         /*product droup drown search*/
+         $(".sales_order").select2({
+            placeholder: "Select Product",
+            theme : "default form-control- customer_width",
+            dropdownParent: $('#DeliveryNoteReport'),
+            ajax: {
+                url: "<?= base_url(); ?>Crm/DeliveryNoteReport/FetchSalesOrder",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: true,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    //console.log(data);
+                    //NO NEED TO PARSE DATA `processResults` automatically parse it
+                    //var c = JSON.parse(data);
+                    //console.log(data);
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function (item) { return {id: item.so_id, text: item.so_reffer_no}}),
+                        pagination: {
+                        // THE `10` SHOULD BE SAME AS `$resultCount FROM PHP, it is the number of records to fetch from table` 
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },              
+            }
+         
+        })
+        /*###*/
+
+
 </script>
 
 
