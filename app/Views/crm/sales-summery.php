@@ -250,7 +250,7 @@
                                                           
 
                                                         ?>
-                                                        <td  class="p-0 text-center" style="height:100%,width:200px"><a href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                        <td  class="p-0 text-center" style="height:100%,width:200px;display: flex;align-items: center;justify-content: center;"><a style="margin-top: 7px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
                                                         <td class="height_class" style="width:650px"><?php echo $sale_data->customer_name; ?></td>
                                                         <td class="height_class text-center" style="width:200px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sale_data->sales_order_id; ?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
                                                         <td class="height_class text-center" style="width:200px"><?php echo $sale_data->sales_lpo; ?></td>
