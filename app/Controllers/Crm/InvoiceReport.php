@@ -66,6 +66,24 @@ class InvoiceReport extends BaseController
     }
 
 
+    public function FetchSalesOrder(){
+
+        $page= !empty($_GET['page']) ? $_GET['page'] : 0;
+        $term = !empty($_GET['term']) ? $_GET['term'] : "";
+        $resultCount = 10;
+        $end = ($page - 1) * $resultCount;       
+        $start = $end + $resultCount;
+      
+        $data['result'] = $this->common_model->FetchAllLimit('crm_sales_orders','so_reffer_no','asc',$term,$start,$end);
+
+        $data['total_count'] = count($data['result']);
+
+        return json_encode($data);
+
+    }
+    
+
+
     //customer droupdrown
     /*public function FetchTypes()
     {
