@@ -400,7 +400,7 @@ class SalesQuotAnalysisReport extends BaseController
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
-            'autoPageBreak' => false, // Disable automatic page breaks
+            'autoPageBreak' => true,  // Enable automatic page breaks
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
@@ -603,7 +603,7 @@ class SalesQuotAnalysisReport extends BaseController
             ';
             //echo $html; exit();
 
-            $mpdf->SetAutoPageBreak(false, 0); // Ensure no automatic page breaks
+            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
         
             $mpdf->WriteHTML($html);
 
