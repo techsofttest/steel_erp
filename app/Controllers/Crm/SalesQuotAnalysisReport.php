@@ -602,6 +602,8 @@ class SalesQuotAnalysisReport extends BaseController
         
             ';
             //echo $html; exit();
+
+            $mpdf->SetAutoPageBreak(false, 0); // Ensure no automatic page breaks
         
             $mpdf->WriteHTML($html);
 
