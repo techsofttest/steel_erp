@@ -348,7 +348,7 @@ class DeliveryNoteReport extends BaseController
                                                         <td width='80px' align='center'>{$delv_prod->dpd_order_qty}</td>
                                                         <td width='80px' align='center'>{$delv_prod->dpd_current_qty}</td>
                                                         <td width='80px' align='right'>".format_currency($delv_prod->dpd_prod_rate)."</td>
-                                                        <td width='80px' align='center'>{$delv_prod->dpd_prod_dicount}</td>
+                                                        <td width='80px' align='center'>".format_currency($delv_prod->dpd_prod_dicount)."</td>
                                                         <td width='80px' align='right'>".format_currency($delv_prod->dpd_total_amount)."</td>";
 
                                                         $total_amount1  = $delv_prod->dpd_total_amount + $total_amount1;
@@ -391,10 +391,11 @@ class DeliveryNoteReport extends BaseController
  
  
             $mpdf = new \Mpdf\Mpdf([
-             'format' => 'Letter', // Custom page size in millimeters
+             'format' => 'Letter-L', // Custom page size in millimeters
              'default_font_size' => 9, 
              'margin_left' => 5, 
              'margin_right' => 5,
+             'autoPageBreak' => true,  // Enable automatic page breaks
              'fontDir' => array_merge($fontDirs, [
                  __DIR__ . '/fonts'
              ]),
@@ -558,7 +559,8 @@ class DeliveryNoteReport extends BaseController
             ';
         
             //$footer = '';
-        
+           
+            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
@@ -571,6 +573,7 @@ class DeliveryNoteReport extends BaseController
 
        
     }
+
 
 
 

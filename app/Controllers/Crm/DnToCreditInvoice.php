@@ -447,10 +447,11 @@ class DnToCreditInvoice extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', // Custom page size in millimeters
+            'format' => 'Letter-L', // Custom page size in millimeters
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
+            'autoPageBreak' => true,  // Enable automatic page breaks
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
@@ -657,6 +658,8 @@ class DnToCreditInvoice extends BaseController
             //$footer = '';
              
             //echo $html; exit();
+
+            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);

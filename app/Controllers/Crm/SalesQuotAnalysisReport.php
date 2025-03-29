@@ -292,13 +292,15 @@ class SalesQuotAnalysisReport extends BaseController
                                                     
                                                     $quot_rate = format_currency($quot_prod->qpd_rate);
 
+                                                    $quot_disc = format_currency($quot_prod->qpd_discount);
+
                                                     $quot_amount = format_currency($quot_prod->qpd_amount);
 
                                                     $pdf_data .="<tr style='background: unset;border-bottom: hidden !important;'>
                                                                     <td class='rotate' width='200px'>{$quot_prod->product_details}</td>
                                                                     <td class='rotate' width='40px' align='center'>{$quot_prod->qpd_quantity}</td>
                                                                     <td class='rotate'  width='80px' align='right'>{$quot_rate}</td>
-                                                                    <td class='rotate '  width='80px' align='center'>{$quot_prod->qpd_discount}</td>
+                                                                    <td class='rotate '  width='80px' align='center'>{$quot_disc}</td>
                                                                     <td class='rotate' width='100px' align='right'>{$quot_amount}</td>";
 
                                                                     $quot_prod_total = $quot_prod->qpd_amount + $quot_prod_total;
@@ -325,6 +327,8 @@ class SalesQuotAnalysisReport extends BaseController
                                                                                                         $diff_total = $diff + $diff_total;
 
                                                                                                         $diff = format_currency($diff);
+
+                                                                                                        
 
                                                                                                         $pdf_data .="<td class='rotate' width='80px' align='right'>{$diff}</td>";
                                                                                                         
@@ -573,15 +577,15 @@ class SalesQuotAnalysisReport extends BaseController
                             <td  width="40px"></td>
                             <td  width="80px"></td>
                             <td  width="80px" ></td>
-                            <td  width="100px" align="right"><b>'.$quot_prod_total.'</b></td>
+                            <td  width="100px" align="right"><b>' . format_currency($quot_prod_total) . '</b></td>
 
                             <td colspan="3"  class="p-0">
                                 <table>
                                     <tr style="background: unset;border-bottom: hidden !important;">
 
                                         <td  width="100px" ></td>
-                                        <td  width="90px" align="right"><b>'.$sales_prod_total.'</b></td>
-                                        <td  width="80px" align="right"><b>'.$final_diff_total.'</b></td>
+                                        <td  width="90px" align="right"><b>'.format_currency($sales_prod_total).'</b></td>
+                                        <td  width="80px" align="right"><b>'.format_currency($final_diff_total).'</b></td>
                                     
                                     </tr>
                                 

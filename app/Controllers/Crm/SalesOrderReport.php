@@ -391,15 +391,15 @@ class SalesOrderReport extends BaseController
 
                 $new_date = date('d-M-Y',strtotime($sales_order->so_date));
 
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+                $pdf_data .= "<tr><td  align='center' style='border-top: 2px solid'>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>";
+                $pdf_data .= "<td align='center' style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>";
+                $pdf_data .= "<td  align='center' style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
+                $pdf_data .= "<td  align='center' style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid' width='110px'>{$sales_order->se_name}</td>";
+                $pdf_data .= "<td align='center'  style='border-top: 2px solid' width='110px'>{$sales_order->se_name}</td>";
 
                 $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$format_sales_amount}</td>";
                
@@ -441,12 +441,12 @@ class SalesOrderReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td align='center' style='";
                     if ($q == 1) {
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->spd_unit}</td>";
+                    $pdf_data .= "'>{$prod_del->spd_quantity}</td>";
 
                     $pdf_data .= "<td align='right' style='";
                     if ($q == 1) {
@@ -517,10 +517,11 @@ class SalesOrderReport extends BaseController
            $fontData = $defaultFontConfig['fontdata'];
 
             $mpdf = new \Mpdf\Mpdf([
-                'format' => 'Letter', // Custom page size in millimeters
+                'format' => 'Letter-L', // Custom page size in millimeters
                 'default_font_size' => 9, 
                 'margin_left' => 5, 
                 'margin_right' => 5,
+                'autoPageBreak' => true,  // Enable automatic page breaks
                 'fontDir' => array_merge($fontDirs, [
                     __DIR__ . '/fonts'
                 ]),
@@ -604,21 +605,21 @@ class SalesOrderReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="center">Date</th>
         
-            <th align="left" width="100px">Sales Order</th>
+            <th align="center" width="100px">Sales Order</th>
         
-            <th align="left">Customer</th>
+            <th align="center">Customer</th>
 
-            <th align="left" width="80px">LPO Ref</th>
+            <th align="center" width="80px">LPO Ref</th>
         
-            <th align="left" widht="110px">Sales Executive</th>
+            <th align="center" widht="110px">Sales Executive</th>
         
             <th align="right">Amount</th>
 
-            <th align="left">Product</th>
+            <th align="center">Product</th>
 
-            <th align="left">Quantity</th>
+            <th align="center">Quantity</th>
 
             <th align="right">Rate</th>
 
@@ -656,7 +657,7 @@ class SalesOrderReport extends BaseController
         
             //$footer = '';
         
-          
+            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');

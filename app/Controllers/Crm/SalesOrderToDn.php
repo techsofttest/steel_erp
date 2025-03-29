@@ -373,12 +373,12 @@ class SalesOrderToDn extends BaseController
 
                 $new_date = date('d-m-Y', strtotime($sales_order->so_date));
                 $pdf_data .= "<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                <td style='border-top: 2px solid' >{$new_date}</td>
                                 <td style='border-top: 2px solid' width='100px'>{$sales_order->so_reffer_no}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sales_order->cc_customer_name}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$sales_order->so_lpo}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$sales_order->se_name}</td>
-                                <td style='border-top: 2px solid' align='right' width='80px'>{$sales_order_amount}</td>";
+                                <td style='border-top: 2px solid' >{$sales_order->cc_customer_name}</td>
+                                <td style='border-top: 2px solid' >{$sales_order->so_lpo}</td>
+                                <td style='border-top: 2px solid' >{$sales_order->se_name}</td>
+                                <td style='border-top: 2px solid' align='right' >{$sales_order_amount}</td>";
                                 
                                 $total_amount = $sales_order->so_amount_total + $total_amount;
                                 
@@ -390,9 +390,9 @@ class SalesOrderToDn extends BaseController
 
                                             $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
 
-                                                            <td class='rotate' width='200px'>{$sales_prod->product_details}</td>
+                                                            <td class='rotate' width='400px'>{$sales_prod->product_details}</td>
 
-                                                            <td class='rotate' width='80px' style='text-align: right;'>{$delivered_amount}</td>";
+                                                            <td class='rotate' width='100px' style='text-align: right;'>{$delivered_amount}</td>";
 
                                                             $final_amount = $sales_prod->spd_amount -  $sales_prod->totaldelivered;
 
@@ -402,12 +402,12 @@ class SalesOrderToDn extends BaseController
 
                                                                 $final_amount = format_currency($final_amount);
 
-                                                                $pdf_data .= "<td class='rotate' align='right' width='80px' align='right'>{$final_amount}</td>";
+                                                                $pdf_data .= "<td class='rotate' width='80px' align='right'  align='right'>{$final_amount}</td>";
 
 
                                                             } else{
 
-                                                                $pdf_data .= "<td class='rotate' align='right' width='80px' align='right'>0.00</td>";
+                                                                $pdf_data .= "<td class='rotate' width='80px' align='right'  align='right'>0.00</td>";
 
                                                             }
 
@@ -454,10 +454,11 @@ class SalesOrderToDn extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', 
+            'format' => 'Letter-L', 
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
+            'autoPageBreak' => true,  // Enable automatic page breaks
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
@@ -542,25 +543,25 @@ class SalesOrderToDn extends BaseController
         
             <tr>
             
-            <th align="left" width="40px" style="border-top: 2px solid">Date</th>
+            <th align="left"  style="border-top: 2px solid">Date</th>
         
             <th align="left" width="100px" style="border-top: 2px solid">Sales Order</th>
         
-            <th align="left" width="100px" style="border-top: 2px solid">Customer</th>
+            <th align="left"  style="border-top: 2px solid">Customer</th>
 
-            <th align="left" width="80px" style="border-top: 2px solid">LPO Ref</th>
+            <th align="left"  style="border-top: 2px solid">LPO Ref</th>
         
-            <th align="left" width="80px" style="border-top: 2px solid">Sales Executive</th>
+            <th align="left"  style="border-top: 2px solid">Sales Executive</th>
         
-            <th align="right" width="80px" style="border-top: 2px solid">Amount</th>
+            <th align="right"  style="border-top: 2px solid">Amount</th>
 
             <th colspan="3"  class="p-0" style="border-top: 2px solid">
 
                <table>
                     <tr>
-                        <th align="center" width="200px">Product</th>
+                        <th align="center" width="400px">Product</th>
 
-                        <th align="right" width="80px">Delivered</th>
+                        <th align="right" width="100px">Delivered</th>
 
                         <th align="right" width="80px">Difference</th>
 
@@ -580,20 +581,20 @@ class SalesOrderToDn extends BaseController
 
             <tr>
 
-                <td style="border-top: 2px solid;" width="40px">Total</td>
+                <td style="border-top: 2px solid;" >Total</td>
                 <td style="border-top: 2px solid;" width="100px"></td>
-                <td style="border-top: 2px solid;" width="100px"></td>
-                <td style="border-top: 2px solid;" width="80px"></td>
-                <td style="border-top: 2px solid;" width="80px"></td>
-                <td style="border-top: 2px solid;text-align: right" width="80px">'.$total_amount.'</td>
+                <td style="border-top: 2px solid;" ></td>
+                <td style="border-top: 2px solid;" ></td>
+                <td style="border-top: 2px solid;" ></td>
+                <td style="border-top: 2px solid;text-align: right">'.format_currency($total_amount).'</td>
               
                 <td colspan="3"  class="p-0" style="border-top: 2px solid">
                     <table>
                        <tr style="background: unset;border-bottom: hidden !important;">
 
-                            <td  width="200px"></td>
-                            <td  width="80px"></td>
-                            <td  width="80px" style="text-align: right;">'.$total_amount2.'</td>
+                            <td  ></td>
+                            <td  ></td>
+                            <td   style="text-align: right;">'.format_currency($total_amount2).'</td>
                            
                             
                        
@@ -620,6 +621,8 @@ class SalesOrderToDn extends BaseController
             //$footer = '';
         
            //echo $html; exit();
+
+           $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);

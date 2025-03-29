@@ -357,10 +357,10 @@ class InvoiceReport extends BaseController
                                 <td style='border-top: 2px solid' width='120px'>{$sale_data->sales_order}</td>
                                 <td style='border-top: 2px solid' width='80px'>{$sale_data->sales_lpo}</td>
                                 <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->amount)."</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->product}</td>
+                                <td style='border-top: 2px solid' width='200px'>{$sale_data->product}</td>
                                 <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->quantity}</td>
-                                <td style='border-top: 2px solid' width='8px' align='right'>{$sale_data->rate}</td>
-                                <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->discount}%</td>
+                                <td style='border-top: 2px solid' width='8px' align='right'>".format_currency($sale_data->rate)."</td>
+                                <td style='border-top: 2px solid' width='80px' align='center'>".format_currency($sale_data->discount)."%</td>
                                 <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
                                
                                 $invoice_total =  $sale_data->prod_amount + $invoice_total; 
@@ -395,10 +395,11 @@ class InvoiceReport extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', // Custom page size in millimeters
+            'format' => 'Letter-L', // Custom page size in millimeters
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
+            'autoPageBreak' => true,  // Enable automatic page breaks
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
@@ -497,7 +498,7 @@ class InvoiceReport extends BaseController
 
                 <th align="ceneter" width="80px">Amount</th>
 
-                <th align="ceneter" width="100px">Product</th>
+                <th align="ceneter" width="200px">Product</th>
 
                 <th align="ceneter" width="80px">Quantity</th>
 
@@ -562,6 +563,8 @@ class InvoiceReport extends BaseController
             //$footer = '';
              
             //echo $html; exit();
+
+            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
             
             $mpdf->WriteHTML($html);
            // $mpdf->SetFooter($footer);
