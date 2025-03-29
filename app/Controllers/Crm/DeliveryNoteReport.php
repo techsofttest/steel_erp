@@ -528,7 +528,7 @@ class DeliveryNoteReport extends BaseController
                 <td style="border-top: 2px solid;" width="100px"></td>
 
                 <td style="border-top: 2px solid;" width="80px"></td>
-                <td style="border-top: 2px solid;" width="80px" align="right">'.format_currency($total_amount).'</td>
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($total_amount).'</b></td>
 
                 <td colspan="6"  class="p-0" style="border-top: 2px solid">
                     <table>
@@ -539,7 +539,7 @@ class DeliveryNoteReport extends BaseController
                             <td  width="80px"></td>
                             <td  width="80px"></td>
                             <td  width="80px"></td>
-                            <td  width="80px" align="right">'.format_currency($total_amount1).'</td>
+                            <td  width="80px" align="right"><b>'.format_currency($total_amount1).'</b></td>
                             
 
                            
