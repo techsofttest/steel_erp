@@ -532,7 +532,7 @@ class InvoiceReport extends BaseController
 
                 <td style="border-top: 2px solid;" width="80px"></td>
 
-                <td style="border-top: 2px solid;" width="80px" align="right">'.format_currency($sales_total).'</b></td>
+                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($sales_total).'</b></td>
 
                 <td style="border-top: 2px solid;" width="100px"></td>
 
@@ -542,7 +542,7 @@ class InvoiceReport extends BaseController
 
                 <td style="border-top: 2px solid;" width="80px"></td>
                 
-                <td style="border-top: 2px solid;" width="80px">'.format_currency($invoice_total).'</td>
+                <td style="border-top: 2px solid;" width="80px"><b>'.format_currency($invoice_total).'</b></td>
 
 
 
