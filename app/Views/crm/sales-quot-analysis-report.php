@@ -1,5 +1,6 @@
 
 <style>
+
     .divcontainer {
         overflow-x: scroll;
         overflow-y: auto;
@@ -23,6 +24,7 @@
     #DataTable td {
         line-height: 1.0
     }
+
     .table{
 
         padding:0px;
@@ -32,13 +34,16 @@
         width: 500px;
         margin: auto;
     }
+
     .adjust_width {
         width: 87%;
     }
+    
     .select2.select2-container{
 
-padding-top: 5px !important;
-}
+        padding-top: 5px !important;
+    }
+   
 </style>
 
 <div class="tab-content text-muted">
@@ -117,7 +122,7 @@ padding-top: 5px !important;
                                                                 ?>
 
                                                                 <div class="mt-4">
-                                                                    <table class="table table-bordered table-striped delTable">
+                                                                    <table class="table table-bordered table-striped delTable ">
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
                                                                                 
@@ -132,7 +137,7 @@ padding-top: 5px !important;
                                                                         </thead>
 
 
-                                                                        <tbody class="travelerinfo">
+                                                                        <tbody class="travelerinfo ">
 
                                                                             <tr>
                                                                                 <td style="width: 30%;" class="center_padding">Customer</td>

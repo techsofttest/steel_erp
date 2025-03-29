@@ -263,7 +263,6 @@ class SalesQuotAnalysisReport extends BaseController
     }
 
 
-
     public function Pdf($quotation_data,$from_date,$to_date)
     {   
        
@@ -401,6 +400,7 @@ class SalesQuotAnalysisReport extends BaseController
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
+            'autoPageBreak' => false, // Disable automatic page breaks
             'fontDir' => array_merge($fontDirs, [
                 __DIR__ . '/fonts'
             ]),
@@ -635,7 +635,8 @@ class SalesQuotAnalysisReport extends BaseController
        
     }
 
-
+    
+    
 
 
 
