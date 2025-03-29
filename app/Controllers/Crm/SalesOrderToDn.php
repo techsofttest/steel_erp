@@ -586,15 +586,15 @@ class SalesOrderToDn extends BaseController
                 <td style="border-top: 2px solid;" ></td>
                 <td style="border-top: 2px solid;" ></td>
                 <td style="border-top: 2px solid;" ></td>
-                <td style="border-top: 2px solid;text-align: right">'.format_currency($total_amount).'</td>
+                <td style="border-top: 2px solid;text-align: right"><b>'.format_currency($total_amount).'</b></td>
               
                 <td colspan="3"  class="p-0" style="border-top: 2px solid">
                     <table>
                        <tr style="background: unset;border-bottom: hidden !important;">
 
-                            <td  ></td>
-                            <td  ></td>
-                            <td   style="text-align: right;">'.format_currency($total_amount2).'</td>
+                            <td  width="400px"></td>
+                            <td  width="100px"></td>
+                            <td  width="80px"  style="text-align: right;"><b>'.format_currency($total_amount2).'</b></td>
                            
                             
                        
