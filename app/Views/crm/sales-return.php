@@ -492,7 +492,7 @@ span.select2.customer_width, span.select2 {
 		<form  class="Dashboard-form class" id="selected_prod_form">
 			<div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close select_modal_close" aria-label="Close"></button>
+                    
                 </div>
 
 				<div class="modal-body">
