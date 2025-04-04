@@ -256,7 +256,7 @@
                                                 foreach($invoice_reports as $inv_rep){ ?> 
                                                 <tr>	
                                                     <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
-                                                    <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $inv_rep->sr_date; ?></td>
+                                                    <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($inv_rep->sr_date)); ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:130px"><a href="<?php echo base_url(); ?>Crm/SalesReturn?view_rut=<?php echo $inv_rep->sr_id; ?>" target="_blank"><?php echo $inv_rep->sr_reffer_no; ?></a></td>
                                                     <td style="white-space: nowrap;width:300px"><?php echo $inv_rep->cc_customer_name; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_invoice; ?></td>
