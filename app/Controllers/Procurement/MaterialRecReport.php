@@ -412,7 +412,7 @@ class MaterialRecReport extends BaseController
             $mpdf = new \Mpdf\Mpdf(
 
                 [
-                    'format' => 'A3', // Set page size to A3
+                    'format' => 'A4', // Set page size to A3
                     'margin_left' => 15,
                     'margin_right' => 15,
                     'margin_top' => 16,
