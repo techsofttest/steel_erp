@@ -287,19 +287,19 @@
                                                             
                                                             
                                                             <td class="height_class" style="width:500px"><?php echo $sale_data->product; ?></td>
-                                                            <td class="height_class text-center" style="width:80px"><?php echo $sale_data->quantity; ?></td>
-                                                            <td class="height_class text-end" style="width:80px"><?php echo $sale_data->rate; ?></td>
-                                                            <td class="height_class text-end" style="width:80px"><?php echo $sale_data->discount; ?>%</td>
+                                                            <td class="height_class text-center" style="width:80px;vertical-align: middle;"><?php echo $sale_data->quantity; ?></td>
+                                                            <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->rate; ?></td>
+                                                            <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->discount; ?>%</td>
                                                              
                                                             <?php if($sale_data->amount_check == "sales return"){ ?> 
                                                                 
-                                                                <td class="height_class text-end" style="width:80px">-<?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                <td class="height_class text-end" style="width:80px;vertical-align: middle;">-<?php echo format_currency($sale_data->prod_amount); ?></td>
                                                                 
                                                                 <?php $invoice_total =    $invoice_total - $sale_data->prod_amount; ?>  
 
                                                             <?php } else{ ?> 
                                                                  
-                                                                <td class="height_class text-end" style="width:80px"><?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo format_currency($sale_data->prod_amount); ?></td>
                                                                 
                                                                 <?php $invoice_total =  $sale_data->prod_amount + $invoice_total; ?>  
                                                                 
