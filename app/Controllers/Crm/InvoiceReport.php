@@ -295,7 +295,7 @@ class InvoiceReport extends BaseController
         
        $data['sales_orders'] = $this->crm_modal->invoice_report($from_date,$to_date,$customer,$sales_order,$product);
         
-      
+       print_r($data['sales_orders']); exit();
 
         if(!empty($from_date))
         {
