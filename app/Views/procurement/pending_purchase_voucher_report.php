@@ -24,7 +24,7 @@
     }
     #DataTable {
         table-layout: fixed;
-        width: auto;
+        width:100%;       
         margin:unset
     }
    
