@@ -606,19 +606,31 @@ class LPO_MRNReport extends BaseController
 
             $title = "SQR";
 
-            $mpdf = new \Mpdf\Mpdf(
-
-                [
-                    'format' => 'A3', // Set page size to A3
-                    'margin_left' => 15,
-                    'margin_right' => 15,
-                    'margin_top' => 16,
-                    'margin_bottom' => 16,
-                    'margin_header' => 9,
-                    'margin_footer' => 9,
-                ]
-            );
-
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+ 
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+            
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter-L', // Custom page size in millimeters
+                'default_font_size' => 9, 
+                'margin_left' => 5, 
+                'margin_right' => 5,
+                'autoPageBreak' => true,  // Enable automatic page breaks
+                'fontDir' => array_merge($fontDirs, [
+                    __DIR__ . '/fonts'
+                ]),
+                'fontdata' => $fontData + [
+                    'bentonsans' => [
+                      
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf',
+                    ],
+                ],
+                'default_font' => 'bentonsans'
+                
+            ]);
 
 
             $mpdf->SetTitle('Purchase Order to Material Received Note Report'); // Set the title
