@@ -293,7 +293,7 @@
                                                         Vendor DN Ref</th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Amount
                                                     </th>
-                                                    <th style="white-space: nowrap;min-width:500px">Product</th>
+                                                    <th style="white-space: nowrap;width:500px">Product</th>
                                                     <th class="text-center" style="white-space: nowrap;width:80px">Quantity
                                                     </th>
                                                     <th class="text-end" style="white-space: nowrap;width:80px">Rate
@@ -349,7 +349,7 @@
                                                                                 $total += $tot_amt; } ?>
                                                                             </td>
 
-                                                                            <td class="rotate" style="min-width:500px">
+                                                                            <td class="rotate" style="width:500px">
                                                                                 <?php echo $orders->product_details; ?><br>
                                                                             </td>
                                                                             <td class="text-center rotate"

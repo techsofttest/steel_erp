@@ -436,7 +436,7 @@ class PurchaseOrderReport extends BaseController
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
             
-            $mpdf = new \Mpdf\Mpdf([
+            $mpdf = new \Mpdf\Mpdf([    
                 'format' => 'Letter-L', // Custom page size in millimeters
                 'default_font_size' => 9, 
                 'margin_left' => 5, 
