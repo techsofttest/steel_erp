@@ -1,9 +1,9 @@
 <?php  $uri = new \CodeIgniter\HTTP\URI(current_url());?>
 <ul class="nav nav-pills nav-custom-outline nav-primary mb-3" role="tablist">
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Vendor") {echo "active" ;} ?>" data-bs-toggle="" href="<?= base_url(); ?>Procurement/Vendor" role="tab">Procurement</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Vendor") {echo "active" ;} ?>" data-bs-toggle="" href="<?= base_url(); ?>Procurement/Vendor" role="tab">Procurement</a>
     </li>
     <li class="nav-item waves-effect waves-light">
-        <a class="nav-link <?php if($uri->getSegment(3)=="Reports") {echo "active" ;} ?>" data-bs-toggle=""  href="<?= base_url(); ?>Procurement/Reports" role="tab">Reports</a>
+        <a class="nav-link <?php if($uri->getSegment(2)=="Reports") {echo "active" ;} ?>" data-bs-toggle=""  href="<?= base_url(); ?>Procurement/Reports" role="tab">Reports</a>
     </li>
 </ul>
