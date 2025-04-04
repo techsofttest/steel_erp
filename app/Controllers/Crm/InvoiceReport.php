@@ -295,7 +295,7 @@ class InvoiceReport extends BaseController
         
        $data['sales_orders'] = $this->crm_modal->invoice_report($from_date,$to_date,$customer,$sales_order,$product);
         
-       print_r($data['sales_orders']); exit();
+       
 
         if(!empty($from_date))
         {
@@ -342,30 +342,66 @@ class InvoiceReport extends BaseController
         if(!empty($sales_orders)){
 
             $title = "SQR";
-
+            $i =1;
             $sales_total = 0;
             $invoice_total = 0;
-            $pdf_data ="";
+            $reff_id = "";
+            $pdf_data = "";
             foreach($sales_orders as $sale_data){
                 $new_date = date('d-M-Y',strtotime($sale_data->date));
                
-                $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->reference}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->customer_name}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->delivery_reff}</td>
-                                <td style='border-top: 2px solid' width='120px'>{$sale_data->sales_order}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$sale_data->sales_lpo}</td>
-                                <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->amount)."</td>
-                                <td style='border-top: 2px solid' width='200px'>{$sale_data->product}</td>
+                                $pdf_data .="<tr>";
+                                if ($sale_data->reference == $reff_id) {
+                                    $pdf_data .= "<td style='border-top: 2px solid' width='40px'></td>
+                                    <td style='border-top: 2px solid' width='100px'></td>
+                                    <td style='border-top: 2px solid' width='100px'></td>
+                                    <td style='border-top: 2px solid' width='100px'></td>
+                                    <td style='border-top: 2px solid' width='120px'></td>
+                                    <td style='border-top: 2px solid' width='80px'></td>
+                                    <td style='border-top: 2px solid' width='80px' align='right'></td>";
+                                }
+                                else{
+                                  
+                                    $pdf_data .="<td style='border-top: 2px solid' width='40px'>{$new_date}</td>
+                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->reference}</td>
+                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->customer_name}</td>
+                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->delivery_reff}</td>
+                                    <td style='border-top: 2px solid' width='120px'>{$sale_data->sales_order}</td>
+                                    <td style='border-top: 2px solid' width='80px'>{$sale_data->sales_lpo}</td>
+                                    <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->amount)."</td>";
+
+                                }
+                                
+
+
+                                $pdf_data .="<td style='border-top: 2px solid' width='200px'>{$sale_data->product}</td>
                                 <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->quantity}</td>
                                 <td style='border-top: 2px solid' width='8px' align='right'>".format_currency($sale_data->rate)."</td>
-                                <td style='border-top: 2px solid' width='80px' align='center'>".format_currency($sale_data->discount)."%</td>
-                                <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
-                               
-                                $invoice_total =  $sale_data->prod_amount + $invoice_total; 
+                                <td style='border-top: 2px solid' width='80px' align='center'>".format_currency($sale_data->discount)."%</td>";
 
-                                $sales_total =  $sale_data->amount + $sales_total;
+                                if($sale_data->amount_check == "sales return"){ 
+                                    
+                                    $pdf_data .="<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
+
+                                    $invoice_total =    $invoice_total - $sale_data->prod_amount;
+
+                                }else{
+
+                                    $pdf_data .="<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
+                                
+                                    $invoice_total =  $sale_data->prod_amount + $invoice_total;
+
+                                }
+
+                                $sales_total =  $sale_data->amount + $sales_total; 
+
+                                if ($reff_id != $sale_data->reference)
+                                {
+                                    
+                                $reff_id = $sale_data->reference;
+                                $i++;
+
+                                }
                               
                           
 
