@@ -391,17 +391,17 @@ class SalesOrderSummeryReport extends BaseController
 
                 $new_date = date('d-M-Y',strtotime($sales_order->so_date));
 
-                $pdf_data .= "<tr><td style='border-top: 2px solid'>{$new_date}</td>";
+                $pdf_data .= "<tr><td style=''>{$new_date}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_reffer_no}</td>";
+                $pdf_data .= "<td style=''>{$sales_order->so_reffer_no}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->cc_customer_name}</td>";
+                $pdf_data .= "<td style=''>{$sales_order->cc_customer_name}</td>";
                 
-                $pdf_data .= "<td style='border-top: 2px solid'>{$sales_order->so_lpo}</td>";
+                $pdf_data .= "<td style=''>{$sales_order->so_lpo}</td>";
 
-                $pdf_data .= "<td style='border-top: 2px solid' width='110'>{$sales_order->se_name}</td>";
+                $pdf_data .= "<td style='' width='110'>{$sales_order->se_name}</td>";
 
-                $pdf_data .= "<td align='right' style='border-top: 2px solid'>{$formalt_amount}</td>";
+                $pdf_data .= "<td align='right' style=''>{$formalt_amount}</td>";
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
@@ -511,7 +511,7 @@ class SalesOrderSummeryReport extends BaseController
         
         
         
-            <table width="100%" style="margin-top:10px;">
+            <table width="100%" style="margin-top:10px;border-bottom: 2px solid;">
             
         
             <tr width="100%">
@@ -524,7 +524,7 @@ class SalesOrderSummeryReport extends BaseController
 
            
         
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;">
             
         
             <tr>

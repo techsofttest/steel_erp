@@ -302,42 +302,47 @@
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $sales_order->se_name;?></td>
                                                         <?php $total_amount = $sales_order->so_amount_total + $total_amount ;?>
                                                         <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($sales_order->so_amount_total);?></td>
-                                                        <td style="width:500px !important;">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->product_details;?><br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-                                                        <td class="text-center" style="white-space: nowrap;width:80px;">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo $sales_prod->spd_quantity;?></br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-                                                        <td style="white-space: nowrap;width:80px;" class="text-end">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo format_currency($sales_prod->spd_rate);?></br>
-                                                            <?php } ?>
-                                                           
-                                                        </td>
-
-                                                        <td style="white-space: nowrap;width:80px;" class="text-end">
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){?> 
-                                                                <?php echo format_currency($sales_prod->spd_discount);?>%</br>
-                                                            <?php } ?>
-                                                        </td>
-
-                                                        <td style="white-space: nowrap;width:100px;" class="text-end">
+                                                        
+                                                        <td colspan="5" align="left" class="p-0">
                                                             
-                                                            <?php foreach($sales_order->sales_product as $sales_prod){
+                                                            <table>
+                                                                <?php foreach($sales_order->sales_product as $sales_prod){?> 
 
-                                                                $total_amount1 = $sales_prod->spd_amount + $total_amount1;
+                                                                    <tr style="background: unset;border-bottom: hidden !important;">
 
-                                                            ?> 
-                                                            <?php echo format_currency($sales_prod->spd_amount);?></br>
-                                                            <?php } ?>
+                                                                        <td style="width:500px !important;"><?php echo $sales_prod->product_details;?><br></td>
+
+                                                                        <td class="text-center" style="white-space: nowrap;width:80px;"><?php echo $sales_prod->spd_quantity;?></br></td>
+                                                                         
+                                                                        <td style="white-space: nowrap;width:80px;" class="text-end"><?php echo format_currency($sales_prod->spd_rate);?></br></td>
+
+                                                                        <td style="white-space: nowrap;width:80px;" class="text-end"><?php echo format_currency($sales_prod->spd_discount);?>%</br></td>
+
+                                                                        <td style="white-space: nowrap;width:100px;" class="text-end">
+                                                                            
+                                                                            <?php 
+
+                                                                                $total_amount1 = $sales_prod->spd_amount + $total_amount1;
+
+                                                                            ?> 
+                                                                            
+                                                                            <?php echo format_currency($sales_prod->spd_amount);?></br>
                                                            
+                                                           
+                                                                        </td>
+
+                                                                    </tr>
+                                                                    
+                                                                <?php } ?>
+                                                            </table>
+
                                                         </td>
+                                                       
+                                                        
+
+                                                       
+
+                                                        
                                                         
                                                        
                                                     </tr>

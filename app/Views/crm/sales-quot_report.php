@@ -93,6 +93,7 @@
 
         padding-top: 5px !important;
     }
+    
 </style>
 
 <div class="tab-content text-muted">
@@ -380,7 +381,11 @@
                                                         <td class="text-end"><b><?php echo format_currency($total1); ?></b></td>
                                                     </tr>
 
-                                                <?php   } ?>
+                                                <?php   } ?> 
+                                                    
+                                                    
+                                                    
+                                               
 
 
 

@@ -284,41 +284,18 @@ class SalesReturnReport extends BaseController
                 $new_date = date('d-M-Y',strtotime($inv_rep->sr_date));
                
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$inv_rep->sr_reffer_no}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$inv_rep->cc_customer_name}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$inv_rep->sr_invoice}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$inv_rep->so_reffer_no}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$inv_rep->sr_lpo_reff}</td>
-                                <td style='border-top: 2px solid' width='80px'>{$inv_rep->se_name}</td>
-                                <td style='border-top: 2px solid' width='100px' align='right'>{$inv_rep->so_amount_total}</td>";
+                                <td style='border-top: 2px solid' align='center' width='40px'>{$new_date}</td>
+                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->sr_reffer_no}</td>
+                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->cc_customer_name}</td>
+                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->sr_invoice}</td>
+                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->so_reffer_no}</td>
+                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->sr_lpo_reff}</td>
+                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->se_name}</td>
+                                <td style='border-top: 2px solid' align='center' width='100px' align='right'>{$inv_rep->so_amount_total}</td>";
 
                                 $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
 
-                                $pdf_data .="<td colspan='5' style='border-top: 2px solid'>
-                                                <table>";
-
-                                                foreach($inv_rep->return_product as $ret_prod){
-
-                                                    $pdf_data .="<tr>
-                                                    
-                                                                    <td width='100px'>{$ret_prod->product_details}</td>
-                                                                    <td  width='70px' align='center'>{$ret_prod->srp_quantity}</td>
-                                                                    <td width='80px' align='right'>".format_currency($ret_prod->srp_rate)."</td>
-                                                                    <td width='80px' align='center'>".format_currency($ret_prod->srp_discount)."</td>
-                                                                    <td width='100px' align='right'>".format_currency($ret_prod->srp_amount)."</td>
-                                                                   
-                                                                   
-                                                                    ";
-
-                                                    
-                                                    $pdf_data .="</tr>";
-
-                                                    $sales_return_rate =  $ret_prod->srp_rate + $sales_return_rate;   $return_prod_amount = $ret_prod->srp_amount + $return_prod_amount;
-                                                }
-
-                                                $pdf_data .="</table>
-                                            </td>";
+                               
                                 
                         
 
@@ -436,44 +413,23 @@ class SalesReturnReport extends BaseController
         
             <tr>
             
-                <th align="ceneter" width="40px">Date</th>
+                <th align="center" width="40px">Date</th>
             
-                <th align="ceneter" width="100px">Sales Return</th>
+                <th align="center" width="100px">Sales Return</th>
             
-                <th align="ceneter" width="100px">Customer</th>
+                <th align="center" width="100px">Customer</th>
             
-                <th align="ceneter" width="80px">Invoice Ref</th>
+                <th align="center" width="80px">Invoice Ref</th>
             
-                <th align="ceneter" width="100px">Sales Order.</th>
+                <th align="center" width="100px">Sales Order.</th>
 
-                <th align="ceneter" width="80px">Lpo Ref.</th>
+                <th align="center" width="80px">Lpo Ref.</th>
 
-                <th align="ceneter" width="80px">Sales Executive</th>
+                <th align="center" width="80px">Sales Executive</th>
 
-                <th align="ceneter" width="100px">Amount</th>
+                <th align="center" width="100px">Amount</th>
 
-                <th colspan="5">
-                   
-                    <table>
-                      
-                        <tr>
-                           
-                            <th align="ceneter" width="100px">Product</th>
-
-                            <th align="ceneter" width="70px">Quantity</th>
-
-                            <th align="ceneter" width="80px">Rate</th>
-
-                            <th align="ceneter" width="80px">Discount</th>
-
-                            <th align="ceneter" width="100px">Amount</th>
-
-                        
-                        </tr>
-                    
-                    </table>
-                
-                </th>
+            
 
                 
 
@@ -496,24 +452,7 @@ class SalesReturnReport extends BaseController
                 <td style="border-top: 2px solid" width="80px"></td>
                 <td style="border-top: 2px solid" width="80px"></td>
                 <td style="border-top: 2px solid" width="100px" align="right"><b>'.format_currency($sales_prod_amount).'</b></td>
-                <td colspan="5" style="border-top: 2px solid">
-
-                    <table>
-                          
-                        <tr>
-                                                    
-                            <td width="100px"></td>
-                            <td  width="70px"></td>
-                            <td width="80px" align="right"><b>'.format_currency($sales_return_rate).'</b></td>
-                            <td width="80px"></td>
-                            <td width="100px" align="right"><b>'.format_currency($return_prod_amount).'</b></td>
-
-                        </tr>
-                                                                   
-                    
-                    </table>
-
-                </td>
+                
             
             </tr>
            

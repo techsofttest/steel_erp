@@ -254,7 +254,7 @@
                                                         <tr>
 
                                                             <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
-                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo $del_note->dn_date; ?></td>
+                                                            <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y',strtotime($del_note->dn_date)); ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/DeliverNote?view_so=<?php echo $del_note->dn_id; ?>" target="_blank"><?php echo $del_note->dn_reffer_no; ?></a></td>
                                                             <td style="white-space: nowrap;width:300px"><?php echo $del_note->cc_customer_name; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $del_note->so_id; ?>" target="_blank"><?php echo $del_note->so_reffer_no; ?></a></td>

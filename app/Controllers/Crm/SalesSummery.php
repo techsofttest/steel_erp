@@ -205,13 +205,13 @@ class SalesSummery extends BaseController
                 $new_date = date('d-M-Y',strtotime($sale_data->date));
                
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' width='100px' align='center'>{$sale_data->reference}</td>
-                                <td style='border-top: 2px solid' width='100px'>{$sale_data->customer_name}</td>
-                                <td style='border-top: 2px solid' width='100px' align='center'>{$sale_data->sales_order}</td>
-                                <td style='border-top: 2px solid' width='100px' align='center'>{$sale_data->sales_lpo}</td>
-                                <td style='border-top: 2px solid' width='100px' align='center'>{$sale_data->sales_exec}</td>
-                                <td style='border-top: 2px solid' width='100px' align='right'>".format_currency($sale_data->amount)."</td>";
+                                <td style='' width='40px'>{$new_date}</td>
+                                <td style='' width='100px' align='center'>{$sale_data->reference}</td>
+                                <td style='' width='100px'>{$sale_data->customer_name}</td>
+                                <td style='' width='100px' align='center'>{$sale_data->sales_order}</td>
+                                <td style='' width='100px' align='center'>{$sale_data->sales_lpo}</td>
+                                <td style='' width='100px' align='center'>{$sale_data->sales_exec}</td>
+                                <td style='' width='100px' align='right'>".format_currency($sale_data->amount)."</td>";
                                
 
                                 $total_amount =  $sale_data->amount + $total_amount;

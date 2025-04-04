@@ -223,12 +223,12 @@ class BackLog extends BaseController
                 if($balance_amount!=0){
                     
                     $pdf_data .="<tr>
-                                    <td style='border-top: 2px solid' width='40px' align='center'>{$new_date}</td>
-                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->so_reffer_no}</td>
-                                    <td style='border-top: 2px solid' width='100px'>{$backlog->cc_customer_name}</td>
-                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->so_lpo}</td>
-                                    <td style='border-top: 2px solid' width='100px' align='center'>{$backlog->se_name}</td>
-                                    <td style='border-top: 2px solid' width='100px' align='right'>".format_currency($backlog->so_amount_total)."</td> ";
+                                    <td style='' width='40px' align='center'>{$new_date}</td>
+                                    <td style='' width='100px' align='center'>{$backlog->so_reffer_no}</td>
+                                    <td style='' width='100px'>{$backlog->cc_customer_name}</td>
+                                    <td style='' width='100px' align='center'>{$backlog->so_lpo}</td>
+                                    <td style='' width='100px' align='center'>{$backlog->se_name}</td>
+                                    <td style='' width='100px' align='right'>".format_currency($backlog->so_amount_total)."</td> ";
                                     
                                     $sales_amount_total = $backlog->so_amount_total + $sales_amount_total;
                                     
@@ -266,7 +266,7 @@ class BackLog extends BaseController
 
                                     $delivered_total = $delivered + $delivered_total;
 
-                                    $pdf_data .="<td  width='100px' style='border-top: 2px solid' align='right'>".format_currency($delivered)."</td>";
+                                    $pdf_data .="<td  width='100px' style='' align='right'>".format_currency($delivered)."</td>";
 
                                     /*delivered coloum calculation end*/
 
@@ -307,7 +307,7 @@ class BackLog extends BaseController
 
                                     $invoiced_total = $invoiced + $invoiced_total;
 
-                                    $pdf_data .="<td class='text-end' width='100px' style='border-top: 2px solid' align='right'>".format_currency($invoiced)."</td>";
+                                    $pdf_data .="<td class='text-end' width='100px' style='' align='right'>".format_currency($invoiced)."</td>";
 
 
 
@@ -317,7 +317,7 @@ class BackLog extends BaseController
 
                                     /*balance coloum calculation start*/
 
-                                    $pdf_data .="<td  width='100px' style='border-top: 2px solid' align='right'>".format_currency($balance_amount)."</td>";
+                                    $pdf_data .="<td  width='100px' style='' align='right'>".format_currency($balance_amount)."</td>";
 
                                     $balance_total_amount = $balance_amount + $balance_total_amount;
 

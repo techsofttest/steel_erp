@@ -237,11 +237,11 @@
                                                     <th class="text-center" style="white-space: nowrap;width:100px">LPO Ref</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Sales Executive</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Amount</th>
-                                                    <th class="text-center" style="width:500px">Product</th>
+                                                    <!--<th class="text-center" style="width:500px">Product</th>
                                                     <th class="text-center" style="width:100px;">Quantity</th>
                                                     <th style="width:100px;" class="text-center">Rate</th>
                                                     <th style="width:100px;" class="text-center">Discount</th>
-                                                    <th style="width:100px;" class="text-center">Amount</th>
+                                                    <th style="width:100px;" class="text-center">Amount</th>-->
                                                     
                                                 </tr>
                                             </thead>
@@ -269,25 +269,25 @@
                                                         $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
                                                     ?>
                                                     <!------------>
-                                                    <td colspan="5" align="left" class="p-0">
+                                                    <!--<td colspan="5" align="left" class="p-0">
                                                         <table>
-                                                        <?php foreach ($inv_rep->return_product as $ret_prod) { ?> 
+                                                        <?php //foreach ($inv_rep->return_product as $ret_prod) { ?> 
                                                                             
                                                             <tr style="background: unset;border-bottom: hidden !important;">
                                                                 
-                                                                <td  style="width:500px" style="line-height: 1.5;"><?php echo $ret_prod->product_details; ?> </td>
-                                                                <td class="text-center" style="width:100px; "><?php echo $ret_prod->srp_quantity; ?> </td>
-                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_rate); ?> </td>
-                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_discount); ?>% </td>
-                                                                <td style="width:100px;" class="text-end  "><?php echo format_currency($ret_prod->srp_amount); ?> </td>
+                                                                <td  style="width:500px" style="line-height: 1.5;"><?php //echo $ret_prod->product_details; ?> </td>
+                                                                <td class="text-center" style="width:100px; "><?php //echo $ret_prod->srp_quantity; ?> </td>
+                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_rate); ?> </td>
+                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_discount); ?>% </td>
+                                                                <td style="width:100px;" class="text-end  "><?php //echo format_currency($ret_prod->srp_amount); ?> </td>
                                                                 
                                                             </tr>
 
-                                                        <?php  $sales_return_rate =  $ret_prod->srp_rate + $sales_return_rate;   $return_prod_amount = $ret_prod->srp_amount + $return_prod_amount; }  ?>
+                                                        <?php  //$sales_return_rate =  $ret_prod->srp_rate + $sales_return_rate;   $return_prod_amount = $ret_prod->srp_amount + $return_prod_amount; }  ?>
                                                                                                 
                                                                                         
                                                         </table>
-                                                    </td>
+                                                    </td>--->
                                                     <!------------>
                                                 </tr>
                                                 <?php $i++; } ?> 
@@ -302,11 +302,11 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="text-end"><b><?php echo format_currency($sales_prod_amount); ?></b></td>
+                                                    <!--<td></td>
                                                     <td></td>
+                                                    <td class="text-end"><b><?php //echo format_currency($sales_return_rate); ?></b></td>
                                                     <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($sales_return_rate); ?></b></td>
-                                                    <td></td>
-                                                    <td class="text-end"><b><?php echo format_currency($return_prod_amount); ?></b></td>
+                                                    <td class="text-end"><b><?php //echo format_currency($return_prod_amount); ?></b></td>-->
                                                 </tr>
                                                 
                                             <?php } ?>
