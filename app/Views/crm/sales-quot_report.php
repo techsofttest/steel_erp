@@ -1,7 +1,7 @@
 
 
 <style>
-    table {
+    /*table {
         table-layout: auto !important;
     }
 
@@ -18,21 +18,17 @@
     .divcontainer {
         overflow-x: scroll;
         overflow-y: auto;
-        /* transform: rotateX(180deg); */
+        
     }
 
-    .divcontainer table {
-        /* transform: rotateX(180deg); */
-    }
+   
 
     .table-responsive {
         width: 100%;
         display: block;
         overflow-x: scroll;
     }
-    /* #DataTable td{
-        line-height:2.3
-    } */
+    
     
     #DataTable td {
         line-height: 1.7
@@ -48,6 +44,51 @@
             margin-right: unset !important;
         }
     }
+    .select2.select2-container{
+
+        padding-top: 5px !important;
+    }
+    .table{
+
+        padding:0px;
+    }*/
+
+    .divcontainer {
+        overflow-x: scroll;
+        overflow-y: auto;
+        /* transform: rotateX(180deg); */
+    }
+
+    .divcontainer table {
+        /* transform: rotateX(180deg); */
+    }
+
+    .table-responsive {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+
+    .rotate {
+        /* transform: rotateX(180deg); */
+    }
+
+   
+
+    .table{
+
+        padding:0px;
+    }
+
+    .modal-dialog{
+        width: 500px;
+        margin: auto;
+    }
+
+    .adjust_width {
+        width: 87%;
+    }
+    
     .select2.select2-container{
 
         padding-top: 5px !important;
@@ -248,21 +289,21 @@
                                         <button type="button" data-bs-toggle="modal" id="clear_data" data-bs-target="#SalesQuotReport" class="btn btn-primary py-1">Search</button>
                                     </div><!-- end card header -->
                                     <div class="card-body table-responsive divcontainer" style="overflow-x:scroll">
-                                        <table id="DataTable" class="table table-bordered table-striped delTable display dataTable">
+                                        <table style="table-layout:fixed !important;" id="DataTable" class="table table-bordered table-striped delTable display dataTable">
                                             <thead>
                                               
                                                 <tr>
-                                                    <th class="no-sort text-center" style="white-space: nowrap; width:60px;">Sl no</th>
-                                                    <th style="white-space: nowrAap" class="text-center">Date</th>
-                                                    <th style="white-space: nowrap" class="text-center">Quotation Ref</th>
+                                                    <th class="no-sort text-center" style="white-space: nowrap; width:40px">Sl no</th>
+                                                    <th style="white-space: nowrAap;width:70px" class="text-center">Date</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-center">Quotation Ref</th>
                                                     <th style="white-space: nowrap;width:300px !important">Customer Name</th>
-                                                    <th style="white-space: nowrap" class="text-center">Sales Executive</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
-                                                    <th style="width:900px">Product</th>
-                                                    <th style="white-space: nowrap" class="text-center">Quantity</th>
-                                                    <th style="white-space: nowrap" class="text-end">Rate</th>
-                                                    <th style="white-space: nowrap" class="text-end">Discount</th>
-                                                    <th style="white-space: nowrap" class="text-end">Amount</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-center">Sales Executive</th>
+                                                    <th style="white-space: nowrap;width:100px" class="text-end">Amount</th>
+                                                    <th style="width:500px !important;">Product</th>
+                                                    <th style="width:80px !important;white-space: nowrap" class="text-center">Quantity</th>
+                                                    <th style="width:80px !important;white-space: nowrap" class="text-end">Rate</th>
+                                                    <th style="width:80px !important;white-space: nowrap;" class="text-end">Discount</th>
+                                                    <th style="width:100px !important;white-space: nowrap" class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
 
@@ -275,53 +316,54 @@
                                                     foreach ($quotation_data as $quot_data) { ?>
                                                         <tr>
                                                             <td class="text-center"><?php echo $i; ?></td>
-                                                            <td style="white-space: nowrap" class="text-center"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
-                                                            <td style="white-space: nowrap" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
+                                                            <td style="white-space: nowrap;width:40px" class="text-center"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
+                                                            <td style="white-space: nowrap;width:70px" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
                                                             <td style="white-space: nowrap;width:300px !important"><?php echo $quot_data->cc_customer_name; ?></td>
-                                                            <td style="white-space: nowrap" class="text-center"><?php echo $quot_data->se_name; ?></td>
+                                                            <td style="white-space: nowrap;width:100px" class="text-center"><?php echo $quot_data->se_name; ?></td>
                                                             <?php
                                                             $total = $quot_data->qd_sales_amount + $total;
                                                             ?>
-                                                            <td style="white-space: nowrap" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount); ?></td>
-                                                            <td style="width:900px !important;">
-                                                                <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
-                                                                    <?php echo $quot_prod->product_details; ?><br>
-                                                                <?php } ?>
+                                                            <td style="white-space: nowrap;width:100px" class="text-end"><?php echo format_currency($quot_data->qd_sales_amount); ?></td>
+
+
+                                                            <td colspan="5" align="left" class="p-0">
+
+                                                                <table>
+
+                                                                    <?php foreach($quot_data->quotation_product as $quot_prod){ ?>
+
+                                                                        <tr style="background: unset;border-bottom: hidden !important;">
+                                                                            
+                                                                            <td style="width:500px !important;"><?php echo $quot_prod->product_details; ?><br></td>
+
+                                                                            <td style="width:80px !important;white-space: nowrap" class="text-center"><?php echo $quot_prod->qpd_quantity; ?><br></td>
+
+                                                                            <td style="white-space: nowrap;width:80px !important;" class="text-end"><?php echo format_currency($quot_prod->qpd_rate); ?><br></td>
+
+                                                                            <td style="white-space: nowrap;width:80px !important;" class="text-end"><?php echo format_currency($quot_prod->qpd_discount); ?>%<br></td>
+
+                                                                            <td style="white-space: nowrap;width:100px !important" class="text-end">
+
+                                                                                <?php $total1  = $quot_prod->qpd_amount + $total1; ?>
+                                                                                <?php echo format_currency($quot_prod->qpd_amount); ?><br>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                        
+                                                                    <?php } ?>
+
+                                                                </table>
+
                                                             </td>
 
-                                                            <td style="white-space: nowrap" class="text-center">
-                                                                <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
-                                                                    <?php echo $quot_prod->qpd_quantity; ?><br>
-                                                                <?php } ?>
-                                                            </td>
 
-                                                            <td style="white-space: nowrap" class="text-end">
-                                                                <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
-                                                                    <?php echo format_currency($quot_prod->qpd_rate); ?><br>
-                                                                <?php } ?>
-                                                            </td>
-
-                                                            <td style="white-space: nowrap" class="text-end">
-                                                                <?php foreach ($quot_data->quotation_product as $quot_prod) { ?>
-                                                                    <?php echo format_currency($quot_prod->qpd_discount); ?>%<br>
-                                                                <?php } ?>
-                                                            </td>
-
-                                                            <td style="white-space: nowrap" class="text-end">
-                                                                <?php foreach ($quot_data->quotation_product as $quot_prod) {
-
-                                                                    $total1  = $quot_prod->qpd_amount + $total1;
-                                                                ?>
-
-                                                                    <?php echo format_currency($quot_prod->qpd_amount); ?><br>
-                                                                <?php } ?>
-                                                            </td>
                                                         </tr>
 
 
 
 
                                                     <?php $i++;
+
                                                     }  ?>
 
                                                     <tr>

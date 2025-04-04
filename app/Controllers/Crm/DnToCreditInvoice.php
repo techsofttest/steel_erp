@@ -357,7 +357,7 @@ class DnToCreditInvoice extends BaseController
 
                                                 foreach($del_note->delivery_products as $del_prod){
                                                    
-                                                    $pdf_data .="<tr >
+                                                    $pdf_data .="<tr>
                                                                     <td width='200px'>{$del_prod->product_details}</td>
                                                                     <td width='80px' align='center'>{$del_prod->dpd_current_qty}</td>
                                                                     <td width='80px' align='right'>{$del_prod->dpd_prod_rate}</td>
@@ -371,7 +371,7 @@ class DnToCreditInvoice extends BaseController
                                                                                     <table>";
                                                                                         if(!empty($del_prod->invoices)){
 
-                                                                                            foreach ($del_prod->invoices as $invoice) {
+                                                                                            foreach ($del_prod->invoices as $invoice){
 
                                                                                                 $pdf_data .="<tr>
                                                                                                                 <td width='100px' align='center'>{$invoice->cci_reffer_no}</td>";
@@ -671,7 +671,6 @@ class DnToCreditInvoice extends BaseController
        
     }
    
-
     
 
 
