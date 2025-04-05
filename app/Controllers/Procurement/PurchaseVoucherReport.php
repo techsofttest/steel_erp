@@ -399,7 +399,7 @@ class PurchaseVoucherReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->mrn_reffer}</td>";
 
-                    $pdf_data .= "<td style='";
+                    $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
 
                         $pdf_data .= $border;

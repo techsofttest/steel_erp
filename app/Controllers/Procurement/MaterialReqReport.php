@@ -462,19 +462,7 @@ class MaterialReqReport extends BaseController
                
             ' . $pdf_data . '
 
-            <tr>
-                <td style="border-top: 2px solid;">Total</td>
-    
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                
-            </tr>    
-           
+            
             
             </table>
 

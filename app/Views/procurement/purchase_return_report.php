@@ -130,7 +130,6 @@
 
 
                                                                         <tbody class="travelerinfo">
-
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Vendor</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -142,7 +141,6 @@
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
-
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Lpo Ref</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -151,7 +149,6 @@
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
-
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Sales Order</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -160,7 +157,6 @@
                                                                                     </select>
                                                                                 </td>
                                                                             </tr>
-
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">GL Account</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -170,10 +166,8 @@
                                                                                             <option value="<?php echo $charts->ca_id ?>"><?php echo $charts->ca_name; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
-                                                                                </td>
-                                                                               
+                                                                                </td>                                                                               
                                                                             </tr>
-
                                                                             <tr>
                                                                             <td style="width: 30%;" class="center_padding">Product</td>
                                                                             <td style="width: 70%;"  colspan="4">
@@ -183,14 +177,9 @@
                                                                                             <option value="<?php echo $product->product_details; ?>"><?php echo $product->product_details; ?></option>
                                                                                         <?php } ?>
                                                                                     </select>
-                                                                                </td>
-                                                                            
+                                                                                </td>                                                                            
                                                                             </tr>
-
-
                                                                         </tbody>
-
-
                                                                     </table>
                                                                 </div>
 
