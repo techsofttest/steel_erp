@@ -112,7 +112,7 @@
                                             
                                                                             <tr>
                                                                                 
-                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px">From</td>
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
                                                                                 <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
                                                                                 <td>
