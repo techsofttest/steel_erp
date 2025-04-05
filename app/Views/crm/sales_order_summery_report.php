@@ -251,8 +251,6 @@
                                                             <?php $total_amount = $sales_order->so_amount_total + $total_amount; ?>
                                                             <td class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
 
-
-
                                                         </tr>
 
                                                 <?php $i++;

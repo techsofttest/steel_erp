@@ -426,7 +426,7 @@ class SalesQuotAnalysisReport extends BaseController
 
             
 
-            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
+            $mpdf->SetTitle('Sales Quotation Analysis Report'); // Set the title
 
             //$sales_amount = format_currency($sales_amount);
             
@@ -491,7 +491,7 @@ class SalesQuotAnalysisReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Quotation Report</h3></td>
+            <td align="right"><h3>Sales Quotation Analysis Report</h3></td>
         
             </tr>
         

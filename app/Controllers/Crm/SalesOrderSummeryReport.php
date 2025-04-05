@@ -462,7 +462,7 @@ class SalesOrderSummeryReport extends BaseController
 
          
 
-            $mpdf->SetTitle('Sales Summery Report'); // Set the title
+            $mpdf->SetTitle('Sales Order Summery Reports'); // Set the title
 
             $html ='
         
@@ -516,7 +516,7 @@ class SalesOrderSummeryReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Summery Report</h3></td>
+            <td align="right"><h3>Sales Order Summery Reports</h3></td>
         
             </tr>
         
@@ -529,17 +529,17 @@ class SalesOrderSummeryReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="left" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left">Sales Order</th>
+            <th align="left" style="border-bottom: 2px solid;">Sales Order</th>
         
-            <th align="left">Customer</th>
+            <th align="left" style="border-bottom: 2px solid;">Customer</th>
 
-            <th align="left" width="70">LPO Ref</th>
+            <th align="left" width="70" style="border-bottom: 2px solid;">LPO Ref</th>
         
-            <th align="left" width="110">Sales Executive</th>
+            <th align="left" width="110" style="border-bottom: 2px solid;">Sales Executive</th>
         
-            <th align="right">Amount</th>
+            <th align="right" style="border-bottom: 2px solid;">Amount</th>
 
            
             

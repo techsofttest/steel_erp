@@ -33,6 +33,23 @@
 
         padding-top: 5px !important;
     }
+    table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+    
+        border-top: unset;
+    }
+    .border-bottom{
+
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+
+       /* border-bottom: 1px solid black !important;*/
+    }
+
+    .border-top{
+        
+        border-top: 1px solid black !important;
+
+    }
+  
 </style>
 
 <div class="tab-content text-muted">
@@ -206,7 +223,7 @@
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:100px">Invoice Ref.</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:200px">Invoice Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Customer</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Delivery Note Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:120px">Sales Order Ref.</th>
@@ -226,15 +243,23 @@
                                                 <?php
                                                 $sales_total = 0;
                                                 $invoice_total = 0;
-                                                $reff_id = "";
+                                                //$reff_id = "";
                                                 if (!empty($sales_orders)) {
                                                     if(!empty($sales_orders))
                                                     {   
-                                                       
+                                                        $count = count($sales_orders);
+                                                        $reff_id = "";
                                                         $i =1;
                                                        
-                                                        foreach($sales_orders as $sale_data){?> 
-                                                        <tr>
+                                                        
+                                                        foreach ($sales_orders as $key => $sale_data) {
+                                                        
+                                                            $next_ref = ($key + 1 < $count) ? $sales_orders[$key + 1]->reference : null;
+                                                            $is_last_in_group = $sale_data->reference !== $next_ref;
+                                                            $border_class = $is_last_in_group ? 'border-bottom' : '';
+                                                                                                                
+                                                        ?>
+                                                        <tr class="">
                                                             
                                                             <?php
                                                             if($sale_data->link == "cash invoice"){
@@ -258,48 +283,51 @@
                                                             }
 
                                                           
-                                                            
+                                                             
+
+                                                             $reff_data =  $sale_data->reference; 
+                                                                
 
                                                             if($sale_data->reference == $reff_id){ ?>
 
-                                                                <td class="height_class" style="width:40px"></td>
-                                                                <td class="height_class" style="width:100px"></td>
-                                                                <td  class="p-0" style="height:100%,width:100px"></td>
-                                                                <td class="height_class" style="width:300px"></td>
-                                                                <td class="height_class" style="width:100px"></td>
-                                                                <td class="height_class" style="width:120px"></td>
-                                                                <td class="height_class" style="width:100px"></td>
-                                                                <td class="height_class text-end" style="width:100px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:40px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:200px"></td>
+                                                                <td  class="p-0 <?= $border_class ?>" style="width:100px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:300px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:100px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:120px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:100px"></td>
+                                                                <td class="height_class <?= $border_class ?> text-end" style="width:100px"></td>
                                                                 
                                                             <?php } else{ ?>
-                                                                <td class="height_class" style="width:40px"><?php echo $i; ?></td>
-                                                                <td class="height_class text-center" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
-                                                                <td  class="p-0 text-center" style="height:100%,width:100px;display: flex;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
-                                                                <td class="height_class" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
-                                                                <td class="height_class text-center" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
-                                                                <td class="height_class text-center" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
-                                                                <td class="height_class text-center" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
-                                                                <td class="height_class text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:40px"><?php echo $i; ?></td>
+                                                                <td class="height_class <?= $border_class ?>  text-center" style="width:200px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                                <td  class=" <?= $border_class ?> text-center" style="width:100px;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
+                                                                <td class="height_class <?= $border_class ?> text-center" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
+                                                                <td class="height_class <?= $border_class ?> text-center" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
+                                                                <td class="height_class <?= $border_class ?> text-center" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
+                                                                <td class="height_class <?= $border_class ?> text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
                                                                 
                                                                 
                                                             <?php } ?>
                                                             
                                                             
                                                             
-                                                            <td class="height_class" style="width:500px"><?php echo $sale_data->product; ?></td>
-                                                            <td class="height_class text-center" style="width:80px;vertical-align: middle;"><?php echo $sale_data->quantity; ?></td>
-                                                            <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->rate; ?></td>
-                                                            <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->discount; ?>%</td>
+                                                            <td class="height_class <?= $border_class ?>" style="width:500px"><?php echo $sale_data->product; ?></td>
+                                                            <td class="height_class <?= $border_class ?>  text-center" style="width:80px;vertical-align: middle;"><?php echo $sale_data->quantity; ?></td>
+                                                            <td class="height_class <?= $border_class ?>  text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->rate; ?></td>
+                                                            <td class="height_class <?= $border_class ?>  text-end" style="width:80px;vertical-align: middle;"><?php echo $sale_data->discount; ?>%</td>
                                                              
                                                             <?php if($sale_data->amount_check == "sales return"){ ?> 
                                                                 
-                                                                <td class="height_class text-end" style="width:80px;vertical-align: middle;">-<?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                <td class="height_class <?= $border_class ?>  text-end" style="width:80px;vertical-align: middle;">-<?php echo format_currency($sale_data->prod_amount); ?></td>
                                                                 
                                                                 <?php $invoice_total =    $invoice_total - $sale_data->prod_amount; ?>  
 
                                                             <?php } else{ ?> 
                                                                  
-                                                                <td class="height_class text-end" style="width:80px;vertical-align: middle;"><?php echo format_currency($sale_data->prod_amount); ?></td>
+                                                                <td class="height_class <?= $border_class ?>   text-end" style="width:80px;vertical-align: middle;"><?php echo format_currency($sale_data->prod_amount); ?></td>
                                                                 
                                                                 <?php $invoice_total =  $sale_data->prod_amount + $invoice_total; ?>  
                                                                 
@@ -315,16 +343,17 @@
 
                                                             $sales_total =  $sale_data->amount + $sales_total; 
 
-                                                            if ($reff_id != $sale_data->reference)
-                                                            {
-                                                               
-                                                            $reff_id = $sale_data->reference;
-                                                            $i++;
-
+                                                            if ($reff_id != $sale_data->reference) {
+                                                                $reff_id = $sale_data->reference;
+                                                                $i++;
                                                             }
+
+                                                            
 
 
                                                             ?>
+
+                                                           
 
                                                             
                                                         
