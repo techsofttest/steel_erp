@@ -467,18 +467,18 @@ class InvoiceReport extends BaseController
     
             <table width="100%" style="margin-top:2px; border-collapse: collapse; border-spacing: 0; border-top:2px solid;">
                 <tr>
-                    <th align="center" width="40px">Date</th>
-                    <th align="center" width="100px">Invoice Ref.</th>
-                    <th align="center" width="100px">Customer</th>
-                    <th align="center" width="100px">Delivery Note Ref.</th>
-                    <th align="center" width="120px">Sales Order Ref.</th>
-                    <th align="center" width="80px">Lpo Ref.</th>
-                    <th align="center" width="80px">Amount</th>
-                    <th align="center" width="200px">Product</th>
-                    <th align="center" width="80px">Quantity</th>
-                    <th align="center" width="80px">Rate</th>
-                    <th align="center" width="80px">Discount</th>
-                    <th align="center" width="80px">Amount</th>
+                    <th align="center" style="border-bottom:2px solid" width="40px">Date</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Invoice Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Customer</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Delivery Note Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="120px">Sales Order Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Lpo Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Amount</th>
+                    <th align="center" style="border-bottom:2px solid" width="200px">Product</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Quantity</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Rate</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Discount</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Amount</th>
                 </tr>
     
                 ' . $pdf_data . '
