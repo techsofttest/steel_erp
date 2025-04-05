@@ -369,7 +369,7 @@ class PurchaseOrderReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_qty}</td>";
+                    $pdf_data .= "'>".(format_currency($prod_del->pop_qty))."</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {

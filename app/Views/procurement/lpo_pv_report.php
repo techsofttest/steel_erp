@@ -27,6 +27,14 @@
         table-layout: fixed;
         width: 100%;
     }
+
+    .modal-dialog{
+        width: 500px;
+        margin: auto;
+    }
+    .adjust_width {
+    width: 86%;
+    }
 </style>
 
 <div class="tab-content text-muted">
@@ -101,12 +109,14 @@
                                                                 <div class="mt-4">
                                                                     <table class="table table-bordered table-striped delTable">
                                                                         <thead class="travelerinfo contact_tbody">
-                                                                            <tr>
-                                                                                <td>Date</td>
-                                                                                <td class="text-center">From</td>
-                                                                                <td><input type="date" name="form_date" id="from_date_id" value="<?php echo $from_date; ?>" onclick="this.showPicker();" class="form-control"></td>
-                                                                                <td>To</td>
-                                                                                <td><input type="date" name="to_date" id="to_date_id" value="<?php echo $to_date; ?>" onclick="this.showPicker();" class="form-control"></td>
+                                                                        <tr>
+                                                                                
+                                                                                <td class="text-center center_padding" style="display: flex;align-items: center;margin-left:10px;margin-top: 15px;">From</td>
+                                                                                <td ><input type="date" style="margin-left: 10px;" name="form_date" id="from_date_id" onclick="this.showPicker();" class="form-control adjust_width"></td>
+                                                                                <td style="width: 10% !important;display: flex;align-items: center;justify-content: center;" class="center_padding">To</td>
+                                                                                <td>
+                                                                                    <input type="date" name="to_date" id="to_date_id" onclick="this.showPicker();" class="form-control adjust_width">
+                                                                                </td>
 
                                                                             </tr>
 
@@ -117,8 +127,8 @@
                                                                         <tbody class="travelerinfo">
 
                                                                             <tr>
-                                                                                <td>Vendor</td>
-                                                                                <td>
+                                                                            <td style="width: 30%;" class="center_padding">Vendor</td>
+                                                                            <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" id="vendor" name="vendor">
                                                                                         <option value="" selected disabled>Select Vendor</option>
                                                                                         <?php foreach ($vendors as $vendor) { ?>
@@ -129,8 +139,8 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td>Lpo Ref</td>
-                                                                                <td>
+                                                                            <td style="width: 30%;" class="center_padding">Lpo Ref</td>
+                                                                            <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" id="lpo_ref" name="lpo_ref" disabled>
                                                                                         <option value="" selected disabled>Select Lpo ref</option>
                                                                                     </select>
@@ -138,8 +148,8 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td>Sales Order</td>
-                                                                                <td>
+                                                                            <td style="width: 30%;" class="center_padding">Sales Order</td>
+                                                                            <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" id="sales_order" name="sales_order" disabled>
                                                                                         <option value="" selected disabled>Select Sales Order</option>
                                                                                     </select>
@@ -149,8 +159,8 @@
 
 
                                                                             <tr>
-                                                                                <td>Product</td>
-                                                                                <td>
+                                                                            <td style="width: 30%;" class="center_padding">Product</td>
+                                                                            <td style="width: 70%;"  colspan="4">
                                                                                     <select class="form-select" value="" name="product">
                                                                                         <option value="" selected disabled>Select product</option>
                                                                                         <?php foreach ($products as $product) { ?>
@@ -158,42 +168,23 @@
                                                                                         <?php } ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                             
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td></td>
-                                                                                <td>
-                                                                                    <table>
-                                                                                        <tr>
-                                                                                            <td style="width:33%">Pending</td>
+                                                                               
+                                                                                        <td style="width: 30%;" class="center_padding">Pending</td>
                                                                                             <td> <input class="" type="checkbox" name="pending">
                                                                                             </td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </td>
-                                                                                <td></td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                       
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td></td>
-                                                                                <td>
-                                                                                    <table>
-                                                                                        <tr>
-                                                                                            <td style="width:33%">Linked </td>
+                                                                              
+                                                                                        <td style="width: 30%;" class="center_padding">Linked </td>
                                                                                             <td> <input class="" type="checkbox" name="linked">
                                                                                             </td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                <td>
-
-                                                                                </td>
-                                                                                <td></td>
-                                                                                <td></td>
+                                                                                       
 
                                                                             </tr>
 

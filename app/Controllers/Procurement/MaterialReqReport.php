@@ -319,7 +319,7 @@ class MaterialReqReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->mrp_qty}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->mrp_qty)."</td>";
 
 
 
@@ -462,19 +462,7 @@ class MaterialReqReport extends BaseController
                
             ' . $pdf_data . '
 
-            <tr>
-                <td style="border-top: 2px solid;">Total</td>
-    
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                <td style="border-top: 2px solid;"></td>
-                
-            </tr>    
-           
+            
             
             </table>
 
