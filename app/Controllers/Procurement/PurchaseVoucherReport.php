@@ -423,7 +423,7 @@ class PurchaseVoucherReport extends BaseController
                     
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pvp_qty}</td>";
+                    $pdf_data .= "'>".(format_currency($prod_del->pvp_qty))."</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
