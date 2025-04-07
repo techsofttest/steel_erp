@@ -405,17 +405,9 @@ class SalesOrderSummeryReport extends BaseController
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
-                
-                
-                
-                
-                
-               
-
                // $pdf_data .="</tr>";
                  
                 
-               
                 
             }
 

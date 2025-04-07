@@ -318,7 +318,7 @@
                                                         <tr>
                                                             <td class="text-center"><?php echo $i; ?></td>
                                                             <td style="white-space: nowrap;width:40px" class="text-center"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
-                                                            <td style="white-space: nowrap;width:70px" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
+                                                            <td style="white-space: nowrap;width:70px" class="text-center"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="_blank" class="" data-id="<?php echo $quot_data->qd_id; ?>"><?php echo $quot_data->qd_reffer_no; ?></a></td>
                                                             <td style="white-space: nowrap;width:300px !important"><?php echo $quot_data->cc_customer_name; ?></td>
                                                             <td style="white-space: nowrap;width:100px" class="text-center"><?php echo $quot_data->se_name; ?></td>
                                                             <?php
