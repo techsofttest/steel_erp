@@ -275,12 +275,22 @@
 
                                                                 $view = "view_crn";
                                                             }
+                                                            else if($sale_data->link == "sales return"){
+                                                                  
+                                                                $href="Crm/SalesReturn";
+
+                                                                $view = "view_rut";
+                                                            }
                                                             else{
 
                                                                 $href="";
 
                                                                 $view = "";
                                                             }
+
+                                                            
+                                                            
+
 
                                                           
                                                              

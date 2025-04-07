@@ -1348,7 +1348,7 @@ span.select2.customer_width, span.select2 {
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+            stateSave: <?php echo empty($_GET['view_so']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',

@@ -1851,7 +1851,7 @@
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+            stateSave: <?php echo empty($_GET['view_so']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',

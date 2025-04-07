@@ -2655,7 +2655,8 @@
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+               
+            stateSave: <?php echo empty($_GET['view_so']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',
@@ -2692,7 +2693,7 @@
                 "initComplete": function () {
 
                     var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
-  
+
                     $('#DataTable').dataTable().fnFilter(dataId);
 
                 },
@@ -2700,6 +2701,8 @@
                 "drawCallback": function() {
                   
                     $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+
+               
 
                 }
  
@@ -2710,6 +2713,15 @@
 
 
         }
+
+
+   
+
+
+
+
+
+
 
         $(document).ready(function () {
             initializeDataTable();
