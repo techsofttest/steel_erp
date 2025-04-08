@@ -295,10 +295,6 @@ class SalesReturnReport extends BaseController
 
                                 $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
 
-                               
-                                
-                        
-
 
                 $pdf_data .="</tr>";
 

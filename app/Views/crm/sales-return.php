@@ -1451,8 +1451,6 @@ span.select2.customer_width, span.select2 {
 
                                 $('#SalesReturn').modal('hide');
 
-                                
-
                                 $('.adjustment_table').html(data.adjustment_data);
 
                                 $('.hidden_sales_return').val("");

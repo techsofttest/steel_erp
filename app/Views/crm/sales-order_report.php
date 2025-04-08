@@ -30,6 +30,10 @@
     
     padding-top: 5px !important;
 }
+.Dashboard-form .form-select {
+   
+   color: #999;
+}
 
 </style>
 
