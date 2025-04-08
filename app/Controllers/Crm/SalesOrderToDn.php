@@ -311,7 +311,7 @@ class SalesOrderToDn extends BaseController
             ),
         );
       
-       $data['sales_orders'] = $this->crm_modal->SalesOrderToDeliveryNote($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive',$data4,'spd_product_details','crm_sales_orders',$joins,'so_reffer_no',$joins1,'spd_sales_order','crm_sales_product_details');  
+       $data['sales_orders'] = $this->crm_modal->SalesOrderToDeliveryNote($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'so_sales_executive',$data4,'spd_product_details','crm_sales_orders',$joins,'so_reffer_no',$joins1,'spd_sales_order','crm_sales_product_details');  
        
        if(!empty($from_date))
        {
