@@ -103,7 +103,6 @@
                                                                         <thead class="travelerinfo contact_tbody">
                                                                             <tr>
 
-                                                                                
                                                                                 <td class="center_padding" style="display: flex;align-items: center;margin-left: 10px;">From</td>
                                                                                 <td style=""><input type="date" style="margin-left: 10px;" name="form_date" id="" onclick="this.showPicker();" value="<?php echo $from_date; ?>" class="form-control adjust_width"></td>
                                                                                 <td style="width: 10% !important;display: flex;align-items: center;margin-right: 10px;">To</td>
@@ -123,7 +122,7 @@
                                                                                     <select class="form-select droup_customer  customer_clz" value="<?php echo $customer; ?>" name="customer">
                                                                                         <option value="" selected disabled>Select Customer</option>
                                                                                         				
-                                                                                        <?php foreach($customer_creation as $cus_data){?>
+                                                                                        <?php foreach($customer_creation as $cus_data){ ?>
                                                                                             <option value="<?php echo $cus_data->cc_id;?>" ><?php echo $cus_data->cc_customer_name;?></option>
                                                                                         <?php } ?>
 
@@ -137,18 +136,15 @@
                                                                                 <td style="width: 30%;" class="center_padding">Sales Executive</td>
                                                                                 <td style="width: 70%;" colspan="4">
                                                                                     <select class="form-select sales_order_ref sales_order" value="<?php echo $sales_executives; ?>" name="sales_executive">
-                                                                                        <option value="" selected disabled>Select Sales
-
-                                                                                        </option>
+                                                                                        <option value="" selected disabled>Select Sales</option>
                                                                                         <?php
-                                                                                        foreach ($sales_executive as $sales_exec) { ?>
+                                                                                        foreach ($sales_executive as $sales_exec){ ?>
                                                                                             <option value="<?php echo $sales_exec->se_id; ?>"><?php echo  $sales_exec->se_name; ?></option>
                                                                                         <?php  }
                                                                                         ?>
                                                                                     </select>
                                                                                 </td>
-                                                                                
-
+                                                                             
                                                                             </tr>
 
 

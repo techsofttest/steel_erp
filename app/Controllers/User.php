@@ -103,7 +103,7 @@ class User extends BaseController
 
         $data['employees'] = $this->common_model->FetchAllOrder('employees','employees_id','desc');
 
-        $data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
+        //$data['enquiry_id'] = $this->common_model->FetchNextId('crm_enquiry','ENQ');
         
         return view('user',$data);
 
