@@ -388,6 +388,9 @@ class SalesQuotation extends BaseController
 
         $data['quot_id'] = $quotation_details->qd_id;
 
+        $data['percentage'] = format_currency($quotation_details->qd_percentage);
+
+
 
         $data['print_pdf_btn'] = '<a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$quotation_details->qd_id.'" class="btn btn btn-success print_pdf_btn" target="_blank">Print</a>';
          
@@ -2143,8 +2146,9 @@ class SalesQuotation extends BaseController
             }
             p{
                 
-                font-size: 12px;
+               font-size: 12px;
                margin-bottom: 13px;
+              
 
             }
             .dec_width
@@ -2167,8 +2171,10 @@ class SalesQuotation extends BaseController
         
                     <td>
                 
-                    <h2>Al Fuzail Engineering Services WLL</h2>
+                    <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
                     
@@ -2377,7 +2383,7 @@ class SalesQuotation extends BaseController
         
             ';
         
-           // echo $html . $footer;
+            //echo $html . $footer; exit();
            
            $mpdf->WriteHTML($html);
            $mpdf->SetFooter($footer);

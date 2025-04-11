@@ -1730,7 +1730,9 @@ class SalesOrder extends BaseController
                     <td>
                 
                     <h2>Al Fuzail Engineering Services WLL</h2>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
                     

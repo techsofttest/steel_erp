@@ -67,6 +67,10 @@ span.select2.customer_width, span.select2 {
     vertical-align: middle;
     text-align: center;
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+   line-height: 18px;
+}
 
 </style>
 

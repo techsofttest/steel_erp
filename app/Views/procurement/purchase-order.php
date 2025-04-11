@@ -101,6 +101,10 @@
         vertical-align: middle;
         
     }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+        line-height: 18px;
+    }
 </style>
 
 

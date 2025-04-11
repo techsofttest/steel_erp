@@ -328,14 +328,13 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                                         $diff = format_currency($diff);
 
-                                                                                                        
-
                                                                                                         $pdf_data .="<td class='rotate' width='80px' align='right'>{$diff}</td>";
                                                                                                         
                                                                                         
                                                                                         $pdf_data .= "</tr>";
 
                                                                                     } 
+                                                                                    
                                                                                 }else{
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
