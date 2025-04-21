@@ -29,7 +29,7 @@
     margin-bottom: 0px;
 }
 .total_table {
-    width: 22% !important;
+    width: 24% !important;
    
 }
 span.select2.customer_width, span.select2 {
@@ -43,7 +43,7 @@ span.select2.customer_width, span.select2 {
 }
 .prod_row td{
 
-    padding:10px 10px;
+    padding:5px 10px;
 
 }
 .view_product td{
@@ -52,7 +52,8 @@ span.select2.customer_width, span.select2 {
 }
 .edit_product td{
  
-    padding:10px 10px;
+    /*padding:10px 10px;*/
+    padding:5px 10px;
 
     
 }
@@ -912,6 +913,25 @@ span.select2.customer_width, span.select2 {
                                 
                           
                             </table>
+
+
+                            <table class="total_table">
+                                <tbody>
+
+                                    <tr>
+                                       
+                                        <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="sr_total" class="view_amount_total form-control text-end" readonly></td>
+
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                            </table>
+
+
+
                         </div>
 
                                                 
@@ -1217,6 +1237,20 @@ span.select2.customer_width, span.select2 {
 
                                 <tbody class="add_more_class"></tbody>   
                                 
+                            </table>
+
+                            <table class="total_table" >
+                                <tbody>
+                                    <tr>
+                                        
+                                        
+                                        <input type="hidden" name="pf_total_amount_in_words" class="performa_amount_in_word_val">
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="sr_total" class="edit_amount_total form-control text-end" readonly></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
                             </table>
                         </div>
 
@@ -2252,9 +2286,12 @@ span.select2.customer_width, span.select2 {
 
            var discount = parseInt($discountSelect.closest('.prod_row').find('.discount_clz_id').val())||0;
            
-           var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
+          // var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
 
-           var rate = $discountSelectElement.val();
+           //var rate = $discountSelectElement.val();
+           var rateElement = $discountSelect.closest(".prod_row").find(".rate_clz_id");
+
+           var rate = parseFloat(rateElement.val().replace(/,/g, "")) || 0;
 
            var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
 
@@ -2270,11 +2307,15 @@ span.select2.customer_width, span.select2 {
           
            var orginalPrice = multipliedTotal - per_amount;
 
-           var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+           //var orginalPrice = orginalPrice.toFixed(2); //For showing 1000.00 instead of 1000 if no decimal present
+
+           // Format calculated price with commas
+           var formattedPrice = orginalPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
            var $amountElement = $discountSelect.closest('.prod_row').find('.amount_clz_id');
+           $amountElement.val(formattedPrice);
 
-           $amountElement.val(orginalPrice);
+           //$amountElement.val(orginalPrice);
 
            TotalAmount();
 
@@ -2472,6 +2513,8 @@ span.select2.customer_width, span.select2 {
                 
 
                 $('.view_product').html(data.prod_details);
+
+                $('.view_amount_total').val(data.total_amount);
                 
                 $('.view_image_table').html(data.image_table);
               
@@ -2542,7 +2585,10 @@ span.select2.customer_width, span.select2 {
 
                             $('.add_more_class').html(data.add_more);
 
+                            $('.edit_amount_total').val(data.total_amount);
+
                             $('#EditSalesReturn').modal('show');
+
 
                         }
                         
@@ -2937,6 +2983,24 @@ span.select2.customer_width, span.select2 {
 
 
     });
+
+
+
+    
+    $('body').on('click','.print_color',function(e){
+        
+        id = $(this).attr('data-id');
+        // Open the PDF generation script in a new window
+
+        var pdfWindow = window.open('<?= base_url()?>Crm/SalesReturn/Pdf/'+id, '_blank');
+
+        // Automatically print when the PDF is loaded
+        pdfWindow.onload = function() {
+            pdfWindow.print();
+        };
+
+    });
+
 
 
 

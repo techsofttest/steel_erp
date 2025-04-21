@@ -1435,7 +1435,7 @@ class ProFormaInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box :  '.$proforma_invoice->cc_post_box.', '.$customers->country_name.'</td>
+            <td>Post Box: ' . $proforma_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
             
             </tr>
         
@@ -1494,7 +1494,7 @@ class ProFormaInvoice extends BaseController
 
                         <td style="width: 19%;">Net Order Value:</td>
             
-                        <td>'.format_currency($proforma_invoice->pf_total_amount).'</td>
+                        <td align="right">'.format_currency($proforma_invoice->pf_total_amount).'</td>
                     
                        
                 
@@ -1508,7 +1508,7 @@ class ProFormaInvoice extends BaseController
 
                         <td style="font-weight: bold;">Current Claim- '.$proforma_invoice->pf_current_cliam.'%</td>
 
-                        <td>'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
+                        <td align="right">'.format_currency($proforma_invoice->pf_current_claim_value).'</td>
                         
                        
                         
@@ -1546,7 +1546,7 @@ class ProFormaInvoice extends BaseController
                 <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
                 
                 <tr>
-                    <td style="width:12%">Invoice Terms</td>
+                    <td style="width:12%" rowspan="2">Invoice Terms</td>
     
                     <td style="width:20%">LPO Ref:</td>
     
@@ -1555,33 +1555,29 @@ class ProFormaInvoice extends BaseController
                     <td style="width:10%">Payment:</td>
     
                     <td style="width:">'.$proforma_invoice->pf_payment_terms.'</td>
+
+                    
+                    
                     
                 </tr>
 
 
                 <tr>
-                    <td style="width:12%"></td>
+                    <td style="width:12%" rowspan="2">Project:</td>
     
-                    <td style="width:20%">Project:</td>
+                    <td style="">'.$proforma_invoice->pf_project.'</td>
     
-                    <td style="width:30%">'.$proforma_invoice->pf_project.'</td>
+                    <td style="width:15%">Sales Order:</td>
+
+                    <td style="">'.$proforma_invoice->so_reffer_no.'</td>
+    
+                    
     
                     
                     
                 </tr>
     
-                <tr>
-                    <td style="width:12%"></td>
-    
-                    <td style="width:20%">Sales Order:</td>
-    
-                    <td style="width:30%">'.$proforma_invoice->so_reffer_no.'</td>
-    
-                    <td style="width:10%"></td>
-    
-                    <td style="width:"></td>
-    
-                </tr>
+               
                 
                 </table>
     
@@ -1603,6 +1599,69 @@ class ProFormaInvoice extends BaseController
                     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                     <td><i>Workshop Manager</i></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
     
                   
     

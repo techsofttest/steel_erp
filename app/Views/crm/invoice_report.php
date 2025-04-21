@@ -223,7 +223,7 @@
                                                 <tr>
                                                     <th class="no-sort text-center" style="white-space: nowrap;width:40px">Sl no</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Date</th>
-                                                    <th class="text-center" style="white-space: nowrap;width:200px">Invoice Ref.</th>
+                                                    <th class="text-center" style="white-space: nowrap;width:150px">Invoice Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:300px">Customer</th>
                                                     <th class="text-center" style="white-space: nowrap;width:100px">Delivery Note Ref.</th>
                                                     <th class="text-center" style="white-space: nowrap;width:120px">Sales Order Ref.</th>
@@ -301,8 +301,8 @@
                                                             if($sale_data->reference == $reff_id){ ?>
 
                                                                 <td class="height_class <?= $border_class ?>" style="width:40px"></td>
-                                                                <td class="height_class <?= $border_class ?>" style="width:200px"></td>
-                                                                <td  class="p-0 <?= $border_class ?>" style="width:100px"></td>
+                                                                <td class="height_class <?= $border_class ?>" style="width:100px"></td>
+                                                                <td  class="p-0 <?= $border_class ?>" style="width:150px"></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:300px"></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:100px"></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:120px"></td>
@@ -310,9 +310,9 @@
                                                                 <td class="height_class <?= $border_class ?> text-end" style="width:100px"></td>
                                                                 
                                                             <?php } else{ ?>
-                                                                <td class="height_class <?= $border_class ?>" style="width:40px"><?php echo $i; ?></td>
-                                                                <td class="height_class <?= $border_class ?>  text-center" style="width:200px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
-                                                                <td  class=" <?= $border_class ?> text-center" style="width:100px;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
+                                                                <td class="height_class text-center <?= $border_class ?>" style="width:40px"><?php echo $i; ?></td>
+                                                                <td class="height_class <?= $border_class ?>  text-center" style="width:100px"><?php echo date('d-M-Y', strtotime($sale_data->date)); ?></td>
+                                                                <td  class=" <?= $border_class ?> text-center" style="width:150px;align-items: center;justify-content: center;"><a style="padding-top: 4px;" href="<?php echo base_url();?><?= $href ?>?<?php echo $view; ?>=<?php echo $sale_data->reffer_id;?>" target="_blank"><?php echo $sale_data->reference; ?></a><br></td>
                                                                 <td class="height_class <?= $border_class ?>" style="width:300px"><?php echo $sale_data->customer_name; ?></td>
                                                                 <td class="height_class <?= $border_class ?> text-center" style="width:100px"><a href="<?php echo base_url();?>Crm/DeliverNote?view_so=<?php echo $sale_data->delivery_id;?>" target="_blank"><?php echo $sale_data->delivery_reff; ?></a></td>
                                                                 <td class="height_class <?= $border_class ?> text-center" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>

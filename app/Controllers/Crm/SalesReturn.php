@@ -66,6 +66,7 @@ class SalesReturn extends BaseController
             
             $action = '<a  href="javascript:void(0)" data-id="'.$record->sr_id.'"  class="view view-color view_btn" data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="ri-eye-fill"></i></a>
             <a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->sr_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i></a>
+            <a href="javascript:void(0)" data-id="'.$record->sr_id.'" class="print_color" title="Preview"><i class="ri-file-pdf-2-line " aria-hidden="true"></i></a>
             <a href="javascript:void(0)" class="delete delete-color delete_btn"  data-toggle="tooltip" data-id="'.$record->sr_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i></a>';
            
             $data[] = array( 
@@ -527,7 +528,7 @@ class SalesReturn extends BaseController
 
         $data['credit_account'] = $cash_invoice->sr_credit_account;
 
-
+        $data['total_amount'] = $cash_invoice->sr_total;
        
 
 
@@ -902,9 +903,8 @@ class SalesReturn extends BaseController
             );
 
             $cash_invoice = $this->common_model->SingleRowJoin('crm_cash_invoice',$cond,$joins);
-            
-           
 
+            
             $products = $this->common_model->FetchAllOrder('crm_products','product_id','desc');
 
             $cond2 = array('contact_customer_creation' => $this->request->getPost('custID'));
@@ -922,18 +922,21 @@ class SalesReturn extends BaseController
 
                 $data['sales_order'] = $cash_invoice->ci_sales_order;
 
-                
 
-                //$data['contact_detail'] = ""; 
+                $data['contact_detail'] = ""; 
 
                 $data['debit_account'] = $cash_invoice->ca_name;
 
-                /*foreach($contact_details as $cont_det)
+                $contact_details = $this->common_model->FetchWhere('crm_contact_details',array('contact_id' => $cash_invoice->ci_contact_person));
+
+               //print_r($contact_details); exit();
+
+                foreach($contact_details as $cont_det)
                 {
                     $data['contact_detail'] .='<option value='.$cont_det->contact_id.'';
                     if($cont_det->contact_id == $cash_invoice->ci_contact_person){ $data['contact_detail'] .=' selected';}
                     $data['contact_detail'] .='>'.$cont_det->contact_person.'</option>';
-                }*/
+                }
 
             }
 
@@ -1346,7 +1349,9 @@ class SalesReturn extends BaseController
 
             $data['cash_invoice_id'] = $cash_invoice->sr_id;
 
-            $data['invoice_no'] = $cash_invoice->sr_invoice;
+            $data['invoice_no']      = $cash_invoice->sr_invoice;
+
+            $data['total_amount']    = $cash_invoice->sr_total;
 
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
@@ -1924,6 +1929,277 @@ class SalesReturn extends BaseController
             
     
             echo json_encode($data); 
+        }
+
+
+        public function Pdf($id)
+        {   
+            if(!empty($id))
+            {   
+                
+    
+                $joins1 = array(
+                
+                    array(
+                        'table' => 'crm_products',
+                        'pk'    => 'product_id',
+                        'fk'    => 'srp_prod_det',
+                    ),
+                   
+                    
+                );
+    
+                $product_details = $this->common_model->FetchWhereJoin('crm_sales_return_prod_det',array('srp_sales_return'=>$id),$joins1);
+                    
+                
+                $pdf_data = "";
+                 $k=1;
+                foreach($product_details as $prod_det)
+                {   
+                    $rate = format_currency($prod_det->srp_rate);
+    
+                    $amount = format_currency($prod_det->srp_amount);
+    
+                    $disc = number_format($prod_det->srp_discount, 2);
+    
+    
+                    $pdf_data .= '<tr><td align="center">'.$k.'</td>';
+    
+                    $pdf_data .= '<td align="left">'.$prod_det->product_details.'</td>';
+    
+                    $pdf_data .= '<td align="center">'.$prod_det->srp_quantity.'</td>';
+    
+                    $pdf_data .= '<td align="center">'.$prod_det->srp_unit.'</td>';
+    
+                    $pdf_data .= '<td align="right">'.$rate.'</td>';
+    
+                    $pdf_data .= '<td align="center" style="color: red";><i>'.$disc.'</i></td>';
+    
+                    $pdf_data .= '<td align="right">'.$amount.'</td></tr>';
+    
+                    $k++;
+                }
+    
+                $join =  array(
+                    
+                    array(
+                        'table' => 'crm_customer_creation',
+                        'pk'    => 'cc_id',
+                        'fk'    => 'sr_customer',
+                    ),
+    
+                    /*array(
+                        'table' => 'crm_quotation_details',
+                        'pk'    => 'qd_id',
+                        'fk'    => 'so_quotation_ref',
+                    ),*/
+    
+                    array(
+                        'table' => 'crm_contact_details',
+                        'pk'    => 'contact_id',
+                        'fk'    => 'sr_contact_person',
+                    ),
+    
+                    /*array(
+                        'table' => 'master_delivery_term',
+                        'pk'    => 'dt_id',
+                        'fk'    => 'so_delivery_term',
+                    ),*/
+    
+                   
+                );
+                
+    
+                $sales_order = $this->common_model->SingleRowJoin('crm_sales_return',array('sr_id'=>$id),$join);
+    
+                $joins1 = array(
+    
+                    array(
+                        'table' => 'master_country',
+                        'pk'    => 'country_id',
+                        'fk'    => 'cc_country',
+                    ),
+                    
+                );
+    
+                $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $sales_order->sr_customer),$joins1);
+    
+               
+                
+                $date = date('d-M-Y',strtotime($sales_order->sr_date));
+    
+               // $delivery_date = date('d-M-Y',strtotime($sales_order->so_delivery_term));
+    
+                $title = 'SR - '.$sales_order->sr_reffer_no;
+    
+                //$mpdf = new \Mpdf\Mpdf();
+    
+                
+                $mpdf = new \Mpdf\Mpdf([
+                    'margin_top' => 5,     // Reduce top margin
+                    'margin_bottom' => 5,  // Reduce bottom margin
+                    'margin_left' => 5,    // Reduce left margin
+                    'margin_right' => 5,   // Reduce right margin
+                ]);
+    
+                $mpdf->SetTitle($title); // Set the title
+    
+                $html ='
+            
+                <style>
+                tbody  td{
+                
+                   padding-top: unset;
+    
+                }
+                th, td {
+                    padding-top: 5px;
+                   
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    font-size: 12px;
+                }
+                p{
+                    
+                    font-size: 12px;
+                    margin-bottom: 13px;
+    
+                }
+                .dec_width
+                {
+                    width:30%
+                }
+                .disc_color
+                {
+                    color:red;
+                }
+                
+                </style>
+               
+               
+                <table>
+            
+                    <tr>
+                        
+                        <td style="height:100px;width:100px"><img src="'.base_url().'public/assets/images/logo-sm.png" alt=""></td>
+            
+                        <td>
+                    
+                        <h2>Al Fuzail Engineering Services WLL</h2>
+                        <span style="font-size:2pt;"><br></span>
+                        <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                        <span style="font-size:2pt;"><br></span>
+                        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                        
+                        
+                        </td>
+                    
+                    </tr>
+            
+                </table>
+            
+            
+                <table width="100%" style="margin-top:-10px;">
+                
+            
+                <tr width="100%">
+                <td width="9%"></td>
+                <td width="20%">Date : '.$date.'</td>
+                <td align="center">'.$sales_order->sr_reffer_no.'</td>
+                <td align="right"><h2>Sales Return</h2></td>
+            
+                </tr>
+            
+                </table>
+    
+            <table  width="100%" style="margin-top:2px;border-top:1px solid;line-height:8px;">
+        
+                <tr>
+                
+                    <td > </td>
+                    
+                    <td >'.$sales_order->cc_customer_name.'</td>
+                
+                </tr>
+        
+        
+            <tr>
+            
+            <td>Customer</td>
+            
+                
+            <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+    
+            
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td ></td>
+            
+           
+    
+             <td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td>
+            
+            </tr>
+        
+        
+            <tr>
+            
+            <td >Attention</td>
+            
+             <td >'.$sales_order->contact_person.' - '.$sales_order->contact_designation.', Mobile:-'.$sales_order->contact_mobile.', Email: - '.$sales_order->contact_email.'</td>
+            
+            </tr>
+        
+        
+            </table>
+    
+               
+            
+            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:1px solid;line-height: 18px;">
+                
+            
+                <tr>
+                
+                    <th align="center" style="border-bottom:1px solid;" width="8%">Item No</th>
+                
+                    <th align="center" style="border-bottom:1px solid;" width="47%">Description</th>
+                
+                    <th align="center" style="border-bottom:1px solid;">Qty</th>
+                
+                    <th align="center" style="border-bottom:1px solid;">Unit</th>
+                
+                    <th align="center" style="border-bottom:1px solid;">Rate</th>
+        
+                    <th align="center" style="border-bottom:1px solid;">Disc%</th>
+        
+                    <th align="center" style="border-bottom:1px solid;">Amount</th>
+        
+                
+                </tr>
+    
+    
+                '.$pdf_data.'
+    
+                 
+                
+            </table>';
+            
+            $footer = '';
+            
+                //echo $html . $footer; exit();
+    
+                $mpdf->WriteHTML($html);
+                $mpdf->SetFooter($footer);
+                $this->response->setHeader('Content-Type', 'application/pdf');
+                $mpdf->Output($title . '.pdf', 'I');
+            
+            }
+    
+           
         }
 
        

@@ -2013,7 +2013,7 @@ class CashInvoice extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:70px;">
+                <table width="100%" style="margin-top:90px;">
                 
             
                 <tr width="100%">
@@ -2051,7 +2051,8 @@ class CashInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box :  '.$cash_invoice->cc_post_box.' , '.$customers->country_name.'</td>
+           
+                <td>Post Box: ' . $cash_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
             
             </tr>
         
@@ -2109,7 +2110,7 @@ class CashInvoice extends BaseController
 
                         <td style="font-weight: bold;width: 20%;">Total Invoice value</td>
             
-                        <td>'.format_currency($cash_invoice->ci_total_amount).'</td>
+                        <td  align="right">'.format_currency($cash_invoice->ci_total_amount).'</td>
                     
                         
                     </tr>
@@ -2142,7 +2143,7 @@ class CashInvoice extends BaseController
         
                         <td>Amount in words</td>
                     
-                        <td style="width: 55%;">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
+                        <td style="width: 55%;" align="right">'.currency_to_words($cash_invoice->ci_total_amount).'</td>
             
                         
                     
@@ -2152,9 +2153,11 @@ class CashInvoice extends BaseController
     
     
                 <table>
+
                 
+                 
                 <tr>
-                    <td style="width:15%">Invoice Terms</td>
+                    <td rowspan="2" style="width:15%;vertical-align: middle;">Invoice Terms</td>
     
                     <td style="width:20%">Project:</td>
     
@@ -2167,12 +2170,13 @@ class CashInvoice extends BaseController
                 </tr>
     
                 <tr>
-                    <td style="width:15%"></td>
+                    <td rowspan="2" style="width:15%">Sales Order:</td>
     
-                    <td style="width:20%">Sales Order:</td>
+                    <td style="width:20%">'.$cash_invoice->so_reffer_no.'</td>
     
-                    <td style="width:30%">'.$cash_invoice->so_reffer_no.'</td>
-    
+                    <td style="width:30%"></td>
+                    
+                   
                     
     
                 </tr>
@@ -2197,6 +2201,71 @@ class CashInvoice extends BaseController
                     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                     <td><i>Workshop Manager</i></td>
+    
+                  
+    
+                </tr>
+
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
     
                   
     

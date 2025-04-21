@@ -1697,7 +1697,7 @@ class SalesOrder extends BaseController
 
             }
             th, td {
-                padding-top: 5px;
+                padding-top: 10px !important;
                
                 padding-left: 5px;
                 padding-right: 5px;
@@ -1773,6 +1773,8 @@ class SalesOrder extends BaseController
         
             
         <td >Tel : '.$sales_order->cc_telephone.', Fax : '.$sales_order->cc_fax.', Email : '.$sales_order->cc_email.'</td>
+
+        
         
         </tr>
     
@@ -1781,7 +1783,9 @@ class SalesOrder extends BaseController
         
         <td ></td>
         
-        <td >Post Box :  '.$sales_order->cc_post_box.' ,  '.$customers->country_name.'</td>
+       
+
+         <td>Post Box: ' . $sales_order->cc_post_box . ', ' . $sales_order->cc_city . ', ' . $customers->cc_country . '</td>
         
         </tr>
     
@@ -1877,7 +1881,7 @@ class SalesOrder extends BaseController
             <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
-                <td style="width:12%">Order Terms</td>
+                <td style="width:12%" rowspan="2">Order Terms</td>
 
                 <td style="width:15%">LPO Reference</td>
 
@@ -1890,12 +1894,11 @@ class SalesOrder extends BaseController
             </tr>
 
             <tr>
-                <td style="width:12%"></td>
-
-                <td style="width:15%">Quote Reference</td>
+                <td style="width:15%" rowspan="2">Quote Reference</td>
 
                 <td style="width:29%">'.$sales_order->qd_reffer_no.'</td>
 
+                
                 
 
             </tr>

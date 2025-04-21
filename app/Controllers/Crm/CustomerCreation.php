@@ -418,11 +418,7 @@ class CustomerCreation extends BaseController
             'pk'    => 'ah_id',
             'fk'    => 'cc_account_head',
             ),
-            array(
-                'table' => 'master_country',
-                'pk'    => 'country_id',
-                'fk'    => 'cc_country',
-                ),
+            
 
         );
 
@@ -458,7 +454,9 @@ class CustomerCreation extends BaseController
        
         $data['signatory_name']     = $cus_creation->cc_signatory_name;
 
-        $data['country']            = $cus_creation->country_name;
+        $data['country']            = $cus_creation->cc_country;
+
+        $data['city']               = $cus_creation->cc_city;
 
        
 
@@ -629,6 +627,12 @@ class CustomerCreation extends BaseController
         $data['cust_id']          = $customer_creation->cc_id;
 
         $data['signatory_name']   = $customer_creation->cc_signatory_name;
+
+        $data['country']          = $customer_creation->cc_country;
+
+        $data['city']          = $customer_creation->cc_city;
+
+
         
         if(!empty($customer_creation->cc_qid_number))
         {
@@ -729,18 +733,7 @@ class CustomerCreation extends BaseController
             
         }
         
-        $data['country'] = '';
-
-        foreach($countries as $country){
-
-              // Check if the current product head is selected
-           
-                $selected = ($country->country_id == $customer_creation->cc_country) ? ' selected' : '';
-                $data['country'] .= '<option value="' . $country->country_id . '"' . $selected . '>' . $country->country_name . '</option>';
-            
-        }
-
-
+        
         /*contact table start*/
 
         $i=1;

@@ -283,6 +283,7 @@ class CommonModel extends Model
         return $result;
 
     }
+    
     //Fetch where limit
     public function FetchWhereLimit($id,$coloum_id,$order_key,$order,$table,$end,$start)
     {
@@ -1518,7 +1519,7 @@ class CommonModel extends Model
 
         //echo $this->db->getLastQuery(); exit();
 
-    return $query->getResult();
+        return $query->getResult();
 
     }
 

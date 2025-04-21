@@ -2323,7 +2323,7 @@ span.select2.customer_width, span.select2 {
 
         $('body .prod_row').each(function() {
 
-            $(this).find('.si_no').html('<td class="si_no text-center" style="border: unset;padding:10px 10px;">' + pp + '</td>');
+            $(this).find('.si_no').html('<td class="si_no text-center" style="border: unset;padding:10px 17px;">' + pp + '</td>');
 
             pp++;
         });
