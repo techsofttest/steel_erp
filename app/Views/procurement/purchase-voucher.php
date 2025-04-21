@@ -138,13 +138,14 @@
 
     }
     .select_data_style{
-        height: 100% !important;
+        /*height: 100% !important;*/
         overflow: visible;
+        height:unset !important;
     }
-    .span.select2.customer_width, span.select2{
+    /*.span.select2.customer_width, span.select2{
 
         height: unset !important;
-    }
+    }*/
     .select2-container--default .select2-selection--single .select2-selection__rendered {
    
    line-height: 18px;
@@ -1933,7 +1934,7 @@
 
 
         /*sales order droup drown search*/
-        function InitProductSelectAdd(){
+        /*function InitProductSelectAdd(){
             $(".add_products:last").select2({
                 placeholder: "Select Product",
                 theme : "default form-control- droup_color select_data_style",
@@ -1964,7 +1965,52 @@
                     },              
                 }
             })
+        }*/
+
+        /***/
+        function InitProductSelectAdd() {
+    var $select = $(".add_products:last");
+
+    $select.select2({
+        placeholder: "Select Product",
+        theme: "default form-control- droup_color select_data_style",
+        dropdownParent: $select.closest('.add_prod_row'),
+        ajax: {
+            url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProducts",
+            dataType: 'json',
+            delay: 250,
+            cache: false,
+            minimumInputLength: 1,
+            allowClear: true,
+            data: function (params) {
+                return {
+                    term: params.term,
+                    page: params.page || 1,
+                };
+            },
+            processResults: function (data, params) {
+                var page = params.page || 1;
+                return {
+                    results: $.map(data.result, function (item) {
+                        return { id: item.product_details, text: item.product_details }
+                    }),
+                    pagination: {
+                        more: (page * 10) <= data.total_count
+                    }
+                };
+            }
         }
+    }).on('select2:open', function () {
+        // Optional: style dropdown when it opens
+        $('.select2-dropdown').attr('style', 'font-size: 14px; max-height: 200px;');
+    });
+
+    // Add inline style to the visible select2 container
+    $select.next('.select2-container').attr('style', 'width: 100% !important; font-size: 14px;height: unset !important;');
+}
+
+
+        /***/
 
         InitProductSelectAdd();
         /*###*/
