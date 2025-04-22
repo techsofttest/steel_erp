@@ -1517,7 +1517,7 @@ class CommonModel extends Model
 
         ->get();
 
-        //echo $this->db->getLastQuery(); exit();
+        echo $this->db->getLastQuery(); exit();
 
         return $query->getResult();
 
