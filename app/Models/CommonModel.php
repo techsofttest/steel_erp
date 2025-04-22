@@ -1492,8 +1492,8 @@ class CommonModel extends Model
        
         $query = $this->db->table($table)
 
-        //->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
-        ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference, crm_sales_orders.so_amount_total')
+        ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+        //->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference, crm_sales_orders.so_amount_total')
 
 
         ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
@@ -1522,7 +1522,7 @@ class CommonModel extends Model
 
         ->get();
 
-        echo $this->db->getLastQuery(); exit();
+        //echo $this->db->getLastQuery(); exit();
 
         return $query->getResult();
 
