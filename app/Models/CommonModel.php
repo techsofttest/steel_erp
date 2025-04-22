@@ -1508,7 +1508,10 @@ class CommonModel extends Model
             
                 ->where('ci_paid_status', 1)
 
-                ->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+                //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+
+                ->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total', null, false)
+
 
             ->groupEnd() // End nested group
 
