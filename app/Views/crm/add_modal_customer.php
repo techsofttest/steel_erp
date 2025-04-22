@@ -279,9 +279,7 @@
                                             <div class="col-col-md-9 col-lg-9">
                                                 <select class="form-select  input_length" name="cc_country"  required>
                                                     <option value="" selected disabled>Select Country</option>
-                                                    <?php //foreach($countryies as $country){?>
-                                                        <option value="<?php //echo $country->country_id;?>"><?php //echo $country->country_name;?></option>
-                                                    <?php// } ?>
+                                                   
                                                     
                                                 </select>
                                             </div>

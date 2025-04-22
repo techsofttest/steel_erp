@@ -318,7 +318,7 @@
                                                                 <td class="height_class <?= $border_class ?> text-center" style="width:120px"><a href="<?php echo base_url();?>Crm/SalesOrder?view_so=<?php echo $sale_data->so_id;?>" target="_blank"><?php echo $sale_data->sales_order; ?></a></td>
                                                                 <td class="height_class <?= $border_class ?> text-center" style="width:100px"><?php echo $sale_data->sales_lpo; ?></td>
                                                                 <td class="height_class <?= $border_class ?> text-end" style="width:100px"><?php echo format_currency($sale_data->amount); ?></td>
-                                                                
+                                                                <?php $sales_total =  $sale_data->amount + $sales_total;  ?>
                                                                 
                                                             <?php } ?>
                                                             
@@ -351,7 +351,9 @@
 
                                                            
 
-                                                            $sales_total =  $sale_data->amount + $sales_total; 
+                                                           
+
+                                                            //echo  $sales_total = $sale_data->amount + $sales_total;
 
                                                             if ($reff_id != $sale_data->reference) {
                                                                 $reff_id = $sale_data->reference;
