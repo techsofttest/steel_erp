@@ -1529,16 +1529,35 @@ class CommonModel extends Model
     }*/
 
     public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = []) {
+        // Start building the query
         $query = $this->db->table($table)
-        ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
-        ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
-        ->where('ci_sales_order', '3') // Replace with actual sales order
-        ->get();
+            ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
+            ->where($cond)
+            ->where($cond2)
+            ->groupStart() // Start grouping conditions
+                ->where('ci_paid_status', 0) // Condition for ci_paid_status = 0
+                ->orGroupStart() // Nested group for ci_paid_status = 1
+                    ->where('ci_paid_status', 1)
+                    //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+                    ->where('(ci_total_amount - ci_paid_amount) > steel_crm_sales_orders.so_amount_total', null, false)
+                ->groupEnd() // End nested group
+            ->groupEnd(); // End outer group
     
-        echo $this->db->getLastQuery(); exit(); // Show the query for debugging
+        // Apply sales order filter (if provided)
+        if (!empty($salesOrderIds)) {
+            $query->whereIn($table . '.ci_sales_order', $salesOrderIds);
+        }
+    
+        // Run the query
+        $queryResult = $query->get();
+    
+        // Debugging: Print out the query for troubleshooting
+        echo $this->db->getLastQuery(); exit();  // Display the full query for troubleshooting
     
         return $queryResult->getResult();
     }
+    
     
     
 
