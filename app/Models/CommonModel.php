@@ -1529,19 +1529,26 @@ class CommonModel extends Model
     }*/
 
     public function FetchSalesReturns1($table, $cond, $cond2)
-    {
-        $query = $this->db->table("$table ci")
-            ->select('ci.ci_id, ci.ci_reffer_no, ci.ci_customer, ci.ci_paid_status, ci.ci_status, (ci.ci_total_amount - ci.ci_paid_amount) AS price_difference')
-            ->join('crm_sales_orders so', 'so.so_id = ci.ci_sales_order')
-            ->where($cond)
-            ->where($cond2)
-            ->where('(ci.ci_total_amount - ci.ci_paid_amount) > 0', null, false)
-            ->get();
-    
-        echo $this->db->getLastQuery(); exit();
-    
-        return $query->getResult();
-    }
+{
+    $query = $this->db->table("$table ci")
+        ->select('ci.ci_id, ci.ci_reffer_no, ci.ci_customer, ci.ci_paid_status, ci.ci_status, (ci.ci_total_amount - ci.ci_paid_amount) AS price_difference')
+        ->join('crm_sales_orders so', 'so.so_id = ci.ci_sales_order')
+        ->where($cond)
+        ->where($cond2)
+        ->groupStart()
+            ->where('ci.ci_paid_status', 0)
+            ->orGroupStart()
+                ->where('ci.ci_paid_status', 1)
+                ->where('(ci.ci_total_amount - ci.ci_paid_amount) > so.so_amount_total', null, false)
+            ->groupEnd()
+        ->groupEnd()
+        ->get();
+
+    echo $this->db->getLastQuery(); exit();
+
+    return $query->getResult();
+}
+
     
 
 
