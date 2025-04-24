@@ -287,7 +287,7 @@ class ReportModel extends Model
 
 
 
-
+    /*
     public function FetchGLTransactions($date_from, $date_to, $account_head, $account_type, $account, $time_frame,$range_from,$range_to)
 {
     $receipt_table = "{$this->db->getPrefix()}accounts_receipts";
@@ -1249,9 +1249,9 @@ $query .="{$this->db->getPrefix()}accounts_account_heads.ah_head_id <= {$range_t
 
 $query .= ")";
 
-*/
+END SUB COMMENT */
 
-
+/*
 $query .= "UNION ALL 
 (SELECT 
     ji_id AS id,
@@ -2258,6 +2258,7 @@ $query .= " ORDER BY transaction_date ASC,id ASC";
 
 
 
+
 public function FetchGlBalance($date_from, $date_to, $account_head="", $account_type="", $account, $time_frame="",$range_from="",$range_to="")
 {
 
@@ -2296,6 +2297,219 @@ $query->select('*');
 return $query->get()->getResult();
 
 
+}
+*/
+
+
+
+public function FetchGLTransactions(
+    $date_from = null,
+    $date_to = null,
+    $account_head = null,
+    $account_type = null,
+    $account = null,
+    $time_frame = null,
+    $range_from = null,
+    $range_to = null
+) {
+    // Define table prefixes
+    $prefix = $this->db->getPrefix();
+
+    // Initialize an array to hold all queries
+    $queries = [];
+
+    // Add individual queries for each transaction type
+    $queries[] = $this->buildPaymentQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+    $queries[] = $this->buildReceiptQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+    $queries[] = $this->buildPettyCashQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+    $queries[] = $this->buildCashInvoiceQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+    $queries[] = $this->buildCreditInvoiceQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+    $queries[] = $this->buildJournalQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    // Combine all queries with UNION ALL
+    $final_query = implode(" UNION ALL ", $queries) . " ORDER BY transaction_date ASC, id ASC";
+
+    // Execute the query and return the result
+    return $this->db->query($final_query)->getResult();
+}
+
+private function buildPaymentQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            payments.pay_id AS id,
+            payments.pay_ref_no AS reference,
+            payments.pay_date AS transaction_date,
+            payments.pay_method AS method,
+            payment_debit.pd_payment_amount AS credit_amount,
+            NULL AS debit_amount,
+            'Payment' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}accounts_payments AS payments
+        LEFT JOIN {$prefix}accounts_payment_debit AS payment_debit ON payment_debit.pd_payment = payments.pay_id
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = payment_debit.pd_debit_account
+    ";
+
+    $query .= $this->buildWhereClause("payments.pay_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+private function buildReceiptQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            receipts.r_id AS id,
+            receipts.r_ref_no AS reference,
+            receipts.r_date AS transaction_date,
+            receipts.r_method AS method,
+            receipt_invoices.ri_amount AS credit_amount,
+            NULL AS debit_amount,
+            'Receipt' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}accounts_receipts AS receipts
+        LEFT JOIN {$prefix}accounts_receipt_invoices AS receipt_invoices ON receipt_invoices.ri_receipt = receipts.r_id
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = receipt_invoices.ri_credit_account
+    ";
+
+    $query .= $this->buildWhereClause("receipts.r_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+private function buildPettyCashQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            pcv.pcv_id AS id,
+            pcv.pcv_voucher_no AS reference,
+            pcv.pcv_date AS transaction_date,
+            pcv.pcv_pay_method AS method,
+            NULL AS credit_amount,
+            pcv_debits.pci_amount AS debit_amount,
+            'Petty Cash Voucher' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}accounts_petty_cash_voucher AS pcv
+        LEFT JOIN {$prefix}accounts_petty_cash_debits AS pcv_debits ON pcv_debits.pci_voucher_id = pcv.pcv_id
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = pcv_debits.pci_debit_account
+    ";
+
+    $query .= $this->buildWhereClause("pcv.pcv_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+private function buildCashInvoiceQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            ci.ci_id AS id,
+            ci.ci_reffer_no AS reference,
+            ci.ci_date AS transaction_date,
+            NULL AS method,
+            NULL AS credit_amount,
+            ci.ci_total_amount AS debit_amount,
+            'Cash Invoice' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}crm_cash_invoice AS ci
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = ci.ci_credit_account
+    ";
+
+    $query .= $this->buildWhereClause("ci.ci_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+private function buildCreditInvoiceQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            cci.cci_id AS id,
+            cci.cci_reffer_no AS reference,
+            cci.cci_date AS transaction_date,
+            NULL AS method,
+            NULL AS credit_amount,
+            cci.cci_total_amount AS debit_amount,
+            'Credit Invoice' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}crm_credit_invoice AS cci
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = cci.cci_credit_account
+    ";
+
+    $query .= $this->buildWhereClause("cci.cci_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+private function buildJournalQuery($prefix, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $query = "
+        SELECT
+            ji.ji_id AS id,
+            jv.jv_voucher_no AS reference,
+            jv.jv_date AS transaction_date,
+            NULL AS method,
+            ji.ji_credit AS credit_amount,
+            ji.ji_debit AS debit_amount,
+            'Journal Voucher' AS voucher_type,
+            accounts.ca_id AS account_id,
+            accounts.ca_name AS account_name
+        FROM {$prefix}accounts_journal_invoices AS ji
+        LEFT JOIN {$prefix}accounts_journal_vouchers AS jv ON jv.jv_id = ji.ji_voucher_id
+        LEFT JOIN {$prefix}accounts_charts_of_accounts AS accounts ON accounts.ca_id = ji.ji_account
+    ";
+
+    $query .= $this->buildWhereClause("jv.jv_date", $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to);
+
+    return $query;
+}
+
+
+private function buildWhereClause($date_column, $date_from, $date_to, $account_head, $account_type, $account, $time_frame, $range_from, $range_to)
+{
+    $conditions = [];
+
+    // Time frame conditions
+    if ($time_frame === "Range") {
+        if (!empty($date_from)) {
+            $conditions[] = "$date_column >= '$date_from'";
+        }
+        if (!empty($date_to)) {
+            $conditions[] = "$date_column <= '$date_to'";
+        }
+    } elseif ($time_frame === "Month") {
+        $conditions[] = "YEAR($date_column) = YEAR(CURRENT_DATE())";
+        $conditions[] = "MONTH($date_column) = MONTH(CURRENT_DATE())";
+    } elseif ($time_frame === "Year") {
+        $conditions[] = "YEAR($date_column) = YEAR(CURRENT_DATE())";
+    }
+
+    // Account-related conditions
+    if (!empty($account_head)) {
+        $conditions[] = "accounts_account_heads.ah_id = $account_head";
+    }
+    if (!empty($account_type)) {
+        $conditions[] = "accounts_account_types.at_id = $account_type";
+    }
+    if (!empty($account)) {
+        $conditions[] = "accounts.ca_id = $account";
+    }
+
+    // Range conditions
+    if (!empty($range_from)) {
+        $conditions[] = "accounts_account_heads.ah_head_id >= $range_from";
+    }
+    if (!empty($range_to)) {
+        $conditions[] = "accounts_account_heads.ah_head_id <= $range_to";
+    }
+
+    // Combine conditions into a WHERE clause
+    return !empty($conditions) ? " WHERE " . implode(" AND ", $conditions) : "";
 }
 
 

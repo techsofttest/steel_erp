@@ -98,8 +98,13 @@
 
         function add_comma(value)
         {
-            let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
-            return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        if (typeof value !== "string") {
+        value = value.toString(); // Convert to string if it's not already
+        }
+
+        let num = parseFloat(value.replace(/,/g, "")); // Remove existing commas before parsing
+        return isNaN(num) ? "" : num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         
         }
 
@@ -149,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
        document.addEventListener('contextmenu', event => event.preventDefault());
         //$('.add_model_btn').click(function(){
 
-        function currency_format(orginalPrice){
+       function currency_format(orginalPrice){
 
            var myObject = new Object();
 
@@ -172,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                    // $('#sqid').val(data);
 
-                   console.log(data);
+                   //console.log(data);
 
                    var myObject = data
 

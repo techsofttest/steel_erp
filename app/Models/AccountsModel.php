@@ -313,15 +313,15 @@ class AccountsModel extends Model
 
             ->where('accounts_charts_of_accounts.ca_id', $cid)
 
-            ->where('so_deliver_flag',0)
+            ->where('so_deliver_flag !=',2)
 
-            ->groupStart()
+            //->groupStart()
 
-            ->where('crm_sales_orders.so_id NOT IN (SELECT ci_sales_order FROM ' . $this->db->getPrefix() . 'crm_cash_invoice)')
+            //->where('crm_sales_orders.so_id NOT IN (SELECT ci_sales_order FROM ' . $this->db->getPrefix() . 'crm_cash_invoice)')
 
-            ->where('crm_sales_orders.so_id NOT IN (SELECT cci_sales_order FROM ' . $this->db->getPrefix() . 'crm_credit_invoice)')
+            //->where('crm_sales_orders.so_id NOT IN (SELECT cci_sales_order FROM ' . $this->db->getPrefix() . 'crm_credit_invoice)')
 
-            ->groupEnd()
+            //->groupEnd()
 
             ->get();
 
@@ -376,6 +376,14 @@ class AccountsModel extends Model
     $result = $query->get()->getRow()->rso_receipt_amount;
 
     return $result;
+
+    }
+
+
+    public function SalesOrderPendingAmount()
+    {
+
+        
 
     }
 

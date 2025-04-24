@@ -8,6 +8,14 @@
     .cheque_sec_view {
         display: none;
     }
+
+
+    .select2-center .select2-container--default .select2-selection--single .select2-selection__rendered 
+    {
+    display: flex;
+    align-items: center;
+    }
+
 </style>
 
 
@@ -433,7 +441,7 @@
                                                         </div>
 
 
-                                                        <div class="col-col-md-9 col-lg-9 select2_parent text-center">
+                                                        <div class="col-col-md-9 col-lg-9 select2_parent select2-center">
 
 
                                                             <select class="form-control add_credit_account_select2" name="p_credit_account" required>
@@ -460,7 +468,7 @@
 
                                                         <div class="col-col-md-9 col-lg-9">
 
-                                                            <input style="padding: 10px 20% !important;" type="file" name="p_cheque_copy" class="form-control">
+                                                            <input type="file" name="p_cheque_copy" class="form-control">
 
                                                         </div>
 
@@ -603,7 +611,7 @@
                                                             <tr class="invoice_row">
 
 
-                                                                <td width="3%" class="px-0">
+                                                                <td width="3%" class="p-0">
 
                                                                     <input class="credit_sl_no form-control" type="number" name="credit_sl_no[]" value="1" readonly>
 
@@ -614,7 +622,7 @@
                                                                 
 
 
-                                                                <td width="15%" class="px-0 so_select2_parent_add">
+                                                                <td width="15%" class="p-0 so_select2_parent_add select2-center">
 
                                                                     <select class="form-control sales_order so_select2_add" name="p_sales_order[]">
 
@@ -624,7 +632,7 @@
 
 
 
-                                                                <td width="35%" class="px-0">
+                                                                <td width="45%" class="p-0 select2-center">
 
                                                                     <select class="form-control debit_account debit_account_select2" name="p_debit_account[]">
 
@@ -633,45 +641,36 @@
                                                                 </td>
 
 
-                                                                <td width="10%" class="px-0">
+                                                                <td width="10%" class="p-0">
 
-                                                                    <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
+                                                                    <input class="form-control credit_amount number_format" data-max="" type="text" name="inv_amount[]">
 
                                                                 </td>
 
 
-                                                                <td class="px-0 text-center" width="4%">
+                                                                <td class="p-0 text-center" width="4%">
                                                                     <a class="btn btn-primary add_invoices" href="javascript:void(0);">Click</a>
                                                                 </td>
 
 
 
-                                                                <td width="20%" class="px-0">
+                                                                <td width="20%" class="p-0">
 
                                                                     <input class="form-control credit_narration" type="text" name="narration[]" />
 
                                                                 </td>
 
 
-                                                                <td> <a href="javascript:void(0);" class="del_elem" style="display:none;"><i class='ri-close-line'></i></a></td>
+                                                                <td> 
+                                                                
+                                                                <a href="javascript:void(0);" class="del_elem remainpass" style="display:none;"><i class='ri-close-line'></i></a>
 
-
-                                                            </tr>
-
-
-                                                            <tr>
-
-                                                                <td colspan="7">
-
-                                                                    <div class="col-lg-12 text-center">
-
-                                                                        <a class="add_more" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i>Add More</span></a>
-
-                                                                    </div>
-
-                                                                </td>
+                                                                <a class="add_more add_icon add_button_cls" href="javascript:void(0);"><span class=""><i class="ri-add-circle-line"></i></span></a>
+                                                            
+                                                            </td>
 
                                                             </tr>
+
 
 
                                                         </tbody>
@@ -798,7 +797,7 @@
                                             <div class="row align-items-end">
 
 
-                                                <div class="col-col-md-12 col-lg-12 add_more_container">
+                                                <div class="col-col-md-12 col-lg-12 add_more_container p-0">
 
                                                     <table class="table table-bordered" style="overflow-y:scroll;">
 
@@ -808,7 +807,7 @@
                                                                 <th>Purchase Order</th>
                                                                 <th>LPO Ref</th>
                                                                 <th>Amount</th>
-                                                                <th>Payment</th>
+                                                                <th colspan="2">Payment</th>
                                                             </tr>
                                                         </thead>
 
@@ -996,6 +995,7 @@
                                                     <div class="col-col-md-3 col-lg-3">
 
                                                         <label for="basiInput" class="form-label">Date</label>
+                                                        
                                                     </div>
 
                                                     <div class="col-col-md-9 col-lg-9">
@@ -1389,7 +1389,7 @@
         /*account head add section*/
 
         $(function() {
-            $('#add_form').validate({
+            $('#add_form').validate({   
                 rules: {
                     required: 'required',
                 },
@@ -1722,7 +1722,7 @@
 
             // console.log(c_account.val());
 
-            var c_amount = parent.find('.credit_amount');
+            var c_amount = parent.find('.debit_account');
 
             if (c_account.val() == "") {
 
@@ -1780,7 +1780,7 @@
 
             var credit_date = parent.find('.credit_date').val();
 
-            var credit_amount = parent.find('.credit_amount').val();
+            var credit_amount = rmv_comma(parent.find('.credit_amount').val());
 
             var credit_narration = parent.find('.credit_narration').val();
 
@@ -1830,7 +1830,7 @@
 
                     $('#InvoicesModal').modal('show');
 
-                    $('.invoice_total').html(credit_amount);
+                    $('.invoice_total').html(add_comma(credit_amount));
 
                     $('.invoice_adjusted').html('0');
 
@@ -1978,7 +1978,13 @@
 
                 $clone.find(".sl_no").html(cc);
 
-                $clone.find(".del_elem").show();
+                $('body .del_elem').show();
+
+                $clone.find(".del_elem").hide();
+
+                $('body .add_more').hide();
+
+                $clone.find(".add_more").show();
 
                 //$clone.find('.credit_sl_no').val('2');
 
@@ -1989,7 +1995,6 @@
                 InitAccountsSelect2('.debit_account_select2', '.invoice_row');
 
                 SOSelect2();
-
 
             }
 
@@ -2028,7 +2033,7 @@
 
 
 
-        /*account head update*/
+        /*//saynoaccount head update*/
         $(document).ready(function() {
             $('#edit_form').submit(function(e) {
 
@@ -2353,7 +2358,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total += rmv_comma(parent.find('.invoice_receipt_amount').val());
 
             })
 
@@ -2361,7 +2366,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.po_advance_amount').val()) || 0;
+                invoice_total += rmv_comma(parent.find('.po_advance_amount').val());
 
             })
 
@@ -2549,6 +2554,18 @@
         });
 
 
+        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.so_receipt_amount,.po_advance_amount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = add_comma(rawValue);
+                $this.val(formattedValue);
+            }
+        });
+
+
+
 
 
 
@@ -2559,23 +2576,19 @@
             // alert();
 
             balance = 0;
-
            
 
             $('body .invoice_receipt_amount').each(function() {
-
-                LinkAdjusted += parseFloat($(this).val()) || 0;
-
+            LinkAdjusted += rmv_comma($(this).val());
             });
 
-            LinkTotal = parseFloat($('.credit_amount').val()) || 0;
+            LinkTotal = rmv_comma($('.credit_amount').val());
 
+            $('body .po_advance_amount').each(function() {
 
-             $('body .po_advance_amount').each(function() {
+            LinkAdjusted += rmv_comma($(this).val());
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
-
-             });
+            });
 
             //alert('link total : '+LinkTotal+' | Link Adjusted : '+LinkAdjusted)
 
@@ -2583,9 +2596,7 @@
 
             balance = Math.max(0, balance);
 
-            $('.invoice_balance').html(balance);
-
-
+            $('.invoice_balance').html(add_comma(balance));
 
             if (LinkAdjusted > LinkTotal) {
 
@@ -2596,7 +2607,7 @@
             //  alert(balance + '|' + LinkAdjusted);
 
 
-            $('.invoice_adjusted').html(LinkAdjusted);
+            $('.invoice_adjusted').html(add_comma(LinkAdjusted));
 
 
           //  alert(balance);
@@ -2751,7 +2762,6 @@
 
             }
             */
-
 
             TotalAmount();
 
@@ -3045,7 +3055,7 @@
 
         $('body').on('click', '#add_poadvance_btn', function() {
 
-            var vendor_id = $(this).sdata('vendor');
+            var vendor_id = $(this).data('vendor');
 
             var debit_id = $(this).data('debitid');
 
@@ -3166,15 +3176,15 @@
         var total = 0;
 
         $('body .credit_amount').each(function() {
-            var sub_tot = parseFloat($(this).val());
+            var sub_tot = rmv_comma($(this).val());
 
-            total += parseFloat(sub_tot.toFixed(2)) || 0;
+            total += sub_tot;
             //total = Number(total).toFixed(2)
         });
 
         total = total.toFixed(2);
 
-        $('#total_amount').html(total);
+        $('#total_amount').html(add_comma(total));
 
         $('#total_amount_val').val(total);
 

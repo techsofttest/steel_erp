@@ -65,7 +65,7 @@
 
                         </div>
 
-                        <div class="col-col-md-9 col-lg-9 select2_parent text-center">
+                        <div class="col-col-md-9 col-lg-9 select2_parent text-center select2-center">
 
                         <select id="add_account_select" class="form-control" name="br_account" required>
 
@@ -97,9 +97,9 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                      <input id="add_date_input" class="form-control datepicker"  readonly>
+                        <input id="add_date_input" class="form-control datepicker"  readonly>
 
-                        </div>
+                    </div>
 
 
 
@@ -173,7 +173,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input type="text" id="add_br_date" name="add_br_date" value="<?= date('d-F-Y') ?>" class="form-control datepicker" required readonly>
+                        <input type="text" id="add_br_date" name="add_br_date" value="<?= date('d-M-Y') ?>" class="form-control datepicker" required readonly>
 
                         </div>
 
@@ -225,7 +225,7 @@
 
                         <div class="col-col-md-9 col-lg-9">
 
-                        <input autocomplete="off" type="number" step="0.01" id="add_bank_balance"  name="bank_balance" class="form-control" required>
+                        <input autocomplete="off" type="text" id="add_bank_balance"  name="bank_balance" class="form-control number_format" required>
 
                         </div>
 
@@ -248,6 +248,8 @@
                     <div class="col-col-md-3 col-lg-3">
 
                         <label for="basiInput" class="form-label">Total Debit</label>
+
+                        <!-- Total debit column -->
 
                     </div>
                         
@@ -692,7 +694,7 @@
 
                        <div class="col-col-md-9 col-lg-9">
 
-                       <input type="text" id="edit_br_date" name="br_date" value="<?= date('d-F-Y') ?>" class="form-control datepicker" required readonly>
+                       <input type="text" id="edit_br_date" name="br_date" value="<?= date('d-M-Y') ?>" class="form-control datepicker" required readonly>
 
                        </div>
 
@@ -978,21 +980,21 @@
             totalCredit += credit;
         });
 
-        var gl_balance = $('#add_gl_balance').val();
+        var gl_balance = rmv_comma($('#add_gl_balance').val());
 
-        var bank_balance = $('#add_bank_balance').val();
+        var bank_balance = rmv_comma($('#add_bank_balance').val());
 
         //console.log('Gl Balance '+gl_balance+'');
 
         //console.log('Bank Balance '+bank_balance+'');
 
-        var total_rec = totalDebit+totalCredit;
+        //var total_rec = totalDebit+totalCredit;
 
-        var gl_balance_calc = gl_balance-total_rec;
+        var gl_balance_calc = gl_balance-totalDebit+totalCredit;
 
         var rec_diff = bank_balance - gl_balance_calc;
 
-        $('#rec_diff').val(rec_diff);
+        $('#rec_diff').val(add_comma(rec_diff));
         
         $('#rec_diff').css('background:red');
 
@@ -1006,6 +1008,20 @@
     $(document).on('change input', '.status_tick,#add_bank_balance', function (e) {
         calculateTotals();
         });
+    });
+
+
+    // Attach the event listener to dynamically added checkboxes using event delegation
+    $(document).on('blur', '#add_bank_balance', function (e) {
+
+        var $this = $(this);
+        var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+        if (rawValue !== "") {
+            var formattedValue = add_comma(rawValue);
+            $this.val(formattedValue);
+        }
+
     });
 
 
@@ -1092,11 +1108,11 @@
 
                     $('#add_account_name').val(data.account_name);
 
-                    $('#add_gl_balance').val(data.gl_balance);
+                    $('#add_gl_balance').val(add_comma(data.gl_balance));
 
-                    $('#add_total_debit').val(data.total_debit);
+                    $('#add_total_debit').val(add_comma(data.total_debit));
 
-                    $('#add_total_credit').val(data.total_credit);
+                    $('#add_total_credit').val(add_comma(data.total_credit));
 
                     $('#transactions_rows').html(data.transactions);
 
@@ -1290,17 +1306,17 @@
 
                         $('#view_account_name').html(data.br.ca_name);
 
-                        $('#view_total_debit').html(data.br.br_total_debit);
+                        $('#view_total_debit').html(add_comma(data.br.br_total_debit));
 
-                        $('#view_total_credit').html(data.br.br_total_credit);
+                        $('#view_total_credit').html(add_comma(data.br.br_total_credit));
 
                         $('#view_date').html(data.br.br_date);
 
-                        $('#view_unrec_diff').html(data.br.br_unrec_diff);
+                        $('#view_unrec_diff').html(add_comma(data.br.br_unrec_diff));
                         
-                        $('#view_gl_balance').html(data.br.br_gl_balance);
+                        $('#view_gl_balance').html(add_comma(data.br.br_gl_balance));
 
-                        $('#view_bank_balance').html(data.br.br_bank_balance);
+                        $('#view_bank_balance').html(add_comma(data.br.br_bank_balance));
 
                         $('#view_transactions_rows').html(data.rows);
 

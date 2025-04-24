@@ -1077,6 +1077,21 @@ height:100% !important;
         align-items: center;
     }
 
+    .form-control[type=file]:not(:disabled):not([readonly])
+    {
+    line-height: 2;
+    }
+
+    .total_table tr
+    {
+    border-top:unset !important;
+    border:1px solid;
+    }
+
+    .total_table td
+    {
+    height:40px;
+    }
 
 
 
