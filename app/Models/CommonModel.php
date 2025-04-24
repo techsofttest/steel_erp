@@ -1529,6 +1529,11 @@ class CommonModel extends Model
     }*/
 
     public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = [3]) {
+        // Start building the query
+        $query = $this->db->table($table)
+            ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order');
+    
         // Check if the $salesOrderIds is an array and not empty
         if (!empty($salesOrderIds)) {
             // If there's only one sales order ID, use where, else use whereIn
@@ -1538,11 +1543,6 @@ class CommonModel extends Model
                 $query->whereIn($table . '.ci_sales_order', $salesOrderIds); // Multiple sales order IDs
             }
         }
-    
-        // Start building the query
-        $query = $this->db->table($table)
-            ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
-            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order');
     
         // Apply additional conditions
         $query->where($cond)
@@ -1564,6 +1564,7 @@ class CommonModel extends Model
     
         return $queryResult->getResult();
     }
+    
     
     
     
