@@ -1528,47 +1528,35 @@ class CommonModel extends Model
 
     }*/
 
-    public function FetchSalesReturns1($table, $cond, $cond2)
-{
-    // Step 1: Fetch all invoice rows with sales order data
-    $query = $this->db->table("$table ci")
-        ->select('ci.*, so.so_amount_total, (ci.ci_total_amount - ci.ci_paid_amount) AS price_difference')
-        ->join('crm_sales_orders so', 'so.so_id = ci.ci_sales_order')
-        ->where($cond)
-        ->where($cond2)
-        ->get();
-
-    $results = $query->getResult();
-
-    // Step 2: Group by Sales Order and calculate total unpaid
-    $grouped_by_so = [];
-
-    foreach ($results as $row) {
-        $so_id = $row->ci_sales_order;
-
-        if (!isset($grouped_by_so[$so_id])) {
-            $grouped_by_so[$so_id] = [
-                'so_amount_total' => $row->so_amount_total,
-                'total_unpaid' => 0,
-                'rows' => [],
-            ];
+    public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = []) {
+        $query = $this->db->table($table)
+            ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+            //->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference, crm_sales_orders.so_amount_total')
+            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
+            ->where($cond)
+            ->where($cond2)
+            ->groupStart() // Start grouping conditions
+                ->where('ci_paid_status', 0) // Condition for ci_paid_status = 0
+                ->orGroupStart() // Nested group for ci_paid_status = 1
+                    ->where('ci_paid_status', 1)
+                    //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+                    ->where('(ci_total_amount - ci_paid_amount) > steel_crm_sales_orders.so_amount_total', null, false)
+                ->groupEnd() // End nested group
+            ->groupEnd(); // End outer group
+    
+        // Apply the condition for sales order IDs if provided
+        if (!empty($salesOrderIds)) {
+            $query->whereIn($table . '.ci_sales_order', $salesOrderIds);
         }
-
-        $grouped_by_so[$so_id]['total_unpaid'] += $row->price_difference;
-        $grouped_by_so[$so_id]['rows'][] = $row;
+    
+        $queryResult = $query->get();
+    
+        echo $this->db->getLastQuery(); exit(); // Show the query for debugging
+    
+        return $queryResult->getResult();
     }
-
-    // Step 3: Only include SOs where total_unpaid > so_amount_total
-    $final_results = [];
-
-    foreach ($grouped_by_so as $group) {
-        if ($group['total_unpaid'] > $group['so_amount_total']) {
-            $final_results = array_merge($final_results, $group['rows']);
-        }
-    }
-
-    return $final_results;
-}
+    
+    
 
     
 
