@@ -1488,7 +1488,7 @@ class CommonModel extends Model
     }
 
 
-    /*public function FetchSalesReturns1($table,$cond,$cond2){
+    public function FetchSalesReturns1($table,$cond,$cond2){
        
         $query = $this->db->table($table)
 
@@ -1526,46 +1526,11 @@ class CommonModel extends Model
 
         return $query->getResult();
 
-    }*/
-
-    public function FetchSalesReturns1($table, $salesOrderIds = [3]) {
-        // Start building the query
-        $query = $this->db->table($table)
-            ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
-            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order');
-    
-        // Apply sales order filter (use whereIn for multiple orders, or where for one)
-        if (!empty($salesOrderIds)) {
-            if (count($salesOrderIds) > 1) {
-                $query->whereIn($table . '.ci_sales_order', $salesOrderIds);
-            } else {
-                $query->where($table . '.ci_sales_order', $salesOrderIds[0]);
-            }
-        }
-    
-        // Run the query
-        $queryResult = $query->get();
-    
-        // Debugging: Print out the query for troubleshooting
-        echo $this->db->getLastQuery(); exit();  // Display the full query for troubleshooting
-    
-        return $queryResult->getResult();
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
-    
 
+   
     
-
 
 
     public function FetchSalesReturns2($table,$cond,$cond2){
