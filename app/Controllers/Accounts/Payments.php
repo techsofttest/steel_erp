@@ -164,7 +164,7 @@ class Payments extends BaseController
             $insert_data['pay_date'] = date('Y-m-d', strtotime($this->request->getPost('p_date')));
             $insert_data['pay_credit_account'] = $this->request->getPost('p_credit_account');
             $insert_data['pay_method'] = $this->request->getPost('p_method');
-            $insert_data['pay_amount'] = $this->request->getPost('p_amount');
+            $insert_data['pay_amount'] = str_replace(",","",$this->request->getPost('p_amount'));
 
             if ($this->request->getPost('p_method') == "1") {
                 $insert_data['pay_cheque_no'] = $this->request->getPost('p_cheque_no');
@@ -225,7 +225,7 @@ class Payments extends BaseController
 
                     $insert_inv_data['pd_payment'] = $id;
                     $insert_inv_data['pd_debit_account'] = $_POST['p_debit_account'][$i];
-                    $insert_inv_data['pd_payment_amount'] = $_POST['inv_amount'][$i];
+                    $insert_inv_data['pd_payment_amount'] = str_replace(",","",$_POST['inv_amount'][$i]);
                     $insert_inv_data['pd_remarks'] = $_POST['narration'][$i];
 
                     // Add to Transactions
@@ -273,8 +273,7 @@ class Payments extends BaseController
 
                         $insert_invoice_data['pdi_lpo_ref'] = $lpo_ref;
 
-                        $insert_invoice_data['pdi_payment_amount'] = $thisAccountLinked['inv_payment_amount'][$li];
-
+                        $insert_invoice_data['pdi_payment_amount'] = str_replace(",","",$thisAccountLinked['inv_payment_amount'][$li]);
 
                         $this->common_model->InsertData('accounts_payment_debit_invoices', $insert_invoice_data);
                     
@@ -313,7 +312,7 @@ class Payments extends BaseController
 
                         $insert_poa_data['pa_purchase_order'] = $advanceData['po_id'][$pa];
 
-                        $insert_poa_data['pa_advance_amount'] = $advanceData['advance_amount'][$pa];
+                        $insert_poa_data['pa_advance_amount'] = str_replace(",","",$advanceData['advance_amount'][$pa]);
 
                         $this->common_model->InsertData('accounts_payment_advances', $insert_poa_data);
 
@@ -1475,6 +1474,37 @@ class Payments extends BaseController
 
             $vendor_id = $this->request->getPost('id');
 
+
+            if(empty($vendor_id))
+            {
+        
+                $data['status']= 0 ;
+        
+                $data['msg'] = "Please select account!";
+        
+                echo json_encode($data);
+        
+                exit;
+        
+            }
+       
+        
+            /*
+            if($payment_amount<1)
+            {
+        
+                $data['status']= 0 ;
+        
+                $data['msg'] = "Please enter amount!";
+        
+                echo json_encode($data);
+        
+                exit;
+        
+            }
+            */
+            
+
             /*
             $insert_data['pd_payment'] = $this->request->getPost('pid');
 
@@ -1527,6 +1557,10 @@ class Payments extends BaseController
 
             $purchase_vouchers = $this->account_model->FetchUnpaidPurchaseVoucher($vendor_id);
 
+            $data['status']=0;
+ 
+            $data['msg'] = "No invoices found!";
+
             $sl = 0;
 
             $data['vendor_id'] = $vendor_id;
@@ -1549,16 +1583,17 @@ class Payments extends BaseController
             <th class="p-0">' . $pv->pv_reffer_id . '</th>
             <th class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
             
-            <th class="p-0">' . $balance_amount . '
+            <th class="p-0">' . format_currency($balance_amount) . '
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th class="p-0"><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            <th class="p-0"><input class="form-control invoice_receipt_amount number_format" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="text"></th>
             
             <th class="p-0"><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
             </tr>';
 
-                $data['status'] = 1;
+            $data['status'] = 1;
+
             }
 
             echo json_encode($data);
@@ -1615,7 +1650,7 @@ class Payments extends BaseController
     <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
     </th>
 
-    <th><input class="form-control invoice_receipt_amount" name="inv_receipt_amount[]" type="number"></th>
+    <th><input class="form-control invoice_receipt_amount number_format" name="inv_receipt_amount[]" type="text"></th>
     
     <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
     </tr>';
@@ -2359,7 +2394,7 @@ class Payments extends BaseController
 
             <td class="p-0">'.format_currency($po->po_amount).'</td>
 
-            <td class="p-0"><input class="form-control po_advance_amount" name="advance_amount[]" step="0.01" type="number"></td>
+            <td class="p-0"><input class="form-control po_advance_amount format_number" name="advance_amount[]"  type="text"></td>
 
             <td></td>
 

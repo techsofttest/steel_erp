@@ -226,7 +226,7 @@ class PettyCashVoucher extends BaseController
 
                     $insert_inv_data['pci_voucher_id'] = $id;
                     $insert_inv_data['pci_debit_account'] = $_POST['p_debit_account'][$i];
-                    $insert_inv_data['pci_amount'] = $_POST['inv_amount'][$i];
+                    $insert_inv_data['pci_amount'] = str_replace(",","",$_POST['inv_amount'][$i]);
                     $insert_inv_data['pci_narration'] = $_POST['narration'][$i];
                     $insert_inv_data['pci_sales_order'] = $_POST['p_sales_order'][$i] ?? null;
 
@@ -268,15 +268,13 @@ class PettyCashVoucher extends BaseController
 
                         $lpo_ref = $thisAccountLinked['inv_lpo_ref'][$li] ?? null;
 
-
                         $insert_invoice_data['pcdi_debit_id'] = $pay_debit_id;
 
                         $insert_invoice_data['pcdi_invoice'] = $thisAccountLinked['pv_id'][$li];
 
                         $insert_invoice_data['pcdi_lpo_ref'] = $lpo_ref;
 
-                        $insert_invoice_data['pcdi_payment_amount'] = $thisAccountLinked['inv_payment_amount'][$li];
-
+                        $insert_invoice_data['pcdi_payment_amount'] = str_replace(",","",$thisAccountLinked['inv_payment_amount'][$li]);
 
                         $this->common_model->InsertData('accounts_petty_cash_debit_invoices', $insert_invoice_data);
                     
@@ -1479,18 +1477,19 @@ class PettyCashVoucher extends BaseController
             <input type="hidden" name="pv_id[]" value="' . $pv->pv_id . '">
 
             <input type="hidden" name="debit_account_invoice[]" value="' . $vendor_id . '">
-            <th>' . $sl . '</th>
-            <th>' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
-            <th>' . $pv->pv_reffer_id . '</th>
-            <th><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
+            <th class="p-0">' . $sl . '</th>
+            <th class="p-0">' . date('d-m-Y', strtotime($pv->pv_date)) . '</th>
+            <th class="p-0">' . $pv->pv_reffer_id . '</th>
+            <th class="p-0"><input class="form-control" name="inv_lpo_ref[]" type="text" value="' . $pv->pv_reffer_id . '" required></th>
             
-            <th>' . $balance_amount . '
+            <th class="p-0">' . format_currency($balance_amount) . '
             <input type="hidden" class="invoice_total_amount" name="total_amount" value="' . $balance_amount . '">
             </th>
 
-            <th><input class="form-control invoice_receipt_amount" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="number"></th>
+            <th class="p-0"><input class="form-control invoice_receipt_amount format_number" step="0.01" max="' . $balance_amount . '" data-max="'.$balance_amount.'" name="inv_payment_amount[]" type="text" autocomplete="off"></th>
             
-            <th><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+            <th class="p-0"><input class="invoice_add_check" type="checkbox" name="invoice_selected[]" value="' . $pv->pv_id . '"></th>
+            
             </tr>';
 
                 $data['status'] = 1;
@@ -2296,7 +2295,7 @@ class PettyCashVoucher extends BaseController
 
             <td>'.format_currency($po->po_amount).'</td>
 
-            <td><input class="form-control po_advance_amount" name="advance_amount[]" step="0.01" type="number"></td>
+            <td><input class="form-control po_advance_amount number_format" name="advance_amount[]" type="text"></td>
 
             </tr>
             

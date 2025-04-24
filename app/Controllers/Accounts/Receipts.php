@@ -376,11 +376,10 @@ class Receipts extends BaseController
 
                         $type = $accountData['type'][$li] ?? null;
                         $creditAccountInvoice = $accountData['credit_account_invoice'][$li] ?? null;
-                        $invReceiptAmount = $accountData['inv_receipt_amount'][$li] ?? null;
+                        $invReceiptAmount = str_replace(",","",$accountData['inv_receipt_amount'][$li]) ?? null;
                         $invLpoRef = $accountData['inv_lpo_ref'][$li] ?? null;
                 
                         if($invReceiptAmount>0)
-
                         {
 
                         // Prepare the data for insertion
@@ -429,7 +428,7 @@ class Receipts extends BaseController
 
                     $insert_soa_data['rso_sales_order'] = $advanceData['so_id'][$sa] ?? NULL;
 
-                    $insert_soa_data['rso_receipt_amount'] = $advanceData['so_receipt_amount'][$sa] ?? NULL;
+                    $insert_soa_data['rso_receipt_amount'] = str_replace(",","",$advanceData['so_receipt_amount'][$sa]) ?? NULL;
 
                     $insert_soa_data['rso_credit_id'] = $receipt_invoice_id;
 
@@ -1026,7 +1025,7 @@ class Receipts extends BaseController
         </td>
 
         <td class="p-0">
-        <input type="number" class="form-control so_receipt_amount" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
+        <input type="text" class="form-control so_receipt_amount number_format" maxlength="'.$balance_total.'" name="so_receipt_amount[]">
         </td>
 
 

@@ -69,7 +69,7 @@ class BankRec extends BaseController
 
            $action = '<a  href="javascript:void(0)" class="edit edit-color view_btn" data-toggle="tooltip" data-placement="top" title="Edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-eye-fill"></i> </a> 
            <!--<a  href="javascript:void(0)" class="edit edit-color edit_btn" data-toggle="tooltip" data-placement="top" title="edit"  data-id="'.$record->br_id.'" data-original-title="Edit"><i class="ri-pencil-fill"></i> Edit</a>--> 
-           <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->br_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> Delete</a>';
+           <a href="javascript:void(0)" class="delete delete-color delete_btn" data-toggle="tooltip" data-id="'.$record->br_id.'"  data-placement="top" title="Delete"><i  class="ri-delete-bin-fill"></i> </a>';
            
            $data[] = array( 
               "br_id"=>$i,
@@ -140,15 +140,15 @@ class BankRec extends BaseController
         
         $insert_data['br_date'] = date('Y-m-d',strtotime($this->request->getPost('add_br_date')));
 
-        $insert_data['br_gl_balance'] = $this->request->getPost('gl_balance');
+        $insert_data['br_gl_balance'] = str_replace(",","",$this->request->getPost('gl_balance'));
 
-        $insert_data['br_bank_balance'] = $this->request->getPost('bank_balance');
+        $insert_data['br_bank_balance'] = str_replace(",","",$this->request->getPost('bank_balance'));
 
-        $insert_data['br_total_debit'] = $this->request->getPost('total_debit');
+        $insert_data['br_total_debit'] = str_replace(",","",$this->request->getPost('total_debit'));
 
-        $insert_data['br_total_credit'] = $this->request->getPost('total_credit');
+        $insert_data['br_total_credit'] = str_replace(",","",$this->request->getPost('total_credit'));
 
-        $insert_data['br_unrec_diff'] = $this->request->getPost('rec_diff');
+        $insert_data['br_unrec_diff'] = str_replace(",","",$this->request->getPost('rec_diff'));
 
         $insert_data['br_account'] = $this->request->getPost('br_account');
 
@@ -774,6 +774,8 @@ class BankRec extends BaseController
 
     $data['br'] = $this->common_model->SingleRowJoin('accounts_bank_rec',$cond,$joins);
 
+    $data['br']->br_date = date('d M Y',strtotime($data['br']->br_date));
+
     $data['rows'] = "";
 
     $cond_recon = array('brc_rec_id' => $id);
@@ -841,7 +843,6 @@ class BankRec extends BaseController
            exit();
         }
         
-        
         $cond = array('br_id' => $id = $this->request->getPost('id'));
 
         //$receipt = $this->common_model->SingleRow('accounts_receipts',$cond);
@@ -852,7 +853,7 @@ class BankRec extends BaseController
 
         $this->common_model->DeleteData('accounts_bank_rec_cleared',$cond_rec);
 
-        $data['status'] =1;
+        $data['status'] = 1;
 
         $data['msg'] ="Data Deleted Successfully";
 
@@ -868,16 +869,13 @@ class BankRec extends BaseController
 
     $id = $this->request->getPost('account_id');
     
-    $date = $this->request->getPost('add_date');
-
-    //$return['account'] = $this->common_model->FetchBRAccount($id,$date);
+    $date = date('Y-m-d',strtotime($this->request->getPost('add_date')));
 
     $return['account_name'] = $this->common_model->SingleRow('accounts_charts_of_accounts',array('ca_id' => $id))->ca_name;
 
     $return['account'] = $this->report_model->FetchGLTransactions($date_from="",$date,$account_head="",$account_type="",$account=$id,$time_frame="Range",$range_from="",$range_to="");
 
     // print_r($return['account']);
-
     // exit;
 
     $keysToRemove = array();
@@ -914,7 +912,7 @@ class BankRec extends BaseController
 
     $return['total_debit'] = array_sum(array_column($return['account'],'debit_amount'));
 
-    $return['gl_balance'] = $return['total_debit']-$return['total_credit'];
+    $return['gl_balance'] = number_format($return['total_debit']-$return['total_credit'],2,'.','');
 
 
     $t=1;
