@@ -1844,7 +1844,7 @@ class CreditInvoice extends BaseController
                 
                 </table>';
             
-                //echo $html . $footer;
+               // echo $html . $footer; exit();
 
                 $mpdf->WriteHTML($html);
                 $mpdf->SetFooter($footer);

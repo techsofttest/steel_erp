@@ -119,6 +119,8 @@ class Vendor extends BaseController
             'cc_credit_period'     =>  $_POST['ven_credit_period'],
             'cc_credit_limit'      =>  $_POST['ven_credit_limit'],
             'cc_status'            =>  1,
+            'cc_city'              =>  $_POST['cc_city'],
+            'cc_country'           =>  $_POST['cc_country'],
             
 
         );
@@ -346,6 +348,10 @@ class Vendor extends BaseController
 
         $data['vendor_id']     = $vendor->cc_id;
 
+        $data['city']          = $vendor->cc_city;
+
+        $data['country']       = $vendor->cc_country;
+
         //office document 
 
         $data['cr_no']  = $vendor->cc_cr_number;
@@ -488,6 +494,10 @@ class Vendor extends BaseController
         $data['credit_period'] = $vendor->cc_credit_period;
 
         $data['credit_limit']  = $vendor->cc_credit_limit;
+
+        $data['city']          = $vendor->cc_city;
+
+        $data['cc_country']    = $vendor->cc_country;
 
         //office document 
 

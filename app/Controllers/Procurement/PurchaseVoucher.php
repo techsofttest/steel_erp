@@ -1225,7 +1225,7 @@ class PurchaseVoucher extends BaseController
                                             <td class="text-center"><input type="text" name="pvp_sales_order[]" value="'.$product->rnp_sales_order.'" class="form-control text-center" readonly></td>
                                             <td style="padding:10px;">'.$product->rnp_product_desc.'</td>
                                             <td class="text-center">
-                                               <select class="form-control debit_account" style="" name="debit_account[]" required>
+                                               <select class="form-control debit_account1" style="" name="debit_account[]" required>
                                                    <option value="" selected disabled>Select Debit</option>';
                                                    foreach($debit_accounts as $debit_account){
 
@@ -1249,7 +1249,7 @@ class PurchaseVoucher extends BaseController
 
                     $final_amount = $product->rnp_amount + $final_amount; 
 
-                    $data['final_amount'] = $final_amount;
+                    $data['final_amount'] = format_currency($final_amount);
                                     
             }
 
@@ -1459,6 +1459,19 @@ class PurchaseVoucher extends BaseController
 
 
         echo json_encode($data);
+
+    }
+
+
+    public function DeliveryNote(){
+
+        $purchase_id =  $this->request->getPost('ID');
+
+        $material_received_note = $this->common_model->SingleRow('pro_material_received_note' ,array('mrn_purchase_order' => $purchase_id));
+
+        $data['delivery_note'] = $material_received_note->mrn_delivery_note;
+
+        echo json_encode($data); 
 
     }
 

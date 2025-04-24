@@ -61,6 +61,10 @@
         
 
     }
+
+    .form-select {
+     padding: unset !important; 
+}
 </style>
 
 <div class="tab-content text-muted">
@@ -231,7 +235,7 @@
                                                             <tr class="prod_row prod_row_lenght">
                                                                 <td class="si_no text-center" style="padding:10px 10px;">1</td>
                                                                 <td >
-                                                                    <select class="form-control add_sales_order" name="mrp_sales_order[0]" required>
+                                                                    <select class="form-control add_sales_order" style="text-align: center;" name="mrp_sales_order[0]" required>
                                                                          <option value="" selected disabled>Select Sales Order Ref</option>
                                                                          <?php foreach($sales_orders as $sales_order){?> 
                                                                          <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>
@@ -600,8 +604,8 @@
                                                                 <td style="width: 4%;">SI</td>
                                                                 <td style="width: 11%;">sales Order</td>
                                                                 <td>Product Description</td>
-                                                                <td style="width: 6%;">Unit</td>
-                                                                <td style="width: 6%;">Qty</td>
+                                                                <td style="width: 5%;">Unit</td>
+                                                                <td style="width: 5%;">Qty</td>
                                                                 <td style="width: 14%;">Action</td>
                                                                
                                                             </tr>
@@ -736,7 +740,7 @@
                                                         <tr>
            
                                                             <td>
-                                                                <select class="form-select edit_add_sales_order" name="mrp_sales_order" required>
+                                                                <select class="form-select edit_add_sales_order text-center" name="mrp_sales_order" required>
                                                                     <option value="" selected disabled>Select Sales Order Ref</option>
                                                                     <?php foreach($sales_orders as $sales_order){?> 
                                                                     <option value="<?php echo $sales_order->so_id;?>"><?php echo $sales_order->so_reffer_no;?></option>
@@ -749,8 +753,8 @@
                                                                     
                                                                 </select>
                                                             </td>
-                                                            <td><input type="text" name="mrp_unit"  value="" class="form-control" required></td>
-                                                            <td> <input type="number" name="mrp_qty" value="" class="form-control" required></td>
+                                                            <td><input type="text" name="mrp_unit"  value="" class="form-control text-center" required></td>
+                                                            <td> <input type="number" name="mrp_qty" value="" class="form-control text-center" required></td>
                                                             <input type="hidden" name="mrp_mr_id" class="mrp_mr_clz_id">
                                                         </tr>
 
