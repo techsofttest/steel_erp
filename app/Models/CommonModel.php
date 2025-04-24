@@ -1530,20 +1530,19 @@ class CommonModel extends Model
 
     public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = [3]) {
         // Check if the $salesOrderIds is an array and not empty
-        if (!empty($salesOrderIds) && is_array($salesOrderIds)) {
-            echo "Sales Order IDs: ";
-            print_r($salesOrderIds);  // Debugging sales order IDs
+        if (!empty($salesOrderIds)) {
+            // If there's only one sales order ID, use where, else use whereIn
+            if (count($salesOrderIds) == 1) {
+                $query->where($table . '.ci_sales_order', $salesOrderIds[0]); // Single sales order ID
+            } else {
+                $query->whereIn($table . '.ci_sales_order', $salesOrderIds); // Multiple sales order IDs
+            }
         }
     
         // Start building the query
         $query = $this->db->table($table)
             ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
             ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order');
-    
-        // Apply sales order filter (if provided as an array of sales orders)
-        if (!empty($salesOrderIds)) {
-            $query->whereIn($table . '.ci_sales_order', $salesOrderIds); // Use whereIn to filter by multiple sales orders
-        }
     
         // Apply additional conditions
         $query->where($cond)
@@ -1565,6 +1564,7 @@ class CommonModel extends Model
     
         return $queryResult->getResult();
     }
+    
     
     
     
