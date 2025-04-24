@@ -1528,7 +1528,7 @@ class CommonModel extends Model
 
     }*/
 
-    public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = []) {
+    public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = [3]) {
         // Start building the query
         $query = $this->db->table($table)
             ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
