@@ -334,19 +334,19 @@ class SalesSummery extends BaseController
         
             <tr>
             
-                <th align="center" width="40px">Date</th>
+                <th align="center" width="40px" style="border-bottom: 2px solid">Date</th>
             
-                <th align="center" width="100px">Invoice Ref.</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Invoice Ref.</th>
             
-                <th align="center" width="100px">Customer</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Customer</th>
             
-                <th align="center" width="100px">Sales Order Ref.</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Sales Order Ref.</th>
 
-                <th align="center" width="100px">Lpo Ref.</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Lpo Ref.</th>
 
-                <th align="center" width="100px">Sales Executive</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Sales Executive</th>
 
-                <th align="center" width="100px">Amount</th>
+                <th align="center" width="100px" style="border-bottom: 2px solid">Amount</th>
 
 
                 

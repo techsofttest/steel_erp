@@ -284,20 +284,16 @@ class SalesReturnReport extends BaseController
                 $new_date = date('d-M-Y',strtotime($inv_rep->sr_date));
                
                 $pdf_data .="<tr>
-                                <td style='border-top: 2px solid' align='center' width='40px'>{$new_date}</td>
-                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->sr_reffer_no}</td>
-                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->cc_customer_name}</td>
-                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->sr_invoice}</td>
-                                <td style='border-top: 2px solid' align='center' width='100px'>{$inv_rep->so_reffer_no}</td>
-                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->sr_lpo_reff}</td>
-                                <td style='border-top: 2px solid' align='center' width='80px'>{$inv_rep->se_name}</td>
-                                <td style='border-top: 2px solid' align='center' width='100px' align='right'>{$inv_rep->so_amount_total}</td>";
+                                <td style='' align='center' width='40px'>{$new_date}</td>
+                                <td style='' align='center' width='100px'>{$inv_rep->sr_reffer_no}</td>
+                                <td style='' align='center' width='100px'>{$inv_rep->cc_customer_name}</td>
+                                <td style='' align='center' width='80px'>{$inv_rep->sr_invoice}</td>
+                                <td style='' align='center' width='100px'>{$inv_rep->so_reffer_no}</td>
+                                <td style='' align='center' width='80px'>{$inv_rep->sr_lpo_reff}</td>
+                                <td style='' align='center' width='80px'>{$inv_rep->se_name}</td>
+                                <td style='' align='center' width='100px' align='right'>{$inv_rep->so_amount_total}</td>";
 
                                 $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
-
-                               
-                                
-                        
 
 
                 $pdf_data .="</tr>";
@@ -325,7 +321,7 @@ class SalesReturnReport extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', // Custom page size in millimeters
+            'format' => 'Letter-L', // Custom page size in millimeters
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,

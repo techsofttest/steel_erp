@@ -258,15 +258,15 @@
                                                     <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($inv_rep->sr_date)); ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:130px"><a href="<?php echo base_url(); ?>Crm/SalesReturn?view_rut=<?php echo $inv_rep->sr_id; ?>" target="_blank"><?php echo $inv_rep->sr_reffer_no; ?></a></td>
-                                                    <td style="white-space: nowrap;width:300px"><?php echo $inv_rep->cc_customer_name; ?></td>
+                                                    <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $inv_rep->cc_customer_name; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_invoice; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $inv_rep->so_id; ?>" target="_blank"><?php echo $inv_rep->so_reffer_no; ?></a></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_lpo_reff; ?></td>
                                                     <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $inv_rep->se_name; ?></td>
-                                                    <td class="text-end" style="white-space: nowrap;width:100px"><?php echo $inv_rep->so_amount_total; ?></td>
+                                                    <td class="text-end" style="white-space: nowrap;width:100px"><?php echo $inv_rep->sr_total; ?></td>
                                                     <?php 
                                                         
-                                                        $sales_prod_amount = $inv_rep->so_amount_total + $sales_prod_amount;
+                                                        $sales_prod_amount = $inv_rep->sr_total + $sales_prod_amount;
                                                     ?>
                                                     <!------------>
                                                     <!--<td colspan="5" align="left" class="p-0">
@@ -283,7 +283,7 @@
                                                                 
                                                             </tr>
 
-                                                        <?php  //$sales_return_rate =  $ret_prod->srp_rate + $sales_return_rate;   $return_prod_amount = $ret_prod->srp_amount + $return_prod_amount; }  ?>
+                                                        <?php  //$sales_return_rate =  $ret_prod->srp_rate + $sales_return_rate;   //$return_prod_amount = $ret_prod->srp_amount + $return_prod_amount; }  ?>
                                                                                                 
                                                                                         
                                                         </table>

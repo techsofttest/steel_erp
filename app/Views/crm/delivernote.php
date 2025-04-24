@@ -57,6 +57,10 @@ span.select2.customer_width, span.select2 {
     vertical-align: middle;
 
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+   line-height: 18px;
+}
 </style>
 
 
@@ -1348,7 +1352,7 @@ span.select2.customer_width, span.select2 {
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+            stateSave: <?php echo empty($_GET['view_so']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',

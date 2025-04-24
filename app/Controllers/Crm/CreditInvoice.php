@@ -346,6 +346,8 @@ class CreditInvoice extends BaseController
                         'ipd_delivery_id'      =>  $delivery_note->dn_id,
     
                     );
+
+                   
                 
                     
                     $id = $this->common_model->InsertData('crm_credit_invoice_prod_det',$contact_detail);
@@ -959,49 +961,12 @@ class CreditInvoice extends BaseController
 
                     foreach($delivery_notes as $del_note){
 
-                        /* orginal one = <td>
-                        <select class="form-select ipd_prod_detl " required>';
-                                    
-                        foreach($products as $prod){
-                            $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                            if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
-                            $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                            }
-                        $data['product_detail'] .= '</select>
-                    </td>*/
-
-                    /*$data_selected_prod = '<td>
-                    <select class="form-select ipd_prod_detl " required>';
-                                
-                    foreach($products as $prod){
-                        $data['product_detail'] .='<option value="'.$prod->product_id.'"'; 
-                        if($prod->product_id == $del_note->dpd_prod_det){ $data['product_detail'] .= "selected"; }
-                        $data['product_detail'] .='>'.$prod->product_details.'</option>';
-                        }
-                    $data['product_detail'] .= '</select>
-                </td>';*/
-
-                /*$data_selected_prod = '
-                <select class="form-select ipd_prod_detl " required>';
-                            
-                foreach($products as $prod){
-                    $data_selected_prod  .='<option value="'.$prod->product_id.'"'; 
-                    if($prod->product_id == $del_note->dpd_prod_det){ $data_selected_prod  .= "selected"; }
-                    $data_selected_prod  .='>'.$prod->product_details.'</option>';
-                    }
-                    $data_selected_prod  .= '</select>
-            ';*/
-
             
-		 $options_product = '<option value="'.$del_note->product_id.'" selected>'.$del_note->product_details.'</option>';
+		                $options_product = '<option value="'.$del_note->product_id.'" selected>'.$del_note->product_details.'</option>';
         
-                                
-                   
-
-
                         $data['product_detail'] .='<tr class="prod_row " id="'.$del_note->dn_id.'" style="text-align:center">
                                                         <td class="si_no text-center">'.$i.'</td>
-                                                        <td class="product_select2_edit" style="text-align: left !important;">'.$options_product.' </td>
+                                                        <td class="" style="text-align: left !important;">'.$del_note->product_details.' </td>
                                                         <td style="padding: 0px !important;">'.$del_note->dn_reffer_no.'</td>
                                                         <td><input type="text"  value="'.$del_note->dpd_current_qty	.'" class="form-control text-center" required></td>
                                                         <td><input type="checkbox" name="product_select[]" id="'.$del_note->dpd_id.'"  onclick="handleCheckboxChange(this)" class="prod_checkmark text-center"></td>
@@ -1318,9 +1283,8 @@ class CreditInvoice extends BaseController
 
                     $data['product_detail'] .='<tr class="prod_row delivery_note_remove" id="'.$sales_det->spd_id.'">
                                                     <td class="si_no"><input type="text" name="ipd_delivery[]" value ="'.$sales_det->dn_reffer_no.'" class="form-control  text-center" readonly></td>
-                                                    <td style="text-align: left;">
-                                                        <select class="form-select ser_product_det product_select2_edit" name="ipd_prod_detl[]" required>'.$options_products.'</select>
-                                                    </td>
+                                                    <td style="text-align: left;padding: 5px 5px;">'.$sales_det->product_details.'</td>
+                                                    <td style="display:none;"><select  class="form-select ser_product_det product_select2_edit" name="ipd_prod_detl[]" required >'.$options_products.'</select></td>
                                                     <td><input type="text" name="ipd_unit[]" value="'.$sales_det->spd_unit.'" class="form-control  text-center" readonly></td>
                                                     <td><input type="number" name="ipd_quantity[]" value="'.$sales_det->dpd_current_qty.'"  class="form-control order_qty  text-center" readonly></td>
                                                     <td><input type="text" name="ipd_rate[]" value="'.format_currency($sales_det->spd_rate).'"  class="form-control delivery_qty  text-end" readonly ></td>
@@ -1613,13 +1577,13 @@ class CreditInvoice extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:60px;">
+                <table width="100%" style="margin-top:90px;">
                 
                 <tr width="100%">
                 <td width="9%"></td>
                 <td >Date : '.$date.'</td>
                 <td>'.$credit_invoice->cci_reffer_no.'</td>
-                <td align="right"><h2>Credit Note</h2></td>
+                <td align="right"><h2>Credit Invoice</h2></td>
             
                 </tr>
             
@@ -1650,7 +1614,9 @@ class CreditInvoice extends BaseController
             
             <td ></td>
             
-            <td >Post Box : '.$credit_invoice->cc_post_box.' , '.$customers->country_name.'</td>
+            
+
+             <td>Post Box: ' . $credit_invoice->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
             
             </tr>
         
@@ -1753,7 +1719,7 @@ class CreditInvoice extends BaseController
                <table>
                
                     <tr>
-                        <td style="width:15%">Invoice Terms</td>
+                        <td style="width:15%"></td>
 
                         <td style="width:15%">LPO Ref</td>
 
@@ -1768,11 +1734,11 @@ class CreditInvoice extends BaseController
 
                     <tr>
                         
-                        <td style="width:15%"></td>
+                        <td style="width:15%">Invoice Terms</td>
                         <td style="width:15%">Project:</td>
                         <td style="width:30%">'.$credit_invoice->cci_project.'</td>
-                        <td style="width:10%">Invoice:</td>
-                        <td>'.$credit_invoice->cci_reffer_no.'</td>
+                        <td style="width:10%">DN No:</td>
+                        <td>'.$del_data_string.'</td>
                     
                     </tr>
 
@@ -1782,8 +1748,7 @@ class CreditInvoice extends BaseController
                         <td style="width:15%"></td>
                         <td style="width:15%">Sales Order:</td>
                         <td style="width:30%">'.$credit_invoice->so_reffer_no.'</td>
-                        <td style="width:10%">DN No:</td>
-                        <td>'.$del_data_string.'</td>
+                        
                 
                     </tr>
                 
@@ -1807,6 +1772,70 @@ class CreditInvoice extends BaseController
                     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
     
                     <td><i>Workshop Manager</i></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
+
+                    <td></td>
+    
+                    <td></td>
     
                   
     

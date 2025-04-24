@@ -73,6 +73,10 @@
         text-align: center;
 
     }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+   line-height: 18px;
+}
 </style>
 
 <div class="tab-content text-muted">

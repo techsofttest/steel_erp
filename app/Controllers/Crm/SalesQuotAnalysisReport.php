@@ -328,14 +328,13 @@ class SalesQuotAnalysisReport extends BaseController
 
                                                                                                         $diff = format_currency($diff);
 
-                                                                                                        
-
                                                                                                         $pdf_data .="<td class='rotate' width='80px' align='right'>{$diff}</td>";
                                                                                                         
                                                                                         
                                                                                         $pdf_data .= "</tr>";
 
                                                                                     } 
+                                                                                    
                                                                                 }else{
 
                                                                                         $pdf_data .= "<tr style='background: unset;border-bottom: hidden !important;'>
@@ -426,7 +425,7 @@ class SalesQuotAnalysisReport extends BaseController
 
             
 
-            $mpdf->SetTitle('Sales Quotation Report'); // Set the title
+            $mpdf->SetTitle('Sales Quotation Analysis Report'); // Set the title
 
             //$sales_amount = format_currency($sales_amount);
             
@@ -491,7 +490,7 @@ class SalesQuotAnalysisReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Quotation Report</h3></td>
+            <td align="right"><h3>Sales Quotation Analysis Report</h3></td>
         
             </tr>
         

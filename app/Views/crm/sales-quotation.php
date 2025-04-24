@@ -110,7 +110,7 @@
     }
     .total_table {
         
-        width: 27% !important;
+        width: 29% !important;
     }
     .cost_data td{
 
@@ -142,6 +142,10 @@
     .edit_cost_cal td{
 
         padding: 10px 10px !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+        line-height: 18px;
     }
 </style>
 
@@ -2567,6 +2571,11 @@
 
                             $('.product-more4').html(responseData.view_product);
 
+                            $('.total_percent').val(responseData.percentage);
+                            
+                            
+                            
+
                             $('.cost_data').html(responseData.cost_details);
 
                             $('#SalesQuotView').modal('show');
@@ -2655,7 +2664,8 @@
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+               
+            stateSave: <?php echo empty($_GET['view_so']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',
@@ -2692,7 +2702,7 @@
                 "initComplete": function () {
 
                     var dataId = '<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>';
-  
+
                     $('#DataTable').dataTable().fnFilter(dataId);
 
                 },
@@ -2700,6 +2710,8 @@
                 "drawCallback": function() {
                   
                     $('.view_btn[data-id="<?php echo isset($_GET['view_so']) ? $_GET['view_so'] : ''; ?>"]').trigger('click');
+
+               
 
                 }
  
@@ -2710,6 +2722,15 @@
 
 
         }
+
+
+   
+
+
+
+
+
+
 
         $(document).ready(function () {
             initializeDataTable();
@@ -2995,7 +3016,7 @@
 
             $('body .cost_cal_row').each(function() {
 
-                $(this).find('.cost_ci_no').html('<td class="cost_ci_no">' + cc + '</td>');
+                $(this).find('.cost_ci_no').html('<td class="cost_ci_no" style="border: unset;">' + cc + '</td>');
 
                 $(this).find('.cost_product_det').attr("name", "qc_material["+cp+"]");
 

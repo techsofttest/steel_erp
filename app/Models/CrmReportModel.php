@@ -129,8 +129,7 @@ class CrmReportModel extends Model
         
         //return $result;
         
-       
-      
+        
 
         $i = 0;
         foreach ($result as $res) {

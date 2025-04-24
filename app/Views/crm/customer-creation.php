@@ -245,6 +245,24 @@
                                                                 <div class="row align-items-center mb-2 margin_zero">
 
                                                                     <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">City</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" class="form-control view_city" readonly>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div> 
+
+                                                            <!-- ### -->
+
+
+                                                            <!--Single Row Start-->
+                                                            <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
                                                                         <label for="basicInput" class="form-label">Country</label>
                                                                     </div>
 
@@ -256,6 +274,9 @@
                                                             </div> 
 
                                                             <!-- ### -->
+
+
+                                                            
 
 
                                                           
@@ -751,6 +772,22 @@
                                                             </div>
 
 
+                                                            <div class="col-lg-12">
+                                                                <div class="row align-items-center mb-2 margin_zero">
+
+                                                                    <div class="col-col-md-3 col-lg-3">
+                                                                        <label for="basicInput" class="form-label">City</label>
+                                                                    </div>
+
+                                                                    <div class="col-col-md-9 col-lg-9">
+                                                                        <input type="text" name="cc_city" class="form-control edit_city input_length" required>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+
+
 
                                                             <div class="col-lg-12">
                                                                 <div class="row align-items-center mb-2 margin_zero">
@@ -761,7 +798,8 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                        
-                                                                        <select class="form-select  edit_country  input_length" name="cc_country"  required></select>
+                                                                        
+                                                                        <input type="text" name="cc_country" class="form-control edit_country input_length" required>
                                                                     </div>
 
                                                                 </div>
@@ -1312,6 +1350,8 @@
 
                     $('.view_country').val(data.country);
 
+                    $('.view_city').val(data.city);
+
                     $('.view_contact_data').html(data.contact);
 
                     $('.view_cr_no').val(data.cr_num);
@@ -1447,7 +1487,9 @@
 
                         $('.edit_credit_limit').val(data.credit_limit);
 
-                        $('.edit_country').html(data.country);
+                        $('.edit_country').val(data.country);
+
+                        $('.edit_city').val(data.city);
 
                         $('.edit_account_head').html(data.account_head);
 

@@ -67,6 +67,10 @@ span.select2.customer_width, span.select2 {
     vertical-align: middle;
     text-align: center;
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+   
+   line-height: 18px;
+}
 
 </style>
 
@@ -457,7 +461,7 @@ span.select2.customer_width, span.select2 {
                                                     <div class="col-lg-6">
                                                         <div class="modal-footer justify-content-center">
                                                             <button class="btn btn btn-success once_form_submit" type="submit">Save</button>
-                                                            <span class="print_btn_clz " style="display:none"><button class="btn btn btn-success" name="print_btn" type="submit" value="1">Preview</button></span>
+                                                            <span class="print_btn_clz " style="display:none"><button class="btn btn btn-success" name="print_btn" type="submit" value="1">Print</button></span>
                                                         </div>
                                                     </div>
 
@@ -1519,7 +1523,7 @@ span.select2.customer_width, span.select2 {
         function initializeDataTable() {
 
             datatable = $('#DataTable').DataTable({
-            'stateSave': true,
+            stateSave: <?php echo empty($_GET['view_cash']) ? 'true' : 'false'; ?>,
             'processing': true,
             'serverSide': true,
             'serverMethod': 'post',
@@ -2050,17 +2054,20 @@ span.select2.customer_width, span.select2 {
         });*/
 
         $("body").on('keyup', '.discount_clz_id , .qtn_clz_id , .rate_clz_id', function(){ 
+            
             var $discountSelect = $(this);
 
             var discount = parseFloat($discountSelect.closest('.prod_row').find('.discount_clz_id').val()) || 0;
             var $discountSelectElement = $discountSelect.closest('.prod_row').find('.rate_clz_id');
-            var rate = parseFloat($discountSelectElement.val()) || 0;
+            //var rate = parseFloat($discountSelectElement.val()) || 0;
+            var rate = parseFloat($discountSelectElement.val().replace(/,/g, '')) || 0;
             var $quantitySelectElement = $discountSelect.closest('.prod_row').find('.qtn_clz_id');
             var quantity = parseFloat($quantitySelectElement.val()) || 0;
 
             var multipliedTotal = rate * quantity;
             var per_amount = (discount / 100) * multipliedTotal;
             var originalPrice = multipliedTotal - per_amount;
+
 
             // Ensure originalPrice is a number before formatting
             var formattedPrice = Number(originalPrice).toLocaleString("en-US", { 
@@ -2072,6 +2079,7 @@ span.select2.customer_width, span.select2 {
             $amountElement.val(formattedPrice);
 
             TotalAmount();
+
         });
 
 

@@ -11,6 +11,11 @@
     
     padding-top: 5px !important;
 }
+.Dashboard-form .form-select {
+   
+   color: #999;
+}
+
 </style>
 
 <div class="tab-content text-muted">
@@ -250,8 +255,6 @@
                                                             <td class="text-center"><?php echo $sales_order->se_name; ?></td>
                                                             <?php $total_amount = $sales_order->so_amount_total + $total_amount; ?>
                                                             <td class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>
-
-
 
                                                         </tr>
 

@@ -27,6 +27,11 @@
     padding-top: 5px !important;
 
 }
+.Dashboard-form .form-select {
+   
+   color: #999;
+}
+
 </style>
 
 
@@ -163,7 +168,7 @@
                             <div class="col-lg-12" style="padding:0px">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">Sales Summer Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1" style="text-align: center;font-weight: 600;color: black;margin-right:-17%">Sales Summery Report <?php if (!empty($from_dates) && !empty($to_dates)) { ?>(<?php echo $from_dates; ?> To <?php echo $to_dates; ?>)<?php } ?></h4>
 
                                         <form method="POST" action="" target="_blank">
                                             <input type="hidden" name="pdf" value="1">
@@ -241,7 +246,7 @@
                                                                 $view = "view_rut";
                                                             }
                                                             else{
-
+ 
                                                                 $href="";
 
                                                                 $view = "";

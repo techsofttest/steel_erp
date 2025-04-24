@@ -283,6 +283,7 @@ class CommonModel extends Model
         return $result;
 
     }
+    
     //Fetch where limit
     public function FetchWhereLimit($id,$coloum_id,$order_key,$order,$table,$end,$start)
     {
@@ -1492,6 +1493,8 @@ class CommonModel extends Model
         $query = $this->db->table($table)
 
         ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+        //->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference, crm_sales_orders.so_amount_total')
+
 
         ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
 
@@ -1509,6 +1512,9 @@ class CommonModel extends Model
 
                 ->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
 
+                //->where('(ci_total_amount - ci_paid_amount) >  steel_crm_sales_orders.so_amount_total', null, false)
+
+
             ->groupEnd() // End nested group
 
         ->groupEnd() // End outer group
@@ -1518,7 +1524,7 @@ class CommonModel extends Model
 
         //echo $this->db->getLastQuery(); exit();
 
-    return $query->getResult();
+        return $query->getResult();
 
     }
 

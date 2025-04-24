@@ -225,7 +225,7 @@ class BackLog extends BaseController
                     $pdf_data .="<tr>
                                     <td style='' width='40px' align='center'>{$new_date}</td>
                                     <td style='' width='100px' align='center'>{$backlog->so_reffer_no}</td>
-                                    <td style='' width='100px'>{$backlog->cc_customer_name}</td>
+                                    <td style='' width='200px' align='center'>{$backlog->cc_customer_name}</td>
                                     <td style='' width='100px' align='center'>{$backlog->so_lpo}</td>
                                     <td style='' width='100px' align='center'>{$backlog->se_name}</td>
                                     <td style='' width='100px' align='right'>".format_currency($backlog->so_amount_total)."</td> ";
@@ -356,7 +356,7 @@ class BackLog extends BaseController
 
 
            $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter', // Custom page size in millimeters
+            'format' => 'Letter-L', // Custom page size in millimeters
             'default_font_size' => 9, 
             'margin_left' => 5, 
             'margin_right' => 5,
@@ -442,23 +442,23 @@ class BackLog extends BaseController
         
             <tr>
             
-            <th align="center" width="40px">Date</th>
+            <th align="center" width="40px" style="border-bottom:2px solid;">Date</th>
         
-            <th align="center" width="100px">Sales Order</th>
+            <th align="center" width="100px" style="border-bottom:2px solid;">Sales Order</th>
         
-            <th align="center" width="100px">Customer</th>
+            <th align="center" width="200px" style="border-bottom:2px solid;">Customer</th>
 
-            <th align="center" width="100px">LPO Ref</th>
+            <th align="center" width="100px" style="border-bottom:2px solid;">LPO Ref</th>
         
-            <th align="center" width="100px">Sales Executive</th>
+            <th align="center" width="100px" style="border-bottom:2px solid;">Sales Executive</th>
 
-            <th align="center" width="100px">Amount</th>
+            <th align="right" width="100px" style="border-bottom:2px solid;">Amount</th>
 
-            <th align="center" width="100px">Delivered</th>
+            <th align="right" width="100px" style="border-bottom:2px solid;">Delivered</th>
 
-            <th align="center" width="100px">Invoiced</th>
+            <th align="right" width="100px" style="border-bottom:2px solid;">Invoiced</th>
 
-            <th align="center" width="100px">Balance</th>
+            <th align="right" width="100px" style="border-bottom:2px solid;">Balance</th>
  
             
             </tr>

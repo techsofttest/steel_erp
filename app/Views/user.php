@@ -185,7 +185,7 @@
                                                                 <td style="width:50px">Yes</td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="view view-color custom-tooltip" data-tooltip="Can add & edit all transaction & view all reports"><i class="ri-eye-fill"></i></a>
-                                                                    <a href="javascript:void(0)" data-id = "1" class="change_pass"> Change Password</a>
+                                                                    <a href="javascript:void(0)" data-id = "1" class="change_pass">Change Password</a>
                                                                 </td>
                                                             
                                                             </tr>

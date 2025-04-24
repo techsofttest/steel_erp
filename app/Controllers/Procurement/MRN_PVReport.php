@@ -498,7 +498,7 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->rnp_current_delivery ?? '') . "</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->rnp_current_delivery ?? '') . "</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
@@ -537,7 +537,7 @@ class MRN_PVReport extends BaseController
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>" . ($prod_del->pvp_qty ?? 0) . "</td>";
+                    $pdf_data .= "'>" . format_currency($prod_del->pvp_qty ?? 0) . "</td>";
 
 
                     $pdf_data .= "<td style='text-align:right;";

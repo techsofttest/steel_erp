@@ -43,6 +43,11 @@
 
         padding-top: 5px !important;
     }
+    .Dashboard-form .form-select {
+   
+        color: #999;
+    }
+
    
 </style>
 
@@ -284,7 +289,7 @@
                                                         <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($quot_data->qd_date)); ?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesQuotation?view_so=<?php echo $quot_data->qd_id; ?>" target="_blank"><?php echo $quot_data->qd_reffer_no; ?></a></td>
-                                                        <td style="white-space: nowrap;width:300px"><?php echo $quot_data->cc_customer_name; ?></td>
+                                                        <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $quot_data->cc_customer_name; ?></td>
                                                         <td class="text-center" style="white-space: nowrap;width:100px"><?php echo $quot_data->se_name; ?></td>
 
 

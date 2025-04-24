@@ -32,6 +32,11 @@
     
     padding-top: 5px !important;
 }
+.Dashboard-form .form-select {
+   
+   color: #999;
+}
+
 </style>
 
 
@@ -246,7 +251,7 @@
                                                             <td class="text-center" style="white-space: nowrap;width:40px"><?php echo $i; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:70px"><?php echo date('d-M-Y', strtotime($sales_order->so_date)); ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:100px"><a href="<?php echo base_url(); ?>Crm/SalesOrder?view_so=<?php echo $sales_order->so_id; ?>" target="_blank"><?php echo $sales_order->so_reffer_no; ?></a></td>
-                                                            <td style="white-space: nowrap;width:300px"><?php echo $sales_order->cc_customer_name; ?></td>
+                                                            <td style="width: 300px; word-wrap: break-word; white-space: normal;"><?php echo $sales_order->cc_customer_name; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $sales_order->so_lpo; ?></td>
                                                             <td class="text-center" style="white-space: nowrap;width:80px"><?php echo $sales_order->se_name; ?></td>
                                                             <td style="white-space: nowrap;width:80px" class="text-end"><?php echo format_currency($sales_order->so_amount_total); ?></td>

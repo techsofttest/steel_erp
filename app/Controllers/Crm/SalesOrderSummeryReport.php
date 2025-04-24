@@ -312,7 +312,7 @@ class SalesOrderSummeryReport extends BaseController
         );
       
       
-        $data['sales_orders'] = $this->crm_modal->SalesOrderCheckData($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_reffer_no',$data3,'so_sales_executive',$data4,'spd_product_details','crm_sales_orders',$joins,'so_reffer_no',$joins1,'spd_sales_order','crm_sales_product_details');  
+        $data['sales_orders'] = $this->crm_modal->SalesOrderCheckData($from_date,'so_date',$to_date,'',$data1,'so_customer',$data2,'so_id',$data3,'so_sales_executive',$data4,'spd_product_details','crm_sales_orders',$joins,'so_reffer_no',$joins1,'spd_sales_order','crm_sales_product_details');  
         
         if(!empty($from_date))
         {
@@ -405,17 +405,9 @@ class SalesOrderSummeryReport extends BaseController
                
                 $total_amount = $sales_order->so_amount_total + $total_amount;
                 
-                
-                
-                
-                
-                
-               
-
                // $pdf_data .="</tr>";
                  
                 
-               
                 
             }
 
@@ -462,7 +454,7 @@ class SalesOrderSummeryReport extends BaseController
 
          
 
-            $mpdf->SetTitle('Sales Summery Report'); // Set the title
+            $mpdf->SetTitle('Sales Order Summery Reports'); // Set the title
 
             $html ='
         
@@ -516,7 +508,7 @@ class SalesOrderSummeryReport extends BaseController
         
             <tr width="100%">
             <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Sales Summery Report</h3></td>
+            <td align="right"><h3>Sales Order Summery Reports</h3></td>
         
             </tr>
         
@@ -529,17 +521,17 @@ class SalesOrderSummeryReport extends BaseController
         
             <tr>
             
-            <th align="left">Date</th>
+            <th align="left" style="border-bottom: 2px solid;">Date</th>
         
-            <th align="left">Sales Order</th>
+            <th align="left" style="border-bottom: 2px solid;">Sales Order</th>
         
-            <th align="left">Customer</th>
+            <th align="left" style="border-bottom: 2px solid;">Customer</th>
 
-            <th align="left" width="70">LPO Ref</th>
+            <th align="left" width="70" style="border-bottom: 2px solid;">LPO Ref</th>
         
-            <th align="left" width="110">Sales Executive</th>
+            <th align="left" width="110" style="border-bottom: 2px solid;">Sales Executive</th>
         
-            <th align="right">Amount</th>
+            <th align="right" style="border-bottom: 2px solid;">Amount</th>
 
            
             

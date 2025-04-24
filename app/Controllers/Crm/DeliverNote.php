@@ -1779,7 +1779,8 @@ class DeliverNote extends BaseController
                 <table><tr><td></td></tr></table>
             
             
-                <table width="100%" style="margin-top:100px;">
+            
+                <table width="100%" style="margin-top:90px;">
                 
             
                 <tr width="100%">
@@ -1817,7 +1818,9 @@ class DeliverNote extends BaseController
             
             <td ></td>
             
-            <td >Post Box : '.$delivery_note->cc_post_box.' , '.$customers->country_name.'</td>
+           
+
+             <td>Post Box: ' . $delivery_note->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
             
             </tr>
         
@@ -1868,7 +1871,7 @@ class DeliverNote extends BaseController
                 <table>
                 
                 <tr>
-                    <td >Order Terms</td>
+                    <td rowspan="2">Order Terms</td>
     
                     <td style="width:15%">LPO Ref:</td>
     
@@ -1881,15 +1884,15 @@ class DeliverNote extends BaseController
                 </tr>
     
                 <tr>
-                    <td></td>
+                    <td>Project:</td>
     
-                    <td style="width:15%">Project:</td>
+                    <td style="">'.$delivery_note->dn_project.'</td>
     
-                    <td style="width:30%">'.$delivery_note->dn_project.'</td>
+                    <td style="">Sales Order:</td>
 
-                    <td style="width:12%">Sales Order:</td>
+                    <td style="">'.$delivery_note->so_reffer_no.'</td>
     
-                    <td >'.$delivery_note->so_reffer_no.'</td>
+                    <td ></td>
     
                 </tr>
                 
@@ -1914,6 +1917,59 @@ class DeliverNote extends BaseController
     
     
                     <td><i>Store Keeper</i></td>
+    
+                  
+    
+                </tr>
+
+
+
+                <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+                 <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+    
+                  
+    
+                </tr>
+
+
+
+                 <tr>
+                
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
+
+                    <td></td>
+                    
+                    <td></td>
     
                   
     

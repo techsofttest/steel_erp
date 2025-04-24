@@ -388,6 +388,9 @@ class SalesQuotation extends BaseController
 
         $data['quot_id'] = $quotation_details->qd_id;
 
+        $data['percentage'] = format_currency($quotation_details->qd_percentage);
+
+
 
         $data['print_pdf_btn'] = '<a href="'.base_url().'Crm/SalesQuotation/Pdf/'.$quotation_details->qd_id.'" class="btn btn btn-success print_pdf_btn" target="_blank">Print</a>';
          
@@ -986,7 +989,7 @@ class SalesQuotation extends BaseController
                 <td><input type="text" name="qpd_unit['.$k.']" value="'.$prod_det->pd_unit.'" class="form-control unit_clz_id text-center" required></td>
                 <td><input type="number" name="qpd_quantity['.$k.']" value="'.$prod_det->pd_quantity.'" class="form-control qtn_clz_id text-center" required></td>
                 <td><input type="text" name="qpd_rate['.$k.']"  class="form-control rate_clz_id text-end" required></td>
-                <td><input type="number" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id text-center" required></td>
+                <td><input type="text" name="qpd_discount['.$k.']" min="0" max="100"  onkeyup=MinMax(this)  class="form-control discount_clz_id text-center" required></td>
                 <td><input type="text" name="qpd_amount['.$k.']" class="form-control amount_clz_id text-end" readonly></td>
                 <input type="hidden" name="qpd_prod_id['.$k.']" class="rename_prod_id" value="'.$prod_det->pd_id.'">
                 <input type="hidden" name="enquiry_id['.$k.']" class="rename_enq_id" value="'.$prod_det->pd_enquiry_id.'">
@@ -2102,15 +2105,13 @@ class SalesQuotation extends BaseController
 
             $joins1 = array(
 
-                array(
-                    'table' => 'master_country',
-                    'pk'    => 'country_id',
-                    'fk'    => 'cc_country',
-                ),
+                
                 
             );
 
             $customers = $this->common_model->SingleRowJoin('crm_customer_creation',array('cc_id' => $quotation_details->cc_id),$joins1);
+
+            
 
             $amount_in_words =currency_to_words($quotation_details->qd_sales_amount); // outputs "fifty dollars ninety nine cents"
 
@@ -2143,8 +2144,9 @@ class SalesQuotation extends BaseController
             }
             p{
                 
-                font-size: 12px;
+               font-size: 12px;
                margin-bottom: 13px;
+              
 
             }
             .dec_width
@@ -2167,8 +2169,10 @@ class SalesQuotation extends BaseController
         
                     <td>
                 
-                    <h2>Al Fuzail Engineering Services WLL</h2>
+                    <h2 style="margin-bottom: 10px;">Al Fuzail Engineering Services WLL</h2>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p>
+                    <span style="font-size:2pt;"><br></span>
                     <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
                     
                     
@@ -2217,7 +2221,8 @@ class SalesQuotation extends BaseController
         
         <td ></td>
         
-        <td >Post Box :'.$quotation_details->cc_post_box.' , '.$customers->country_name.'</td>
+            <td>Post Box: ' . $quotation_details->cc_post_box . ', ' . $customers->cc_city . ', ' . $customers->cc_country . '</td>
+      
         
         </tr>
     
@@ -2313,8 +2318,8 @@ class SalesQuotation extends BaseController
             <table style="border-top:1px solid; border-collapse: collapse; width: 100%;">
             
             <tr>
-                <td style="width:12%">Quote Terms</td>
-
+                <td style="width:12%;" rowspan="2">Quote Terms</td>
+                
                 <td style="width:15%">Enquiry Ref.</td>
 
                 <td style="width:32%">'.$quotation_details->enquiry_reff.'</td>
@@ -2326,15 +2331,12 @@ class SalesQuotation extends BaseController
             </tr>
 
             <tr>
-                <td style="width:12%"></td>
+                <td style="width:15%" rowspan="2">Delivery Period</td>
 
-                <td style="width:15%">Delivery Period</td>
+                <td style="width:29%">'.$quotation_details->dt_name.'</td>
 
-                <td style="width:32%">'.$quotation_details->dt_name.'</td>
+                
 
-               
-
-                 
 
             </tr>
             
@@ -2365,10 +2367,6 @@ class SalesQuotation extends BaseController
             </tr>
 
 
-           
-
-
-            
             
             
             </table>
@@ -2377,7 +2375,7 @@ class SalesQuotation extends BaseController
         
             ';
         
-           // echo $html . $footer;
+           //echo $html . $footer; exit();
            
            $mpdf->WriteHTML($html);
            $mpdf->SetFooter($footer);

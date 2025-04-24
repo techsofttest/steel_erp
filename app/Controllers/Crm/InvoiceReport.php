@@ -336,127 +336,99 @@ class InvoiceReport extends BaseController
     }
 
 
-    public function Pdf($sales_orders,$from_date,$to_date)
-    {   
-        
-        if(!empty($sales_orders)){
-
+    public function Pdf($sales_orders, $from_date, $to_date)
+    {
+        if (!empty($sales_orders)) {
+    
             $title = "SQR";
-            $i =1;
+            $i = 1;
             $sales_total = 0;
             $invoice_total = 0;
-            $reff_id = "";
             $pdf_data = "";
-            foreach($sales_orders as $sale_data){
-                $new_date = date('d-M-Y',strtotime($sale_data->date));
-               
-                                $pdf_data .="<tr>";
-                                if ($sale_data->reference == $reff_id) {
-                                    $pdf_data .= "<td style='border-top: 2px solid' width='40px'></td>
-                                    <td style='border-top: 2px solid' width='100px'></td>
-                                    <td style='border-top: 2px solid' width='100px'></td>
-                                    <td style='border-top: 2px solid' width='100px'></td>
-                                    <td style='border-top: 2px solid' width='120px'></td>
-                                    <td style='border-top: 2px solid' width='80px'></td>
-                                    <td style='border-top: 2px solid' width='80px' align='right'></td>";
-                                }
-                                else{
-                                  
-                                    $pdf_data .="<td style='border-top: 2px solid' width='40px'>{$new_date}</td>
-                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->reference}</td>
-                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->customer_name}</td>
-                                    <td style='border-top: 2px solid' width='100px'>{$sale_data->delivery_reff}</td>
-                                    <td style='border-top: 2px solid' width='120px'>{$sale_data->sales_order}</td>
-                                    <td style='border-top: 2px solid' width='80px'>{$sale_data->sales_lpo}</td>
-                                    <td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->amount)."</td>";
-
-                                }
-                                
-
-
-                                $pdf_data .="<td style='border-top: 2px solid' width='200px'>{$sale_data->product}</td>
-                                <td style='border-top: 2px solid' width='80px' align='center'>{$sale_data->quantity}</td>
-                                <td style='border-top: 2px solid' width='8px' align='right'>".format_currency($sale_data->rate)."</td>
-                                <td style='border-top: 2px solid' width='80px' align='center'>".format_currency($sale_data->discount)."%</td>";
-
-                                if($sale_data->amount_check == "sales return"){ 
-                                    
-                                    $pdf_data .="<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
-
-                                    $invoice_total =    $invoice_total - $sale_data->prod_amount;
-
-                                }else{
-
-                                    $pdf_data .="<td style='border-top: 2px solid' width='80px' align='right'>".format_currency($sale_data->prod_amount)."</td>";
-                                
-                                    $invoice_total =  $sale_data->prod_amount + $invoice_total;
-
-                                }
-
-                                $sales_total =  $sale_data->amount + $sales_total; 
-
-                                if ($reff_id != $sale_data->reference)
-                                {
-                                    
-                                $reff_id = $sale_data->reference;
-                                $i++;
-
-                                }
-                              
-                          
-
-
-                $pdf_data .="</tr>";
-
+            $reff_id = "";
+            $count = count($sales_orders);
+    
+            for ($key = 0; $key < $count; $key++) {
+                $sale_data = $sales_orders[$key];
+                $next_ref = ($key + 1 < $count) ? $sales_orders[$key + 1]->reference : null;
+                $is_last_in_group = $sale_data->reference !== $next_ref;
+                $border_style = $is_last_in_group ? "border-bottom: 1px solid black;" : "";
+    
+                $new_date = date('d-M-Y', strtotime($sale_data->date));
+    
+                $pdf_data .= "<tr>";
+    
+                if ($sale_data->reference == $reff_id) {
+                    $pdf_data .= "
+                    <td style='$border_style' width='40px'></td>
+                    <td style='$border_style' width='100px'></td>
+                    <td style='$border_style' width='100px'></td>
+                    <td style='$border_style' width='100px'></td>
+                    <td style='$border_style' width='120px'></td>
+                    <td style='$border_style' width='80px'></td>
+                    <td style='$border_style' width='80px' align='right'></td>";
+                } else {
+                    $pdf_data .= "
+                    <td style='$border_style' width='40px'>{$new_date}</td>
+                    <td style='$border_style' width='100px'>{$sale_data->reference}</td>
+                    <td style='$border_style' width='100px'>{$sale_data->customer_name}</td>
+                    <td style='$border_style' width='100px'>{$sale_data->delivery_reff}</td>
+                    <td style='$border_style' width='120px'>{$sale_data->sales_order}</td>
+                    <td style='$border_style' width='80px'>{$sale_data->sales_lpo}</td>
+                    <td style='$border_style' width='80px' align='right'>" . format_currency($sale_data->amount) . "</td>";
+                }
+    
+                $pdf_data .= "
+                <td style='$border_style' width='200px'>{$sale_data->product}</td>
+                <td style='$border_style' width='80px' align='center'>{$sale_data->quantity}</td>
+                <td style='$border_style' width='80px' align='right'>" . format_currency($sale_data->rate) . "</td>
+                <td style='$border_style' width='80px' align='center'>" . format_currency($sale_data->discount) . "%</td>";
+    
+                if ($sale_data->amount_check == "sales return") {
+                    $pdf_data .= "<td style='$border_style' width='80px' align='right'>-" . format_currency($sale_data->prod_amount) . "</td>";
+                    $invoice_total -= $sale_data->prod_amount;
+                } else {
+                    $pdf_data .= "<td style='$border_style' width='80px' align='right'>" . format_currency($sale_data->prod_amount) . "</td>";
+                    $invoice_total += $sale_data->prod_amount;
+                }
+    
+                $sales_total += $sale_data->amount;
+    
+                if ($reff_id != $sale_data->reference) {
+                    $reff_id = $sale_data->reference;
+                    $i++;
+                }
+    
+                $pdf_data .= "</tr>";
             }
-
-            if(empty($from_date) && empty($to_date))
-            {
-             
-               $dates = "";
-            }
-            else
-            {
-               $dates = $from_date . " to " . $to_date;
-            }
-
-
-            
-           // $mpdf = new \Mpdf\Mpdf();
-           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-           $fontDirs = $defaultConfig['fontDir'];
-
-           $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-           $fontData = $defaultFontConfig['fontdata'];
-
-
-           $mpdf = new \Mpdf\Mpdf([
-            'format' => 'Letter-L', // Custom page size in millimeters
-            'default_font_size' => 9, 
-            'margin_left' => 5, 
-            'margin_right' => 5,
-            'autoPageBreak' => true,  // Enable automatic page breaks
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/fonts'
-            ]),
-            'fontdata' => $fontData + [
-                'bentonsans' => [
-                  
-                    'R' => 'OpenSans-Regular.ttf',
-                    'B' => 'OpenSans-Bold.ttf',
+    
+            $dates = (!empty($from_date) || !empty($to_date)) ? $from_date . " to " . $to_date : "";
+    
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+    
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+    
+            $mpdf = new \Mpdf\Mpdf([
+                'format' => 'Letter-L',
+                'default_font_size' => 9,
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'autoPageBreak' => true,
+                'fontDir' => array_merge($fontDirs, [__DIR__ . '/fonts']),
+                'fontdata' => $fontData + [
+                    'bentonsans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf',
+                    ],
                 ],
-            ],
-            'default_font' => 'bentonsans'
-            
-        ]);
-
-
-            $mpdf->SetTitle('Invoice Report'); // Set the title
-
-          
-
-            $html ='
-        
+                'default_font' => 'bentonsans'
+            ]);
+    
+            $mpdf->SetTitle('Invoice Report');
+    
+            $html = '
             <style>
             th, td {
                 padding-top: 10px;
@@ -465,152 +437,76 @@ class InvoiceReport extends BaseController
                 padding-right: 5px;
                 font-size: 12px;
             }
-            p{
-                
+            p {
                 font-size: 12px;
-
             }
-            .dec_width
-            {
+            .dec_width {
                 width:30%
             }
-            .disc_color
-            {
+            .disc_color {
                 color:red;
             }
-            
             </style>
-        
+    
             <table>
-            
-            <tr>
-            
-            
-        
-            <td>
-        
-            <h3>Al Fuzail Engineering Services WLL</h3>
-            <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
-            <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
-            
-            
-            </td>
-            
-            </tr>
-        
+                <tr>
+                    <td>
+                        <h3>Al Fuzail Engineering Services WLL</h3>
+                        <div><p class="paragraph-spacing">Tel : +974 4460 4254, Fax : 4029 8994, email : engineering@alfuzailgroup.com</p></div>
+                        <p>Post Box : 201978, Gate : 248, Street : 24, Industrial Area, Doha - Qatar</p>
+                    </td>
+                </tr>
             </table>
-        
-        
-        
+    
             <table width="100%" style="margin-top:10px;">
-            
-        
-            <tr width="100%">
-            <td>Period : '.$dates.'</td>
-            <td align="right"><h3>Invoice Report</h3></td>
-        
-            </tr>
-        
+                <tr width="100%">
+                    <td>Period : ' . $dates . '</td>
+                    <td align="right"><h3>Invoice Report</h3></td>
+                </tr>
             </table>
-
-           
-        
-            <table  width="100%" style="margin-top:2px;border-collapse: collapse; border-spacing: 0;border-top:2px solid;">
-            
-        
-            <tr>
-            
-                <th align="ceneter" width="40px">Date</th>
-            
-                <th align="ceneter" width="100px">Invoice Ref.</th>
-            
-                <th align="ceneter" width="100px">Customer</th>
-            
-                <th align="ceneter" width="100px">Delivery Note Ref.</th>
-            
-                <th align="ceneter" width="120px">Sales Order Ref.</th>
-
-                <th align="ceneter" width="80px">Lpo Ref.</th>
-
-                <th align="ceneter" width="80px">Amount</th>
-
-                <th align="ceneter" width="200px">Product</th>
-
-                <th align="ceneter" width="80px">Quantity</th>
-
-                <th align="ceneter" width="80px">Rate</th>
-
-                <th align="ceneter" width="80px">Discount</th>
-
-                <th align="ceneter" width="80px">Amount</th>
-
-
-                
-
-            
-            </tr>
-
-             
-            '.$pdf_data.'
-
-
-            <tr>
-
-                <td style="border-top: 2px solid;" width="40px">Total</td>
-
-                <td style="border-top: 2px solid;" width="100px"></td>
-
-                <td style="border-top: 2px solid;" width="100px"></td>
-
-                <td style="border-top: 2px solid;" width="100px"></td>
-
-                <td style="border-top: 2px solid;" width="120px"></td>
-
-                <td style="border-top: 2px solid;" width="80px"></td>
-
-                <td style="border-top: 2px solid;" width="80px" align="right"><b>'.format_currency($sales_total).'</b></td>
-
-                <td style="border-top: 2px solid;" width="100px"></td>
-
-                <td style="border-top: 2px solid;" width="80px"></td>
-
-                <td style="border-top: 2px solid;" width="80px"></td>
-
-                <td style="border-top: 2px solid;" width="80px"></td>
-                
-                <td style="border-top: 2px solid;" width="80px"><b>'.format_currency($invoice_total).'</b></td>
-
-
-
-                
-            
-            </tr>
-
-
-
-           
-            
+    
+            <table width="100%" style="margin-top:2px; border-collapse: collapse; border-spacing: 0; border-top:2px solid;">
+                <tr>
+                    <th align="center" style="border-bottom:2px solid" width="40px">Date</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Invoice Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Customer</th>
+                    <th align="center" style="border-bottom:2px solid" width="100px">Delivery Note Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="120px">Sales Order Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Lpo Ref.</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Amount</th>
+                    <th align="center" style="border-bottom:2px solid" width="200px">Product</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Quantity</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Rate</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Discount</th>
+                    <th align="center" style="border-bottom:2px solid" width="80px">Amount</th>
+                </tr>
+    
+                ' . $pdf_data . '
+    
+                <tr>
+                    <td style="border-top: 2px solid;" width="40px">Total</td>
+                    <td style="border-top: 2px solid;" width="100px"></td>
+                    <td style="border-top: 2px solid;" width="100px"></td>
+                    <td style="border-top: 2px solid;" width="100px"></td>
+                    <td style="border-top: 2px solid;" width="120px"></td>
+                    <td style="border-top: 2px solid;" width="80px"></td>
+                    <td style="border-top: 2px solid;" width="80px" align="right"><b>' . format_currency($sales_total) . '</b></td>
+                    <td style="border-top: 2px solid;" width="100px"></td>
+                    <td style="border-top: 2px solid;" width="80px"></td>
+                    <td style="border-top: 2px solid;" width="80px"></td>
+                    <td style="border-top: 2px solid;" width="80px"></td>
+                    <td style="border-top: 2px solid;" width="80px"><b>' . format_currency($invoice_total) . '</b></td>
+                </tr>
             </table>
-
-
-        
             ';
-        
-            //$footer = '';
-             
-            //echo $html; exit();
-
-            $mpdf->SetAutoPageBreak(true, 10); // If 10mm space is left, move to the next page
-            
+    
+            $mpdf->SetAutoPageBreak(true, 10);
             $mpdf->WriteHTML($html);
-           // $mpdf->SetFooter($footer);
             $this->response->setHeader('Content-Type', 'application/pdf');
             $mpdf->Output($title . '.pdf', 'I');
-        
         }
-
-       
     }
+    
    
 
     

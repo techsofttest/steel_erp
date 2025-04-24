@@ -502,12 +502,12 @@ class LPO_MRNReport extends BaseController
                     }
                     $pdf_data .= "'>{$prod_del->product_details}</td>";
 
-                    $pdf_data .= "<td style='text-align:right;";
+                    $pdf_data .= "<td style='";
                     if ($q == 1) {
 
                         $pdf_data .= $border;
                     }
-                    $pdf_data .= "'>{$prod_del->pop_qty}</td>";
+                    $pdf_data .= "'>".format_currency($prod_del->pop_qty)."</td>";
 
                     $pdf_data .= "<td style='text-align:right;";
                     if ($q == 1) {
