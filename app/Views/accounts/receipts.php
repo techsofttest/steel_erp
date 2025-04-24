@@ -294,8 +294,8 @@
                                                         <label for="basiInput" class="form-label">Cheque Copy</label>
                                                     </div>
 
-                                                    <div class="col-col-md-6 col-lg-6">
-                                                        <input type="file" name="r_cheque_copy" class="form-control">
+                                                    <div class="col-col-md-9 col-lg-9">
+                                                        <input style="line-height:2;" type="file" name="r_cheque_copy" class="form-control">
                                                     </div>
 
                                                 </div>
@@ -349,7 +349,7 @@
 
                                                             <td width="5%" class="p-0">
 
-                                                                <input title="Only numbers, commas, and dots allowed" class="number_format form-control credit_amount p-0" type="text" name="inv_amount[]" value="">
+                                                                <input title="Only numbers, commas, and dots allowed" class="number_format form-control credit_amount p-0" autocomplete="off" type="text" name="inv_amount[]" value="">
 
                                                             </td>
 
@@ -666,7 +666,7 @@
 
                                                 <div class="row align-items-center">
 
-                                                    <div class="col-lg-10 add_more_container p-0">
+                                                    <div class="col-lg-12 add_more_container p-0">
 
                                                         <table class="table table-bordered" id="">
 
@@ -698,12 +698,11 @@
 
                                                                 <td class="p-0">Total Receipt</td>
 
-                                                                <td class="p-0" class="invoice_total"></td>
+                                                                <td class="p-0 invoice_total"></td>
 
                                                                 <td class="p-0">Adjusted</td>
 
-                                                                <td class="p-0" class="invoice_adjusted"></td>
-
+                                                                <td class="p-0 invoice_adjusted"></td>
 
                                                                 <td class="p-0">Balance</td>
 
@@ -718,13 +717,7 @@
                                                     </div>
 
 
-
-                                                    <div class="col-lg-2">
-
-                                                        <button class="w-100" type="submit">Save</button>
-
-                                                    </div>
-
+                                                   
 
                                                 </div>
 
@@ -752,10 +745,9 @@
 
                 </div>
 
-                <!-- <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-target="#AddModal" data-bs-toggle="modal">Cancel</button>
-                <button type="submit" class="btn btn btn-success">Add</button>
-            </div> -->
+                <div class="modal-footer justify-content-center">
+                 <button class="btn btn-success" type="submit">Save</button>
+                </div> 
 
             </div>
         </form>
@@ -1206,7 +1198,7 @@
                                                        
 
                                                             
-                                        <button class="submit_btn btn btn-success once_form_submit" type="submit">Update</button></td>
+                                        <button class="submit_btn btn btn-success once_form_submit" type="submit">Update</button></td><!--Yepril-->
                                                            
                                                         
                                 </div>
@@ -1924,7 +1916,7 @@
 
         $('body').on('input', '.credit_amount', function() {
 
-            value = parseFloat($(this).val());
+            value = rmv_comma($(this).val());
 
             max = parseFloat($(this).attr('data-max')) || 0;
 
@@ -1951,15 +1943,16 @@
             var total = 0;
 
             $('body .credit_amount').each(function() {
-                var sub_tot = parseFloat($(this).val());
 
-                total += parseFloat(sub_tot.toFixed(2)) || 0;
+                var sub_tot = rmv_comma($(this).val());
+
+                total += sub_tot;
                 //total = Number(total).toFixed(2)
             });
 
             total = total.toFixed(2);
 
-            $('#total_amount').html(total);
+            $('#total_amount').html(add_comma(total));
 
             $('#total_amount_val').val(total);
 
@@ -2060,6 +2053,10 @@
         /* ## */
 
         $(document).on('input change', '#invoices_sec .invoice_receipt_amount', function(event) {
+            let val = rmv_comma($(this).val());
+            if (isNaN(val) || val < 0) {
+                val = 0; // Default to 0 if the value is invalid or negative
+            }
             // Debugging: Check if the function is called and with correct element
        
 
@@ -2070,10 +2067,11 @@
             var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
             var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-            var val = rmv_comma($(this).val()); // Current value entered
+             // Current value entered
             var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
-
-          
+            // If the entered value exceeds the maximum allowed value, cap it at the maximum
+            if (val > max) {
+            
 
             // Ensure the value doesn't exceed the maximum allowed for the field
             if (val > max) {
@@ -2086,14 +2084,24 @@
             var sum = 0;
             $('.invoice_receipt_amount').each(function() {
                 if (this !== event.target) {
-                    sum += parseFloat($(this).val()) || 0;
+                    var value = rmv_comma($(this).val());
+                    if (!isNaN(value) && value >= 0) { // Validate numeric and non-negative
+                        sum += value;
+                    }
                 }
-            });
-
-           
-
+            })
+                
             // If the sum plus the current value exceeds the initial balance
             if (sum + val > receipt_total) {
+                // Adjust the current field value so the sum equals the receipt_total
+                val = Math.max(0, receipt_total - sum); // Ensure val is not negative
+                $(this).val(val).trigger('change');
+            }
+            
+            // Handle cases where receipt_total is zero or negative
+            if (receipt_total <= 0) {
+                $(this).val(0).trigger('change'); // Set val to 0 if receipt_total is invalid
+            }
                 // Adjust the current field value so the sum equals the receipt_total
                 val = receipt_total - sum;
                 $(this).val(val).trigger('change');
@@ -2101,7 +2109,7 @@
 
           
             // Handle the checkbox based on the value entered
-            if (max_receipt != val) {
+            if (!isNaN(max_receipt) && !isNaN(val) && max_receipt != val) {
                 parent.find('.invoice_add_check').prop('checked', false);
             } else {
                 parent.find('.invoice_add_check').prop('checked', true);
@@ -2436,6 +2444,17 @@
 
 
 
+        
+        $("body").on('keypress', '.so_receipt_amount', function() {
+
+        if(rmv_comma($(this).val())>balance)
+        {
+        console.log('above');
+        $(this).val(balance)
+        }
+
+        });
+
         /* Check Total Balance For Invoices End*/
 
 
@@ -2462,11 +2481,15 @@
 
             });
 
+            //console.log(LinkAdjusted);
+
             invoice_adjusted = LinkTotal - LinkAdjusted;
+
+            balance = LinkTotal-LinkAdjusted;
 
             balance = Math.max(0, balance);
 
-            $('.invoice_balance').html(balance);
+            $('.invoice_balance').html(add_comma(balance));
 
             if (LinkAdjusted > LinkTotal) {
 
@@ -2474,7 +2497,7 @@
 
             }
 
-            $('.invoice_adjusted').html(LinkAdjusted);
+            $('.invoice_adjusted').html(add_comma(LinkAdjusted));
 
         }
 
@@ -3557,7 +3580,7 @@
 
 
 
-        /* If Cheque  */
+        /* If Cheque  */    
 
         $('#AddModal select[name=r_method]').change(function() {
 
@@ -3954,7 +3977,7 @@
        
 
 
-
+        
 
         $('.add_model_btn').click(function() {
 
@@ -4273,6 +4296,18 @@
 
             //var total = parseInt($('#fifo_add').attr('data-total'))||0;
 
+            $('#invoices_add').find(':input').each(function() {
+            var $input = $(this);
+            var value = $input.val();
+            if (value && typeof value === 'string' && value.includes(',')) {
+            $input.val(value.replace(/,/g, '')); // Remove commas and update the input value
+            }
+            });
+
+            // Serialize the form and send it via AJAX
+            var serializedData = $('#invoices_add').serialize();
+
+
             var total = parseFloat($('#fifo_add').data('total')) || 0;
 
             var invoice_total = 0;
@@ -4281,7 +4316,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total += rmv_comma(parent.find('.invoice_receipt_amount').val());
 
             })
 
@@ -4290,7 +4325,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.so_receipt_amount').val()) || 0;
+                invoice_total += rmv_comma(parent.find('.so_receipt_amount').val());
 
             })
             
@@ -4321,7 +4356,7 @@
 
                 method: "POST",
 
-                data: $(this).serialize(),
+                data: serializedData,
 
                 success: function(data) {
 
@@ -4412,7 +4447,7 @@
             
             // If the checkbox is checked
             if ($(this).prop('checked') == true) {
-                //console.log("point 2");
+            //console.log("point 2");
 
                 // Fill the amount with the minimum between total and total_amount
                 var fill_amount = Math.min(total, total_amount);
@@ -4619,7 +4654,7 @@
 
             //var resultQuotation = numberToWords.toWords(total);
 
-        });
+            });
 
 
 
@@ -4763,7 +4798,7 @@
      // Function to format numbers with commas and always show two decimal places
         
 
-        $("body").on("blur", ".credit_amount,.invoice_receipt_amount", function () {
+        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.so_receipt_amount", function () {
             var $this = $(this);
             var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
 
@@ -4798,6 +4833,7 @@
 
             total += parseFloat(sub_tot.toFixed(2)) || 0;
             //total = Number(total).toFixed(2)
+            //notthat fixed number(total);
         });
 
         total = total.toFixed(2);

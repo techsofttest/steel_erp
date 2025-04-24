@@ -155,7 +155,9 @@
                                             <tr>
                                            
                                             <td class="text-end" colspan="4">Total Payment : </td>
+
                                             <td class='text-end' style=""><b><span id="total_payment_amount_view"></span></b></td>
+
                                             </tr>
 
                                             </tfoot>
@@ -620,7 +622,7 @@
 
                                                                 <td width="5%" class="p-0">
 
-                                                                    <input class="form-control credit_amount" data-max="" type="number" name="inv_amount[]">
+                                                                    <input class="form-control credit_amount number_format" data-max="" type="text" name="inv_amount[]">
 
                                                                 </td>
 
@@ -1370,6 +1372,17 @@
                 errorPlacement: function(error, element) {},
                 submitHandler: function(form) {
 
+                    // Iterate through each input field in the form
+                    $('#add_form').find(':input .credit_amount ').each(function() {
+                        var $input = $(this);
+                        var value = $input.val(); // Get the input's value
+
+                        // Check if the value contains commas and remove them
+                        if (value && typeof value === 'string' && value.includes(',')) {
+                            $input.val(value.replace(/,/g, '')); // Remove commas and update the input value
+                        }
+                    });
+
                     var submitButtonName = $(this.submitButton).attr("name");
 
                     var formData = new FormData(form);
@@ -1695,71 +1708,38 @@
 
             var parent = $(this).closest('tr');
 
-            var c_account = parent.find('.debit_account');
+            var d_account = parent.find('.debit_account');
 
-            // console.log(c_account.val());
+            var d_amount = parent.find('.credit_amount');
 
-            var c_amount = parent.find('.credit_amount');
+            LinkTotal = rmv_comma(d_amount.val());
 
-            if (c_account.val() == "") {
-
+            if (d_account.val() == "") {
                 alertify.error('Select Debit Account!').delay(3).dismissOthers();
-
                 return false;
-
             }
 
-
-            if (c_amount.val() == "") {
-
+            if (d_amount.val() == "") {
                 alertify.error('Enter Amount!').delay(3).dismissOthers();
-
-                c_amount.focus();
-
+                d_amount.focus();
                 return false;
-
             }
 
             //var id=1;
 
 
-            /*
-            if (!$("#add_form").valid()) {
-                alertify.error('Fill required fields!').delay(3).dismissOthers();
-                return false;
-            }
-                */
-
-
-            /*
-            if ($('#added_id').val() == '') {
-                $('#add_form').submit();
-
-                if (!$("#add_form").valid()) {
-                    alertify.error('Fill required fields!').delay(3).dismissOthers();
-                    return false;
-                }
-
-            }
-                */
-
-
-            /*
-            var checkValueInterval = setInterval(function() {
-                if ($('#added_id').val() !== '') {
-                    clearInterval(checkValueInterval);
-            */
-
 
             var pid = $('#added_id').val();
 
-            var id = c_account.val(); //Customer_ID
+            var id = d_account.val(); //Customer_ID
 
-            var credit_date = parent.find('.credit_date').val();
+            var debit_date = parent.find('.credit_date').val();
 
-            var credit_amount = parent.find('.credit_amount').val();
+            var debit_amount_comma = parent.find('.credit_amount').val();
 
-            var credit_narration = parent.find('.credit_narration').val();
+            debit_amount = debit_amount_comma.replace(",","");
+
+            var debit_narration = parent.find('.credit_narration').val();
 
 
             $.ajax({
@@ -1770,9 +1750,9 @@
 
                 data: {
                     id: id,
-                    cdate: credit_date,
-                    camount: credit_amount,
-                    cnarration: credit_narration,
+                    cdate: debit_date,
+                    camount: debit_amount,
+                    cnarration: debit_narration,
                     pid: pid
                 },
 
@@ -1781,7 +1761,7 @@
                 success: function(data) {
 
                     if (data.status == 0) {
-                        alertify.error('No Invoices Found!').delay(3).dismissOthers();
+                        alertify.error(data.msg).delay(3).dismissOthers();
 
                         $('#AddModal').modal('show');
 
@@ -1792,9 +1772,9 @@
 
                     $('#AddModal').modal('hide');
 
-                    $('#fifo_add').attr('data-total', credit_amount);
+                    $('#fifo_add').attr('data-total', debit_amount);
 
-                    $('body #fifo_add').data('total', credit_amount);
+                    $('body #fifo_add').data('total', debit_amount);
 
                     $('body #add_poadvance_btn').data('vendor', data.vendor_id);
 
@@ -1807,7 +1787,7 @@
 
                     $('#InvoicesModal').modal('show');
 
-                    $('.invoice_total').html(credit_amount);
+                    $('.invoice_total').html(debit_amount);
 
                     $('.invoice_adjusted').html('0');
 
@@ -2524,11 +2504,21 @@
 
             var invoice_total = 0.00;
 
+            $('#invoices_add').find(':input').each(function() {
+            var $input = $(this);
+            var value = $input.val();
+            if (value && typeof value === 'string' && value.includes(',')) {
+            $input.val(value.replace(/,/g, '')); // Remove commas and update the input value
+            }
+            });
+
             $('.invoice_receipt_amount').each(function() {
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.invoice_receipt_amount').val()) || 0;
+                invoice_total_no_comma = rmv_comma(parent.find('.invoice_receipt_amount').val());
+
+                invoice_total += parseFloat(invoice_total_no_comma) || 0;
 
             })
 
@@ -2536,7 +2526,7 @@
 
                 parent = $(this).closest('tr');
 
-                invoice_total += parseFloat(parent.find('.po_advance_amount').val()) || 0;
+                invoice_total += rmv_comma(parent.find('.po_advance_amount').val());
 
             })
 
@@ -2739,7 +2729,7 @@
             var receipt_total = parseFloat($('#fifo_add').data('total')) || 0; // Initial balance
             var max_receipt = parseFloat(parent.find('.invoice_total_amount').val()) || 0;
 
-            var val = parseFloat($(this).val()) || 0; // Current value entered
+            var val = parseFloat(rmv_comma($(this).val())) || 0; // Current value entered
             var max = parseFloat($(this).attr('data-max')) || max_receipt; // Use data-max for proper validation
 
           
@@ -2757,7 +2747,7 @@
             var sum = 0;
             $('.invoice_receipt_amount').each(function() {
                 if (this !== event.target) {
-                    sum += parseFloat($(this).val()) || 0;
+                    sum += parseFloat(rmv_comma($(this).val())) || 0;
                 }
             });
 
@@ -2794,22 +2784,20 @@
 
             balance = 0;
 
-           
-
             $('body .invoice_receipt_amount').each(function() {
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+                LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
 
             });
 
-            LinkTotal = parseFloat($('.credit_amount').val()) || 0;
+            //LinkTotal = parseFloat($('.credit_amount').val()) || 0;
 
 
-             $('body .po_advance_amount').each(function() {
+            $('body .po_advance_amount').each(function() {
 
-                LinkAdjusted += parseFloat($(this).val()) || 0;
+            LinkAdjusted += parseFloat(rmv_comma($(this).val())) || 0;
 
-             });
+            });
 
             //alert('link total : '+LinkTotal+' | Link Adjusted : '+LinkAdjusted)
 
@@ -2817,8 +2805,7 @@
 
             balance = Math.max(0, balance);
 
-            $('.invoice_balance').html(balance);
-
+            $('.invoice_balance').html(add_comma(balance));
 
 
             if (LinkAdjusted > LinkTotal) {
@@ -2827,13 +2814,13 @@
 
             }
 
-            //  alert(balance + '|' + LinkAdjusted);
+            //alert(balance + '|' + LinkAdjusted);
 
 
-            $('.invoice_adjusted').html(LinkAdjusted);
+            $('.invoice_adjusted').html(add_comma(LinkAdjusted));
 
 
-          //  alert(balance);
+            //alert(balance);
 
         }
 
@@ -3379,6 +3366,20 @@
 
 
 
+        // Function to format numbers with commas and always show two decimal places
+
+        $("body").on("blur", ".credit_amount,.invoice_receipt_amount,.po_advance_amount", function () {
+            var $this = $(this);
+            var rawValue = $this.val().replace(/,/g, ""); // Remove existing commas
+
+            if (rawValue !== "") {
+                var formattedValue = add_comma(rawValue);
+                $this.val(formattedValue);
+            }
+        });
+
+
+
 
 
 
@@ -3400,15 +3401,16 @@
         var total = 0;
 
         $('body .credit_amount').each(function() {
-            var sub_tot = parseFloat($(this).val());
 
-            total += parseFloat(sub_tot.toFixed(2)) || 0;
+            var sub_tot = rmv_comma($(this).val());
+
+            total += rmv_comma(sub_tot);
             //total = Number(total).toFixed(2)
         });
 
         total = total.toFixed(2);
 
-        $('#total_amount').html(total);
+        $('#total_amount').html(add_comma(total));
 
         $('#total_amount_val').val(total);
 
