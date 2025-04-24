@@ -96,7 +96,7 @@
         margin-bottom: 0px;
     }
     .total_table {
-        width: 16% !important;
+        width: 14% !important;
     
     }
     .select_prod_add td{
