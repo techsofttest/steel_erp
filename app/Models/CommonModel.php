@@ -1528,7 +1528,7 @@ class CommonModel extends Model
 
     }*/
 
-    public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = []) {
+    public function FetchSalesReturns1($table, $cond, $cond2, $salesOrderIds = [3]) {
         // Check if the $salesOrderIds is an array and not empty
         if (!empty($salesOrderIds) && is_array($salesOrderIds)) {
             echo "Sales Order IDs: ";
