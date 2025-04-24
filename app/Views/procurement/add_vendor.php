@@ -238,7 +238,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_city" class="form-control input_length" required>
+                                                <input type="text" name="cc_city" class="form-control " required>
                                             </div>
 
                                         </div>
@@ -256,7 +256,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="text" name="cc_country" class="form-control input_length" required>
+                                                <input type="text" name="cc_country" class="form-control " required>
                                             </div>
 
                                         </div>
