@@ -1534,13 +1534,13 @@ class CommonModel extends Model
             ->select('ci_id, ci_reffer_no, ci_customer, ci_paid_status, ci_status, (ci_total_amount - ci_paid_amount) AS price_difference')
             ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order');
     
-        // Check if the $salesOrderIds is an array and not empty
+        // Apply sales order filter (check if it's an array and not empty)
         if (!empty($salesOrderIds)) {
-            // If there's only one sales order ID, use where, else use whereIn
-            if (count($salesOrderIds) == 1) {
-                $query->where($table . '.ci_sales_order', $salesOrderIds[0]); // Single sales order ID
+            // Use whereIn for multiple sales orders, or where for a single sales order
+            if (count($salesOrderIds) > 1) {
+                $query->whereIn($table . '.ci_sales_order', $salesOrderIds);
             } else {
-                $query->whereIn($table . '.ci_sales_order', $salesOrderIds); // Multiple sales order IDs
+                $query->where($table . '.ci_sales_order', $salesOrderIds[0]);
             }
         }
     
@@ -1551,12 +1551,11 @@ class CommonModel extends Model
                 ->where('ci_paid_status', 0) // Condition for ci_paid_status = 0
                 ->orGroupStart() // Nested group for ci_paid_status = 1
                     ->where('ci_paid_status', 1)
-                    //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
                     ->where('(ci_total_amount - ci_paid_amount) > steel_crm_sales_orders.so_amount_total', null, false)
                 ->groupEnd() // End nested group
               ->groupEnd(); // End outer group
     
-        // Run the query
+        // Run the query and get the result
         $queryResult = $query->get();
     
         // Debugging: Print out the query for troubleshooting
@@ -1564,6 +1563,7 @@ class CommonModel extends Model
     
         return $queryResult->getResult();
     }
+    
     
     
     
