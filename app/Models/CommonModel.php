@@ -1216,6 +1216,7 @@ class CommonModel extends Model
 
         ->get();
 
+       
         return $query->getResult();
  
     }
@@ -1512,7 +1513,7 @@ class CommonModel extends Model
 
                 //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
 
-                ->where('(ci_total_amount - ci_paid_amount) >  steel_crm_sales_orders.so_amount_total', null, false)
+                //->where('(ci_total_amount - ci_paid_amount) >  steel_crm_sales_orders.so_amount_total', null, false)
 
 
             ->groupEnd() // End nested group
@@ -1528,8 +1529,68 @@ class CommonModel extends Model
 
     }
 
+    /**/
+    /*public function FetchReturnsales($table,$cond1,$cond2){
+         
+        $query = $this->db->table($table)
+        
+        ->select('*')
 
-   
+        ->where($cond1)
+
+        ->where($cond2);
+
+        
+
+        //->get();
+
+        //echo $this->db->getLastQuery(); exit();
+
+        //->get();
+
+        
+       // return $query->getResult();
+
+        $result = $query->get()->getResult();
+
+        $i = 0;
+        foreach ($result as $res) {
+            $cond_user = ['ci_sales_order' => $res->ci_sales_order];
+                $result[$i]->sales_return = $this->FetchSalesReturns1('crm_cash_invoice',$cond_user);
+            
+            $i++;
+        }
+
+       return $result;
+       
+    
+        
+
+    }
+
+    public function FetchSalesReturns1($table, $cond)
+    {
+        $query = $this->db->table($table)
+            ->select('ci_id, ci_reffer_no, ci_sales_order, ci_paid_status, (ci_total_amount - ci_paid_amount) AS price_difference')
+            ->join('crm_sales_orders', 'crm_sales_orders.so_id = ' . $table . '.ci_sales_order')
+            ->where($cond)
+            ->groupStart()
+                ->where('ci_paid_status', 0)
+                ->orGroupStart()
+                    ->where('ci_paid_status', 1)
+                    //->where('(ci_total_amount - ci_paid_amount) > crm_sales_orders.so_amount_total')
+                    
+                ->groupEnd()
+            ->groupEnd()
+            //->having('price_difference > steel_crm_sales_orders.so_amount_total') // Use HAVING instead of WHERE for alias
+            ->get();
+
+        echo $this->db->getLastQuery(); exit();
+
+        return $query->getResult();
+    }*/
+
+    /***/
     
 
 
@@ -1554,7 +1615,7 @@ class CommonModel extends Model
             
                 ->where('cci_paid_status', 1)
 
-                ->where('(cci_total_amount - cci_paid_amount) > crm_sales_orders.so_amount_total')
+                //->where('(cci_total_amount - cci_paid_amount) > crm_sales_orders.so_amount_total')
 
             ->groupEnd() // End nested group
 

@@ -628,11 +628,19 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
-        $cash_customer = $this->common_model->CheckTwiceCond1('crm_cash_invoice',$cond,array('ci_status'=>0));
+        //$cash_invoices = $this->common_model->FetchReturnsales('crm_cash_invoice',$cond,array('ci_status'=>0));
 
-        print_r($cash_customer); exit();
+        //print_r($cash_invoices); exit();
+         
+        /*$sales_order = []; 
+        foreach($cash_customer as $cash_cust){
 
-        //$cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
+            $sales_order[] = $cash_customer->ci_sales_order;
+        }*/
+
+        //print_r($cash_customer); exit();
+
+        $cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
 
         
         $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
@@ -643,10 +651,14 @@ class SalesReturn extends BaseController
 
         foreach($cash_invoices as $cash_invoice)
         {   
-            
-            $data['invoice_no'] .='<option value='.$cash_invoice->ci_reffer_no.'';
+            //foreach($cash_invoice->sales_return as $sales_ret){
+                 
+                $data['invoice_no'] .='<option value='.$cash_invoice->ci_reffer_no.'';
            
-            $data['invoice_no'] .='>' .$cash_invoice->ci_reffer_no. '</option>'; 
+                $data['invoice_no'] .='>' .$cash_invoice->ci_reffer_no. '</option>'; 
+
+            //} 
+            
         }
 
         foreach($credit_invoices as $credit_invoice)
