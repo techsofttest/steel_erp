@@ -78,7 +78,7 @@
         font-size: 25px;
         color: #ff0000b5;
         position: absolute;
-        right: 5px;
+        right: 0px;
         top: -10px;
     }
     .add_more_icon {
@@ -1465,6 +1465,7 @@
         $(function() {
             var form = $('#purchase_form');
             
+            
             form.validate({
                 /*rules: {
                     required: 'required',
@@ -1950,7 +1951,7 @@
          /*sales order droup drown search*/
          function InitSalesSelectAdd(){
             $(".add_sales_order:last").select2({
-                placeholder: "Select Product",
+                placeholder: "Select Sales Order",
                 theme : "default form-control- droup_color",
                 dropdownParent: $($('.add_sales_order:last').closest('.add_prod_row')),
                 ajax: {

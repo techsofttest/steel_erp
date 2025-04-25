@@ -191,7 +191,7 @@
 
                                                                     <div class="col-col-md-3 col-lg-3">
                                                                         
-                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref <span class="add_more_icon add_contact ri-add-line"></span></label>
+                                                                        <label for="basicInput" class="form-label">Vendor Inv Ref <span class="add_more_icon add_contact ri-add-line" id="blink"></span></label>
                                                                     
                                                                     </div>
 
@@ -1167,6 +1167,7 @@
         /*add form*/
         $(function() {
             var form = $('#purchase_form');
+            var refreshIntervalId; // Declare outside for proper scope
             
             form.validate({
                 rules: {
@@ -1225,7 +1226,7 @@
                     }
                     else
                     {
-                        alertify.error('Please Select Products').delay(3).dismissOthers();
+                        /*alertify.error('Please Select Products').delay(3).dismissOthers();
 
                         
                         $('#blink').each(function() {
@@ -1242,7 +1243,29 @@
                         setTimeout(function(){
                             clearInterval(refreshIntervalId);
                             
-                        }, 1000)
+                        }, 1000)*/
+
+
+                        alertify.error('Please Select Products').delay(3).dismissOthers();
+
+                        // Clear any previous blinking
+                        if (refreshIntervalId) clearInterval(refreshIntervalId);
+
+                        $('#blink').css('visibility', 'visible'); // ensure it starts visible
+
+                        refreshIntervalId = setInterval(function() {
+                            var elem = $('#blink');
+                            if (elem.css('visibility') === 'hidden') {
+                                elem.css('visibility', 'visible');
+                            } else {
+                                elem.css('visibility', 'hidden');
+                            }
+                        }, 200);
+
+                        setTimeout(function() {
+                            clearInterval(refreshIntervalId);
+                            $('#blink').css('visibility', 'visible'); // reset to visible
+                        }, 1000);
                     }
                    
                 }
