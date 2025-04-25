@@ -628,11 +628,13 @@ class SalesReturn extends BaseController
     {
         $cond = array('ci_customer' => $this->request->getPost('ID'));
 
-        $credit_customer = $this->common_model->FetchWhere('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')));
+        $cash_customer = $this->common_model->CheckTwiceCond('crm_cash_invoice',$cond,array('ci_status'=>0));
 
-        print_r($credit_customer); exit();
+        print_r($cash_customer); exit();
 
-       
+        //$cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
+
+        
         $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
         
         
