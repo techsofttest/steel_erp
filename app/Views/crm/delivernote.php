@@ -1304,9 +1304,6 @@ span.select2.customer_width, span.select2 {
 
                                 }
 
-                                
-
-                                
                         
                             }
                         });
