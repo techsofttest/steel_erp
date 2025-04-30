@@ -134,11 +134,7 @@
         color: #ff0000b5;
         font-size: 20px;
     }
-    .select_width1{
-
-        border: unset !important;
-
-    }
+    
     .select_data_style{
         /*height: 100% !important;*/
         overflow: visible;
@@ -166,7 +162,13 @@
         
         text-align: left !important;
     }
+    .select_width1{
 
+        border: unset !important;
+        
+
+
+    }
 
 </style>
 
@@ -3513,7 +3515,7 @@ InitDebitSelectAdd1()
         /**/
 
 
-        function ProductSelect2Edit() {
+        /*function ProductSelect2Edit() {
                 $('body .product_select2_edit').each(function() {
                 $(this).select2({
                     placeholder: "Select Product",
@@ -3550,11 +3552,60 @@ InitDebitSelectAdd1()
                     }
                 })
 
+                
+
             });
 
 
             
+        }*/
+
+
+
+        function ProductSelect2Edit() {
+            $('body .product_select2_edit').each(function () {
+                var $select = $(this); // <-- define $select first
+
+                $select.select2({
+                    placeholder: "Select Product",
+                    theme: "default form-control- select_width1",
+                    dropdownParent: $select.closest('.edit_single_prod_row'),
+                    ajax: {
+                        url: "<?= base_url(); ?>Procurement/PurchaseVoucher/FetchProdDes",
+                        dataType: 'json',
+                        delay: 250,
+                        cache: false,
+                        minimumInputLength: 1,
+                        allowClear: false,
+                        data: function (params) {
+                            return {
+                                term: params.term,
+                                page: params.page || 1,
+                            };
+                        },
+                        processResults: function (data, params) {
+                            var page = params.page || 1;
+                            return {
+                                results: $.map(data.result, function (item) {
+                                    return {
+                                        id: item.product_details,
+                                        text: item.product_details
+                                    };
+                                }),
+                                pagination: {
+                                    more: (page * 10) <= data.total_count
+                                }
+                            };
+                        }
+                    }
+                });
+
+                // Inline-style fix
+                $select.next('.select_width1').attr('style', 'height:100% !important;text-align: left;');
+               
+            });
         }
+
 
 
 

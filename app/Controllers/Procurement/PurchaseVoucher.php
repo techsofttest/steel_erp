@@ -886,7 +886,7 @@ class PurchaseVoucher extends BaseController
         
                 <td>
                     <select class="form-control" name="pvp_sales_order" required>';
-                    
+                    $data['prod_desc'] .='<option value="" selected disabled>Select Sales Order</option>';
                         foreach($sales_orders as $sales_order){
                             $data['prod_desc'] .='<option class="droup_color" value="'.$sales_order->so_reffer_no.'" '; 
                             if($sales_order->so_reffer_no == $pur_vou_prod->pvp_sales_order){ $data['prod_desc'] .= "selected"; }
