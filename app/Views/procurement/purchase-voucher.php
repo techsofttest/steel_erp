@@ -3614,6 +3614,7 @@ InitDebitSelectAdd1()
         
         function DebitSelect2Edit() {
                 $('body .debit_select2_edit').each(function() {
+                var $select = $(this);    
                 $(this).select2({
                     placeholder: "Select Product",
                     theme: "default form-control- select_width1 ",
@@ -3648,6 +3649,12 @@ InitDebitSelectAdd1()
                         },
                     }
                 })
+
+
+                // Inline-style fix
+                $select.next('.select_width1').attr('style', 'height:100% !important;');
+
+
 
             });
 
