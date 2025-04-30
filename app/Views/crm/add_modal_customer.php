@@ -221,7 +221,7 @@
                                             </div>
 
                                             <div class="col-col-md-9 col-lg-9">
-                                                <input type="number" name="cc_credit_limit" class="form-control input_length" required>
+                                                <input type="text" name="cc_credit_limit" class="form-control input_length credit_limit_clz" required>
                                             </div>
 
                                         </div>
@@ -469,7 +469,7 @@
                                         <label for="basicInput" class="form-label">Est.ID Attach</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="file" name="cc_est_id_attach" class="form-control input_length ">
+                                        <input type="file" name="cc_est_id_attach" class="form-control input_length">
                                     </div>
                                 </div>
                                 
@@ -487,7 +487,7 @@
                                         <label for="basicInput" class="form-label">Est.ID Expery</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker input_length ">
+                                        <input type="text" name="cc_est_id_expery" autocomplete="off" placeholder="dd-mm-yy" class="form-control datepicker input_length">
                                     </div>
                                 </div>
                                 
@@ -505,7 +505,7 @@
                                         <label for="basicInput" class="form-label">Signatory Name</label>
                                     </div>
                                     <div class="col-lg-9">
-                                        <input type="text" name="cc_signatory_name" class="form-control input_length ">
+                                        <input type="text" name="cc_signatory_name" class="form-control input_length">
                                     </div>
                                 </div>
                                 
@@ -882,6 +882,32 @@
 
         /*#####*/
 
+        
+
+        /*credit limit start*/
+
+        $("body").on("blur", ".credit_limit_clz", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (/[^0-9.]/.test(rawValue)) {
+                alertify.error('Please enter a valid numeric amount.').delay(3).dismissOthers();
+                $(this).val(''); // optional: clear the field
+                return;
+            }
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
+        /*credit limit end*/
 
 
         /* account head  search droup drown start*/
@@ -1012,3 +1038,5 @@
     });
      
  </script>
+
+ 

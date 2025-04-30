@@ -236,7 +236,7 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <input type="text" name="pr_lpo" class="form-control input_length" value="" required>   
+                                                                        <input type="text" name="pr_lpo" class="form-control input_length lpo_clz" value="" required>   
 
                                                                     </div>
 
@@ -1018,7 +1018,7 @@
 
                                             <div class="col-col-md-9 col-lg-9">
                                                 
-                                                <input type="text" name="edit_lpo_ref" class="form-control edit_lpo_ref input_length" >
+                                                <input type="text" name="edit_lpo_ref" class="form-control edit_lpo_ref input_length" readonly>
                                             
                                             </div>
 
@@ -2002,6 +2002,8 @@
                     //$('.add_contact_person').val(data.contact_person);
 
                     $('.add_payment_term').val(data.payment_term);
+
+                    $('.lpo_clz').val(data.delivery_note);
                   
                 }
 

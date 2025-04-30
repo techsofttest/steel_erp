@@ -2767,7 +2767,7 @@
                   
                     $(".contact_person_clz").html(data.customer_person);
 
-                   // console(data.customer_person); 
+                    // console(data.customer_person); 
 
                     $("#qd_payment_term_id").val(data.cc_credit_term);
 

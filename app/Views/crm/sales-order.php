@@ -2719,6 +2719,7 @@
 
 
         $("body").on("keyup", ".edit_add_discount, .edit_add_qty, .edit_add_rate", function () {
+            
             var $this = $(this);
 
             var discount = parseFloat($this.closest(".edit_add_prod_row").find(".edit_add_discount").val()) || 0;

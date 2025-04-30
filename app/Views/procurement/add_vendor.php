@@ -220,7 +220,7 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="number" name="ven_credit_limit" class="form-control" required>
+                                                    <input type="text" name="ven_credit_limit" class="form-control ven_credit_limit" required>
                                                 </div>
 
                                             </div>
@@ -921,6 +921,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     /*####*/
+
+
+    /*credit limit start*/
+
+    $("body").on("blur", ".ven_credit_limit", function () {
+        var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+        var number = parseFloat(rawValue);
+
+        if (/[^0-9.]/.test(rawValue)) {
+            alertify.error('Please enter a valid numeric amount.').delay(3).dismissOthers();
+            $(this).val(''); // optional: clear the field
+            return;
+        }
+
+        if (!isNaN(number)) {
+            var formattedValue = number.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            $(this).val(formattedValue); // set the formatted value
+        }
+    });
+
+    /*credit limit end*/
 
    
 

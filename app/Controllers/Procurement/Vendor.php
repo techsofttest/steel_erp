@@ -117,7 +117,7 @@ class Vendor extends BaseController
             'cc_email'             =>  $_POST['ven_email'],
             'cc_credit_term'       =>  $_POST['ven_credit_term'],
             'cc_credit_period'     =>  $_POST['ven_credit_period'],
-            'cc_credit_limit'      =>  $_POST['ven_credit_limit'],
+            'cc_credit_limit'      =>  str_replace(',', '', $_POST['ven_credit_limit']),
             'cc_status'            =>  1,
             'cc_city'              =>  $_POST['cc_city'],
             'cc_country'           =>  $_POST['cc_country'],
@@ -194,7 +194,7 @@ class Vendor extends BaseController
    
 
     public function AddTab3()
-    {
+    {    
         $cond = array('cc_id' => $this->request->getPost('cc_id'));
 
         $update_data = $this->request->getPost();
@@ -228,7 +228,7 @@ class Vendor extends BaseController
             $update_data['cc_qid_expiry'] = "";
         }
         
-  
+      
         
         // Handle file upload
         if ($_FILES['cc_attach_cr']['name'] !== '') {
@@ -245,6 +245,10 @@ class Vendor extends BaseController
             $ccAttachCrFileName = $this->uploadFile('cc_qid_attach','uploads/Vendor');
             $update_data['cc_qid_attach'] = $ccAttachCrFileName;
         }
+
+       
+
+       
 
 
         $this->common_model->EditData($update_data, $cond, 'crm_customer_creation');
@@ -493,7 +497,7 @@ class Vendor extends BaseController
 
         $data['credit_period'] = $vendor->cc_credit_period;
 
-        $data['credit_limit']  = $vendor->cc_credit_limit;
+        $data['credit_limit']  = format_currency($vendor->cc_credit_limit);
 
         $data['city']          = $vendor->cc_city;
 
@@ -678,7 +682,9 @@ class Vendor extends BaseController
         if (array_key_exists('cc_account_id', $update_data)) 
         {
             unset($update_data['cc_account_id']);
-        } 
+        }
+        
+        $update_data['cc_credit_limit'] = str_replace(',', '', $update_data['cc_credit_limit']);
        
 	    $this->common_model->EditData($update_data,$cond,'crm_customer_creation');
 
@@ -686,7 +692,6 @@ class Vendor extends BaseController
         
         $this->common_model->EditData(array('ca_name' => $this->request->getPost('cc_customer_name')),array('ca_customer' => $this->request->getPost('cc_id'),'ca_type' => 'VENDOR'),'accounts_charts_of_accounts');
 
-        
     }
 
 

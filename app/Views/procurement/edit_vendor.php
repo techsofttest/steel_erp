@@ -211,7 +211,7 @@
                                                 </div>
 
                                                 <div class="col-col-md-9 col-lg-9">
-                                                    <input type="number" name="cc_credit_limit" class="form-control edit_credit_limit" required>
+                                                    <input type="text" name="cc_credit_limit" class="form-control edit_credit_limit" required>
                                                 </div>
 
                                             </div>
@@ -1255,6 +1255,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
     /*edit section end*/
+
+
+    /*credit limit start*/
+
+    $("body").on("blur", ".edit_credit_limit", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
+    /*credit limit end*/
 
 
 

@@ -285,7 +285,7 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="number" name="ven_credit_limit" class="form-control view_credit_limit" readonly>
+                                                                        <input type="text" name="ven_credit_limit" class="form-control view_credit_limit" readonly>
                                                                     </div>
 
                                                                 </div>

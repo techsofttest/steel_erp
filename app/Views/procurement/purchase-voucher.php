@@ -434,7 +434,13 @@
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">
+                                                                        <!--<input type="text" name="purchase_delivery_note" class="form-control input_length delivery_note_clz" value="">-->
+
+                                                                        <select class="form-select delivery_note_clz input_length" name="purchase_delivery_note" id="">
+                                                                            
+                                                                            <option value="" selected="" disabled="">Select Delivery Order</option>
+
+                                                                        </select>
                                                                     </div>
 
                                                                 </div> 
@@ -1053,7 +1059,10 @@
 
                                                                     <div class="col-col-md-9 col-lg-9">
 
-                                                                        <input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">
+                                                                        <!--<input type="text" name="pv_delivery_note" class="form-control edit_delivery_note input_length">-->
+                                                                        <select class="form-select edit_delivery_note input_length" name="pv_delivery_note" id="" required></select>
+                                                                    
+
 
                                                                     </div>
 
@@ -1704,9 +1713,9 @@
                 {   
                     var data = JSON.parse(data);
                      
-                  
+                   console.log(data.delivery_note);
 
-                    $('.delivery_note_clz').val(data.delivery_note)
+                    $('.delivery_note_clz').html(data.delivery_note)
 
                    
  
@@ -3267,7 +3276,7 @@ InitDebitSelectAdd1()
 
                         $('.edit_purchase_order').val(data.purchase_order);
 
-                        console.log(data.purchase_order);
+                       
 
                         if (data.purchase_order && data.purchase_order.trim() !== "") {
                                 
@@ -3278,7 +3287,9 @@ InitDebitSelectAdd1()
 
                         $('.edit_vendor_inv_ref').val(data.vendor_inv);
 
-                        $('.edit_delivery_note').val(data.delivery_note);
+                        $('.edit_delivery_note').html(data.delivery_note);
+
+                        console.log(data.delivery_note);
 
                         $('.edit_payment_term').val(data.payment_term);
 

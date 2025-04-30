@@ -661,6 +661,13 @@ class PurchaseReturn extends BaseController
                 'pk'    => 'contact_id',
                 'fk'    => 'pv_contact_person',
             ),
+
+            array(
+
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'pv_delivery_note',
+            ),
             
         );
 
@@ -669,6 +676,8 @@ class PurchaseReturn extends BaseController
         $data['contact_person'] = $purchase_voucher->contact_person;
 
         $data['payment_term']   = $purchase_voucher->pv_payment_term;
+
+        $data['delivery_note']   = $purchase_voucher->	mrn_delivery_note;
 
 
         echo json_encode($data);

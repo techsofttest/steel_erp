@@ -592,6 +592,12 @@ class PurchaseVoucher extends BaseController
                 'fk'    => 'pv_contact_person',
             ),
 
+            array(
+                'table' => 'pro_material_received_note',
+                'pk'    => 'mrn_id',
+                'fk'    => 'pv_delivery_note',
+            ),
+
 
         );
         
@@ -609,7 +615,7 @@ class PurchaseVoucher extends BaseController
 
         $data['vendor_inv']      = $purchase_voucher->pv_vendor_inv;
 
-        $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
+        $data['delivery_note']   = $purchase_voucher->mrn_delivery_note;
 
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
 
@@ -709,6 +715,8 @@ class PurchaseVoucher extends BaseController
         $purchase_voucher = $this->common_model->SingleRowJoin('pro_purchase_voucher', array('pv_id' => $this->request->getPost('ID')),$join);
 
         $vendor_data = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
+
+        $material_received_note = $this->common_model->FetchAllOrder('pro_material_received_note','mrn_id','desc');
         
         $data['reffer_id']       = $purchase_voucher->pv_reffer_id;
 
@@ -722,7 +730,7 @@ class PurchaseVoucher extends BaseController
 
         $data['vendor_inv']      = $purchase_voucher->pv_vendor_inv;
 
-        $data['delivery_note']   = $purchase_voucher->pv_delivery_note;
+        //$data['delivery_note']   = $purchase_voucher->pv_delivery_note;
 
         $data['payment_term']    = $purchase_voucher->pv_payment_term;
 
@@ -765,6 +773,27 @@ class PurchaseVoucher extends BaseController
 
             
         /**/
+
+
+        /*delivery note start*/
+
+        $data['delivery_note'] = '';
+
+        foreach($material_received_note as $mate_rec_note)
+        {  
+            
+            $data['delivery_note'] .= '<option value="' .$mate_rec_note->mrn_id.'"'; 
+
+            if($purchase_voucher->pv_delivery_note == $mate_rec_note->mrn_id)
+            {
+                $data['delivery_note'] .= ' selected'; 
+            }
+
+		    $data['delivery_note'] .= '>' . $mate_rec_note->mrn_delivery_note.'</option>';
+        }
+        
+        
+        /*delivery note end*/
         
         
         $join1 =  array(
@@ -1467,9 +1496,21 @@ class PurchaseVoucher extends BaseController
 
         $purchase_id =  $this->request->getPost('ID');
 
-        $material_received_note = $this->common_model->SingleRow('pro_material_received_note' ,array('mrn_purchase_order' => $purchase_id));
+        $material_received_note = $this->common_model->FetchWhere('pro_material_received_note' ,array('mrn_purchase_order' => $purchase_id));
 
-        $data['delivery_note'] = $material_received_note->mrn_delivery_note;
+       
+
+        //$data['delivery_note'] = $material_received_note->mrn_delivery_note;
+
+        $data['delivery_note'] = "<option value='' selected disabled>Select Delivery Order</option>";
+
+        foreach($material_received_note as $mat_rec_note)
+        {
+            $data['delivery_note'] .="<option value='".$mat_rec_note->mrn_id."'>".$mat_rec_note->mrn_delivery_note."</option>";
+	
+        }
+
+        
 
         echo json_encode($data); 
 

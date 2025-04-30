@@ -2527,6 +2527,22 @@ span.select2.customer_width, span.select2 {
     });
 
 
+
+    $("body").on("blur", ".current_cliam_clz", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
     /*claim section end*/
 
 
@@ -3226,6 +3242,21 @@ span.select2.customer_width, span.select2 {
        });
 
 
+       $("body").on("blur", ".edit_current_claim", function () {
+            var rawValue = $(this).val().replace(/,/g, ''); // remove existing commas
+            var number = parseFloat(rawValue);
+
+            if (!isNaN(number)) {
+                var formattedValue = number.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $(this).val(formattedValue); // set the formatted value
+            }
+        });
+
+
        function EditTotalAmount()
        {
 
@@ -3493,6 +3524,8 @@ span.select2.customer_width, span.select2 {
 
     
     function currentClaim() {  
+
+        
         var current_claim_lenght = $(".current_cliam_clz").length;
         var current_claim = $('.current_cliam_clz').val();
 
@@ -3510,6 +3543,8 @@ span.select2.customer_width, span.select2 {
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
                 });
+
+                
 
                 $('.claim_qar').val(formattedPrice);
             } 
