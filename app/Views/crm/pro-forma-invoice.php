@@ -273,7 +273,7 @@ span.select2.customer_width, span.select2 {
 
                                                                     <div class="col-col-md-9 col-lg-9">
                                                                         
-                                                                        <select class="form-select contact_person_clz input_length " name="pf_contact_person" id="contact_person_id" required>
+                                                                        <select class="form-select contact_person_clz input_length" name="pf_contact_person" id="contact_person_id" required>
                                                                             <option value="" selected disabled>Contact Person</option>
                                                                 
                                                                         </select>
@@ -300,7 +300,7 @@ span.select2.customer_width, span.select2 {
                                                                     </div>
 
                                                                     <div class="col-col-md-9 col-lg-9">
-                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz input_length " required>
+                                                                        <input type="text" name="pf_payment_terms" class="form-control payment_term_clz input_length" required>
                                                                     </div>
 
                                                                 </div> 

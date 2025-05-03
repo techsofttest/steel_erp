@@ -528,7 +528,7 @@ class SalesReturn extends BaseController
 
         $data['credit_account'] = $cash_invoice->sr_credit_account;
 
-        $data['total_amount'] = $cash_invoice->sr_total;
+        $data['total_amount'] = format_currency($cash_invoice->sr_total);
        
 
 
@@ -643,9 +643,12 @@ class SalesReturn extends BaseController
         $cash_invoices = $this->common_model->FetchSalesReturns1('crm_cash_invoice',$cond,array('ci_status'=>0));
 
         
-        $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
+       // $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_paid_status'=>0),array('cci_status'=>0));
         
-        
+       $credit_invoices = $this->common_model->FetchSalesReturns2('crm_credit_invoice',array('cci_customer' => $this->request->getPost('ID')),array('cci_status'=>0));
+
+       
+
         $data['invoice_no'] ='<option value="" selected disabled>Select Unpaid Invoices</option>';
 
 
@@ -1381,7 +1384,7 @@ class SalesReturn extends BaseController
 
             $data['invoice_no']      = $cash_invoice->sr_invoice;
 
-            $data['total_amount']    = $cash_invoice->sr_total;
+            $data['total_amount']    = format_currency($cash_invoice->sr_total);
 
             // customer craetion
             $customer_creation = $this->common_model->FetchAllOrder('crm_customer_creation','cc_id','desc');
