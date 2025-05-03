@@ -905,7 +905,7 @@
                     "<tr class='prod_row mr_remove prod_row_lenght'>" +
                     "<td class='si_no text-center' style='padding:10px; 10px;'><input type='number' value='" + pp + "' name='pd_serial_no["+jj+"]' class='form-control' required='' readonly></td>" +
                     "<td>" +
-                    "<select class='form-select add_sales_order' name='mrp_sales_order["+jj+"]' required>" +
+                    "<select class='form-select add_sales_order' name='mrp_sales_order["+jj+"]' style='text-align: center;' required>" +
                     "<option value='' selected disabled>Select Sales Order Ref</option>" +
                     "<?php foreach($sales_orders as $sales_order): ?>" +
                     "<option value='<?php echo $sales_order->so_id; ?>'><?php echo $sales_order->so_reffer_no; ?></option>" +

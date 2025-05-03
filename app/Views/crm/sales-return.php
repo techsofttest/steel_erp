@@ -1684,8 +1684,7 @@ span.select2.customer_width, span.select2 {
                 success:function(data)
                 {   
                     var data = JSON.parse(data);
-
-                
+                    
                     $(".lpo_ref").val(data.ci_lpo);
 
                     $(".project_clz").val(data.ci_project);
