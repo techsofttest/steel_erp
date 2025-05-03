@@ -105,6 +105,10 @@
    
         line-height: 18px;
     }
+    .total_table tr {
+   
+    border: 1px solid black;
+}
 </style>
 
 

@@ -81,6 +81,17 @@
 .modal-xxl {
         max-width: 95% !important; /* Or use 100%, or a fixed px like 1400px */
     }
+
+    .total_table {
+    width: 14% !important;
+    margin-top: -16px;
+}
+
+.total_table tr {
+    
+    border: 1px solid black;
+}
+
 </style>
 
 <div class="tab-content text-muted">
@@ -330,7 +341,7 @@
 
                                                         <tbody  class="travelerinfo product-more2"></tbody>
 
-                                                        <tbody>
+                                                        <!--<tbody>
                                                             <tr>
                                                                
                                                                 <td colspan="7" class="sales_order_amount_in_word"></td>
@@ -339,8 +350,21 @@
                                                                 <td><input type="text" name="pr_total_amount" class="amount_total form-control text-end" readonly=""></td>
                                                             </tr>
 
-                                                        </tbody>
+                                                        </tbody>--->
                                                         
+                                                    </table>
+
+                                                    <table class="total_table" style="display:none">
+
+                                                        <tbody>
+
+                                                            <tr>
+                                                                
+                                                                <td align="right" class="total_label">Total</td>
+                                                                <td><input type="text" name="pr_total_amount" class=" form-control amount_total text-end" readonly=""></td>
+                                                            </tr>
+
+                                                        </tbody>
                                                     </table>
                                                 </div>
 
@@ -834,7 +858,7 @@
                                 
                                 <tbody  class="travelerinfo view_prod_data"></tbody>
 
-                                <tbody>
+                                <!--<tbody>
                                     <tr>
                                         
                                         <td colspan="7" class=""></td>
@@ -842,10 +866,27 @@
                                         <td><input type="text" name="" class="view_total_prod form-control text-end" readonly=""></td>
                                     </tr>
 
-                                </tbody>
+                                </tbody>--->
 
                                 
                             </table>
+
+                            <table class="total_table">
+
+                                <tbody>
+
+                                    <tr>
+                                                                
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="" class=" form-control view_total_prod text-end" readonly=""></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+
                         </div>
 
 
@@ -1108,7 +1149,7 @@
                                 
                                 <tbody  class="travelerinfo edit_prod_data"></tbody>
 
-                                <tbody>
+                                <!--<tbody>
                                     <tr>
                                         
                                         <td colspan="7" class=""></td>
@@ -1116,9 +1157,23 @@
                                         <td><input type="text" name="" class="edit_total_prod form-control text-end" readonly=""></td>
                                     </tr>
 
-                                </tbody>
+                                </tbody>--->
 
                                 
+                            </table>
+
+                            <table class="total_table">
+
+                                <tbody>
+
+                                    <tr>
+                                                                
+                                        <td align="right" class="total_label">Total</td>
+                                        <td><input type="text" name="" class=" form-control edit_total_prod text-end" readonly=""></td>
+                                    
+                                    </tr>
+
+                                </tbody>
                             </table>
                         </div>
 
@@ -1708,6 +1763,10 @@
                     checkedIds.length = 0; 
 
                     $('#purchase_form').attr('data_fill','true');
+
+                    $(".total_table").show();
+
+                    
 
                 }
 

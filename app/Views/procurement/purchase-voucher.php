@@ -170,6 +170,11 @@
 
     }
 
+    .total_table tr{
+
+        border: 1px solid black;
+    }
+
 </style>
 
  <!--add product modal start-->
