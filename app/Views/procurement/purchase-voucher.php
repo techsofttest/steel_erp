@@ -2638,8 +2638,6 @@ InitDebitSelectAdd1()
 
             //var order = parseFloat(orderSelectElement.val()) || 0;
 
-            
-
 
             if(total > order)
             {   
@@ -3769,12 +3767,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         $('#AddProdModal').modal('show');
 
+        $('#EditModal').modal('hide');
+
     });
 
 
-     /*close product modal (open enquiry modal)*/
+    /*close product modal (open enquiry modal)*/
 
-     $('#AddProdModal').on('hidden.bs.modal', function () {
+    $('#AddProdModal').on('hidden.bs.modal', function () {
 
         $('#AddPurchaseVoucher').modal('show')
 

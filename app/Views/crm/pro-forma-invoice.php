@@ -21,7 +21,7 @@
 
 color: black !important;
 margin-bottom: 0px;
-width: 100% !important;
+/*width: 100% !important;*/
 padding: 0px;
 display: block;
 border-radius: 4px;
@@ -38,7 +38,7 @@ height: 37px !important;
 
 color: black !important;
 margin-bottom: 0px;
-width: 100% !important;
+/*width: 100% !important;*/
 padding: 0px;
 display: block;
 border-radius: 4px;
@@ -1916,7 +1916,7 @@ span.select2.customer_width, span.select2 {
 
         /**/
 
-        function InitProductSelectEdit() {
+        /*function InitProductSelectEdit() {
                 $('body .edit_cost_product_det').each(function() {
                 $(this).select2({
                     placeholder: "Select Product",
@@ -1957,6 +1957,58 @@ span.select2.customer_width, span.select2 {
 
 
         }
+
+        InitProductSelectEdit();*/
+
+        function InitProductSelectEdit() {
+    $('body .edit_cost_product_det').each(function() {
+        const $input = $(this);
+        const $parentRow = $input.closest('.prod_row');
+
+        // Warn if the expected parent is not found
+        if ($parentRow.length === 0) {
+            console.warn('No .prod_row found for:', $input);
+        }
+
+        $(this).select2({
+            placeholder: "Select Product",
+            theme: "default form-control- droup_color select_width", // simplified theme
+            dropdownParent: $parentRow.length, // only set if exists
+            ajax: {
+                url: "<?= base_url(); ?>Crm/SalesQuotation/FetchCostMetal",
+                dataType: 'json',
+                delay: 250,
+                cache: false,
+                minimumInputLength: 1,
+                allowClear: false,
+                data: function(params) {
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    };
+                },
+                processResults: function(data, params) {
+                    var page = params.page || 1;
+                    return {
+                        results: $.map(data.result, function(item) {
+                            return {
+                                id: item.product_id,
+                                text: item.product_details
+                            };
+                        }),
+                        pagination: {
+                            more: (page * 10) <= data.total_count
+                        }
+                    };
+                },
+            }
+        });
+    });
+}
+
+InitProductSelectEdit();
+
+
 
         /**/
 
