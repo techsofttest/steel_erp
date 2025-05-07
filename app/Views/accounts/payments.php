@@ -2594,6 +2594,7 @@
 
             $('.debit_account_select2').val('').trigger('change');
 
+            $('body .po_advance_amount').val('');
             
             $('.invoice_row').not(':first').remove();
 

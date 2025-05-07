@@ -1722,7 +1722,7 @@
 
             // console.log(c_account.val());
 
-            var c_amount = parent.find('.debit_account');
+            var c_amount = parent.find('.credit_amount');
 
             if (c_account.val() == "") {
 
@@ -2998,7 +2998,7 @@
 
         /* ### */
 
-
+//Folloe
         function SOSelect2() {
                            
                            $('.so_select2_add:last').select2({

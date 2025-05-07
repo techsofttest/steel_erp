@@ -1104,7 +1104,6 @@
                         <a href="javascript:void(0);" class="btn btn-success edit_invoice_add">Add</a>
 
                     </div>
-
                     -->
 
 
@@ -1950,9 +1949,13 @@
                 //total = Number(total).toFixed(2)
             });
 
+            //console.log(total);
+
             total = total.toFixed(2);
 
-            $('#total_amount').html(add_comma(total));
+            //console.log(total);
+
+            $('#total_amount').html(total);
 
             $('#total_amount_val').val(total);
 
@@ -2285,7 +2288,7 @@
 
                     var credit_amount_comma = parent.find('.credit_amount').val();
 
-                    credit_amount = credit_amount_comma.replace(",","")
+                    credit_amount = credit_amount_comma.replace(",","") //Replace the comma
 
                     var credit_narration = parent.find('.credit_narration').val();
 
@@ -4551,6 +4554,10 @@
 
         /* ### */
 
+        /* No  MMans */
+
+        /* No Mans End */
+
 
 
 
@@ -4640,15 +4647,16 @@
             var total = 0;
 
             $('body .credit_amount').each(function() {
-                var sub_tot = parseFloat($(this).val());
+                
+                var sub_tot = rmv_comma($(this).val());
 
-                total += parseFloat(sub_tot.toFixed(2)) || 0;
+                total += sub_tot;
                 //total = Number(total).toFixed(2)
             });
 
-            total = total.toFixed(2);
+            //total = total.toFixed(2);
 
-            $('#total_amount').html(total);
+            $('#total_amount').html(add_comma(total));
 
             $('#total_amount_val').val(total);
 
@@ -4829,9 +4837,10 @@
         var total = 0;
 
         $('body .credit_amount').each(function() {
-            var sub_tot = parseFloat($(this).val());
 
-            total += parseFloat(sub_tot.toFixed(2)) || 0;
+            var sub_tot = rmv_comma($(this).val());
+
+            total += sub_tot;
             //total = Number(total).toFixed(2)
             //notthat fixed number(total);
         });
